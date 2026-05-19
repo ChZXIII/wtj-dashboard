@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WTJ STORY - Content Operations Center</title>
+    <!-- Google Fonts: Orbitron & Share Tech Mono for the ultimate clean/tactical look -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=1.7">
+</head>
+<body>
+    <!-- Tactical Blueprint Grid Background -->
+    <div class="blueprint-grid"></div>
+
+    <!-- Main Command Interface Container -->
+    <div class="command-container">
+        
+        <!-- TOP STATUS HEADER BAR -->
+        <header class="tactical-header">
+            <div class="header-left">
+                <div class="title-block">
+                    <h1>WTJ PIPELINE</h1>
+                    <p class="subtitle">CONTENT OPERATIONS CENTER // MANAGEMENT TERMINAL</p>
+                </div>
+            </div>
+            
+            <!-- System Status Readout & Controls -->
+            <div class="header-right">
+                <button id="theme-toggle-btn" class="theme-btn" onclick="toggleTheme()">
+                    <span class="theme-icon">🌓</span> VEDA MODE
+                </button>
+                <div class="status-readout">
+                    <span class="label">PIPELINE ENGINE:</span>
+                    <span class="status-dot"></span>
+                </div>
+                <div class="status-readout">
+                    <span class="label">CONTROL LEVEL:</span>
+                    <span class="value">SYS-003</span>
+                </div>
+                <div class="clock-display" id="system-clock">12:48:57</div>
+            </div>
+        </header>
+
+        <!-- SUB-HEADER INFORMATION LINE -->
+        <div class="info-ticker">
+            <div class="ticker-label">SYSTEM FEED:</div>
+            <div class="ticker-marquee-container">
+                <div class="ticker-text">PIPELINE SECURE // CONSOLE ONLINE // ALL AGENTS FUNCTIONAL // READY FOR COMMANDS...</div>
+            </div>
+        </div>
+
+        <!-- MAIN LAYOUT: LEFT SIDEBAR & CENTRAL TACTICAL DISPLAY -->
+        <div class="dashboard-body">
+            
+            <!-- LEFT CONTROL PANEL (SIDEBAR) -->
+            <aside class="control-panel">
+                <div class="panel-header">NAVIGATION</div>
+                <div class="panel-content">
+                    <button class="nav-btn active" onclick="switchTab('calendar')">
+                        <span class="btn-indicator"></span>
+                        CONTENT CALENDAR
+                    </button>
+                    <button class="nav-btn" onclick="switchTab('gundam-status')">
+                        <span class="btn-indicator"></span>
+                        GUNDAM AGENTS
+                    </button>
+                    <button class="nav-btn" onclick="switchTab('content-vault')">
+                        <span class="btn-indicator"></span>
+                        CONTENT VAULT
+                    </button>
+                    <button class="nav-btn" onclick="switchTab('pipeline-control')">
+                        <span class="btn-indicator"></span>
+                        PIPELINE CONTROL
+                    </button>
+                    <button class="nav-btn" onclick="switchTab('team-workflow')">
+                        <span class="btn-indicator"></span>
+                        TEAM WORKFLOW
+                    </button>
+                </div>
+
+                <!-- Vector Radar Widget -->
+                <div class="radar-container">
+                    <div class="vector-radar">
+                        <div class="outer-circle"></div>
+                        <div class="inner-circle"></div>
+                        <div class="scanning-line"></div>
+                        <div class="gundam-marker" style="top: 30%; left: 70%;">GN-001</div>
+                        <div class="gundam-marker" style="top: 75%; left: 20%;">GN-002</div>
+                        <div class="gundam-marker" style="top: 20%; left: 40%;">GN-003</div>
+                        <div class="gundam-marker" style="top: 72%; left: 72%;">GN-005</div>
+                    </div>
+                    <div class="radar-label">ACTIVE AGENT TELEMETRY</div>
+                </div>
+            </aside>
+
+            <!-- CENTRAL TACTICAL CONTENT STAGE -->
+            <main class="tactical-stage">
+                
+                <!-- TAB 1: WEEKLY TACTICAL CALENDAR -->
+                <section id="tab-calendar" class="base-pane">
+                    <div class="panel-card shadow-offset">
+                        <div class="card-header">
+                            <span class="title">WEEKLY CONTENT OPERATIONS CALENDAR</span>
+                            <span class="alert-tag">MON-SUN</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="calendar-grid">
+                                
+                                <!-- MON -->
+                                <div class="calendar-day-card">
+                                    <div class="day-header">
+                                        <span class="day-name">MON</span>
+                                        <span class="day-label">DEEP DIVE</span>
+                                    </div>
+                                    <div class="day-content">
+                                        <div class="content-tag fb-tag">FACEBOOK</div>
+                                        <p class="content-desc"><strong>WTJ Story Deep-Dive:</strong> นำข้อมูล Insight จากคลิปวันอาทิตย์มาเล่าเป็น Storytelling ยาวชวนอ่าน</p>
+                                        <div class="optimal-time-badge" id="opt-time-mon">🚀 <span>Time to Post: 11:30</span></div>
+                                    </div>
+                                </div>
+
+                                <!-- TUE -->
+                                <div class="calendar-day-card empty-day">
+                                    <div class="day-header">
+                                        <span class="day-name">TUE</span>
+                                        <span class="day-label">OFF-LINE</span>
+                                    </div>
+                                    <div class="day-content">
+                                        <p class="content-desc empty">เตรียมข้อมูล / ถ่ายทำคลิปสำหรับสัปดาห์ถัดไป</p>
+                                    </div>
+                                </div>
+
+                                <!-- WED -->
+                                <div class="calendar-day-card">
+                                    <div class="day-header">
+                                        <span class="day-name">WED</span>
+                                        <span class="day-label">TEASER</span>
+                                    </div>
+                                    <div class="day-content">
+                                        <div class="content-tag fb-tag">FACEBOOK</div>
+                                        <p class="content-desc"><strong>Teaser / Q&A:</strong> สปอยล์เนื้อหาคลิปวันพฤหัสบดีเพื่อเรียกเสียงฮือฮาล่วงหน้า</p>
+                                        <div class="optimal-time-badge" id="opt-time-wed">🚀 <span>Time to Post: 17:45</span></div>
+                                    </div>
+                                </div>
+
+                                <!-- THU -->
+                                <div class="calendar-day-card active-day-border">
+                                    <div class="day-header">
+                                        <span class="day-name active-glow">THU</span>
+                                        <span class="day-label active-glow">PODCAST RELEASE</span>
+                                    </div>
+                                    <div class="day-content">
+                                        <div class="content-tag yt-tag">YOUTUBE</div>
+                                        <div class="content-tag fb-tag">FACEBOOK</div>
+                                        <p class="content-desc"><strong>15:30 น.</strong> คลิปสัมภาษณ์ / Podcast ปล่อยบน YouTube พร้อมบทความเปิดตัวบน Facebook</p>
+                                        <div class="optimal-time-badge" id="opt-time-thu">🚀 <span>Time to Post: 15:30</span></div>
+                                    </div>
+                                </div>
+
+                                <!-- FRI -->
+                                <div class="calendar-day-card">
+                                    <div class="day-header">
+                                        <span class="day-name">FRI</span>
+                                        <span class="day-label">QUOTE INSIGHT</span>
+                                    </div>
+                                    <div class="day-content">
+                                        <div class="content-tag fb-tag">FACEBOOK</div>
+                                        <p class="content-desc"><strong>Quote / Insight:</strong> ลงรูปภาพคำคมเด็ดๆ ที่ดึงมาจากคลิปสัมภาษณ์เมื่อวาน ขยี้ประเด็นให้แชร์กระหน่ำ</p>
+                                        <div class="optimal-time-badge" id="opt-time-fri">🚀 <span>Time to Post: 12:00</span></div>
+                                    </div>
+                                </div>
+
+                                <!-- SAT -->
+                                <div class="calendar-day-card">
+                                    <div class="day-header">
+                                        <span class="day-name">SAT</span>
+                                        <span class="day-label">REELS / SHORTS</span>
+                                    </div>
+                                    <div class="day-content">
+                                        <div class="content-tag fb-tag">REELS</div>
+                                        <p class="content-desc"><strong>Reels / Shorts:</strong> ลงวิดีโอสั้นที่เป็นไฮไลต์หรือจังหวะตลกจากคลิป WTJ Story หรือสัมภาษณ์</p>
+                                        <div class="optimal-time-badge" id="opt-time-sat">🚀 <span>Time to Post: 10:15</span></div>
+                                    </div>
+                                </div>
+
+                                <!-- SUN -->
+                                <div class="calendar-day-card active-day-border">
+                                    <div class="day-header">
+                                        <span class="day-name active-glow">SUN</span>
+                                        <span class="day-label active-glow">WTJ STORY RELEASE</span>
+                                    </div>
+                                    <div class="day-content">
+                                        <div class="content-tag yt-tag">YOUTUBE</div>
+                                        <p class="content-desc"><strong>18:00 น.</strong> คลิป WTJ Story (Solo Narrative) ปล่อยลง YouTube ช่วง Prime Time วันหยุด</p>
+                                        <div class="optimal-time-badge" id="opt-time-sun">🚀 <span>Time to Post: 18:00</span></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 2: GUNDAM TEAM STATUS -->
+                <section id="tab-gundam-status" class="floating-window">
+                    <div class="panel-card shadow-offset">
+                        <div class="card-header">
+                            <span class="title">GUNDAM AGENT OPERATIONS</span>
+                            <span class="alert-tag green-tag">ALL ACTIVE</span>
+                            <span class="close-window-btn" onclick="switchTab('gundam-status')">✖</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="gundam-grid">
+                                
+                                <!-- GUNDAM 1 -->
+                                <div class="gundam-card">
+                                    <div class="gundam-img exia"></div>
+                                    <div class="gundam-info">
+                                        <h3>GN-001 // EXIA</h3>
+                                        <div class="agent-alias">Agent: Cream (Transcriber)</div>
+                                        <p class="role-desc">รับหน้าที่ถอดเทปเสียงและสแกนข้อมูลต้นฉบับ ว่องไว แม่นยำ ดึงข้อเท็จจริงแบบไร้รอยต่อ</p>
+                                        <div class="stat-bar"><div class="fill" style="width: 100%;"></div></div>
+                                        <span class="stat-label">OPERATIONAL CAPACITY: 100%</span>
+                                    </div>
+                                </div>
+
+                                <!-- GUNDAM 2 -->
+                                <div class="gundam-card">
+                                    <div class="gundam-img dynames"></div>
+                                    <div class="gundam-info">
+                                        <h3>GN-002 // DYNAMES</h3>
+                                        <div class="agent-alias">Agent: Zee (Creative)</div>
+                                        <p class="role-desc">รับหน้าที่คิดคอนเซปต์และ Hook ชวนหยุดดูสอยเป้าหมายใน 1.5 วินาทีแรกด้วยความเฉียบคมสูง</p>
+                                        <div class="stat-bar"><div class="fill" style="width: 95%;"></div></div>
+                                        <span class="stat-label">OPERATIONAL CAPACITY: 95%</span>
+                                    </div>
+                                </div>
+
+                                <!-- GUNDAM 3 -->
+                                <div class="gundam-card">
+                                    <div class="gundam-img kyrios"></div>
+                                    <div class="gundam-info">
+                                        <h3>GN-003 // KYRIOS</h3>
+                                        <div class="agent-alias">Agent: Ray (Writer)</div>
+                                        <p class="role-desc">รับหน้าที่เรียบเรียงและแปลงร่างข้อมูลเป็นโพสต์ทรงพลัง หลากหลายสไตล์ ไม่ซ้ำซากจำเจ</p>
+                                        <div class="stat-bar"><div class="fill" style="width: 100%;"></div></div>
+                                        <span class="stat-label">OPERATIONAL CAPACITY: 100%</span>
+                                    </div>
+                                </div>
+
+                                <!-- GUNDAM 5 -->
+                                <div class="gundam-card">
+                                    <div class="gundam-img virtue"></div>
+                                    <div class="gundam-info">
+                                        <h3>GN-005 // VIRTUE</h3>
+                                        <div class="agent-alias">Agent: Chris (Editor)</div>
+                                        <p class="role-desc">รับหน้าที่เป็นบก. ตรวจเช็คความถูกต้องและคุมคุณภาพโทนเสียงทั้งหมดเพื่อเกราะป้องกันที่แกร่งที่สุด</p>
+                                        <div class="stat-bar"><div class="fill" style="width: 90%;"></div></div>
+                                        <span class="stat-label">OPERATIONAL CAPACITY: 90%</span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 3: CONTENT VAULT -->
+                <section id="tab-content-vault" class="floating-window">
+                    <div class="panel-card shadow-offset">
+                        <div class="card-header">
+                            <span class="title">CONTENT VAULT // RECENT DELIVERIES</span>
+                            <span class="alert-tag font-mono">3 ITEMS</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="vault-list">
+                                
+                                <div class="vault-item">
+                                    <div class="item-meta">
+                                        <span class="item-id">#WTJ-003</span>
+                                        <span class="item-title">พี่เก่ง ภูมิไทย (ต้นสี Wall Painting)</span>
+                                    </div>
+                                    <div class="item-tags">
+                                        <span class="tag tag-fb">Facebook (Storytelling)</span>
+                                        <span class="tag tag-status">DELIVERED</span>
+                                    </div>
+                                    <button class="action-btn" onclick="openTextModal('wall-painter')">VIEW TEXT</button>
+                                </div>
+
+                                <div class="vault-item">
+                                    <div class="item-meta">
+                                        <span class="item-id">#WTJ-002</span>
+                                        <span class="item-title">คุณกิ๊บ Muscari (Global Brand Ambassador)</span>
+                                    </div>
+                                    <div class="item-tags">
+                                        <span class="tag tag-fb">Facebook (Monologue / Concept)</span>
+                                        <span class="tag tag-status">DELIVERED</span>
+                                    </div>
+                                    <button class="action-btn" onclick="openTextModal('muscari')">VIEW TEXT</button>
+                                </div>
+
+                                <div class="vault-item">
+                                    <div class="item-meta">
+                                        <span class="item-id">#WTJ-001</span>
+                                        <span class="item-title">พี่เก่ง โวเก่ง (ช่างภาพ Wedding)</span>
+                                    </div>
+                                    <div class="item-tags">
+                                        <span class="tag tag-fb">Facebook (Listicle Version)</span>
+                                        <span class="tag tag-status">DELIVERED</span>
+                                    </div>
+                                    <button class="action-btn" onclick="openTextModal('wedding-photographer')">VIEW TEXT</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 4: PIPELINE CONTROL -->
+                <section id="tab-pipeline-control" class="floating-window">
+                    <div class="panel-card shadow-offset">
+                        <div class="card-header">
+                            <span class="title">PIPELINE OPERATION INTERFACE</span>
+                            <span class="alert-red-tag">ENGINE TRIGGER</span>
+                        </div>
+                        <div class="card-body">
+                            <p class="control-help-text">กรอกลิงก์วิดีโอ YouTube ของ WTJ Story เพื่อสั่งการให้ทีมงานเริ่มต้นการวิเคราะห์และดึงข้อมูลยุทธการทันที</p>
+                            
+                            <div class="control-input-group">
+                                <input type="text" placeholder="PASTE YOUTUBE URL HERE (e.g. https://www.youtube.com/watch?v=...)" id="yt-url-input">
+                                <button class="launch-btn" onclick="triggerPipeline()">EXECUTE TRANSCRIPTION</button>
+                            </div>
+
+                            <div class="terminal-container">
+                                <div class="terminal-header">
+                                    <span class="dot red"></span>
+                                    <span class="dot yellow"></span>
+                                    <span class="dot green"></span>
+                                    <span class="terminal-title">CONSOLE MONITOR READOUT</span>
+                                </div>
+                                <div class="terminal-body" id="terminal-readout">
+                                    <div class="line"><span class="prompt">></span> WTJ AUTOMATION ONLINE...</div>
+                                    <div class="line"><span class="prompt">></span> WAITING FOR COMMAND INSTRUCTION...</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 5: TEAM WORKFLOW CHART -->
+                <section id="tab-team-workflow" class="floating-window">
+                    <div class="panel-card shadow-offset">
+                        <div class="card-header">
+                            <span class="title">WTJ TACTICAL OPERATIONS: TEAM WORKFLOW & ORG CHART</span>
+                            <span class="alert-tag green-tag">VEDA SYSTEM MAP</span>
+                            <span class="close-window-btn" onclick="switchTab('team-workflow')">✖</span>
+                        </div>
+                        <div class="card-body">
+                            <p class="control-help-text">แผนผังปฏิบัติการร่วมของระบบผู้ช่วย 1st Agent และทีมงานผลิตคอนเทนต์ WTJ Story / WTJ Talk</p>
+                            
+                            <div class="workflow-container">
+                                <!-- Leadership Section -->
+                                <div class="workflow-group leadership-group">
+                                    <div class="group-title">🎯 LEADERSHIP CORE</div>
+                                    <div class="workflow-nodes flex-center">
+                                        <div class="wf-node boss-node">
+                                            <div class="node-id">CEO / OWNER</div>
+                                            <div class="node-name">พี่เก่ง</div>
+                                            <div class="node-role">สั่งการ & ตัดสินใจสุดท้าย</div>
+                                        </div>
+                                        <div class="wf-connector-vertical"></div>
+                                        <div class="wf-node first-node">
+                                            <div class="node-id">PA-COORD // FIRST</div>
+                                            <div class="node-name">เฟิส (First)</div>
+                                            <div class="node-role">ผู้ประสานงานภาพรวมและสั่งการ</div>
+                                            <div class="node-desc">ควบคุมสิบทิศ คุมนโยบาย ห้ามดึงดราม่า ห้ามทำคลิกเบท (No Clickbait, No Drama)</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="workflow-columns">
+                                    <!-- Left Column: Personal Assistance & Tech Team -->
+                                    <div class="workflow-column sticky-col">
+                                        <div class="group-title">🤖 PERSONAL ASSISTANCE & TECH</div>
+                                        <div class="workflow-nodes vertical-nodes">
+                                            <div class="wf-node pa-node">
+                                                <div class="node-id">PA-001 // WIN</div>
+                                                <div class="node-name">วิน (Win)</div>
+                                                <div class="node-role">Crypto Analyst</div>
+                                                <div class="node-desc">ซิงค์ API Bitkub/Binance อัปเดตพอร์ตคริปโต และ Rollover ปฏิทิน BTC</div>
+                                            </div>
+                                            <div class="wf-node pa-node">
+                                                <div class="node-id">PA-002 // JANE</div>
+                                                <div class="node-name">เจน (Jane)</div>
+                                                <div class="node-role">Grab Operations</div>
+                                                <div class="node-desc">คลีนโน้ต บันทึกรายรับลง Google Sheets อัตโนมัติและ Rollover วันที่ทุกคืน</div>
+                                            </div>
+                                            <div class="wf-node pa-node">
+                                                <div class="node-id">PA-003 // M</div>
+                                                <div class="node-name">เอ็ม (M)</div>
+                                                <div class="node-role">Frontend UI/UX Designer</div>
+                                                <div class="node-desc">ดูแลดีไซน์ HTML, หน้าเว็บ Dashboard (Dark Mode & Neon Glow) ปรับโครงสร้างระบบแบบ 100%</div>
+                                            </div>
+                                            <div class="wf-node pa-node">
+                                                <div class="node-id">PA-004 // PIE</div>
+                                                <div class="node-name">ปาย (Pie)</div>
+                                                <div class="node-role">Data Analyst</div>
+                                                <div class="node-desc">วิเคราะห์สถิติจริงหลังบ้าน Facebook & YouTube (CTR, Retention Curve Drop) เพื่อต่อยอดไอเดียทีมสร้างสรรค์</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Right Column: Content Production Team Pipeline -->
+                                    <div class="workflow-column content-pipeline-col">
+                                        <div class="group-title">🎬 CONTENT PRODUCTION PIPELINE</div>
+                                        
+                                        <div class="director-node-container">
+                                            <div class="wf-node director-node">
+                                                <div class="node-id">GN-005 // CHRIS</div>
+                                                <div class="node-name">พี่คริส (Chris)</div>
+                                                <div class="node-role">Creative Director / บก.คุมโทน</div>
+                                                <div class="node-desc">คุมโทนช่องพรีเมียม ตรวจทานร่างบท และอนุมัติงานขั้นสุดท้ายก่อนเผยแพร่</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="pipeline-flow-steps">
+                                            <div class="step-label">🎯 ลำดับท่อส่งงานผลิตคอนเทนต์ (Content Production Sequence)</div>
+                                            
+                                            <div class="flow-step">
+                                                <div class="step-num">1</div>
+                                                <div class="wf-node content-node">
+                                                    <div class="node-id">GN-001 // CREAM</div>
+                                                    <div class="node-name">ครีม (Cream)</div>
+                                                    <div class="node-role">Researcher / Transcriber</div>
+                                                    <div class="node-desc">ถอดเทปบันทึกเสียง (Transcript) และค้นคว้าข้อมูลดิบเชิงลึกตามประเด็นความสนใจ</div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="flow-arrow">⬇️</div>
+                                            
+                                            <div class="flow-step">
+                                                <div class="step-num">2</div>
+                                                <div class="wf-node content-node">
+                                                    <div class="node-id">GN-002 // ZEE</div>
+                                                    <div class="node-name">ซี (Zee)</div>
+                                                    <div class="node-role">Creative Hooks & Concepts</div>
+                                                    <div class="node-desc">คิดประเด็นหลักและจุด Hook ดึงดูดคนดูใน 1.5 วินาทีแรก หลีกเลี่ยงแนวคลิกเบท</div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="flow-arrow">⬇️</div>
+                                            
+                                            <div class="flow-step">
+                                                <div class="step-num">3</div>
+                                                <div class="wf-node content-node">
+                                                    <div class="node-id">SUPPORT // DEER</div>
+                                                    <div class="node-name">เดียร์ (Deer)</div>
+                                                    <div class="node-role">Idea Card Designer</div>
+                                                    <div class="node-desc">สร้างสรรค์ Idea Card สรุปมุมมองทางธุรกิจ (Business Core Value) เพื่อเพิ่มมูลค่าข้อมูล</div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="flow-arrow">⬇️</div>
+                                            
+                                            <div class="flow-step">
+                                                <div class="step-num">4</div>
+                                                <div class="wf-node content-node">
+                                                    <div class="node-id">SUPPORT // OR</div>
+                                                    <div class="node-name">ออ (Or)</div>
+                                                    <div class="node-role">Fact Auditor</div>
+                                                    <div class="node-desc">ตรวจสอบความถูกต้องเชิงวิชาการ ข้อเท็จจริง ตัวเลข และที่มาของข้อมูลทั้งหมดอย่างละเอียด</div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="flow-arrow">⬇️</div>
+                                            
+                                            <div class="flow-step">
+                                                <div class="step-num">5</div>
+                                                <div class="wf-node content-node">
+                                                    <div class="node-id">SUPPORT // CRI</div>
+                                                    <div class="node-name">คริ (Cri)</div>
+                                                    <div class="node-role">Content Critic</div>
+                                                    <div class="node-desc">วิจารณ์ประเมินจุดบกพร่อง ความลื่นไหล โครงสร้าง และสมดุลของความยาวบทพูด</div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="flow-arrow">⬇️</div>
+                                            
+                                            <div class="flow-step">
+                                                <div class="step-num">6</div>
+                                                <div class="wf-node content-node">
+                                                    <div class="node-id">GN-003 // RAY</div>
+                                                    <div class="node-name">เรย์ (Ray)</div>
+                                                    <div class="node-role">Writer</div>
+                                                    <div class="node-desc">เรียบเรียงโพสต์เฟซบุ๊กและบทสคริปต์บรรยายวิดีโอ (Storytelling) ตามคู่มือการเขียนของช่อง</div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="flow-arrow">⬇️</div>
+                                            
+                                            <div class="flow-step">
+                                                <div class="step-num">7</div>
+                                                <div class="wf-node content-node">
+                                                    <div class="node-id">SUPPORT // MUSIC</div>
+                                                    <div class="node-name">มิวสิค (Music)</div>
+                                                    <div class="node-role">Marketer / Copywriter</div>
+                                                    <div class="node-desc">ขัดเกลาคำให้วัยรุ่นโดนใจ ใช้มีม คำฮิต คีย์เวิร์ด และจัดวาง Call to Action (CTA) ให้เข้าเป้า</div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="flow-arrow">⬇️</div>
+                                            
+                                            <div class="flow-step">
+                                                <div class="step-num">8</div>
+                                                <div class="wf-node visual-node">
+                                                    <div class="node-id">SUPPORT // P</div>
+                                                    <div class="node-name">พี (P)</div>
+                                                    <div class="node-role">Visual Storyteller</div>
+                                                    <div class="node-desc">ออกแบบปก คุมสไตล์ภาพประกอบ (Hyper-realism) และทำ B-roll ตามไกด์มุมกล้อง/การจัดแสง</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+
+        </div>
+
+    </div>
+
+    <!-- MODAL FOR VIEWING DRAFT COPIES -->
+    <div id="text-modal" class="modal">
+        <div class="modal-content shadow-offset">
+            <div class="modal-header">
+                <span id="modal-title">DRAFT COPIES</span>
+                <span class="close-btn" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <textarea id="modal-textarea" readonly></textarea>
+                <div class="modal-actions">
+                    <button class="action-btn-green" onclick="copyModalText()">COPY TO CLIPBOARD</button>
+                    <button class="action-btn" onclick="closeModal()">CLOSE</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js?v=1.2"></script>
+</body>
+</html>

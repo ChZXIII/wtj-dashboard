@@ -1,0 +1,1560 @@
+/* 
+  =========================================
+  CELESTIAL BEING TACTICAL OPERATIONAL STYLE
+  =========================================
+*/
+
+:root {
+    --bg-color: #f7f9fa;
+    --border-color: #1a1a1a;
+    --text-primary: #1a1a1a;
+    --text-secondary: #5e5e5e;
+    --panel-bg: #ffffff;
+    --accent-green: #25d366;
+    --accent-red: #ff3333;
+    --accent-yellow: #ffb700;
+    --shadow-color: rgba(0, 0, 0, 0.2);
+    
+    --font-primary: 'Inter', sans-serif;
+    --font-tactical: 'Orbitron', sans-serif;
+    --font-mono: 'Share Tech Mono', monospace;
+    
+    /* Global Transition Speed */
+    --transition-speed: 0.3s;
+
+    /* Neon UI Accent Colors */
+    --neon-blue: #00e5ff;
+    --neon-orange: #ff9100;
+    --neon-pink: #ff007f;
+    --neon-green: #39ff14;
+    --glow-blue: 0 0 10px rgba(0, 229, 255, 0.5);
+}
+
+body.dark-theme {
+    --bg-color: #080c14;
+    --border-color: rgba(255, 255, 255, 0.2);
+    --text-primary: #d8dde8;
+    --text-secondary: #5e6678;
+    --panel-bg: rgba(255, 255, 255, 0.03);
+    --accent-green: rgba(255, 255, 255, 0.75);
+    --shadow-color: rgba(0, 0, 0, 0.55);
+}
+
+body.dark-theme .blueprint-grid {
+    background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+}
+
+body.dark-theme .panel-card,
+body.dark-theme .calendar-day-card,
+body.dark-theme .gundam-card,
+body.dark-theme .vault-item {
+    background-color: var(--panel-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 0 15px var(--shadow-color);
+    clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px);
+    border: 1px solid var(--border-color);
+}
+
+body.dark-theme .nav-btn,
+body.dark-theme .action-btn,
+body.dark-theme .launch-btn,
+body.dark-theme .theme-btn {
+    background-color: rgba(255, 255, 255, 0.03);
+    color: var(--text-primary);
+    box-shadow: none;
+    clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+body.dark-theme .nav-btn.active {
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #080c14;
+    box-shadow: none;
+}
+
+body.dark-theme .day-name.active-glow {
+    color: #fff;
+    -webkit-text-stroke: 0px;
+    text-shadow: none;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    font-family: var(--font-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+    padding: 20px;
+    transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+}
+
+/* 1. BLUEPRINT GRID BACKGROUND */
+.blueprint-grid {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background-image: 
+        linear-gradient(to right, rgba(26, 26, 26, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(26, 26, 26, 0.04) 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
+/* Add a subtle circular radar vector background behind the dashboard */
+.blueprint-grid::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 800px;
+    height: 800px;
+    border: 1px solid rgba(26, 26, 26, 0.03);
+    border-radius: 50%;
+    pointer-events: none;
+}
+.blueprint-grid::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    height: 500px;
+    border: 1px dashed rgba(26, 26, 26, 0.03);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+/* 2. COMMAND CONTAINER */
+.command-container {
+    max-width: 1300px;
+    margin: 0 auto;
+    border: 1px solid var(--border-color);
+    border-radius: 2px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 15px var(--shadow-color);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 3. TOP TACTICAL HEADER */
+.tactical-header {
+    background-color: var(--border-color);
+    color: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 25px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Custom Vector logo representing WTJ */
+.wtj-logo-icon {
+    width: 32px;
+    height: 32px;
+    background-color: var(--border-color);
+    color: #ffffff;
+    font-family: var(--font-tactical);
+    font-weight: 900;
+    font-size: 1.1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--border-color);
+    border-radius: 2px;
+    box-shadow: none;
+}
+
+.title-block h1 {
+    font-family: var(--font-tactical);
+    font-size: 1.6rem;
+    letter-spacing: 4px;
+    font-weight: 900;
+}
+.title-block p {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    color: #a0a0a0;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.theme-btn {
+    background-color: transparent;
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 2px;
+    padding: 6px 12px;
+    font-family: var(--font-tactical);
+    font-size: 0.75rem;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all var(--transition-speed) ease;
+    box-shadow: 0 4px 15px var(--shadow-color);
+}
+.theme-btn:hover {
+    background-color: var(--border-color);
+    color: var(--bg-color);
+    box-shadow: 0 4px 15px var(--shadow-color);
+    transform: translateY(-2px);
+}
+body.dark-theme .theme-btn {
+    box-shadow: 0 0 10px var(--shadow-color);
+}
+
+.status-readout {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+.status-readout .label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: #a0a0a0;
+}
+.status-readout .value {
+    font-family: var(--font-tactical);
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+}
+.active-glow {
+    color: var(--text-primary);
+}
+
+.day-name.active-glow {
+    color: transparent;
+    -webkit-text-stroke: 1px var(--text-primary);
+    text-shadow: none;
+}
+
+@keyframes blink-dot {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+.status-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background-color: var(--text-primary);
+    border-radius: 50%;
+    margin-top: 4px;
+    animation: blink-dot 3s infinite ease-in-out;
+}
+
+body.dark-theme .status-dot {
+    background-color: rgba(255,255,255,0.7);
+}
+
+.clock-display {
+    font-family: var(--font-mono);
+    font-size: 1.6rem;
+    letter-spacing: 1px;
+    background-color: #2a2a2a;
+    padding: 5px 12px;
+    border: 1px solid #444;
+    border-radius: 4px;
+}
+
+/* 4. TICKER SUB-HEADER */
+.info-ticker {
+    background-color: #f1f3f5;
+    border-bottom: 1px solid var(--border-color);
+    padding: 8px 25px;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+}
+.ticker-label {
+    font-family: var(--font-tactical);
+    font-size: 0.75rem;
+    font-weight: 900;
+    color: var(--text-primary);
+    background-color: transparent;
+    padding: 2px 6px;
+    border: 1px solid var(--border-color);
+    position: relative;
+    z-index: 10;
+}
+
+body.dark-theme .ticker-label {
+    color: rgba(255,255,255,0.5);
+    border-color: rgba(255,255,255,0.15);
+}
+.ticker-marquee-container {
+    flex: 1;
+    overflow: hidden;
+}
+.ticker-text {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    animation: ticker-anim 25s linear infinite;
+}
+
+@keyframes ticker-anim {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+}
+
+/* 5. DASHBOARD LAYOUT */
+.dashboard-body {
+    display: flex;
+    min-height: 650px;
+}
+
+/* 6. CONTROL PANEL (LEFT SIDEBAR) */
+.control-panel {
+    width: 280px;
+    border-right: 1px solid var(--border-color);
+    background-color: transparent;
+    display: flex;
+    flex-direction: column;
+}
+
+.control-panel .panel-header {
+    background-color: #ededed;
+    border-bottom: 1px solid var(--border-color);
+    font-family: var(--font-tactical);
+    font-size: 0.85rem;
+    font-weight: 900;
+    padding: 10px 20px;
+    letter-spacing: 2px;
+}
+
+.panel-content {
+    padding: 20px 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Vector Tactical Buttons like Screenshot 3 */
+.nav-btn {
+    width: 100%;
+    padding: 12px 15px;
+    background-color: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 2px;
+    font-family: var(--font-tactical);
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+    box-shadow: 4px 4px 0px rgba(0,0,0,0.2);
+    transition: all 0.15s ease;
+}
+
+.nav-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 6px 6px 0px rgba(0,0,0,0.25);
+    background-color: #f7f9fa;
+}
+
+.nav-btn:active {
+    transform: translateY(1px);
+    box-shadow: 2px 2px 0px rgba(0,0,0,0.2);
+}
+
+.nav-btn.active {
+    background-color: var(--border-color);
+    color: #ffffff;
+    box-shadow: none;
+    transform: none;
+}
+
+.btn-indicator {
+    width: 10px;
+    height: 10px;
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    display: inline-block;
+}
+
+.nav-btn.active .btn-indicator {
+    background-color: var(--border-color);
+    border-color: var(--border-color);
+    box-shadow: none;
+}
+
+body.dark-theme .nav-btn.active .btn-indicator {
+    background-color: #080c14;
+    border-color: #080c14;
+}
+
+/* Tactical Radar Widget */
+.radar-container {
+    margin-top: auto;
+    border-top: 1px solid var(--border-color);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: transparent;
+}
+
+.vector-radar {
+    width: 180px;
+    height: 180px;
+    border: 1px solid var(--border-color);
+    border-radius: 2px;
+    border-radius: 50%;
+    position: relative;
+    overflow: hidden;
+    background-color: transparent;
+    box-shadow: 0 4px 15px var(--shadow-color);
+}
+
+.vector-radar .outer-circle {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    right: 15px;
+    bottom: 15px;
+    border: 1px dashed rgba(26, 26, 26, 0.2);
+    border-radius: 50%;
+}
+
+.vector-radar .inner-circle {
+    position: absolute;
+    top: 45px;
+    left: 45px;
+    right: 45px;
+    bottom: 45px;
+    border: 1px solid rgba(26, 26, 26, 0.1);
+    border-radius: 50%;
+}
+
+.vector-radar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 1px;
+    height: 100%;
+    background-color: rgba(26, 26, 26, 0.1);
+}
+.vector-radar::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: rgba(26, 26, 26, 0.1);
+}
+
+.scanning-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: conic-gradient(from 0deg at 50% 50%, rgba(255, 255, 255, 0.06) 0deg, transparent 80deg);
+    border-radius: 50%;
+    animation: rotate-radar 8s linear infinite;
+    transform-origin: center;
+}
+
+@keyframes rotate-radar {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.gundam-marker {
+    position: absolute;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    font-weight: bold;
+    color: var(--text-primary);
+    background-color: #ffffff;
+    padding: 2px 4px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 15px var(--shadow-color);
+    transform: translate(-50%, -50%);
+}
+
+.gundam-marker::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-bottom: 5px solid var(--border-color);
+    transform: translateX(-50%);
+}
+
+.radar-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+    margin-top: 12px;
+    color: var(--text-secondary);
+}
+
+/* 7. CENTRAL TACTICAL STAGE */
+.tactical-stage {
+    flex: 1;
+    padding: 30px;
+    background-color: transparent;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+
+.tab-pane {
+    display: none;
+    width: 100%;
+}
+.tab-pane.active {
+    display: block;
+}
+
+/* Floating Window System */
+.floating-window {
+    position: absolute;
+    display: none;
+    background-color: var(--panel-bg);
+    box-shadow: 12px 12px 0px rgba(0,0,0,0.4);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    width: 600px;
+    max-width: 80%;
+    max-height: calc(100% - 60px);
+    overflow-y: auto;
+    z-index: 100;
+    animation: popup-anim 0.2s ease-out;
+}
+.floating-window.active {
+    display: block;
+}
+
+@keyframes popup-anim {
+    from { opacity: 0; transform: translateY(10px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Staggered Default Positions for the overlapping effect */
+#tab-gundam-status.floating-window { top: 40px; left: 100px; }
+#tab-content-vault.floating-window { top: 120px; left: 250px; }
+#tab-pipeline-control.floating-window { top: 200px; left: 150px; }
+
+.close-window-btn {
+    color: var(--accent-red);
+    font-size: 1.2rem;
+    cursor: pointer;
+    margin-left: 15px;
+    font-weight: bold;
+}
+.close-window-btn:hover {
+    color: #ff6666;
+    transform: scale(1.1);
+}
+
+/* 8. PANEL CARDS (NEOBRUTALIST FLOATING BOXES) */
+.panel-card {
+    background-color: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 2px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.shadow-offset {
+    box-shadow: 8px 8px 0px rgba(0,0,0,0.4);
+}
+
+.panel-card .card-header {
+    background-color: var(--border-color);
+    color: #ffffff;
+    border-bottom: 1px solid var(--border-color);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.panel-card .card-header .title {
+    font-family: var(--font-tactical);
+    font-size: 1rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+}
+
+.alert-tag {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: var(--border-color);
+    padding: 4px 8px;
+    border: 1px solid var(--border-color);
+}
+.alert-red-tag {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: var(--accent-red);
+    padding: 4px 8px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 15px var(--shadow-color);
+}
+.green-tag {
+    background-color: var(--border-color);
+    color: #ffffff;
+}
+
+body.dark-theme .green-tag {
+    background-color: rgba(255,255,255,0.15);
+    color: var(--text-primary);
+}
+
+.panel-card .card-body {
+    padding: 25px;
+}
+
+/* 9. CALENDAR GRID DESIGN */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.calendar-day-card {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: transparent;
+    display: flex;
+    flex-direction: column;
+    box-shadow: none;
+    position: relative;
+    transition: all 0.15s ease;
+}
+
+.calendar-day-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.calendar-day-card .day-header {
+    border-bottom: 1px solid var(--border-color);
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+    padding: 8px 15px;
+    background-color: transparent;
+    color: var(--text-primary);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.day-name {
+    font-family: var(--font-tactical);
+    font-size: 1.1rem;
+    font-weight: 900;
+    color: var(--text-primary);
+}
+
+.day-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+}
+
+.calendar-day-card .day-content {
+    padding: 15px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.content-tag {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: bold;
+    padding: 2px 6px;
+    border: 1px solid var(--border-color);
+    width: fit-content;
+}
+.fb-tag {
+    background-color: #e7f3ff;
+    color: #1877f2;
+}
+.yt-tag {
+    background-color: #ffeae6;
+    color: #ff0000;
+}
+.reels-tag {
+    background-color: #fbe6ff;
+    color: #d100d1;
+}
+
+.optimal-time-badge {
+    background-color: #ffffff;
+    border: 1.5px solid #000000;
+    padding: 6px 12px;
+    border-radius: 4px;
+    margin-top: 10px;
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 3px 3px 0px #000000;
+}
+
+.optimal-time-badge span {
+    font-family: var(--font-tactical);
+    font-size: 0.85rem;
+    font-weight: 900;
+    color: transparent;
+    -webkit-text-stroke: 0.8px #000000;
+    text-shadow: none;
+    letter-spacing: 0.5px;
+}
+
+.content-desc {
+    font-size: 0.85rem;
+    line-height: 1.4;
+    color: var(--text-primary);
+}
+
+.calendar-day-card.empty-day {
+    opacity: 0.6;
+    border-style: dashed;
+}
+.calendar-day-card.empty-day .day-header {
+    border-bottom-style: dashed;
+}
+.content-desc.empty {
+    color: var(--text-secondary);
+    font-style: italic;
+    font-size: 0.8rem;
+}
+
+/* Active Highlight Day border like screenshot 5 */
+.calendar-day-card.active-day-border {
+    border-color: var(--border-color);
+}
+.calendar-day-card.active-day-border::before {
+    content: '';
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 7px;
+    height: 7px;
+    background-color: var(--text-primary);
+    border-radius: 50%;
+    animation: blink-dot 3s infinite ease-in-out;
+}
+/* Prevent text overlap with the dot */
+.calendar-day-card.active-day-border .day-label {
+    padding-right: 15px;
+}
+
+/* 10. GUNDAM AGENT GRID DESIGN */
+.gundam-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 25px;
+}
+
+.gundam-card {
+    border: 1px solid var(--border-color);
+    border-radius: 2px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 15px var(--shadow-color);
+    padding: 20px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.gundam-img {
+    width: 80px;
+    height: 80px;
+    border: 1px solid var(--border-color);
+    border-radius: 2px;
+    background-color: #f1f3f5;
+    position: relative;
+}
+
+/* Vector representation of Gundam face shields from screenshots */
+.gundam-img::before {
+    content: '';
+    position: absolute;
+    top: 20%;
+    left: 20%;
+    right: 20%;
+    bottom: 20%;
+    background-color: var(--border-color);
+    clip-path: polygon(50% 0%, 100% 30%, 80% 90%, 50% 100%, 20% 90%, 0% 30%);
+}
+.gundam-img.exia::after {
+    content: '';
+    position: absolute;
+    top: 40%;
+    left: 40%;
+    width: 20%;
+    height: 20%;
+    background-color: var(--accent-green);
+    border-radius: 50%;
+}
+.gundam-img.dynames::after {
+    content: '';
+    position: absolute;
+    top: 10%;
+    left: 45%;
+    width: 10%;
+    height: 50%;
+    background-color: var(--accent-yellow);
+}
+.gundam-img.kyrios::after {
+    content: '';
+    position: absolute;
+    top: 30%;
+    left: 30%;
+    right: 30%;
+    bottom: 30%;
+    background-color: var(--accent-red);
+    clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+}
+
+.gundam-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.gundam-info h3 {
+    font-family: var(--font-tactical);
+    font-size: 1.1rem;
+    font-weight: 900;
+}
+
+.agent-alias {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.role-desc {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    line-height: 1.3;
+}
+
+.stat-bar {
+    width: 100%;
+    height: 8px;
+    background-color: #ededed;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 5px;
+}
+.stat-bar .fill {
+    height: 100%;
+    background-color: var(--border-color);
+}
+
+body.dark-theme .stat-bar .fill {
+    background-color: rgba(255,255,255,0.6);
+}
+
+.stat-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: bold;
+}
+
+/* 11. CONTENT VAULT DESIGN */
+.vault-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.vault-item {
+    border: 1px solid var(--border-color);
+    border-radius: 2px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 15px var(--shadow-color);
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.item-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.item-id {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: var(--text-secondary);
+}
+.item-title {
+    font-weight: bold;
+    font-size: 0.95rem;
+}
+
+.item-tags {
+    display: flex;
+    gap: 10px;
+}
+.tag {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    padding: 3px 8px;
+    border: 1px solid var(--border-color);
+}
+.tag-fb {
+    background-color: #e7f3ff;
+}
+.tag-status {
+    background-color: var(--border-color);
+    color: #ffffff;
+    font-weight: bold;
+}
+
+body.dark-theme .tag-status {
+    background-color: rgba(255,255,255,0.15);
+    color: var(--text-primary);
+}
+
+/* Action button for Copy/View like CB menu button */
+.action-btn {
+    padding: 8px 15px;
+    background-color: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 2px;
+    font-family: var(--font-tactical);
+    font-weight: 700;
+    font-size: 0.75rem;
+    cursor: pointer;
+    box-shadow: 0 4px 15px var(--shadow-color);
+    transition: all 0.1s ease;
+}
+.action-btn:hover {
+    background-color: #f1f3f5;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px var(--shadow-color);
+}
+.action-btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 4px 15px var(--shadow-color);
+}
+
+.action-btn-green {
+    padding: 8px 15px;
+    background-color: var(--border-color);
+    color: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 2px;
+    font-family: var(--font-tactical);
+    font-weight: 700;
+    font-size: 0.75rem;
+    cursor: pointer;
+    box-shadow: 0 4px 15px var(--shadow-color);
+    transition: all 0.1s ease;
+}
+.action-btn-green:hover {
+    opacity: 0.85;
+    transform: translateY(-2px);
+}
+
+/* 12. PIPELINE CONTROL */
+.control-help-text {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+}
+
+.control-input-group {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.control-input-group input {
+    flex: 1;
+    padding: 12px 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 2px;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    box-shadow: 0 4px 15px var(--shadow-color);
+    outline: none;
+}
+.control-input-group input:focus {
+    background-color: transparent;
+    border-color: var(--border-color);
+    outline: none;
+}
+
+.launch-btn {
+    padding: 12px 25px;
+    background-color: var(--border-color);
+    color: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 2px;
+    font-family: var(--font-tactical);
+    font-weight: 900;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px var(--shadow-color);
+    transition: all 0.15s ease;
+}
+.launch-btn:hover {
+    background-color: #333333;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px var(--shadow-color);
+}
+.launch-btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 4px 15px var(--shadow-color);
+}
+
+/* Terminal Readout Window */
+.terminal-container {
+    border: 1px solid var(--border-color);
+    border-radius: 2px;
+    box-shadow: 0 4px 15px var(--shadow-color);
+    background-color: #1a1a1a;
+    color: #ffffff;
+    font-family: var(--font-mono);
+}
+
+.terminal-header {
+    background-color: #2b2b2b;
+    border-bottom: 1px solid var(--border-color);
+    padding: 8px 15px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.terminal-header .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 1px solid var(--border-color);
+}
+.terminal-header .dot.red { background-color: var(--accent-red); }
+.terminal-header .dot.yellow { background-color: #888; }
+.terminal-header .dot.green { background-color: #555; }
+
+body.dark-theme .terminal-header .dot.red { background-color: rgba(255,255,255,0.3); }
+body.dark-theme .terminal-header .dot.yellow { background-color: rgba(255,255,255,0.2); }
+body.dark-theme .terminal-header .dot.green { background-color: rgba(255,255,255,0.1); }
+
+.terminal-title {
+    margin-left: 10px;
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+    color: #a0a0a0;
+}
+
+.terminal-body {
+    padding: 15px;
+    min-height: 150px;
+    max-height: 250px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 0.85rem;
+}
+
+.terminal-body .line {
+    line-height: 1.4;
+}
+
+.terminal-body .line .prompt {
+    color: #888;
+    margin-right: 5px;
+}
+
+.terminal-body .line.success {
+    color: #aaa;
+}
+
+body.dark-theme .terminal-body .line .prompt {
+    color: rgba(255,255,255,0.4);
+}
+
+body.dark-theme .terminal-body .line.success {
+    color: rgba(255,255,255,0.7);
+}
+
+/* 13. MODAL DESIGN */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(26, 26, 26, 0.4);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 2px;
+    width: 90%;
+    max-width: 650px;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-header {
+    background-color: #f1f3f5;
+    border-bottom: 1px solid var(--border-color);
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-tactical);
+    font-weight: 900;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+}
+
+.close-btn {
+    cursor: pointer;
+    font-size: 1.4rem;
+    font-weight: bold;
+}
+.close-btn:hover {
+    color: var(--accent-red);
+}
+
+.modal-body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.modal-body textarea {
+    width: 100%;
+    height: 300px;
+    padding: 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 2px;
+    font-family: var(--font-primary);
+    font-size: 0.9rem;
+    line-height: 1.4;
+    resize: none;
+    outline: none;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+/* 14. RESPONSIVE DESIGN (MOBILE FIX) */
+@media screen and (max-width: 850px) {
+    body {
+        padding: 10px;
+    }
+    .tactical-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+        padding: 15px;
+    }
+    .header-right {
+        width: 100%;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    .clock-display {
+        font-size: 1.2rem;
+    }
+    
+    .dashboard-body {
+        flex-direction: column;
+    }
+    
+    .control-panel {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+    }
+    
+    .panel-content {
+        flex-direction: row;
+        flex-wrap: wrap;
+        padding: 15px;
+    }
+    
+    .nav-btn {
+        width: calc(50% - 6px); /* 2 columns */
+        padding: 10px;
+        font-size: 0.75rem;
+    }
+    
+    .radar-container {
+        display: none; /* Hide radar on mobile to save vertical space */
+    }
+    
+    .tactical-stage {
+        padding: 10px;
+    }
+    
+    .floating-window {
+        position: relative;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100%;
+        max-width: 100%;
+        box-shadow: 4px 4px 0px rgba(0,0,0,0.4);
+        margin-top: 15px;
+    }
+    
+    .panel-card .card-body {
+        padding: 15px;
+    }
+    
+    .gundam-grid, .calendar-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .vault-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .action-btn {
+        width: 100%;
+    }
+    
+    .control-input-group {
+        flex-direction: column;
+    }
+    
+    .launch-btn {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .nav-btn {
+        width: 100%; /* 1 column on very small screens */
+    }
+    .header-right {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .clock-display {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* GUNDAM TELEMETRY RADAR DOTS & GLOW EFFECTS */
+.gundam-marker::after {
+    content: '';
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background-color: #ff3b30;
+    border-radius: 50%;
+    top: -9px;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 0 6px #ff3b30, 0 0 10px #ff3b30;
+    opacity: 0;
+    transition: opacity 1.5s cubic-bezier(0.1, 0.8, 0.25, 1);
+    pointer-events: none;
+}
+
+.gundam-marker.active-scan::after {
+    opacity: 1;
+    transition: opacity 0.05s ease;
+}
+
+/* 11. TEAM WORKFLOW CHART DESIGN */
+#tab-team-workflow.floating-window {
+    top: 60px;
+    left: 180px;
+    width: 950px;
+    max-width: 95%;
+}
+
+.workflow-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 15px;
+}
+
+.leadership-group {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 15px;
+    text-align: center;
+    opacity: 0.9;
+}
+
+.group-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--text-secondary);
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 5px;
+    opacity: 0.7;
+}
+
+.workflow-nodes {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.workflow-columns {
+    display: flex;
+    gap: 20px;
+}
+
+.workflow-column {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.01);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.workflow-column.sticky-col {
+    position: sticky;
+    top: 10px;
+    align-self: flex-start;
+}
+
+.wf-node {
+    background-color: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 2px;
+    padding: 12px;
+    min-width: 180px;
+    transition: all 0.15s ease;
+    position: relative;
+    box-shadow: 5px 5px 0px rgba(0,0,0,0.12);
+    text-align: left;
+}
+
+.wf-node:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 6px 6px 0px rgba(0,0,0,0.18);
+}
+
+.boss-node {
+    border-left: 3px solid var(--border-color) !important;
+}
+.first-node {
+    border-left: 3px solid var(--border-color) !important;
+}
+.director-node {
+    border-left: 3px solid var(--border-color) !important;
+}
+
+.node-id {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--text-secondary);
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+.node-name {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+}
+
+.node-role {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.node-desc {
+    font-size: 0.68rem;
+    color: var(--text-secondary);
+    line-height: 1.3;
+}
+
+/* Dark Theme Overrides for Workflow Nodes */
+body.dark-theme .wf-node {
+    background-color: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: none;
+}
+
+body.dark-theme .wf-node:hover {
+    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: none;
+}
+
+body.dark-theme .boss-node,
+body.dark-theme .first-node,
+body.dark-theme .director-node {
+    border-left: 3px solid rgba(255, 255, 255, 0.5) !important;
+}
+
+.vertical-nodes {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.flex-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.wf-connector-vertical {
+    width: 1px;
+    height: 15px;
+    background: var(--border-color);
+    opacity: 0.4;
+}
+
+.director-node-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.pipeline-flow-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background: transparent;
+    padding: 0;
+}
+
+.step-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 5px;
+    opacity: 0.6;
+}
+
+.flow-step {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.step-num {
+    background: var(--border-color);
+    color: var(--panel-bg);
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    font-size: 0.75rem;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.flow-arrow {
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    line-height: 1;
+    opacity: 0.5;
+}
+
+.overflow-auto {
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+@media screen and (max-width: 768px) {
+    .workflow-columns {
+        flex-direction: column;
+        gap: 15px;
+    }
+}
+
