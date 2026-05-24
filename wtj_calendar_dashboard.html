@@ -795,46 +795,34 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>MON</td>
-                        <td>FB VIDEO</td>
-                        <td>18:00</td>
-                        <td>FACEBOOK</td>
+                        <td>DAILY</td>
+                        <td>Reels (คลิปสั้น &lt;1 นาที)</td>
+                        <td>12:30, 19:30</td>
+                        <td>Reels / Shorts</td>
                     </tr>
                     <tr>
-                        <td>TUE</td>
-                        <td>FB VIDEO</td>
+                        <td>MON, TUE, WED, FRI, SAT</td>
+                        <td>FB Video (คลิปกลาง 3-5 นาที)</td>
                         <td>18:00</td>
-                        <td>FACEBOOK</td>
+                        <td>Facebook Page</td>
                     </tr>
                     <tr>
-                        <td>WED</td>
-                        <td>FB VIDEO</td>
-                        <td>18:00</td>
-                        <td>FACEBOOK</td>
+                        <td>THU, SUN</td>
+                        <td>Interactive Text / Quote Post</td>
+                        <td>12:00</td>
+                        <td>Facebook Page</td>
                     </tr>
                     <tr>
                         <td>THU</td>
-                        <td>TEXT POST</td>
-                        <td>12:00</td>
-                        <td>FACEBOOK</td>
-                    </tr>
-                    <tr>
-                        <td>FRI</td>
-                        <td>FB VIDEO</td>
-                        <td>18:00</td>
-                        <td>FACEBOOK</td>
-                    </tr>
-                    <tr>
-                        <td>SAT</td>
-                        <td>FB VIDEO</td>
-                        <td>18:00</td>
-                        <td>FACEBOOK</td>
+                        <td>WTJ Podcast / Talk (คลิปยาว)</td>
+                        <td>20:00</td>
+                        <td>YouTube</td>
                     </tr>
                     <tr>
                         <td>SUN</td>
-                        <td>TEXT POST</td>
-                        <td>12:00</td>
-                        <td>FACEBOOK</td>
+                        <td>WTJ Story (คลิปยาว)</td>
+                        <td>18:00</td>
+                        <td>YouTube</td>
                     </tr>
                 </tbody>
             </table>
@@ -871,13 +859,43 @@
         // Posting schedule configurations
         // Weekday number mappings (0 = Sunday, 1 = Monday, etc.)
         const POSTING_RULE = {
-            1: { type: "FB Video", platform: "Facebook" },
-            2: { type: "FB Video", platform: "Facebook" },
-            3: { type: "FB Video", platform: "Facebook" },
-            4: { type: "Text Post", platform: "Facebook" },
-            5: { type: "FB Video", platform: "Facebook" },
-            6: { type: "FB Video", platform: "Facebook" },
-            0: { type: "Text Post", platform: "Facebook" }
+            1: [
+                { type: "Reels (สั้น <1 นาที)", platform: "Facebook Reels", time: "12:30" },
+                { type: "FB Video (3-5 นาที)", platform: "Facebook Video", time: "18:00" },
+                { type: "Reels (สั้น <1 นาที)", platform: "Facebook Reels", time: "19:30" }
+            ],
+            2: [
+                { type: "Reels (สั้น <1 นาที)", platform: "Facebook Reels", time: "12:30" },
+                { type: "FB Video (3-5 นาที)", platform: "Facebook Video", time: "18:00" },
+                { type: "Reels (สั้น <1 นาที)", platform: "Facebook Reels", time: "19:30" }
+            ],
+            3: [
+                { type: "Reels (สั้น <1 นาที)", platform: "Facebook Reels", time: "12:30" },
+                { type: "FB Video (3-5 นาที)", platform: "Facebook Video", time: "18:00" },
+                { type: "Reels (สั้น <1 นาที)", platform: "Facebook Reels", time: "19:30" }
+            ],
+            4: [
+                { type: "Text Post (ชวนคุย/โพล)", platform: "Facebook", time: "12:00" },
+                { type: "Reels (สั้น <1 นาที)", platform: "Facebook Reels", time: "12:30" },
+                { type: "Reels (สั้น <1 นาที)", platform: "Facebook Reels", time: "19:30" },
+                { type: "WTJ Podcast / Talk (คลิปยาว)", platform: "YouTube", time: "20:00" }
+            ],
+            5: [
+                { type: "Reels (สั้น <1 นาที)", platform: "Facebook Reels", time: "12:30" },
+                { type: "FB Video (3-5 นาที)", platform: "Facebook Video", time: "18:00" },
+                { type: "Reels (สั้น <1 นาที)", platform: "Facebook Reels", time: "19:30" }
+            ],
+            6: [
+                { type: "Reels (สั้น <1 นาที)", platform: "Facebook Reels", time: "12:30" },
+                { type: "FB Video (3-5 นาที)", platform: "Facebook Video", time: "18:00" },
+                { type: "Reels (สั้น <1 นาที)", platform: "Facebook Reels", time: "19:30" }
+            ],
+            0: [
+                { type: "Text Post (คำคมดึงใจ)", platform: "Facebook", time: "12:00" },
+                { type: "Reels (สั้น <1 นาที)", platform: "Facebook Reels", time: "12:30" },
+                { type: "WTJ Story (คลิปยาว)", platform: "YouTube", time: "18:00" },
+                { type: "Reels (สั้น <1 นาที)", platform: "Facebook Reels", time: "19:30" }
+            ]
         };
 
         // Static parameters for all 12 months in 2026
@@ -988,32 +1006,39 @@
 
                 // Check if this weekday has a posting rule
                 if (POSTING_RULE[weekdayIndex]) {
-                    const rule = POSTING_RULE[weekdayIndex];
-                    
-                    // Load status and title from localStorage
-                    const isReady = localStorage.getItem(`status-${dateKey}`) === "ready";
-                    const savedTitle = localStorage.getItem(`title-${dateKey}`) || "";
-                    
-                    const slotDiv = document.createElement("div");
-                    slotDiv.className = "content-slot";
-                    
-                    // Render slot details
-                    slotDiv.innerHTML = `
-                        <div>
-                            <div class="post-type">${rule.type}</div>
-                            <div class="post-title-container">
-                                <div class="post-title ${savedTitle ? '' : 'placeholder'}" id="title-display-${dateKey}" onclick="startEditTitle('${dateKey}')">
-                                    ${savedTitle || "Click to add topic..."}
+                    const rules = POSTING_RULE[weekdayIndex];
+                    rules.forEach((rule, slotIdx) => {
+                        const slotKey = `${dateKey}-${rule.time}`;
+                        const isReady = localStorage.getItem(`status-${slotKey}`) === "ready";
+                        const savedTitle = localStorage.getItem(`title-${slotKey}`) || "";
+                        
+                        const slotDiv = document.createElement("div");
+                        slotDiv.className = "content-slot";
+                        if (slotIdx > 0) {
+                            slotDiv.style.borderTop = "1px dashed var(--border-light)";
+                            slotDiv.style.paddingTop = "5px";
+                        }
+                        slotDiv.style.marginTop = "5px";
+                        
+                        slotDiv.innerHTML = `
+                            <div>
+                                <div class="post-type" style="display: flex; justify-content: space-between; font-size: 0.6rem;">
+                                    <span>${rule.type}</span>
+                                    <span style="opacity: 0.8; font-weight: normal;">${rule.time}</span>
                                 </div>
-                                <input type="text" class="post-title-input" id="title-input-${dateKey}" value="${savedTitle}" style="display: none;" onblur="finishEditTitle('${dateKey}')" onkeydown="handleTitleKey(event, '${dateKey}')">
+                                <div class="post-title-container">
+                                    <div class="post-title ${savedTitle ? '' : 'placeholder'}" id="title-display-${slotKey}" onclick="startEditTitle('${slotKey}')" style="font-size: 0.7rem;">
+                                        ${savedTitle || "Click to add topic..."}
+                                    </div>
+                                    <input type="text" class="post-title-input" id="title-input-${slotKey}" value="${savedTitle}" style="display: none; font-size: 0.7rem;" onblur="finishEditTitle('${slotKey}')" onkeydown="handleTitleKey(event, '${slotKey}')">
+                                </div>
                             </div>
-                        </div>
-                        <button class="status-toggle ${isReady ? 'ready' : 'missing'}" id="status-btn-${dateKey}" onclick="toggleStatus('${dateKey}')">
-                            ${isReady ? 'READY' : 'MISSING ASSETS'}
-                        </button>
-                    `;
-                    
-                    cell.appendChild(slotDiv);
+                            <button class="status-toggle ${isReady ? 'ready' : 'missing'}" id="status-btn-${slotKey}" onclick="toggleStatus('${slotKey}')" style="padding: 3px; font-size: 0.6rem;">
+                                ${isReady ? 'READY' : 'MISSING ASSETS'}
+                            </button>
+                        `;
+                        cell.appendChild(slotDiv);
+                    });
                 }
 
                 grid.appendChild(cell);
@@ -1106,14 +1131,18 @@
                 const weekdayIndex = dateObj.getDay();
 
                 if (POSTING_RULE[weekdayIndex]) {
-                    totalSlots++;
-                    const paddedMonth = String(currentMonthIndex + 1).padStart(2, '0');
-                    const paddedDay = String(dayNum).padStart(2, '0');
-                    const dateKey = `2026-${paddedMonth}-${paddedDay}`;
-                    
-                    if (localStorage.getItem(`status-${dateKey}`) === "ready") {
-                        readySlots++;
-                    }
+                    const rules = POSTING_RULE[weekdayIndex];
+                    rules.forEach(rule => {
+                        totalSlots++;
+                        const paddedMonth = String(currentMonthIndex + 1).padStart(2, '0');
+                        const paddedDay = String(dayNum).padStart(2, '0');
+                        const dateKey = `2026-${paddedMonth}-${paddedDay}`;
+                        const slotKey = `${dateKey}-${rule.time}`;
+                        
+                        if (localStorage.getItem(`status-${slotKey}`) === "ready") {
+                            readySlots++;
+                        }
+                    });
                 }
             }
 
@@ -1139,14 +1168,18 @@
                     const weekdayIndex = dateObj.getDay();
 
                     if (POSTING_RULE[weekdayIndex]) {
-                        totalSlots++;
-                        const paddedMonth = String(mIndex + 1).padStart(2, '0');
-                        const paddedDay = String(dayNum).padStart(2, '0');
-                        const dateKey = `2026-${paddedMonth}-${paddedDay}`;
-                        
-                        if (localStorage.getItem(`status-${dateKey}`) === "ready") {
-                            readySlots++;
-                        }
+                        const rules = POSTING_RULE[weekdayIndex];
+                        rules.forEach(rule => {
+                            totalSlots++;
+                            const paddedMonth = String(mIndex + 1).padStart(2, '0');
+                            const paddedDay = String(dayNum).padStart(2, '0');
+                            const dateKey = `2026-${paddedMonth}-${paddedDay}`;
+                            const slotKey = `${dateKey}-${rule.time}`;
+                            
+                            if (localStorage.getItem(`status-${slotKey}`) === "ready") {
+                                readySlots++;
+                            }
+                        });
                     }
                 }
             });
