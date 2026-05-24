@@ -13,6 +13,26 @@ function toggleTheme() {
     localStorage.setItem('wtj-dashboard-theme', isDark ? 'dark' : 'light');
 }
 
+// Sync display times from hidden badges updated by Python/M
+function syncDisplayTimes() {
+    const days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+    days.forEach(day => {
+        const badge = document.getElementById(`opt-time-${day}`);
+        const display = document.getElementById(`display-time-${day}`);
+        if (badge && display) {
+            const span = badge.querySelector('span');
+            if (span) {
+                const text = span.textContent;
+                const match = text.match(/Time to Post:\s*(\d{2}:\d{2})/i);
+                if (match) {
+                    display.textContent = match[1];
+                }
+            }
+        }
+    });
+}
+syncDisplayTimes();
+
 // 1. LIVE CLOCK SYSTEM (Tactical Time Readout)
 function updateClock() {
     const clockElement = document.getElementById('system-clock');
