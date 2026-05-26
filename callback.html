@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TikTok OAuth Callback</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        .container {
+            background-color: #1e1e1e;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            max-width: 400px;
+        }
+        h2 {
+            color: #fe2c55;
+            margin-bottom: 1rem;
+        }
+        p {
+            color: #a0a0a0;
+            line-height: 1.5;
+        }
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border-left-color: #fe2c55;
+            animation: spin 1s linear infinite;
+            margin: 1.5rem auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>กำลังส่งต่อข้อมูลการล็อกอิน...</h2>
+        <div class="spinner"></div>
+        <p>กำลังพยายามเชื่อมต่อกลับไปที่บอทของคุณบนเครื่องคอมพิวเตอร์ (localhost)...</p>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+        const state = urlParams.get('state');
+        const error = urlParams.get('error');
+        const errorDescription = urlParams.get('error_description');
+
+        if (code) {
+            // Redirect to local HTTP server
+            window.location.href = `http://localhost:5000/callback?code=${encodeURIComponent(code)}&state=${encodeURIComponent(state || '')}`;
+        } else if (error) {
+            document.querySelector('h2').textContent = 'เกิดข้อผิดพลาดในการล็อกอิน';
+            document.querySelector('.spinner').style.display = 'none';
+            document.querySelector('p').innerHTML = `Error: ${encodeURIComponent(error)}<br>${encodeURIComponent(errorDescription || '')}`;
+        } else {
+            document.querySelector('h2').textContent = 'ไม่พบรหัสเข้าใช้งาน';
+            document.querySelector('.spinner').style.display = 'none';
+            document.querySelector('p').textContent = 'กรุณาลองใหม่อีกครั้ง';
+        }
+    </script>
+</body>
+</html>
