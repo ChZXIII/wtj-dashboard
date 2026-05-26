@@ -3,603 +3,608 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WTJ STORY - Content Operations Center</title>
+    <title>WTJ Content Studio - AI-Powered Social Media Management & Scheduling</title>
     <!-- Google Fonts: Orbitron & Share Tech Mono for the ultimate clean/tactical look -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=1.7">
+    <style>
+        :root {
+            --bg-primary: #0a0b10;
+            --bg-secondary: rgba(18, 20, 30, 0.7);
+            --border-color: rgba(0, 240, 255, 0.2);
+            --border-hover: rgba(0, 240, 255, 0.5);
+            --text-primary: #f0f3ff;
+            --text-muted: #8b9bb4;
+            --accent-cyan: #00f0ff;
+            --accent-green: #00ff66;
+            --glow-color: rgba(0, 240, 255, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Blueprint Grid Background */
+        .blueprint-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: 
+                linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: -2;
+        }
+
+        .blueprint-scanline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                rgba(0, 240, 255, 0) 0%,
+                rgba(0, 240, 255, 0.02) 10%,
+                rgba(0, 240, 255, 0) 20%
+            );
+            background-size: 100% 200%;
+            animation: scan 8s linear infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        @keyframes scan {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 0% 200%; }
+        }
+
+        header {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+        }
+
+        .logo-block {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-block h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            color: var(--accent-cyan);
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+        }
+
+        .logo-block span {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-primary);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.9rem;
+            margin-left: 20px;
+            padding: 5px 10px;
+            border: 1px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--accent-cyan);
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 8px var(--glow-color);
+        }
+
+        .cta-btn {
+            background: transparent;
+            border: 1px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+            font-family: 'Orbitron', sans-serif;
+            font-weight: bold;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-shadow: 0 0 5px rgba(0, 240, 255, 0.5);
+            box-shadow: inset 0 0 5px rgba(0, 240, 255, 0.2);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-btn:hover {
+            background: var(--accent-cyan);
+            color: var(--bg-primary);
+            text-shadow: none;
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.5);
+        }
+
+        .hero-section {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 20px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .hero-tag {
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--accent-green);
+            border: 1px solid var(--accent-green);
+            padding: 5px 12px;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            border-radius: 4px;
+            background: rgba(0, 255, 102, 0.05);
+            display: inline-block;
+        }
+
+        .hero-section h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            max-width: 800px;
+            line-height: 1.2;
+            letter-spacing: 1px;
+        }
+
+        .hero-section h2 span {
+            color: var(--accent-cyan);
+            text-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+        }
+
+        .hero-section p {
+            max-width: 650px;
+            color: var(--text-muted);
+            line-height: 1.6;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        /* Mock UI Window Component */
+        .mock-window {
+            width: 100%;
+            max-width: 900px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-top: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 20px var(--glow-color);
+            overflow: hidden;
+            text-align: left;
+        }
+
+        .window-header {
+            background: rgba(0,0,0,0.3);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .window-dots {
+            display: flex;
+            gap: 8px;
+        }
+
+        .window-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ff5f56;
+        }
+
+        .window-dot.yellow { background: #ffbd2e; }
+        .window-dot.green { background: #27c93f; }
+
+        .window-title {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+        }
+
+        .window-body {
+            padding: 24px;
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 20px;
+            min-height: 380px;
+        }
+
+        .mock-sidebar {
+            border-right: 1px solid var(--border-color);
+            padding-right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .sidebar-item {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.85rem;
+            padding: 8px 12px;
+            border: 1px solid transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
+        .sidebar-item.active {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+            background: rgba(0, 240, 255, 0.05);
+        }
+
+        .mock-content {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .mock-card {
+            border: 1px solid var(--border-color);
+            background: rgba(10, 11, 16, 0.5);
+            padding: 15px;
+            border-radius: 4px;
+        }
+
+        .mock-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85rem;
+            color: var(--accent-cyan);
+        }
+
+        .status-badge {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.75rem;
+            padding: 2px 6px;
+            background: rgba(0, 255, 102, 0.1);
+            color: var(--accent-green);
+            border: 1px solid var(--accent-green);
+        }
+
+        .mock-text {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .features-section {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 30px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
+        }
+
+        .feature-card:hover::before {
+            transform: translateX(100%);
+        }
+
+        .feature-card:hover {
+            border-color: var(--border-hover);
+            box-shadow: 0 10px 20px var(--glow-color);
+            transform: translateY(-5px);
+        }
+
+        .feature-card h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.25rem;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .feature-icon {
+            font-size: 1.8rem;
+            color: var(--accent-cyan);
+            margin-bottom: 20px;
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        /* Platform connection mock grid */
+        .platforms-section {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 40px 20px;
+            text-align: center;
+            border-top: 1px dashed var(--border-color);
+            border-bottom: 1px dashed var(--border-color);
+        }
+
+        .platforms-section h3 {
+            font-family: 'Orbitron', sans-serif;
+            margin-bottom: 30px;
+            letter-spacing: 2px;
+            font-size: 1.4rem;
+        }
+
+        .platform-grid {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .platform-badge {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            border: 1px solid var(--border-color);
+            background: rgba(18, 20, 30, 0.4);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1rem;
+            color: var(--text-muted);
+        }
+
+        .platform-badge.active {
+            border-color: var(--accent-cyan);
+            color: var(--text-primary);
+            box-shadow: 0 0 10px var(--glow-color);
+        }
+
+        .platform-badge span.dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent-green);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--accent-green);
+        }
+
+        footer {
+            max-width: 1200px;
+            margin: 80px auto 40px auto;
+            padding: 40px 20px 20px 20px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .footer-top {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 40px;
+        }
+
+        .footer-info {
+            max-width: 400px;
+        }
+
+        .footer-info p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-top: 10px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 60px;
+        }
+
+        .link-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .link-group h4 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            color: var(--accent-cyan);
+            margin-bottom: 5px;
+        }
+
+        .link-group a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .link-group a:hover {
+            color: var(--accent-cyan);
+            padding-left: 5px;
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            border-top: 1px dashed rgba(255,255,255,0.05);
+            padding-top: 20px;
+        }
+    </style>
 </head>
 <body>
-    <!-- Tactical Blueprint Grid Background -->
+
     <div class="blueprint-grid"></div>
+    <div class="blueprint-scanline"></div>
 
-    <!-- Main Command Interface Container -->
-    <div class="command-container">
-        
-        <!-- TOP STATUS HEADER BAR -->
-        <header class="tactical-header">
-            <div class="header-left">
-                <div class="title-block">
-                    <h1>WTJ PIPELINE</h1>
-                    <p class="subtitle">CONTENT OPERATIONS CENTER // MANAGEMENT TERMINAL</p>
-                </div>
-            </div>
-            
-            <!-- System Status Readout & Controls -->
-            <div class="header-right">
-                <a href="../../index.html" class="theme-btn" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center; margin-right: 5px;">
-                    <span>🦉 HUB</span>
-                </a>
-                <button id="theme-toggle-btn" class="theme-btn" onclick="toggleTheme()">
-                    <span class="theme-icon">🌓</span> VEDA MODE
-                </button>
-                <div class="status-readout">
-                    <span class="label">PIPELINE ENGINE:</span>
-                    <span class="status-dot"></span>
-                </div>
-                <div class="status-readout">
-                    <span class="label">CONTROL LEVEL:</span>
-                    <span class="value">SYS-003</span>
-                </div>
-                <div class="clock-display" id="system-clock">12:48:57</div>
-            </div>
-        </header>
+    <header>
+        <div class="logo-block">
+            <h1>WTJ CONTENT STUDIO</h1>
+            <span>CREATOR OPERATIONAL PLATFORM</span>
+        </div>
+        <nav>
+            <a href="privacy.html">PRIVACY POLICY</a>
+            <a href="terms.html">TERMS OF SERVICE</a>
+            <a href="mailto:cheezphoto.contact@gmail.com" class="cta-btn">GET START</a>
+        </nav>
+    </header>
 
-        <!-- SUB-HEADER INFORMATION LINE -->
-        <div class="info-ticker">
-            <div class="ticker-label">SYSTEM FEED:</div>
-            <div class="ticker-marquee-container">
-                <div class="ticker-text">PIPELINE SECURE // CONSOLE ONLINE // ALL AGENTS FUNCTIONAL // READY FOR COMMANDS...</div>
-            </div>
+    <section class="hero-section">
+        <div class="hero-tag">DEPLOYMENT KEY: ACTIVE</div>
+        <h2>Scale Your Audience With <span>AI Content Pipeline</span></h2>
+        <p>WTJ Content Studio is a unified publishing & scheduling SaaS for short-form creators. Streamline post orchestration, optimize scheduling, and auto-post to TikTok, YouTube, and Facebook Page Reels.</p>
+        <div style="margin-top: 10px;">
+            <a href="mailto:cheezphoto.contact@gmail.com" class="cta-btn" style="padding: 15px 30px; font-size: 1rem;">GET STARTED FREE</a>
         </div>
 
-        <!-- MAIN LAYOUT: LEFT SIDEBAR & CENTRAL TACTICAL DISPLAY -->
-        <div class="dashboard-body">
-            
-            <!-- LEFT CONTROL PANEL (SIDEBAR) -->
-            <aside class="control-panel">
-                <div class="panel-header">NAVIGATION</div>
-                <div class="panel-content">
-                    <button class="nav-btn active" onclick="switchTab('calendar')">
-                        <span class="btn-indicator"></span>
-                        CONTENT CALENDAR
-                    </button>
-                    <button class="nav-btn" onclick="switchTab('gundam-status')">
-                        <span class="btn-indicator"></span>
-                        GUNDAM AGENTS
-                    </button>
-                    <button class="nav-btn" onclick="switchTab('content-vault')">
-                        <span class="btn-indicator"></span>
-                        CONTENT VAULT
-                    </button>
-                    <button class="nav-btn" onclick="switchTab('pipeline-control')">
-                        <span class="btn-indicator"></span>
-                        PIPELINE CONTROL
-                    </button>
-                    <button class="nav-btn" onclick="switchTab('team-workflow')">
-                        <span class="btn-indicator"></span>
-                        TEAM WORKFLOW
-                    </button>
+        <!-- Sleek Interactive-looking Mock UI Dashboard -->
+        <div class="mock-window">
+            <div class="window-header">
+                <div class="window-dots">
+                    <span class="window-dot"></span>
+                    <span class="window-dot yellow"></span>
+                    <span class="window-dot green"></span>
                 </div>
-
-                <!-- Vector Radar Widget -->
-                <div class="radar-container">
-                    <div class="vector-radar">
-                        <div class="outer-circle"></div>
-                        <div class="inner-circle"></div>
-                        <div class="scanning-line"></div>
-                        <div class="gundam-marker" style="top: 30%; left: 70%;">GN-001</div>
-                        <div class="gundam-marker" style="top: 75%; left: 20%;">GN-002</div>
-                        <div class="gundam-marker" style="top: 20%; left: 40%;">GN-003</div>
-                        <div class="gundam-marker" style="top: 72%; left: 72%;">GN-005</div>
-                    </div>
-                    <div class="radar-label">ACTIVE AGENT TELEMETRY</div>
+                <div class="window-title">WTJ STUDIO SUITE // WEB CONSOLE</div>
+            </div>
+            <div class="window-body">
+                <div class="mock-sidebar">
+                    <div class="sidebar-item active">● CONTENT CALENDAR</div>
+                    <div class="sidebar-item">○ VIDEO PIPELINE</div>
+                    <div class="sidebar-item">○ AI COPILOT</div>
+                    <div class="sidebar-item">○ CONNECTED ACCOUNTS</div>
                 </div>
-            </aside>
-
-            <!-- CENTRAL TACTICAL CONTENT STAGE -->
-            <main class="tactical-stage">
-                
-                <!-- TAB 1: WEEKLY TACTICAL CALENDAR -->
-                <section id="tab-calendar" class="base-pane">
-                    <div class="panel-card shadow-offset">
-                        <div class="card-header">
-                            <span class="title">WEEKLY CONTENT OPERATIONS CALENDAR</span>
-                            <span class="alert-tag">MON-SUN</span>
+                <div class="mock-content">
+                    <div class="mock-card">
+                        <div class="mock-card-header">
+                            <span>TIKTOK AUTO-PUBLISH QUEUE</span>
+                            <span class="status-badge">CONNECTED</span>
                         </div>
-                        <div class="card-body">
-                            <div class="calendar-grid">
-                                
-                                <!-- MON -->
-                                <div class="calendar-day-card empty-day">
-                                    <div class="day-header">
-                                        <span class="day-name">MON</span>
-                                        <span class="day-label">NO POSTS SCHEDULED</span>
-                                    </div>
-                                    <div class="day-content">
-                                        <p class="no-post-msg" style="color: var(--text-muted); font-family: 'Share Tech Mono', monospace; font-size: 0.8rem; text-align: center; margin-top: 20px;">// SYSTEM STANDBY</p>
-                                    </div>
-                                </div>
-
-                                <!-- TUE -->
-                                <div class="calendar-day-card empty-day">
-                                    <div class="day-header">
-                                        <span class="day-name">TUE</span>
-                                        <span class="day-label">NO POSTS SCHEDULED</span>
-                                    </div>
-                                    <div class="day-content">
-                                        <p class="no-post-msg" style="color: var(--text-muted); font-family: 'Share Tech Mono', monospace; font-size: 0.8rem; text-align: center; margin-top: 20px;">// SYSTEM STANDBY</p>
-                                    </div>
-                                </div>
-
-                                <!-- WED -->
-                                <div class="calendar-day-card">
-                                    <div class="day-header">
-                                        <span class="day-name">WED</span>
-                                        <span class="day-label">1 POST SCHEDULED</span>
-                                    </div>
-                                    <div class="day-content">
-                                        <div class="schedule-slots">
-                                            <div class="schedule-slot main-slot">
-                                                <div class="slot-header">
-                                                    <span class="slot-time" id="display-time-wed">18:00</span>
-                                                    <span class="content-tag fb-tag">FB VIDEO</span>
-                                                </div>
-                                                <p class="slot-desc">วิดีโอคอนเทนต์ 3-5 นาที เสิร์ฟคนดูช่วงเลิกงาน</p>
-                                                <div class="optimal-time-badge" id="opt-time-wed" style="display: none;">🚀 <span>Time to Post: 18:00</span></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- THU -->
-                                <div class="calendar-day-card">
-                                    <div class="day-header">
-                                        <span class="day-name">THU</span>
-                                        <span class="day-label">2 POSTS SCHEDULED</span>
-                                    </div>
-                                    <div class="day-content">
-                                        <div class="schedule-slots">
-                                            <div class="schedule-slot main-slot">
-                                                <div class="slot-header">
-                                                    <span class="slot-time" id="display-time-thu">12:00</span>
-                                                    <span class="content-tag text-tag">TEXT POST</span>
-                                                </div>
-                                                <p class="slot-desc">โพสต์ข้อความสั้น รูปภาพเด็ด หรือคำคมแชร์ไลก์ช่วงกลางวัน</p>
-                                                <div class="optimal-time-badge" id="opt-time-thu" style="display: none;">🚀 <span>Time to Post: 12:00</span></div>
-                                            </div>
-                                            <div class="schedule-slot">
-                                                <div class="slot-header">
-                                                    <span class="slot-time">20:00</span>
-                                                    <span class="content-tag yt-tag">YT LONG</span>
-                                                </div>
-                                                <p class="slot-desc"><strong>WTJ Podcast / Talk:</strong> วิดีโอสัมภาษณ์แขกรับเชิญตัวจริง</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- FRI -->
-                                <div class="calendar-day-card empty-day">
-                                    <div class="day-header">
-                                        <span class="day-name">FRI</span>
-                                        <span class="day-label">NO POSTS SCHEDULED</span>
-                                    </div>
-                                    <div class="day-content">
-                                        <p class="no-post-msg" style="color: var(--text-muted); font-family: 'Share Tech Mono', monospace; font-size: 0.8rem; text-align: center; margin-top: 20px;">// SYSTEM STANDBY</p>
-                                    </div>
-                                </div>
-
-                                <!-- SAT -->
-                                <div class="calendar-day-card">
-                                    <div class="day-header">
-                                        <span class="day-name">SAT</span>
-                                        <span class="day-label">3 POSTS SCHEDULED</span>
-                                    </div>
-                                    <div class="day-content">
-                                        <div class="schedule-slots">
-                                            <div class="schedule-slot">
-                                                <div class="slot-header" style="flex-wrap: wrap; gap: 5px;">
-                                                    <span class="slot-time">19:30</span>
-                                                    <span class="content-tag reels-tag">REELS</span>
-                                                    <span class="content-tag yt-tag">YT SHORTS</span>
-                                                    <span class="content-tag" style="background-color: #000000; color: #ffffff; border-color: #000000;">TIKTOK</span>
-                                                </div>
-                                                <p class="slot-desc">คลิปสั้น Reels / YouTube Shorts / TikTok ดึงยอดผู้ติดตามช่วงค่ำวันหยุด</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- SUN -->
-                                <div class="calendar-day-card">
-                                    <div class="day-header">
-                                        <span class="day-name">SUN</span>
-                                        <span class="day-label">2 POSTS SCHEDULED</span>
-                                    </div>
-                                    <div class="day-content">
-                                        <div class="schedule-slots">
-                                            <div class="schedule-slot main-slot">
-                                                <div class="slot-header">
-                                                    <span class="slot-time" id="display-time-sun">12:00</span>
-                                                    <span class="content-tag text-tag">TEXT POST</span>
-                                                </div>
-                                                <p class="slot-desc">โพสต์ข้อความชวนคิด คุยกับฐานแฟนคลับในวันพักผ่อน</p>
-                                                <div class="optimal-time-badge" id="opt-time-sun" style="display: none;">🚀 <span>Time to Post: 12:00</span></div>
-                                            </div>
-                                            <div class="schedule-slot">
-                                                <div class="slot-header">
-                                                    <span class="slot-time">18:00</span>
-                                                    <span class="content-tag yt-tag">YT LONG</span>
-                                                </div>
-                                                <p class="slot-desc"><strong>WTJ Story:</strong> รายการเล่าเรื่องเดี่ยว ย่อยข้อมูลเข้มข้น</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
+                        <div class="mock-text">// READY TO UPLOAD SYSTEM BUFFER</div>
+                        <div class="mock-text" style="color: var(--accent-cyan); margin-top: 10px;">• video_1080p_short.mp4 ➔ Scheduled for Sat 19:30</div>
                     </div>
-                </section>
-
-                <!-- TAB 2: GUNDAM TEAM STATUS -->
-                <section id="tab-gundam-status" class="floating-window">
-                    <div class="panel-card shadow-offset">
-                        <div class="card-header">
-                            <span class="title">GUNDAM AGENT OPERATIONS</span>
-                            <span class="alert-tag green-tag">ALL ACTIVE</span>
-                            <span class="close-window-btn" onclick="switchTab('gundam-status')">✖</span>
+                    <div class="mock-card">
+                        <div class="mock-card-header">
+                            <span>OPTIMAL TIMING ANALYTICS</span>
+                            <span style="color: var(--accent-cyan); font-family: 'Share Tech Mono', monospace; font-size: 0.8rem;">ENGINE V2</span>
                         </div>
-                        <div class="card-body">
-                            <div class="gundam-grid">
-                                
-                                <!-- GUNDAM 1 -->
-                                <div class="gundam-card">
-                                    <div class="gundam-img exia"></div>
-                                    <div class="gundam-info">
-                                        <h3>GN-001 // EXIA</h3>
-                                        <div class="agent-alias">Agent: Cream (Transcriber)</div>
-                                        <p class="role-desc">รับหน้าที่ถอดเทปเสียงและสแกนข้อมูลต้นฉบับ ว่องไว แม่นยำ ดึงข้อเท็จจริงแบบไร้รอยต่อ</p>
-                                        <div class="stat-bar"><div class="fill" style="width: 100%;"></div></div>
-                                        <span class="stat-label">OPERATIONAL CAPACITY: 100%</span>
-                                    </div>
-                                </div>
-
-                                <!-- GUNDAM 2 -->
-                                <div class="gundam-card">
-                                    <div class="gundam-img dynames"></div>
-                                    <div class="gundam-info">
-                                        <h3>GN-002 // DYNAMES</h3>
-                                        <div class="agent-alias">Agent: Zee (Creative)</div>
-                                        <p class="role-desc">รับหน้าที่คิดคอนเซปต์และ Hook ชวนหยุดดูสอยเป้าหมายใน 1.5 วินาทีแรกด้วยความเฉียบคมสูง</p>
-                                        <div class="stat-bar"><div class="fill" style="width: 95%;"></div></div>
-                                        <span class="stat-label">OPERATIONAL CAPACITY: 95%</span>
-                                    </div>
-                                </div>
-
-                                <!-- GUNDAM 3 -->
-                                <div class="gundam-card">
-                                    <div class="gundam-img kyrios"></div>
-                                    <div class="gundam-info">
-                                        <h3>GN-003 // KYRIOS</h3>
-                                        <div class="agent-alias">Agent: Ray (Writer)</div>
-                                        <p class="role-desc">รับหน้าที่เรียบเรียงและแปลงร่างข้อมูลเป็นโพสต์ทรงพลัง หลากหลายสไตล์ ไม่ซ้ำซากจำเจ</p>
-                                        <div class="stat-bar"><div class="fill" style="width: 100%;"></div></div>
-                                        <span class="stat-label">OPERATIONAL CAPACITY: 100%</span>
-                                    </div>
-                                </div>
-
-                                <!-- GUNDAM 5 -->
-                                <div class="gundam-card">
-                                    <div class="gundam-img virtue"></div>
-                                    <div class="gundam-info">
-                                        <h3>GN-005 // VIRTUE</h3>
-                                        <div class="agent-alias">Agent: Chris (Editor)</div>
-                                        <p class="role-desc">รับหน้าที่เป็นบก. ตรวจเช็คความถูกต้องและคุมคุณภาพโทนเสียงทั้งหมดเพื่อเกราะป้องกันที่แกร่งที่สุด</p>
-                                        <div class="stat-bar"><div class="fill" style="width: 90%;"></div></div>
-                                        <span class="stat-label">OPERATIONAL CAPACITY: 90%</span>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
+                        <div class="mock-text">TikTok traffic spikes identified between 18:30 - 20:00 (Saturday). Peak visibility auto-scheduled at 19:30.</div>
                     </div>
-                </section>
-
-                <!-- TAB 3: CONTENT VAULT -->
-                <section id="tab-content-vault" class="floating-window">
-                    <div class="panel-card shadow-offset">
-                        <div class="card-header">
-                            <span class="title">CONTENT VAULT // RECENT DELIVERIES</span>
-                            <span class="alert-tag font-mono">3 ITEMS</span>
-                        </div>
-                        <div class="card-body">
-                            <div class="vault-list">
-                                
-                                <div class="vault-item">
-                                    <div class="item-meta">
-                                        <span class="item-id">#WTJ-003</span>
-                                        <span class="item-title">พี่เก่ง ภูมิไทย (ต้นสี Wall Painting)</span>
-                                    </div>
-                                    <div class="item-tags">
-                                        <span class="tag tag-fb">Facebook (Storytelling)</span>
-                                        <span class="tag tag-status">DELIVERED</span>
-                                    </div>
-                                    <button class="action-btn" onclick="openTextModal('wall-painter')">VIEW TEXT</button>
-                                </div>
-
-                                <div class="vault-item">
-                                    <div class="item-meta">
-                                        <span class="item-id">#WTJ-002</span>
-                                        <span class="item-title">คุณกิ๊บ Muscari (Global Brand Ambassador)</span>
-                                    </div>
-                                    <div class="item-tags">
-                                        <span class="tag tag-fb">Facebook (Monologue / Concept)</span>
-                                        <span class="tag tag-status">DELIVERED</span>
-                                    </div>
-                                    <button class="action-btn" onclick="openTextModal('muscari')">VIEW TEXT</button>
-                                </div>
-
-                                <div class="vault-item">
-                                    <div class="item-meta">
-                                        <span class="item-id">#WTJ-001</span>
-                                        <span class="item-title">พี่เก่ง โวเก่ง (ช่างภาพ Wedding)</span>
-                                    </div>
-                                    <div class="item-tags">
-                                        <span class="tag tag-fb">Facebook (Listicle Version)</span>
-                                        <span class="tag tag-status">DELIVERED</span>
-                                    </div>
-                                    <button class="action-btn" onclick="openTextModal('wedding-photographer')">VIEW TEXT</button>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- TAB 4: PIPELINE CONTROL -->
-                <section id="tab-pipeline-control" class="floating-window">
-                    <div class="panel-card shadow-offset">
-                        <div class="card-header">
-                            <span class="title">PIPELINE OPERATION INTERFACE</span>
-                            <span class="alert-red-tag">ENGINE TRIGGER</span>
-                        </div>
-                        <div class="card-body">
-                            <p class="control-help-text">กรอกลิงก์วิดีโอ YouTube ของ WTJ Story เพื่อสั่งการให้ทีมงานเริ่มต้นการวิเคราะห์และดึงข้อมูลยุทธการทันที</p>
-                            
-                            <div class="control-input-group">
-                                <input type="text" placeholder="PASTE YOUTUBE URL HERE (e.g. https://www.youtube.com/watch?v=...)" id="yt-url-input">
-                                <button class="launch-btn" onclick="triggerPipeline()">EXECUTE TRANSCRIPTION</button>
-                            </div>
-
-                            <div class="terminal-container">
-                                <div class="terminal-header">
-                                    <span class="dot red"></span>
-                                    <span class="dot yellow"></span>
-                                    <span class="dot green"></span>
-                                    <span class="terminal-title">CONSOLE MONITOR READOUT</span>
-                                </div>
-                                <div class="terminal-body" id="terminal-readout">
-                                    <div class="line"><span class="prompt">></span> WTJ AUTOMATION ONLINE...</div>
-                                    <div class="line"><span class="prompt">></span> WAITING FOR COMMAND INSTRUCTION...</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- TAB 5: TEAM WORKFLOW CHART -->
-                <section id="tab-team-workflow" class="floating-window">
-                    <div class="panel-card shadow-offset">
-                        <div class="card-header">
-                            <span class="title">WTJ TACTICAL OPERATIONS: TEAM WORKFLOW & ORG CHART</span>
-                            <span class="alert-tag green-tag">VEDA SYSTEM MAP</span>
-                            <span class="close-window-btn" onclick="switchTab('team-workflow')">✖</span>
-                        </div>
-                        <div class="card-body">
-                            <p class="control-help-text">แผนผังปฏิบัติการร่วมของระบบผู้ช่วย 1st Agent และทีมงานผลิตคอนเทนต์ WTJ Story / WTJ Talk</p>
-                            
-                            <div class="workflow-container">
-                                <!-- Leadership Section -->
-                                <div class="workflow-group leadership-group">
-                                    <div class="group-title">🎯 LEADERSHIP CORE</div>
-                                    <div class="workflow-nodes flex-center">
-                                        <div class="wf-node boss-node">
-                                            <div class="node-id">CEO / OWNER</div>
-                                            <div class="node-name">พี่เก่ง</div>
-                                            <div class="node-role">สั่งการ & ตัดสินใจสุดท้าย</div>
-                                        </div>
-                                        <div class="wf-connector-vertical"></div>
-                                        <div class="wf-node first-node">
-                                            <div class="node-id">PA-COORD // FIRST</div>
-                                            <div class="node-name">เฟิส (First)</div>
-                                            <div class="node-role">ผู้ประสานงานภาพรวมและสั่งการ</div>
-                                            <div class="node-desc">ควบคุมสิบทิศ คุมนโยบาย ห้ามดึงดราม่า ห้ามทำคลิกเบท (No Clickbait, No Drama)</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="workflow-columns">
-                                    <!-- Left Column: Personal Assistance & Tech Team -->
-                                    <div class="workflow-column sticky-col">
-                                        <div class="group-title">🤖 PERSONAL ASSISTANCE & TECH</div>
-                                        <div class="workflow-nodes vertical-nodes">
-                                            <div class="wf-node pa-node">
-                                                <div class="node-id">PA-001 // WIN</div>
-                                                <div class="node-name">วิน (Win)</div>
-                                                <div class="node-role">Crypto Analyst</div>
-                                                <div class="node-desc">ซิงค์ API Bitkub/Binance อัปเดตพอร์ตคริปโต และ Rollover ปฏิทิน BTC</div>
-                                            </div>
-                                            <div class="wf-node pa-node">
-                                                <div class="node-id">PA-002 // JANE</div>
-                                                <div class="node-name">เจน (Jane)</div>
-                                                <div class="node-role">Grab Operations</div>
-                                                <div class="node-desc">คลีนโน้ต บันทึกรายรับลง Google Sheets อัตโนมัติและ Rollover วันที่ทุกคืน</div>
-                                            </div>
-                                            <div class="wf-node pa-node">
-                                                <div class="node-id">PA-003 // M</div>
-                                                <div class="node-name">เอ็ม (M)</div>
-                                                <div class="node-role">Frontend UI/UX Designer</div>
-                                                <div class="node-desc">ดูแลดีไซน์ HTML, หน้าเว็บ Dashboard (Dark Mode & Neon Glow) ปรับโครงสร้างระบบแบบ 100%</div>
-                                            </div>
-                                            <div class="wf-node pa-node">
-                                                <div class="node-id">PA-004 // PIE</div>
-                                                <div class="node-name">ปาย (Pie)</div>
-                                                <div class="node-role">Data Analyst</div>
-                                                <div class="node-desc">วิเคราะห์สถิติจริงหลังบ้าน Facebook & YouTube (CTR, Retention Curve Drop) เพื่อต่อยอดไอเดียทีมสร้างสรรค์</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <!-- Right Column: Content Production Team Pipeline -->
-                                    <div class="workflow-column content-pipeline-col">
-                                        <div class="group-title">🎬 CONTENT PRODUCTION PIPELINE</div>
-                                        
-                                        <div class="director-node-container">
-                                            <div class="wf-node director-node">
-                                                <div class="node-id">GN-005 // CHRIS</div>
-                                                <div class="node-name">พี่คริส (Chris)</div>
-                                                <div class="node-role">Creative Director / บก.คุมโทน</div>
-                                                <div class="node-desc">คุมโทนช่องพรีเมียม ตรวจทานร่างบท และอนุมัติงานขั้นสุดท้ายก่อนเผยแพร่</div>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="pipeline-flow-steps">
-                                            <div class="step-label">🎯 ลำดับท่อส่งงานผลิตคอนเทนต์ (Content Production Sequence)</div>
-                                            
-                                            <div class="flow-step">
-                                                <div class="step-num">1</div>
-                                                <div class="wf-node content-node">
-                                                    <div class="node-id">GN-001 // CREAM</div>
-                                                    <div class="node-name">ครีม (Cream)</div>
-                                                    <div class="node-role">Researcher / Transcriber</div>
-                                                    <div class="node-desc">ถอดเทปบันทึกเสียง (Transcript) และค้นคว้าข้อมูลดิบเชิงลึกตามประเด็นความสนใจ</div>
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="flow-arrow">⬇️</div>
-                                            
-                                            <div class="flow-step">
-                                                <div class="step-num">2</div>
-                                                <div class="wf-node content-node">
-                                                    <div class="node-id">GN-002 // ZEE</div>
-                                                    <div class="node-name">ซี (Zee)</div>
-                                                    <div class="node-role">Creative Hooks & Concepts</div>
-                                                    <div class="node-desc">คิดประเด็นหลักและจุด Hook ดึงดูดคนดูใน 1.5 วินาทีแรก หลีกเลี่ยงแนวคลิกเบท</div>
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="flow-arrow">⬇️</div>
-                                            
-                                            <div class="flow-step">
-                                                <div class="step-num">3</div>
-                                                <div class="wf-node content-node">
-                                                    <div class="node-id">SUPPORT // DEER</div>
-                                                    <div class="node-name">เดียร์ (Deer)</div>
-                                                    <div class="node-role">Idea Card Designer</div>
-                                                    <div class="node-desc">สร้างสรรค์ Idea Card สรุปมุมมองทางธุรกิจ (Business Core Value) เพื่อเพิ่มมูลค่าข้อมูล</div>
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="flow-arrow">⬇️</div>
-                                            
-                                            <div class="flow-step">
-                                                <div class="step-num">4</div>
-                                                <div class="wf-node content-node">
-                                                    <div class="node-id">SUPPORT // OR</div>
-                                                    <div class="node-name">ออ (Or)</div>
-                                                    <div class="node-role">Fact Auditor</div>
-                                                    <div class="node-desc">ตรวจสอบความถูกต้องเชิงวิชาการ ข้อเท็จจริง ตัวเลข และที่มาของข้อมูลทั้งหมดอย่างละเอียด</div>
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="flow-arrow">⬇️</div>
-                                            
-                                            <div class="flow-step">
-                                                <div class="step-num">5</div>
-                                                <div class="wf-node content-node">
-                                                    <div class="node-id">SUPPORT // CRI</div>
-                                                    <div class="node-name">คริ (Cri)</div>
-                                                    <div class="node-role">Content Critic</div>
-                                                    <div class="node-desc">วิจารณ์ประเมินจุดบกพร่อง ความลื่นไหล โครงสร้าง และสมดุลของความยาวบทพูด</div>
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="flow-arrow">⬇️</div>
-                                            
-                                            <div class="flow-step">
-                                                <div class="step-num">6</div>
-                                                <div class="wf-node content-node">
-                                                    <div class="node-id">GN-003 // RAY</div>
-                                                    <div class="node-name">เรย์ (Ray)</div>
-                                                    <div class="node-role">Writer</div>
-                                                    <div class="node-desc">เรียบเรียงโพสต์เฟซบุ๊กและบทสคริปต์บรรยายวิดีโอ (Storytelling) ตามคู่มือการเขียนของช่อง</div>
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="flow-arrow">⬇️</div>
-                                            
-                                            <div class="flow-step">
-                                                <div class="step-num">7</div>
-                                                <div class="wf-node content-node">
-                                                    <div class="node-id">SUPPORT // MUSIC</div>
-                                                    <div class="node-name">มิวสิค (Music)</div>
-                                                    <div class="node-role">Marketer / Copywriter</div>
-                                                    <div class="node-desc">ขัดเกลาคำให้วัยรุ่นโดนใจ ใช้มีม คำฮิต คีย์เวิร์ด และจัดวาง Call to Action (CTA) ให้เข้าเป้า</div>
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="flow-arrow">⬇️</div>
-                                            
-                                            <div class="flow-step">
-                                                <div class="step-num">8</div>
-                                                <div class="wf-node visual-node">
-                                                    <div class="node-id">SUPPORT // P</div>
-                                                    <div class="node-name">พี (P)</div>
-                                                    <div class="node-role">Visual Storyteller</div>
-                                                    <div class="node-desc">ออกแบบปก คุมสไตล์ภาพประกอบ (Hyper-realism) และทำ B-roll ตามไกด์มุมกล้อง/การจัดแสง</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </main>
-        </div>
-
-        <!-- TACTICAL FOOTER BAR WITH LEGAL LINKS FOR TIKTOK AUDIT -->
-        <footer class="tactical-footer" style="display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; margin-top: 15px; border-top: 1px dashed rgba(255, 255, 255, 0.15); font-family: 'Share Tech Mono', monospace; font-size: 0.85rem; color: #a0a0a0; background-color: rgba(10, 10, 15, 0.5);">
-            <div class="footer-left">
-                <span>WTJ PIPELINE MANAGEMENT © 2026 // SYSTEM LEVEL: SYS-003</span>
-            </div>
-            <div class="footer-right" style="display: flex; gap: 20px;">
-                <a href="privacy.html" style="color: #00ff66; text-decoration: none; border-bottom: 1px dotted #00ff66; padding-bottom: 2px;">PRIVACY POLICY</a>
-                <a href="terms.html" style="color: #00ff66; text-decoration: none; border-bottom: 1px dotted #00ff66; padding-bottom: 2px;">TERMS OF SERVICE</a>
-            </div>
-        </footer>
-
-    </div>
-
-    <!-- MODAL FOR VIEWING DRAFT COPIES -->
-    <div id="text-modal" class="modal">
-        <div class="modal-content shadow-offset">
-            <div class="modal-header">
-                <span id="modal-title">DRAFT COPIES</span>
-                <span class="close-btn" onclick="closeModal()">&times;</span>
-            </div>
-            <div class="modal-body">
-                <textarea id="modal-textarea" readonly></textarea>
-                <div class="modal-actions">
-                    <button class="action-btn-green" onclick="copyModalText()">COPY TO CLIPBOARD</button>
-                    <button class="action-btn" onclick="closeModal()">CLOSE</button>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <script src="app.js?v=1.2"></script>
+    <section class="features-section">
+        <div class="feature-card">
+            <div class="feature-icon">[ 01 ]</div>
+            <h3>Direct Video Publishing</h3>
+            <p>Connect your TikTok, YouTube, and Facebook accounts. Upload, review, and auto-publish content with target metadata automatically using official Developer APIs.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">[ 02 ]</div>
+            <h3>Unified Content Calendar</h3>
+            <p>Organize, drag, and schedule your media slots from a single high-tech interface. Never miss a peak upload time across any social network.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">[ 03 ]</div>
+            <h3>Smart Posting Timing</h3>
+            <p>Our analytics scheduler computes when your audience is active, automatically aligning and pacing your uploads to capture maximum organic traffic.</p>
+        </div>
+    </section>
+
+    <section class="platforms-section">
+        <h3>SUPPORTED API CONNECTIONS</h3>
+        <div class="platform-grid">
+            <div class="platform-badge active">
+                <span class="dot"></span> TikTok API
+            </div>
+            <div class="platform-badge active">
+                <span class="dot"></span> YouTube Data API v3
+            </div>
+            <div class="platform-badge active">
+                <span class="dot"></span> Meta Graph API
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-top">
+            <div class="footer-info">
+                <div class="logo-block">
+                    <h1>WTJ CONTENT STUDIO</h1>
+                    <span>CREATOR OPERATIONAL PLATFORM</span>
+                </div>
+                <p>The developer-friendly platform for social video orchestration. Connect your creative channels, configure post routines, and let automation carry your outreach.</p>
+            </div>
+            <div class="footer-links">
+                <div class="link-group">
+                    <h4>PLATFORM</h4>
+                    <a href="privacy.html">Privacy Policy</a>
+                    <a href="terms.html">Terms of Service</a>
+                </div>
+                <div class="link-group">
+                    <h4>SUPPORT</h4>
+                    <a href="mailto:cheezphoto.contact@gmail.com">Contact Developer</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>&copy; 2026 WTJ Content Studio. All rights reserved.</span>
+            <span>SYSTEM CONSOLE // VERSION 2.1.0</span>
+        </div>
+    </footer>
+
 </body>
 </html>
