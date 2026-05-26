@@ -845,6 +845,9 @@
         DESIGNED IN HYBRID ENGINE BY M (CREATIVE HTML DESIGNER) // ANTIGRAVITY OS 2026
     </footer>
 
+    <!-- Notion Calendar Data -->
+    <script src="notion_calendar_data.js"></script>
+
     <!-- System JavaScript -->
     <script>
         // System live clock
@@ -896,7 +899,7 @@
         ];
 
         let currentTheme = 'light';
-        let currentMonthIndex = 5; // Default to JUNE (index 5)
+        let currentMonthIndex = new Date().getMonth(); // Default to current month index (0-11)
 
         // Set Theme system
         function setTheme(theme) {
@@ -989,8 +992,11 @@
                     const rules = POSTING_RULE[weekdayIndex];
                     rules.forEach((rule, slotIdx) => {
                         const slotKey = `${dateKey}-${rule.time}`;
-                        const isReady = localStorage.getItem(`status-${slotKey}`) === "ready";
-                        const savedTitle = localStorage.getItem(`title-${slotKey}`) || "";
+                        
+                        // Check if we have Notion data for this slot
+                        const notionItem = typeof NOTION_CALENDAR_DATA !== 'undefined' ? NOTION_CALENDAR_DATA[slotKey] : null;
+                        const isReady = notionItem ? notionItem.status === "ready" : (localStorage.getItem(`status-${slotKey}`) === "ready");
+                        const savedTitle = notionItem ? notionItem.title : (localStorage.getItem(`title-${slotKey}`) || "");
                         
                         const slotDiv = document.createElement("div");
                         slotDiv.className = "content-slot";
@@ -1007,13 +1013,13 @@
                                     <span style="opacity: 0.8; font-weight: normal;">${rule.time}</span>
                                 </div>
                                 <div class="post-title-container">
-                                    <div class="post-title ${savedTitle ? '' : 'placeholder'}" id="title-display-${slotKey}" onclick="startEditTitle('${slotKey}')" style="font-size: 0.7rem;">
-                                        ${savedTitle || "Click to add topic..."}
+                                    <div class="post-title ${savedTitle ? '' : 'placeholder'}" id="title-display-${slotKey}" ${notionItem ? '' : `onclick="startEditTitle('${slotKey}')"`} style="font-size: 0.7rem;">
+                                        ${savedTitle || "Click to add topic..."} ${notionItem ? `<span style="font-size: 0.55rem; opacity: 0.8; font-weight: bold; display: block; margin-top: 2px; color: var(--border-color);">🤖 [${notionItem.notion_status}]</span>` : ''}
                                     </div>
                                     <input type="text" class="post-title-input" id="title-input-${slotKey}" value="${savedTitle}" style="display: none; font-size: 0.7rem;" onblur="finishEditTitle('${slotKey}')" onkeydown="handleTitleKey(event, '${slotKey}')">
                                 </div>
                             </div>
-                            <button class="status-toggle ${isReady ? 'ready' : 'missing'}" id="status-btn-${slotKey}" onclick="toggleStatus('${slotKey}')" style="padding: 3px; font-size: 0.6rem;">
+                            <button class="status-toggle ${isReady ? 'ready' : 'missing'}" id="status-btn-${slotKey}" ${notionItem ? 'disabled style="cursor: not-allowed; opacity: 0.8; padding: 3px; font-size: 0.6rem;"' : `onclick="toggleStatus('${slotKey}')" style="padding: 3px; font-size: 0.6rem;"`}>
                                 ${isReady ? 'READY' : 'MISSING ASSETS'}
                             </button>
                         `;
@@ -1119,7 +1125,9 @@
                         const dateKey = `2026-${paddedMonth}-${paddedDay}`;
                         const slotKey = `${dateKey}-${rule.time}`;
                         
-                        if (localStorage.getItem(`status-${slotKey}`) === "ready") {
+                        const notionItem = typeof NOTION_CALENDAR_DATA !== 'undefined' ? NOTION_CALENDAR_DATA[slotKey] : null;
+                        const isReady = notionItem ? notionItem.status === "ready" : (localStorage.getItem(`status-${slotKey}`) === "ready");
+                        if (isReady) {
                             readySlots++;
                         }
                     });
@@ -1156,7 +1164,9 @@
                             const dateKey = `2026-${paddedMonth}-${paddedDay}`;
                             const slotKey = `${dateKey}-${rule.time}`;
                             
-                            if (localStorage.getItem(`status-${slotKey}`) === "ready") {
+                            const notionItem = typeof NOTION_CALENDAR_DATA !== 'undefined' ? NOTION_CALENDAR_DATA[slotKey] : null;
+                            const isReady = notionItem ? notionItem.status === "ready" : (localStorage.getItem(`status-${slotKey}`) === "ready");
+                            if (isReady) {
                                 readySlots++;
                             }
                         });
@@ -1185,9 +1195,29 @@
         }
 
         // Initialize App
+        // Auto-sync from Notion Live API (if served from local python server)
+        async function fetchNotionData() {
+            try {
+                const response = await fetch('/api/notion_data');
+                if (response.ok) {
+                    const data = await response.json();
+                    window.NOTION_CALENDAR_DATA = data;
+                    renderCalendar();
+                    console.log("LIVE SYNC: ดึงข้อมูลจาก Notion สำเร็จแก!");
+                }
+            } catch (e) {
+                // Ignore errors if run as file:// without local server
+            }
+        }
+
         window.onload = function() {
             renderMonthTabs();
             renderCalendar();
+            
+            // Start Live Sync check
+            fetchNotionData();
+            // Check every 30 seconds
+            setInterval(fetchNotionData, 30000);
         }
     </script>
 </body>
