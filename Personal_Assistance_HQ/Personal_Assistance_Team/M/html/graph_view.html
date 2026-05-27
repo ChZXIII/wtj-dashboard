@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1st Agent Knowledge Graph</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="graph_data.js"></script>
+    <style>
+        :root {
+            /* --- Ptolemy Light Theme (Default) --- */
+            --bg-color: #f3f4f1;
+            --text-color: #111111;
+            --panel-bg: #ffffff;
+            --border-color: rgba(17, 17, 17, 0.15);
+            --node-dir: #1976d2;
+            --node-py: #e65100;
+            --node-html: #7b1fa2;
+            --node-md: #2e7d32;
+            --node-other: #555555;
+            --link-color: rgba(0, 0, 0, 0.15);
+            --header-color: #1976d2;
+            --scanline-opacity: 0;
+            --grid-color: rgba(0, 0, 0, 0.08);
+            --blueprint-opacity: 0.8;
+        }
+
+        html.dark-theme {
+            /* --- Veda Flat Dark Theme --- */
+            --bg-color: #13141d;
+            --text-color: #eceff4;
+            --panel-bg: #1e1f29;
+            --border-color: rgba(229, 229, 229, 0.15);
+            --node-dir: #81a1c1;
+            --node-py: #ebcb8b;
+            --node-html: #88c0d0;
+            --node-md: #a3be8c;
+            --node-other: #d8dee9;
+            --link-color: rgba(255, 255, 255, 0.1);
+            --header-color: #81a1c1;
+            --scanline-opacity: 0;
+            --grid-color: rgba(255, 255, 255, 0.06);
+            --blueprint-opacity: 0.6;
+        }
+
+        html.color-theme {
+            /* --- Veda Neon Dark Theme (Color mode) --- */
+            --bg-color: #05070a;
+            --text-color: #e2e8f0;
+            --panel-bg: rgba(10, 15, 24, 0.85);
+            --border-color: rgba(0, 240, 255, 0.15);
+            --node-dir: #bd93f9;
+            --node-py: #ffaa00;
+            --node-html: #00f0ff;
+            --node-md: #39ff14;
+            --node-other: #64748b;
+            --link-color: rgba(0, 240, 255, 0.15);
+            --header-color: #00f0ff;
+            --scanline-opacity: 0.25;
+            --grid-color: rgba(0, 240, 255, 0.06);
+            --blueprint-opacity: 1;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+        }
+
+        /* Ambient Cyber Grid Background */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
+                linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: -1;
+            opacity: var(--blueprint-opacity);
+            transition: opacity 0.25s ease;
+        }
+
+        /* CRT Scanlines Overlay */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                rgba(18, 16, 16, 0) 50%, 
+                rgba(0, 0, 0, 0.25) 50%
+            );
+            background-size: 100% 4px;
+            z-index: 9999;
+            pointer-events: none;
+            opacity: var(--scanline-opacity);
+        }
+
+        #graph-container {
+            width: 100%;
+            height: 100%;
+        }
+
+        .node circle {
+            stroke: var(--bg-color);
+            stroke-width: 0.5px;
+            transition: r 0.2s, stroke-width 0.2s;
+        }
+
+        .node text {
+            font-size: 10px;
+            pointer-events: none;
+            text-anchor: middle;
+            fill: var(--text-color);
+            opacity: 0.7;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+        }
+
+        .link {
+            stroke: var(--link-color);
+            stroke-opacity: 0.6;
+            stroke-width: 1px;
+        }
+
+        #ui-overlay {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            pointer-events: none;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+            color: var(--header-color);
+        }
+
+        .legend {
+            margin-top: 10px;
+            font-size: 0.8rem;
+            display: flex;
+            gap: 15px;
+            pointer-events: auto;
+        }
+
+        .legend-item { display: flex; align-items: center; gap: 5px; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; }
+
+        #tooltip {
+            position: absolute;
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            display: none;
+            pointer-events: none;
+        }
+        
+        .floating-hub-btn {
+            transition: all 0.3s ease !important;
+            pointer-events: auto !important;
+        }
+        .floating-hub-btn:hover {
+            background: rgba(129, 161, 193, 0.35) !important;
+            box-shadow: 0 0 20px rgba(129, 161, 193, 0.5) !important;
+            transform: translateY(-2px) !important;
+        }
+
+        /* 3-Mode Theme Selector */
+        .theme-switcher-container {
+            position: fixed;
+            top: 20px;
+            right: 130px;
+            z-index: 10000;
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            padding: 4px 8px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+        .theme-switcher-label {
+            font-size: 0.65rem;
+            color: var(--text-color);
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .theme-switcher {
+            display: flex;
+            gap: 2px;
+        }
+        .theme-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-color);
+            padding: 4px 10px;
+            font-family: inherit;
+            font-size: 0.7rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.25s ease;
+            border-radius: 12px;
+        }
+        .theme-btn.active {
+            background: var(--header-color);
+            color: var(--bg-color);
+        }
+    </style>
+    <script>
+        // Initialize Theme immediately to prevent flash
+        let savedTheme = 'light';
+        try {
+            savedTheme = localStorage.getItem('wtj-theme') || 'light';
+        } catch (e) {
+            console.warn('localStorage is not accessible:', e);
+        }
+        document.documentElement.className = savedTheme + '-theme';
+        
+        window.setTheme = function(theme) {
+            document.body.className = theme + '-theme';
+            document.documentElement.className = theme + '-theme';
+            try {
+                localStorage.setItem('wtj-theme', theme);
+            } catch (e) {
+                console.warn('localStorage is not writable:', e);
+            }
+            document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
+            const activeBtn = document.getElementById(`theme-btn-${theme}`);
+            if (activeBtn) activeBtn.classList.add('active');
+        };
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            // Apply theme class to body once DOM is ready
+            document.body.className = savedTheme + '-theme';
+            
+            // Sync UI buttons on load
+            const activeBtn = document.getElementById(`theme-btn-${savedTheme}`);
+            if (activeBtn) {
+                document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
+                activeBtn.classList.add('active');
+            }
+        });
+    </script>
+</head>
+<body>
+    <!-- CRT scanlines overlay -->
+    <div class="scanlines"></div>
+
+    <!-- 3-Mode Theme Selector -->
+    <div class="theme-switcher-container">
+        <span class="theme-switcher-label">THEME</span>
+        <div class="theme-switcher">
+            <button class="theme-btn active" id="theme-btn-light" onclick="setTheme('light')">LIGHT</button>
+            <button class="theme-btn" id="theme-btn-dark" onclick="setTheme('dark')">DARK</button>
+            <button class="theme-btn" id="theme-btn-color" onclick="setTheme('color')">COLOR</button>
+        </div>
+    </div>
+
+    <!-- Floating Hub Button -->
+    <a href="index.html" class="floating-hub-btn" style="position: fixed; top: 20px; right: 20px; z-index: 10000; background: rgba(129, 161, 193, 0.1); border: 1px solid #81a1c1; color: #81a1c1; padding: 10px 18px; border-radius: 30px; text-decoration: none; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 0.85rem; font-weight: bold; backdrop-filter: blur(10px); display: flex; align-items: center; gap: 8px;">
+        <span>🦉 HUB</span>
+    </a>
+    <div id="ui-overlay">
+        <h1>1st AGENT GRAPH VIEW</h1>
+        <div class="legend">
+            <div class="legend-item"><div class="dot" style="background: var(--node-dir)"></div> Directory</div>
+            <div class="legend-item"><div class="dot" style="background: var(--node-py)"></div> Python</div>
+            <div class="legend-item"><div class="dot" style="background: var(--node-md)"></div> Markdown</div>
+            <div class="legend-item"><div class="dot" style="background: var(--node-html)"></div> HTML</div>
+        </div>
+    </div>
+    <div id="tooltip"></div>
+    <svg id="graph-container"></svg>
+
+    <script>
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+
+        // Check if data and d3 are loaded
+        if (typeof graphData === 'undefined') {
+            document.body.innerHTML = "<div style='display:flex; justify-content:center; align-items:center; height:100vh; color:red; font-family:sans-serif;'><h2>Error: Could not load graph_data.js</h2></div>";
+            console.error("graphData is not defined. Check if graph_data.js is in the same folder.");
+        } else if (typeof d3 === 'undefined') {
+            document.body.innerHTML = "<div style='display:flex; justify-content:center; align-items:center; height:100vh; color:red; font-family:sans-serif;'><h2>Error: Could not load D3.js library</h2></div>";
+            console.error("D3 is not defined. Check internet connection or D3 CDN path.");
+        } else {
+            try {
+                const svg = d3.select("#graph-container")
+                    .attr("width", width)
+                    .attr("height", height);
+
+                const g = svg.append("g");
+
+                // Zoom & Pan
+                svg.call(d3.zoom()
+                    .scaleExtent([0.1, 8])
+                    .on("zoom", (event) => {
+                        g.attr("transform", event.transform);
+                    }));
+
+                const getColor = (type) => {
+                    switch(type) {
+                        case 'directory': return 'var(--node-dir)';
+                        case 'python': return 'var(--node-py)';
+                        case 'html': return 'var(--node-html)';
+                        case 'markdown': return 'var(--node-md)';
+                        default: return 'var(--node-other)';
+                    }
+                };
+
+                const simulation = d3.forceSimulation(graphData.nodes)
+                    .force("link", d3.forceLink(graphData.links).id(d => d.id).distance(100))
+                    .force("charge", d3.forceManyBody().strength(-300))
+                    .force("center", d3.forceCenter(width / 2, height / 2))
+                    .force("collision", d3.forceCollide().radius(d => d.val + 5));
+
+                const link = g.append("g")
+                    .attr("class", "links")
+                    .selectAll("line")
+                    .data(graphData.links)
+                    .join("line")
+                    .attr("class", "link");
+
+                const node = g.append("g")
+                    .attr("class", "nodes")
+                    .selectAll(".node")
+                    .data(graphData.nodes)
+                    .join("g")
+                    .attr("class", "node")
+                    .call(d3.drag()
+                        .on("start", dragstarted)
+                        .on("drag", dragged)
+                        .on("end", dragended));
+
+                node.append("circle")
+                    .attr("r", d => d.val)
+                    .attr("fill", d => getColor(d.type))
+                    .on("mouseover", (event, d) => {
+                        d3.select("#tooltip")
+                            .style("display", "block")
+                            .html(`<strong>${d.label}</strong><br>Type: ${d.type}`);
+                    })
+                    .on("mousemove", (event) => {
+                        d3.select("#tooltip")
+                            .style("left", (event.pageX + 10) + "px")
+                            .style("top", (event.pageY - 20) + "px");
+                    })
+                    .on("mouseout", () => {
+                        d3.select("#tooltip").style("display", "none");
+                    });
+
+                node.append("text")
+                    .attr("dy", d => d.val + 12)
+                    .text(d => d.label)
+                    .style("opacity", d => d.type === 'directory' ? 1 : 0.4);
+
+                simulation.on("tick", () => {
+                    link
+                        .attr("x1", d => d.source.x)
+                        .attr("y1", d => d.source.y)
+                        .attr("x2", d => d.target.x)
+                        .attr("y2", d => d.target.y);
+
+                    node.attr("transform", d => `translate(${d.x},${d.y})`);
+                });
+
+                function dragstarted(event, d) {
+                    if (!event.active) simulation.alphaTarget(0.3).restart();
+                    d.fx = d.x;
+                    d.fy = d.y;
+                }
+
+                function dragged(event, d) {
+                    d.fx = event.x;
+                    d.fy = event.y;
+                }
+
+                function dragended(event, d) {
+                    if (!event.active) simulation.alphaTarget(0);
+                    d.fx = null;
+                    d.fy = null;
+                }
+
+                // Handle Resize
+                window.addEventListener('resize', () => {
+                    svg.attr("width", window.innerWidth).attr("height", window.innerHeight);
+                    simulation.force("center", d3.forceCenter(window.innerWidth / 2, window.innerHeight / 2));
+                    simulation.alpha(0.3).restart();
+                });
+            } catch (e) {
+                console.error("Error rendering D3 graph:", e);
+                document.body.innerHTML = `<div style='display:flex; justify-content:center; align-items:center; height:100vh; color:red; font-family:sans-serif;'><h2>Error rendering graph: ${e.message}</h2></div>`;
+            }
+        }
+    </script>
+</body>
+</html>

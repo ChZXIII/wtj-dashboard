@@ -1,0 +1,2208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WTJ TEAM WORKFLOW DASHBOARD</title>
+    <!-- Premium Fonts: Outfit, Inter, and Space Mono for a tactical cyber look -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="workflow_status.js"></script>
+    <script>
+        // Initialize Theme immediately to prevent flash
+        let savedTheme = 'light';
+        try {
+            savedTheme = localStorage.getItem('wtj-theme') || 'light';
+        } catch (e) {
+            console.warn('localStorage is not accessible:', e);
+        }
+        document.documentElement.className = savedTheme + '-theme';
+        
+        window.setTheme = function(theme) {
+            document.body.className = theme + '-theme';
+            document.documentElement.className = theme + '-theme';
+            try {
+                localStorage.setItem('wtj-theme', theme);
+            } catch (e) {
+                console.warn('localStorage is not writable:', e);
+            }
+            document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
+            const activeBtn = document.getElementById(`theme-btn-${theme}`);
+            if (activeBtn) activeBtn.classList.add('active');
+        };
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            // Apply theme class to body once DOM is ready
+            document.body.className = savedTheme + '-theme';
+            
+            // Sync UI buttons on load
+            const activeBtn = document.getElementById(`theme-btn-${savedTheme}`);
+            if (activeBtn) {
+                document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
+                activeBtn.classList.add('active');
+            }
+        });
+    </script>
+    <style>
+        :root {
+            /* --- Ptolemy Light Theme (Default) --- */
+            --bg-dark: #f3f4f1;
+            --panel-bg: #ffffff;
+            --border-color: rgba(17, 17, 17, 0.15);
+            --text-primary: #111111;
+            --text-muted: #555555;
+            
+            --neon-blue: #1976d2;
+            --neon-pink: #d81b60;
+            --neon-green: #2e7d32;
+            --neon-orange: #e65100;
+            --neon-purple: #7b1fa2;
+            --neon-red: #c62828;
+            --neon-yellow: #f57c00;
+            
+            --glow-blue: none;
+            --glow-pink: none;
+            --glow-green: none;
+            --glow-orange: none;
+            --glow-purple: none;
+            
+            --grid-color: rgba(0, 0, 0, 0.08);
+            --scanline-opacity: 0;
+            --blueprint-opacity: 0.8;
+            --radial-gradient-opacity: 0;
+            --body-text-color: #111111;
+            --header-border: rgba(17, 17, 17, 0.15);
+            --logo-text-color: #111111;
+            --logo-sub-text-color: #555555;
+            
+            --card-subtext: #555555;
+            --card-bg-opacity: 1;
+            --timeline-line-color: rgba(17, 17, 17, 0.1);
+        }
+ 
+        html.dark-theme {
+            /* --- Veda Flat Dark Theme --- */
+            --bg-dark: #13141d;
+            --panel-bg: #1e1f29;
+            --border-color: rgba(229, 229, 229, 0.15);
+            --text-primary: #e5e5e5;
+            --text-muted: #888888;
+            
+            --neon-blue: #40a9ff;
+            --neon-pink: #ff85c0;
+            --neon-green: #69f0ae;
+            --neon-orange: #ffa940;
+            --neon-purple: #b37feb;
+            --neon-red: #ffa39e;
+            --neon-yellow: #ffe58f;
+            
+            --glow-blue: none;
+            --glow-pink: none;
+            --glow-green: none;
+            --glow-orange: none;
+            --glow-purple: none;
+            
+            --grid-color: rgba(255, 255, 255, 0.06);
+            --scanline-opacity: 0;
+            --blueprint-opacity: 0.6;
+            --radial-gradient-opacity: 0.2;
+            --body-text-color: #f1f3f9;
+            --header-border: rgba(229, 229, 229, 0.15);
+            --logo-text-color: #ffffff;
+            --logo-sub-text-color: #8a8f9f;
+            
+            --card-subtext: #8a8f9f;
+            --card-bg-opacity: 1;
+            --timeline-line-color: rgba(255, 255, 255, 0.1);
+        }
+ 
+        html.color-theme {
+            /* --- Veda Neon Dark Theme (Color mode) --- */
+            --bg-dark: #05070a;
+            --panel-bg: rgba(10, 15, 24, 0.85);
+            --border-color: rgba(0, 240, 255, 0.15);
+            --text-primary: #e2e8f0;
+            --text-muted: #64748b;
+            
+            --neon-blue: #00f0ff;
+            --neon-pink: #ff007f;
+            --neon-green: #39ff14;
+            --neon-orange: #ffaa00;
+            --neon-purple: #bd93f9;
+            --neon-red: #ff3333;
+            --neon-yellow: #ffff00;
+            
+            --glow-blue: 0 0 15px rgba(0, 240, 255, 0.35);
+            --glow-pink: 0 0 15px rgba(255, 0, 127, 0.35);
+            --glow-green: 0 0 15px rgba(57, 255, 20, 0.35);
+            --glow-orange: 0 0 15px rgba(255, 170, 0, 0.35);
+            --glow-purple: 0 0 15px rgba(189, 147, 249, 0.35);
+            
+            --grid-color: rgba(0, 240, 255, 0.06);
+            --scanline-opacity: 0.35;
+            --blueprint-opacity: 1;
+            --radial-gradient-opacity: 1;
+            --body-text-color: #f1f3f9;
+            --header-border: rgba(255, 255, 255, 0.08);
+            --logo-text-color: #ffffff;
+            --logo-sub-text-color: #8a8f9f;
+            
+            --card-subtext: #8a8f9f;
+            --card-bg-opacity: 0.85;
+            --timeline-line-color: rgba(255, 255, 255, 0.18);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--body-text-color);
+            font-family: 'Outfit', sans-serif;
+            min-height: 100vh;
+            padding: 30px;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(0, 240, 255, calc(0.04 * var(--radial-gradient-opacity))) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(255, 0, 127, calc(0.04 * var(--radial-gradient-opacity))) 0px, transparent 50%);
+        }
+
+        /* Ambient Cyber Grid Background */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
+                linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: -1;
+            opacity: var(--blueprint-opacity);
+            transition: opacity 0.25s ease;
+        }
+
+        /* CRT Scanlines Overlay */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                rgba(18, 16, 16, 0) 50%, 
+                rgba(0, 0, 0, 0.25) 50
+            );
+            background-size: 100% 4px;
+            z-index: 9999;
+            pointer-events: none;
+            opacity: var(--scanline-opacity);
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .logo-section h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, var(--logo-text-color) 40%, var(--neon-purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(189, 147, 249, 0.1);
+        }
+
+        .logo-section p {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--logo-sub-text-color);
+            margin-top: 5px;
+            letter-spacing: 1px;
+        }
+
+        .status-pill {
+            background: rgba(189, 147, 249, 0.08);
+            border: 1px solid var(--neon-purple);
+            color: var(--neon-purple);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            font-size: 0.8rem;
+            box-shadow: var(--glow-purple);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--neon-purple);
+            border-radius: 50%;
+            display: inline-block;
+            animation: pulse 1.8s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.3; }
+            50% { opacity: 1; }
+            100% { opacity: 0.3; }
+        }
+
+        /* 3-Mode Theme Selector */
+        .theme-switcher-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px;
+        }
+
+        .theme-switcher-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .theme-switcher {
+            display: flex;
+            gap: 2px;
+            border: 2px solid var(--neon-blue);
+            padding: 2px;
+            background: var(--panel-bg);
+            border-radius: 4px;
+        }
+
+        .theme-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            padding: 4px 10px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.25s ease;
+            border-radius: 2px;
+        }
+
+        .theme-btn.active {
+            background: var(--neon-blue);
+            color: var(--panel-bg);
+        }
+
+        /* Mode Selector */
+        .pipeline-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            background: rgba(127, 127, 127, 0.05);
+            padding: 8px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            width: fit-content;
+        }
+
+        .selector-btn {
+            background: transparent;
+            border: 1px solid transparent;
+            color: var(--text-muted);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .selector-btn:hover {
+            color: var(--text-primary);
+            background: rgba(127, 127, 127, 0.1);
+        }
+
+        .selector-btn.active {
+            background: var(--panel-bg);
+            border-color: var(--neon-blue);
+            color: var(--neon-blue);
+            box-shadow: var(--glow-blue);
+        }
+
+        /* Layout Grid */
+        .dashboard-layout {
+            display: grid;
+            grid-template-columns: 3.2fr 1fr;
+            gap: 25px;
+        }
+
+        /* Canvas Panel */
+        .canvas-panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 20px;
+            position: relative;
+            min-height: 680px;
+            overflow: auto;
+            box-shadow: 0 10px 45px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(12px);
+        }
+
+        /* SVG Connections Container */
+        .connections-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .connection-line {
+            fill: none;
+            stroke: var(--timeline-line-color);
+            stroke-width: 2;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0.8;
+        }
+
+        .connection-line.active {
+            stroke-width: 2.5;
+            filter: drop-shadow(0 0 4px var(--active-color));
+            stroke-dasharray: 8 6;
+            animation: flow 15s linear infinite;
+            opacity: 0.85;
+        }
+
+        @keyframes flow {
+            from { stroke-dashoffset: 1000; }
+            to { stroke-dashoffset: 0; }
+        }
+
+        /* Nodes Container */
+        .nodes-container {
+            position: relative;
+            width: 1280px;
+            height: 600px;
+            z-index: 2;
+        }
+
+        /* Individual Node Card */
+        .node-card {
+            position: absolute;
+            width: 120px;
+            height: 80px;
+            background: rgba(10, 12, 22, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .node-card:hover {
+            transform: translateY(-4px);
+            border-color: #fff;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+            z-index: 10;
+        }
+
+        .node-card.dimmed {
+            opacity: 0.12;
+            filter: grayscale(80%);
+        }
+
+        .node-card.active-node {
+            border-width: 2px;
+            transform: scale(1.05);
+            z-index: 5;
+        }
+
+        /* Node Color Variations based on Roles */
+        .node-me { border-color: var(--neon-pink); }
+        .node-me:hover, .node-me.active-node { box-shadow: var(--glow-pink); border-color: var(--neon-pink); }
+        
+        .node-assist { border-color: var(--neon-blue); }
+        .node-assist:hover, .node-assist.active-node { box-shadow: var(--glow-blue); border-color: var(--neon-blue); }
+
+        .node-pipeline { border-color: var(--neon-orange); }
+        .node-pipeline:hover, .node-pipeline.active-node { box-shadow: var(--glow-orange); border-color: var(--neon-orange); }
+
+        .node-audit { border-color: var(--neon-green); }
+        .node-audit:hover, .node-audit.active-node { box-shadow: var(--glow-green); border-color: var(--neon-green); }
+
+        .node-special { border-color: var(--neon-purple); }
+        .node-special:hover, .node-special.active-node { box-shadow: var(--glow-purple); border-color: var(--neon-purple); }
+
+        .node-output { border-color: var(--neon-red); }
+        .node-output:hover, .node-output.active-node { box-shadow: 0 0 15px rgba(255, 51, 51, 0.35); border-color: var(--neon-red); }
+
+        .node-note { border-color: var(--neon-yellow); }
+        .node-note:hover, .node-note.active-node { box-shadow: 0 0 15px rgba(255, 255, 0, 0.35); border-color: var(--neon-yellow); }
+
+        .node-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .node-subtitle {
+            font-size: 0.65rem;
+            color: #8a8f9f;
+            font-family: 'Space Mono', monospace;
+            text-transform: uppercase;
+        }
+
+        /* Swimlane Separators */
+        .swimlane-label {
+            position: absolute;
+            left: 10px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.15);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            pointer-events: none;
+        }
+
+        /* Detail Sidebar Panel */
+        .detail-panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 10px 45px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(12px);
+            min-height: 680px;
+        }
+
+        .detail-header {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .detail-title {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #fff;
+            background: linear-gradient(135deg, #fff 60%, var(--neon-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .detail-role {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--neon-blue);
+            margin-top: 5px;
+            letter-spacing: 1px;
+        }
+
+        .detail-section {
+            margin-bottom: 20px;
+        }
+
+        .detail-section-title {
+            font-size: 0.8rem;
+            font-family: 'Space Mono', monospace;
+            color: #8a8f9f;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .detail-body {
+            font-size: 0.95rem;
+            color: #adb3c5;
+            line-height: 1.6;
+        }
+
+        .io-badge {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 0.85rem;
+            margin-top: 5px;
+            color: #fff;
+        }
+
+        .manual-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.1) 0%, rgba(0, 240, 255, 0.02) 100%);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            color: var(--neon-blue);
+            padding: 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 240, 255, 0.05);
+            margin-top: auto;
+            text-align: center;
+        }
+
+        .manual-btn:hover {
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.2) 0%, rgba(0, 240, 255, 0.05) 100%);
+            border-color: var(--neon-blue);
+            box-shadow: var(--glow-blue);
+            transform: translateY(-2px);
+        }
+
+        .manual-btn.disabled {
+            border-color: rgba(255, 255, 255, 0.05);
+            color: #555;
+            cursor: not-allowed;
+            pointer-events: none;
+            background: transparent;
+            box-shadow: none;
+        }
+
+        /* Mobile View Toggle Styling */
+        .mobile-sim-panel {
+            text-align: center;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+
+        .sim-btn {
+            background: transparent;
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 10px 24px;
+            border-radius: 30px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .sim-btn:hover {
+            background: #fff;
+            color: #000;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .sim-btn.active {
+            border-color: var(--neon-purple);
+            color: var(--neon-purple);
+            box-shadow: var(--glow-purple);
+        }
+
+        .simulated-mobile-body {
+            max-width: 480px !important;
+            margin: 0 auto !important;
+            padding: 15px !important;
+            background: #000 !important;
+            border: 12px solid #222 !important;
+            border-radius: 40px !important;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.8) !important;
+        }
+
+        .simulated-mobile-body .dashboard-layout {
+            grid-template-columns: 1fr !important;
+        }
+
+        .simulated-mobile-body .canvas-panel {
+            min-height: 450px;
+        }
+
+        .simulated-mobile-body header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        /* Footer styling */
+        footer {
+            text-align: center;
+            color: #4a4f5f;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            margin-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            padding-top: 20px;
+        }
+
+        /* Custom scrollbars */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.01);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Custom scrollbars for logs */
+        #live-logs-terminal::-webkit-scrollbar {
+            width: 4px;
+        }
+        #live-logs-terminal::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+        }
+        
+        /* Running Active Node Glow Pulse styling */
+        .node-card.running-node {
+            border-color: var(--neon-green) !important;
+            box-shadow: 0 0 20px rgba(57, 255, 20, 0.6) !important;
+            animation: runningPulse 1.5s infinite ease-in-out;
+            transform: scale(1.08);
+            z-index: 10;
+        }
+        @keyframes runningPulse {
+            0% { box-shadow: 0 0 10px rgba(57, 255, 20, 0.4); }
+            50% { box-shadow: 0 0 25px rgba(57, 255, 20, 0.9); }
+            100% { box-shadow: 0 0 10px rgba(57, 255, 20, 0.4); }
+        }
+        
+        /* Running Connection Fast-Flowing Lights styling */
+        .connection-line.running-connection {
+            stroke-width: 4.5px !important;
+            stroke-dasharray: 12 8 !important;
+            filter: drop-shadow(0 0 10px var(--active-color)) !important;
+            animation: fastFlow 0.8s linear infinite !important;
+            opacity: 1 !important;
+            z-index: 10;
+        }
+        @keyframes fastFlow {
+            from { stroke-dashoffset: 40; }
+            to { stroke-dashoffset: 0; }
+        }
+        
+        /* Master Workflow Styles */
+        .master-workflow-view {
+            padding: 15px;
+            animation: fadeIn 0.4s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .timeline-track {
+            position: relative;
+            max-width: 1000px;
+            margin: 10px auto;
+            padding-left: 55px;
+        }
+        .timeline-track::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            bottom: 20px;
+            width: 3px;
+            background: linear-gradient(to bottom, var(--neon-pink), var(--neon-purple), var(--neon-blue), var(--neon-green));
+            box-shadow: 0 0 12px rgba(0, 240, 255, 0.25);
+            border-radius: 4px;
+        }
+        .step-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 18px;
+            margin-bottom: 20px;
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            display: grid;
+            grid-template-columns: auto auto 1fr auto;
+            gap: 20px;
+            align-items: center;
+            backdrop-filter: blur(8px);
+        }
+        .step-card:hover {
+            transform: translateX(8px);
+            border-color: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.04);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+        }
+        .step-card.active-step {
+            border-color: var(--neon-green);
+            background: rgba(57, 255, 20, 0.04);
+            box-shadow: 0 0 25px rgba(57, 255, 20, 0.1);
+        }
+        .step-card.active-step::before {
+            background: var(--neon-green) !important;
+            border-color: var(--neon-green) !important;
+            box-shadow: 0 0 15px var(--neon-green) !important;
+        }
+        .step-card::before {
+            content: '';
+            position: absolute;
+            left: -44px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #090a0f;
+            border: 3px solid rgba(255, 255, 255, 0.25);
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+        .step-card.completed-step::before {
+            background: var(--neon-blue);
+            border-color: var(--neon-blue);
+            box-shadow: var(--glow-blue);
+        }
+        .step-number {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            width: 40px;
+            text-align: center;
+        }
+        .step-card.active-step .step-number {
+            color: var(--neon-green);
+        }
+        .step-icon-wrapper {
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+        .step-card:hover .step-icon-wrapper {
+            background: rgba(255, 255, 255, 0.08);
+            transform: scale(1.05);
+        }
+        .step-content {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .step-title-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .step-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #fff;
+        }
+        .step-desc {
+            font-size: 0.85rem;
+            color: #8a8f9f;
+            line-height: 1.5;
+        }
+        .step-meta {
+            display: flex;
+            gap: 8px;
+            margin-top: 5px;
+            flex-wrap: wrap;
+        }
+        .step-tag {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.03);
+            color: #8a8f9f;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .step-tag.tag-me { color: var(--neon-pink); border-color: rgba(255, 0, 127, 0.2); }
+        .step-tag.tag-first { color: var(--neon-purple); border-color: rgba(189, 147, 249, 0.2); }
+        .step-tag.tag-team { color: var(--neon-orange); border-color: rgba(255, 170, 0, 0.2); }
+        .step-tag.tag-notes { color: var(--neon-yellow); border-color: rgba(255, 255, 0, 0.2); }
+        .step-status-badge {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-family: 'Space Mono', monospace;
+            border: 1px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .status-pending {
+            background: rgba(255, 255, 255, 0.02);
+            color: #4a4f5f;
+            border-color: rgba(255, 255, 255, 0.03);
+        }
+        .status-running {
+            background: rgba(57, 255, 20, 0.08);
+            color: var(--neon-green);
+            border-color: var(--neon-green);
+            box-shadow: 0 0 10px rgba(57, 255, 20, 0.2);
+            animation: pulse 1.5s infinite;
+        }
+        .status-completed {
+            background: rgba(0, 240, 255, 0.08);
+            color: var(--neon-blue);
+            border-color: var(--neon-blue);
+        }
+        /* Mobile responsive adjustments */
+        @media (max-width: 768px) {
+            .timeline-track {
+                padding-left: 40px;
+            }
+            .timeline-track::before {
+                left: 15px;
+            }
+            .step-card {
+                grid-template-columns: auto 1fr;
+                grid-template-areas: 
+                    "num icon"
+                    "content content"
+                    "badge badge";
+                gap: 12px;
+                padding: 15px;
+                align-items: center;
+            }
+            .step-number {
+                grid-area: num;
+                font-size: 1.5rem;
+                width: auto;
+            }
+            .step-icon-wrapper {
+                grid-area: icon;
+                width: 40px;
+                height: 40px;
+                font-size: 1.4rem;
+                justify-self: start;
+            }
+            .step-content {
+                grid-area: content;
+            }
+            .step-status-badge {
+                grid-area: badge;
+                width: fit-content;
+                justify-self: start;
+            }
+            .step-card::before {
+                left: -32px;
+                width: 15px;
+                height: 15px;
+            }
+        .floating-hub-btn {
+            transition: all 0.3s ease !important;
+        }
+        .floating-hub-btn:hover {
+            background: rgba(189, 147, 249, 0.35) !important;
+            box-shadow: 0 0 25px var(--neon-purple) !important;
+            transform: translateY(-2px) !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- CRT scanlines overlay -->
+    <div class="scanlines"></div>
+
+    <!-- Floating Hub Button -->
+    <a href="../../../index.html" class="floating-hub-btn" style="position: fixed; top: 20px; right: 20px; z-index: 10000; background: rgba(189, 147, 249, 0.15); border: 1px solid var(--neon-purple); color: var(--neon-purple); padding: 10px 18px; border-radius: 30px; text-decoration: none; font-family: 'Space Mono', monospace; font-size: 0.85rem; font-weight: bold; box-shadow: var(--glow-purple); backdrop-filter: blur(10px); display: flex; align-items: center; gap: 8px;">
+        <span>🦉 HUB</span>
+    </a>
+
+    <!-- Mobile view toggle -->
+    <div class="mobile-sim-panel">
+        <button id="sim-btn" class="sim-btn" onclick="toggleMobileSimulation()">📱 TOGGLE MOBILE VIEW SIMULATION</button>
+    </div>
+
+    <!-- MAIN HEADER -->
+    <header>
+        <div class="logo-section">
+            <h1>WTJ TEAM WORKFLOW</h1>
+            <p>INTERACTIVE SYSTEM GRAPH // PIPELINE VISUALIZER</p>
+        </div>
+        <div class="header-meta" style="display: flex; align-items: center; gap: 20px;">
+            <span class="status-pill" id="status-pill"><span class="status-dot" id="status-dot"></span> <span id="status-text">PIPELINE ENGINE: STABLE</span></span>
+            
+            <!-- 3-Mode Theme Selector -->
+            <div class="theme-switcher-container">
+                <span class="theme-switcher-label">HYBRID INTERFACE MODE</span>
+                <div class="theme-switcher">
+                    <button class="theme-btn active" id="theme-btn-light" onclick="setTheme('light')">LIGHT</button>
+                    <button class="theme-btn" id="theme-btn-dark" onclick="setTheme('dark')">DARK</button>
+                    <button class="theme-btn" id="theme-btn-color" onclick="setTheme('color')">COLOR</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- PIPELINE SELECTOR MENU -->
+    <div class="pipeline-selector">
+        <button class="selector-btn active" id="btn-all" onclick="selectPipeline('all')">🌐 ALL OVERVIEW</button>
+        <button class="selector-btn" id="btn-master-wf" onclick="selectPipeline('master-wf')">📋 WTJ MASTER WORKFLOW</button>
+        <button class="selector-btn" id="btn-story" onclick="selectPipeline('story')">🎬 WTJ STORY PIPELINE</button>
+        <button class="selector-btn" id="btn-podcast" onclick="selectPipeline('podcast')">🎙️ WTJ PODCAST PIPELINE</button>
+        <!-- <button class="selector-btn" id="btn-dacrlight" onclick="selectPipeline('dacrlight')">📸 DACRLIGHT PIPELINE</button> -->
+        <button class="selector-btn" id="btn-data" onclick="selectPipeline('data')">📊 DATA FEEDBACK LOOP</button>
+    </div>
+
+    <!-- MAIN GRID LAYOUT -->
+    <div class="dashboard-layout">
+        
+        <!-- Interactive Canvas Panel -->
+        <div class="canvas-panel">
+            <div class="nodes-container">
+                <!-- Connections SVG Overlay -->
+                <svg class="connections-svg" id="connections-svg">
+                    <!-- Default overlay paths (dynamic points drawn via JavaScript) -->
+                </svg>
+
+                <!-- Swimlane Labels -->
+                <div class="swimlane-label" style="top: 15px;">▲ visual & director lane</div>
+                <div class="swimlane-label" style="top: 215px;">■ main production pipeline</div>
+                <div class="swimlane-label" style="top: 365px;">▼ auditors & support lane</div>
+                <div class="swimlane-label" style="top: 480px;">▼ backend & assistants lane</div>
+
+                <!-- ME / KENG -->
+                <div class="node-card node-me" id="node-me" style="left: 20px; top: 240px;" onclick="showAgentDetails('me')">
+                    <span class="node-title">แก (Keng)</span>
+                    <span class="node-subtitle">Owner</span>
+                </div>
+
+                <!-- 1ST AGENT -->
+                <div class="node-card node-special" id="node-first_agent" style="left: 160px; top: 240px;" onclick="showAgentDetails('first')">
+                    <span class="node-title">1st Agent</span>
+                    <span class="node-subtitle">Manager / First</span>
+                </div>
+
+                <!-- PERSONAL ASSISTANCE TEAM -->
+                <div class="node-card node-special" id="node-personal_team" style="left: 160px; top: 390px;" onclick="showAgentDetails('personal_team')">
+                    <span class="node-title">Assist Team</span>
+                    <span class="node-subtitle">Personal</span>
+                </div>
+
+                <!-- WIN (CRYPTO) -->
+                <div class="node-card node-assist" id="node-win" style="left: 20px; top: 500px;" onclick="showAgentDetails('win')">
+                    <span class="node-title">น้องวิน (Win)</span>
+                    <span class="node-subtitle">Crypto</span>
+                </div>
+
+                <!-- JANE (GRAB) -->
+                <div class="node-card node-assist" id="node-jane" style="left: 160px; top: 500px;" onclick="showAgentDetails('jane')">
+                    <span class="node-title">น้องเจน (Jane)</span>
+                    <span class="node-subtitle">Grab Data</span>
+                </div>
+
+                <!-- M (HTML) -->
+                <div class="node-card node-assist" id="node-m" style="left: 300px; top: 500px;" onclick="showAgentDetails('m')">
+                    <span class="node-title">น้องเอ็ม (M)</span>
+                    <span class="node-subtitle">HTML Designer</span>
+                </div>
+
+                <!-- TEAM AGENT CONTENT -->
+                <div class="node-card node-special" id="node-content_team" style="left: 300px; top: 240px;" onclick="showAgentDetails('content_team')">
+                    <span class="node-title">Content Team</span>
+                    <span class="node-subtitle">Production</span>
+                </div>
+
+                <!-- DEER (IDEA) -->
+                <div class="node-card node-pipeline" id="node-deer" style="left: 440px; top: 240px;" onclick="showAgentDetails('deer')">
+                    <span class="node-title">น้องเดียร์ (Deer)</span>
+                    <span class="node-subtitle">Idea Card</span>
+                </div>
+
+                <!-- NAM (CREATIVE) -->
+                <div class="node-card node-pipeline" id="node-nam" style="left: 580px; top: 240px;" onclick="showAgentDetails('nam')">
+                    <span class="node-title">น้องน้ำ (Nam)</span>
+                    <span class="node-subtitle">Creative</span>
+                </div>
+
+                <!-- MUSIC (MARKETING) -->
+                <div class="node-card node-pipeline" id="node-music" style="left: 720px; top: 240px;" onclick="showAgentDetails('music')">
+                    <span class="node-title">น้องมิวสิค (Music)</span>
+                    <span class="node-subtitle">Marketing</span>
+                </div>
+
+                <!-- CREAM (RESEARCH) -->
+                <div class="node-card node-pipeline" id="node-cream" style="left: 860px; top: 240px;" onclick="showAgentDetails('cream')">
+                    <span class="node-title">น้องครีม (Cream)</span>
+                    <span class="node-subtitle">Research Doc</span>
+                </div>
+
+                <!-- OR (AUDIT) -->
+                <div class="node-card node-audit" id="node-or" style="left: 860px; top: 390px;" onclick="showAgentDetails('or')">
+                    <span class="node-title">น้องออ (Or)</span>
+                    <span class="node-subtitle">Auditor</span>
+                </div>
+
+                <!-- RAY (WRITER) -->
+                <div class="node-card node-pipeline" id="node-ray" style="left: 1000px; top: 240px;" onclick="showAgentDetails('ray')">
+                    <span class="node-title">น้องเรย์ (Ray)</span>
+                    <span class="node-subtitle">Writer</span>
+                </div>
+
+                <!-- CRI (CRITIC) -->
+                <div class="node-card node-audit" id="node-cri" style="left: 1000px; top: 390px;" onclick="showAgentDetails('cri')">
+                    <span class="node-title">พี่คริ (Cri)</span>
+                    <span class="node-subtitle">Critic</span>
+                </div>
+
+                <!-- NOTES -->
+                <div class="node-card node-note" id="node-notes" style="left: 580px; top: 390px;" onclick="showAgentDetails('notes')">
+                    <span class="node-title">Notes</span>
+                    <span class="node-subtitle">Apple Storage</span>
+                </div>
+
+                <!-- YOUTUBE SCRIPT -->
+                <div class="node-card node-output" id="node-youtube_script" style="left: 1140px; top: 200px;" onclick="showAgentDetails('youtube_script')">
+                    <span class="node-title">Youtube Script</span>
+                    <span class="node-subtitle">Output</span>
+                </div>
+
+                <!-- FACEBOOK TEXT -->
+                <div class="node-card node-output" id="node-facebook_text" style="left: 1140px; top: 310px;" onclick="showAgentDetails('facebook_text')">
+                    <span class="node-title">Facebook Text</span>
+                    <span class="node-subtitle">Output</span>
+                </div>
+
+                <!-- PIE (DATA ANALYST) -->
+                <div class="node-card node-special" id="node-pie" style="left: 720px; top: 390px;" onclick="showAgentDetails('pie')">
+                    <span class="node-title">น้องปาย (Pie)</span>
+                    <span class="node-subtitle">Data Analyst</span>
+                </div>
+
+                <!-- P (VISUAL) -->
+                <div class="node-card node-pipeline" id="node-p" style="left: 860px; top: 90px;" onclick="showAgentDetails('p')">
+                    <span class="node-title">น้องพี (P)</span>
+                    <span class="node-subtitle">Image Prompts</span>
+                </div>
+
+                <!-- CHRIS (DIRECTOR) -->
+                <div class="node-card node-special" id="node-chris" style="left: 1000px; top: 90px;" onclick="showAgentDetails('chris')">
+                    <span class="node-title">พี่คริส (Chris)</span>
+                    <span class="node-subtitle">Director</span>
+                </div>
+
+                <!-- PODCAST QUESTION -->
+                <div class="node-card node-note" id="node-podcast_question" style="left: 1140px; top: 90px;" onclick="showAgentDetails('podcast_question')">
+                    <span class="node-title">Podcast Qs</span>
+                    <span class="node-subtitle">Support</span>
+                </div>
+            </div>
+            
+            <!-- Master Workflow Stepper View -->
+            <div class="master-workflow-view" id="master-workflow-view" style="display: none;">
+                <div class="timeline-track">
+                    
+                    <!-- Step 1 -->
+                    <div class="step-card" onclick="showStepDetails(0)">
+                        <div class="step-number">01</div>
+                        <div class="step-icon-wrapper">💡</div>
+                        <div class="step-content">
+                            <div class="step-title-row">
+                                <span class="step-title">หัวข้อ & Grill Session</span>
+                            </div>
+                            <p class="step-desc">พี่เก่งส่งโจทย์หัวข้อหลักที่น่าสนใจมาให้บอทเฟิส (First) ทำการ Grill สัมภาษณ์เจาะลึกเพื่อดึงข้อมูล ความต้องการ และประเด็นที่สนใจออกมาให้ครบถ้วน</p>
+                            <div class="step-meta">
+                                <span class="step-tag tag-me">แก (Keng)</span>
+                                <span class="step-tag tag-first">First (Manager)</span>
+                            </div>
+                        </div>
+                        <div class="step-status-badge status-pending">รอดำเนินการ</div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="step-card" onclick="showStepDetails(1)">
+                        <div class="step-number">02</div>
+                        <div class="step-icon-wrapper">📝</div>
+                        <div class="step-content">
+                            <div class="step-title-row">
+                                <span class="step-title">สรุปบรีฟหลัง Grill (Consolidated Brief)</span>
+                            </div>
+                            <p class="step-desc">หลังจากได้ข้อมูลที่ Grill กันแล้ว บอทเฟิสทำการสรุปบรีฟออกมาเป็นหัวข้อย่อยและแก่นที่ต้องนำไปปั้นต่ออย่างชัดเจน</p>
+                            <div class="step-meta">
+                                <span class="step-tag tag-first">First (Manager)</span>
+                            </div>
+                        </div>
+                        <div class="step-status-badge status-pending">รอดำเนินการ</div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="step-card" onclick="showStepDetails(2)">
+                        <div class="step-number">03</div>
+                        <div class="step-icon-wrapper">🤝</div>
+                        <div class="step-content">
+                            <div class="step-title-row">
+                                <span class="step-title">ประชุมทีมเบรนสตรอม (Team Brainstorming)</span>
+                            </div>
+                            <p class="step-desc">เรียกประชุมน้องๆ เอเจนต์ในทีมคอนเทนต์มารับบรีฟ เพื่อระดมสมอง ตบคอนเซปต์ มุมมองเล่าเรื่อง (Story Angle) และวางทิศทางร่วมกันก่อนแยกย้าย</p>
+                            <div class="step-meta">
+                                <span class="step-tag tag-first">First (Manager)</span>
+                                <span class="step-tag tag-team">Content Team</span>
+                            </div>
+                        </div>
+                        <div class="step-status-badge status-pending">รอดำเนินการ</div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="step-card" onclick="showStepDetails(3)">
+                        <div class="step-number">04</div>
+                        <div class="step-icon-wrapper">🛠️</div>
+                        <div class="step-content">
+                            <div class="step-title-row">
+                                <span class="step-title">แยกย้ายผลิตเนื้อหา (Production Pipeline)</span>
+                            </div>
+                            <p class="step-desc">น้องๆ แต่ละคนแยกย้ายกันออกไปทำงานตามความรับผิดชอบในลูปการทำงาน: ร่างไอเดียการ์ด -> ตบคอนเซปต์ -> รีเสิร์ชประเด็น -> ตรวจ Fact -> เขียนบท -> ปรับจังหวะ -> วางวิชวล Storyboard</p>
+                            <div class="step-meta">
+                                <span class="step-tag tag-team">Content Team (Deer, Nam, Music, Cream, Or, Ray, Cri, P, Chris)</span>
+                            </div>
+                        </div>
+                        <div class="step-status-badge status-pending">รอดำเนินการ</div>
+                    </div>
+
+                    <!-- Step 5 -->
+                    <div class="step-card" onclick="showStepDetails(4)">
+                        <div class="step-number">05</div>
+                        <div class="step-icon-wrapper">📤</div>
+                        <div class="step-content">
+                            <div class="step-title-row">
+                                <span class="step-title">จัดเก็บงานลงคลัง Notes (Sync to Apple Notes)</span>
+                            </div>
+                            <p class="step-desc">เมื่อปรับแก้ทุกอย่างเสร็จสิ้นสมบูรณ์ บอทจะทำการ compile รวบรวมงานทั้งหมดส่งข้อมูลไปจัดเก็บไว้ใน Notes โฟลเดอร์ WTJ > WTJ Story</p>
+                            <div class="step-meta">
+                                <span class="step-tag tag-notes">Apple Notes</span>
+                                <span class="step-tag tag-first">First (Manager)</span>
+                            </div>
+                        </div>
+                        <div class="step-status-badge status-pending">รอดำเนินการ</div>
+                    </div>
+
+                    <!-- Step 6 -->
+                    <div class="step-card" onclick="showStepDetails(5)">
+                        <div class="step-number">06</div>
+                        <div class="step-icon-wrapper">🔄</div>
+                        <div class="step-content">
+                            <div class="step-title-row">
+                                <span class="step-title">ตรวจทาน & สั่งปรับแก้ (Review & Revisions)</span>
+                            </div>
+                            <p class="step-desc">พี่เก่งเข้าไปอ่านข้อมูลและเนื้อหาที่จัดเก็บในคลัง Notes หากมีจุดที่อยากแก้ไขเพิ่มเติม จะส่งคำสั่งปรับแก้ (Revision Loop) กลับมาให้ทีมงานดำเนินการทันที</p>
+                            <div class="step-meta">
+                                <span class="step-tag tag-me">แก (Keng)</span>
+                                <span class="step-tag tag-first">First & Team</span>
+                            </div>
+                        </div>
+                        <div class="step-status-badge status-pending">รอดำเนินการ</div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Detail Sidebar Panel -->
+        <div class="detail-panel">
+            <!-- Container for Agent Details -->
+            <div id="agent-detail-view" style="display:none; flex-direction: column; height: 100%;">
+                <div class="detail-header-wrapper">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <button onclick="showPipelineStatusView()" style="background: transparent; border: 1px solid rgba(0, 240, 255, 0.3); color: var(--neon-blue); padding: 5px 10px; border-radius: 8px; font-size: 0.75rem; cursor: pointer; font-family: 'Outfit', sans-serif; transition: all 0.2s; font-weight: 600;">← ดู Live Status</button>
+                    </div>
+                    <div class="detail-header">
+                        <h2 class="detail-title" id="panel-agent-name">คลิกที่การ์ดเพื่อดูข้อมูล</h2>
+                        <div class="detail-role" id="panel-agent-role">TEAM MEMBER SPECIFICATIONS</div>
+                    </div>
+
+                    <div class="detail-section">
+                        <div class="detail-section-title">
+                            <span>📝 DESCRIPTION</span>
+                        </div>
+                        <div class="detail-body" id="panel-agent-desc">
+                            กรุณาคลิกเลือกตำแหน่งในแผนผังเพื่อดูบทบาท หน้าที่ความรับผิดชอบ และการเชื่อมโยงระบบการทำงานของทีม WTJ Story
+                        </div>
+                    </div>
+
+                    <div class="detail-section" id="panel-io-section" style="display:none;">
+                        <div class="detail-section-title">
+                            <span>📥 INPUT & OUTPUT</span>
+                        </div>
+                        <div class="detail-body">
+                            <div style="font-weight:600; color:var(--neon-blue); font-size:0.8rem;">INPUTS:</div>
+                            <div class="io-badge" id="panel-agent-inputs">-</div>
+                            <div style="font-weight:600; color:var(--neon-pink); font-size:0.8rem; margin-top:10px;">OUTPUTS:</div>
+                            <div class="io-badge" id="panel-agent-outputs">-</div>
+                        </div>
+                    </div>
+                </div>
+
+                <a href="#" class="manual-btn disabled" id="panel-agent-manual" target="_blank">
+                    📖 เปิดดูคู่มือของเอเจนท์ (Manual File)
+                </a>
+            </div>
+
+            <!-- Container for Step Details -->
+            <div id="step-detail-view" style="display:none; flex-direction: column; height: 100%;">
+                <div class="detail-header-wrapper" style="display: flex; flex-direction: column; height: 100%;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <button onclick="showPipelineStatusView()" style="background: transparent; border: 1px solid rgba(0, 240, 255, 0.3); color: var(--neon-blue); padding: 5px 10px; border-radius: 8px; font-size: 0.75rem; cursor: pointer; font-family: 'Outfit', sans-serif; transition: all 0.2s; font-weight: 600;">← ดู Live Status</button>
+                    </div>
+                    <div class="detail-header">
+                        <h2 class="detail-title" id="panel-step-name">รายละเอียดขั้นตอน</h2>
+                        <div class="detail-role" id="panel-step-num">STEP DETAILED SPECIFICATIONS</div>
+                    </div>
+
+                    <div class="detail-section">
+                        <div class="detail-section-title">
+                            <span>📝 DESCRIPTION</span>
+                        </div>
+                        <div class="detail-body" id="panel-step-desc">
+                            -
+                        </div>
+                    </div>
+
+                    <div class="detail-section">
+                        <div class="detail-section-title">
+                            <span>👥 RESPONSIBLE AGENTS</span>
+                        </div>
+                        <div class="detail-body" id="panel-step-agents">
+                            -
+                        </div>
+                    </div>
+                    
+                    <div class="detail-section" style="margin-top: auto;">
+                        <div class="detail-section-title">
+                            <span>🔗 NODES INVOLVED</span>
+                        </div>
+                        <div class="detail-body" id="panel-step-nodes-hint" style="font-size: 0.8rem; color: var(--neon-blue); font-family: 'Space Mono', monospace;">
+                            -
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Container for Live Pipeline Status -->
+            <div id="pipeline-status-view" style="display:flex; flex-direction: column; height: 100%;">
+                <div class="detail-header">
+                    <h2 class="detail-title">LIVE WORKFLOW STATUS</h2>
+                    <div class="detail-role" id="live-status-subtitle">PIPELINE MONITOR</div>
+                </div>
+                
+                <div class="detail-section">
+                    <div class="detail-section-title">
+                        <span>🤖 ACTIVE STEP</span>
+                    </div>
+                    <div class="io-badge" id="live-active-step" style="border-color: var(--neon-purple); color: #fff; font-weight: 600; text-align: center; text-transform: uppercase;">
+                        IDLE
+                    </div>
+                </div>
+
+                <div class="detail-section" style="flex-grow: 1; display: flex; flex-direction: column; min-height: 200px;">
+                    <div class="detail-section-title">
+                        <span>💻 LIVE EXECUTION LOGS</span>
+                    </div>
+                    <div id="live-logs-terminal" style="background: rgba(0, 0, 0, 0.6); border: 1px solid var(--border-color); border-radius: 12px; padding: 12px; font-family: 'Space Mono', monospace; font-size: 0.75rem; color: #a6accd; flex-grow: 1; overflow-y: auto; max-height: 220px; line-height: 1.4;">
+                        <div style="color: #676e95;">[System] รอการทำงานเริ่มขบวน...</div>
+                    </div>
+                </div>
+
+                <div class="detail-section" style="margin-top: 15px;">
+                    <div class="detail-section-title">
+                        <span>📦 GENERATED ARTIFACTS</span>
+                    </div>
+                    <div id="live-artifacts-list" style="display: flex; flex-direction: column; gap: 8px;">
+                        <div style="color: #676e95; font-size: 0.85rem;">ยังไม่มีไฟล์ผลลัพธ์ในรอบการทำงานนี้</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        DESIGNED & COOLED BY M (CREATIVE HTML DESIGNER) // DATA INSIGHTS BY PIE // ANTIGRAVITY SYSTEM 2026
+    </footer>
+
+    <!-- INTERACTIVE DASHBOARD JAVASCRIPT -->
+    <script>
+        // Agent Metadata
+        const agentData = {
+            me: {
+                name: "แก (Keng - Channel Owner)",
+                role: "เจ้าของช่อง & ผู้ควบคุมสูงสุด",
+                desc: "พี่ใหญ่หัวหน้าทีม คอยริเริ่มหัวข้อปังๆ คิดประเด็นเบื้องต้น ตัดสินใจและอนุมัติแนวทางงานเขียน/ดีไซน์ในขั้นตอนร่างของทีมงาน",
+                inputs: "กระแสโซเชียล, Insight แฟนคลับ, หัวข้อที่สนใจ",
+                outputs: "โจทย์หัวข้อหลักส่งต่อให้ เดียร์ (Idea Architect) ร่างไอเดียการ์ด",
+                manual: null
+            },
+            first: {
+                name: "เฟิส (First - Personal Manager)",
+                role: "ผู้จัดการส่วนตัว & ประสานงานระบบ",
+                desc: "ผู้ช่วยระบบความรู้ ประสานงานสิบทิศคุมทีม ผลักดันและจัดเก็บสคริปต์ที่คริอนุมัติแล้วเข้าสู่คลังความรู้/Apple Notes ตลอดจนการคุมเวลาเผยแพร่ของบอท",
+                inputs: "สคริปต์อนุมัติจากคริ/พี่คริส, รายงานวิเคราะห์ข้อมูลจากปาย",
+                outputs: "อัปเดตระบบความรู้ของทีม, จัดส่งข้อมูลลง Apple Notes, อนุมัติการเผยแพร่",
+                manual: "file:///Users/chz/Desktop/ChZ_Agent_Corp/Personal_Assistance_HQ/First_Office/first_manual.md"
+            },
+            personal_team: {
+                name: "Personal Assistance Team",
+                role: "ทีมช่วยเหลือผู้จัดการส่วนตัว",
+                desc: "ทีมแอดมินและผู้ช่วยเหลือดูแลระบบคริปโต บัญชีรายได้ และการประสานงานหน้าเว็บสรุปผลของช่อง WTJ Story ทั้งหมด",
+                inputs: "เป้าหมายการลงทุน, ยอดบัญชีดิบ Grab, งานออกแบบ",
+                outputs: "การรันบอทคุมสถิติและพอร์ตลงทุนให้พี่เก่ง",
+                manual: null
+            },
+            win: {
+                name: "น้องวิน (Win - Crypto Specialist)",
+                role: "ผู้ดูแลและจดบันทึกพอร์ตคริปโต",
+                desc: "รับผิดชอบการดูแลบันทึกพอร์ตเงินลงทุนคริปโตของครอบครัว ดึง API ราคาเหรียญจากบิตคับ/ไบแนนซ์ เพื่อสร้างแดชบอร์ดพอร์ตการลงทุนเรียลไทม์ให้พี่เก่ง",
+                inputs: "ข้อมูล API ราคาคริปโตเรียลไทม์",
+                outputs: "พอร์ต Dashboard สำหรับแสดงพฤติกรรมการลงทุนของเหรียญต่างๆ",
+                manual: "file:///Users/chz/Desktop/ChZ_Agent_Corp/Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/Win/win_manual.md"
+            },
+            jane: {
+                name: "น้องเจน (Jane - Grab Data Admin)",
+                role: "ผู้ดูแลบันทึกยอดบัญชี Grab",
+                desc: "รับผิดชอบงาน Grab 100% อ่านบันทึก Grab จาก Apple Notes ย้ายข้อมูล จัดการงบการเงิน สูตรคำนวณใน Google Sheets และขึ้นปี/เดือนใหม่อัตโนมัติ",
+                inputs: "ข้อมูลการจดบันทึก Grab รายสัปดาห์ใน Apple Notes",
+                outputs: "ตารางสรุป Grab Sheets และรายงานวิเคราะห์ทางการเงิน",
+                manual: "file:///Users/chz/Desktop/ChZ_Agent_Corp/Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/Jane/jane_manual.md"
+            },
+            m: {
+                name: "น้องเอ็ม (M - HTML Designer)",
+                role: "นักประสานงานหน้าเว็บและผู้พัฒนา UI",
+                desc: "ทำหน้าที่ออกแบบหน้าเว็บสวยงามพรีเมียม สไตล์ Dark Mode (Vibe นีออนหรูหรา) สรุปรายงานรายรับรายจ่าย พอร์ตการลงทุน และผังงานระบบการทำงาน",
+                inputs: "โพสต์ตารางเวลา, ข้อมูลดิบ Grab/Crypto, สถิติตัวเลขจากปาย",
+                outputs: "หน้า Dashboard HTML สวยๆ ให้พี่เก่งกดดูง่ายและรวดเร็ว",
+                manual: "file:///Users/chz/Desktop/ChZ_Agent_Corp/Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/M/m_manual.md"
+            },
+            content_team: {
+                name: "Content Production Team",
+                role: "ทีมงานผลิตเนื้อหารายการ",
+                desc: "กลุ่มนักวิเคราะห์ไอเดีย ครีเอทีฟ นักวิจัย นักเขียน และนักการตลาดที่ช่วยกันปั้นสคริปต์รายการสัมภาษณ์และรายการวิเคราะห์เจาะลึกอาชีพ WTJ Story",
+                inputs: "โจทย์หัวข้อหลักจากแก",
+                outputs: "สคริปต์ YouTube และโพสต์ Facebook คุณภาพเด่น",
+                manual: null
+            },
+            deer: {
+                name: "น้องเดียร์ (Deer - Idea Architect)",
+                role: "นักสกัดประเด็นไอเดียการ์ด",
+                desc: "หาแก่นหลักของประเด็น เจาะข้อมูลตื้นๆ เพื่อกำหนดขอบเขตและมุมเบื้องต้นของเนื้อหา ก่อนส่งต่อไปพัฒนาให้ดูแปลกใหม่ลึกซึ้ง",
+                inputs: "หัวข้อจากแก, อินไซต์สถิติตัวเลขผู้ชมจากน้องปาย",
+                outputs: "Idea Card (สไลด์แก่นสาระสำคัญของเรื่อง)",
+                manual: "file:///Users/chz/Desktop/ChZ_Agent_Corp/WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Deer/deer_manual.md"
+            },
+            nam: {
+                name: "น้องน้ำ (Nam - Creative & Content Creator)",
+                role: "นักออกแบบทิศทางสร้างสรรค์",
+                desc: "ใส่ลูกเล่น มุมมองเล่าเรื่อง (Story Angle) ที่ว้าว แปลกใหม่ แฟนซี และดึงอารมณ์ร่วมให้น่าจดจำก่อนเข้ารอบการวิจัยข้อมูลเชิงลึก",
+                inputs: "Idea Card จากเดียร์, ข้อมูลทิศทางสไตล์ยอดนิยมจากน้องปาย",
+                outputs: "Creative Concept (การวางธีมและวิธีการเล่าเรื่องแปลกใหม่)",
+                manual: "file:///Users/chz/Desktop/ChZ_Agent_Corp/WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Nam/nam_manual.md"
+            },
+            music: {
+                name: "น้องมิวสิค (Music - Creative Marketer)",
+                role: "นักการตลาดคอนเทนต์และมีม",
+                desc: "แทรกไอเดียแคมเปญ สปอนเซอร์ มุกตลก และช่วยเรย์ขัดเกลาตัวหนังสือ/พาดหัวคลิป/Hook เพื่อปั้นคลิปให้กลายเป็นกระแสและไวรัลได้ง่ายที่สุด",
+                inputs: "Creative Concept ของน้ำ, สคริปต์ของเรย์, สถิติ CTR จากน้องปาย",
+                outputs: "Hook Optimization, Viral Hooks, Social Text Enhancement",
+                manual: "file:///Users/chz/Desktop/ChZ_Agent_Corp/WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Music/music_manual.md"
+            },
+            cream: {
+                name: "น้องครีม (Cream - Researcher)",
+                role: "นักวิจัยข้อมูลสนับสนุนเชิงลึก",
+                desc: "รับธีมจากน้ำและมิวสิคไปค้นคว้าวิจัย Fact ข้อมูลอ้างอิงเชิงลึก ความถูกต้อง ข้อมูลประวัติศาสตร์ เพื่อรวบรวมเป็นวัตถุดิบให้นักเขียนเขียนบท",
+                inputs: "Creative Concept & Marketing Angle จาก น้ำ และ มิวสิค",
+                outputs: "Research Doc (เอกสารรายงานการวิจัยสรุปประเด็นเนื้อหาหลัก)",
+                manual: "file:///Users/chz/Desktop/ChZ_Agent_Corp/WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Cream/cream_manual.md"
+            },
+            or: {
+                name: "น้องออ (Or - Auditor)",
+                role: "ผู้ตรวจสอบข้อมูลสนับสนุน (Fact Checker)",
+                desc: "ตรวจสอบเช็ค Fact ข้อมูลวิจัยของน้องครีมเพื่อตรวจสอบแหล่งอ้างอิง ความน่าเชื่อถือ ป้องกันความเข้าใจผิดหรือการรายงานข้อมูลเท็จ",
+                inputs: "Research Doc จากน้องครีม",
+                outputs: "Audit Report (บันทึกรายงานอนุมัติความถูกต้องข้อมูลวิจัย)",
+                manual: "file:///Users/chz/Desktop/ChZ_Agent_Corp/WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Or/or_manual.md"
+            },
+            ray: {
+                name: "น้องเรย์ (Ray - Writer)",
+                role: "นักเขียนสคริปต์รายการ (Writer)",
+                desc: "นำข้อมูลวิจัยที่ออดิทแล้วมาเรียบเรียงเป็นสคริปต์วิดีโอ YouTube หรือร่างคำถามวิเคราะห์ของรายการ Podcast ภายใต้น้ำเสียงของพี่เก่ง",
+                inputs: "Research Doc & Audit Report, คำถามเบื้องต้นรายการ Podcast",
+                outputs: "Draft YouTube Script, Draft Facebook Text 3 รูปแบบ",
+                manual: "file:///Users/chz/Desktop/ChZ_Agent_Corp/WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Ray/ray_manual.md"
+            },
+            cri: {
+                name: "พี่คริ (Cri - Critic)",
+                role: "นักวิจารณ์และตรวจทานคุณภาพบท",
+                desc: "วิจารณ์ Flow ความไหลลื่น จังหวะการพูด ความน่าสนใจ และคุณภาพตัวสคริปต์ของเรย์ในรอบสุดท้ายก่อนส่งอนุมัติปล่อยงาน",
+                inputs: "Draft YouTube Script & Draft Facebook Text จาก เรย์ & มิวสิค",
+                outputs: "Critique Report (บันทึกการประเมินสคริปต์และข้อแนะนำปรับปรุง)",
+                manual: "file:///Users/chz/Desktop/ChZ_Agent_Corp/WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Cri/cri_manual.md"
+            },
+            p: {
+                name: "น้องพี (P - Visual Specialist)",
+                role: "นักออกแบบภาพประกอบคอนเทนต์",
+                desc: "ออกแบบสตอรี่บอร์ดของภาพ และเขียน Prompts สั่ง AI (Midjourney/DALL-E 3) พร้อมระบุทิศทางแสงและมุมกล้องของภาพ",
+                inputs: "สคริปต์วิดีโอที่เรย์เขียนบรรยายมู้ดโทนภาพ (ปัจจุบันอยู่ในสถานะ Standby)",
+                outputs: "Image Prompts & Storyboard Plan",
+                manual: "file:///Users/chz/Desktop/ChZ_Agent_Corp/WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/P/p_manual.md"
+            },
+            chris: {
+                name: "พี่คริส (Chris - Creative Director Visual)",
+                role: "ผู้กำกับด้านวิชวลและมาตรฐานภาพ",
+                desc: "ควบคุมดูแลมู้ดโทนสี มาตรฐานภาพประกอบ และความคมชัดของเทคนิคภาพถ่ายให้เป็นไปในทิศทางภาพยนตร์ Cinematic (สแตนด์บาย)",
+                inputs: "สคริปต์และ Prompts รูปภาพของน้องพี",
+                outputs: "งานวิชวลที่ผ่านการอนุมัติระดับมาตรฐานภาพยนตร์",
+                manual: "file:///Users/chz/Desktop/ChZ_Agent_Corp/WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Chris/chris_manual.md"
+            },
+            pie: {
+                name: "น้องปาย (Pie - Data Analyst)",
+                role: "นักวิเคราะห์ตัวเลขสถิติหลังบ้าน",
+                desc: "วิเคราะห์ข้อมูลยอดผู้รับชมสถิติ อัตรา CTR กราฟ Retention และ Engagement เพื่อป้อนข้อมูลอินไซต์ให้เดียร์, น้ำ และมิวสิคไปปรับแก้ไขเนื้อหาพร้อมกัน",
+                inputs: "ข้อมูลดิบหลังบ้าน YouTube Analytics และ Facebook Creator Studio",
+                outputs: "data_analysis_report.md และรายงานส่งตรงให้ผู้รับผิดชอบ 3 ฝ่าย",
+                manual: "file:///Users/chz/Desktop/ChZ_Agent_Corp/WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Pie/pie_manual.md"
+            },
+            notes: {
+                name: "Notes (Apple Notes Storage)",
+                role: "คลังจัดเก็บไฟล์เอกสารการผลิตงาน",
+                desc: "ที่เก็บไฟล์บทความ สคริปต์ ดราฟต์โพสต์ Facebook ทั้ง 3 รูปแบบ เพื่อให้คนในทีมและบอทใช้ดึงไปใช้งานต่อไป",
+                inputs: "Drafts โดยน้องเรย์และมิวสิค",
+                outputs: "ไฟล์สคริปต์ที่อนุมัติแล้วเพื่อส่งเข้า Dashboard หรือบอทโพสอัตโนมัติ",
+                manual: null
+            },
+            youtube_script: {
+                name: "YouTube Script",
+                role: "ผลงานสคริปต์วิดีโอ YouTube",
+                desc: "สคริปต์บทวิเคราะห์ลึกซึ้งผ่านการ Optimize หัวข้อและ Hook แล้ว พร้อมให้พี่เก่งรันวิดีโอถ่ายทำ",
+                inputs: "สคริปต์ที่คริ/พี่คริสอนุมัติขั้นสุดยอด",
+                outputs: "คลิปวิดีโอลงช่อง YouTube",
+                manual: null
+            },
+            facebook_text: {
+                name: "Facebook Text (Social Highlights)",
+                role: "บทความโพสต์ Facebook Page",
+                desc: "โพสต์หลากหลายรูปแบบ (Storytelling/Quote/Teaser) 3 แบบต่อวัน เพื่อใช้โปรโมทและดึงผู้ชมไปที่คลิปเต็ม",
+                inputs: "ดราฟต์โพสต์ที่ได้รับการอนุมัติจากพี่เก่งและระบบบอทดึงโพสต์",
+                outputs: "โพสต์บน Facebook Page ตามตารางเวลาอัตโนมัติ",
+                manual: null
+            },
+            podcast_question: {
+                name: "Podcast Interview Questions",
+                role: "บทคำถามประเด็นสัมภาษณ์ Podcast",
+                desc: "ชุดคำถามสัมภาษณ์แบบลึกเป็นสเต็ป ไหลตามธรรมชาติสำหรับให้แขกรับเชิญ WTJ Podcast เผยอินไซต์พิเศษ",
+                inputs: "ชุดคำถามวิจัยที่ได้รับการคัดเกลาโดยเรย์และมิวสิค",
+                outputs: "บทสัมภาษณ์เสียงในรายการ WTJ Podcast",
+                manual: null
+            }
+        };
+
+        // UI Overlay Connections Setup (Dynamic coordinates mapped from center of each node)
+        const nodes = {
+            me: { x: 80, y: 280 },
+            first_agent: { x: 220, y: 280 },
+            personal_team: { x: 220, y: 430 },
+            win: { x: 80, y: 540 },
+            jane: { x: 220, y: 540 },
+            m: { x: 360, y: 540 },
+            content_team: { x: 360, y: 280 },
+            deer: { x: 500, y: 280 },
+            nam: { x: 640, y: 280 },
+            music: { x: 780, y: 280 },
+            cream: { x: 920, y: 280 },
+            or: { x: 920, y: 430 },
+            ray: { x: 1060, y: 280 },
+            cri: { x: 1060, y: 430 },
+            notes: { x: 640, y: 430 },
+            youtube_script: { x: 1200, y: 240 },
+            facebook_text: { x: 1200, y: 350 },
+            pie: { x: 780, y: 430 },
+            p: { x: 920, y: 130 },
+            chris: { x: 1060, y: 130 },
+            podcast_question: { x: 1200, y: 130 }
+        };
+
+        const connections = [
+            // Core Management (Horizontal straight line flow)
+            { from: 'me', to: 'first_agent', color: 'var(--neon-pink)', pipelines: ['all', 'story', 'podcast'] },
+            { from: 'first_agent', to: 'personal_team', color: 'var(--neon-blue)', pipelines: ['all'] },
+            { from: 'personal_team', to: 'win', color: 'var(--neon-blue)', pipelines: ['all'] },
+            { from: 'personal_team', to: 'jane', color: 'var(--neon-blue)', pipelines: ['all'] },
+            { from: 'personal_team', to: 'm', color: 'var(--neon-blue)', pipelines: ['all', 'data'] },
+            { from: 'first_agent', to: 'content_team', color: 'var(--neon-purple)', pipelines: ['all', 'story', 'podcast'] },
+            
+            // Production Pipeline (Clean straight horizontal lane)
+            { from: 'content_team', to: 'deer', color: 'var(--neon-orange)', pipelines: ['all', 'story', 'podcast'] },
+            { from: 'deer', to: 'nam', color: 'var(--neon-orange)', pipelines: ['all', 'story', 'podcast'] },
+            { from: 'nam', to: 'music', color: 'var(--neon-orange)', pipelines: ['all', 'story', 'podcast'] },
+            { from: 'music', to: 'cream', color: 'var(--neon-orange)', pipelines: ['all', 'story', 'podcast'] },
+            
+            // Verification / Writing
+            { from: 'cream', to: 'or', color: 'var(--neon-green)', pipelines: ['all', 'story', 'podcast'] },
+            { from: 'cream', to: 'ray', color: 'var(--neon-orange)', pipelines: ['all', 'story', 'podcast'] },
+            { from: 'ray', to: 'cri', color: 'var(--neon-green)', pipelines: ['all', 'story', 'podcast'] },
+            
+            // Outputs Stack on Right
+            { from: 'ray', to: 'youtube_script', color: 'var(--neon-red)', pipelines: ['all', 'story'] },
+            { from: 'ray', to: 'facebook_text', color: 'var(--neon-red)', pipelines: ['all', 'story'] },
+            { from: 'ray', to: 'podcast_question', color: 'var(--neon-red)', pipelines: ['all', 'podcast'] },
+
+            // Storage Workflow (Orthogonal underflow loops)
+            { from: 'podcast_question', to: 'notes', color: 'var(--neon-yellow)', pipelines: ['all', 'podcast'] },
+            { from: 'youtube_script', to: 'notes', color: 'var(--neon-yellow)', pipelines: ['all', 'story'] },
+            { from: 'facebook_text', to: 'notes', color: 'var(--neon-yellow)', pipelines: ['all', 'story'] },
+            { from: 'notes', to: 'm', color: 'var(--neon-blue)', pipelines: ['all'] },
+
+            // Feedback Loops (Shown ONLY in Data pipeline mode to prevent clutter)
+            { from: 'pie', to: 'deer', color: 'var(--neon-green)', pipelines: ['data'] },
+            { from: 'pie', to: 'nam', color: 'var(--neon-green)', pipelines: ['data'] },
+            { from: 'pie', to: 'music', color: 'var(--neon-green)', pipelines: ['data'] },
+            { from: 'pie', to: 'm', color: 'var(--neon-blue)', pipelines: ['data'] },
+
+            // Visual Production Track (Top lane)
+            { from: 'p', to: 'chris', color: 'var(--neon-purple)', pipelines: ['all'] },
+            { from: 'p', to: 'ray', color: 'var(--neon-purple)', pipelines: ['all'] }
+        ];
+
+        // Draw Connector Lines with Clean Right-Angle Bends (Orthogonal routing)
+        function drawConnections() {
+            const svg = document.getElementById('connections-svg');
+            svg.innerHTML = '';
+            
+            connections.forEach(conn => {
+                const fromNode = nodes[conn.from];
+                const toNode = nodes[conn.to];
+                if (!fromNode || !toNode) return;
+
+                let d = '';
+                
+                // Determine orthogonal (right-angle) paths to reduce diagonal crossing mess
+                if (fromNode.y === toNode.y) {
+                    // Perfect straight horizontal connection
+                    d = `M ${fromNode.x} ${fromNode.y} L ${toNode.x} ${toNode.y}`;
+                } else if (fromNode.x === toNode.x) {
+                    // Perfect straight vertical connection
+                    d = `M ${fromNode.x} ${fromNode.y} L ${toNode.x} ${toNode.y}`;
+                } else {
+                    // Right angle bends
+                    if (conn.from === 'pie' && ['deer', 'nam', 'music'].includes(conn.to)) {
+                        // Curved feedback path over/under other nodes
+                        d = `M ${fromNode.x} ${fromNode.y} C ${fromNode.x} ${fromNode.y - 70}, ${toNode.x} ${toNode.y + 75}, ${toNode.x} ${toNode.y}`;
+                    } else if (['youtube_script', 'facebook_text', 'podcast_question'].includes(conn.from) && conn.to === 'notes') {
+                        // Route behind the stack
+                        d = `M ${fromNode.x} ${fromNode.y} L ${fromNode.x + 40} ${fromNode.y} L ${fromNode.x + 40} ${toNode.y + 20} L ${toNode.x} ${toNode.y + 20}`;
+                    } else if (conn.from === 'personal_team' && ['win', 'jane', 'm'].includes(conn.to)) {
+                        // Fork pattern
+                        d = `M ${fromNode.x} ${fromNode.y} L ${fromNode.x} ${fromNode.y + 50} L ${toNode.x} ${fromNode.y + 50} L ${toNode.x} ${toNode.y}`;
+                    } else {
+                        // Halfway split bend
+                        const midX = (fromNode.x + toNode.x) / 2;
+                        d = `M ${fromNode.x} ${fromNode.y} L ${midX} ${fromNode.y} L ${midX} ${toNode.y} L ${toNode.x} ${toNode.y}`;
+                    }
+                }
+
+                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                path.setAttribute('d', d);
+                path.setAttribute('class', 'connection-line');
+                path.setAttribute('id', `conn-${conn.from}-${conn.to}`);
+                path.style.setProperty('--active-color', conn.color);
+                
+                svg.appendChild(path);
+            });
+        }
+
+        // Step Metadata for Master Workflow Details View
+        const stepData = [
+            {
+                name: "หัวข้อ & Grill Session",
+                num: "STEP 1 // START INITIATION",
+                desc: "พี่เก่งเสนอหัวข้อรายการที่สนใจเข้ามาให้ในแชท เฟิส (First) จะทำการสัมภาษณ์สัมมนา (Grill) เพื่อดึงทิศทางที่ชัดเจนที่สุด รวมถึงแก่นที่ต้องการขยี้ หัวข้อที่สงสัย และคุมไม่ให้เนื้อหาฟุ้งซ่าน",
+                agents: "แก (Keng - Channel Owner) สั่งการนำเข้า // เฟิส (First - Manager) ดำเนินสัมภาษณ์",
+                nodes: "Keng [node-me] ➔ First [node-first_agent]"
+            },
+            {
+                name: "สรุปบรีฟหลัง Grill",
+                num: "STEP 2 // BRIEF CONSOLIDATION",
+                desc: "เมื่อ Grill ได้ประเด็นครบถ้วนแล้ว เฟิส (First) จะเขียนสรุปบรีฟที่สมบูรณ์ออกมาเป็นไฟล์ brief_from_keng.md เพื่อรวบรวมประเด็นที่ต้องใช้ และแนวทางการเขียนที่จะให้น้องๆ นำไปใช้ในขั้นตอนต่อไป",
+                agents: "เฟิส (First - Manager) เป็นผู้รวบรวมข้อมูลดิบและเขียนเอกสารสรุปบรีฟ",
+                nodes: "First [node-first_agent] ➔ brief_from_keng.md"
+            },
+            {
+                name: "ประชุมทีมเบรนสตรอม",
+                num: "STEP 3 // TEAM ALIGNMENT & PLANNING",
+                desc: "เฟิสเรียกสมาชิกทีมงานเนื้อหาคอนเทนต์ทั้งหมดมาลุยอ่านบรีฟและหารือ เพื่อระดมสมองและตบคอนเซปต์ร่วมกัน ให้แน่ใจว่าทุกคนเห็นทิศทางมู้ดแอนด์โทนของตอนนั้นตรงกันก่อนลงมือทำงาน",
+                agents: "สมาชิกทีมงาน WTJ Story Content ทั้งหมด ประชุมตระหนักรู้งานร่วมกัน",
+                nodes: "First ➔ Content Production Team [node-content_team]"
+            },
+            {
+                name: "แยกย้ายผลิตเนื้อหา",
+                num: "STEP 4 // DISTRIBUTED PRODUCTION PIPELINE",
+                desc: "สมาชิกทีมงานแยกย้ายลุยทำงานตามหน้าตัก: เดียร์ (ร่าง Idea Card) ➔ น้ำ (ตบคอนเซปต์สร้างสรรค์) ➔ มิวสิค (เสริมมุกและทิศทางการตลาด) ➔ ครีม (วิจัยประเด็นสนับสนุน) ➔ ออ (Fact-Check ข้อมูล) ➔ เรย์ (เขียนสคริปต์ฉบับเต็ม) ➔ คริ (ตรวจสอบ Pacing คำพูด) ➔ พี & พี่คริส (วาง Storyboard ภาพประกอบไฮบริด)",
+                agents: "ทีมผลิตคอนเทนต์ (Deer, Nam, Music, Cream, Or, Ray, Cri, P, Chris)",
+                nodes: "Deer ➔ Nam ➔ Music ➔ Cream [Or] ➔ Ray [Cri] ➔ Visual [P & Chris]"
+            },
+            {
+                name: "จัดเก็บงานลงคลัง Notes",
+                num: "STEP 5 // ARTIFACT COMPILATION & SYNC",
+                desc: "เมื่อสคริปต์และงานภาพผ่านการวิจารณ์และอนุมัติรอบสุดท้ายเรียบร้อย ระบบบอทจะทำการ Sync รวบรวมสคริปต์ บันทึกการวิจัย สตอรี่บอร์ดภาพประกอบ และดราฟต์สำหรับโพสต์โซเชียลทั้งหมด เข้าสู่ Apple Notes โฟลเดอร์ WTJ > WTJ Story เพื่อเป็นแหล่งจัดเก็บข้อมูลที่พร้อมใช้งาน",
+                agents: "เฟิส (First) ควบคุมการรวบรวมข้อมูลและ Sync ผ่านสคริปต์ออโต้เข้า Apple Notes",
+                nodes: "Compiled Deliverables ➔ Apple Notes Storage [node-notes]"
+            },
+            {
+                name: "ตรวจทาน & สั่งปรับแก้",
+                num: "STEP 6 // OWNER AUDIT & FINAL REVISION",
+                desc: "พี่เก่งทำการตรวจทานสคริปต์และภาพจาก Apple Notes ด้วยตัวเอง หากมีจุดที่อยากขัดเกลาหรือแก้สำนวน จะสั่งแก้ไขงานผ่านแชทอีกรอบ เมื่อสมบูรณ์แล้วจึงถือเป็นจุดสิ้นสุดของขบวนงาน (IDLE)",
+                agents: "พี่เก่ง (Keng) ตรวจงานรอบสุดท้าย // ทีมงานแก้ไขตามคำสั่ง (ถ้ามี)",
+                nodes: "Apple Notes ➔ Keng Review [node-me] ➔ Release"
+            }
+        ];
+
+        // Show Master Workflow Step Details on sidebar
+        function showStepDetails(stepIndex) {
+            // Switch view to step-detail-view
+            document.getElementById('agent-detail-view').style.display = 'none';
+            document.getElementById('pipeline-status-view').style.display = 'none';
+            
+            const stepDetailView = document.getElementById('step-detail-view');
+            if (stepDetailView) {
+                stepDetailView.style.display = 'flex';
+            }
+
+            // Remove highlighted class from step cards
+            document.querySelectorAll('.step-card').forEach(card => {
+                card.style.borderColor = '';
+                card.style.background = '';
+            });
+            
+            const cards = document.querySelectorAll('.step-card');
+            if (cards && cards[stepIndex]) {
+                cards[stepIndex].style.borderColor = 'var(--neon-purple)';
+                cards[stepIndex].style.background = 'rgba(189, 147, 249, 0.04)';
+            }
+
+            const info = stepData[stepIndex];
+            if (!info) return;
+
+            document.getElementById('panel-step-name').innerText = info.name;
+            document.getElementById('panel-step-num').innerText = info.num;
+            document.getElementById('panel-step-desc').innerText = info.desc;
+            document.getElementById('panel-step-agents').innerText = info.agents;
+            document.getElementById('panel-step-nodes-hint').innerText = info.nodes;
+        }
+
+        // Show live status monitor view
+        function showPipelineStatusView() {
+            document.getElementById('agent-detail-view').style.display = 'none';
+            document.getElementById('step-detail-view').style.display = 'none';
+            document.getElementById('pipeline-status-view').style.display = 'flex';
+            document.querySelectorAll('.node-card').forEach(card => card.classList.remove('active-node'));
+            
+            // Clear step cards highlight
+            document.querySelectorAll('.step-card').forEach(card => {
+                card.style.borderColor = '';
+                card.style.background = '';
+            });
+        }
+
+        // Map activeNode to active step (1-6)
+        function getActiveStepIndex(activeNode, statusText) {
+            if (!activeNode || activeNode === 'idle') {
+                return 5; // Step 6
+            }
+            
+            if (activeNode === 'me') {
+                if (statusText && (statusText.toLowerCase().includes('review') || statusText.toLowerCase().includes('ตรวจ') || statusText.toLowerCase().includes('ปรับแก้'))) {
+                    return 5; // Step 6
+                }
+                return 0; // Step 1
+            }
+            if (activeNode === 'first_agent' || activeNode === 'first') {
+                if (statusText && (statusText.toLowerCase().includes('brief') || statusText.toLowerCase().includes('summary') || statusText.toLowerCase().includes('สรุปบรีฟ') || statusText.toLowerCase().includes('บรีฟ'))) {
+                    return 1; // Step 2
+                }
+                if (statusText && (statusText.toLowerCase().includes('ตรวจ') || statusText.toLowerCase().includes('check') || statusText.toLowerCase().includes('ออดิท') || statusText.toLowerCase().includes('audit'))) {
+                    return 3; // Step 4
+                }
+                return 0; // Step 1
+            }
+            if (activeNode === 'content_team') {
+                return 2; // Step 3
+            }
+            const productionNodes = ['deer', 'nam', 'music', 'cream', 'or', 'ray', 'cri', 'p', 'chris'];
+            if (productionNodes.includes(activeNode)) {
+                return 3; // Step 4
+            }
+            const outputNodes = ['notes', 'youtube_script', 'facebook_text', 'podcast_question'];
+            if (outputNodes.includes(activeNode)) {
+                return 4; // Step 5
+            }
+            
+            return 5; // Step 6 / idle
+        }
+
+        // Handle Pipeline Mode Selection
+        function selectPipeline(mode) {
+            // Update Buttons
+            document.querySelectorAll('.selector-btn').forEach(btn => btn.classList.remove('active'));
+            const modeBtn = document.getElementById(`btn-${mode}`);
+            if (modeBtn) modeBtn.classList.add('active');
+
+            const nodesContainer = document.querySelector('.nodes-container');
+            const masterView = document.getElementById('master-workflow-view');
+            
+            if (mode === 'master-wf') {
+                if (nodesContainer) nodesContainer.style.display = 'none';
+                if (masterView) masterView.style.display = 'block';
+                
+                // Hide connections
+                connections.forEach(conn => {
+                    const path = document.getElementById(`conn-${conn.from}-${conn.to}`);
+                    if (path) {
+                        path.classList.remove('active');
+                        path.setAttribute('stroke', 'transparent');
+                        path.style.opacity = '0';
+                    }
+                });
+                return;
+            } else {
+                if (nodesContainer) nodesContainer.style.display = 'block';
+                if (masterView) masterView.style.display = 'none';
+            }
+
+            // Apply path highlights
+            connections.forEach(conn => {
+                const path = document.getElementById(`conn-${conn.from}-${conn.to}`);
+                if (!path) return;
+
+                // Toggle visibility based on mode
+                const isFeedback = conn.from === 'pie' && ['deer', 'nam', 'music', 'm'].includes(conn.to);
+                
+                if (mode === 'all') {
+                    if (isFeedback) {
+                        // Hide feedback loops by default to keep the main overview neat!
+                        path.classList.remove('active');
+                        path.setAttribute('stroke', 'transparent');
+                        path.style.opacity = '0';
+                    } else {
+                        path.classList.add('active');
+                        path.setAttribute('stroke', conn.color);
+                        path.style.opacity = '1';
+                    }
+                } else if (conn.pipelines.includes(mode)) {
+                    path.classList.add('active');
+                    path.setAttribute('stroke', conn.color);
+                    path.style.opacity = '1';
+                } else {
+                    path.classList.remove('active');
+                    path.setAttribute('stroke', 'rgba(255, 255, 255, 0.02)');
+                    path.style.opacity = '0.1';
+                }
+            });
+
+            // Dim unrelated nodes
+            const nodeKeys = Object.keys(nodes);
+            nodeKeys.forEach(key => {
+                const card = document.getElementById(`node-${key}`);
+                if (!card) return;
+
+                if (mode === 'all') {
+                    card.classList.remove('dimmed');
+                    return;
+                }
+
+                // Determine if this agent belongs to the pipeline
+                let inPipeline = false;
+                
+                if (mode === 'data') {
+                    inPipeline = ['pie', 'deer', 'nam', 'music', 'm', 'personal_team'].includes(key);
+                } else if (mode === 'story') {
+                    inPipeline = ['me', 'first_agent', 'content_team', 'deer', 'nam', 'music', 'cream', 'or', 'ray', 'cri', 'youtube_script', 'facebook_text', 'notes', 'm'].includes(key);
+                } else if (mode === 'podcast') {
+                    inPipeline = ['me', 'first_agent', 'content_team', 'deer', 'nam', 'music', 'cream', 'or', 'ray', 'cri', 'podcast_question', 'notes', 'm'].includes(key);
+                }
+
+                if (inPipeline) {
+                    card.classList.remove('dimmed');
+                } else {
+                    card.classList.add('dimmed');
+                }
+            });
+        }
+
+        // Show Agent Details on sidebar
+        function showAgentDetails(agentKey) {
+            if (agentKey === 'personal_team' || agentKey === 'content_team') return;
+
+            // Switch view
+            document.getElementById('agent-detail-view').style.display = 'flex';
+            document.getElementById('pipeline-status-view').style.display = 'none';
+            const stepDetailView = document.getElementById('step-detail-view');
+            if (stepDetailView) stepDetailView.style.display = 'none';
+
+            // Toggle highlight class
+            document.querySelectorAll('.node-card').forEach(card => card.classList.remove('active-node'));
+            
+            const card = document.getElementById(`node-${agentKey}`);
+            if (card) card.classList.add('active-node');
+
+            const info = agentData[agentKey];
+            if (!info) return;
+
+            document.getElementById('panel-agent-name').innerText = info.name;
+            document.getElementById('panel-agent-role').innerText = info.role;
+            document.getElementById('panel-agent-desc').innerText = info.desc;
+            
+            const ioSection = document.getElementById('panel-io-section');
+            if (info.inputs && info.outputs) {
+                ioSection.style.display = 'block';
+                document.getElementById('panel-agent-inputs').innerText = info.inputs;
+                document.getElementById('panel-agent-outputs').innerText = info.outputs;
+            } else {
+                ioSection.style.display = 'none';
+            }
+
+            const manualBtn = document.getElementById('panel-agent-manual');
+            if (info.manual) {
+                manualBtn.href = info.manual;
+                manualBtn.classList.remove('disabled');
+                manualBtn.innerText = `📖 เปิดดูคู่มือของน้อง ${info.name.split(' ')[0]}`;
+            } else {
+                manualBtn.href = '#';
+                manualBtn.classList.add('disabled');
+                manualBtn.innerText = '⚠️ ไม่มีคู่มือภายนอกสำหรับบทบาทนี้';
+            }
+        }
+
+        function logToTerminal(message, isError = false) {
+            const terminal = document.getElementById('live-logs-terminal');
+            if (terminal) {
+                const color = isError ? 'var(--neon-red)' : 'var(--neon-blue)';
+                terminal.innerHTML += `<div class="debug-log-msg" style="margin-bottom: 6px; color: ${color};">[Debug] ${message}</div>`;
+                terminal.scrollTop = terminal.scrollHeight;
+            }
+        }
+
+        // Update dashboard styling and items with dynamic workflow status
+        function updateDashboardWithStatus() {
+            if (!window.workflowStatus) {
+                logToTerminal("window.workflowStatus is undefined", true);
+                return;
+            }
+            
+            const status = window.workflowStatus;
+            logToTerminal("Status data found! Updating UI...", false);
+            
+            // Update top status pill
+            const statusPill = document.getElementById('status-pill');
+            const statusDot = document.getElementById('status-dot');
+            const statusText = document.getElementById('status-text');
+            
+            const activeNode = status.activeNode;
+            const isIdle = activeNode === 'idle';
+            
+            if (isIdle) {
+                statusPill.style.borderColor = 'var(--neon-purple)';
+                statusPill.style.color = 'var(--neon-purple)';
+                statusPill.style.boxShadow = 'var(--glow-purple)';
+                statusDot.style.backgroundColor = 'var(--neon-purple)';
+                statusText.innerText = `PIPELINE ENGINE: STABLE (IDLE)`;
+                
+                document.getElementById('live-active-step').style.borderColor = 'var(--neon-purple)';
+                document.getElementById('live-active-step').style.color = 'var(--neon-purple)';
+                document.getElementById('live-active-step').innerText = 'IDLE';
+            } else {
+                statusPill.style.borderColor = 'var(--neon-orange)';
+                statusPill.style.color = 'var(--neon-orange)';
+                statusPill.style.boxShadow = 'var(--glow-orange)';
+                statusDot.style.backgroundColor = 'var(--neon-orange)';
+                statusText.innerText = `RUNNING: ${status.statusText ? status.statusText.toUpperCase() : 'ACTIVE'}`;
+                
+                document.getElementById('live-active-step').style.borderColor = 'var(--neon-orange)';
+                document.getElementById('live-active-step').style.color = 'var(--neon-orange)';
+                document.getElementById('live-active-step').innerText = (activeNode || 'unknown') + ' / ' + (status.statusText || 'Running');
+            }
+            
+            // Update active node running highlights
+            document.querySelectorAll('.node-card').forEach(card => card.classList.remove('running-node'));
+            
+            // Reset all connection lines to remove running class
+            document.querySelectorAll('.connection-line').forEach(path => {
+                path.classList.remove('running-connection');
+            });
+            
+            if (!isIdle) {
+                const activeCard = document.getElementById(`node-${activeNode}`);
+                if (activeCard) {
+                    activeCard.classList.add('running-node');
+                }
+                
+                // Highlight and pulse active connection lines connected to the activeNode!
+                connections.forEach(conn => {
+                    if (conn.from === activeNode || conn.to === activeNode) {
+                        const path = document.getElementById(`conn-${conn.from}-${conn.to}`);
+                        if (path) {
+                            path.classList.add('running-connection');
+                            path.classList.add('active');
+                            path.setAttribute('stroke', conn.color);
+                            path.style.opacity = '1';
+                        }
+                    } else {
+                        // Dim other connections slightly to emphasize active flow
+                        const path = document.getElementById(`conn-${conn.from}-${conn.to}`);
+                        if (path && !path.classList.contains('running-connection')) {
+                            path.style.opacity = '0.15';
+                        }
+                    }
+                });
+            } else {
+                // Restore connections based on currently active pipeline
+                const activeBtn = document.querySelector('.selector-btn.active');
+                const currentMode = activeBtn ? activeBtn.id.replace('btn-', '') : 'all';
+                selectPipeline(currentMode);
+            }
+
+            // Update Master Workflow steps status in the UI
+            const activeStepIndex = getActiveStepIndex(activeNode, status.statusText);
+            const stepCards = document.querySelectorAll('.step-card');
+            
+            stepCards.forEach((card, idx) => {
+                card.classList.remove('active-step', 'completed-step');
+                const badge = card.querySelector('.step-status-badge');
+                
+                if (idx === activeStepIndex) {
+                    card.classList.add('active-step');
+                    if (badge) {
+                        badge.className = 'step-status-badge status-running';
+                        badge.innerText = 'กำลังรันงาน';
+                    }
+                } else if (idx < activeStepIndex) {
+                    card.classList.add('completed-step');
+                    if (badge) {
+                        badge.className = 'step-status-badge status-completed';
+                        badge.innerText = 'เสร็จสิ้น';
+                    }
+                } else {
+                    if (badge) {
+                        badge.className = 'step-status-badge status-pending';
+                        badge.innerText = 'รอดำเนินการ';
+                    }
+                }
+            });
+            
+            // Update live logs
+            const terminal = document.getElementById('live-logs-terminal');
+            if (status.logs && status.logs.length > 0) {
+                // Keep the debug messages at the top if any, but clear the rest
+                const debugLogs = Array.from(terminal.querySelectorAll('.debug-log-msg')).map(el => el.outerHTML).join('');
+                
+                const mainLogs = status.logs.map(log => {
+                    const timeStr = log.time;
+                    const agentStr = log.agent;
+                    const msgStr = log.message;
+                    
+                    // Get color for agent tag
+                    let colorStyle = 'color: #fff;';
+                    if (agentStr === 'first_agent') colorStyle = 'color: var(--neon-purple);';
+                    else if (agentStr === 'cream') colorStyle = 'color: var(--neon-blue);';
+                    else if (agentStr === 'ray') colorStyle = 'color: var(--neon-orange);';
+                    else if (agentStr === 'notes') colorStyle = 'color: var(--neon-yellow);';
+                    else if (agentStr === 'idle') colorStyle = 'color: var(--neon-green);';
+                    
+                    return `<div style="margin-bottom: 6px;"><span style="color: #676e95;">[${timeStr}]</span> <span style="${colorStyle} font-weight: bold;">${agentStr}:</span> <span style="color: #adb3c5;">${msgStr}</span></div>`;
+                }).join('');
+                
+                terminal.innerHTML = debugLogs + mainLogs;
+                terminal.scrollTop = terminal.scrollHeight;
+            } else {
+                terminal.innerHTML = '<div style="color: #676e95;">[System] รอการทำงานเริ่มขบวน...</div>';
+            }
+            
+            // Update artifacts
+            const artifactsContainer = document.getElementById('live-artifacts-list');
+            artifactsContainer.innerHTML = '';
+            if (!status.artifacts || Object.keys(status.artifacts).length === 0) {
+                artifactsContainer.innerHTML = '<div style="color: #676e95; font-size: 0.85rem;">ยังไม่มีไฟล์ผลลัพธ์ในรอบการทำงานนี้</div>';
+            } else {
+                for (const [name, path] of Object.entries(status.artifacts)) {
+                    const a = document.createElement('a');
+                    a.href = path;
+                    a.target = '_blank';
+                    a.style.display = 'flex';
+                    a.style.alignItems = 'center';
+                    a.style.gap = '8px';
+                    a.style.background = 'rgba(57, 255, 20, 0.05)';
+                    a.style.border = '1px solid rgba(57, 255, 20, 0.3)';
+                    a.style.color = 'var(--neon-green)';
+                    a.style.padding = '10px';
+                    a.style.borderRadius = '8px';
+                    a.style.textDecoration = 'none';
+                    a.style.fontSize = '0.85rem';
+                    a.style.fontWeight = '600';
+                    a.style.transition = 'all 0.3s ease';
+                    
+                    a.onmouseenter = () => {
+                        a.style.background = 'rgba(57, 255, 20, 0.15)';
+                        a.style.boxShadow = '0 0 10px rgba(57, 255, 20, 0.2)';
+                    };
+                    a.onmouseleave = () => {
+                        a.style.background = 'rgba(57, 255, 20, 0.05)';
+                        a.style.boxShadow = 'none';
+                    };
+                    
+                    a.innerHTML = `📄 <span style="flex-grow: 1;">${name}</span> <span style="font-size: 0.7rem; opacity: 0.7;">เปิดไฟล์ ↗</span>`;
+                    artifactsContainer.appendChild(a);
+                }
+            }
+        }
+        
+        // Fetch status by dynamically appending script block to prevent local CORS issues
+        function fetchWorkflowStatus() {
+            try {
+                const oldScript = document.getElementById('workflow-status-script');
+                if (oldScript) {
+                    oldScript.remove();
+                }
+                const script = document.createElement('script');
+                script.id = 'workflow-status-script';
+                
+                // Always try cache-busting with query parameter first, let onerror fallback handles failure
+                script.src = `workflow_status.js?cb=${Date.now()}`;
+                
+                script.onload = () => {
+                    logToTerminal("workflow_status.js script loaded successfully", false);
+                    updateDashboardWithStatus();
+                };
+                script.onerror = (err) => {
+                    logToTerminal("Failed to load script (is workflow_status.js missing or blocked?)", true);
+                    // Fallback: if we used a query parameter and it failed, try loading without query parameters
+                    if (script.src.includes('?')) {
+                        logToTerminal("Attempting fallback load without query parameters...", false);
+                        const fallbackScript = document.createElement('script');
+                        fallbackScript.id = 'workflow-status-script';
+                        fallbackScript.src = 'workflow_status.js';
+                        fallbackScript.onload = () => {
+                            logToTerminal("Fallback script loaded successfully", false);
+                            updateDashboardWithStatus();
+                        };
+                        fallbackScript.onerror = () => {
+                            logToTerminal("Fallback script also failed to load", true);
+                        };
+                        document.body.appendChild(fallbackScript);
+                    }
+                };
+                document.body.appendChild(script);
+            } catch (e) {
+                logToTerminal("Exception in fetch: " + e.message, true);
+            }
+        }
+
+        // Dynamic Hover Connection Highlight (Super Clean Vibe!)
+        function setupInteractions() {
+            document.querySelectorAll('.node-card').forEach(card => {
+                const id = card.id.replace('node-', '');
+                if (id === 'personal_team' || id === 'content_team') return;
+                
+                card.addEventListener('mouseenter', () => {
+                    // Dim all other nodes
+                    document.querySelectorAll('.node-card').forEach(c => {
+                        if (c.id !== card.id) c.classList.add('dimmed');
+                    });
+                    
+                    // Highlight only connections related to this node
+                    connections.forEach(conn => {
+                        const path = document.getElementById(`conn-${conn.from}-${conn.to}`);
+                        if (!path) return;
+                        
+                        if (conn.from === id || conn.to === id) {
+                            path.classList.add('active');
+                            path.setAttribute('stroke', conn.color);
+                            path.style.opacity = '1';
+                        } else {
+                            path.classList.remove('active');
+                            path.setAttribute('stroke', 'rgba(255, 255, 255, 0.02)');
+                            path.style.opacity = '0.1';
+                        }
+                    });
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    // Reset to active pipeline view
+                    const activeBtn = document.querySelector('.selector-btn.active');
+                    const currentMode = activeBtn ? activeBtn.id.replace('btn-', '') : 'all';
+                    selectPipeline(currentMode);
+                });
+            });
+        }
+
+        // Mobile Simulation View Toggle
+        function toggleMobileSimulation() {
+            const body = document.body;
+            const btn = document.getElementById('sim-btn');
+            body.classList.toggle('simulated-mobile-body');
+            btn.classList.toggle('active');
+            
+            // Re-render connections correctly if layout shifts
+            setTimeout(drawConnections, 300);
+        }
+
+        // Initialize Page
+        window.onload = () => {
+            drawConnections();
+            selectPipeline('all');
+            setupInteractions();
+            
+            // If window.workflowStatus is already loaded statically, update immediately
+            if (window.workflowStatus) {
+                logToTerminal("Statically loaded workflowStatus found, initializing UI", false);
+                updateDashboardWithStatus();
+            } else {
+                logToTerminal("No statically loaded workflowStatus found", false);
+            }
+            
+            // Start real-time polling for workflow status
+            fetchWorkflowStatus();
+            setInterval(fetchWorkflowStatus, 3000);
+        };
+
+        // Redraw connections on window resize
+        window.onresize = () => {
+            drawConnections();
+        };
+    </script>
+</body>
+</html>

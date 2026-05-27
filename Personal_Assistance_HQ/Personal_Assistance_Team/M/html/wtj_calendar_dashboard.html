@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<!-- Auto-deployed by Antigravity -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WTJ STORY - OPERATIONS CALENDAR</title>
+    <!-- Share Tech Mono and Inter Fonts for authentic tech/military blueprint feel -->
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Themes definition */
+        :root {
+            /* Ptolemy Light Theme (Default) */
+            --bg-color: #f3f4f1;
+            --panel-bg: #ffffff;
+            --border-color: #111111;
+            --border-light: #cccccc;
+            --text-color: #111111;
+            --text-muted: #666666;
+            --accent-red: #d32f2f;
+            --accent-green: #2e7d32;
+            --grid-color: rgba(0, 0, 0, 0.08);
+            --blueprint-opacity: 0.8;
+            --shadow: 4px 4px 0px rgba(0,0,0,0.15);
+            --glow-color: transparent;
+            --text-glow: none;
+            --btn-hover-bg: #111111;
+            --btn-hover-text: #ffffff;
+            --grid-size: 30px;
+        }
+
+        html.dark-theme {
+            /* Veda Flat Dark Theme */
+            --bg-color: #13141d;
+            --panel-bg: #1e1f29;
+            --border-color: #e5e5e5;
+            --border-light: #444444;
+            --text-color: #e5e5e5;
+            --text-muted: #888888;
+            --accent-red: #ff5252;
+            --accent-green: #69f0ae;
+            --grid-color: rgba(255, 255, 255, 0.06);
+            --blueprint-opacity: 0.6;
+            --shadow: 4px 4px 0px rgba(0,0,0,0.4);
+            --glow-color: transparent;
+            --text-glow: none;
+            --btn-hover-bg: #e5e5e5;
+            --btn-hover-text: #1e1f29;
+        }
+
+        html.color-theme {
+            /* Veda Neon Dark Theme */
+            --bg-color: #0b0c10;
+            --panel-bg: #12141c;
+            --border-color: #00ffaa;
+            --border-light: #008855;
+            --text-color: #00ffaa;
+            --text-muted: #00aa77;
+            --accent-red: #ff3366;
+            --accent-green: #00ffaa;
+            --grid-color: rgba(0, 255, 170, 0.06);
+            --blueprint-opacity: 1;
+            --shadow: 0 0 10px rgba(0, 255, 170, 0.2);
+            --glow-color: rgba(0, 255, 170, 0.4);
+            --text-glow: 0 0 5px rgba(0, 255, 170, 0.5);
+            --btn-hover-bg: #00ffaa;
+            --btn-hover-text: #12141c;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Ambient Cyber Grid Background */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
+                linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
+            background-size: var(--grid-size) var(--grid-size);
+            pointer-events: none;
+            z-index: -1;
+            opacity: var(--blueprint-opacity);
+            transition: opacity 0.25s ease;
+        }
+
+        /* Subtle scanline overlay for color mode */
+        .color-theme::after {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 255, 170, 0.02) 50%);
+            background-size: 100% 4px;
+            z-index: 9999;
+            pointer-events: none;
+        }
+
+        /* Top Header Navigation style */
+        header.tactical-header {
+            border: 2px solid var(--border-color);
+            background: var(--panel-bg);
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .header-title h1 {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 2rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .header-title p {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+            letter-spacing: 1.5px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .system-readouts {
+            display: flex;
+            gap: 20px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.9rem;
+        }
+
+        .readout-item {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .readout-item .label {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+        }
+
+        .readout-item .value {
+            font-weight: bold;
+        }
+
+        /* 3-Mode Theme Selector */
+        .theme-switcher-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px;
+        }
+
+        .theme-switcher-label {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .theme-switcher {
+            display: flex;
+            gap: 2px;
+            border: 2px solid var(--border-color);
+            padding: 2px;
+            background: var(--panel-bg);
+        }
+
+        .theme-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-color);
+            padding: 5px 12px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.8rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        .theme-btn.active {
+            background: var(--border-color);
+            color: var(--panel-bg);
+        }
+
+        /* Sub Navigation Menu */
+        .sub-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .control-btns {
+            display: flex;
+            gap: 5px;
+        }
+
+        .nav-btn {
+            background: var(--panel-bg);
+            border: 2px solid var(--border-color);
+            color: var(--text-color);
+            padding: 8px 18px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            box-shadow: var(--shadow);
+        }
+
+        .nav-btn:hover {
+            background: var(--btn-hover-bg);
+            color: var(--btn-hover-text);
+        }
+
+        /* 12-Month Navigation Tabs */
+        .month-tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 20px;
+            width: 100%;
+            flex-wrap: wrap;
+        }
+
+        .month-tab-btn {
+            background: var(--panel-bg);
+            border: 2px solid var(--border-color);
+            color: var(--text-color);
+            padding: 10px 5px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            flex-grow: 1;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+
+        .month-tab-btn:hover {
+            background: var(--btn-hover-bg);
+            color: var(--btn-hover-text);
+        }
+
+        .month-tab-btn.active {
+            background: var(--border-color);
+            color: var(--panel-bg);
+        }
+
+        /* Single Calendar Wrapper */
+        .calendar-wrapper {
+            margin-bottom: 25px;
+        }
+
+        /* Month Container */
+        .month-container {
+            background: var(--panel-bg);
+            border: 2px solid var(--border-color);
+            padding: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .month-header {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.8rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .month-header-stats {
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        /* Days Grid */
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            border-top: 1px solid var(--border-color);
+            border-left: 1px solid var(--border-color);
+        }
+
+        /* Weekday Headers */
+        .weekday-header {
+            background: rgba(0, 0, 0, 0.05);
+            border-right: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            padding: 8px 5px;
+            text-align: center;
+            font-family: 'Share Tech Mono', monospace;
+            font-weight: bold;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+
+        .dark-theme .weekday-header {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .color-theme .weekday-header {
+            background: rgba(0, 255, 170, 0.08);
+        }
+
+        /* Day Cells */
+        .day-cell {
+            border-right: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            min-height: 125px;
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background: var(--panel-bg);
+            position: relative;
+        }
+
+        .day-cell.empty {
+            background: rgba(0, 0, 0, 0.02);
+        }
+
+        .dark-theme .day-cell.empty {
+            background: rgba(255, 255, 255, 0.01);
+        }
+
+        .color-theme .day-cell.empty {
+            background: rgba(0, 255, 170, 0.01);
+        }
+
+        .day-number {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.95rem;
+            font-weight: bold;
+            color: var(--text-color);
+            align-self: flex-start;
+        }
+
+        .day-cell.today {
+            background: rgba(211, 47, 47, 0.05);
+            outline: 2px solid var(--accent-red);
+            z-index: 10;
+        }
+
+        .color-theme .day-cell.today {
+            background: rgba(0, 255, 170, 0.05);
+            outline: 2px solid var(--border-color);
+        }
+
+        /* Content block inside day cells */
+        .content-slot {
+            margin-top: 5px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 5px;
+        }
+
+        .post-type {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Interactive editable topic title */
+        .post-title-container {
+            position: relative;
+        }
+
+        .post-title {
+            font-size: 0.75rem;
+            font-weight: 700;
+            line-height: 1.2;
+            word-break: break-word;
+            cursor: pointer;
+            padding: 2px;
+            border: 1px dashed transparent;
+            min-height: 1.5em;
+        }
+
+        .post-title:hover {
+            border-color: var(--border-light);
+            background-color: rgba(0, 0, 0, 0.02);
+        }
+
+        .dark-theme .post-title:hover {
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+
+        .color-theme .post-title:hover {
+            background-color: rgba(0, 255, 170, 0.05);
+        }
+
+        .post-title.placeholder {
+            color: var(--text-muted);
+            opacity: 0.6;
+            font-style: italic;
+            font-weight: normal;
+        }
+
+        .post-title-input {
+            width: 100%;
+            font-size: 0.75rem;
+            font-weight: 700;
+            border: 1px solid var(--border-color);
+            background: var(--panel-bg);
+            color: var(--text-color);
+            padding: 2px;
+            outline: none;
+            font-family: inherit;
+        }
+
+        /* Toggle status button */
+        .status-toggle {
+            width: 100%;
+            padding: 6px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.7rem;
+            font-weight: 900;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.1s ease;
+        }
+
+        /* Toggle State: Missing Assets */
+        .status-toggle.missing {
+            background: var(--panel-bg);
+            color: var(--accent-red);
+            border-color: var(--border-color);
+        }
+
+        .status-toggle.missing:hover {
+            background: rgba(211, 47, 47, 0.05);
+        }
+
+        /* Toggle State: Ready */
+        .status-toggle.ready {
+            background: var(--border-color);
+            color: var(--panel-bg);
+            border-color: var(--border-color);
+        }
+
+        .status-toggle.ready:hover {
+            opacity: 0.9;
+        }
+
+        /* Sidebar Panels Layout (Bottom section) */
+        .bottom-control-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 25px;
+        }
+
+        @media (max-width: 1000px) {
+            .bottom-control-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel-card {
+            background: var(--panel-bg);
+            border: 2px solid var(--border-color);
+            padding: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .panel-card-title {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.1rem;
+            font-weight: 900;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+
+        /* Progress Bar elements */
+        .metric-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .metric-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .metric-label-row {
+            display: flex;
+            justify-content: space-between;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 16px;
+            border: 1px solid var(--border-color);
+            background: rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
+
+        .dark-theme .progress-bar {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .color-theme .progress-bar {
+            background: rgba(0, 255, 170, 0.05);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--border-color);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* System Info table layout */
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.75rem;
+            table-layout: fixed;
+        }
+
+        .info-table th {
+            text-align: left;
+            padding: 8px 4px;
+            border-bottom: 2px solid var(--border-color);
+            color: var(--text-muted);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .info-table th:nth-child(1),
+        .info-table td:nth-child(1) {
+            width: 15%; /* DAY */
+        }
+        .info-table th:nth-child(2),
+        .info-table td:nth-child(2) {
+            width: 48%; /* SLOT TYPE */
+            word-break: break-word;
+            white-space: normal;
+        }
+        .info-table th:nth-child(3),
+        .info-table td:nth-child(3) {
+            width: 17%; /* TIME */
+        }
+        .info-table th:nth-child(4),
+        .info-table td:nth-child(4) {
+            width: 20%; /* PLATFORM */
+            text-align: right;
+        }
+
+        .info-table td {
+            padding: 8px 4px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            line-height: 1.3;
+        }
+
+        .dark-theme .info-table td {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .color-theme .info-table td {
+            border-bottom: 1px solid rgba(0, 255, 170, 0.1);
+        }
+
+        /* Setup Instructions Block */
+        .instruction-box {
+            font-size: 0.8rem;
+            line-height: 1.5;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .instruction-box code {
+            font-family: 'Share Tech Mono', monospace;
+            background: rgba(0, 0, 0, 0.05);
+            padding: 2px 6px;
+            border: 1px solid var(--border-light);
+        }
+
+        .dark-theme .instruction-box code {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .color-theme .instruction-box code {
+            background: rgba(0, 255, 170, 0.1);
+        }
+
+        footer {
+            text-align: center;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 40px;
+            border-top: 2px solid var(--border-color);
+            padding-top: 15px;
+        }
+
+        /* Neon glow enhancements specifically for Color Mode */
+        .color-theme .tactical-header,
+        .color-theme .month-container,
+        .color-theme .panel-card,
+        .color-theme .theme-switcher,
+        .color-theme .theme-btn,
+        .color-theme .nav-btn,
+        .color-theme .month-tab-btn,
+        .color-theme .status-toggle {
+            box-shadow: 0 0 8px rgba(0, 255, 170, 0.3), inset 0 0 4px rgba(0, 255, 170, 0.1);
+            text-shadow: 0 0 3px rgba(0, 255, 170, 0.4);
+        }
+
+        .color-theme .status-toggle.missing {
+            box-shadow: 0 0 8px rgba(255, 51, 102, 0.3);
+            text-shadow: 0 0 3px rgba(255, 51, 102, 0.4);
+        }
+
+        .color-theme .progress-bar {
+            box-shadow: 0 0 6px rgba(0, 255, 170, 0.2);
+        }
+
+        .color-theme .day-cell.today {
+            outline: 2px solid #ff3366;
+            box-shadow: 0 0 10px rgba(255, 51, 102, 0.4);
+        }
+
+        /* Responsive Grid layout */
+        @media (max-width: 1200px) {
+            .calendar-grid {
+                grid-template-columns: repeat(7, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .calendar-grid {
+                grid-template-columns: 1fr;
+                border-top: none;
+                border-left: none;
+            }
+            .weekday-header {
+                display: none;
+            }
+            .day-cell {
+                border: 1px solid var(--border-color);
+                margin-bottom: 10px;
+                min-height: auto;
+                padding: 10px;
+            }
+            .day-cell.empty {
+                display: none;
+            }
+            .day-number::before {
+                content: "DATE: ";
+                font-size: 0.8rem;
+                color: var(--text-muted);
+            }
+            .header-right {
+                flex-direction: column;
+                align-items: flex-end;
+                gap: 10px;
+            }
+        }
+        .floating-hub-btn {
+            transition: all 0.3s ease !important;
+        }
+        .floating-hub-btn:hover {
+            background: var(--btn-hover-bg) !important;
+            color: var(--btn-hover-text) !important;
+            transform: translateY(-2px) !important;
+        }
+    </style>
+    <script>
+        // Initialize Theme immediately to prevent flash
+        let savedTheme = 'light';
+        try {
+            savedTheme = localStorage.getItem('wtj-theme') || 'light';
+        } catch (e) {
+            console.warn('localStorage is not accessible:', e);
+        }
+        document.documentElement.className = savedTheme + '-theme';
+        
+        // Apply to body immediately on DOMContentLoaded
+        document.addEventListener('DOMContentLoaded', () => {
+            document.body.className = savedTheme + '-theme';
+        });
+    </script>
+</head>
+<body class="light-theme">
+    <!-- Floating Hub Button -->
+    <a href="index.html" class="floating-hub-btn" style="position: fixed; top: 20px; right: 20px; z-index: 10000; background: rgba(0, 0, 0, 0.05); border: 2px solid var(--border-color); color: var(--text-color); padding: 10px 18px; border-radius: 30px; text-decoration: none; font-family: 'Share Tech Mono', sans-serif; font-size: 0.85rem; font-weight: bold; backdrop-filter: blur(10px); display: flex; align-items: center; gap: 8px;">
+        <span>🦉 HUB</span>
+    </a>
+
+    <!-- Tactical Top Header -->
+    <header class="tactical-header">
+        <div class="header-title">
+            <h1>WTJ STORY OPERATIONS</h1>
+            <p>CONSTRUCTION PIPELINE // 12-MONTH PACING CALENDAR</p>
+        </div>
+        <div class="header-right">
+            <div class="system-readouts">
+                <div class="readout-item">
+                    <span class="label">VEDA ACCESS:</span>
+                    <span class="value">LEVEL-001 CLEARANCE</span>
+                </div>
+                <div class="readout-item">
+                    <span class="label">CURRENT SYSTEM TIME:</span>
+                    <span class="value" id="system-clock">12:00:00</span>
+                </div>
+            </div>
+            
+            <!-- 3-Mode Theme Selector -->
+            <div class="theme-switcher-container">
+                <span class="theme-switcher-label">HYBRID INTERFACE MODE</span>
+                <div class="theme-switcher">
+                    <button class="theme-btn active" id="theme-btn-light" onclick="setTheme('light')">LIGHT</button>
+                    <button class="theme-btn" id="theme-btn-dark" onclick="setTheme('dark')">DARK</button>
+                    <button class="theme-btn" id="theme-btn-color" onclick="setTheme('color')">COLOR</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sub Navigation Menu -->
+    <div class="sub-nav">
+        <!-- 12-Month Tabs row -->
+        <div class="month-tabs" id="month-tabs-bar">
+            <!-- Tabs rendered by JS -->
+        </div>
+        <div class="control-btns">
+            <button class="nav-btn" onclick="resetAllData()">RESET ANNUAL DATA</button>
+        </div>
+    </div>
+
+    <!-- Calendar Wrapper (Single Month Display) -->
+    <div class="calendar-wrapper">
+        <div class="month-container">
+            <div class="month-header">
+                <span id="active-month-title">JUNE 2026</span>
+                <span class="month-header-stats" id="active-month-stats">READY: 0/0 (0%)</span>
+            </div>
+            <div class="calendar-grid" id="active-calendar-grid">
+                <!-- Day cells rendered by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Dashboard Panels -->
+    <div class="bottom-control-grid">
+        
+        <!-- Metric Readiness Progress -->
+        <div class="panel-card">
+            <h2 class="panel-card-title">PROJECT PIPELINE READYNESS</h2>
+            <div class="metric-group">
+                <div class="metric-item">
+                    <div class="metric-label-row">
+                        <span id="active-month-bar-label">JUNE 2026 PACING RATE</span>
+                        <span id="active-month-bar-percent">0%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="active-month-progress-fill"></div>
+                    </div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-label-row">
+                        <span>COMBINED ANNUAL PIPELINE STABILITY</span>
+                        <span id="combined-bar-percent">0%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="combined-progress-fill"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Operational Info Table -->
+        <div class="panel-card">
+            <h2 class="panel-card-title">CREAM POSTING RULE SCHEDULE</h2>
+            <table class="info-table">
+                <thead>
+                    <tr>
+                        <th>DAY</th>
+                        <th>SLOT TYPE</th>
+                        <th>TIME</th>
+                        <th>PLATFORM</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>SAT</td>
+                        <td>Reels / YT Shorts / TikTok (คลิปสั้น &lt;1 นาที)</td>
+                        <td>19:30</td>
+                        <td>Reels / Shorts / TikTok</td>
+                    </tr>
+                    <tr>
+                        <td>WED</td>
+                        <td>FB Video (คลิปกลาง 3-5 นาที)</td>
+                        <td>18:00</td>
+                        <td>Facebook Page</td>
+                    </tr>
+                    <tr>
+                        <td>THU, SUN</td>
+                        <td>Interactive Text / Quote Post</td>
+                        <td>12:00</td>
+                        <td>Facebook Page</td>
+                    </tr>
+                    <tr>
+                        <td>THU</td>
+                        <td>WTJ Podcast / Talk (คลิปยาว)</td>
+                        <td>20:00</td>
+                        <td>YouTube</td>
+                    </tr>
+                    <tr>
+                        <td>SUN</td>
+                        <td>WTJ Story (คลิปยาว)</td>
+                        <td>18:00</td>
+                        <td>YouTube</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- User Controls / Instructions -->
+        <div class="panel-card">
+            <h2 class="panel-card-title">OPERATIONS MANUAL</h2>
+            <div class="instruction-box">
+                <p>1. <strong>เลือกเปลี่ยนเดือน:</strong> กดปุ่มแท็บเดือนด้านบน (JAN - DEC) เพื่อสลับดูตารางงานและเช็ค pacing ของแต่ละเดือน</p>
+                <p>2. <strong>ป้อนหัวข้อหรือชื่องาน:</strong> ดับเบิ้ลคลิก (Double-click) ตรงข้อความชื่อตอนใต้ประเภทโพสต์ เพื่อแก้พิมพ์ใส่ชื่องานที่กำลังทำได้เลย ข้อมูลจะบันทึกให้อัตโนมัติเมื่อกด Enter หรือคลิกที่อื่น</p>
+                <p>3. <strong>ติ๊กวัตถุดิบ (มีของ/ไม่มีของ):</strong> คลิกที่ปุ่มเพื่อสลับสถานะ หากของยังไม่เสร็จปุ่มจะขึ้นว่า <code>MISSING ASSETS</code> และหากเตรียมของเสร็จแล้วคลิกเปลี่ยนเป็น <code>READY</code></p>
+                <p>4. <strong>สลับธีมสีแดชบอร์ด:</strong> กดปุ่มสลับธีม <code>LIGHT</code>, <code>DARK</code> หรือ <code>COLOR</code> (นีออนเรืองแสง) ที่มุมบนขวาตามชอบใจ</p>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        DESIGNED IN HYBRID ENGINE BY M (CREATIVE HTML DESIGNER) // ANTIGRAVITY OS 2026
+    </footer>
+
+    <!-- Notion Calendar Data -->
+    <script src="notion_calendar_data.js"></script>
+
+    <!-- System JavaScript -->
+    <script>
+        // System live clock
+        function updateClock() {
+            const clock = document.getElementById('system-clock');
+            const now = new Date();
+            clock.textContent = now.toTimeString().split(' ')[0];
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // Posting schedule configurations
+        // Weekday number mappings (0 = Sunday, 1 = Monday, etc.)
+        const POSTING_RULE = {
+            1: [],
+            2: [],
+            3: [
+                { type: "FB Video (3-5 นาที)", platform: "Facebook Video", time: "18:00" }
+            ],
+            4: [
+                { type: "Text Post (ชวนคุย/โพล)", platform: "Facebook", time: "12:00" },
+                { type: "WTJ Podcast / Talk (คลิปยาว)", platform: "YouTube", time: "20:00" }
+            ],
+            5: [],
+            6: [
+                { type: "Reels / YT Shorts / TikTok", platform: "Reels / Shorts / TikTok", time: "19:30" }
+            ],
+            0: [
+                { type: "Text Post (คำคมดึงใจ)", platform: "Facebook", time: "12:00" },
+                { type: "WTJ Story (คลิปยาว)", platform: "YouTube", time: "18:00" }
+            ]
+        };
+
+        // Static parameters for all 12 months in 2026
+        // startDay: 1=Mon, 2=Tue, 3=Wed, 4=Thu, 5=Fri, 6=Sat, 7=Sun
+        const MONTHS_CONFIG = [
+            { name: "JANUARY", days: 31, startDay: 4 },
+            { name: "FEBRUARY", days: 28, startDay: 7 },
+            { name: "MARCH", days: 31, startDay: 7 },
+            { name: "APRIL", days: 30, startDay: 3 },
+            { name: "MAY", days: 31, startDay: 5 },
+            { name: "JUNE", days: 30, startDay: 1 },
+            { name: "JULY", days: 31, startDay: 3 },
+            { name: "AUGUST", days: 31, startDay: 6 },
+            { name: "SEPTEMBER", days: 30, startDay: 2 },
+            { name: "OCTOBER", days: 31, startDay: 4 },
+            { name: "NOVEMBER", days: 30, startDay: 7 },
+            { name: "DECEMBER", days: 31, startDay: 2 }
+        ];
+
+        let currentTheme = 'light';
+        let currentMonthIndex = new Date().getMonth(); // Default to current month index (0-11)
+
+        // Set Theme system
+        function setTheme(theme) {
+            currentTheme = theme;
+            document.body.className = `${theme}-theme`;
+            document.documentElement.className = `${theme}-theme`;
+            try {
+                localStorage.setItem('wtj-theme', theme);
+            } catch (e) {
+                console.warn('localStorage is not writable:', e);
+            }
+            
+            // Update active buttons style
+            document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
+            const activeBtn = document.getElementById(`theme-btn-${theme}`);
+            if (activeBtn) activeBtn.classList.add('active');
+        }
+
+        // Initialize theme from localStorage safely
+        let savedThemeVal = 'light';
+        try {
+            savedThemeVal = localStorage.getItem('wtj-theme') || 'light';
+        } catch (e) {
+            console.warn('localStorage is not readable:', e);
+        }
+        setTheme(savedThemeVal);
+
+        // Render month tabs dynamically
+        function renderMonthTabs() {
+            const tabsBar = document.getElementById('month-tabs-bar');
+            tabsBar.innerHTML = "";
+            
+            MONTHS_CONFIG.forEach((month, index) => {
+                const btn = document.createElement('button');
+                btn.className = `month-tab-btn ${index === currentMonthIndex ? 'active' : ''}`;
+                btn.textContent = month.name.substring(0, 3); // JAN, FEB, etc.
+                btn.onclick = () => selectMonth(index);
+                tabsBar.appendChild(btn);
+            });
+        }
+
+        function selectMonth(index) {
+            currentMonthIndex = index;
+            renderMonthTabs();
+            renderCalendar();
+        }
+
+        // Render active month calendar
+        function renderCalendar() {
+            const mData = MONTHS_CONFIG[currentMonthIndex];
+            const grid = document.getElementById('active-calendar-grid');
+            grid.innerHTML = ""; // Clear grid
+
+            // 1. Render Weekday headers (MON to SUN)
+            const weekdays = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
+            weekdays.forEach(day => {
+                const header = document.createElement("div");
+                header.className = "weekday-header";
+                header.textContent = day;
+                grid.appendChild(header);
+            });
+
+            // 2. Render padding cells (empty days before 1st of the month)
+            let paddingCount = mData.startDay - 1; 
+            if (paddingCount < 0) paddingCount = 6; // Sunday fallback
+            
+            for (let i = 0; i < paddingCount; i++) {
+                const padCell = document.createElement("div");
+                padCell.className = "day-cell empty";
+                grid.appendChild(padCell);
+            }
+
+            // 3. Render actual day cells
+            for (let dayNum = 1; dayNum <= mData.days; dayNum++) {
+                const cell = document.createElement("div");
+                cell.className = "day-cell";
+                
+                // Form date-specific ID key: e.g. "2026-06-05"
+                const paddedMonth = String(currentMonthIndex + 1).padStart(2, '0');
+                const paddedDay = String(dayNum).padStart(2, '0');
+                const dateKey = `2026-${paddedMonth}-${paddedDay}`;
+                
+                // Check weekday index (1=Mon, 2=Tue, ... 0=Sun)
+                const dateObj = new Date(2026, currentMonthIndex, dayNum);
+                const weekdayIndex = dateObj.getDay();
+
+                cell.innerHTML = `<span class="day-number">${dayNum}</span>`;
+
+                // Highlight today's date if within current year & month
+                const today = new Date();
+                if (today.getFullYear() === 2026 && today.getMonth() === currentMonthIndex && today.getDate() === dayNum) {
+                    cell.classList.add("today");
+                }
+
+                // Check if this weekday has a posting rule
+                if (POSTING_RULE[weekdayIndex]) {
+                    const rules = POSTING_RULE[weekdayIndex];
+                    rules.forEach((rule, slotIdx) => {
+                        const slotKey = `${dateKey}-${rule.time}`;
+                        
+                        // Check if we have Notion data for this slot
+                        const notionItem = typeof NOTION_CALENDAR_DATA !== 'undefined' ? NOTION_CALENDAR_DATA[slotKey] : null;
+                        const isReady = notionItem ? notionItem.status === "ready" : (localStorage.getItem(`status-${slotKey}`) === "ready");
+                        const savedTitle = notionItem ? notionItem.title : (localStorage.getItem(`title-${slotKey}`) || "");
+                        
+                        const slotDiv = document.createElement("div");
+                        slotDiv.className = "content-slot";
+                        if (slotIdx > 0) {
+                            slotDiv.style.borderTop = "1px dashed var(--border-light)";
+                            slotDiv.style.paddingTop = "5px";
+                        }
+                        slotDiv.style.marginTop = "5px";
+                        
+                        slotDiv.innerHTML = `
+                            <div>
+                                <div class="post-type" style="display: flex; justify-content: space-between; font-size: 0.6rem;">
+                                    <span>${rule.type}</span>
+                                    <span style="opacity: 0.8; font-weight: normal;">${rule.time}</span>
+                                </div>
+                                <div class="post-title-container">
+                                    <div class="post-title ${savedTitle ? '' : 'placeholder'}" id="title-display-${slotKey}" ${notionItem ? '' : `onclick="startEditTitle('${slotKey}')"`} style="font-size: 0.7rem;">
+                                        ${savedTitle || "Click to add topic..."} ${notionItem ? `<span style="font-size: 0.55rem; opacity: 0.8; font-weight: bold; display: block; margin-top: 2px; color: var(--border-color);">🤖 [${notionItem.notion_status}]</span>` : ''}
+                                    </div>
+                                    <input type="text" class="post-title-input" id="title-input-${slotKey}" value="${savedTitle}" style="display: none; font-size: 0.7rem;" onblur="finishEditTitle('${slotKey}')" onkeydown="handleTitleKey(event, '${slotKey}')">
+                                </div>
+                            </div>
+                            <button class="status-toggle ${isReady ? 'ready' : 'missing'}" id="status-btn-${slotKey}" ${notionItem ? 'disabled style="cursor: not-allowed; opacity: 0.8; padding: 3px; font-size: 0.6rem;"' : `onclick="toggleStatus('${slotKey}')" style="padding: 3px; font-size: 0.6rem;"`}>
+                                ${isReady ? 'READY' : 'MISSING ASSETS'}
+                            </button>
+                        `;
+                        cell.appendChild(slotDiv);
+                    });
+                }
+
+                grid.appendChild(cell);
+            }
+
+            // 4. Fill in remaining cells at the end of the grid to make complete rows
+            const totalCells = paddingCount + mData.days;
+            const remaining = (7 - (totalCells % 7)) % 7;
+            for (let i = 0; i < remaining; i++) {
+                const padCell = document.createElement("div");
+                padCell.className = "day-cell empty";
+                grid.appendChild(padCell);
+            }
+
+            // Render header text
+            document.getElementById('active-month-title').textContent = `${mData.name} 2026`;
+            
+            // Calculate and display stats
+            updateActiveMonthStats();
+            updateCombinedStats();
+        }
+
+        // Edit Topic Title functionality
+        function startEditTitle(dateKey) {
+            const display = document.getElementById(`title-display-${dateKey}`);
+            const input = document.getElementById(`title-input-${dateKey}`);
+            
+            display.style.display = "none";
+            input.style.display = "block";
+            input.focus();
+            input.select();
+        }
+
+        function finishEditTitle(dateKey) {
+            const display = document.getElementById(`title-display-${dateKey}`);
+            const input = document.getElementById(`title-input-${dateKey}`);
+            const newTitle = input.value.trim();
+
+            if (newTitle) {
+                display.textContent = newTitle;
+                display.classList.remove("placeholder");
+                localStorage.setItem(`title-${dateKey}`, newTitle);
+            } else {
+                display.textContent = "Click to add topic...";
+                display.classList.add("placeholder");
+                localStorage.removeItem(`title-${dateKey}`);
+            }
+
+            input.style.display = "none";
+            display.style.display = "block";
+        }
+
+        function handleTitleKey(event, dateKey) {
+            if (event.key === "Enter") {
+                finishEditTitle(dateKey);
+            } else if (event.key === "Escape") {
+                const input = document.getElementById(`title-input-${dateKey}`);
+                input.value = localStorage.getItem(`title-${dateKey}`) || "";
+                finishEditTitle(dateKey);
+            }
+        }
+
+        // Toggle asset readiness status
+        function toggleStatus(dateKey) {
+            const btn = document.getElementById(`status-btn-${dateKey}`);
+            const currentStatus = localStorage.getItem(`status-${dateKey}`);
+            
+            if (currentStatus === "ready") {
+                localStorage.removeItem(`status-${dateKey}`);
+                btn.className = "status-toggle missing";
+                btn.textContent = "MISSING ASSETS";
+            } else {
+                localStorage.setItem(`status-${dateKey}`, "ready");
+                btn.className = "status-toggle ready";
+                btn.textContent = "READY";
+            }
+
+            updateActiveMonthStats();
+            updateCombinedStats();
+        }
+
+        // Calculate and update active month stats
+        function updateActiveMonthStats() {
+            const mData = MONTHS_CONFIG[currentMonthIndex];
+            let totalSlots = 0;
+            let readySlots = 0;
+
+            for (let dayNum = 1; dayNum <= mData.days; dayNum++) {
+                const dateObj = new Date(2026, currentMonthIndex, dayNum);
+                const weekdayIndex = dateObj.getDay();
+
+                if (POSTING_RULE[weekdayIndex]) {
+                    const rules = POSTING_RULE[weekdayIndex];
+                    rules.forEach(rule => {
+                        totalSlots++;
+                        const paddedMonth = String(currentMonthIndex + 1).padStart(2, '0');
+                        const paddedDay = String(dayNum).padStart(2, '0');
+                        const dateKey = `2026-${paddedMonth}-${paddedDay}`;
+                        const slotKey = `${dateKey}-${rule.time}`;
+                        
+                        const notionItem = typeof NOTION_CALENDAR_DATA !== 'undefined' ? NOTION_CALENDAR_DATA[slotKey] : null;
+                        const isReady = notionItem ? notionItem.status === "ready" : (localStorage.getItem(`status-${slotKey}`) === "ready");
+                        if (isReady) {
+                            readySlots++;
+                        }
+                    });
+                }
+            }
+
+            const percent = totalSlots > 0 ? Math.round((readySlots / totalSlots) * 100) : 0;
+            
+            // Update stats text
+            document.getElementById('active-month-stats').textContent = `READY: ${readySlots}/${totalSlots} (${percent}%)`;
+            
+            // Update active month progress bar
+            document.getElementById('active-month-bar-label').textContent = `${mData.name} 2026 PACING RATE`;
+            document.getElementById('active-month-bar-percent').textContent = `${percent}%`;
+            document.getElementById('active-month-progress-fill').style.width = `${percent}%`;
+        }
+
+        // Calculate and update overall yearly stability progress
+        function updateCombinedStats() {
+            let totalSlots = 0;
+            let readySlots = 0;
+
+            MONTHS_CONFIG.forEach((month, mIndex) => {
+                for (let dayNum = 1; dayNum <= month.days; dayNum++) {
+                    const dateObj = new Date(2026, mIndex, dayNum);
+                    const weekdayIndex = dateObj.getDay();
+
+                    if (POSTING_RULE[weekdayIndex]) {
+                        const rules = POSTING_RULE[weekdayIndex];
+                        rules.forEach(rule => {
+                            totalSlots++;
+                            const paddedMonth = String(mIndex + 1).padStart(2, '0');
+                            const paddedDay = String(dayNum).padStart(2, '0');
+                            const dateKey = `2026-${paddedMonth}-${paddedDay}`;
+                            const slotKey = `${dateKey}-${rule.time}`;
+                            
+                            const notionItem = typeof NOTION_CALENDAR_DATA !== 'undefined' ? NOTION_CALENDAR_DATA[slotKey] : null;
+                            const isReady = notionItem ? notionItem.status === "ready" : (localStorage.getItem(`status-${slotKey}`) === "ready");
+                            if (isReady) {
+                                readySlots++;
+                            }
+                        });
+                    }
+                }
+            });
+
+            const percent = totalSlots > 0 ? Math.round((readySlots / totalSlots) * 100) : 0;
+            document.getElementById('combined-bar-percent').textContent = `${percent}%`;
+            document.getElementById('combined-progress-fill').style.width = `${percent}%`;
+        }
+
+        // Reset all client pacing data for the whole year
+        function resetAllData() {
+            if (confirm("คุณแน่ใจนะแกที่จะรีเซ็ตข้อมูลความพร้อมวัตถุดิบทั้งหมดของทั้งปี 2026? ข้อมูลที่กรอกไว้ทั้งหมดจะหายเกลี้ยงเลยนะ!")) {
+                Object.keys(localStorage).forEach(key => {
+                    if (key.startsWith("status-2026-") || key.startsWith("title-2026-")) {
+                        localStorage.removeItem(key);
+                    }
+                });
+                
+                // Re-render
+                renderCalendar();
+                alert("รีเซ็ตข้อมูลตารางงานปี 2026 เรียบร้อยแล้วแก! 🧹");
+            }
+        }
+
+        // Initialize App
+        // Auto-sync from Notion Live API (if served from local python server)
+        async function fetchNotionData() {
+            try {
+                const response = await fetch('/api/notion_data');
+                if (response.ok) {
+                    const data = await response.json();
+                    window.NOTION_CALENDAR_DATA = data;
+                    renderCalendar();
+                    console.log("LIVE SYNC: ดึงข้อมูลจาก Notion สำเร็จแก!");
+                }
+            } catch (e) {
+                // Ignore errors if run as file:// without local server
+            }
+        }
+
+        window.onload = function() {
+            renderMonthTabs();
+            renderCalendar();
+            
+            // Start Live Sync check
+            fetchNotionData();
+            // Check every 30 seconds
+            setInterval(fetchNotionData, 30000);
+        }
+    </script>
+</body>
+</html>

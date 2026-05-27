@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.pyc
+venv/
+
+# Environment and Secrets (IMPORTANT)
+.env
+token*.json
+client_secret.json
+credentials/
+
+# OS files
+.DS_Store
+
+# Logs
+*.log
+
+# Large binary / generated files
+knowledge_base/
+*.wav
+*.mp3
+*.sqlite3
+pdf_extracted_text.txt
+nam_first_ideas.txt
+history_data.js
+spam_filter.log
+sync_output.log
+grab_automation_log.log

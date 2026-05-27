@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="th" class="light-theme">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🦉 VEDA CONTROL HUB - CELESTIAL BEING</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="home_style.css">
+    
+    <!-- Immediate Head Theme Loader to prevent FOUC -->
+    <script>
+        (function() {
+            let savedTheme = 'light';
+            try {
+                savedTheme = localStorage.getItem('wtj-theme') || 'light';
+            } catch (e) {}
+            document.documentElement.className = savedTheme + '-theme';
+        })();
+    </script>
+</head>
+<body class="light-theme">
+
+    <!-- Grid Backdrops -->
+    <div class="blueprint-grid"></div>
+    <div class="scanlines"></div>
+
+    <div class="command-container">
+        
+        <!-- Tactical Header -->
+        <header class="tactical-header">
+            <div class="title-block">
+                <h1>VEDA CONTROL HUB</h1>
+                <div class="subtitle">CELESTIAL BEING OPERATION TERMINAL</div>
+            </div>
+            
+            <div class="header-right">
+                <div class="status-readout">
+                    <span class="status-dot"></span>
+                    <span class="status-text">VEDA ONLINE</span>
+                </div>
+                <div class="clock-display" id="system-clock">00:00:00</div>
+                
+                <!-- 3-Mode Theme Switcher -->
+                <div class="theme-switcher-container">
+                    <span class="theme-switcher-label">INTERFACE MODE</span>
+                    <div class="theme-switcher">
+                        <button class="theme-btn active" id="theme-btn-light" onclick="setTheme('light')">PTOL. LIGHT</button>
+                        <button class="theme-btn" id="theme-btn-dark" onclick="setTheme('dark')">FLAT DARK</button>
+                        <button class="theme-btn" id="theme-btn-color" onclick="setTheme('color')">NEON DARK</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Info Ticker -->
+        <div class="info-ticker">
+            <span class="ticker-label">SYSTEM MESSAGE:</span>
+            <div class="ticker-wrap">
+                <span class="ticker-text" id="ticker-status-text">INITIALIZING VEDA LINK DIRECT STREAM... ACTIVE CONSOLE SECURED.</span>
+            </div>
+        </div>
+
+        <!-- Layout Grid -->
+        <main class="dashboard-layout">
+            
+            <!-- COLUMN 1: Tactical HUD & Controls (Span 3/12 equivalent) -->
+            <div class="left-cockpit-deck">
+                
+                <!-- Spaceship Blueprint Card -->
+                <!-- VEDA Module Directory Card -->
+                <div class="bevel-wrapper">
+                    <div class="bevel-content">
+                        <div class="card-header">
+                            <span>VEDA MODULE DIRECTORY</span>
+                            <span class="alert-tag">SELECT MODE</span>
+                        </div>
+                        <div class="module-directory-body" style="padding: 15px 20px; display: flex; flex-direction: column; gap: 10px;">
+                            <div class="ship-section directory-item" data-section="bridge">
+                                <span class="directory-num">01</span>
+                                <span class="directory-name">BRIDGE / WORKFLOW COMMAND</span>
+                            </div>
+                            <div class="ship-section directory-item" data-section="engine">
+                                <span class="directory-num">02</span>
+                                <span class="directory-name">GN DRIVE / CONTENT CORE</span>
+                            </div>
+                            <div class="ship-section directory-item" data-section="briefing">
+                                <span class="directory-num">03</span>
+                                <span class="directory-name">BRIEFING DECK / TIMELINE</span>
+                            </div>
+                            <div class="ship-section directory-item" data-section="veda">
+                                <span class="directory-num">04</span>
+                                <span class="directory-name">VEDA CORE / DATABASE</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HUD Detail Console Card -->
+                <div class="bevel-wrapper hud-panel">
+                    <div class="bevel-content" style="display: flex; flex-direction: column; height: 100%;">
+                        <div class="card-header">
+                            <span>HUD DETAIL CONSOLE</span>
+                            <span class="alert-tag standby" id="hud-status-tag">STANDBY</span>
+                        </div>
+                        <div class="hud-monitor" id="hud-monitor-box" style="flex-grow: 1; border: none; padding: 15px 20px; background: transparent; height: 200px;">
+                            <div class="hud-placeholder">
+                                <p class="hud-title-large">VEDA LINK</p>
+                                <p class="hud-desc-large">SELECT CODES / HOVER SHIP MODULE TO INJECT DIRECT DATA STREAM</p>
+                                <div class="hud-pulse-ring"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- System Mode Buttons -->
+                <div class="bevel-wrapper">
+                    <div class="bevel-content">
+                        <div class="tactical-btn-group" style="padding: 20px;">
+                            <button class="tactical-btn" id="btn-mode-1">
+                                <span>STABLE MODE 01</span>
+                                <span class="btn-status-indicator"></span>
+                            </button>
+                            <button class="tactical-btn" id="btn-mode-2">
+                                <span>GLOBAL MONITOR 02</span>
+                                <span class="btn-status-indicator"></span>
+                            </button>
+                            <button class="tactical-btn" id="btn-mode-3">
+                                <span>NEURAL STREAM 03</span>
+                                <span class="btn-status-indicator"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- COLUMN 2: Command & Timeline (Span 6/12 equivalent) -->
+            <div class="main-console">
+                
+                <!-- Section 01: Bridge Status & Active Node -->
+                <div class="bevel-wrapper">
+                    <div class="bevel-content">
+                        <div class="card-header">
+                            <span>SECTION 01: BRIDGE STATUS CONSOLE</span>
+                            <span class="alert-tag">MONITOR</span>
+                        </div>
+                        <div class="card-body" style="padding: 15px 20px 20px 20px;">
+                            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 15px;">
+                                <div class="telemetry-item" style="border: 1px solid var(--border-color); padding: 10px; flex-direction: column; align-items: flex-start; gap: 5px;">
+                                    <span class="telemetry-label" style="font-size: 0.75rem;">ACTIVE NODE</span>
+                                    <span class="telemetry-value" id="bridge-active-node" style="font-family: 'Share Tech Mono', monospace; font-size: 1.2rem; font-weight: bold; text-transform: uppercase;">IDLE</span>
+                                </div>
+                                <div class="telemetry-item" style="border: 1px solid var(--border-color); padding: 10px; flex-direction: column; align-items: flex-start; gap: 5px;">
+                                    <span class="telemetry-label" style="font-size: 0.75rem;">SYNC STATE</span>
+                                    <span class="telemetry-value green" style="font-family: 'Share Tech Mono', monospace; font-size: 1.2rem; font-weight: bold;">STABLE (100%)</span>
+                                </div>
+                                <div class="telemetry-item" style="border: 1px solid var(--border-color); padding: 10px; flex-direction: column; align-items: flex-start; gap: 5px;">
+                                    <span class="telemetry-label" style="font-size: 0.75rem;">LAST UPDATE</span>
+                                    <span class="telemetry-value" id="bridge-last-updated" style="font-family: 'Share Tech Mono', monospace; font-size: 0.85rem; font-weight: bold;">2026-05-25 15:06:21</span>
+                                </div>
+                            </div>
+                            <div style="border: 1px solid var(--border-color); padding: 12px; background: rgba(0,0,0,0.02); display: flex; flex-direction: column; gap: 8px;">
+                                <div style="font-family: 'Share Tech Mono', monospace; font-size: 0.8rem; color: var(--text-muted);">LATEST COMPLETED ARTIFACT:</div>
+                                <div id="bridge-artifact-link" style="font-weight: bold; font-size: 0.9rem;">
+                                    <a href="#" style="color: var(--text-primary); text-decoration: underline;">Loading artifact...</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- System Command Log Stream - Terminal UI -->
+                <div class="bevel-wrapper">
+                    <div class="bevel-content">
+                        <div class="card-header">
+                            <span>SYSTEM COMMAND LOG STREAM</span>
+                            <span class="alert-tag">LIVE DIAGNOSTICS</span>
+                        </div>
+                        <div class="card-body" style="padding: 15px 20px 20px 20px;">
+                            <div class="terminal-monitor" id="terminal-monitor" style="height: 180px;">
+                                <!-- Live logs injected here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 03: Briefing & Notion Calendar Timeline -->
+                <div class="bevel-wrapper">
+                    <div class="bevel-content">
+                        <div class="card-header">
+                            <span>SECTION 03: NOTION CALENDAR TIMELINE</span>
+                            <span class="alert-tag">SCHEDULE</span>
+                        </div>
+                        <div class="card-body" style="padding: 15px 20px 20px 20px;">
+                            <!-- Responsive Calendar Timeline Container -->
+                            <div class="timeline-container" id="timeline-container">
+                                <!-- Grouped Timeline items will be injected here via JS -->
+                                <div style="text-align: center; padding: 20px; font-family: 'Share Tech Mono', monospace; color: var(--text-muted);">
+                                    PROCESSING TIMELINE SCHEMA...
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- COLUMN 3: Telemetry & Database (Span 3/12 equivalent) -->
+            <div class="side-console">
+                
+                <!-- Section 02: GN Drive Telemetry Widget -->
+                <div class="bevel-wrapper">
+                    <div class="bevel-content">
+                        <div class="card-header">
+                            <span>SECTION 02: GN DRIVE TELEMETRY</span>
+                            <span class="alert-tag">CORE POWER</span>
+                        </div>
+                        <div class="card-body" style="padding: 15px 20px 20px 20px;">
+                            <div class="telemetry-row">
+                                <div class="telemetry-item">
+                                    <span class="telemetry-label">TRANS-AM PACING:</span>
+                                    <span class="telemetry-value green" id="telemetry-transam" style="font-weight: bold;">READY</span>
+                                </div>
+                                <div class="telemetry-item">
+                                    <span class="telemetry-label">CONTENT OUTPUT:</span>
+                                    <span class="telemetry-value" id="telemetry-output" style="font-weight: bold;">128 FILES</span>
+                                </div>
+                                <div class="telemetry-item">
+                                    <span class="telemetry-label">WEEKLY CTR AVG:</span>
+                                    <span class="telemetry-value" id="telemetry-ctr" style="font-weight: bold;">8.42%</span>
+                                </div>
+                            </div>
+                            <!-- Simulation telemetry bars -->
+                            <div style="margin-top: 15px; display: flex; flex-direction: column; gap: 10px;">
+                                <div class="progress-bar-container">
+                                    <div class="progress-header">
+                                        <span>CPU STREAM LOAD</span>
+                                        <span id="telemetry-cpu">52.4%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" id="annual-stability-fill" style="width: 0%;"></div>
+                                    </div>
+                                </div>
+                                <div class="progress-bar-container">
+                                    <div class="progress-header">
+                                        <span>MEMORY BUFFER ALLOC</span>
+                                        <span id="telemetry-mem">10.8 GB</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" id="active-month-fill" style="width: 0%;"></div>
+                                    </div>
+                                </div>
+                                <div class="progress-bar-container">
+                                    <div class="progress-header">
+                                        <span>GN CONCENTRATION RATE</span>
+                                        <span id="telemetry-gn">98.42%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" id="gn-concentration-fill" style="width: 98.42%; background: var(--progress-fill-bg);"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 04: Hangar & Database Links -->
+                <div class="bevel-wrapper">
+                    <div class="bevel-content">
+                        <div class="card-header">
+                            <span>SECTION 04: HANGAR PORTAL</span>
+                            <span class="alert-tag">DATABASE LINKS</span>
+                        </div>
+                        <div class="card-body" style="padding: 15px 20px 20px 20px; display: flex; flex-direction: column; gap: 10px;">
+                            <a href="graph_view.html" class="tactical-btn">
+                                <span>OBSIDIAN KNOWLEDGE GRAPH</span>
+                                <span class="btn-status-indicator"></span>
+                            </a>
+                            <a href="knowledge_dashboard.html" class="tactical-btn">
+                                <span>KNOWLEDGE BASE MANAGER</span>
+                                <span class="btn-status-indicator"></span>
+                            </a>
+                            <a href="wtj_calendar_dashboard.html" class="tactical-btn">
+                                <span>WTJ CALENDAR DASHBOARD</span>
+                                <span class="btn-status-indicator"></span>
+                            </a>
+                            <a href="https://docs.google.com/spreadsheets/d/1yWxTiVglJsWhVBSlB7UPu7MXGRQ_vti5IjqxWTCFJK0/edit?usp=sharing" target="_blank" class="tactical-btn">
+                                <span>CRYPTO PORTFOLIO SHEET</span>
+                                <span class="btn-status-indicator"></span>
+                            </a>
+                            <a href="https://docs.google.com/spreadsheets/d/1Uhpj9avRUogJLE6pplkhNsMvTgYFLtX93vqe5CPNjE0/edit?usp=sharing" target="_blank" class="tactical-btn">
+                                <span>GRAB REVENUE SHEET</span>
+                                <span class="btn-status-indicator"></span>
+                            </a>
+                            <a href="https://docs.google.com/spreadsheets/d/1YkKiRQ0eRzH9gMr-wM8TwfLv8BdTxoT04GSruG9aQ9s/edit?usp=sharing" target="_blank" class="tactical-btn">
+                                <span>SAVINGS ACCOUNT SHEET</span>
+                                <span class="btn-status-indicator"></span>
+                            </a>
+                            <button class="tactical-btn emergency" id="btn-emergency">
+                                <span>EMERGENCY INTERRUPT</span>
+                                <span class="btn-status-indicator"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Crypto PnL History - Table Only -->
+                <div class="bevel-wrapper">
+                    <div class="bevel-content">
+                        <div class="card-header">
+                            <span>CRYPTO PORTFOLIO TELEMETRY</span>
+                            <span class="alert-tag">TELEMETRY</span>
+                        </div>
+                        <div class="card-body" style="padding: 15px 20px 20px 20px;">
+                            <div style="overflow-x: auto;">
+                                <table style="width: 100%; border-collapse: collapse; font-family: 'Share Tech Mono', monospace; font-size: 0.75rem; text-align: right;">
+                                    <thead>
+                                        <tr style="border-bottom: 1.5px solid var(--border-color); color: var(--text-muted);">
+                                            <th style="text-align: left; padding: 4px;">COIN</th>
+                                            <th style="padding: 4px;">จำนวนเหรียญที่มี</th>
+                                            <th style="padding: 4px;">ราคาปัจจุบัน</th>
+                                            <th style="padding: 4px;">% PNL</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="pnl-table-body">
+                                        <!-- Coins rows injected here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </main>
+
+        <!-- Tactical Footer -->
+        <footer>
+            <div>VEDA CONSOLE TERMINAL v4.81 // CELESTIAL BEING OPERATION GROUP</div>
+            <div style="font-size: 0.65rem; color: var(--text-muted); margin-top: 4px;">DATA SYNCHRONIZED DIRECTLY VIA OBSERVATION NODES</div>
+        </footer>
+
+    </div>
+
+    <!-- Data packages scripts -->
+    <script src="workflow_status.js"></script>
+    <script src="history_data.js"></script>
+    <script src="notion_calendar_data.js"></script>
+    <!-- Main behavior script -->
+    <script src="home_app.js"></script>
+</body>
+</html>

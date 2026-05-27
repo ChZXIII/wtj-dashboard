@@ -1,0 +1,27 @@
+# 🎬 Video Generation Prompts: WTJ Story Intro
+
+ชุดคำสั่งสำหรับนำไปป้อนให้ AI Video Generator (เช่น Google Veo, VideoFX หรือ Kling/Runway) เพื่อสร้างวิดีโออินโทรเท่ๆ สไตล์คริสโตเฟอร์ โนแลน (Nolan Style) เน้นงานแสงเงา คอนทราสต์จัด และอารมณ์ดราม่าลึกลับ
+
+---
+
+### ตัวเลือกที่ 1: ฟันเฟืองกลไกขับเคลื่อนโลก (The Machinery of Society)
+*แนวคิด: เปรียบเทียบ "อาชีพ" เหมือนฟันเฟืองลึกลับที่ช่วยขับเคลื่อนสังคมเบื้องหลัง*
+
+> **Prompt:**
+> A dramatic cinematic close-up of intricate, vintage metallic gears and clockwork machinery turning in slow motion inside a dark, atmospheric workshop. Intense volumetric lighting cutting through floating dust motes. Moody high-contrast shadows. Subtle red, green, and blue glowing energy lines pulse through the mechanical joints. Shot on 35mm anamorphic lens, IMAX style, dark slate color palette, cinematic dramatic tension, hyper-realistic detail. --ar 16:9
+
+---
+
+### ตัวเลือกที่ 2: ลำแสงปริศนาในห้องทำงานที่มืดมิด (The Abstract Light Portal)
+*แนวคิด: เน้นงานศิลป์แนว Abstract ลึกลับ มีลำแสงสีสันวิ่งผ่านห้องมืดเพื่อเปิดเผยตัวตน*
+
+> **Prompt:**
+> A slow forward camera dolly shot inside a moody, minimalist dark concrete room with smoke particles. Three distinct glowing neon light streaks in emerald green, sapphire blue, and ruby red swirl and dance together in the air. The light streaks collide at the center of the frame, creating a soft radial pulse and a bright horizontal light sweep that reveals white bold text on the dark wall. Volumetric lighting, high contrast, cinematic chiaroscuro, mysterious atmosphere, Christopher Nolan style. --ar 16:9
+
+---
+
+### ตัวเลือกที่ 3: ความหลากหลายของสตูดิโอทำงาน (Atmospheric Workspaces)
+*แนวคิด: ภาพตัดปะไวๆ ของสถานที่ทำงานต่างๆ ก่อนจะสวิทช์เข้าสู่โลโก้*
+
+> **Prompt:**
+> Cinematic fast-paced montage of diverse occupational environments: first, glowing welder sparks in a dark garage; second, blue neon lights reflecting on computer screens in a hacker's dark room; third, warm sunlight hitting floating dust in a quiet artist's studio. Extremely moody, dark aesthetic, close-up details of hands and tools working, atmospheric realism, cinematic lighting, 4k resolution, high-contrast grading. --ar 16:9

@@ -1,0 +1,1388 @@
+/* 🧑‍🎨 M — Home Portal CSS (Veda Theme Style) */
+
+:root {
+    /* --- Ptolemy Light Theme (Default) --- */
+    --bg-main: #f3f4f1;
+    --panel-bg: #ffffff;
+    --bg-card: #ffffff;
+    --terminal-bg: #e6e7e2;
+    --border-color: #111111;
+    --border-glow: rgba(0, 0, 0, 0);
+    
+    --neon-cyan: #111111; 
+    --neon-green: #555555;
+    --neon-yellow: #333333;
+    --neon-orange: #777777;
+    --neon-pink: #111111;
+    --text-primary: #111111;
+    --text-title: #111111;
+    --text-muted: #555555;
+    
+    --glow-cyan: none;
+    --glow-green: none;
+    --glow-panel: none;
+    --shadow-text: none;
+    --shadow: 4px 4px 0px #cccccc; /* Solid flat retro gray shadow */
+    --shadow-color: #cccccc;
+    --header-shadow: none;
+    --monitor-inner-shadow: none;
+    --progress-glow: none;
+    --card-header-bg: rgba(0, 0, 0, 0.03);
+    --btn-hover-bg: #111111;
+    --btn-hover-text: #ffffff;
+    
+    --svg-fill: transparent;
+    --svg-hover-fill: rgba(17, 17, 17, 0.05);
+    --svg-hover-stroke: #111111;
+    
+    --grid-color: rgba(0, 0, 0, 0.06);
+    --scanline-opacity: 0;
+    --blueprint-opacity: 0.8;
+
+    /* Design Review additions */
+    --tag-standby-bg: #111111;
+    --tag-standby-color: #ffffff;
+    --tag-active-bg: #555555;
+    --tag-active-color: #ffffff;
+    --glow-green-text: none;
+    --scrollbar-track: rgba(0, 0, 0, 0.03);
+    --scrollbar-thumb: rgba(17, 17, 17, 0.2);
+    --scrollbar-thumb-hover: rgba(17, 17, 17, 0.4);
+    --timeline-card-bg: rgba(0, 0, 0, 0.02);
+    --progress-track-bg: rgba(0, 0, 0, 0.05);
+    --progress-fill-bg: linear-gradient(90deg, #111111, #777777);
+    --pnl-positive: #111111;
+    --pnl-negative: #555555;
+
+    /* Background glows and borders */
+    --bg-glow-1: rgba(0, 0, 0, 0.01);
+    --bg-glow-2: rgba(0, 0, 0, 0.005);
+    --telemetry-border: rgba(0, 0, 0, 0.06);
+    --footer-border: rgba(0, 0, 0, 0.05);
+}
+
+html.dark-theme {
+    /* --- Veda Flat Dark Theme --- */
+    --bg-main: #13141d;
+    --panel-bg: #1b1c26;
+    --bg-card: #1b1c26;
+    --terminal-bg: #1e1f29;
+    --border-color: #e5e5e5;
+    --border-glow: rgba(0, 0, 0, 0);
+    
+    --neon-cyan: #e5e5e5;
+    --neon-green: #888888;
+    --neon-yellow: #777777;
+    --neon-orange: #aaaaaa;
+    --neon-pink: #cccccc;
+    --text-primary: #e5e5e5;
+    --text-title: #ffffff;
+    --text-muted: #9e9e9e;
+    
+    --glow-cyan: none;
+    --glow-green: none;
+    --glow-panel: none;
+    --shadow-text: none;
+    --shadow: 4px 4px 0px #050608; /* Solid flat retro shadow for dark mode */
+    --shadow-color: #050608;
+    --header-shadow: none;
+    --monitor-inner-shadow: none;
+    --progress-glow: none;
+    --card-header-bg: rgba(255, 255, 255, 0.03);
+    --btn-hover-bg: #e5e5e5;
+    --btn-hover-text: #1b1c26;
+    
+    --svg-fill: transparent;
+    --svg-hover-fill: rgba(255, 255, 255, 0.06);
+    --svg-hover-stroke: #ffffff;
+    
+    --grid-color: rgba(255, 255, 255, 0.06);
+    --scanline-opacity: 0;
+    --blueprint-opacity: 0.6;
+
+    /* Design Review additions */
+    --tag-standby-bg: #e5e5e5;
+    --tag-standby-color: #1b1c26;
+    --tag-active-bg: #888888;
+    --tag-active-color: #1b1c26;
+    --glow-green-text: none;
+    --scrollbar-track: rgba(255, 255, 255, 0.02);
+    --scrollbar-thumb: rgba(229, 229, 229, 0.15);
+    --scrollbar-thumb-hover: rgba(229, 229, 229, 0.3);
+    --timeline-card-bg: rgba(255, 255, 255, 0.02);
+    --progress-track-bg: rgba(255, 255, 255, 0.05);
+    --progress-fill-bg: linear-gradient(90deg, #ffffff, #888888);
+    --pnl-positive: #ffffff;
+    --pnl-negative: #888888;
+
+    /* Background glows and borders */
+    --bg-glow-1: rgba(255, 255, 255, 0.01);
+    --bg-glow-2: rgba(255, 255, 255, 0.005);
+    --telemetry-border: rgba(255, 255, 255, 0.06);
+    --footer-border: rgba(255, 255, 255, 0.05);
+}
+
+html.color-theme {
+    /* --- Veda Neon Dark Theme (Neon Grayscale mode) --- */
+    --bg-main: #05070a;
+    --panel-bg: #0b0d13;
+    --bg-card: #0b0d13;
+    --terminal-bg: #020305;
+    --border-color: #ffffff; /* Sharp white border */
+    --border-glow: rgba(255, 255, 255, 0.25);
+    
+    --neon-cyan: #ffffff; /* White highlights */
+    --neon-green: #cccccc; /* Light gray */
+    --neon-yellow: #888888; /* Medium gray */
+    --neon-orange: #aaaaaa; /* Medium-light gray */
+    --neon-pink: #dddddd; /* Very light gray */
+    --text-primary: #ffffff;
+    --text-title: #ffffff;
+    --text-muted: #888888;
+    
+    --glow-cyan: 0 0 12px rgba(255, 255, 255, 0.3);
+    --glow-green: 0 0 12px rgba(204, 204, 204, 0.2);
+    --glow-panel: 0 8px 32px 0 rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.05);
+    --shadow-text: 0 0 8px rgba(255, 255, 255, 0.4);
+    --shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+    --header-shadow: 0 4px 20px rgba(255, 255, 255, 0.08);
+    --monitor-inner-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+    --progress-glow: 0 0 8px rgba(255, 255, 255, 0.3);
+    --card-header-bg: rgba(255, 255, 255, 0.05);
+    --btn-hover-bg: #ffffff;
+    --btn-hover-text: #05070a;
+    
+    --svg-fill: transparent;
+    --svg-hover-fill: rgba(255, 255, 255, 0.08);
+    --svg-hover-stroke: #ffffff;
+    
+    --grid-color: rgba(255, 255, 255, 0.04);
+    --scanline-opacity: 0.25;
+    --blueprint-opacity: 0.9;
+
+    /* Design Review additions */
+    --tag-standby-bg: #ffffff;
+    --tag-standby-color: #05070a;
+    --tag-active-bg: #cccccc;
+    --tag-active-color: #05070a;
+    --glow-green-text: 0 0 5px rgba(204, 204, 204, 0.4);
+    --scrollbar-track: rgba(255, 255, 255, 0.02);
+    --scrollbar-thumb: rgba(255, 255, 255, 0.15);
+    --scrollbar-thumb-hover: rgba(255, 255, 255, 0.3);
+    --timeline-card-bg: rgba(255, 255, 255, 0.02);
+    --progress-track-bg: rgba(255, 255, 255, 0.05);
+    --progress-fill-bg: linear-gradient(90deg, #ffffff, #888888);
+    --pnl-positive: #ffffff;
+    --pnl-negative: #888888;
+
+    /* Background glows and borders */
+    --bg-glow-1: rgba(255, 255, 255, 0.03);
+    --bg-glow-2: rgba(255, 255, 255, 0.02);
+    --telemetry-border: rgba(255, 255, 255, 0.08);
+    --footer-border: rgba(255, 255, 255, 0.05);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+    padding: 30px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Blueprint Grid Background */
+.blueprint-grid {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
+    background-size: 50px 50px;
+    pointer-events: none;
+    z-index: -2;
+    opacity: var(--blueprint-opacity);
+    transition: opacity 0.25s ease;
+}
+
+.blueprint-grid::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 10% 20%, var(--bg-glow-1) 0%, transparent 40%),
+        radial-gradient(circle at 80% 80%, var(--bg-glow-2) 0%, transparent 40%);
+    pointer-events: none;
+    opacity: var(--scanline-opacity);
+    transition: opacity 0.25s ease;
+}
+
+/* CRT Scanline Effect Overlay */
+.scanlines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        rgba(18, 16, 16, 0) 50%, 
+        rgba(0, 0, 0, 0.25) 50%
+    );
+    background-size: 100% 4px;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: var(--scanline-opacity);
+    transition: opacity 0.25s ease;
+}
+
+/* 3-Mode Theme Selector */
+.theme-switcher-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+}
+
+.theme-switcher-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.theme-switcher {
+    display: flex;
+    gap: 2px;
+    border: 2px solid var(--border-color);
+    padding: 2px;
+    background: var(--panel-bg);
+}
+
+.theme-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    padding: 4px 10px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.25s ease;
+}
+
+.theme-btn.active {
+    background: var(--border-color);
+    color: var(--panel-bg);
+}
+
+/* Tactical Deck Control Buttons */
+.tactical-btn-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+}
+
+.tactical-btn {
+    background: var(--panel-bg);
+    border: 2px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 12px 18px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.85rem;
+    font-weight: bold;
+    text-align: left;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    border-radius: 6px;
+    transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-decoration: none;
+}
+
+.tactical-btn::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 0;
+    background: var(--btn-hover-text);
+    transition: width 0.15s ease-out;
+    z-index: 1;
+}
+
+.tactical-btn:hover::before {
+    width: 4px;
+}
+
+.tactical-btn > * {
+    position: relative;
+    z-index: 2;
+}
+
+.tactical-btn:hover {
+    background: var(--btn-hover-bg);
+    color: var(--btn-hover-text);
+    transform: translate(-1px, -1px);
+}
+
+.tactical-btn:active {
+    transform: translate(1px, 1px);
+    box-shadow: none; /* Shadow disappears when pressed down */
+}
+
+/* Specific warning button style (Hazard Stripes Red-White Retro) */
+.tactical-btn.emergency {
+    border-color: #d32f2f;
+    color: #ffffff !important;
+    background: #d32f2f;
+    text-shadow: none;
+    box-shadow: var(--shadow);
+}
+
+.dark-theme .tactical-btn.emergency,
+.color-theme .tactical-btn.emergency {
+    border-color: #ff5252;
+    color: #ffffff !important;
+    background: #ff5252;
+}
+
+.tactical-btn.emergency:hover {
+    filter: brightness(1.15);
+    background: #d32f2f;
+    color: #ffffff !important;
+}
+
+.tactical-btn .btn-status-indicator {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--border-color);
+    transition: background-color 0.2s;
+}
+
+.tactical-btn:hover .btn-status-indicator {
+    background-color: var(--btn-hover-text);
+}
+
+.tactical-btn.emergency .btn-status-indicator {
+    background-color: #111111;
+}
+
+.tactical-btn.emergency:hover .btn-status-indicator {
+    background-color: #000000;
+}
+
+/* Double Layer Bevel Corner Wrappers replaced with Rounded Corners */
+.bevel-wrapper {
+    position: relative;
+    background-color: var(--bg-card);
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    transition: background-color 0.25s ease-out, box-shadow 0.25s ease-out, border-color 0.25s ease-out;
+}
+
+.bevel-content {
+    background-color: transparent;
+    color: var(--text-primary);
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    transition: background-color 0.25s ease-out, color 0.25s ease-out;
+}
+
+/* Main Container */
+.command-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    z-index: 1;
+}
+
+/* Tactical Header */
+.tactical-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--neon-cyan);
+    padding-bottom: 15px;
+    box-shadow: var(--header-shadow, none);
+    position: relative;
+}
+
+.tactical-header::after {
+    content: "";
+    position: absolute;
+    bottom: -5px;
+    right: 0;
+    width: 20px;
+    height: 8px;
+    background-color: var(--neon-green);
+    box-shadow: var(--glow-green);
+}
+
+.title-block h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 900;
+    letter-spacing: 4px;
+    color: var(--text-title);
+    text-shadow: var(--shadow-text);
+}
+
+.title-block .subtitle {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--neon-cyan);
+    letter-spacing: 3px;
+    margin-top: 5px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-family: 'Share Tech Mono', monospace;
+}
+
+.status-readout {
+    background: var(--card-header-bg);
+    border: 1px solid var(--border-color);
+    padding: 6px 12px;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--neon-green);
+    box-shadow: var(--glow-green);
+    animation: blink 2s infinite;
+}
+
+.clock-display {
+    font-size: 1.1rem;
+    color: var(--neon-cyan);
+    border-left: 2px solid var(--border-color);
+    padding-left: 20px;
+    min-width: 90px;
+}
+
+/* Info Ticker (Fixed Overlap Bug) */
+.info-ticker {
+    background: var(--panel-bg);
+    border: 2px solid var(--border-color);
+    padding: 8px 15px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    box-shadow: var(--shadow);
+}
+
+.ticker-label {
+    color: var(--neon-yellow);
+    font-weight: bold;
+    margin-right: 15px;
+    flex-shrink: 0;
+    z-index: 2;
+    background: var(--panel-bg);
+    padding-right: 10px;
+}
+
+.ticker-wrap {
+    overflow: hidden;
+    width: 100%;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    z-index: 1;
+}
+
+.ticker-text {
+    display: inline-block;
+    padding-left: 100%;
+    color: var(--text-muted);
+    animation: marquee 25s linear infinite;
+}
+
+/* Layout Grid */
+.dashboard-layout {
+    display: grid;
+    grid-template-columns: 240px 1.3fr 1fr;
+    gap: 25px;
+}
+
+.left-cockpit-deck {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+/* Left Area: Main Console */
+.main-console {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+/* Tactical Panel Cards */
+.panel-card {
+    background: var(--panel-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 0;
+    box-shadow: var(--shadow);
+    position: relative;
+}
+
+/* Technical Corner Markings */
+.panel-card::before {
+    content: "";
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 8px;
+    height: 8px;
+    border-top: 2px solid var(--border-color);
+    border-left: 2px solid var(--border-color);
+    pointer-events: none;
+}
+
+.panel-card::after {
+    content: "";
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    width: 8px;
+    height: 8px;
+    border-bottom: 2px solid var(--border-color);
+    border-right: 2px solid var(--border-color);
+    pointer-events: none;
+}
+
+.card-header {
+    background: var(--card-header-bg, rgba(0, 0, 0, 0.03));
+    border-bottom: 1.5px solid var(--border-color);
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 1px;
+}
+
+.card-header .alert-tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    background: var(--neon-cyan);
+    color: var(--panel-bg);
+    padding: 2px 8px;
+    font-weight: bold;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+/* Spaceship Blueprint Container */
+.blueprint-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+    overflow: hidden;
+}
+
+.blueprint-wrapper {
+    width: 100%;
+    max-width: 800px;
+    height: auto;
+}
+
+.spaceship-blueprint {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* SVG Blueprint Section Styling */
+.ship-section-link {
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.ship-section {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.section-shape {
+    fill: var(--svg-fill, transparent);
+    stroke: var(--border-color);
+    stroke-width: 1px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.num-box {
+    fill: var(--panel-bg);
+    stroke: var(--border-color);
+    stroke-width: 1;
+    transition: all 0.3s;
+}
+
+.core-box {
+    fill: transparent;
+    stroke: var(--border-color);
+    stroke-dasharray: 2 2;
+    stroke-width: 1;
+    transition: all 0.3s;
+}
+
+.core-ring {
+    fill: none;
+    stroke: var(--border-color);
+    stroke-width: 1;
+    stroke-dasharray: 4 4;
+    transition: all 0.3s;
+}
+
+.core-inner {
+    fill: var(--border-color);
+    transition: all 0.3s;
+}
+
+/* SVG Text Labels Styling */
+.section-label-num {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    font-weight: bold;
+    fill: var(--text-primary);
+    text-anchor: middle;
+}
+
+.section-label-title {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    font-weight: bold;
+    fill: var(--text-primary);
+    letter-spacing: 1px;
+}
+
+.section-label-sub {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 8px;
+    fill: var(--text-muted);
+    letter-spacing: 0.5px;
+}
+
+/* Hover States under different Themes */
+.ship-section:hover .section-shape {
+    fill: var(--svg-hover-fill);
+    stroke: var(--svg-hover-stroke);
+}
+
+.ship-section:hover .num-box {
+    fill: var(--svg-hover-stroke);
+    stroke: var(--svg-hover-stroke);
+}
+
+.ship-section:hover .section-label-num {
+    fill: var(--panel-bg);
+}
+
+.ship-section:hover .section-label-title {
+    fill: var(--svg-hover-stroke);
+}
+
+.ship-section:hover .core-box {
+    fill: var(--svg-hover-fill);
+    stroke: var(--svg-hover-stroke);
+}
+
+.ship-section:hover .core-ring {
+    stroke: var(--svg-hover-stroke);
+    animation: spin 8s linear infinite;
+    transform-origin: 560px 250px;
+}
+
+.ship-section:hover .core-inner {
+    fill: var(--svg-hover-stroke);
+}
+
+/* Theme overrides for hover glows */
+.color-theme .ship-section:hover .section-shape {
+    fill: rgba(0, 240, 255, 0.12);
+    filter: drop-shadow(0 0 8px rgba(0, 240, 255, 0.5));
+}
+.color-theme .ship-section:hover .num-box {
+    filter: drop-shadow(0 0 5px var(--neon-cyan));
+}
+.color-theme .ship-section:hover .core-box {
+    filter: drop-shadow(0 0 8px rgba(57, 255, 20, 0.4));
+}
+
+/* HUD detailed display style */
+.hud-panel {
+    flex-grow: 1;
+}
+
+.hud-monitor {
+    background: var(--terminal-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 0;
+    height: 250px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: var(--text-primary);
+    overflow-y: auto;
+    position: relative;
+    box-shadow: var(--monitor-inner-shadow, none);
+}
+
+.hud-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 15px;
+    opacity: 0.6;
+}
+
+.hud-title-large {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 900;
+    letter-spacing: 3px;
+    color: var(--neon-cyan);
+    text-shadow: var(--glow-cyan);
+}
+
+.hud-desc-large {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    max-width: 250px;
+}
+
+.hud-pulse-ring {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--neon-cyan);
+    border-radius: 50%;
+    animation: radar-pulse 2s infinite;
+}
+
+/* Active HUD telemetry info style */
+.hud-active-content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    height: 100%;
+}
+
+.hud-header {
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 8px;
+    margin-bottom: 5px;
+}
+
+.hud-module-num {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--neon-yellow);
+    font-weight: bold;
+}
+
+.hud-module-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-title);
+    letter-spacing: 1px;
+}
+
+.hud-desc {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+}
+
+.hud-stats-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8rem;
+    margin-top: 5px;
+}
+
+.hud-stats-item {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.05);
+    padding-bottom: 4px;
+}
+
+.hud-stats-label {
+    color: var(--text-muted);
+}
+
+.hud-stats-value {
+    color: var(--neon-cyan);
+}
+
+.hud-stats-value.online {
+    color: var(--neon-green);
+}
+
+.hud-btn {
+    align-self: flex-start;
+    margin-top: auto;
+    background: transparent;
+    border: 1px solid var(--neon-cyan);
+    color: var(--neon-cyan);
+    padding: 6px 15px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8rem;
+    cursor: pointer;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: all 0.25s ease;
+}
+
+.hud-btn:hover {
+    background: var(--neon-cyan);
+    color: var(--panel-bg);
+    box-shadow: var(--glow-cyan);
+}
+
+/* Animations */
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes radar-pulse {
+    0% { transform: scale(0.8); opacity: 1; }
+    100% { transform: scale(2.2); opacity: 0; }
+}
+
+/* Right Side: Telemetry & Radar */
+.side-console {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+/* Telemetry Widgets */
+.telemetry-row {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.telemetry-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.85rem;
+    border-bottom: 1px dashed var(--telemetry-border);
+    padding-bottom: 8px;
+}
+
+.telemetry-label {
+    color: var(--text-muted);
+}
+
+.telemetry-value {
+    color: var(--neon-cyan);
+}
+
+.telemetry-value.green {
+    color: var(--neon-green);
+    text-shadow: var(--glow-green-text, none);
+}
+
+/* Progress bar style */
+.progress-bar-container {
+    margin-top: 5px;
+}
+
+.progress-header {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    margin-bottom: 4px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: var(--progress-track-bg, rgba(0, 0, 0, 0.05));
+    border: 2px solid var(--border-color);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--progress-fill-bg, linear-gradient(90deg, #111111, #777777));
+    box-shadow: var(--progress-glow, none);
+    width: 0%;
+    transition: width 1.5s ease-out;
+}
+
+/* Agent deployment grid */
+.agent-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.agent-status-card {
+    background: rgba(10, 15, 24, 0.4);
+    border: 1px solid rgba(0, 240, 255, 0.08);
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    border-radius: 2px;
+}
+
+.agent-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+}
+
+.agent-name {
+    font-weight: bold;
+    color: var(--text-title);
+}
+
+.agent-pill {
+    padding: 1px 5px;
+    font-size: 0.65rem;
+    border-radius: 2px;
+}
+
+.agent-pill.online {
+    background: rgba(57, 255, 20, 0.1);
+    border: 1px solid var(--neon-green);
+    color: var(--neon-green);
+}
+
+.agent-role {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+}
+
+/* Vector Radar Widget */
+.radar-panel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 15px 0;
+}
+
+.vector-radar {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 240, 255, 0.15);
+    position: relative;
+    overflow: hidden;
+    background: radial-gradient(circle, rgba(0, 240, 255, 0.02) 20%, transparent 70%);
+}
+
+.vector-radar::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: rgba(0, 240, 255, 0.15);
+}
+
+.vector-radar::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 1px;
+    height: 100%;
+    background: rgba(0, 240, 255, 0.15);
+}
+
+.radar-circle {
+    border-radius: 50%;
+    border: 1px dashed rgba(0, 240, 255, 0.1);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.radar-circle.c1 { width: 120px; height: 120px; }
+.radar-circle.c2 { width: 60px; height: 60px; }
+
+.radar-sweep {
+    position: absolute;
+    width: 50%;
+    height: 50%;
+    background: linear-gradient(45deg, rgba(0, 240, 255, 0.15), transparent);
+    transform-origin: bottom right;
+    top: 0;
+    left: 0;
+    animation: sweep 4s linear infinite;
+}
+
+.radar-blip {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--neon-cyan);
+    box-shadow: 0 0 10px var(--neon-cyan);
+    animation: pulse-blip 2s infinite;
+}
+
+/* Live Terminal Log */
+.terminal-card {
+    grid-column: span 3;
+}
+
+.terminal-monitor {
+    background: var(--terminal-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 0;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8rem;
+    height: 160px;
+    padding: 15px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    color: var(--text-primary);
+    box-shadow: var(--monitor-inner-shadow, none);
+}
+
+.terminal-line {
+    display: flex;
+    gap: 10px;
+    line-height: 1.4;
+}
+
+.terminal-time {
+    color: var(--text-muted);
+    flex-shrink: 0;
+}
+
+.terminal-tag {
+    color: var(--neon-yellow);
+    flex-shrink: 0;
+}
+
+.terminal-tag.sys { color: var(--neon-cyan); }
+.terminal-tag.grab { color: var(--neon-green); }
+.terminal-tag.crypto { color: var(--neon-orange); }
+
+.terminal-msg {
+    word-break: break-all;
+}
+
+/* Animations */
+@keyframes blink {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+}
+
+@keyframes marquee {
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(-100%, 0, 0); }
+}
+
+@keyframes sweep {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes pulse-blip {
+    0%, 100% { opacity: 0.2; transform: scale(0.8); }
+    50% { opacity: 1; transform: scale(1.2); }
+}
+
+/* Footer Section */
+footer {
+    text-align: center;
+    color: var(--text-muted);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid var(--footer-border);
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: var(--scrollbar-track, rgba(0, 0, 0, 0.05));
+}
+::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb, rgba(0, 0, 0, 0.2));
+    border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--scrollbar-thumb-hover, rgba(0, 0, 0, 0.35));
+}
+
+/* Notion Calendar Timeline Layout (Design Review fixes) */
+.timeline-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    position: relative;
+}
+@media (max-width: 768px) {
+    .timeline-columns {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+}
+.timeline-header-block {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.8rem;
+    font-weight: bold;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 8px;
+    margin-bottom: 15px;
+    color: var(--neon-cyan);
+}
+.timeline-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    border-left: 2px solid var(--border-color);
+    padding-left: 15px;
+    position: relative;
+}
+.timeline-item-card {
+    position: relative;
+    padding: 12px;
+    background: var(--timeline-card-bg, rgba(0, 0, 0, 0.01));
+    border: 1px solid var(--border-color);
+    transition: all 0.25s ease;
+}
+.timeline-item-card .timeline-card-date {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-bottom: 5px;
+}
+.timeline-item-card .timeline-card-title {
+    font-size: 0.8rem;
+    font-weight: bold;
+    line-height: 1.3;
+    margin-bottom: 8px;
+    word-break: break-word;
+}
+.timeline-item-card .timeline-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.timeline-item-card .timeline-card-badge {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    padding: 2px 6px;
+    text-transform: uppercase;
+}
+.timeline-item-card.status-published .timeline-card-badge {
+    background: var(--border-color);
+    color: var(--panel-bg);
+    font-weight: bold;
+    border: 1px solid var(--border-color);
+}
+.timeline-item-card.status-queued .timeline-card-badge {
+    background: transparent;
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    opacity: 0.7;
+}
+.timeline-item-card .timeline-card-status {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--text-muted);
+}
+
+
+/* Mobile Responsive */
+@media (max-width: 968px) {
+    .dashboard-layout {
+        grid-template-columns: 1fr;
+    }
+    .terminal-card {
+        grid-column: auto;
+    }
+    body {
+        padding: 15px;
+    }
+}
+
+/* Alert Tag States (Design Audit Fixes) */
+.alert-tag.active {
+    background: var(--tag-active-bg, #2e7d32) !important;
+    color: var(--tag-active-color, #ffffff) !important;
+}
+.alert-tag.standby {
+    background: var(--tag-standby-bg, #111111) !important;
+    color: var(--tag-standby-color, #ffffff) !important;
+}
+.alert-tag.emergency {
+    background: #d32f2f !important;
+    color: #ffffff !important;
+}
+
+/* Emergency HUD Console Content Styles */
+.hud-active-content.emergency {
+    border-color: #d32f2f !important;
+}
+.hud-active-content.emergency .hud-header {
+    border-bottom-color: rgba(211, 47, 47, 0.4) !important;
+}
+.hud-active-content.emergency .hud-module-num,
+.hud-active-content.emergency .hud-module-title {
+    color: #d32f2f !important;
+}
+.hud-active-content.emergency .hud-desc {
+    color: var(--text-primary) !important;
+}
+
+/* Timeline Tooltip Styles */
+#timeline-tooltip {
+    position: absolute;
+    background: var(--panel-bg);
+    border: 2px solid var(--border-color);
+    padding: 10px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    z-index: 1000;
+    display: none;
+    pointer-events: none;
+    box-shadow: var(--shadow);
+    max-width: 300px;
+    line-height: 1.4;
+}
+#timeline-tooltip .tooltip-header {
+    color: var(--neon-cyan);
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+#timeline-tooltip .tooltip-divider {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+    border-top: 1px dashed var(--border-color);
+    padding-top: 4px;
+}
+
+.timeline-item-card.hovered {
+    background: var(--card-header-bg) !important;
+    transform: translateX(2px) !important;
+}
+
+/* Module Directory List */
+.directory-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px 15px;
+    background: var(--terminal-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.directory-item:hover {
+    background: var(--btn-hover-bg);
+    color: var(--btn-hover-text);
+    border-color: var(--btn-hover-bg);
+    transform: translateX(4px);
+}
+.directory-num {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: var(--neon-cyan);
+    background: var(--bg-main);
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+}
+.directory-item:hover .directory-num {
+    background: var(--panel-bg);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+.directory-name {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+
+
+
