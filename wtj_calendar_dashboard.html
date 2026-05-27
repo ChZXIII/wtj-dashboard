@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <style>
         /* CSS Themes definition */
-        :root {
+        :root, html.light-theme, body.light-theme {
             /* Ptolemy Light Theme (Default) */
             --bg-color: #f3f4f1;
             --panel-bg: #ffffff;
@@ -28,7 +28,7 @@
             --grid-size: 30px;
         }
 
-        body.dark-theme {
+        html.dark-theme, body.dark-theme {
             /* Veda Flat Dark Theme */
             --bg-color: #13141d;
             --panel-bg: #1e1f29;
@@ -46,7 +46,7 @@
             --btn-hover-text: #1e1f29;
         }
 
-        body.color-theme {
+        html.color-theme, body.color-theme {
             /* Veda Neon Dark Theme */
             --bg-color: #0b0c10;
             --panel-bg: #12141c;
@@ -87,7 +87,7 @@
         }
 
         /* Subtle scanline overlay for color mode */
-        body.color-theme::after {
+        .color-theme::after {
             content: "";
             position: fixed;
             top: 0;
@@ -315,11 +315,11 @@
             text-transform: uppercase;
         }
 
-        body.dark-theme .weekday-header {
+        .dark-theme .weekday-header {
             background: rgba(255, 255, 255, 0.05);
         }
 
-        body.color-theme .weekday-header {
+        .color-theme .weekday-header {
             background: rgba(0, 255, 170, 0.08);
         }
 
@@ -340,11 +340,11 @@
             background: rgba(0, 0, 0, 0.02);
         }
 
-        body.dark-theme .day-cell.empty {
+        .dark-theme .day-cell.empty {
             background: rgba(255, 255, 255, 0.01);
         }
 
-        body.color-theme .day-cell.empty {
+        .color-theme .day-cell.empty {
             background: rgba(0, 255, 170, 0.01);
         }
 
@@ -362,7 +362,7 @@
             z-index: 10;
         }
 
-        body.color-theme .day-cell.today {
+        .color-theme .day-cell.today {
             background: rgba(0, 255, 170, 0.05);
             outline: 2px solid var(--border-color);
         }
@@ -407,11 +407,11 @@
             background-color: rgba(0, 0, 0, 0.02);
         }
 
-        body.dark-theme .post-title:hover {
+        .dark-theme .post-title:hover {
             background-color: rgba(255, 255, 255, 0.02);
         }
 
-        body.color-theme .post-title:hover {
+        .color-theme .post-title:hover {
             background-color: rgba(0, 255, 170, 0.05);
         }
 
@@ -529,11 +529,11 @@
             position: relative;
         }
 
-        body.dark-theme .progress-bar {
+        .dark-theme .progress-bar {
             background: rgba(255, 255, 255, 0.05);
         }
 
-        body.color-theme .progress-bar {
+        .color-theme .progress-bar {
             background: rgba(0, 255, 170, 0.05);
         }
 
@@ -591,11 +591,11 @@
             line-height: 1.3;
         }
 
-        body.dark-theme .info-table td {
+        .dark-theme .info-table td {
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        body.color-theme .info-table td {
+        .color-theme .info-table td {
             border-bottom: 1px solid rgba(0, 255, 170, 0.1);
         }
 
@@ -615,11 +615,11 @@
             border: 1px solid var(--border-light);
         }
 
-        body.dark-theme .instruction-box code {
+        .dark-theme .instruction-box code {
             background: rgba(255, 255, 255, 0.05);
         }
 
-        body.color-theme .instruction-box code {
+        .color-theme .instruction-box code {
             background: rgba(0, 255, 170, 0.1);
         }
 
@@ -906,6 +906,7 @@
         function setTheme(theme) {
             currentTheme = theme;
             document.body.className = `${theme}-theme`;
+            document.documentElement.className = `${theme}-theme`;
             localStorage.setItem('wtj-theme', theme);
             
             // Update active buttons style
