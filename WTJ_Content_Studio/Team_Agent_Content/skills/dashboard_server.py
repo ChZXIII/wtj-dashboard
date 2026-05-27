@@ -21,8 +21,9 @@ if current_dir not in sys.path:
     sys.path.append(current_dir)
 
 from notion_helper import NotionHelper
+import config
 
-HTML_DIR = os.path.join(PROJECT_ROOT, "Personal_Assistance_HQ", "Personal_Assistance_Team", "M", "html")
+HTML_DIR = config.LOCAL_DASHBOARD_DIR
 
 # Knowledge Base Paths
 KB_DIR = os.path.join(PROJECT_ROOT, "knowledge_base")
@@ -454,8 +455,9 @@ class DashboardHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
                 
                 # Extract title
                 title = "Untitled"
-                name_prop = properties.get("Name", {})
-                if name_prop.get("type") == "title" and name_prop.get("title"):
+                title_prop_name = notion.get_title_property_name()
+                name_prop = properties.get(title_prop_name, {})
+                if name_prop and name_prop.get("type") == "title" and name_prop.get("title"):
                     title = "".join([t.get("text", {}).get("content", "") for t in name_prop["title"]])
                     
                 # Extract Status name
@@ -496,12 +498,17 @@ class DashboardHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
                     "notion_status": status_name
                 }
             
-            # Write to static JS file for backup/fallback
-            target_js_path = os.path.join(HTML_DIR, "notion_calendar_data.js")
+            # Write to static JS file for backup/fallback in both directories
             js_content = f"// Generated automatically by WTJ Sync Agent\nconst NOTION_CALENDAR_DATA = {json.dumps(calendar_data, indent=4, ensure_ascii=False)};\n"
             
-            with open(target_js_path, "w", encoding="utf-8") as f:
-                f.write(js_content)
+            paths_to_save = [
+                os.path.join(config.LOCAL_DASHBOARD_DIR, "notion_calendar_data.js"),
+                os.path.join(config.GITHUB_DASHBOARD_DIR, "notion_calendar_data.js")
+            ]
+            for path in paths_to_save:
+                os.makedirs(os.path.dirname(path), exist_ok=True)
+                with open(path, "w", encoding="utf-8") as f:
+                    f.write(js_content)
                 
             # Send JSON response
             response_bytes = json.dumps(calendar_data, ensure_ascii=False).encode('utf-8')
