@@ -8,8 +8,8 @@
     <!-- Share Tech Mono and Inter Fonts for authentic tech/military blueprint feel -->
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <style>
-        :root, html.light-theme {
-            /* Default Fallback (Ptolemy Light Theme) */
+        /* CSS Theme variables — base default (light). JS will override on switch. */
+        :root {
             --bg-color: #f3f4f1;
             --panel-bg: #ffffff;
             --border-color: #111111;
@@ -25,42 +25,6 @@
             --btn-hover-bg: #111111;
             --btn-hover-text: #ffffff;
             --grid-size: 30px;
-        }
-
-        html.dark-theme {
-            /* Veda Flat Dark Theme */
-            --bg-color: #13141d;
-            --panel-bg: #1e1f29;
-            --border-color: #e5e5e5;
-            --border-light: #444444;
-            --text-color: #e5e5e5;
-            --text-muted: #888888;
-            --accent-red: #ff5252;
-            --accent-green: #69f0ae;
-            --grid-color: rgba(255, 255, 255, 0.03);
-            --shadow: 4px 4px 0px rgba(0,0,0,0.4);
-            --glow-color: transparent;
-            --text-glow: none;
-            --btn-hover-bg: #e5e5e5;
-            --btn-hover-text: #1e1f29;
-        }
-
-        html.color-theme {
-            /* Veda Neon Dark Theme */
-            --bg-color: #0b0c10;
-            --panel-bg: #12141c;
-            --border-color: #00ffaa;
-            --border-light: #008855;
-            --text-color: #00ffaa;
-            --text-muted: #00aa77;
-            --accent-red: #ff3366;
-            --accent-green: #00ffaa;
-            --grid-color: rgba(0, 255, 170, 0.04);
-            --shadow: 0 0 10px rgba(0, 255, 170, 0.2);
-            --glow-color: rgba(0, 255, 170, 0.4);
-            --text-glow: 0 0 5px rgba(0, 255, 170, 0.5);
-            --btn-hover-bg: #00ffaa;
-            --btn-hover-text: #12141c;
         }
 
         * {
@@ -85,28 +49,13 @@
             position: relative;
         }
 
-        body.light-theme {
-            background-color: #f3f4f1 !important;
-            color: #111111 !important;
-        }
-        body.dark-theme {
-            background-color: #13141d !important;
-            color: #e5e5e5 !important;
-        }
-        body.color-theme {
-            background-color: #0b0c10 !important;
-            color: #00ffaa !important;
-        }
-
-        /* Subtle scanline overlay for color mode */
-        .color-theme::after {
+        /* Scanline overlay for Neon mode — triggered by class on html */
+        html.color-mode-active body::after {
             content: "";
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 255, 170, 0.02) 50%);
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(rgba(18,16,16,0) 50%, rgba(0,255,170,0.02) 50%);
             background-size: 100% 4px;
             z-index: 9999;
             pointer-events: none;
@@ -709,19 +658,38 @@
             }
     </style>
     <script>
-        // Initialize Theme immediately to prevent flash
-        let savedTheme = 'light';
-        try {
-            savedTheme = localStorage.getItem('wtj-theme-calendar') || 'light';
-        } catch (e) {
-            console.warn('localStorage is not accessible:', e);
-        }
-        document.documentElement.className = savedTheme + '-theme';
-        
-        // Apply to body immediately on DOMContentLoaded
-        document.addEventListener('DOMContentLoaded', () => {
-            document.body.className = savedTheme + '-theme';
-        });
+        // Initialize Theme immediately to prevent flash — inject CSS vars directly onto :root
+        const _THEMES_EARLY = {
+            light: {
+                '--bg-color': '#f3f4f1', '--panel-bg': '#ffffff', '--border-color': '#111111',
+                '--border-light': '#cccccc', '--text-color': '#111111', '--text-muted': '#666666',
+                '--accent-red': '#d32f2f', '--accent-green': '#2e7d32',
+                '--grid-color': 'rgba(0,0,0,0.03)',
+                '--shadow': '4px 4px 0px rgba(0,0,0,0.15)', '--glow-color': 'transparent',
+                '--text-glow': 'none', '--btn-hover-bg': '#111111', '--btn-hover-text': '#ffffff', '--grid-size': '30px'
+            },
+            dark: {
+                '--bg-color': '#13141d', '--panel-bg': '#1e1f29', '--border-color': '#e5e5e5',
+                '--border-light': '#444444', '--text-color': '#e5e5e5', '--text-muted': '#888888',
+                '--accent-red': '#ff5252', '--accent-green': '#69f0ae',
+                '--grid-color': 'rgba(255,255,255,0.03)',
+                '--shadow': '4px 4px 0px rgba(0,0,0,0.4)', '--glow-color': 'transparent',
+                '--text-glow': 'none', '--btn-hover-bg': '#e5e5e5', '--btn-hover-text': '#1e1f29', '--grid-size': '30px'
+            },
+            color: {
+                '--bg-color': '#0b0c10', '--panel-bg': '#12141c', '--border-color': '#00ffaa',
+                '--border-light': '#008855', '--text-color': '#00ffaa', '--text-muted': '#00aa77',
+                '--accent-red': '#ff3366', '--accent-green': '#00ffaa',
+                '--grid-color': 'rgba(0,255,170,0.04)',
+                '--shadow': '0 0 10px rgba(0,255,170,0.2)', '--glow-color': 'rgba(0,255,170,0.4)',
+                '--text-glow': '0 0 5px rgba(0,255,170,0.5)', '--btn-hover-bg': '#00ffaa', '--btn-hover-text': '#12141c', '--grid-size': '30px'
+            }
+        };
+        let _savedThemeEarly = 'light';
+        try { _savedThemeEarly = localStorage.getItem('wtj-theme-calendar') || 'light'; } catch(e) {}
+        const _earlyVars = _THEMES_EARLY[_savedThemeEarly] || _THEMES_EARLY.light;
+        Object.entries(_earlyVars).forEach(([k, v]) => document.documentElement.style.setProperty(k, v));
+        if (_savedThemeEarly === 'color') document.documentElement.className = 'color-mode-active';
     </script>
 </head>
 <body>
@@ -926,28 +894,62 @@
         ];
 
         let currentTheme = 'light';
-        let currentMonthIndex = new Date().getMonth(); // Default to current month index (0-11)
+        let currentMonthIndex = new Date().getMonth();
 
-        // Set Theme system
+        // Theme palette definitions — all values written directly to :root CSS vars
+        const THEMES = {
+            light: {
+                '--bg-color': '#f3f4f1', '--panel-bg': '#ffffff', '--border-color': '#111111',
+                '--border-light': '#cccccc', '--text-color': '#111111', '--text-muted': '#666666',
+                '--accent-red': '#d32f2f', '--accent-green': '#2e7d32',
+                '--grid-color': 'rgba(0,0,0,0.03)',
+                '--shadow': '4px 4px 0px rgba(0,0,0,0.15)', '--glow-color': 'transparent',
+                '--text-glow': 'none', '--btn-hover-bg': '#111111', '--btn-hover-text': '#ffffff', '--grid-size': '30px',
+            },
+            dark: {
+                '--bg-color': '#13141d', '--panel-bg': '#1e1f29', '--border-color': '#e5e5e5',
+                '--border-light': '#444444', '--text-color': '#e5e5e5', '--text-muted': '#888888',
+                '--accent-red': '#ff5252', '--accent-green': '#69f0ae',
+                '--grid-color': 'rgba(255,255,255,0.03)',
+                '--shadow': '4px 4px 0px rgba(0,0,0,0.4)', '--glow-color': 'transparent',
+                '--text-glow': 'none', '--btn-hover-bg': '#e5e5e5', '--btn-hover-text': '#1e1f29', '--grid-size': '30px',
+            },
+            color: {
+                '--bg-color': '#0b0c10', '--panel-bg': '#12141c', '--border-color': '#00ffaa',
+                '--border-light': '#008855', '--text-color': '#00ffaa', '--text-muted': '#00aa77',
+                '--accent-red': '#ff3366', '--accent-green': '#00ffaa',
+                '--grid-color': 'rgba(0,255,170,0.04)',
+                '--shadow': '0 0 10px rgba(0,255,170,0.2)', '--glow-color': 'rgba(0,255,170,0.4)',
+                '--text-glow': '0 0 5px rgba(0,255,170,0.5)', '--btn-hover-bg': '#00ffaa', '--btn-hover-text': '#12141c', '--grid-size': '30px',
+            }
+        };
+
+        // Set Theme — inject CSS vars directly onto :root, bypassing WebKit class-cascade issues
         function setTheme(theme) {
             currentTheme = theme;
-            document.body.className = `${theme}-theme`;
-            document.documentElement.className = `${theme}-theme`;
-            
-            // Force WebKit repaint / reflow to fix mixed styling bugs
-            void document.body.offsetHeight;
-            
+            const vars = THEMES[theme] || THEMES.light;
+            const root = document.documentElement;
+
+            // Write every CSS variable directly — forces immediate recalculate in all browsers
+            Object.entries(vars).forEach(([key, val]) => {
+                root.style.setProperty(key, val);
+            });
+
+            // Keep class for scanline overlay toggle only
+            root.className = theme === 'color' ? 'color-mode-active' : '';
+
             try {
                 localStorage.setItem('wtj-theme-calendar', theme);
             } catch (e) {
                 console.warn('localStorage is not writable:', e);
             }
-            
-            // Update active buttons style
+
+            // Update active buttons
             document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
             const activeBtn = document.getElementById(`theme-btn-${theme}`);
             if (activeBtn) activeBtn.classList.add('active');
         }
+
 
         // Initialize theme from localStorage safely
         let savedThemeVal = 'light';
