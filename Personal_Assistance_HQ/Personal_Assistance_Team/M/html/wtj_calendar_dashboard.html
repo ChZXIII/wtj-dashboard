@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <style>
         /* CSS Themes definition */
-        :root {
+        :root, html.light-theme {
             /* Default Fallback (Ptolemy Light Theme) */
             --bg-color: #f3f4f1;
             --panel-bg: #ffffff;
@@ -29,26 +29,7 @@
             --grid-size: 30px;
         }
 
-        body.light-theme {
-            /* Ptolemy Light Theme */
-            --bg-color: #f3f4f1;
-            --panel-bg: #ffffff;
-            --border-color: #111111;
-            --border-light: #cccccc;
-            --text-color: #111111;
-            --text-muted: #666666;
-            --accent-red: #d32f2f;
-            --accent-green: #2e7d32;
-            --grid-color: rgba(0, 0, 0, 0.08);
-            --blueprint-opacity: 0.8;
-            --shadow: 4px 4px 0px rgba(0,0,0,0.15);
-            --glow-color: transparent;
-            --text-glow: none;
-            --btn-hover-bg: #111111;
-            --btn-hover-text: #ffffff;
-        }
-
-        body.dark-theme {
+        html.dark-theme {
             /* Veda Flat Dark Theme */
             --bg-color: #13141d;
             --panel-bg: #1e1f29;
@@ -67,7 +48,7 @@
             --btn-hover-text: #1e1f29;
         }
 
-        body.color-theme {
+        html.color-theme {
             /* Veda Neon Dark Theme */
             --bg-color: #0b0c10;
             --panel-bg: #12141c;
@@ -756,7 +737,7 @@
         });
     </script>
 </head>
-<body class="light-theme">
+<body>
     <!-- Floating Hub Button -->
     <a href="index.html" class="floating-hub-btn" style="position: fixed; top: 20px; right: 20px; z-index: 10000; background: rgba(0, 0, 0, 0.05); border: 2px solid var(--border-color); color: var(--text-color); padding: 10px 18px; border-radius: 30px; text-decoration: none; font-family: 'Share Tech Mono', sans-serif; font-size: 0.85rem; font-weight: bold; backdrop-filter: blur(10px); display: flex; align-items: center; gap: 8px;">
         <span>🦉 HUB</span>
