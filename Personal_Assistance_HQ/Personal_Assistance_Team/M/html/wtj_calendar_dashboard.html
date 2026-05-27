@@ -84,6 +84,19 @@
             position: relative;
         }
 
+        body.light-theme {
+            background-color: #f3f4f1 !important;
+            color: #111111 !important;
+        }
+        body.dark-theme {
+            background-color: #13141d !important;
+            color: #e5e5e5 !important;
+        }
+        body.color-theme {
+            background-color: #0b0c10 !important;
+            color: #00ffaa !important;
+        }
+
         /* Ambient Cyber Grid Background */
         body::before {
             content: "";
@@ -950,6 +963,10 @@
             currentTheme = theme;
             document.body.className = `${theme}-theme`;
             document.documentElement.className = `${theme}-theme`;
+            
+            // Force WebKit repaint / reflow to fix mixed styling bugs
+            void document.body.offsetHeight;
+            
             try {
                 localStorage.setItem('wtj-theme-calendar', theme);
             } catch (e) {
