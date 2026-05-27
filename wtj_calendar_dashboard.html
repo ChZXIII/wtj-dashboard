@@ -8,8 +8,7 @@
     <!-- Share Tech Mono and Inter Fonts for authentic tech/military blueprint feel -->
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <style>
-        /* CSS Themes definition */
-        :root {
+        :root, html.light-theme {
             /* Default Fallback (Ptolemy Light Theme) */
             --bg-color: #f3f4f1;
             --panel-bg: #ffffff;
@@ -28,25 +27,7 @@
             --grid-size: 30px;
         }
 
-        body.light-theme {
-            /* Ptolemy Light Theme */
-            --bg-color: #f3f4f1;
-            --panel-bg: #ffffff;
-            --border-color: #111111;
-            --border-light: #cccccc;
-            --text-color: #111111;
-            --text-muted: #666666;
-            --accent-red: #d32f2f;
-            --accent-green: #2e7d32;
-            --grid-color: rgba(0, 0, 0, 0.03);
-            --shadow: 4px 4px 0px rgba(0,0,0,0.15);
-            --glow-color: transparent;
-            --text-glow: none;
-            --btn-hover-bg: #111111;
-            --btn-hover-text: #ffffff;
-        }
-
-        body.dark-theme {
+        html.dark-theme {
             /* Veda Flat Dark Theme */
             --bg-color: #13141d;
             --panel-bg: #1e1f29;
@@ -64,7 +45,7 @@
             --btn-hover-text: #1e1f29;
         }
 
-        body.color-theme {
+        html.color-theme {
             /* Veda Neon Dark Theme */
             --bg-color: #0b0c10;
             --panel-bg: #12141c;
@@ -713,10 +694,24 @@
                 align-items: flex-end;
                 gap: 10px;
             }
-        }
     </style>
+    <script>
+        // Initialize Theme immediately to prevent flash
+        let savedTheme = 'light';
+        try {
+            savedTheme = localStorage.getItem('wtj-theme') || 'light';
+        } catch (e) {
+            console.warn('localStorage is not accessible:', e);
+        }
+        document.documentElement.className = savedTheme + '-theme';
+        
+        // Apply to body immediately on DOMContentLoaded
+        document.addEventListener('DOMContentLoaded', () => {
+            document.body.className = savedTheme + '-theme';
+        });
+    </script>
 </head>
-<body class="light-theme">
+<body>
 
     <!-- Tactical Top Header -->
     <header class="tactical-header">
@@ -925,20 +920,26 @@
             currentTheme = theme;
             document.body.className = `${theme}-theme`;
             document.documentElement.className = `${theme}-theme`;
-            localStorage.setItem('wtj-theme', theme);
+            try {
+                localStorage.setItem('wtj-theme', theme);
+            } catch (e) {
+                console.warn('localStorage is not writable:', e);
+            }
             
             // Update active buttons style
             document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
-            document.getElementById(`theme-btn-${theme}`).classList.add('active');
+            const activeBtn = document.getElementById(`theme-btn-${theme}`);
+            if (activeBtn) activeBtn.classList.add('active');
         }
 
-        // Initialize theme from localStorage
-        const savedTheme = localStorage.getItem('wtj-theme');
-        if (savedTheme) {
-            setTheme(savedTheme);
-        } else {
-            setTheme('light');
+        // Initialize theme from localStorage safely
+        let savedThemeVal = 'light';
+        try {
+            savedThemeVal = localStorage.getItem('wtj-theme') || 'light';
+        } catch (e) {
+            console.warn('localStorage is not readable:', e);
         }
+        setTheme(savedThemeVal);
 
         // Render month tabs dynamically
         function renderMonthTabs() {
