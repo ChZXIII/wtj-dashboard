@@ -48,11 +48,6 @@ To avoid hardcoded styles, always design with CSS custom properties (variables) 
 | **Shadows & Glows** | Solid offset shadow, no glow | Flat dark offset shadow | Glowing box-shadows, glow filters |
 | **Text Primary** | Dark charcoal (`#111111`) | Light gray (`#e5e5e5`) | Radiant neon cyber cyan (`#00f0ff`) |
 
-> [!WARNING]
-> **WebKit/Safari Dynamic Theme Specificity Bug:**
-> ห้ามผูก CSS variables สำหรับการเปลี่ยนธีมแบบ dynamic ไว้บน `:root.theme-name` หรือ `html.theme-name` (เช่น `:root.dark-theme`) เพราะในเบราว์เซอร์ตระกูล WebKit/Safari (บน macOS/iOS) การเปลี่ยนคลาสของ `<html>` ผ่าน JavaScript จะไม่ทริกเกอร์ให้ CSS engine อัปเดตและคำนวณค่าตัวแปร CSS ใหม่ทันที (ต้องกด Refresh หน้าจอจึงจะยอมแสดงผลธีมใหม่)
-> **แนวทางแก้ไข:** ให้เปลี่ยนไปผูก CSS variables ของธีมไว้ที่ระดับ `body.theme-name` แทน (เช่น `body.dark-theme`) และให้ JavaScript สลับคลาสที่ `body` เพื่อบังคับให้เบราว์เซอร์อัปเดตสไตล์และแสดงผลสีตามธีมใหม่ทันทีโดยไม่ต้องโหลดหน้าจอใหม่
-
 ---
 
 ## 4. Accessibility (WCAG 2.1 AA Checklist)

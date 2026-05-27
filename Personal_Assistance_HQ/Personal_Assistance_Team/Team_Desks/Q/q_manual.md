@@ -61,6 +61,9 @@
 - **ปัญหา HTML/JS (Theme Switcher refresh bug)**: หน้าเว็บสลับธีมค้างเมื่อเปลี่ยนกลับมาเป็นสว่าง (Light Mode) ในหน้าระบบคอนเทนต์ (`WTJ_Story_Project/dashboard/index.html` และ `wtj_calendar_dashboard.html`)
   - *สาเหตุ*: CSS variables ใน `style.css` และ inline style ถูกประกาศและ override ไว้บน Selector `html.dark-theme` และ `html.color-theme` แต่ฟังก์ชันสลับธีม `setTheme` ใน JavaScript ทำการเขียนทับคลาสแค่บน `document.body` โดยไม่ได้อัปเดตคลาสของ `document.documentElement` (`<html>` element) ทำให้สไตล์สว่างที่สืบทอดจาก `:root` ไม่ได้รับการกู้คืนหลังสลับกลับมาจากสีเข้ม (ค้างที่สไตล์มืด)
   - *วิธีแก้ไข*: ปรับแก้ฟังก์ชัน `setTheme` ให้เปลี่ยนคลาสทั้ง `document.body.className` และ `document.documentElement.className` ไปพร้อมๆ กัน เพื่อให้ล้างคลาสสีเข้มออกตอนกลับมาเป็นสว่าง
+- **ปัญหา WebKit CSS Variables rendering bug (Theme not changing immediately)**: เมื่อกดสลับธีมผ่านปุ่ม หน้าเว็บไม่ยอมอัปเดตสไตล์และสีตามธีมใหม่ทันที ต้องกด Refresh หน้าจอถึงจะหาย (พบบ่อยบน macOS/iOS ที่ใช้ Safari หรือ Chrome/WebKit Engine)
+  - *สาเหตุ*: มีการประกาศและผูก CSS Variables ของธีมต่างๆ ไว้ที่ Selector `:root.theme-name` หรือ `html.theme-name` (เช่น `:root.dark-theme`) ซึ่งเบราว์เซอร์ตระกูล WebKit มีบั๊กที่จะไม่ยอมประมวลผลหรือคำนวณค่าตัวแปร CSS บนระดับ `:root`/`html` ใหม่ทันทีเมื่อมีการสลับคลาสผ่าน JavaScript แบบ dynamic 
+  - *วิธีแก้ไข*: หลีกเลี่ยงการผูก CSS variables ของแต่ละธีมไว้บนระดับ `:root`/`html` โดยให้ย้ายไปผูกไว้กับคลาสระดับ `body` แทน (เช่น `body.light-theme`, `body.dark-theme`, `body.color-theme`) ซึ่ง `body` คลุมการแสดงผลทั้งหมดอยู่แล้ว และเบราว์เซอร์จะประมวลผลการเปลี่ยนสไตล์ของ `body` ทันทีแบบ dynamic โดยไม่มีปัญหากับ WebKit Engine
 - **ปัญหา HTML Syntax (Missing style tag)**: โครงสร้าง HTML Syntax Error ในหน้า `WTJ_Story_Project/dashboard/index.html`
   - *สาเหตุ*: ลืมเขียนปิดแท็ก `</style>` ก่อนการเริ่มบล็อกสคริปต์ `<script>` ทำให้โค้ด JavaScript ถูกครอบงำเป็น CSS
   - *วิธีแก้ไข*: เติมแท็กปิด `</style>` หน้าแท็ก `<script>` ให้ถูกต้องตามไวยากรณ์ HTML
