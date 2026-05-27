@@ -9,8 +9,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <style>
         /* CSS Themes definition */
-        :root, html.light-theme, body.light-theme {
-            /* Ptolemy Light Theme (Default) */
+        :root {
+            /* Default Fallback (Ptolemy Light Theme) */
             --bg-color: #f3f4f1;
             --panel-bg: #ffffff;
             --border-color: #111111;
@@ -27,6 +27,25 @@
             --btn-hover-bg: #111111;
             --btn-hover-text: #ffffff;
             --grid-size: 30px;
+        }
+
+        html.light-theme, body.light-theme {
+            /* Ptolemy Light Theme */
+            --bg-color: #f3f4f1;
+            --panel-bg: #ffffff;
+            --border-color: #111111;
+            --border-light: #cccccc;
+            --text-color: #111111;
+            --text-muted: #666666;
+            --accent-red: #d32f2f;
+            --accent-green: #2e7d32;
+            --grid-color: rgba(0, 0, 0, 0.08);
+            --blueprint-opacity: 0.8;
+            --shadow: 4px 4px 0px rgba(0,0,0,0.15);
+            --glow-color: transparent;
+            --text-glow: none;
+            --btn-hover-bg: #111111;
+            --btn-hover-text: #ffffff;
         }
 
         html.dark-theme, body.dark-theme {
