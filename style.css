@@ -4,7 +4,7 @@
   =========================================
 */
 
-:root, body.light-theme, html.light-theme {
+:root {
     --bg-color: #f7f9fa;
     --border-color: #1a1a1a;
     --text-primary: #1a1a1a;
@@ -31,7 +31,7 @@
     --glow-blue: 0 0 10px rgba(0, 229, 255, 0.5);
 }
 
-body.dark-theme, html.dark-theme {
+html.dark-theme {
     --bg-color: #080c14;
     --border-color: rgba(255, 255, 255, 0.2);
     --text-primary: #d8dde8;
@@ -42,7 +42,7 @@ body.dark-theme, html.dark-theme {
     --radar-color: rgba(255, 255, 255, 0.04);
 }
 
-body.color-theme, html.color-theme {
+html.color-theme {
     /* --- Veda Neon Dark Theme (Color mode) --- */
     --bg-color: #05070a;
     --border-color: rgba(0, 229, 255, 0.25);

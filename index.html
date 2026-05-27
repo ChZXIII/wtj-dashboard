@@ -515,6 +515,7 @@
             border-top: 1px dashed rgba(255,255,255,0.05);
             padding-top: 20px;
         }
+    </style>
     <script>
         // Initialize Theme immediately to prevent flash
         const savedTheme = localStorage.getItem('wtj-theme') || 'light';
@@ -532,7 +533,9 @@
         });
         
         window.setTheme = function(theme) {
-            document.body.className = theme === 'light' ? '' : `${theme}-theme`;
+            const themeClass = theme === 'light' ? '' : `${theme}-theme`;
+            document.body.className = themeClass;
+            document.documentElement.className = themeClass;
             localStorage.setItem('wtj-theme', theme);
             document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
             const activeBtn = document.getElementById(`theme-btn-${theme}`);
