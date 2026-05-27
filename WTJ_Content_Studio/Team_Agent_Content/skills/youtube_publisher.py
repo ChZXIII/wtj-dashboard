@@ -95,6 +95,8 @@ def find_video_file(filename):
         os.path.join(PROJECT_ROOT, "WTJ_Content_Studio", "Team_Agent_Content", "WTJ_Story_Project", "workspace", "1_raw_materials", "raw_videos", "raw_vdo_short"),
         os.path.join(PROJECT_ROOT, "WTJ_Content_Studio", "Team_Agent_Content", "WTJ_Story_Project", "workspace", "1_raw_materials", "raw_videos", "raw_vdo_3-5min"),
         os.path.join(PROJECT_ROOT, "WTJ_Content_Studio", "Team_Agent_Content", "WTJ_Story_Project", "workspace", "1_raw_materials", "raw_videos"),
+        os.path.join(PROJECT_ROOT, "WTJ_Content_Studio", "Team_Agent_Content", "WTJ_Podcast_Project", "workspace", "1_raw_materials", "raw_videos", "processed"),
+        os.path.join(PROJECT_ROOT, "WTJ_Content_Studio", "Team_Agent_Content", "WTJ_Podcast_Project", "workspace", "1_raw_materials", "raw_videos"),
     ]
     
     # 1. เช็คถ้าเป็น Absolute path อยู่แล้ว
@@ -112,11 +114,15 @@ def find_video_file(filename):
             return os.path.abspath(full_path)
             
     # 4. ค้นหาแบบ Recursive ใต้โฟลเดอร์ดิบ
-    base_search = os.path.join(PROJECT_ROOT, "WTJ_Content_Studio", "Team_Agent_Content", "WTJ_Story_Project", "workspace", "1_raw_materials", "raw_videos")
-    if os.path.exists(base_search):
-        for root, _, files in os.walk(base_search):
-            if filename in files:
-                return os.path.abspath(os.path.join(root, filename))
+    base_searches = [
+        os.path.join(PROJECT_ROOT, "WTJ_Content_Studio", "Team_Agent_Content", "WTJ_Story_Project", "workspace", "1_raw_materials", "raw_videos"),
+        os.path.join(PROJECT_ROOT, "WTJ_Content_Studio", "Team_Agent_Content", "WTJ_Podcast_Project", "workspace", "1_raw_materials", "raw_videos"),
+    ]
+    for base_search in base_searches:
+        if os.path.exists(base_search):
+            for root, _, files in os.walk(base_search):
+                if filename in files:
+                    return os.path.abspath(os.path.join(root, filename))
                 
     return None
 
@@ -133,7 +139,7 @@ def extract_filename_from_title(title):
         
     return None
 
-def upload_video_to_youtube(youtube, video_path, title, description="", tags=None, privacy_status="draft", dry_run=False):
+def upload_video_to_youtube(youtube, video_path, title, description="", tags=None, privacy_status="draft", dry_run=False, thumbnail_path=None):
     """อัปโหลดวิดีโอขึ้น YouTube แบบ Resumable Chunked Upload"""
     if not os.path.exists(video_path):
         print(f"❌ Error: ไม่พบไฟล์วิดีโอที่: {video_path}")
@@ -147,6 +153,8 @@ def upload_video_to_youtube(youtube, video_path, title, description="", tags=Non
     print(f"\n==================================================")
     print(f"🎬 ข้อมูลที่จะอัปโหลด YouTube:")
     print(f"📁 ไฟล์วิดีโอ: {video_path}")
+    if thumbnail_path:
+        print(f"🖼️ ภาพหน้าปก: {thumbnail_path}")
     print(f"🏷️ ชื่อคลิป (Title): {title}")
     print(f"🔒 สถานะความเป็นส่วนตัว: {privacy_status.upper()}")
     if tags:
@@ -162,11 +170,16 @@ def upload_video_to_youtube(youtube, video_path, title, description="", tags=Non
             'title': title,
             'description': description,
             'tags': tags or [],
-            'categoryId': '27'  # Education (หรือ '22' สำหรับ People & Blogs)
+            'categoryId': '27',  # Education (หรือ '22' สำหรับ People & Blogs)
+            'defaultLanguage': 'th',
+            'defaultAudioLanguage': 'th'
         },
         'status': {
             'privacyStatus': privacy_status,
-            'selfDeclaredMadeForKids': False
+            'selfDeclaredMadeForKids': False,
+            'license': 'youtube',
+            'embeddable': True,
+            'publicStatsViewable': True
         }
     }
     
@@ -190,7 +203,20 @@ def upload_video_to_youtube(youtube, video_path, title, description="", tags=Non
                 
         video_id = response.get("id")
         print(f"✅ อัปโหลดคลิปสำเร็จเสร็จสิ้น!")
-        print(f"🔗 ลิงก์คลิปสั้น YouTube Shorts: https://youtu.be/{video_id}")
+        print(f"🔗 ลิงก์คลิป YouTube: https://youtu.be/{video_id}")
+        
+        # อัปโหลด Thumbnail รูปหน้าปกหากระบุพาธมา
+        if thumbnail_path and os.path.exists(thumbnail_path):
+            print(f"🖼️ กำลังอัปโหลดภาพหน้าปก (Thumbnail): {thumbnail_path} ...")
+            try:
+                youtube.thumbnails().set(
+                    videoId=video_id,
+                    media_body=MediaFileUpload(thumbnail_path)
+                ).execute()
+                print("   ✅ ตั้งค่าภาพหน้าปกสำเร็จ!")
+            except Exception as e:
+                print(f"   ⚠️ เกิดข้อผิดพลาดในการตั้งหน้าปกคลิป: {e}")
+                
         return True
         
     except googleapiclient.errors.HttpError as e:

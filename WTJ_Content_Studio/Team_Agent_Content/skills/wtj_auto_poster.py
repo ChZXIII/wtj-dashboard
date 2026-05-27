@@ -47,7 +47,8 @@ def load_env():
 QUEUE_PLATFORM_MAP = {
     "FB_Videos_3-5Min": "FB_Video",
     "Reels_Under1Min": "Reels",
-    "Text_Posts": "FB_Text_Quote"
+    "Text_Posts": "FB_Text_Quote",
+    "YT_Videos_Full": "YouTube"
 }
 
 def get_sort_key(page):
@@ -62,7 +63,7 @@ def get_sort_key(page):
 
 def main():
     parser = argparse.ArgumentParser(description="WTJ Master Auto-Poster (Sequential Queue)")
-    parser.add_argument("-q", "--queue", required=True, choices=["FB_Videos_3-5Min", "Reels_Under1Min", "Text_Posts"],
+    parser.add_argument("-q", "--queue", required=True, choices=["FB_Videos_3-5Min", "Reels_Under1Min", "Text_Posts", "YT_Videos_Full"],
                         help="ชื่อคิวงานที่ต้องการโพสต์")
     parser.add_argument("-d", "--dry-run", action="store_true", help="จำลองการทำงานโดยไม่โพสต์จริง")
     parser.add_argument("--yt-privacy", default="public", choices=["public", "private", "unlisted", "draft"],
@@ -93,11 +94,21 @@ def main():
     
     for page in pages:
         platforms = page.get("platforms", [])
-        if target_platform_tag in platforms:
-            filtered_pages.append(page)
+        if args.queue == "YT_Videos_Full":
+            # สำหรับคลิปยาว YouTube: ต้องมี "YouTube" แต่ห้ามมี "Reels"
+            if "YouTube" in platforms and "Reels" not in platforms:
+                filtered_pages.append(page)
+        elif args.queue == "Reels_Under1Min":
+            # สำหรับ Shorts: ต้องมี "Reels"
+            if "Reels" in platforms:
+                filtered_pages.append(page)
+        else:
+            # คิวอื่นๆ เช็คตรงตัว
+            if target_platform_tag in platforms:
+                filtered_pages.append(page)
             
     if not filtered_pages:
-        print(f"📭 ไม่พบการ์ดสำหรับคิว '{args.queue}' (ต้องการแพลตฟอร์มแท็ก: '{target_platform_tag}') ที่ได้รับการอนุมัติ")
+        print(f"📭 ไม่พบการ์ดสำหรับคิว '{args.queue}' ที่ได้รับการอนุมัติ")
         return
         
     # เรียงลำดับจากน้อยไปมากตามตัวเลข (Sequential)
@@ -162,7 +173,7 @@ def main():
         
     # เช็คว่ามีไฟล์วิดีโอหรือไม่ (สำหรับ Reels และ FB Video)
     video_path = None
-    is_video_queue = ("Reels" in platforms or "FB_Video" in platforms)
+    is_video_queue = ("Reels" in platforms or "FB_Video" in platforms or "YouTube" in platforms)
     if is_video_queue:
         video_filename = extract_filename_from_title(title)
         if not video_filename:
@@ -200,37 +211,81 @@ def main():
             
             success_flags["Facebook"] = bool(success)
             
-    # ------------------ 2. YouTube Shorts ------------------
+    # ------------------ 2. YouTube Publishing ------------------
     if "YouTube" in platforms or "Reels" in platforms:
         print("\n🔴 [YouTube Publishing]")
         try:
             youtube_client = get_youtube_client() if not args.dry_run else None
             
-            # เตรียมข้อมูลหัวข้อ & รายละเอียดสไตล์ YouTube Shorts
-            content_lines = [line.strip() for line in post_content.split("\n") if line.strip()]
-            tags = []
+            # เตรียมแฮชแท็กและคีย์เวิร์ด
+            default_tags = ["What the job", "WTJ", "เก่ง What the job", "สมัครงาน", "สัมภาษณ์งาน", "มนุษย์เงินเดือน", "รีวิวอาชีพ", "พัฒนาตัวเอง"]
+            tags = default_tags.copy()
+            
+            # ดึงแฮชแท็กทั่วไปจากเนื้อหา
             hashtags = re.findall(r'#([^\s#]+)', post_content)
             if hashtags:
-                tags = list(set(hashtags))
+                tags.extend(hashtags)
                 
-            clean_lines = []
-            for line in content_lines:
-                line_lower = line.lower()
-                if any(h in line_lower for h in ["ทางเลือกที่", "ทางเลือก", "option", "queue:"]):
-                    continue
-                if line.startswith("#WhatTheJob") or line.startswith("ดูคลิปเต็มที่"):
-                    continue
-                clean_line = re.sub(r'#[^\s#]+', '', line).strip()
-                if clean_line:
-                    clean_lines.append(clean_line)
-                    
-            yt_title = f"{title.split('] ')[-1].split('.mp4')[0]} | WTJ Shorts"
-            if clean_lines:
-                candidate = clean_lines[0].replace('"', '').replace('“', '').replace('”', '')
-                if len(candidate) > 10 and len(candidate) < 70:
-                    yt_title = f"{candidate} #Shorts"
-                    
-            yt_description = post_content + "\n\n📲 ติดตามเพจของเราได้ที่: https://www.facebook.com/WhatTheJobs"
+            # ดึงจากส่วนเจาะจงที่น้องเรย์เขียน เช่น Tags: tag1, tag2 หรือ แท็ก: tag1, tag2
+            tags_match = re.search(r'(?:Tags|แท็ก)\s*:\s*(.*)', post_content, re.IGNORECASE)
+            if tags_match:
+                content_tags = [t.strip() for t in tags_match.group(1).split(",") if t.strip()]
+                tags.extend(content_tags)
+                
+            # ลบตัวซ้ำ
+            tags = list(set(tags))
+            
+            is_shorts = "Reels" in platforms
+            thumbnail_path = None
+            
+            if is_shorts:
+                # --- ยูทูบ Shorts ---
+                content_lines = [line.strip() for line in post_content.split("\n") if line.strip()]
+                clean_lines = []
+                for line in content_lines:
+                    line_lower = line.lower()
+                    if any(h in line_lower for h in ["ทางเลือกที่", "ทางเลือก", "option", "queue:"]):
+                        continue
+                    if line.startswith("#WhatTheJob") or line.startswith("ดูคลิปเต็มที่"):
+                        continue
+                    clean_line = re.sub(r'#[^\s#]+', '', line).strip()
+                    if clean_line:
+                        clean_lines.append(clean_line)
+                        
+                yt_title = f"{title.split('] ')[-1].split('.mp4')[0]} | WTJ Shorts"
+                if clean_lines:
+                    candidate = clean_lines[0].replace('"', '').replace('“', '').replace('”', '')
+                    if len(candidate) > 10 and len(candidate) < 70:
+                        yt_title = f"{candidate} #Shorts"
+                        
+                yt_description = post_content + "\n\n📲 ติดตามเพจของเราได้ที่: https://www.facebook.com/WhatTheJobs"
+            else:
+                # --- ยูทูบ คลิปยาวตัวเต็ม (Long Video) ---
+                yt_title = title.split('] ')[-1].split('.mp4')[0].strip()
+                yt_description = post_content
+                
+                # ค้นหาภาพหน้าปกที่มีชื่อเดียวกับชื่อการ์ด/วิดีโอ (แต่เป็น .png/.jpg/.jpeg)
+                video_filename = extract_filename_from_title(title)
+                if video_filename:
+                    base_name = os.path.splitext(video_filename)[0].strip()
+                    thumb_dirs = [
+                        os.path.join(PROJECT_ROOT, "WTJ_Content_Studio", "Team_Agent_Content", "WTJ_Story_Project", "workspace", "1_raw_materials", "thumbnails"),
+                        os.path.join(PROJECT_ROOT, "WTJ_Content_Studio", "Team_Agent_Content", "WTJ_Podcast_Project", "workspace", "1_raw_materials", "thumbnails"),
+                    ]
+                    for thumb_dir in thumb_dirs:
+                        if not os.path.exists(thumb_dir):
+                            continue
+                        for ext in [".png", ".jpg", ".jpeg", ".PNG", ".JPG", ".JPEG"]:
+                            check_path = os.path.join(thumb_dir, base_name + ext)
+                            if os.path.exists(check_path):
+                                thumbnail_path = check_path
+                                print(f"🖼️ พบไฟล์ภาพหน้าปกที่จะใช้อัปโหลด: {thumbnail_path}")
+                                break
+                        if thumbnail_path:
+                            break
+                            
+                    if not thumbnail_path:
+                        print("⚠️ ไม่พบไฟล์ภาพหน้าปกในโฟลเดอร์ thumbnails/ จะอัปโหลดเฉพาะคลิปยาวโดยให้ระบบสุ่มปก")
             
             success = upload_video_to_youtube(
                 youtube_client,
@@ -239,7 +294,8 @@ def main():
                 description=yt_description,
                 tags=tags,
                 privacy_status=args.yt_privacy,
-                dry_run=args.dry_run
+                dry_run=args.dry_run,
+                thumbnail_path=thumbnail_path
             )
             success_flags["YouTube"] = success
         except Exception as e:
