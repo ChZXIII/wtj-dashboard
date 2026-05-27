@@ -725,7 +725,7 @@
         // Initialize Theme immediately to prevent flash
         let savedTheme = 'light';
         try {
-            savedTheme = localStorage.getItem('wtj-theme') || 'light';
+            savedTheme = localStorage.getItem('wtj-theme-calendar') || 'light';
         } catch (e) {
             console.warn('localStorage is not accessible:', e);
         }
@@ -951,7 +951,7 @@
             document.body.className = `${theme}-theme`;
             document.documentElement.className = `${theme}-theme`;
             try {
-                localStorage.setItem('wtj-theme', theme);
+                localStorage.setItem('wtj-theme-calendar', theme);
             } catch (e) {
                 console.warn('localStorage is not writable:', e);
             }
@@ -965,7 +965,7 @@
         // Initialize theme from localStorage safely
         let savedThemeVal = 'light';
         try {
-            savedThemeVal = localStorage.getItem('wtj-theme') || 'light';
+            savedThemeVal = localStorage.getItem('wtj-theme-calendar') || 'light';
         } catch (e) {
             console.warn('localStorage is not readable:', e);
         }
