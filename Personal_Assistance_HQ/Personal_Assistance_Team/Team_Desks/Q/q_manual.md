@@ -67,6 +67,13 @@
 - **ปัญหา HTML Syntax (Missing style tag)**: โครงสร้าง HTML Syntax Error ในหน้า `WTJ_Story_Project/dashboard/index.html`
   - *สาเหตุ*: ลืมเขียนปิดแท็ก `</style>` ก่อนการเริ่มบล็อกสคริปต์ `<script>` ทำให้โค้ด JavaScript ถูกครอบงำเป็น CSS
   - *วิธีแก้ไข*: เติมแท็กปิด `</style>` หน้าแท็ก `<script>` ให้ถูกต้องตามไวยากรณ์ HTML
+- **ปัญหา Live Sync Data Desynchronization & Untitled Items (Dashboard Server sync failures)**: หน้าตารางปฏิทิน Calendar Dashboard ไม่อัปเดตข้อมูลตาม Notion หรือชื่อเรื่องแสดงผลเป็น `"Untitled"` ทั้งหมด
+  - *สาเหตุ*: 
+    1. เซิร์ฟเวอร์หลังบ้าน (`dashboard_server.py`) ใช้วิธีแกะข้อมูลชื่อเรื่อง (Title) ของ Notion แบบฮาร์ดโค้ดคอลัมน์ชื่อ `"Name"` ซึ่งไม่ตรงกับชื่อคอลัมน์หลักจริงใน Notion Database ของโครงการ ทำให้หาไม่เจอและพ่นชื่อเรื่องเป็น `"Untitled"`
+    2. เซิร์ฟเวอร์บันทึกไฟล์สำรองข้อมูล `notion_calendar_data.js` แค่ในโฟลเดอร์หน้าบ้านหลัก (`M/html`) แต่ไม่ได้เขียนทับในฝั่งของโครงการ (`WTJ_Story_Project/dashboard`) ส่งผลให้ปฏิทินฝั่งโครงการไม่ได้รับข้อมูลล่าสุด
+  - *วิธีแก้ไข*:
+    1. ปรับปรุง `dashboard_server.py` ให้ดึงชื่อเรื่องแบบ Dynamic ผ่านคำสั่ง `notion.get_title_property_name()`
+    2. เปลี่ยนวิธีการบันทึกข้อมูล โดยให้บันทึกไฟล์ทับลงไปในทั้ง 2 พาธปลายทางพร้อมๆ กัน (อ้างอิงคอนฟิกพาธจาก `config.LOCAL_DASHBOARD_DIR` และ `config.GITHUB_DASHBOARD_DIR`)
 
 ### [Theme: Clarity UI / NotebookLM System]
 - **ปัญหา Web Dashboard (file:// protocol AJAX failures)**: ดับเบิ้ลคลิกเปิดหน้าแดชบอร์ดจาก Finder แล้วกดเพิ่มคิวหรือรันระบบหลังบ้านไม่ได้
