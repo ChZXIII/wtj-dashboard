@@ -8,15 +8,48 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-primary: #0a0b10;
-            --bg-secondary: rgba(18, 20, 30, 0.7);
-            --border-color: rgba(0, 240, 255, 0.2);
+            /* --- Ptolemy Light Theme (Default) --- */
+            --bg-primary: #f3f4f1;
+            --bg-secondary: #ffffff;
+            --border-color: rgba(17, 17, 17, 0.15);
+            --border-hover: rgba(17, 17, 17, 0.35);
+            --text-primary: #111111;
+            --text-muted: #555555;
+            --accent-cyan: #1976d2;
+            --accent-green: #2e7d32;
+            --glow-color: transparent;
+            --grid-color: rgba(0, 0, 0, 0.03);
+            --scanline-opacity: 0;
+        }
+
+        body.dark-theme {
+            /* --- Veda Flat Dark Theme --- */
+            --bg-primary: #13141d;
+            --bg-secondary: #1e1f29;
+            --border-color: rgba(229, 229, 229, 0.15);
+            --border-hover: rgba(229, 229, 229, 0.35);
+            --text-primary: #eceff4;
+            --text-muted: #888888;
+            --accent-cyan: #40a9ff;
+            --accent-green: #69f0ae;
+            --glow-color: transparent;
+            --grid-color: rgba(255, 255, 255, 0.03);
+            --scanline-opacity: 0;
+        }
+
+        body.color-theme {
+            /* --- Veda Neon Dark Theme (Color mode) --- */
+            --bg-primary: #05070a;
+            --bg-secondary: rgba(10, 15, 24, 0.85);
+            --border-color: rgba(0, 240, 255, 0.15);
             --border-hover: rgba(0, 240, 255, 0.5);
-            --text-primary: #f0f3ff;
-            --text-muted: #8b9bb4;
+            --text-primary: #e2e8f0;
+            --text-muted: #64748b;
             --accent-cyan: #00f0ff;
-            --accent-green: #00ff66;
+            --accent-green: #39ff14;
             --glow-color: rgba(0, 240, 255, 0.15);
+            --grid-color: rgba(0, 240, 255, 0.02);
+            --scanline-opacity: 0.35;
         }
 
         * {
@@ -41,8 +74,8 @@
             width: 100vw;
             height: 100vh;
             background-image: 
-                linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
             background-size: 40px 40px;
             pointer-events: none;
             z-index: -2;
@@ -64,6 +97,7 @@
             animation: scan 8s linear infinite;
             pointer-events: none;
             z-index: -1;
+            opacity: var(--scanline-opacity);
         }
 
         @keyframes scan {
@@ -481,7 +515,30 @@
             border-top: 1px dashed rgba(255,255,255,0.05);
             padding-top: 20px;
         }
-    </style>
+    <script>
+        // Initialize Theme immediately to prevent flash
+        const savedTheme = localStorage.getItem('wtj-theme') || 'light';
+        document.documentElement.className = savedTheme === 'light' ? '' : `${savedTheme}-theme`;
+        // Also apply to body when loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            document.body.className = savedTheme === 'light' ? '' : `${savedTheme}-theme`;
+            
+            // Sync UI buttons on load
+            const activeBtn = document.getElementById(`theme-btn-${savedTheme}`);
+            if (activeBtn) {
+                document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
+                activeBtn.classList.add('active');
+            }
+        });
+        
+        window.setTheme = function(theme) {
+            document.body.className = theme === 'light' ? '' : `${theme}-theme`;
+            localStorage.setItem('wtj-theme', theme);
+            document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
+            const activeBtn = document.getElementById(`theme-btn-${theme}`);
+            if (activeBtn) activeBtn.classList.add('active');
+        };
+    </script>
 </head>
 <body>
 
@@ -493,11 +550,19 @@
             <h1>WTJ CONTENT STUDIO</h1>
             <span>CREATOR OPERATIONAL PLATFORM</span>
         </div>
-        <nav>
-            <a href="privacy.html">PRIVACY POLICY</a>
-            <a href="terms.html">TERMS OF SERVICE</a>
-            <a href="mailto:support@wtjcontentstudio.com" class="cta-btn">GET START</a>
-        </nav>
+        <div style="display: flex; align-items: center; gap: 20px;">
+            <!-- 3-Mode Theme Selector -->
+            <div class="theme-switcher-container" style="display: flex; gap: 2px; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); padding: 2px; border-radius: 4px;">
+                <button class="theme-btn active" id="theme-btn-light" onclick="setTheme('light')" style="font-family: 'Share Tech Mono', monospace; font-size: 0.75rem; font-weight: bold; cursor: pointer; border: none; background: transparent; color: var(--text-primary); padding: 4px 8px; border-radius: 2px;">LIGHT</button>
+                <button class="theme-btn" id="theme-btn-dark" onclick="setTheme('dark')" style="font-family: 'Share Tech Mono', monospace; font-size: 0.75rem; font-weight: bold; cursor: pointer; border: none; background: transparent; color: var(--text-primary); padding: 4px 8px; border-radius: 2px;">DARK</button>
+                <button class="theme-btn" id="theme-btn-color" onclick="setTheme('color')" style="font-family: 'Share Tech Mono', monospace; font-size: 0.75rem; font-weight: bold; cursor: pointer; border: none; background: transparent; color: var(--text-primary); padding: 4px 8px; border-radius: 2px;">COLOR</button>
+            </div>
+            <nav style="display: flex; align-items: center;">
+                <a href="privacy.html" style="margin-left: 10px;">PRIVACY POLICY</a>
+                <a href="terms.html" style="margin-left: 10px;">TERMS OF SERVICE</a>
+                <a href="mailto:support@wtjcontentstudio.com" class="cta-btn" style="margin-left: 15px;">GET START</a>
+            </nav>
+        </div>
     </header>
 
     <section class="hero-section">

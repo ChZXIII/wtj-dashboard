@@ -7,8 +7,25 @@
     <!-- Google Fonts: Orbitron & Share Tech Mono for the ultimate clean/tactical look -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css?v=1.7">
+    <script>
+        // Initialize Theme immediately to prevent flash
+        let savedTheme = 'light';
+        try {
+            savedTheme = localStorage.getItem('wtj-theme') || 'light';
+        } catch (e) {
+            console.warn('localStorage is not accessible:', e);
+        }
+        document.documentElement.className = savedTheme + '-theme';
+        // Also apply to body when loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            document.body.className = savedTheme + '-theme';
+        });
+    </script>
 </head>
 <body>
+    <!-- CRT scanlines overlay -->
+    <div class="scanlines"></div>
+
     <!-- Tactical Blueprint Grid Background -->
     <div class="blueprint-grid"></div>
 
@@ -26,12 +43,15 @@
             
             <!-- System Status Readout & Controls -->
             <div class="header-right">
-                <a href="../../index.html" class="theme-btn" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center; margin-right: 5px;">
+                <a href="../../../../Personal_Assistance_HQ/Personal_Assistance_Team/M/html/index.html" class="theme-btn" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center; margin-right: 5px;">
                     <span>🦉 HUB</span>
                 </a>
-                <button id="theme-toggle-btn" class="theme-btn" onclick="toggleTheme()">
-                    <span class="theme-icon">🌓</span> VEDA MODE
-                </button>
+                <!-- 3-Mode Theme Selector -->
+                <div class="theme-switcher-container" style="display: flex; gap: 2px; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); padding: 2px; margin-right: 5px; border-radius: 4px;">
+                    <button class="theme-btn active" id="theme-btn-light" onclick="setTheme('light')" style="font-family: 'Share Tech Mono', monospace; font-size: 0.75rem; font-weight: bold; cursor: pointer; border: none; background: transparent; color: var(--text-primary); padding: 4px 8px;">LIGHT</button>
+                    <button class="theme-btn" id="theme-btn-dark" onclick="setTheme('dark')" style="font-family: 'Share Tech Mono', monospace; font-size: 0.75rem; font-weight: bold; cursor: pointer; border: none; background: transparent; color: var(--text-primary); padding: 4px 8px;">DARK</button>
+                    <button class="theme-btn" id="theme-btn-color" onclick="setTheme('color')" style="font-family: 'Share Tech Mono', monospace; font-size: 0.75rem; font-weight: bold; cursor: pointer; border: none; background: transparent; color: var(--text-primary); padding: 4px 8px;">COLOR</button>
+                </div>
                 <div class="status-readout">
                     <span class="label">PIPELINE ENGINE:</span>
                     <span class="status-dot"></span>

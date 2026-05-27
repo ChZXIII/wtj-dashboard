@@ -1,17 +1,34 @@
 // 0. THEME INITIALIZATION (Veda Mode)
-function initTheme() {
-    const savedTheme = localStorage.getItem('wtj-dashboard-theme');
-    if (savedTheme === 'dark') {
-        document.body.classList.add('dark-theme');
+window.setTheme = function(theme) {
+    document.body.className = theme + '-theme';
+    document.documentElement.className = theme + '-theme';
+    try {
+        localStorage.setItem('wtj-theme', theme);
+    } catch (e) {
+        console.warn('localStorage is not writable:', e);
     }
-}
-initTheme();
+    document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
+    const activeBtn = document.getElementById(`theme-btn-${theme}`);
+    if (activeBtn) activeBtn.classList.add('active');
+};
 
-function toggleTheme() {
-    document.body.classList.toggle('dark-theme');
-    const isDark = document.body.classList.contains('dark-theme');
-    localStorage.setItem('wtj-dashboard-theme', isDark ? 'dark' : 'light');
+let savedThemeVal = 'light';
+try {
+    savedThemeVal = localStorage.getItem('wtj-theme') || 'light';
+} catch (e) {
+    console.warn('localStorage is not readable:', e);
 }
+document.body.className = savedThemeVal + '-theme';
+document.documentElement.className = savedThemeVal + '-theme';
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Sync UI buttons on load
+    const activeBtn = document.getElementById(`theme-btn-${savedThemeVal}`);
+    if (activeBtn) {
+        document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
+        activeBtn.classList.add('active');
+    }
+});
 
 // Sync display times from hidden badges updated by Python/M
 function syncDisplayTimes() {
