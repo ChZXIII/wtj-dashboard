@@ -34,7 +34,7 @@ SAFETY_SETTINGS = [
 ]
 
 # Prompts Directory
-PROMPTS_DIR = os.path.join(project_root, "WTJ_Content_Studio", "Team_Agent_Content", "prompts")
+PROMPTS_DIR = os.path.join(project_root, "Team_Content_Studio", "Team_Agent_Content", "prompts")
 
 # Mapping triggers to prompt files for other agents (text-only)
 AGENT_CONFIGS = {

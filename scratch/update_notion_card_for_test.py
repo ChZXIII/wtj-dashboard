@@ -1,7 +1,7 @@
 import sys
 import os
 
-sys.path.append(os.path.join('/Users/chz/Desktop/ChZ_Agent_Corp/', 'WTJ_Content_Studio', 'Team_Agent_Content', 'skills'))
+sys.path.append(os.path.join('/Users/chz/Desktop/ChZ_Agent_Corp/', 'Team_Content_Studio', 'Team_Agent_Content', 'skills'))
 from notion_helper import NotionHelper
 
 helper = NotionHelper()

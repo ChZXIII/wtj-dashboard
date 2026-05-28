@@ -4,7 +4,7 @@ import os
 # Set up paths
 current_dir = os.path.dirname(os.path.abspath(__file__))
 project_root = os.path.dirname(current_dir)
-sys.path.append(os.path.join(project_root, 'WTJ_Content_Studio', 'Team_Agent_Content', 'skills'))
+sys.path.append(os.path.join(project_root, 'Team_Content_Studio', 'Team_Agent_Content', 'skills'))
 
 from notion_helper import NotionHelper
 

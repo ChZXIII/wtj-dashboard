@@ -4,7 +4,7 @@ import os
 # Add project root to sys.path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from WTJ_Content_Studio.Team_Agent_Content.skills.notion_helper import NotionHelper
+from Team_Content_Studio.Team_Agent_Content.skills.notion_helper import NotionHelper
 
 helper = NotionHelper()
 

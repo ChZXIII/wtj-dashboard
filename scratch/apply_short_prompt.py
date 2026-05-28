@@ -1,7 +1,7 @@
 import re
 
 def update_fb_draft():
-    file_path = "/Users/chz/Desktop/ChZ_Agent_Corp/WTJ_Content_Studio/Team_Agent_Content/skills/fb_draft_generator.py"
+    file_path = "/Users/chz/Desktop/ChZ_Agent_Corp/Team_Content_Studio/Team_Agent_Content/skills/fb_draft_generator.py"
     with open(file_path, "r", encoding="utf-8") as f:
         content = f.read()
 
@@ -39,7 +39,7 @@ def update_fb_draft():
     return True
 
 def update_video_draft():
-    file_path = "/Users/chz/Desktop/ChZ_Agent_Corp/WTJ_Content_Studio/Team_Agent_Content/skills/video_draft_generator.py"
+    file_path = "/Users/chz/Desktop/ChZ_Agent_Corp/Team_Content_Studio/Team_Agent_Content/skills/video_draft_generator.py"
     with open(file_path, "r", encoding="utf-8") as f:
         content = f.read()
 
@@ -77,7 +77,7 @@ def update_video_draft():
     return True
 
 def update_ray_prompt():
-    file_path = "/Users/chz/Desktop/ChZ_Agent_Corp/WTJ_Content_Studio/Team_Agent_Content/prompts/ray_prompt.md"
+    file_path = "/Users/chz/Desktop/ChZ_Agent_Corp/Team_Content_Studio/Team_Agent_Content/prompts/ray_prompt.md"
     with open(file_path, "r", encoding="utf-8") as f:
         content = f.read()
 

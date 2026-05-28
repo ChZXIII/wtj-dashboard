@@ -43,7 +43,7 @@ description: How to check, refresh, and re-authenticate YouTube API upload token
 รันสคริปต์ออโต้โพสต์แบบ Dry-Run เพื่อจำลองการเชื่อมต่อและตรวจเช็คความถูกต้องโดยไม่ทำการอัปโหลดคลิปจริงขึ้นหน้าช่อง:
 
 ```bash
-./venv/bin/python WTJ_Content_Studio/Team_Agent_Content/skills/wtj_auto_poster.py -q Reels_Under1Min --dry-run
+./venv/bin/python Team_Content_Studio/Team_Agent_Content/skills/wtj_auto_poster.py -q Reels_Under1Min --dry-run
 ```
 
 หากผลลัพธ์ขึ้นว่า `YouTube: ✅ สำเร็จ` แสดงว่าโทเคนพร้อมใช้งานเรียบร้อยแล้ว!

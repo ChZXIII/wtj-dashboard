@@ -75,6 +75,22 @@
     1. ปรับปรุง `dashboard_server.py` ให้ดึงชื่อเรื่องแบบ Dynamic ผ่านคำสั่ง `notion.get_title_property_name()`
     2. เปลี่ยนวิธีการบันทึกข้อมูล โดยให้บันทึกไฟล์ทับลงไปในทั้ง 2 พาธปลายทางพร้อมๆ กัน (อ้างอิงคอนฟิกพาธจาก `config.LOCAL_DASHBOARD_DIR` และ `config.GITHUB_DASHBOARD_DIR`)
 
+- **ปัญหา Safari Background ค้างสีเก่าตอนสลับธีม (WebKit CSS Transition Ghost Background)**: เมื่อสลับธีมใน `wtj_calendar_dashboard.html` เช่น กดเปลี่ยนจาก Light → Dark พื้นหลังยังค้างเป็นสีขาว หรือ Dark → Light พื้นหลังยังค้างเป็นสีดำ ต้องกด Refresh Safari ถึงจะกลับมาปกติ
+  - *สาเหตุ*: มี 2 สาเหตุประกอบกัน: (1) `* { transition: background-color 0.25s ease }` ใน CSS ครอบ `body` ด้วย ทำให้ background ค่อยๆ เปลี่ยน แต่ WebKit ของ Safari cache สีเก่าไว้บน layer ก่อน transition จบ และ (2) แท็ก `<html>` ไม่มี `background-color` เลย ทำให้พื้นหลังจริงของหน้า (ก่อน body paint) ยังโปร่งใสหรือค้างสีเก่าให้เห็นอยู่ระหว่างการ switch
+- **ปัญหา Calendar Dashboard ไม่อัปเดตสถานะการ Approve อัตโนมัติ (Notion Live Sync & Publish Date configuration issues)**: หน้าตารางปฏิทินไม่อัปเดตข้อมูลตาม Notion อัตโนมัติ หรือค้างสถานะ `MISSING ASSETS`
+  - *สาเหตุ*: 
+    1. ผู้ใช้ดับเบิ้ลคลิกเปิดไฟล์ `wtj_calendar_dashboard.html` จาก Finder โดยใช้โปรโตคอล `file://` ทำให้เบราว์เซอร์บล็อกการยิง API `fetch('/api/notion_data')` ไปยัง Local Server (ติด CORS/Protocol Error) ทำให้ระบบ Live Sync ดึงข้อมูลสดๆ ไม่ทำงาน
+    2. ข้อมูลการ์ดใน Notion Database ไม่ได้รับการระบุ `Publish Date` (ว่างเปล่าหรือเป็น None) ทำให้สคริปต์ดึงข้อมูลฝั่งหลังบ้านข้ามการ์ดใบนั้นไป (หน้าปฏิทินเลยไม่มีข้อมูลและแสดงผลเป็น `MISSING ASSETS` ค้างตลอด)
+  - *วิธีแก้ไข*:
+    1. ปรับปรุง JavaScript ใน `wtj_calendar_dashboard.html` ส่วน `window.onload` ให้ตรวจสอบโปรโตคอล หากตรวจพบว่าเปิดเป็น `file:` ให้ Redirect ไปที่หน้าบอร์ดจริงบน Local Server `http://localhost:8000/wtj_calendar_dashboard.html` โดยอัตโนมัติ เพื่อให้เรียก Live Sync API ทุก 30 วินาทีได้
+    2. ตรวจสอบและแจ้งให้ผู้ใช้ทราบว่า หากต้องการให้อัปเดตออโต้ ต้องใส่ข้อมูล `Publish Date` (วันและเวลาปล่อย) ของการ์ดใบนั้นใน Notion เสมอ
+- **การยกเลิก Server รันค้าง และสลับไปใช้ระบบตั้งเวลาแบบ 4 ชั่วโมง (Port-Free Periodic Sync System)**:
+  - *สาเหตุ*: ผู้ใช้ต้องการปิดการรันของ Python server (`dashboard_server.py` พอร์ต 8000) ค้างไว้บนระบบตลอดเวลา แต่ต้องการให้ระบบดึงข้อมูล Notion และจัดคิวออโต้ทุกๆ 4 ชั่วโมงโดยตรงลงดิสก์
+  - *วิธีแก้ไข*:
+    1. ยกเลิกตารางงานเซิร์ฟเวอร์เดิม (`launchctl unload ~/Library/LaunchAgents/com.wtj.dashboard_server.plist`) และเปลี่ยนชื่อไฟล์เป็น `.plist.bak`
+    2. สร้างสคริปต์รวม `scratch/sync_notion_cycle.py` ทำหน้าที่รัน `auto_schedule_approved.py` คู่กับ `sync_to_dashboard.py`
+    3. สร้างและลงทะเบียน LaunchAgent ใหม่ `com.wtj.dashboard_scheduler.plist` ตั้งค่า `StartInterval` เป็น `14400` วินาที (4 ชั่วโมง) และให้รันตัวสคริปต์รวมโดยใช้ Python interpreter ของ `venv` เพื่อป้องกันการติดสิทธิ์ macOS TCC Operation not permitted
+
 ### [Theme: Clarity UI / NotebookLM System]
 - **ปัญหา Web Dashboard (file:// protocol AJAX failures)**: ดับเบิ้ลคลิกเปิดหน้าแดชบอร์ดจาก Finder แล้วกดเพิ่มคิวหรือรันระบบหลังบ้านไม่ได้
   - *สาเหตุ*: เมื่อรันด้วย `file://` protocol เบราว์เซอร์จะบล็อกคำขอ `fetch()` ข้ามโปรโตคอลไปยัง `http://localhost:8000` (CORS Error) ทำให้บอร์ดใช้งานไม่ได้

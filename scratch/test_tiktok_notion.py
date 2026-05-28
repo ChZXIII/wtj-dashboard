@@ -6,7 +6,7 @@ import json
 # Add project root to sys.path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from WTJ_Content_Studio.Team_Agent_Content.skills.notion_helper import NotionHelper
+from Team_Content_Studio.Team_Agent_Content.skills.notion_helper import NotionHelper
 
 page_id = "36b1b328-5b0e-8154-bb80-e1200e4c7f10" # Page [8]
 helper = NotionHelper()
@@ -48,7 +48,7 @@ try:
     env["TIKTOK_CLIENT_KEY"] = "mock_client_key_123"
     env["TIKTOK_CLIENT_SECRET"] = "mock_client_secret_abc"
     
-    cmd = ["venv/bin/python3", "WTJ_Content_Studio/Team_Agent_Content/skills/tiktok_publisher.py", "--dry-run", "--from-notes"]
+    cmd = ["venv/bin/python3", "Team_Content_Studio/Team_Agent_Content/skills/tiktok_publisher.py", "--dry-run", "--from-notes"]
     result = subprocess.run(cmd, env=env, capture_output=True, text=True)
     
     print("\n--- Command Output ---")

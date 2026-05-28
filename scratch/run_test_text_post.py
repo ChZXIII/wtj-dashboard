@@ -3,7 +3,7 @@ import os
 import subprocess
 
 # Add skills folder to sys.path
-skills_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'WTJ_Content_Studio', 'Team_Agent_Content', 'skills')
+skills_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'Team_Content_Studio', 'Team_Agent_Content', 'skills')
 sys.path.append(skills_dir)
 
 from notion_helper import NotionHelper

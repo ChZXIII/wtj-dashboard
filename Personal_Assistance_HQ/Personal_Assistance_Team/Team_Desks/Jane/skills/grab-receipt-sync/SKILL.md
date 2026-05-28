@@ -43,7 +43,7 @@ description: Automatically extracts daily Grab delivery receipt data from macOS 
 รันสคริปต์หลักผ่านทาง Terminal ภายใต้ Virtual Environment ของโปรเจกต์:
 ```bash
 cd /Users/chz/Desktop/ChZ_Agent_Corp
-./venv/bin/python3 WTJ_Content_Studio/Team_Agent_Content/skills/grab_receipt_sync.py
+./venv/bin/python3 Team_Content_Studio/Team_Agent_Content/skills/grab_receipt_sync.py
 ```
 > [!IMPORTANT]
 > - ต้องมั่นใจว่าแอป Apple Notes เปิดอยู่บน Mac และเครื่องต่ออินเทอร์เน็ตเพื่อยิงข้อมูลขึ้น Google Sheets ได้

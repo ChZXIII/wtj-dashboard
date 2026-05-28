@@ -10,14 +10,34 @@ import sys
 import os
 import json
 import re
+import csv
 from datetime import datetime, timedelta, timezone
 
 # Set up paths
 current_dir = os.path.dirname(os.path.abspath(__file__))
 project_root = os.path.dirname(current_dir)
-sys.path.append(os.path.join(project_root, 'WTJ_Content_Studio', 'Team_Agent_Content', 'skills'))
+sys.path.append(os.path.join(project_root, 'Team_Content_Studio', 'Team_Agent_Content', 'skills'))
 
 from notion_helper import NotionHelper
+
+# โหลดวันเผยแพร่วิดีโอต้นฉบับจาก CSV สำหรับจัดเรียง Rerun จากเก่าสุดไปใหม่สุด
+video_dates = {}
+csv_path = os.path.join(project_root, "Team_Content_Studio", "Team_Agent_Content", "WTJ_Story_Project", "workspace", "1_raw_materials", "analytics", "Table data.csv")
+if os.path.exists(csv_path):
+    try:
+        with open(csv_path, "r", encoding="utf-8") as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                v_title = row.get("Video title")
+                publish_time_str = row.get("Video publish time")
+                if v_title and publish_time_str:
+                    try:
+                        dt = datetime.strptime(publish_time_str.strip('"'), "%b %d, %Y")
+                        video_dates[v_title.strip().lower()] = dt
+                    except Exception:
+                        pass
+    except Exception as e:
+        print(f"⚠️ เตือน: โหลดไฟล์ CSV เพื่อจัดเรียง Rerun ล้มเหลว: {e}")
 
 # Map JSON Weekday (0=Sunday, 1=Monday, ..., 6=Saturday) -> Python Weekday (0=Monday, ..., 6=Sunday)
 def json_weekday_to_python(json_w):
@@ -28,7 +48,7 @@ def python_weekday_to_json(py_w):
     return (py_w + 1) % 7
 
 def load_schedule_rules():
-    schedule_file = os.path.join(project_root, "WTJ_Content_Studio", "Team_Agent_Content", "WTJ_Story_Project", "workspace", "posting_schedule.json")
+    schedule_file = os.path.join(project_root, "Team_Content_Studio", "Team_Agent_Content", "WTJ_Story_Project", "workspace", "posting_schedule.json")
     if not os.path.exists(schedule_file):
         print(f"❌ ไม่พบไฟล์ตารางการโพสต์: {schedule_file}")
         sys.exit(1)
@@ -38,15 +58,21 @@ def load_schedule_rules():
         
     # จัดกลุ่มตามประเภท
     rules = {
-        "Reels_Under1Min": [],  # type: reels
-        "FB_Videos_3-5Min": [], # type: fb_video
-        "Text_Posts": []        # type: text_post
+        "Reels_Under1Min": [],
+        "FB_Videos_3-5Min": [],
+        "Rerun_Post_Tue": [],
+        "Rerun_Post_Fri": [],
+        "Spoiler_Post_Thu": [],
+        "Spoiler_Post_Sun": []
     }
     
     type_map = {
         "reels": "Reels_Under1Min",
         "fb_video": "FB_Videos_3-5Min",
-        "text_post": "Text_Posts"
+        "rerun_tue": "Rerun_Post_Tue",
+        "rerun_fri": "Rerun_Post_Fri",
+        "spoiler_thu": "Spoiler_Post_Thu",
+        "spoiler_sun": "Spoiler_Post_Sun"
     }
     
     for key, val in schedule.items():
@@ -68,6 +94,30 @@ def load_schedule_rules():
 
 def get_sort_key(page):
     title = page.get("title", "")
+    
+    # สำหรับการ์ด Rerun ให้จัดเรียงตามวันเผยแพร่วิดีโอต้นฉบับ (เก่าสุดไปใหม่สุด)
+    if "[RERUN" in title.upper():
+        cleaned = title
+        if cleaned.startswith("[RERUN_THU]"):
+            cleaned = cleaned[len("[RERUN_THU]"):].strip()
+        elif cleaned.startswith("[RERUN_SUN]"):
+            cleaned = cleaned[len("[RERUN_SUN]"):].strip()
+        
+        cleaned_lower = cleaned.strip().lower()
+        
+        # 1. ค้นหาแบบตรงตัวในดิกชันนารีวันเผยแพร่
+        if cleaned_lower in video_dates:
+            return (2, video_dates[cleaned_lower], title)
+            
+        # 2. ค้นหาแบบกึ่งตรง (Fuzzy Matching)
+        for v_title, v_date in video_dates.items():
+            if cleaned_lower in v_title or v_title in cleaned_lower:
+                return (2, v_date, title)
+                
+        # หากไม่พบข้อมูล ให้กำหนดวันเผยแพร่ในอนาคตไกลๆ (เพื่อให้จัดไปอยู่ท้ายคิว)
+        return (2, datetime(2030, 1, 1), title)
+
+    # สำหรับคลิปใหม่หรือโพสต์ทั่วไป ให้จัดเรียงตามตัวเลขหน้าคลิป
     match = re.search(r'(?:\]\s*|^)(\d+)', title)
     if match:
         return (0, int(match.group(1)), title)
@@ -103,13 +153,19 @@ def main():
     booked_dates = {
         "Reels_Under1Min": [],
         "FB_Videos_3-5Min": [],
-        "Text_Posts": []
+        "Rerun_Post_Tue": [],
+        "Rerun_Post_Fri": [],
+        "Spoiler_Post_Thu": [],
+        "Spoiler_Post_Sun": []
     }
     
     approved_cards = {
         "Reels_Under1Min": [],
         "FB_Videos_3-5Min": [],
-        "Text_Posts": []
+        "Rerun_Post_Tue": [],
+        "Rerun_Post_Fri": [],
+        "Spoiler_Post_Thu": [],
+        "Spoiler_Post_Sun": []
     }
     
     title_prop_name = helper.get_title_property_name()
@@ -149,7 +205,26 @@ def main():
         elif "FB_Video" in platforms:
             q_name = "FB_Videos_3-5Min"
         elif "FB_Text_Quote" in platforms:
-            q_name = "Text_Posts"
+            if "[RERUN_THU]" in title:
+                q_name = "Rerun_Post_Tue"   # Rerun วันพฤหัสบดี ย้ายไปลงอังคาร
+            elif "[RERUN_SUN]" in title:
+                q_name = "Rerun_Post_Fri"   # Rerun วันอาทิตย์ ย้ายไปลงศุกร์
+            elif "[THU_สปอย" in title or ("สปอย" in title and ("พฤหัส" in title or "THU" in title)):
+                q_name = "Spoiler_Post_Thu" # สปอย Podcast ลงพฤหัสบดีเช้า
+            elif "[SUN_สปอย" in title or ("สปอย" in title and ("อาทิตย์" in title or "SUN" in title)):
+                q_name = "Spoiler_Post_Sun" # สปอย Story ลงอาทิตย์เช้า
+            else:
+                # Fallback: ถ้าเป็น FB_Text_Quote ทั่วไปที่ไม่มี prefix
+                if "RERUN" in title.upper():
+                    if "THU" in title.upper():
+                        q_name = "Rerun_Post_Tue"
+                    else:
+                        q_name = "Rerun_Post_Fri"
+                else:
+                    if "THU" in title.upper() or "PODCAST" in title.upper() or "TALK" in title.upper():
+                        q_name = "Spoiler_Post_Thu"
+                    else:
+                        q_name = "Spoiler_Post_Sun"
             
         if not q_name:
             continue

@@ -58,11 +58,30 @@ description: Prerequisites, setup guide, and API troubleshooting for auto-postin
   * ยิง `POST` ไปที่ `https://graph.facebook.com/v19.0/{PAGE_ID}/video_reels?upload_phase=finish&video_id={VIDEO_ID}&access_token={PAGE_TOKEN}&video_state=PUBLISHED&description={TEXT_CAPTION}`
 
 ### 🎞️ การอัปโหลด Facebook Page Video (วิดีโอยาวปกติ)
-หากเป็นคลิปยาวปานกลางหรือยาวปกติ (เช่น คิว `FB_Videos_3-5Min`)
-* ให้ใช้ Endpoint สำหรับอัปโหลดวิดีโอโดยตรง:
-  `POST https://graph-video.facebook.com/v19.0/{PAGE_ID}/videos`
-  *(หมายเหตุ: ต้องเปลี่ยนโฮสต์เป็น `graph-video.facebook.com` เท่านั้น ไม่ใช่โฮสต์ graph ปกติ)*
-* ส่งข้อมูลผ่านบอทโดยระบุฟิลด์ `source` (ข้อมูลไบนารีของไฟล์) และ `description`
+หากเป็นคลิปยาวปานกลางหรือยาวปกติ (เช่น คิว `FB_Videos_3-5Min`) **ห้ามอัปโหลดด้วย Single Request (ฟิลด์ `source`) โดยเด็ดขาด** หากวิดีโอมีขนาดใหญ่ จะเกิดข้อผิดพลาด `413 Client Error: Request Entity Too Large` ให้ใช้ **3-step Resumable Video Upload API** ผ่าน Endpoint `https://graph-video.facebook.com/v19.0/{PAGE_ID}/videos` เท่านั้น โดยทำตามขั้นตอนดังนี้:
+
+* **Step 1: Start (เริ่มต้น Session)**
+  * ส่งคำขอ `POST` โดยระบุ `upload_phase=start` และ `file_size` (ขนาดไฟล์เป็นไบต์)
+  * ดึงค่า `upload_session_id` จากผลลัพธ์กลับมาใช้ในขั้นตอนถัดไป
+* **Step 2: Transfer (อัปโหลด Chunk)**
+  * แบ่งไฟล์วิดีโอเป็นส่วนๆ (แนะนำขนาด 10MB ต่อส่วน: `10 * 1024 * 1024` ไบต์)
+  * ทำการวนลูปอ่านไฟล์ทีละส่วนตาม `start_offset` และยิง `POST` ไปที่ Endpoint เดิม
+  * ส่งข้อมูลแบบ `multipart/form-data` ประกอบด้วย:
+    * `upload_phase`: `transfer`
+    * `upload_session_id`: ID จากขั้นแรก
+    * `start_offset`: ตำแหน่งไบต์เริ่มต้นของ Chunk นั้นๆ
+    * ไฟล์ Chunk โดยส่งในฟิลด์ชื่อ `video_file_chunk`
+  * อัปเดต `start_offset` จากผลตอบกลับของ Facebook ในแต่ละรอบ และทำซ้ำจนกระทั่งอ่านและส่งครบทั้งไฟล์
+* **Step 3: Finish (สั่งเผยแพร่)**
+  * ส่งคำขอ `POST` โดยระบุ `upload_phase=finish`, `upload_session_id` และแนบเนื้อหาข้อความโพสต์ในฟิลด์ `description`
+
+---
+
+## ⚠️ Facebook Publishing Troubleshooting: ปัญหาและวิธีแก้ไขที่พบบ่อย
+
+#### 1. อัปโหลดวิดีโอยาวแล้วติดข้อผิดพลาด 413 Client Error: Request Entity Too Large
+* **สาเหตุ:** การยิงไฟล์วิดีโอที่มีขนาดใหญ่ (เช่น คลิปยาว 3-5 นาที หรือไฟล์ > 50-100MB) แบบ Single POST (ระบุฟิลด์ `source`) จะถูกจำกัดโดย API Gateway หรือเซิร์ฟเวอร์ของ Meta ทำให้การส่งล้มเหลว
+* **วิธีแก้:** สวิตช์ฟังก์ชันการอัปโหลดไปใช้แบบ Chunked Resumable Upload (แบ่งส่งส่วนละ 10MB ตามขั้นตอน 3-step ด้านบน) ในโค้ด [facebook_publisher.py](file:///Users/chz/Desktop/ChZ_Agent_Corp/Team_Content_Studio/Team_Agent_Content/skills/facebook_publisher.py) ได้รับการปรับปรุงเพื่อแก้ปัญหานี้แล้ว
 
 ---
 
@@ -86,7 +105,7 @@ description: Prerequisites, setup guide, and API troubleshooting for auto-postin
 
 #### 3. ปัญหา local HTTP server บายด์พอร์ตไม่ผ่าน (Errno 49 Can't assign requested address)
 * **อาการ:** เมื่อรันสคริปต์ `tiktok_publisher.py` ในโหมดขอสิทธิ์ (OAuth) ครั้งแรก สคริปต์จะพยายามแกะตัวแปร `TIKTOK_REDIRECT_URI` เพื่อไปบายด์พอร์ตเซิร์ฟเวอร์ และจะโยน Error 49 ออกมาเพราะพยายามไปบายด์พอร์ตบนโฮสต์ GitHub Pages (`chzxiii.github.io`)
-* **วิธีแก้:** ในโค้ด [tiktok_publisher.py](file:///Users/chz/Desktop/ChZ_Agent_Corp/WTJ_Content_Studio/Team_Agent_Content/skills/tiktok_publisher.py) ได้รับการปรับปรุงให้ตรวจสอบว่า หากตัวแปร Redirect URI ไม่ใช่ localhost/127.0.0.1 ให้ตั้งค่าเซิร์ฟเวอร์โลคอลไปบายด์ที่ `127.0.0.1` พอร์ต `5000` เสมอ เพื่อรอรับสายดีดกลับจากหน้าเว็บ GitHub Pages
+* **วิธีแก้:** ในโค้ด [tiktok_publisher.py](file:///Users/chz/Desktop/ChZ_Agent_Corp/Team_Content_Studio/Team_Agent_Content/skills/tiktok_publisher.py) ได้รับการปรับปรุงให้ตรวจสอบว่า หากตัวแปร Redirect URI ไม่ใช่ localhost/127.0.0.1 ให้ตั้งค่าเซิร์ฟเวอร์โลคอลไปบายด์ที่ `127.0.0.1` พอร์ต `5000` เสมอ เพื่อรอรับสายดีดกลับจากหน้าเว็บ GitHub Pages
 
 #### 4. บุ่มเซฟหรือตั้งค่าทั้งหมดกลายเป็นสีเทา กดอะไรไม่ได้ (Locked)
 * **อาการ:** หลังจากกดปุ่ม **Submit for review** ด้านขวาบน หน้าเว็บคอนโซลจะล็อกการตั้งค่าทั้งหมดทำให้แก้ไขข้อมูลหรือปรับแต่ง Redirect URI ไม่ได้
@@ -102,7 +121,7 @@ description: Prerequisites, setup guide, and API troubleshooting for auto-postin
 * **อาการ:** TikTok ปฏิเสธการอัปเดตแอปอย่างรวดเร็วพร้อมขึ้นแจ้งเตือน: `Missing Terms of Service, ToS needs to be easily accessible from the homepage. Missing Privacy Policy, PP needs to be easily accessible from the homepage. Website must be fully developed.`
 * **สาเหตุ:** ถึงแม้เราจะกรอกลิงก์หน้า `privacy.html` และ `terms.html` แยกไปให้ในฟอร์มของแอปแล้ว แต่ทาง TikTok มีเกณฑ์ว่าลิงก์กฎหมายทั้งสองตัวนี้จะต้องแสดงอยู่บน **หน้าแรกสุดของเว็บไซต์ (Homepage / Landing page)** ที่ผู้ใช้เข้าถึงด้วย เพื่อให้ผู้ใช้สามารถกดคลิกอ่านนโยบายได้ตลอดเวลา
 * **วิธีแก้:**
-  1. เข้าไปแก้ไขไฟล์หน้าแรกสุดของแดชบอร์ด ([`index.html`](file:///Users/chz/Desktop/ChZ_Agent_Corp/WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard/index.html)) เพื่อเพิ่มกล่อง Footer ท้ายหน้าเว็บที่มีลิงก์ชี้ไปยังหน้า `/privacy.html` และ `/terms.html`
+  1. เข้าไปแก้ไขไฟล์หน้าแรกสุดของแดชบอร์ด ([`index.html`](file:///Users/chz/Desktop/ChZ_Agent_Corp/Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard/index.html)) เพื่อเพิ่มกล่อง Footer ท้ายหน้าเว็บที่มีลิงก์ชี้ไปยังหน้า `/privacy.html` และ `/terms.html`
   2. สั่งรัน git เพื่อดันโค้ดขึ้นระบบ GitHub Pages (เช่น `https://chzxiii.github.io/wtj-dashboard/`)
   3. ไปที่แดชบอร์ดผู้พัฒนาของ TikTok กดปุ่ม **Return to Draft** ➔ ตรวจสอบข้อมูลฟอร์ม ➔ กด **Save** ➔ กด **Submit for review** เพื่อส่งตรวจใหม่อีกรอบ
 

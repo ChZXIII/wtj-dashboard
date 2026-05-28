@@ -9,7 +9,7 @@ PYTHON3_PATH = os.path.join(PROJECT_ROOT, "venv", "bin", "python")
 SCRIPT_PATH = os.path.join(PROJECT_ROOT, "scratch", "auto_schedule_approved.py")
 LABEL = "com.wtj.auto_scheduler"
 PLIST_PATH = os.path.join(LAUNCH_AGENTS_DIR, f"{LABEL}.plist")
-LOG_BASE = os.path.join(PROJECT_ROOT, "WTJ_Content_Studio", "Team_Agent_Content", "WTJ_Story_Project", "workspace", "auto_scheduler")
+LOG_BASE = os.path.join(PROJECT_ROOT, "Team_Content_Studio", "Team_Agent_Content", "WTJ_Story_Project", "workspace", "auto_scheduler")
 
 def register_agent():
     print(f"⚙️  กำลังลงทะเบียน macOS LaunchAgent: {LABEL}")

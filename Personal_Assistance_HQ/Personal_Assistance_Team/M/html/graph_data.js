@@ -43,10 +43,16 @@ const graphData = {
       "val": 15
     },
     {
-      "id": "WTJ_Content_Studio",
-      "label": "WTJ_Content_Studio",
+      "id": "Team_Content_Studio",
+      "label": "Team_Content_Studio",
       "type": "directory",
       "val": 15
+    },
+    {
+      "id": "how_to_post_youtube.md",
+      "label": "how_to_post_youtube.md",
+      "type": "markdown",
+      "val": 10
     },
     {
       "id": "README.md",
@@ -175,6 +181,12 @@ const graphData = {
       "val": 15
     },
     {
+      "id": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/D",
+      "label": "D",
+      "type": "directory",
+      "val": 15
+    },
+    {
       "id": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/Q",
       "label": "Q",
       "type": "directory",
@@ -250,6 +262,42 @@ const graphData = {
       "id": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/M/sync_output.log",
       "label": "sync_output.log",
       "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/D/skills",
+      "label": "skills",
+      "type": "directory",
+      "val": 15
+    },
+    {
+      "id": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/D/d_manual.md",
+      "label": "d_manual.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/D/skills/ui-ux-design",
+      "label": "ui-ux-design",
+      "type": "directory",
+      "val": 15
+    },
+    {
+      "id": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/D/skills/modern-web-guidance",
+      "label": "modern-web-guidance",
+      "type": "directory",
+      "val": 15
+    },
+    {
+      "id": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/D/skills/ui-ux-design/SKILL.md",
+      "label": "SKILL.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/D/skills/modern-web-guidance/SKILL.md",
+      "label": "SKILL.md",
+      "type": "markdown",
       "val": 10
     },
     {
@@ -379,6 +427,12 @@ const graphData = {
       "val": 15
     },
     {
+      "id": "Personal_Assistance_HQ/Personal_Assistance_Team/M/html/knowledge_dashboard.html",
+      "label": "knowledge_dashboard.html",
+      "type": "html",
+      "val": 10
+    },
+    {
       "id": "Personal_Assistance_HQ/Personal_Assistance_Team/M/html/workflow_status.js",
       "label": "workflow_status.js",
       "type": "javascript",
@@ -400,6 +454,24 @@ const graphData = {
       "id": "Personal_Assistance_HQ/Personal_Assistance_Team/M/html/notion_calendar_data.js",
       "label": "notion_calendar_data.js",
       "type": "javascript",
+      "val": 10
+    },
+    {
+      "id": "Personal_Assistance_HQ/Personal_Assistance_Team/M/html/index.html.recovered",
+      "label": "index.html.recovered",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Personal_Assistance_HQ/Personal_Assistance_Team/M/html/index.html.raw",
+      "label": "index.html.raw",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Personal_Assistance_HQ/Personal_Assistance_Team/M/html/publisher_dashboard.html",
+      "label": "publisher_dashboard.html",
+      "type": "html",
       "val": 10
     },
     {
@@ -436,6 +508,12 @@ const graphData = {
       "id": "Personal_Assistance_HQ/Personal_Assistance_Team/M/html/content_dashboard.html",
       "label": "content_dashboard.html",
       "type": "html",
+      "val": 10
+    },
+    {
+      "id": "Personal_Assistance_HQ/Personal_Assistance_Team/M/html/knowledge_style.css",
+      "label": "knowledge_style.css",
+      "type": "other",
       "val": 10
     },
     {
@@ -1039,6 +1117,12 @@ const graphData = {
       "val": 10
     },
     {
+      "id": "scratch/css_layout_guide.md",
+      "label": "css_layout_guide.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
       "id": "scratch/test_youtube_api.py",
       "label": "test_youtube_api.py",
       "type": "python",
@@ -1225,10 +1309,82 @@ const graphData = {
       "val": 10
     },
     {
+      "id": "knowledge_base/my_style",
+      "label": "my_style",
+      "type": "directory",
+      "val": 15
+    },
+    {
+      "id": "knowledge_base/ai_references",
+      "label": "ai_references",
+      "type": "directory",
+      "val": 15
+    },
+    {
+      "id": "knowledge_base/wtj_project",
+      "label": "wtj_project",
+      "type": "directory",
+      "val": 15
+    },
+    {
       "id": "knowledge_base/db",
       "label": "db",
       "type": "directory",
       "val": 15
+    },
+    {
+      "id": "knowledge_base/ingest_queue",
+      "label": "ingest_queue",
+      "type": "directory",
+      "val": 15
+    },
+    {
+      "id": "knowledge_base/ingest_sources.py",
+      "label": "ingest_sources.py",
+      "type": "python",
+      "val": 10
+    },
+    {
+      "id": "knowledge_base/ai_references/web_Scraped_Web_Page.md",
+      "label": "web_Scraped_Web_Page.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "knowledge_base/ai_references/yt_YouTube_Video_6iZu48YpXXo.md",
+      "label": "yt_YouTube_Video_6iZu48YpXXo.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "knowledge_base/ai_references/yt_Create_a_Professional_Dashboard_with_One_Prompt_Using_Claude_AI_In_Just_3_Minute.md",
+      "label": "yt_Create_a_Professional_Dashboard_with_One_Prompt_Using_Claude_AI_In_Just_3_Minute.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "knowledge_base/ai_references/yt_Claude_\u0e40\u0e1b\u0e25\u0e35\u0e48\u0e22\u0e19\u0e0a\u0e35\u0e27\u0e34\u0e15\u0e1c\u0e21\u0e44\u0e1b\u0e40\u0e25\u0e22.md",
+      "label": "yt_Claude_\u0e40\u0e1b\u0e25\u0e35\u0e48\u0e22\u0e19\u0e0a\u0e35\u0e27\u0e34\u0e15\u0e1c\u0e21\u0e44\u0e1b\u0e40\u0e25\u0e22.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "knowledge_base/ai_references/yt_Rick_Astley_-_Never_Gonna_Give_You_Up_Official_Video_4K_Remaster.md",
+      "label": "yt_Rick_Astley_-_Never_Gonna_Give_You_Up_Official_Video_4K_Remaster.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "knowledge_base/wtj_project/yt_\u0e0a\u0e35\u0e27\u0e34\u0e15\u0e40\u0e0b\u0e1f\u0e21\u0e37\u0e2d\u0e2d\u0e32\u0e0a\u0e35\u0e1e_\u0e40\u0e1a\u0e37\u0e49\u0e2d\u0e07\u0e2b\u0e25\u0e31\u0e07\u0e04\u0e23\u0e31\u0e27\u0e41\u0e25\u0e30\u0e40\u0e04\u0e25\u0e47\u0e14\u0e25\u0e31\u0e1a\u0e17\u0e33\u0e2d\u0e32\u0e2b\u0e32\u0e23\u0e23\u0e30\u0e14\u0e31\u0e1a\u0e21\u0e37\u0e2d\u0e42\u0e1b\u0e23.md",
+      "label": "yt_\u0e0a\u0e35\u0e27\u0e34\u0e15\u0e40\u0e0b\u0e1f\u0e21\u0e37\u0e2d\u0e2d\u0e32\u0e0a\u0e35\u0e1e_\u0e40\u0e1a\u0e37\u0e49\u0e2d\u0e07\u0e2b\u0e25\u0e31\u0e07\u0e04\u0e23\u0e31\u0e27\u0e41\u0e25\u0e30\u0e40\u0e04\u0e25\u0e47\u0e14\u0e25\u0e31\u0e1a\u0e17\u0e33\u0e2d\u0e32\u0e2b\u0e32\u0e23\u0e23\u0e30\u0e14\u0e31\u0e1a\u0e21\u0e37\u0e2d\u0e42\u0e1b\u0e23.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "knowledge_base/wtj_project/README_WTJ.md",
+      "label": "README_WTJ.md",
+      "type": "markdown",
+      "val": 10
     },
     {
       "id": "knowledge_base/db/b36e67e0-0f16-4f4c-80f7-2cb857783f6e",
@@ -1417,6 +1573,12 @@ const graphData = {
       "val": 10
     },
     {
+      "id": "knowledge_base/ingest_queue/urls_to_ingest.txt",
+      "label": "urls_to_ingest.txt",
+      "type": "other",
+      "val": 10
+    },
+    {
       "id": "Agent_Lab/tests",
       "label": "tests",
       "type": "directory",
@@ -1455,6 +1617,12 @@ const graphData = {
     {
       "id": "Agent_Lab/bug_vault/.gitkeep",
       "label": ".gitkeep",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Agent_Lab/logs/ingest_run.log",
+      "label": "ingest_run.log",
       "type": "other",
       "val": 10
     },
@@ -1519,2479 +1687,2839 @@ const graphData = {
       "val": 10
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content",
+      "id": "Team_Content_Studio/Team_Agent_Content",
       "label": "Team_Agent_Content",
       "type": "directory",
       "val": 15
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge",
+      "id": "Team_Content_Studio/Team_Agent_Content/Team_Lounge",
       "label": "Team_Lounge",
       "type": "directory",
       "val": 15
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace",
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Podcast_Project",
+      "label": "WTJ_Podcast_Project",
+      "type": "directory",
+      "val": 15
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/archive",
+      "label": "archive",
+      "type": "directory",
+      "val": 15
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace",
       "label": "workspace",
       "type": "directory",
       "val": 15
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project",
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project",
       "label": "WTJ_Story_Project",
       "type": "directory",
       "val": 15
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/prompts",
+      "id": "Team_Content_Studio/Team_Agent_Content/prompts",
       "label": "prompts",
       "type": "directory",
       "val": 15
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project",
+      "id": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project",
       "label": "ANTIA_AI_Project",
       "type": "directory",
       "val": 15
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/skills",
+      "id": "Team_Content_Studio/Team_Agent_Content/skills",
       "label": "skills",
       "type": "directory",
       "val": 15
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/director_agent.py",
+      "id": "Team_Content_Studio/Team_Agent_Content/director_agent.py",
       "label": "director_agent.py",
       "type": "python",
       "val": 10
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/music_agent.py",
+      "id": "Team_Content_Studio/Team_Agent_Content/music_agent.py",
       "label": "music_agent.py",
       "type": "python",
       "val": 10
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/creative_agent.py",
+      "id": "Team_Content_Studio/Team_Agent_Content/creative_agent.py",
       "label": "creative_agent.py",
       "type": "python",
       "val": 10
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/researcher_agent.py",
+      "id": "Team_Content_Studio/Team_Agent_Content/researcher_agent.py",
       "label": "researcher_agent.py",
       "type": "python",
       "val": 10
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/README.md",
+      "id": "Team_Content_Studio/Team_Agent_Content/README.md",
       "label": "README.md",
       "type": "markdown",
       "val": 10
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/pie_agent.py",
+      "id": "Team_Content_Studio/Team_Agent_Content/pie_agent.py",
       "label": "pie_agent.py",
       "type": "python",
       "val": 10
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Music",
+      "id": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Music",
       "label": "Music",
       "type": "directory",
       "val": 15
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Pie",
+      "id": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Pie",
       "label": "Pie",
       "type": "directory",
       "val": 15
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Chris",
+      "id": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Chris",
       "label": "Chris",
       "type": "directory",
       "val": 15
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Nam",
+      "id": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Nam",
       "label": "Nam",
       "type": "directory",
       "val": 15
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Cream",
+      "id": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Cream",
       "label": "Cream",
       "type": "directory",
       "val": 15
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Cri",
+      "id": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Cri",
       "label": "Cri",
       "type": "directory",
       "val": 15
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Or",
+      "id": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Or",
       "label": "Or",
       "type": "directory",
       "val": 15
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Ray",
+      "id": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Ray",
       "label": "Ray",
       "type": "directory",
       "val": 15
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Deer",
+      "id": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Deer",
       "label": "Deer",
       "type": "directory",
       "val": 15
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/P",
+      "id": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/P",
       "label": "P",
       "type": "directory",
       "val": 15
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Music/music_manual.md",
+      "id": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Music/music_manual.md",
       "label": "music_manual.md",
       "type": "markdown",
       "val": 10
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Pie/pie_manual.md",
+      "id": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Pie/pie_manual.md",
       "label": "pie_manual.md",
       "type": "markdown",
       "val": 10
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Chris/chris_manual.md",
+      "id": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Chris/chris_manual.md",
       "label": "chris_manual.md",
       "type": "markdown",
       "val": 10
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Nam/nam_first_ideas.txt",
+      "id": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Nam/nam_first_ideas.txt",
       "label": "nam_first_ideas.txt",
       "type": "other",
       "val": 10
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Nam/nam_manual.md",
+      "id": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Nam/nam_manual.md",
       "label": "nam_manual.md",
       "type": "markdown",
       "val": 10
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Cream/cream_manual.md",
+      "id": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Cream/cream_manual.md",
       "label": "cream_manual.md",
       "type": "markdown",
       "val": 10
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Cri/cri_manual.md",
+      "id": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Cri/cri_manual.md",
       "label": "cri_manual.md",
       "type": "markdown",
       "val": 10
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Or/or_manual.md",
+      "id": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Or/or_manual.md",
       "label": "or_manual.md",
       "type": "markdown",
       "val": 10
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Ray/skills",
+      "id": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Ray/skills",
       "label": "skills",
       "type": "directory",
       "val": 15
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Ray/ray_manual.md",
+      "id": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Ray/ray_manual.md",
       "label": "ray_manual.md",
       "type": "markdown",
       "val": 10
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Ray/skills/facebook-draft-generator",
+      "id": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Ray/skills/facebook-draft-generator",
       "label": "facebook-draft-generator",
       "type": "directory",
       "val": 15
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Ray/skills/facebook-draft-generator/SKILL.md",
+      "id": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Ray/skills/facebook-draft-generator/SKILL.md",
       "label": "SKILL.md",
       "type": "markdown",
       "val": 10
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Deer/deer_manual.md",
+      "id": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Deer/deer_manual.md",
       "label": "deer_manual.md",
       "type": "markdown",
       "val": 10
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/P/p_manual.md",
+      "id": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/P/p_manual.md",
       "label": "p_manual.md",
       "type": "markdown",
       "val": 10
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon",
-      "label": "interview_anupab_sarmoon",
-      "type": "directory",
-      "val": 15
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "label": "2_drafts",
-      "type": "directory",
-      "val": 15
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/learning_base.json",
-      "label": "learning_base.json",
-      "type": "json",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/temp_audio.m4a",
-      "label": "temp_audio.m4a",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/update_hashtags_everywhere.py",
-      "label": "update_hashtags_everywhere.py",
-      "type": "python",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/rerun_state.json",
-      "label": "rerun_state.json",
-      "type": "json",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/check_review_cards.py",
-      "label": "check_review_cards.py",
-      "type": "python",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images",
-      "label": "images",
-      "type": "directory",
-      "val": 15
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/cream_research_notes.md",
-      "label": "cream_research_notes.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/or_audit_report.md",
-      "label": "or_audit_report.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/download_images.py",
-      "label": "download_images.py",
-      "type": "python",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/chris_director_guide.md",
-      "label": "chris_director_guide.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images/07_leather_suit_kangaroo.jpg",
-      "label": "07_leather_suit_kangaroo.jpg",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images/04_yamaha_spark_110.jpg",
-      "label": "04_yamaha_spark_110.jpg",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images/04_motocross_child_training.jpg",
-      "label": "04_motocross_child_training.jpg",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images/06_data_telemetry_analysis.jpg",
-      "label": "06_data_telemetry_analysis.jpg",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images/05_anupab_fitness_gym.jpg",
-      "label": "05_anupab_fitness_gym.jpg",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images/06_motorland_aragon_circuit.jpg",
-      "label": "06_motorland_aragon_circuit.jpg",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images/02_yamaha_yzr_m1_motogp.jpg",
-      "label": "02_yamaha_yzr_m1_motogp.jpg",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images/02_yamaha_r6_wsbk.jpg",
-      "label": "02_yamaha_r6_wsbk.jpg",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images/03_yamaha_spark_racing.jpg",
-      "label": "03_yamaha_spark_racing.jpg",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images/09_chang_international_circuit.jpg",
-      "label": "09_chang_international_circuit.jpg",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images/08_race_cargo_container.jpg",
-      "label": "08_race_cargo_container.jpg",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images/03_yamaha_mio_racing.jpg",
-      "label": "03_yamaha_mio_racing.jpg",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images/07_alpinestars_tech_air_airbag.jpg",
-      "label": "07_alpinestars_tech_air_airbag.jpg",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e1e\u0e40\u0e01\u0e07.md",
-      "label": "text_posts_thu_discord_\u0e1e\u0e40\u0e01\u0e07.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e28\u0e25\u0e1b\u0e19\u0e44\u0e2a\u0e41\u0e2b\u0e07.md",
-      "label": "rerun_thu_\u0e28\u0e25\u0e1b\u0e19\u0e44\u0e2a\u0e41\u0e2b\u0e07.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e42\u0e27\u0e40\u0e01\u0e07.md",
-      "label": "text_posts_sun_discord_\u0e42\u0e27\u0e40\u0e01\u0e07.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e40\u0e0a\u0e1f\u0e44\u0e02.md",
-      "label": "text_posts_sun_discord_\u0e40\u0e0a\u0e1f\u0e44\u0e02.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_ai_\u0e21\u0e1c\u0e25\u0e15\u0e2d\u0e2d\u0e32\u0e0a\u0e1e\u0e28\u0e25\u0e1b\u0e19\u0e08\u0e23\u0e07\u0e2b\u0e23\u0e2d\u0e44\u0e21.md",
-      "label": "rerun_thu_ai_\u0e21\u0e1c\u0e25\u0e15\u0e2d\u0e2d\u0e32\u0e0a\u0e1e\u0e28\u0e25\u0e1b\u0e19\u0e08\u0e23\u0e07\u0e2b\u0e23\u0e2d\u0e44\u0e21.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e01\u0e1f_muzcali_\u0e04\u0e19\u0e44\u0e17\u0e22\u0e04\u0e19\u0e40\u0e14\u0e22\u0e27_\u0e17\u0e44\u0e14\u0e40\u0e1b\u0e19_global_brand_ambassador_\u0e43\u0e19\u0e27\u0e07\u0e01\u0e32\u0e23\u0e08\u0e01\u0e23\u0e22\u0e32\u0e19__what_the_job_ss3_ep2.md",
-      "label": "rerun_sun_\u0e01\u0e1f_muzcali_\u0e04\u0e19\u0e44\u0e17\u0e22\u0e04\u0e19\u0e40\u0e14\u0e22\u0e27_\u0e17\u0e44\u0e14\u0e40\u0e1b\u0e19_global_brand_ambassador_\u0e43\u0e19\u0e27\u0e07\u0e01\u0e32\u0e23\u0e08\u0e01\u0e23\u0e22\u0e32\u0e19__what_the_job_ss3_ep2.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_location_manager_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e15\u0e2d\u0e07\u0e17\u0e33\u0e2d\u0e30\u0e44\u0e23\u0e1a\u0e32\u0e07.md",
-      "label": "rerun_thu_location_manager_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e15\u0e2d\u0e07\u0e17\u0e33\u0e2d\u0e30\u0e44\u0e23\u0e1a\u0e32\u0e07.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_ai_\u0e21\u0e1c\u0e25\u0e15\u0e2d\u0e2d\u0e32\u0e0a\u0e1e\u0e28\u0e25\u0e1b\u0e19\u0e08\u0e23\u0e07\u0e2b\u0e23\u0e2d\u0e44\u0e21.md",
-      "label": "rerun_sun_ai_\u0e21\u0e1c\u0e25\u0e15\u0e2d\u0e2d\u0e32\u0e0a\u0e1e\u0e28\u0e25\u0e1b\u0e19\u0e08\u0e23\u0e07\u0e2b\u0e23\u0e2d\u0e44\u0e21.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e0a\u0e27\u0e15\u0e40\u0e0b\u0e1f\u0e21\u0e2d\u0e2d\u0e32\u0e0a\u0e1e__\u0e40\u0e1a\u0e2d\u0e07\u0e2b\u0e25\u0e07\u0e04\u0e23\u0e27\u0e41\u0e25\u0e30\u0e40\u0e04\u0e25\u0e14\u0e25\u0e1a\u0e17\u0e33\u0e2d\u0e32\u0e2b\u0e32\u0e23\u0e23\u0e30\u0e14\u0e1a\u0e21\u0e2d\u0e42\u0e1b\u0e23.md",
-      "label": "rerun_thu_\u0e0a\u0e27\u0e15\u0e40\u0e0b\u0e1f\u0e21\u0e2d\u0e2d\u0e32\u0e0a\u0e1e__\u0e40\u0e1a\u0e2d\u0e07\u0e2b\u0e25\u0e07\u0e04\u0e23\u0e27\u0e41\u0e25\u0e30\u0e40\u0e04\u0e25\u0e14\u0e25\u0e1a\u0e17\u0e33\u0e2d\u0e32\u0e2b\u0e32\u0e23\u0e23\u0e30\u0e14\u0e1a\u0e21\u0e2d\u0e42\u0e1b\u0e23.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e0a\u0e32\u0e07\u0e44\u0e17\u0e22\u0e21\u0e32\u0e01\u0e1d\u0e21\u0e2d\u0e17\u0e25\u0e01\u0e04\u0e32\u0e44\u0e27\u0e43\u0e08\u0e16\u0e2d\u0e22\u0e23\u0e16\u0e43\u0e2b\u0e21\u0e04\u0e19\u0e40\u0e1b\u0e19\u0e25\u0e32\u0e19__\u0e21\u0e32\u0e43\u0e2b\u0e04\u0e2a\u0e15\u0e2d\u0e21\u0e15\u0e07\u0e41\u0e15\u0e2d\u0e2d\u0e01\u0e28\u0e19\u0e22_\u0e41\u0e1a\u0e1a\u0e22\u0e07\u0e44\u0e21\u0e44\u0e14\u0e02.md",
-      "label": "rerun_thu_\u0e0a\u0e32\u0e07\u0e44\u0e17\u0e22\u0e21\u0e32\u0e01\u0e1d\u0e21\u0e2d\u0e17\u0e25\u0e01\u0e04\u0e32\u0e44\u0e27\u0e43\u0e08\u0e16\u0e2d\u0e22\u0e23\u0e16\u0e43\u0e2b\u0e21\u0e04\u0e19\u0e40\u0e1b\u0e19\u0e25\u0e32\u0e19__\u0e21\u0e32\u0e43\u0e2b\u0e04\u0e2a\u0e15\u0e2d\u0e21\u0e15\u0e07\u0e41\u0e15\u0e2d\u0e2d\u0e01\u0e28\u0e19\u0e22_\u0e41\u0e1a\u0e1a\u0e22\u0e07\u0e44\u0e21\u0e44\u0e14\u0e02.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e18\u0e23\u0e01\u0e08\u0e23\u0e32\u0e19\u0e01\u0e32\u0e41\u0e1f_\u0e41\u0e25\u0e30_\u0e1a\u0e32\u0e23\u0e2a\u0e15\u0e32.md",
-      "label": "rerun_thu_\u0e18\u0e23\u0e01\u0e08\u0e23\u0e32\u0e19\u0e01\u0e32\u0e41\u0e1f_\u0e41\u0e25\u0e30_\u0e1a\u0e32\u0e23\u0e2a\u0e15\u0e32.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e40\u0e1a\u0e2d\u0e07\u0e2b\u0e25\u0e07\u0e2d\u0e32\u0e0a\u0e1e_dj_\u0e17\u0e04\u0e13\u0e2d\u0e32\u0e08\u0e44\u0e21\u0e40\u0e04\u0e22\u0e23.md",
-      "label": "rerun_sun_\u0e40\u0e1a\u0e2d\u0e07\u0e2b\u0e25\u0e07\u0e2d\u0e32\u0e0a\u0e1e_dj_\u0e17\u0e04\u0e13\u0e2d\u0e32\u0e08\u0e44\u0e21\u0e40\u0e04\u0e22\u0e23.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e19\u0e32\u0e22\u0e01_\u0e2d\u0e1a\u0e08_\u0e25\u0e33\u0e1e\u0e19.md",
-      "label": "text_posts_sun_discord_\u0e19\u0e32\u0e22\u0e01_\u0e2d\u0e1a\u0e08_\u0e25\u0e33\u0e1e\u0e19.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/reels_under1min_\u0e0a\u0e32\u0e07\u0e41\u0e15\u0e07\u0e2b\u0e19\u0e32\u0e2a\u0e0a\u0e27\u0e15.md",
-      "label": "reels_under1min_\u0e0a\u0e32\u0e07\u0e41\u0e15\u0e07\u0e2b\u0e19\u0e32\u0e2a\u0e0a\u0e27\u0e15.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_consult_\u0e01\u0e2d\u0e2a\u0e23\u0e32\u0e07_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e08\u0e33\u0e40\u0e1b\u0e19\u0e15\u0e2d\u0e07\u0e21\u0e21\u0e22__\u0e08\u0e32\u0e07\u0e21\u0e32\u0e41\u0e25\u0e27\u0e44\u0e14\u0e2d\u0e30\u0e44\u0e23.md",
-      "label": "rerun_thu_consult_\u0e01\u0e2d\u0e2a\u0e23\u0e32\u0e07_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e08\u0e33\u0e40\u0e1b\u0e19\u0e15\u0e2d\u0e07\u0e21\u0e21\u0e22__\u0e08\u0e32\u0e07\u0e21\u0e32\u0e41\u0e25\u0e27\u0e44\u0e14\u0e2d\u0e30\u0e44\u0e23.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e1e\u0e40\u0e01\u0e32.md",
-      "label": "text_posts_sun_discord_\u0e1e\u0e40\u0e01\u0e32.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e0a\u0e32\u0e07\u0e20\u0e32\u0e1e\u0e07\u0e32\u0e19\u0e41\u0e15\u0e07_\u0e2d\u0e32\u0e0a\u0e1e\u0e17\u0e14\u0e2a\u0e27\u0e22\u0e2b\u0e23_\u0e41\u0e15\u0e40\u0e1a\u0e2d\u0e07\u0e2b\u0e25\u0e07\u0e41\u0e25\u0e01\u0e21\u0e32\u0e14\u0e27\u0e22\u0e2d\u0e30\u0e44\u0e23__what_the_job_s3_ep1.md",
-      "label": "rerun_sun_\u0e0a\u0e32\u0e07\u0e20\u0e32\u0e1e\u0e07\u0e32\u0e19\u0e41\u0e15\u0e07_\u0e2d\u0e32\u0e0a\u0e1e\u0e17\u0e14\u0e2a\u0e27\u0e22\u0e2b\u0e23_\u0e41\u0e15\u0e40\u0e1a\u0e2d\u0e07\u0e2b\u0e25\u0e07\u0e41\u0e25\u0e01\u0e21\u0e32\u0e14\u0e27\u0e22\u0e2d\u0e30\u0e44\u0e23__what_the_job_s3_ep1.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_1_\u0e27\u0e19\u0e43\u0e19\u0e01\u0e32\u0e23\u0e17\u0e33\u0e1f\u0e32\u0e23\u0e21\u0e07\u0e2a\u0e27\u0e22\u0e07\u0e32\u0e21.md",
-      "label": "rerun_sun_1_\u0e27\u0e19\u0e43\u0e19\u0e01\u0e32\u0e23\u0e17\u0e33\u0e1f\u0e32\u0e23\u0e21\u0e07\u0e2a\u0e27\u0e22\u0e07\u0e32\u0e21.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e1e\u0e32\u0e0a\u0e21\u0e1f\u0e32\u0e23\u0e21\u0e2b\u0e19\u0e40\u0e2b\u0e22\u0e2d.md",
-      "label": "rerun_sun_\u0e1e\u0e32\u0e0a\u0e21\u0e1f\u0e32\u0e23\u0e21\u0e2b\u0e19\u0e40\u0e2b\u0e22\u0e2d.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_location_manager_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e15\u0e2d\u0e07\u0e17\u0e33\u0e2d\u0e30\u0e44\u0e23\u0e1a\u0e32\u0e07.md",
-      "label": "rerun_sun_location_manager_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e15\u0e2d\u0e07\u0e17\u0e33\u0e2d\u0e30\u0e44\u0e23\u0e1a\u0e32\u0e07.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/reels_under1min_transcript_\u0e0a\u0e32\u0e07\u0e20\u0e32\u0e1e\u0e2d\u0e32\u0e0a\u0e1e.md",
-      "label": "reels_under1min_transcript_\u0e0a\u0e32\u0e07\u0e20\u0e32\u0e1e\u0e2d\u0e32\u0e0a\u0e1e.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e1e\u0e40\u0e01\u0e07_wall_painting_\u0e08\u0e32\u0e01\u0e01\u0e33\u0e41\u0e1e\u0e07\u0e40\u0e1b\u0e25\u0e32\u0e2a\u0e1c\u0e25\u0e07\u0e32\u0e19\u0e28\u0e25\u0e1b\u0e30\u0e17\u0e2a\u0e23\u0e32\u0e07\u0e23\u0e32\u0e22\u0e44\u0e14\u0e40\u0e25\u0e22\u0e07\u0e0a\u0e1e__what_the_job_ss3_ep3.md",
-      "label": "rerun_thu_\u0e1e\u0e40\u0e01\u0e07_wall_painting_\u0e08\u0e32\u0e01\u0e01\u0e33\u0e41\u0e1e\u0e07\u0e40\u0e1b\u0e25\u0e32\u0e2a\u0e1c\u0e25\u0e07\u0e32\u0e19\u0e28\u0e25\u0e1b\u0e30\u0e17\u0e2a\u0e23\u0e32\u0e07\u0e23\u0e32\u0e22\u0e44\u0e14\u0e40\u0e25\u0e22\u0e07\u0e0a\u0e1e__what_the_job_ss3_ep3.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e40\u0e1b\u0e14\u0e43\u0e08\u0e04\u0e19\u0e02\u0e1a\u0e2a\u0e25\u0e2d\u0e41\u0e14\u0e07_\u0e40\u0e1b\u0e19\u0e08\u0e23\u0e07\u0e2d\u0e22\u0e32\u0e07\u0e0a\u0e32\u0e27\u0e40\u0e19\u0e15\u0e27\u0e32\u0e21\u0e22_\u0e43\u0e19\u0e2d\u0e01\u0e21\u0e21\u0e21\u0e2d\u0e07.md",
-      "label": "rerun_sun_\u0e40\u0e1b\u0e14\u0e43\u0e08\u0e04\u0e19\u0e02\u0e1a\u0e2a\u0e25\u0e2d\u0e41\u0e14\u0e07_\u0e40\u0e1b\u0e19\u0e08\u0e23\u0e07\u0e2d\u0e22\u0e32\u0e07\u0e0a\u0e32\u0e27\u0e40\u0e19\u0e15\u0e27\u0e32\u0e21\u0e22_\u0e43\u0e19\u0e2d\u0e01\u0e21\u0e21\u0e21\u0e2d\u0e07.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_vlog_\u0e01\u0e2d\u0e1f_midlife_crisis.md",
-      "label": "rerun_sun_vlog_\u0e01\u0e2d\u0e1f_midlife_crisis.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e08\u0e2a\u0e21\u0e19.md",
-      "label": "text_posts_thu_discord_\u0e08\u0e2a\u0e21\u0e19.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e1e\u0e01\u0e1a.md",
-      "label": "text_posts_sun_discord_\u0e1e\u0e01\u0e1a.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e01\u0e27\u0e32\u0e08\u0e30\u0e21\u0e32\u0e40\u0e1b\u0e19\u0e40\u0e08\u0e32\u0e02\u0e2d\u0e07\u0e40\u0e2b\u0e23\u0e22\u0e0d\u0e17\u0e2d\u0e07\u0e0b\u0e40\u0e01\u0e21\u0e2a_\u0e1e\u0e21\u0e30\u0e15\u0e21\u0e19\u0e01\u0e08\u0e01\u0e23\u0e22\u0e32\u0e19\u0e17\u0e21\u0e0a\u0e32\u0e15_\u0e40\u0e15\u0e1a\u0e42\u0e15\u0e21\u0e32\u0e22\u0e07\u0e44\u0e07_\u0e1c\u0e32\u0e19\u0e2d\u0e30\u0e44\u0e23\u0e21\u0e32\u0e1a\u0e32\u0e07.md",
-      "label": "rerun_sun_\u0e01\u0e27\u0e32\u0e08\u0e30\u0e21\u0e32\u0e40\u0e1b\u0e19\u0e40\u0e08\u0e32\u0e02\u0e2d\u0e07\u0e40\u0e2b\u0e23\u0e22\u0e0d\u0e17\u0e2d\u0e07\u0e0b\u0e40\u0e01\u0e21\u0e2a_\u0e1e\u0e21\u0e30\u0e15\u0e21\u0e19\u0e01\u0e08\u0e01\u0e23\u0e22\u0e32\u0e19\u0e17\u0e21\u0e0a\u0e32\u0e15_\u0e40\u0e15\u0e1a\u0e42\u0e15\u0e21\u0e32\u0e22\u0e07\u0e44\u0e07_\u0e1c\u0e32\u0e19\u0e2d\u0e30\u0e44\u0e23\u0e21\u0e32\u0e1a\u0e32\u0e07.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e40\u0e1b\u0e14\u0e43\u0e08\u0e04\u0e19\u0e02\u0e1a\u0e2a\u0e25\u0e2d\u0e41\u0e14\u0e07_\u0e40\u0e1b\u0e19\u0e08\u0e23\u0e07\u0e2d\u0e22\u0e32\u0e07\u0e0a\u0e32\u0e27\u0e40\u0e19\u0e15\u0e27\u0e32\u0e21\u0e22_\u0e43\u0e19\u0e2d\u0e01\u0e21\u0e21\u0e21\u0e2d\u0e07.md",
-      "label": "rerun_thu_\u0e40\u0e1b\u0e14\u0e43\u0e08\u0e04\u0e19\u0e02\u0e1a\u0e2a\u0e25\u0e2d\u0e41\u0e14\u0e07_\u0e40\u0e1b\u0e19\u0e08\u0e23\u0e07\u0e2d\u0e22\u0e32\u0e07\u0e0a\u0e32\u0e27\u0e40\u0e19\u0e15\u0e27\u0e32\u0e21\u0e22_\u0e43\u0e19\u0e2d\u0e01\u0e21\u0e21\u0e21\u0e2d\u0e07.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e41\u0e04\u0e40\u0e2d\u0e32\u0e40\u0e17_\u0e2b\u0e23\u0e2d_funtion.md",
-      "label": "rerun_sun_\u0e41\u0e04\u0e40\u0e2d\u0e32\u0e40\u0e17_\u0e2b\u0e23\u0e2d_funtion.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e01\u0e1f_muzcali_\u0e04\u0e19\u0e44\u0e17\u0e22\u0e04\u0e19\u0e40\u0e14\u0e22\u0e27_\u0e17\u0e44\u0e14\u0e40\u0e1b\u0e19_global_brand_ambassador_\u0e43\u0e19\u0e27\u0e07\u0e01\u0e32\u0e23\u0e08\u0e01\u0e23\u0e22\u0e32\u0e19__what_the_job_ss3_ep2.md",
-      "label": "rerun_thu_\u0e01\u0e1f_muzcali_\u0e04\u0e19\u0e44\u0e17\u0e22\u0e04\u0e19\u0e40\u0e14\u0e22\u0e27_\u0e17\u0e44\u0e14\u0e40\u0e1b\u0e19_global_brand_ambassador_\u0e43\u0e19\u0e27\u0e07\u0e01\u0e32\u0e23\u0e08\u0e01\u0e23\u0e22\u0e32\u0e19__what_the_job_ss3_ep2.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e2d\u0e19\u0e1f\u0e25\u0e40\u0e2d\u0e19\u0e40\u0e0b\u0e2d\u0e23\u0e2a\u0e32\u0e22_sport_\u0e17\u0e33\u0e2d\u0e30\u0e44\u0e23\u0e01\u0e19\u0e1a\u0e32\u0e07\u0e43\u0e19\u0e41\u0e15\u0e25\u0e30\u0e27\u0e19.md",
-      "label": "rerun_sun_\u0e2d\u0e19\u0e1f\u0e25\u0e40\u0e2d\u0e19\u0e40\u0e0b\u0e2d\u0e23\u0e2a\u0e32\u0e22_sport_\u0e17\u0e33\u0e2d\u0e30\u0e44\u0e23\u0e01\u0e19\u0e1a\u0e32\u0e07\u0e43\u0e19\u0e41\u0e15\u0e25\u0e30\u0e27\u0e19.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_\u0e0a\u0e32\u0e07\u0e41\u0e15\u0e07\u0e2b\u0e19\u0e32\u0e2a\u0e0a\u0e27\u0e15.md",
-      "label": "text_posts_sun_\u0e0a\u0e32\u0e07\u0e41\u0e15\u0e07\u0e2b\u0e19\u0e32\u0e2a\u0e0a\u0e27\u0e15.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e40\u0e1a\u0e2d\u0e07\u0e2b\u0e25\u0e07\u0e2d\u0e32\u0e0a\u0e1e_dj_\u0e17\u0e04\u0e13\u0e2d\u0e32\u0e08\u0e44\u0e21\u0e40\u0e04\u0e22\u0e23.md",
-      "label": "rerun_thu_\u0e40\u0e1a\u0e2d\u0e07\u0e2b\u0e25\u0e07\u0e2d\u0e32\u0e0a\u0e1e_dj_\u0e17\u0e04\u0e13\u0e2d\u0e32\u0e08\u0e44\u0e21\u0e40\u0e04\u0e22\u0e23.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e0a\u0e07.md",
-      "label": "text_posts_sun_discord_\u0e0a\u0e07.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e19\u0e2d\u0e07\u0e01\u0e1f.md",
-      "label": "text_posts_thu_discord_\u0e19\u0e2d\u0e07\u0e01\u0e1f.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e27\u0e23\u0e14\u0e32.md",
-      "label": "text_posts_thu_discord_\u0e27\u0e23\u0e14\u0e32.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e2b\u0e2d\u0e22\u0e02\u0e21\u0e22\u0e01\u0e29\u0e23\u0e19\u0e15\u0e19\u0e30_\u0e23\u0e32\u0e22\u0e44\u0e14\u0e40\u0e2a\u0e23\u0e21\u0e27\u0e19\u0e25\u0e30_2000_\u0e2b\u0e2d\u0e22\u0e02\u0e21\u0e17\u0e21\u0e02\u0e19\u0e32\u0e14\u0e43\u0e2b\u0e0d\u0e40\u0e17\u0e32\u0e44\u0e02\u0e44\u0e01_\u0e40\u0e25\u0e22\u0e07\u0e07\u0e32\u0e22_\u0e42\u0e15\u0e44\u0e27_wtj_wtjtalk.md",
-      "label": "rerun_thu_\u0e2b\u0e2d\u0e22\u0e02\u0e21\u0e22\u0e01\u0e29\u0e23\u0e19\u0e15\u0e19\u0e30_\u0e23\u0e32\u0e22\u0e44\u0e14\u0e40\u0e2a\u0e23\u0e21\u0e27\u0e19\u0e25\u0e30_2000_\u0e2b\u0e2d\u0e22\u0e02\u0e21\u0e17\u0e21\u0e02\u0e19\u0e32\u0e14\u0e43\u0e2b\u0e0d\u0e40\u0e17\u0e32\u0e44\u0e02\u0e44\u0e01_\u0e40\u0e25\u0e22\u0e07\u0e07\u0e32\u0e22_\u0e42\u0e15\u0e44\u0e27_wtj_wtjtalk.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e1e\u0e41\u0e2d\u0e21.md",
-      "label": "text_posts_thu_discord_\u0e1e\u0e41\u0e2d\u0e21.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e41\u0e04\u0e40\u0e2d\u0e32\u0e40\u0e17_\u0e2b\u0e23\u0e2d_funtion.md",
-      "label": "rerun_thu_\u0e41\u0e04\u0e40\u0e2d\u0e32\u0e40\u0e17_\u0e2b\u0e23\u0e2d_funtion.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e1e\u0e01\u0e1a.md",
-      "label": "text_posts_thu_discord_\u0e1e\u0e01\u0e1a.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e1e\u0e0a.md",
-      "label": "text_posts_thu_discord_\u0e1e\u0e0a.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e40\u0e01\u0e29\u0e15\u0e23\u0e01\u0e23\u0e07\u0e2a\u0e27\u0e22\u0e07\u0e32\u0e21\u0e01\u0e1a\u0e23\u0e32\u0e22\u0e44\u0e14\u0e16\u0e07_7_\u0e2b\u0e25\u0e01\u0e15\u0e2d\u0e1b.md",
-      "label": "rerun_sun_\u0e40\u0e01\u0e29\u0e15\u0e23\u0e01\u0e23\u0e07\u0e2a\u0e27\u0e22\u0e07\u0e32\u0e21\u0e01\u0e1a\u0e23\u0e32\u0e22\u0e44\u0e14\u0e16\u0e07_7_\u0e2b\u0e25\u0e01\u0e15\u0e2d\u0e1b.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e2d\u0e19.md",
-      "label": "text_posts_thu_discord_\u0e2d\u0e19.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e28\u0e25\u0e1b\u0e19\u0e44\u0e2a\u0e41\u0e2b\u0e07.md",
-      "label": "rerun_sun_\u0e28\u0e25\u0e1b\u0e19\u0e44\u0e2a\u0e41\u0e2b\u0e07.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e1a\u0e07.md",
-      "label": "text_posts_sun_discord_\u0e1a\u0e07.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e44\u0e21\u0e43\u0e0a\u0e41\u0e04\u0e16\u0e32\u0e22\u0e2a\u0e27\u0e22\u0e19\u0e04\u0e2d\u0e01\u0e32\u0e23\u0e17\u0e33\u0e07\u0e32\u0e19\u0e02\u0e2d\u0e07\u0e21\u0e2d\u0e42\u0e1b\u0e23\u0e19\u0e01\u0e1a\u0e19\u0e42\u0e14\u0e23\u0e19.md",
-      "label": "rerun_sun_\u0e44\u0e21\u0e43\u0e0a\u0e41\u0e04\u0e16\u0e32\u0e22\u0e2a\u0e27\u0e22\u0e19\u0e04\u0e2d\u0e01\u0e32\u0e23\u0e17\u0e33\u0e07\u0e32\u0e19\u0e02\u0e2d\u0e07\u0e21\u0e2d\u0e42\u0e1b\u0e23\u0e19\u0e01\u0e1a\u0e19\u0e42\u0e14\u0e23\u0e19.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e19\u0e32\u0e22\u0e01_\u0e2d\u0e1a\u0e08_\u0e25\u0e33\u0e1e\u0e19.md",
-      "label": "text_posts_thu_discord_\u0e19\u0e32\u0e22\u0e01_\u0e2d\u0e1a\u0e08_\u0e25\u0e33\u0e1e\u0e19.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e01\u0e2d\u0e25\u0e1f\u0e1a\u0e32\u0e23\u0e40\u0e17\u0e19\u0e40\u0e14\u0e2d\u0e23_\u0e1c\u0e44\u0e21\u0e40\u0e04\u0e22\u0e22\u0e2d\u0e21\u0e41\u0e1e_\u0e08\u0e19\u0e44\u0e1b\u0e04\u0e27\u0e32\u0e23\u0e32\u0e07\u0e27\u0e25\u0e23\u0e30\u0e14\u0e1a\u0e42\u0e25\u0e01\u0e21\u0e32\u0e08\u0e19\u0e44\u0e14.md",
-      "label": "rerun_sun_\u0e01\u0e2d\u0e25\u0e1f\u0e1a\u0e32\u0e23\u0e40\u0e17\u0e19\u0e40\u0e14\u0e2d\u0e23_\u0e1c\u0e44\u0e21\u0e40\u0e04\u0e22\u0e22\u0e2d\u0e21\u0e41\u0e1e_\u0e08\u0e19\u0e44\u0e1b\u0e04\u0e27\u0e32\u0e23\u0e32\u0e07\u0e27\u0e25\u0e23\u0e30\u0e14\u0e1a\u0e42\u0e25\u0e01\u0e21\u0e32\u0e08\u0e19\u0e44\u0e14.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e40\u0e01\u0e29\u0e15\u0e23\u0e01\u0e23\u0e07\u0e2a\u0e27\u0e22\u0e07\u0e32\u0e21\u0e01\u0e1a\u0e23\u0e32\u0e22\u0e44\u0e14\u0e16\u0e07_7_\u0e2b\u0e25\u0e01\u0e15\u0e2d\u0e1b.md",
-      "label": "rerun_thu_\u0e40\u0e01\u0e29\u0e15\u0e23\u0e01\u0e23\u0e07\u0e2a\u0e27\u0e22\u0e07\u0e32\u0e21\u0e01\u0e1a\u0e23\u0e32\u0e22\u0e44\u0e14\u0e16\u0e07_7_\u0e2b\u0e25\u0e01\u0e15\u0e2d\u0e1b.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_web_3_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e21\u0e32\u0e2b\u0e32\u0e04\u0e33\u0e15\u0e2d\u0e1a\u0e01\u0e19\u0e43\u0e19\u0e04\u0e25\u0e1b\u0e44\u0e14\u0e40\u0e25\u0e1a\u0e22\u0e04\u0e23\u0e1a.md",
-      "label": "rerun_sun_web_3_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e21\u0e32\u0e2b\u0e32\u0e04\u0e33\u0e15\u0e2d\u0e1a\u0e01\u0e19\u0e43\u0e19\u0e04\u0e25\u0e1b\u0e44\u0e14\u0e40\u0e25\u0e1a\u0e22\u0e04\u0e23\u0e1a.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e0a\u0e27\u0e15\u0e40\u0e0b\u0e1f\u0e21\u0e2d\u0e2d\u0e32\u0e0a\u0e1e__\u0e40\u0e1a\u0e2d\u0e07\u0e2b\u0e25\u0e07\u0e04\u0e23\u0e27\u0e41\u0e25\u0e30\u0e40\u0e04\u0e25\u0e14\u0e25\u0e1a\u0e17\u0e33\u0e2d\u0e32\u0e2b\u0e32\u0e23\u0e23\u0e30\u0e14\u0e1a\u0e21\u0e2d\u0e42\u0e1b\u0e23.md",
-      "label": "rerun_sun_\u0e0a\u0e27\u0e15\u0e40\u0e0b\u0e1f\u0e21\u0e2d\u0e2d\u0e32\u0e0a\u0e1e__\u0e40\u0e1a\u0e2d\u0e07\u0e2b\u0e25\u0e07\u0e04\u0e23\u0e27\u0e41\u0e25\u0e30\u0e40\u0e04\u0e25\u0e14\u0e25\u0e1a\u0e17\u0e33\u0e2d\u0e32\u0e2b\u0e32\u0e23\u0e23\u0e30\u0e14\u0e1a\u0e21\u0e2d\u0e42\u0e1b\u0e23.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_\u0e0a\u0e32\u0e07\u0e41\u0e15\u0e07\u0e2b\u0e19\u0e32\u0e2a\u0e0a\u0e27\u0e15.md",
-      "label": "text_posts_thu_\u0e0a\u0e32\u0e07\u0e41\u0e15\u0e07\u0e2b\u0e19\u0e32\u0e2a\u0e0a\u0e27\u0e15.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e19\u0e2d\u0e07\u0e01\u0e1f.md",
-      "label": "text_posts_sun_discord_\u0e19\u0e2d\u0e07\u0e01\u0e1f.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e1e\u0e40\u0e01\u0e32.md",
-      "label": "text_posts_thu_discord_\u0e1e\u0e40\u0e01\u0e32.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e40\u0e01\u0e29\u0e15\u0e23\u0e01\u0e23\u0e17\u0e33\u0e1f\u0e32\u0e23\u0e21\u0e2b\u0e19\u0e17\u0e2a\u0e32\u0e21\u0e32\u0e23\u0e16\u0e17\u0e33\u0e23\u0e32\u0e22\u0e44\u0e14\u0e16\u0e07_7_\u0e2b\u0e25\u0e01\u0e43\u0e19\u0e40\u0e27\u0e25\u0e32\u0e40\u0e1e\u0e22\u0e07_2_\u0e1b.md",
-      "label": "rerun_thu_\u0e40\u0e01\u0e29\u0e15\u0e23\u0e01\u0e23\u0e17\u0e33\u0e1f\u0e32\u0e23\u0e21\u0e2b\u0e19\u0e17\u0e2a\u0e32\u0e21\u0e32\u0e23\u0e16\u0e17\u0e33\u0e23\u0e32\u0e22\u0e44\u0e14\u0e16\u0e07_7_\u0e2b\u0e25\u0e01\u0e43\u0e19\u0e40\u0e27\u0e25\u0e32\u0e40\u0e1e\u0e22\u0e07_2_\u0e1b.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e40\u0e01\u0e29\u0e15\u0e23\u0e01\u0e23\u0e17\u0e33\u0e1f\u0e32\u0e23\u0e21\u0e2b\u0e19\u0e17\u0e2a\u0e32\u0e21\u0e32\u0e23\u0e16\u0e17\u0e33\u0e23\u0e32\u0e22\u0e44\u0e14\u0e16\u0e07_7_\u0e2b\u0e25\u0e01\u0e43\u0e19\u0e40\u0e27\u0e25\u0e32\u0e40\u0e1e\u0e22\u0e07_2_\u0e1b.md",
-      "label": "rerun_sun_\u0e40\u0e01\u0e29\u0e15\u0e23\u0e01\u0e23\u0e17\u0e33\u0e1f\u0e32\u0e23\u0e21\u0e2b\u0e19\u0e17\u0e2a\u0e32\u0e21\u0e32\u0e23\u0e16\u0e17\u0e33\u0e23\u0e32\u0e22\u0e44\u0e14\u0e16\u0e07_7_\u0e2b\u0e25\u0e01\u0e43\u0e19\u0e40\u0e27\u0e25\u0e32\u0e40\u0e1e\u0e22\u0e07_2_\u0e1b.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e15\u0e44\u0e21\u0e19\u0e33\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e02\u0e2d\u0e07\u0e08\u0e23\u0e07\u0e2b\u0e23\u0e2d\u0e02\u0e2d\u0e07\u0e1b\u0e25\u0e2d\u0e21_\u0e40\u0e25\u0e22\u0e07\u0e41\u0e25\u0e27\u0e15\u0e2d\u0e07\u0e14\u0e41\u0e25\u0e21\u0e22.md",
-      "label": "rerun_thu_\u0e15\u0e44\u0e21\u0e19\u0e33\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e02\u0e2d\u0e07\u0e08\u0e23\u0e07\u0e2b\u0e23\u0e2d\u0e02\u0e2d\u0e07\u0e1b\u0e25\u0e2d\u0e21_\u0e40\u0e25\u0e22\u0e07\u0e41\u0e25\u0e27\u0e15\u0e2d\u0e07\u0e14\u0e41\u0e25\u0e21\u0e22.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e1e\u0e32\u0e0a\u0e21\u0e1f\u0e32\u0e23\u0e21\u0e2b\u0e19\u0e40\u0e2b\u0e22\u0e2d.md",
-      "label": "rerun_thu_\u0e1e\u0e32\u0e0a\u0e21\u0e1f\u0e32\u0e23\u0e21\u0e2b\u0e19\u0e40\u0e2b\u0e22\u0e2d.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e01\u0e27\u0e32\u0e08\u0e30\u0e21\u0e32\u0e40\u0e1b\u0e19\u0e40\u0e08\u0e32\u0e02\u0e2d\u0e07\u0e40\u0e2b\u0e23\u0e22\u0e0d\u0e17\u0e2d\u0e07\u0e0b\u0e40\u0e01\u0e21\u0e2a_\u0e1e\u0e21\u0e30\u0e15\u0e21\u0e19\u0e01\u0e08\u0e01\u0e23\u0e22\u0e32\u0e19\u0e17\u0e21\u0e0a\u0e32\u0e15_\u0e40\u0e15\u0e1a\u0e42\u0e15\u0e21\u0e32\u0e22\u0e07\u0e44\u0e07_\u0e1c\u0e32\u0e19\u0e2d\u0e30\u0e44\u0e23\u0e21\u0e32\u0e1a\u0e32\u0e07.md",
-      "label": "rerun_thu_\u0e01\u0e27\u0e32\u0e08\u0e30\u0e21\u0e32\u0e40\u0e1b\u0e19\u0e40\u0e08\u0e32\u0e02\u0e2d\u0e07\u0e40\u0e2b\u0e23\u0e22\u0e0d\u0e17\u0e2d\u0e07\u0e0b\u0e40\u0e01\u0e21\u0e2a_\u0e1e\u0e21\u0e30\u0e15\u0e21\u0e19\u0e01\u0e08\u0e01\u0e23\u0e22\u0e32\u0e19\u0e17\u0e21\u0e0a\u0e32\u0e15_\u0e40\u0e15\u0e1a\u0e42\u0e15\u0e21\u0e32\u0e22\u0e07\u0e44\u0e07_\u0e1c\u0e32\u0e19\u0e2d\u0e30\u0e44\u0e23\u0e21\u0e32\u0e1a\u0e32\u0e07.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e19\u0e01\u0e01\u0e21\u0e44\u0e2b\u0e19.md",
-      "label": "text_posts_sun_discord_\u0e19\u0e01\u0e01\u0e21\u0e44\u0e2b\u0e19.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e2d\u0e19\u0e1f\u0e25\u0e40\u0e2d\u0e19\u0e40\u0e0b\u0e2d\u0e23\u0e2a\u0e32\u0e22_sport_\u0e17\u0e33\u0e2d\u0e30\u0e44\u0e23\u0e01\u0e19\u0e1a\u0e32\u0e07\u0e43\u0e19\u0e41\u0e15\u0e25\u0e30\u0e27\u0e19.md",
-      "label": "rerun_thu_\u0e2d\u0e19\u0e1f\u0e25\u0e40\u0e2d\u0e19\u0e40\u0e0b\u0e2d\u0e23\u0e2a\u0e32\u0e22_sport_\u0e17\u0e33\u0e2d\u0e30\u0e44\u0e23\u0e01\u0e19\u0e1a\u0e32\u0e07\u0e43\u0e19\u0e41\u0e15\u0e25\u0e30\u0e27\u0e19.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e01\u0e2d\u0e25\u0e1f\u0e1a\u0e32\u0e23\u0e40\u0e17\u0e19\u0e40\u0e14\u0e2d\u0e23_\u0e1c\u0e44\u0e21\u0e40\u0e04\u0e22\u0e22\u0e2d\u0e21\u0e41\u0e1e_\u0e08\u0e19\u0e44\u0e1b\u0e04\u0e27\u0e32\u0e23\u0e32\u0e07\u0e27\u0e25\u0e23\u0e30\u0e14\u0e1a\u0e42\u0e25\u0e01\u0e21\u0e32\u0e08\u0e19\u0e44\u0e14.md",
-      "label": "rerun_thu_\u0e01\u0e2d\u0e25\u0e1f\u0e1a\u0e32\u0e23\u0e40\u0e17\u0e19\u0e40\u0e14\u0e2d\u0e23_\u0e1c\u0e44\u0e21\u0e40\u0e04\u0e22\u0e22\u0e2d\u0e21\u0e41\u0e1e_\u0e08\u0e19\u0e44\u0e1b\u0e04\u0e27\u0e32\u0e23\u0e32\u0e07\u0e27\u0e25\u0e23\u0e30\u0e14\u0e1a\u0e42\u0e25\u0e01\u0e21\u0e32\u0e08\u0e19\u0e44\u0e14.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e2d\u0e32\u0e0a\u0e1e\u0e2d\u0e2a\u0e23\u0e30\u0e17\u0e0a\u0e2d\u0e27\u0e32_stock_photo_\u0e01\u0e1a\u0e23\u0e32\u0e22\u0e44\u0e14_6_\u0e2b\u0e25\u0e01__\u0e40\u0e04\u0e32\u0e17\u0e33\u0e22\u0e07\u0e44\u0e07_\u0e40\u0e23\u0e21\u0e15\u0e19\u0e22\u0e07\u0e44\u0e07_\u0e44\u0e1b\u0e15\u0e14\u0e15\u0e32\u0e21\u0e0a\u0e21\u0e01\u0e19\u0e04\u0e23\u0e1a.md",
-      "label": "rerun_thu_\u0e2d\u0e32\u0e0a\u0e1e\u0e2d\u0e2a\u0e23\u0e30\u0e17\u0e0a\u0e2d\u0e27\u0e32_stock_photo_\u0e01\u0e1a\u0e23\u0e32\u0e22\u0e44\u0e14_6_\u0e2b\u0e25\u0e01__\u0e40\u0e04\u0e32\u0e17\u0e33\u0e22\u0e07\u0e44\u0e07_\u0e40\u0e23\u0e21\u0e15\u0e19\u0e22\u0e07\u0e44\u0e07_\u0e44\u0e1b\u0e15\u0e14\u0e15\u0e32\u0e21\u0e0a\u0e21\u0e01\u0e19\u0e04\u0e23\u0e1a.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e2b\u0e2d\u0e22\u0e02\u0e21\u0e22\u0e01\u0e29\u0e23\u0e19\u0e15\u0e19\u0e30_\u0e23\u0e32\u0e22\u0e44\u0e14\u0e40\u0e2a\u0e23\u0e21\u0e27\u0e19\u0e25\u0e30_2000_\u0e2b\u0e2d\u0e22\u0e02\u0e21\u0e17\u0e21\u0e02\u0e19\u0e32\u0e14\u0e43\u0e2b\u0e0d\u0e40\u0e17\u0e32\u0e44\u0e02\u0e44\u0e01_\u0e40\u0e25\u0e22\u0e07\u0e07\u0e32\u0e22_\u0e42\u0e15\u0e44\u0e27_wtj_wtjtalk.md",
-      "label": "rerun_sun_\u0e2b\u0e2d\u0e22\u0e02\u0e21\u0e22\u0e01\u0e29\u0e23\u0e19\u0e15\u0e19\u0e30_\u0e23\u0e32\u0e22\u0e44\u0e14\u0e40\u0e2a\u0e23\u0e21\u0e27\u0e19\u0e25\u0e30_2000_\u0e2b\u0e2d\u0e22\u0e02\u0e21\u0e17\u0e21\u0e02\u0e19\u0e32\u0e14\u0e43\u0e2b\u0e0d\u0e40\u0e17\u0e32\u0e44\u0e02\u0e44\u0e01_\u0e40\u0e25\u0e22\u0e07\u0e07\u0e32\u0e22_\u0e42\u0e15\u0e44\u0e27_wtj_wtjtalk.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e19\u0e01\u0e01\u0e21\u0e44\u0e2b\u0e19.md",
-      "label": "text_posts_thu_discord_\u0e19\u0e01\u0e01\u0e21\u0e44\u0e2b\u0e19.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e2d\u0e32\u0e0a\u0e1e\u0e2d\u0e2a\u0e23\u0e30\u0e17\u0e0a\u0e2d\u0e27\u0e32_stock_photo_\u0e01\u0e1a\u0e23\u0e32\u0e22\u0e44\u0e14_6_\u0e2b\u0e25\u0e01__\u0e40\u0e04\u0e32\u0e17\u0e33\u0e22\u0e07\u0e44\u0e07_\u0e40\u0e23\u0e21\u0e15\u0e19\u0e22\u0e07\u0e44\u0e07_\u0e44\u0e1b\u0e15\u0e14\u0e15\u0e32\u0e21\u0e0a\u0e21\u0e01\u0e19\u0e04\u0e23\u0e1a.md",
-      "label": "rerun_sun_\u0e2d\u0e32\u0e0a\u0e1e\u0e2d\u0e2a\u0e23\u0e30\u0e17\u0e0a\u0e2d\u0e27\u0e32_stock_photo_\u0e01\u0e1a\u0e23\u0e32\u0e22\u0e44\u0e14_6_\u0e2b\u0e25\u0e01__\u0e40\u0e04\u0e32\u0e17\u0e33\u0e22\u0e07\u0e44\u0e07_\u0e40\u0e23\u0e21\u0e15\u0e19\u0e22\u0e07\u0e44\u0e07_\u0e44\u0e1b\u0e15\u0e14\u0e15\u0e32\u0e21\u0e0a\u0e21\u0e01\u0e19\u0e04\u0e23\u0e1a.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e1e\u0e40\u0e01\u0e07.md",
-      "label": "text_posts_sun_discord_\u0e1e\u0e40\u0e01\u0e07.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_web_3_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e21\u0e32\u0e2b\u0e32\u0e04\u0e33\u0e15\u0e2d\u0e1a\u0e01\u0e19\u0e43\u0e19\u0e04\u0e25\u0e1b\u0e44\u0e14\u0e40\u0e25\u0e1a\u0e22\u0e04\u0e23\u0e1a.md",
-      "label": "rerun_thu_web_3_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e21\u0e32\u0e2b\u0e32\u0e04\u0e33\u0e15\u0e2d\u0e1a\u0e01\u0e19\u0e43\u0e19\u0e04\u0e25\u0e1b\u0e44\u0e14\u0e40\u0e25\u0e1a\u0e22\u0e04\u0e23\u0e1a.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e0a\u0e32\u0e07\u0e44\u0e17\u0e22\u0e21\u0e32\u0e01\u0e1d\u0e21\u0e2d\u0e17\u0e25\u0e01\u0e04\u0e32\u0e44\u0e27\u0e43\u0e08\u0e16\u0e2d\u0e22\u0e23\u0e16\u0e43\u0e2b\u0e21\u0e04\u0e19\u0e40\u0e1b\u0e19\u0e25\u0e32\u0e19__\u0e21\u0e32\u0e43\u0e2b\u0e04\u0e2a\u0e15\u0e2d\u0e21\u0e15\u0e07\u0e41\u0e15\u0e2d\u0e2d\u0e01\u0e28\u0e19\u0e22_\u0e41\u0e1a\u0e1a\u0e22\u0e07\u0e44\u0e21\u0e44\u0e14\u0e02.md",
-      "label": "rerun_sun_\u0e0a\u0e32\u0e07\u0e44\u0e17\u0e22\u0e21\u0e32\u0e01\u0e1d\u0e21\u0e2d\u0e17\u0e25\u0e01\u0e04\u0e32\u0e44\u0e27\u0e43\u0e08\u0e16\u0e2d\u0e22\u0e23\u0e16\u0e43\u0e2b\u0e21\u0e04\u0e19\u0e40\u0e1b\u0e19\u0e25\u0e32\u0e19__\u0e21\u0e32\u0e43\u0e2b\u0e04\u0e2a\u0e15\u0e2d\u0e21\u0e15\u0e07\u0e41\u0e15\u0e2d\u0e2d\u0e01\u0e28\u0e19\u0e22_\u0e41\u0e1a\u0e1a\u0e22\u0e07\u0e44\u0e21\u0e44\u0e14\u0e02.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_consult_\u0e01\u0e2d\u0e2a\u0e23\u0e32\u0e07_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e08\u0e33\u0e40\u0e1b\u0e19\u0e15\u0e2d\u0e07\u0e21\u0e21\u0e22__\u0e08\u0e32\u0e07\u0e21\u0e32\u0e41\u0e25\u0e27\u0e44\u0e14\u0e2d\u0e30\u0e44\u0e23.md",
-      "label": "rerun_sun_consult_\u0e01\u0e2d\u0e2a\u0e23\u0e32\u0e07_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e08\u0e33\u0e40\u0e1b\u0e19\u0e15\u0e2d\u0e07\u0e21\u0e21\u0e22__\u0e08\u0e32\u0e07\u0e21\u0e32\u0e41\u0e25\u0e27\u0e44\u0e14\u0e2d\u0e30\u0e44\u0e23.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e01\u0e27\u0e32\u0e08\u0e30\u0e21\u0e32\u0e40\u0e1b\u0e19\u0e0a\u0e32\u0e07\u0e2a\u0e01_\u0e17\u0e2a\u0e32\u0e21\u0e32\u0e32\u0e23\u0e16\u0e40\u0e25\u0e22\u0e07\u0e15\u0e27\u0e44\u0e14_\u0e44\u0e1b\u0e1f\u0e07\u0e01\u0e19\u0e08\u0e32.md",
-      "label": "rerun_sun_\u0e01\u0e27\u0e32\u0e08\u0e30\u0e21\u0e32\u0e40\u0e1b\u0e19\u0e0a\u0e32\u0e07\u0e2a\u0e01_\u0e17\u0e2a\u0e32\u0e21\u0e32\u0e32\u0e23\u0e16\u0e40\u0e25\u0e22\u0e07\u0e15\u0e27\u0e44\u0e14_\u0e44\u0e1b\u0e1f\u0e07\u0e01\u0e19\u0e08\u0e32.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_1_\u0e27\u0e19\u0e43\u0e19\u0e01\u0e32\u0e23\u0e17\u0e33\u0e1f\u0e32\u0e23\u0e21\u0e07\u0e2a\u0e27\u0e22\u0e07\u0e32\u0e21.md",
-      "label": "rerun_thu_1_\u0e27\u0e19\u0e43\u0e19\u0e01\u0e32\u0e23\u0e17\u0e33\u0e1f\u0e32\u0e23\u0e21\u0e07\u0e2a\u0e27\u0e22\u0e07\u0e32\u0e21.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e17\u0e33\u0e44\u0e21\u0e15\u0e2d\u0e07\u0e21\u0e04\u0e32\u0e22\u0e40\u0e1e\u0e25\u0e07_\u0e1e\u0e40\u0e21\u0e18_minimal_record.md",
-      "label": "rerun_sun_\u0e17\u0e33\u0e44\u0e21\u0e15\u0e2d\u0e07\u0e21\u0e04\u0e32\u0e22\u0e40\u0e1e\u0e25\u0e07_\u0e1e\u0e40\u0e21\u0e18_minimal_record.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e44\u0e21\u0e43\u0e0a\u0e41\u0e04\u0e16\u0e32\u0e22\u0e2a\u0e27\u0e22\u0e19\u0e04\u0e2d\u0e01\u0e32\u0e23\u0e17\u0e33\u0e07\u0e32\u0e19\u0e02\u0e2d\u0e07\u0e21\u0e2d\u0e42\u0e1b\u0e23\u0e19\u0e01\u0e1a\u0e19\u0e42\u0e14\u0e23\u0e19.md",
-      "label": "rerun_thu_\u0e44\u0e21\u0e43\u0e0a\u0e41\u0e04\u0e16\u0e32\u0e22\u0e2a\u0e27\u0e22\u0e19\u0e04\u0e2d\u0e01\u0e32\u0e23\u0e17\u0e33\u0e07\u0e32\u0e19\u0e02\u0e2d\u0e07\u0e21\u0e2d\u0e42\u0e1b\u0e23\u0e19\u0e01\u0e1a\u0e19\u0e42\u0e14\u0e23\u0e19.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e42\u0e04\u0e0a\u0e15\u0e19_\u0e01\u0e1a\u0e40\u0e23\u0e2d\u0e07\u0e23\u0e32\u0e27\u0e02\u0e2d\u0e07\u0e2d\u0e32\u0e0a\u0e1e\u0e44\u0e1e\u0e23\u0e40\u0e27\u0e17\u0e40\u0e17\u0e23\u0e19\u0e40\u0e19\u0e2d\u0e23.md",
-      "label": "rerun_thu_\u0e42\u0e04\u0e0a\u0e15\u0e19_\u0e01\u0e1a\u0e40\u0e23\u0e2d\u0e07\u0e23\u0e32\u0e27\u0e02\u0e2d\u0e07\u0e2d\u0e32\u0e0a\u0e1e\u0e44\u0e1e\u0e23\u0e40\u0e27\u0e17\u0e40\u0e17\u0e23\u0e19\u0e40\u0e19\u0e2d\u0e23.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e1e\u0e41\u0e2d\u0e21.md",
-      "label": "text_posts_sun_discord_\u0e1e\u0e41\u0e2d\u0e21.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e0a\u0e07.md",
-      "label": "text_posts_thu_discord_\u0e0a\u0e07.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e0a\u0e32\u0e07\u0e20\u0e32\u0e1e\u0e07\u0e32\u0e19\u0e41\u0e15\u0e07_\u0e2d\u0e32\u0e0a\u0e1e\u0e17\u0e14\u0e2a\u0e27\u0e22\u0e2b\u0e23_\u0e41\u0e15\u0e40\u0e1a\u0e2d\u0e07\u0e2b\u0e25\u0e07\u0e41\u0e25\u0e01\u0e21\u0e32\u0e14\u0e27\u0e22\u0e2d\u0e30\u0e44\u0e23__what_the_job_s3_ep1.md",
-      "label": "rerun_thu_\u0e0a\u0e32\u0e07\u0e20\u0e32\u0e1e\u0e07\u0e32\u0e19\u0e41\u0e15\u0e07_\u0e2d\u0e32\u0e0a\u0e1e\u0e17\u0e14\u0e2a\u0e27\u0e22\u0e2b\u0e23_\u0e41\u0e15\u0e40\u0e1a\u0e2d\u0e07\u0e2b\u0e25\u0e07\u0e41\u0e25\u0e01\u0e21\u0e32\u0e14\u0e27\u0e22\u0e2d\u0e30\u0e44\u0e23__what_the_job_s3_ep1.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e15\u0e44\u0e21\u0e19\u0e33\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e02\u0e2d\u0e07\u0e08\u0e23\u0e07\u0e2b\u0e23\u0e2d\u0e02\u0e2d\u0e07\u0e1b\u0e25\u0e2d\u0e21_\u0e40\u0e25\u0e22\u0e07\u0e41\u0e25\u0e27\u0e15\u0e2d\u0e07\u0e14\u0e41\u0e25\u0e21\u0e22.md",
-      "label": "rerun_sun_\u0e15\u0e44\u0e21\u0e19\u0e33\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e02\u0e2d\u0e07\u0e08\u0e23\u0e07\u0e2b\u0e23\u0e2d\u0e02\u0e2d\u0e07\u0e1b\u0e25\u0e2d\u0e21_\u0e40\u0e25\u0e22\u0e07\u0e41\u0e25\u0e27\u0e15\u0e2d\u0e07\u0e14\u0e41\u0e25\u0e21\u0e22.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e17\u0e33\u0e44\u0e21\u0e15\u0e2d\u0e07\u0e21\u0e04\u0e32\u0e22\u0e40\u0e1e\u0e25\u0e07_\u0e1e\u0e40\u0e21\u0e18_minimal_record.md",
-      "label": "rerun_thu_\u0e17\u0e33\u0e44\u0e21\u0e15\u0e2d\u0e07\u0e21\u0e04\u0e32\u0e22\u0e40\u0e1e\u0e25\u0e07_\u0e1e\u0e40\u0e21\u0e18_minimal_record.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e42\u0e27\u0e40\u0e01\u0e07.md",
-      "label": "text_posts_thu_discord_\u0e42\u0e27\u0e40\u0e01\u0e07.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e40\u0e0a\u0e1f\u0e44\u0e02.md",
-      "label": "text_posts_thu_discord_\u0e40\u0e0a\u0e1f\u0e44\u0e02.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e01\u0e27\u0e32\u0e08\u0e30\u0e21\u0e32\u0e40\u0e1b\u0e19\u0e0a\u0e32\u0e07\u0e2a\u0e01_\u0e17\u0e2a\u0e32\u0e21\u0e32\u0e32\u0e23\u0e16\u0e40\u0e25\u0e22\u0e07\u0e15\u0e27\u0e44\u0e14_\u0e44\u0e1b\u0e1f\u0e07\u0e01\u0e19\u0e08\u0e32.md",
-      "label": "rerun_thu_\u0e01\u0e27\u0e32\u0e08\u0e30\u0e21\u0e32\u0e40\u0e1b\u0e19\u0e0a\u0e32\u0e07\u0e2a\u0e01_\u0e17\u0e2a\u0e32\u0e21\u0e32\u0e32\u0e23\u0e16\u0e40\u0e25\u0e22\u0e07\u0e15\u0e27\u0e44\u0e14_\u0e44\u0e1b\u0e1f\u0e07\u0e01\u0e19\u0e08\u0e32.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e1a\u0e07.md",
-      "label": "text_posts_thu_discord_\u0e1a\u0e07.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e2d\u0e19.md",
-      "label": "text_posts_sun_discord_\u0e2d\u0e19.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e42\u0e04\u0e0a\u0e15\u0e19_\u0e01\u0e1a\u0e40\u0e23\u0e2d\u0e07\u0e23\u0e32\u0e27\u0e02\u0e2d\u0e07\u0e2d\u0e32\u0e0a\u0e1e\u0e44\u0e1e\u0e23\u0e40\u0e27\u0e17\u0e40\u0e17\u0e23\u0e19\u0e40\u0e19\u0e2d\u0e23.md",
-      "label": "rerun_sun_\u0e42\u0e04\u0e0a\u0e15\u0e19_\u0e01\u0e1a\u0e40\u0e23\u0e2d\u0e07\u0e23\u0e32\u0e27\u0e02\u0e2d\u0e07\u0e2d\u0e32\u0e0a\u0e1e\u0e44\u0e1e\u0e23\u0e40\u0e27\u0e17\u0e40\u0e17\u0e23\u0e19\u0e40\u0e19\u0e2d\u0e23.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e08\u0e2a\u0e21\u0e19.md",
-      "label": "text_posts_sun_discord_\u0e08\u0e2a\u0e21\u0e19.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_vlog_\u0e01\u0e2d\u0e1f_midlife_crisis.md",
-      "label": "rerun_thu_vlog_\u0e01\u0e2d\u0e1f_midlife_crisis.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e27\u0e23\u0e14\u0e32.md",
-      "label": "text_posts_sun_discord_\u0e27\u0e23\u0e14\u0e32.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e1e\u0e40\u0e01\u0e07_wall_painting_\u0e08\u0e32\u0e01\u0e01\u0e33\u0e41\u0e1e\u0e07\u0e40\u0e1b\u0e25\u0e32\u0e2a\u0e1c\u0e25\u0e07\u0e32\u0e19\u0e28\u0e25\u0e1b\u0e30\u0e17\u0e2a\u0e23\u0e32\u0e07\u0e23\u0e32\u0e22\u0e44\u0e14\u0e40\u0e25\u0e22\u0e07\u0e0a\u0e1e__what_the_job_ss3_ep3.md",
-      "label": "rerun_sun_\u0e1e\u0e40\u0e01\u0e07_wall_painting_\u0e08\u0e32\u0e01\u0e01\u0e33\u0e41\u0e1e\u0e07\u0e40\u0e1b\u0e25\u0e32\u0e2a\u0e1c\u0e25\u0e07\u0e32\u0e19\u0e28\u0e25\u0e1b\u0e30\u0e17\u0e2a\u0e23\u0e32\u0e07\u0e23\u0e32\u0e22\u0e44\u0e14\u0e40\u0e25\u0e22\u0e07\u0e0a\u0e1e__what_the_job_ss3_ep3.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e18\u0e23\u0e01\u0e08\u0e23\u0e32\u0e19\u0e01\u0e32\u0e41\u0e1f_\u0e41\u0e25\u0e30_\u0e1a\u0e32\u0e23\u0e2a\u0e15\u0e32.md",
-      "label": "rerun_sun_\u0e18\u0e23\u0e01\u0e08\u0e23\u0e32\u0e19\u0e01\u0e32\u0e41\u0e1f_\u0e41\u0e25\u0e30_\u0e1a\u0e32\u0e23\u0e2a\u0e15\u0e32.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e1e\u0e0a.md",
-      "label": "text_posts_sun_discord_\u0e1e\u0e0a.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Podcast_Project/workspace",
       "label": "workspace",
       "type": "directory",
       "val": 15
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard",
-      "label": "dashboard",
-      "type": "directory",
-      "val": 15
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/status_logger.py",
-      "label": "status_logger.py",
-      "type": "python",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workflow.md",
-      "label": "workflow.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/temp_mono_audio.wav",
-      "label": "temp_mono_audio.wav",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/first_pipeline.py",
-      "label": "first_pipeline.py",
-      "type": "python",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/3_final_scripts",
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Podcast_Project/workspace/3_final_scripts",
       "label": "3_final_scripts",
       "type": "directory",
       "val": 15
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer",
-      "label": "game_balancer",
-      "type": "directory",
-      "val": 15
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials",
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Podcast_Project/workspace/1_raw_materials",
       "label": "1_raw_materials",
       "type": "directory",
       "val": 15
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro",
-      "label": "wtj_intro",
-      "type": "directory",
-      "val": 15
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/podcast_pao_mayor",
-      "label": "podcast_pao_mayor",
-      "type": "directory",
-      "val": 15
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references",
-      "label": "4_design_references",
-      "type": "directory",
-      "val": 15
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer",
-      "label": "sound_engineer",
-      "type": "directory",
-      "val": 15
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/VTuber",
-      "label": "VTuber",
-      "type": "directory",
-      "val": 15
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts",
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Podcast_Project/workspace/2_drafts",
       "label": "2_drafts",
       "type": "directory",
       "val": 15
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/ray_drafter.err",
-      "label": "ray_drafter.err",
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Podcast_Project/workspace/3_final_scripts/.gitkeep",
+      "label": ".gitkeep",
       "type": "other",
       "val": 10
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/cover_design_wall_painter.md",
-      "label": "cover_design_wall_painter.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/video_drafter.out",
-      "label": "video_drafter.out",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/brainstorm_viewership_growth.md",
-      "label": "brainstorm_viewership_growth.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/data_analysis_report.md",
-      "label": "data_analysis_report.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/fb_fb_video_mon.out",
-      "label": "fb_fb_video_mon.out",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_logo_on_black.png",
-      "label": "wtj_logo_on_black.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/fb_fb_video_mon.err",
-      "label": "fb_fb_video_mon.err",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/video_drafter.err",
-      "label": "video_drafter.err",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/yt_style_guide.txt",
-      "label": "yt_style_guide.txt",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/posting_schedule.json",
-      "label": "posting_schedule.json",
-      "type": "json",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/ray_drafter.out",
-      "label": "ray_drafter.out",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/auto_scheduler.err",
-      "label": "auto_scheduler.err",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/fb_thu_podcast.out",
-      "label": "fb_thu_podcast.out",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/fb_reels_midday.out",
-      "label": "fb_reels_midday.out",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/youtube_upload_guide.md",
-      "label": "youtube_upload_guide.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/fb_sat_reels.err",
-      "label": "fb_sat_reels.err",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/fb_fri_quote.out",
-      "label": "fb_fri_quote.out",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro_logo.png",
-      "label": "wtj_intro_logo.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/darc_light_logo.png",
-      "label": "darc_light_logo.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/fb_fri_quote.err",
-      "label": "fb_fri_quote.err",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/fb_reels_midday.err",
-      "label": "fb_reels_midday.err",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/fb_thu_podcast.err",
-      "label": "fb_thu_podcast.err",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/fb_sat_reels.out",
-      "label": "fb_sat_reels.out",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/layman_data_report.md",
-      "label": "layman_data_report.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/auto_scheduler.out",
-      "label": "auto_scheduler.out",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/facebook_setup_guide.md",
-      "label": "facebook_setup_guide.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/3_final_scripts/graphic_designer_wtj_draft.txt",
-      "label": "graphic_designer_wtj_draft.txt",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/3_final_scripts/software_developer_wtj_draft.txt",
-      "label": "software_developer_wtj_draft.txt",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/3_final_scripts/photographer_wtj_draft.txt",
-      "label": "photographer_wtj_draft.txt",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images",
-      "label": "images",
-      "type": "directory",
-      "val": 15
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/4_audit_report.md",
-      "label": "4_audit_report.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/3_research_doc.md",
-      "label": "3_research_doc.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/7_storyboard_and_prompts.md",
-      "label": "7_storyboard_and_prompts.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/5_youtube_script.md",
-      "label": "5_youtube_script.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/2_creative_concept.md",
-      "label": "2_creative_concept.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/ray_draft.md",
-      "label": "ray_draft.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/brief_from_keng.md",
-      "label": "brief_from_keng.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/6_critique_script.md",
-      "label": "6_critique_script.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/create_clean_thumbnail.py",
-      "label": "create_clean_thumbnail.py",
-      "type": "python",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/overlay_logo.py",
-      "label": "overlay_logo.py",
-      "type": "python",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/1_idea_card.md",
-      "label": "1_idea_card.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/image_prompts_instructions.txt",
-      "label": "image_prompts_instructions.txt",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/clean_thumbnail_middle.png",
-      "label": "clean_thumbnail_middle.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/thumbnail_option_a.png",
-      "label": "thumbnail_option_a.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/clean_thumbnail_premium_top.png",
-      "label": "clean_thumbnail_premium_top.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/style3_nam_huge.png",
-      "label": "style3_nam_huge.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/clean_thumbnail_dramatic_top.png",
-      "label": "clean_thumbnail_dramatic_top.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/thumbnail_option_b.png",
-      "label": "thumbnail_option_b.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/style2_realistic_huge.png",
-      "label": "style2_realistic_huge.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/clean_thumbnail_dramatic_top_blend.png",
-      "label": "clean_thumbnail_dramatic_top_blend.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/clean_thumbnail_top.png",
-      "label": "clean_thumbnail_top.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/clean_thumbnail_16_9.png",
-      "label": "clean_thumbnail_16_9.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/clean_thumbnail_premium_stacked.png",
-      "label": "clean_thumbnail_premium_stacked.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/test_cropped_logo.png",
-      "label": "test_cropped_logo.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/clean_thumbnail_dramatic_middle.png",
-      "label": "clean_thumbnail_dramatic_middle.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/style1_clay_huge.png",
-      "label": "style1_clay_huge.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/debug_logo_alpha.png",
-      "label": "debug_logo_alpha.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/thumbnail_option_b_with_logo.png",
-      "label": "thumbnail_option_b_with_logo.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/thumbnail_option_a_with_logo.png",
-      "label": "thumbnail_option_a_with_logo.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/test_text_render.png",
-      "label": "test_text_render.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos",
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Podcast_Project/workspace/1_raw_materials/raw_videos",
       "label": "raw_videos",
       "type": "directory",
       "val": 15
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/analytics",
-      "label": "analytics",
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Podcast_Project/workspace/1_raw_materials/thumbnails",
+      "label": "thumbnails",
       "type": "directory",
       "val": 15
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/research_Game_Balancer_profession_insights_pain_points_salary_2026.md",
-      "label": "research_Game_Balancer_profession_insights_pain_points_salary_2026.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/sources_for_notebooklm_Game_Balancer.md",
-      "label": "sources_for_notebooklm_Game_Balancer.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/transcript_Sport_Influencer.md",
-      "label": "transcript_Sport_Influencer.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/transcript_Gwz7rBrIhxQ.md",
-      "label": "transcript_Gwz7rBrIhxQ.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/transcript_TUXVwxumHsg.md",
-      "label": "transcript_TUXVwxumHsg.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/transcript_2SG1BAItYMg.md",
-      "label": "transcript_2SG1BAItYMg.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_short",
-      "label": "raw_vdo_short",
-      "type": "directory",
-      "val": 15
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/fb_videos",
-      "label": "fb_videos",
-      "type": "directory",
-      "val": 15
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/reels",
-      "label": "reels",
-      "type": "directory",
-      "val": 15
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_3-5min",
-      "label": "raw_vdo_3-5min",
-      "type": "directory",
-      "val": 15
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_short/processed",
-      "label": "processed",
-      "type": "directory",
-      "val": 15
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_short/processed/04 \u0e01\u0e34\u0e1f infu cycling global 30 sec.mp4",
-      "label": "04 \u0e01\u0e34\u0e1f infu cycling global 30 sec.mp4",
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Podcast_Project/workspace/1_raw_materials/raw_videos/\u0e15\u0e23\u0e35\u0e19\u0e31\u0e01\u0e41\u0e02\u0e48\u0e07 Moto.mov",
+      "label": "\u0e15\u0e23\u0e35\u0e19\u0e31\u0e01\u0e41\u0e02\u0e48\u0e07 Moto.mov",
       "type": "other",
       "val": 10
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_short/processed/01   \u0e01\u0e2d\u0e1f \u0e2d\u0e34\u0e19\u0e1e\u0e25\u0e39   30 sec_.mp4",
-      "label": "01   \u0e01\u0e2d\u0e1f \u0e2d\u0e34\u0e19\u0e1e\u0e25\u0e39   30 sec_.mp4",
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Podcast_Project/workspace/1_raw_materials/thumbnails/.gitkeep",
+      "label": ".gitkeep",
       "type": "other",
       "val": 10
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_short/processed/wtj_intro.mp4",
-      "label": "wtj_intro.mp4",
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Podcast_Project/workspace/1_raw_materials/thumbnails/\u0e15\u0e23\u0e35\u0e19\u0e31\u0e01\u0e41\u0e02\u0e48\u0e07 Moto.png",
+      "label": "\u0e15\u0e23\u0e35\u0e19\u0e31\u0e01\u0e41\u0e02\u0e48\u0e07 Moto.png",
       "type": "other",
       "val": 10
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_short/processed/03 vokeg 30 sec.mp4",
-      "label": "03 vokeg 30 sec.mp4",
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Podcast_Project/workspace/2_drafts/.gitkeep",
+      "label": ".gitkeep",
       "type": "other",
       "val": 10
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_short/processed/02 \u0e40\u0e01\u0e48\u0e07 wall painting 30 sec.mp4",
-      "label": "02 \u0e40\u0e01\u0e48\u0e07 wall painting 30 sec.mp4",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/fb_videos/processed",
-      "label": "processed",
-      "type": "directory",
-      "val": 15
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/reels/processed",
-      "label": "processed",
-      "type": "directory",
-      "val": 15
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_3-5min/processed",
-      "label": "processed",
-      "type": "directory",
-      "val": 15
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_3-5min/processed/03 vokeg 3-5 min.mp4",
-      "label": "03 vokeg 3-5 min.mp4",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_3-5min/processed/04 \u0e01\u0e34\u0e1f infu cycling global 3-5 min.mp4",
-      "label": "04 \u0e01\u0e34\u0e1f infu cycling global 3-5 min.mp4",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_3-5min/processed/02 \u0e40\u0e01\u0e48\u0e07 wall painting 3-5 min.mp4",
-      "label": "02 \u0e40\u0e01\u0e48\u0e07 wall painting 3-5 min.mp4",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_3-5min/processed/01   \u0e01\u0e2d\u0e1f \u0e2d\u0e34\u0e19\u0e1e\u0e25\u0e39   3-5 min.mp4",
-      "label": "01   \u0e01\u0e2d\u0e1f \u0e2d\u0e34\u0e19\u0e1e\u0e25\u0e39   3-5 min.mp4",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/analytics/Chart data.csv",
-      "label": "Chart data.csv",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/analytics/README.md",
-      "label": "README.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/analytics/Table data.csv",
-      "label": "Table data.csv",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/analytics/Totals.csv",
-      "label": "Totals.csv",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro/wtj_outro_lofi.png",
-      "label": "wtj_outro_lofi.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro/wtj_outro_template.png",
-      "label": "wtj_outro_template.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro/logo_source.png",
-      "label": "logo_source.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro/wtj_outro_anime.png",
-      "label": "wtj_outro_anime.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro/wtj_intro.mp4",
-      "label": "wtj_intro.mp4",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro/video_prompts.txt",
-      "label": "video_prompts.txt",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro/generate_intro.py",
-      "label": "generate_intro.py",
-      "type": "python",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro/wtj_outro_lofi_v2.png",
-      "label": "wtj_outro_lofi_v2.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro/wtj_flow_prompts.txt",
-      "label": "wtj_flow_prompts.txt",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro/wtj_outro_luxury.png",
-      "label": "wtj_outro_luxury.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/podcast_pao_mayor/script.md",
-      "label": "script.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being",
-      "label": "celestial_being",
-      "type": "directory",
-      "val": 15
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779004691974.png",
-      "label": "media__1779004691974.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779005034869.png",
-      "label": "media__1779005034869.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779004052568.png",
-      "label": "media__1779004052568.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779003753896.png",
-      "label": "media__1779003753896.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779003965524.png",
-      "label": "media__1779003965524.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779006410273.png",
-      "label": "media__1779006410273.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779004735801.png",
-      "label": "media__1779004735801.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779007489632.png",
-      "label": "media__1779007489632.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779004662914.png",
-      "label": "media__1779004662914.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779006043321.png",
-      "label": "media__1779006043321.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779006287293.png",
-      "label": "media__1779006287293.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779003357678.png",
-      "label": "media__1779003357678.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779003680104.png",
-      "label": "media__1779003680104.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779004001415.png",
-      "label": "media__1779004001415.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779006270573.png",
-      "label": "media__1779006270573.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779006732945.png",
-      "label": "media__1779006732945.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779005182796.png",
-      "label": "media__1779005182796.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779003940136.png",
-      "label": "media__1779003940136.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779007053066.png",
-      "label": "media__1779007053066.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779007006715.png",
-      "label": "media__1779007006715.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779005010309.png",
-      "label": "media__1779005010309.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779006632729.png",
-      "label": "media__1779006632729.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779006980180.png",
-      "label": "media__1779006980180.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/images",
-      "label": "images",
-      "type": "directory",
-      "val": 15
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/4_audit_report.md",
-      "label": "4_audit_report.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/3_research_doc.md",
-      "label": "3_research_doc.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/7_storyboard_and_prompts.md",
-      "label": "7_storyboard_and_prompts.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/5_youtube_script.md",
-      "label": "5_youtube_script.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/2_creative_concept.md",
-      "label": "2_creative_concept.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/6_critique_script.md",
-      "label": "6_critique_script.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/1_idea_card.md",
-      "label": "1_idea_card.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/images/scene_8_scene_11:_\u0e04\u0e33\u0e28\u0e31\u0e1e\u0e17\u0e4c\u0e40\u0e09\u0e1e\u0e32\u0e30\u0e17\u0e32\u0e07_-_mastering.png",
-      "label": "scene_8_scene_11:_\u0e04\u0e33\u0e28\u0e31\u0e1e\u0e17\u0e4c\u0e40\u0e09\u0e1e\u0e32\u0e30\u0e17\u0e32\u0e07_-_mastering.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/images/scene_1_scene_1:_hook_-_\u0e40\u0e2a\u0e35\u0e22\u0e07\u0e01\u0e33\u0e25\u0e31\u0e07\u0e1a\u0e07\u0e01\u0e32\u0e23\u0e04\u0e27\u0e32\u0e21\u0e23\u0e39\u0e49\u0e2a\u0e36\u0e01!.png",
-      "label": "scene_1_scene_1:_hook_-_\u0e40\u0e2a\u0e35\u0e22\u0e07\u0e01\u0e33\u0e25\u0e31\u0e07\u0e1a\u0e07\u0e01\u0e32\u0e23\u0e04\u0e27\u0e32\u0e21\u0e23\u0e39\u0e49\u0e2a\u0e36\u0e01!.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/images/scene_5_scene_7:_\u0e23\u0e32\u0e22\u0e44\u0e14\u0e49\u0e17\u0e35\u0e48\u0e41\u0e17\u0e49\u0e08\u0e23\u0e34\u0e07_-_\u0e23\u0e30\u0e14\u0e31\u0e1a\u0e40\u0e23\u0e34\u0e48\u0e21\u0e15\u0e49\u0e19.png",
-      "label": "scene_5_scene_7:_\u0e23\u0e32\u0e22\u0e44\u0e14\u0e49\u0e17\u0e35\u0e48\u0e41\u0e17\u0e49\u0e08\u0e23\u0e34\u0e07_-_\u0e23\u0e30\u0e14\u0e31\u0e1a\u0e40\u0e23\u0e34\u0e48\u0e21\u0e15\u0e49\u0e19.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/images/scene_6_scene_8:_\u0e23\u0e32\u0e22\u0e44\u0e14\u0e49\u0e17\u0e35\u0e48\u0e41\u0e17\u0e49\u0e08\u0e23\u0e34\u0e07_-_\u0e23\u0e30\u0e14\u0e31\u0e1a\u0e01\u0e25\u0e32\u0e07\u0e16\u0e36\u0e07\u0e1c\u0e39\u0e49\u0e40\u0e0a\u0e35\u0e48\u0e22\u0e27\u0e0a\u0e32\u0e0d.png",
-      "label": "scene_6_scene_8:_\u0e23\u0e32\u0e22\u0e44\u0e14\u0e49\u0e17\u0e35\u0e48\u0e41\u0e17\u0e49\u0e08\u0e23\u0e34\u0e07_-_\u0e23\u0e30\u0e14\u0e31\u0e1a\u0e01\u0e25\u0e32\u0e07\u0e16\u0e36\u0e07\u0e1c\u0e39\u0e49\u0e40\u0e0a\u0e35\u0e48\u0e22\u0e27\u0e0a\u0e32\u0e0d.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/images/scene_2_scene_2:_intro_-_\u0e2a\u0e16\u0e32\u0e1b\u0e19\u0e34\u0e01\u0e41\u0e2b\u0e48\u0e07\u0e40\u0e2a\u0e35\u0e22\u0e07.png",
-      "label": "scene_2_scene_2:_intro_-_\u0e2a\u0e16\u0e32\u0e1b\u0e19\u0e34\u0e01\u0e41\u0e2b\u0e48\u0e07\u0e40\u0e2a\u0e35\u0e22\u0e07.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/images/scene_4_scene_4:_\u0e04\u0e27\u0e32\u0e21\u0e08\u0e23\u0e34\u0e07\u0e17\u0e35\u0e48\u0e40\u0e08\u0e47\u0e1a\u0e1b\u0e27\u0e14_2_-_\u0e2b\u0e39\u0e1e\u0e31\u0e07\u0e01\u0e48\u0e2d\u0e19\u0e27\u0e31\u0e22\u0e2d\u0e31\u0e19\u0e04\u0e27\u0e23.png",
-      "label": "scene_4_scene_4:_\u0e04\u0e27\u0e32\u0e21\u0e08\u0e23\u0e34\u0e07\u0e17\u0e35\u0e48\u0e40\u0e08\u0e47\u0e1a\u0e1b\u0e27\u0e14_2_-_\u0e2b\u0e39\u0e1e\u0e31\u0e07\u0e01\u0e48\u0e2d\u0e19\u0e27\u0e31\u0e22\u0e2d\u0e31\u0e19\u0e04\u0e27\u0e23.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/images/scene_3_scene_3:_\u0e04\u0e27\u0e32\u0e21\u0e08\u0e23\u0e34\u0e07\u0e17\u0e35\u0e48\u0e40\u0e08\u0e47\u0e1a\u0e1b\u0e27\u0e14_1_-_\u0e2d\u0e32\u0e0a\u0e35\u0e1e\u0e2b\u0e25\u0e31\u0e07\u0e44\u0e21\u0e04\u0e4c\u0e17\u0e35\u0e48\u0e43\u0e04\u0e23\u0e01\u0e47\u0e21\u0e2d\u0e07\u0e02\u0e49\u0e32\u0e21.png",
-      "label": "scene_3_scene_3:_\u0e04\u0e27\u0e32\u0e21\u0e08\u0e23\u0e34\u0e07\u0e17\u0e35\u0e48\u0e40\u0e08\u0e47\u0e1a\u0e1b\u0e27\u0e14_1_-_\u0e2d\u0e32\u0e0a\u0e35\u0e1e\u0e2b\u0e25\u0e31\u0e07\u0e44\u0e21\u0e04\u0e4c\u0e17\u0e35\u0e48\u0e43\u0e04\u0e23\u0e01\u0e47\u0e21\u0e2d\u0e07\u0e02\u0e49\u0e32\u0e21.png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/images/scene_7_scene_9:_\u0e04\u0e33\u0e28\u0e31\u0e1e\u0e17\u0e4c\u0e40\u0e09\u0e1e\u0e32\u0e30\u0e17\u0e32\u0e07_-_daw_(digital_audio_workstation).png",
-      "label": "scene_7_scene_9:_\u0e04\u0e33\u0e28\u0e31\u0e1e\u0e17\u0e4c\u0e40\u0e09\u0e1e\u0e32\u0e30\u0e17\u0e32\u0e07_-_daw_(digital_audio_workstation).png",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/VTuber/idea_card.md",
-      "label": "idea_card.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/VTuber/youtube_script.md",
-      "label": "youtube_script.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/VTuber/facebook_text.md",
-      "label": "facebook_text.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/VTuber/image_prompts.md",
-      "label": "image_prompts.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/VTuber/audit_report.md",
-      "label": "audit_report.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/VTuber/critique_research.md",
-      "label": "critique_research.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/VTuber/critique_script.md",
-      "label": "critique_script.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/VTuber/research_doc.md",
-      "label": "research_doc.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/social_highlights_transcript_2SG1BAItYMg.md",
-      "label": "social_highlights_transcript_2SG1BAItYMg.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/reels_under1min_from_video_01___\u0e01\u0e2d\u0e1f_\u0e2d\u0e19\u0e1e\u0e25___30_sec_mp4.md",
-      "label": "reels_under1min_from_video_01___\u0e01\u0e2d\u0e1f_\u0e2d\u0e19\u0e1e\u0e25___30_sec_mp4.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/fb_videos_3-5min_from_video_04_\u0e01\u0e1f_infu_cycling_global_3-5_minmp4.md",
-      "label": "fb_videos_3-5min_from_video_04_\u0e01\u0e1f_infu_cycling_global_3-5_minmp4.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/facebook_text_muscari.md",
-      "label": "facebook_text_muscari.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/sat_reels_draft.md",
-      "label": "sat_reels_draft.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/sat_reels_transcript_\u0e19\u0e2d\u0e07\u0e01\u0e2d\u0e25\u0e1f_sport_influencer\u2028\u2028\u0e19\u0e04\u0e2d\u0e2a\u0e23\u0e1b\u0e40\u0e19\u0e2d\u0e2b\u0e32\u0e41\u0e25\u0e30\u0e16\u0e2d\u0e14\u0e04\u0e27\u0e32\u0e21.md",
-      "label": "sat_reels_transcript_\u0e19\u0e2d\u0e07\u0e01\u0e2d\u0e25\u0e1f_sport_influencer\u2028\u2028\u0e19\u0e04\u0e2d\u0e2a\u0e23\u0e1b\u0e40\u0e19\u0e2d\u0e2b\u0e32\u0e41\u0e25\u0e30\u0e16\u0e2d\u0e14\u0e04\u0e27\u0e32\u0e21.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/wed_teaser_transcript_\u0e19\u0e2d\u0e07\u0e01\u0e2d\u0e25\u0e1f_sport_influencer\u2028\u2028\u0e19\u0e04\u0e2d\u0e2a\u0e23\u0e1b\u0e40\u0e19\u0e2d\u0e2b\u0e32\u0e41\u0e25\u0e30\u0e16\u0e2d\u0e14\u0e04\u0e27\u0e32\u0e21.md",
-      "label": "wed_teaser_transcript_\u0e19\u0e2d\u0e07\u0e01\u0e2d\u0e25\u0e1f_sport_influencer\u2028\u2028\u0e19\u0e04\u0e2d\u0e2a\u0e23\u0e1b\u0e40\u0e19\u0e2d\u0e2b\u0e32\u0e41\u0e25\u0e30\u0e16\u0e2d\u0e14\u0e04\u0e27\u0e32\u0e21.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/facebook_text_wall_painter.md",
-      "label": "facebook_text_wall_painter.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/reels_under1min_from_video_03_vokeg_30_secmp4.md",
-      "label": "reels_under1min_from_video_03_vokeg_30_secmp4.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/fb_videos_3-5min_from_video_01___\u0e01\u0e2d\u0e1f_\u0e2d\u0e19\u0e1e\u0e25___3-5_minmp4.md",
-      "label": "fb_videos_3-5min_from_video_01___\u0e01\u0e2d\u0e1f_\u0e2d\u0e19\u0e1e\u0e25___3-5_minmp4.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/social_highlights_Game_Balancer.md",
-      "label": "social_highlights_Game_Balancer.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/reels_under1min_from_video_wtj_intromp4.md",
-      "label": "reels_under1min_from_video_wtj_intromp4.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/wed_teaser_draft.md",
-      "label": "wed_teaser_draft.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/reels_under1min_from_video_02_\u0e40\u0e01\u0e07_wall_painting_30_secmp4.md",
-      "label": "reels_under1min_from_video_02_\u0e40\u0e01\u0e07_wall_painting_30_secmp4.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/fb_videos_3-5min_from_video_02_\u0e40\u0e01\u0e07_wall_painting_3-5_minmp4.md",
-      "label": "fb_videos_3-5min_from_video_02_\u0e40\u0e01\u0e07_wall_painting_3-5_minmp4.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/fri_quote_draft.md",
-      "label": "fri_quote_draft.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/fri_quote_transcript_\u0e19\u0e2d\u0e07\u0e01\u0e2d\u0e25\u0e1f_sport_influencer\u2028\u2028\u0e19\u0e04\u0e2d\u0e2a\u0e23\u0e1b\u0e40\u0e19\u0e2d\u0e2b\u0e32\u0e41\u0e25\u0e30\u0e16\u0e2d\u0e14\u0e04\u0e27\u0e32\u0e21.md",
-      "label": "fri_quote_transcript_\u0e19\u0e2d\u0e07\u0e01\u0e2d\u0e25\u0e1f_sport_influencer\u2028\u2028\u0e19\u0e04\u0e2d\u0e2a\u0e23\u0e1b\u0e40\u0e19\u0e2d\u0e2b\u0e32\u0e41\u0e25\u0e30\u0e16\u0e2d\u0e14\u0e04\u0e27\u0e32\u0e21.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/facebook_text_\u0e0a\u0e48\u0e32\u0e07\u0e20\u0e32\u0e1e\u0e07\u0e32\u0e19\u0e41\u0e15\u0e48\u0e07.md",
-      "label": "facebook_text_\u0e0a\u0e48\u0e32\u0e07\u0e20\u0e32\u0e1e\u0e07\u0e32\u0e19\u0e41\u0e15\u0e48\u0e07.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/fb_videos_3-5min_from_video_03_vokeg_3-5_minmp4.md",
-      "label": "fb_videos_3-5min_from_video_03_vokeg_3-5_minmp4.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/reels_under1min_from_video_04_\u0e01\u0e1f_infu_cycling_global_30_secmp4.md",
-      "label": "reels_under1min_from_video_04_\u0e01\u0e1f_infu_cycling_global_30_secmp4.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard/index.html",
-      "label": "index.html",
-      "type": "html",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard/notion_calendar_data.js",
-      "label": "notion_calendar_data.js",
-      "type": "javascript",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard/terms.html",
-      "label": "terms.html",
-      "type": "html",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard/wtj_calendar_dashboard.html",
-      "label": "wtj_calendar_dashboard.html",
-      "type": "html",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard/dashboard.html",
-      "label": "dashboard.html",
-      "type": "html",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard/callback.html",
-      "label": "callback.html",
-      "type": "html",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard/style.css",
-      "label": "style.css",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard/tiktok2KL4Ktw7PJLhCI63jKnczSskOmIYeSwm.txt",
-      "label": "tiktok2KL4Ktw7PJLhCI63jKnczSskOmIYeSwm.txt",
-      "type": "other",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard/app.js",
-      "label": "app.js",
-      "type": "javascript",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard/privacy.html",
-      "label": "privacy.html",
-      "type": "html",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/prompts/music_prompt.md",
-      "label": "music_prompt.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/prompts/pie_prompt.md",
-      "label": "pie_prompt.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/prompts/deer_prompt.md",
-      "label": "deer_prompt.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/prompts/creative_prompt.md",
-      "label": "creative_prompt.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/prompts/cri_prompt.md",
-      "label": "cri_prompt.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/prompts/ray_prompt.md",
-      "label": "ray_prompt.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/prompts/q_prompt.md",
-      "label": "q_prompt.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/prompts/researcher_prompt.md",
-      "label": "researcher_prompt.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/prompts/p_prompt.md",
-      "label": "p_prompt.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/prompts/or_prompt.md",
-      "label": "or_prompt.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/prompts/director_prompt.md",
-      "label": "director_prompt.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/legacy_study_course_archive",
-      "label": "legacy_study_course_archive",
-      "type": "directory",
-      "val": 15
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace",
-      "label": "workspace",
-      "type": "directory",
-      "val": 15
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/dashboard",
-      "label": "dashboard",
-      "type": "directory",
-      "val": 15
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/skills",
-      "label": "skills",
-      "type": "directory",
-      "val": 15
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/antia_pipeline.py",
-      "label": "antia_pipeline.py",
-      "type": "python",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/legacy_study_course_archive/gemini_legacy.md",
-      "label": "gemini_legacy.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/legacy_study_course_archive/preferences_legacy.md",
-      "label": "preferences_legacy.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/legacy_study_course_archive/readme_legacy.md",
-      "label": "readme_legacy.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/legacy_study_course_archive/session_summary.md",
-      "label": "session_summary.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/3_final_scripts",
-      "label": "3_final_scripts",
-      "type": "directory",
-      "val": 15
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/1_raw_materials",
-      "label": "1_raw_materials",
-      "type": "directory",
-      "val": 15
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/2_drafts",
-      "label": "2_drafts",
-      "type": "directory",
-      "val": 15
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/3_final_scripts/lesson_hello_world_\u0e23\u0e08\u0e01\u0e01\u0e1a_3_\u0e40\u0e2a\u0e32\u0e2b\u0e25\u0e01_\u0e41\u0e25\u0e30\u0e01\u0e32\u0e23\u0e2a\u0e23\u0e32\u0e07_agent_\u0e15\u0e27\u0e41\u0e23\u0e01.md",
-      "label": "lesson_hello_world_\u0e23\u0e08\u0e01\u0e01\u0e1a_3_\u0e40\u0e2a\u0e32\u0e2b\u0e25\u0e01_\u0e41\u0e25\u0e30\u0e01\u0e32\u0e23\u0e2a\u0e23\u0e32\u0e07_agent_\u0e15\u0e27\u0e41\u0e23\u0e01.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/3_final_scripts/lesson_0_script_legacy.md",
-      "label": "lesson_0_script_legacy.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/1_raw_materials/reference_official_guide.md",
-      "label": "reference_official_guide.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/1_raw_materials/course_outline_antigravity.md",
-      "label": "course_outline_antigravity.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/1_raw_materials/FAQ_antigravity.md",
-      "label": "FAQ_antigravity.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/1_raw_materials/course_outline_v0.md",
-      "label": "course_outline_v0.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/2_drafts/1_idea_card_hello_world_\u0e23\u0e08\u0e01\u0e01\u0e1a_3_\u0e40\u0e2a\u0e32\u0e2b\u0e25\u0e01_\u0e41\u0e25\u0e30\u0e01\u0e32\u0e23\u0e2a\u0e23\u0e32\u0e07_agent_\u0e15\u0e27\u0e41\u0e23\u0e01.md",
-      "label": "1_idea_card_hello_world_\u0e23\u0e08\u0e01\u0e01\u0e1a_3_\u0e40\u0e2a\u0e32\u0e2b\u0e25\u0e01_\u0e41\u0e25\u0e30\u0e01\u0e32\u0e23\u0e2a\u0e23\u0e32\u0e07_agent_\u0e15\u0e27\u0e41\u0e23\u0e01.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/2_drafts/2_creative_concept_hello_world_\u0e23\u0e08\u0e01\u0e01\u0e1a_3_\u0e40\u0e2a\u0e32\u0e2b\u0e25\u0e01_\u0e41\u0e25\u0e30\u0e01\u0e32\u0e23\u0e2a\u0e23\u0e32\u0e07_agent_\u0e15\u0e27\u0e41\u0e23\u0e01.md",
-      "label": "2_creative_concept_hello_world_\u0e23\u0e08\u0e01\u0e01\u0e1a_3_\u0e40\u0e2a\u0e32\u0e2b\u0e25\u0e01_\u0e41\u0e25\u0e30\u0e01\u0e32\u0e23\u0e2a\u0e23\u0e32\u0e07_agent_\u0e15\u0e27\u0e41\u0e23\u0e01.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/2_drafts/3_technical_verification_hello_world_\u0e23\u0e08\u0e01\u0e01\u0e1a_3_\u0e40\u0e2a\u0e32\u0e2b\u0e25\u0e01_\u0e41\u0e25\u0e30\u0e01\u0e32\u0e23\u0e2a\u0e23\u0e32\u0e07_agent_\u0e15\u0e27\u0e41\u0e23\u0e01.md",
-      "label": "3_technical_verification_hello_world_\u0e23\u0e08\u0e01\u0e01\u0e1a_3_\u0e40\u0e2a\u0e32\u0e2b\u0e25\u0e01_\u0e41\u0e25\u0e30\u0e01\u0e32\u0e23\u0e2a\u0e23\u0e32\u0e07_agent_\u0e15\u0e27\u0e41\u0e23\u0e01.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/skills/apple-notes",
-      "label": "apple-notes",
-      "type": "directory",
-      "val": 15
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/skills/apple-notes/SKILL.md",
-      "label": "SKILL.md",
-      "type": "markdown",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/skills/crypto_portfolio_sync.py",
-      "label": "crypto_portfolio_sync.py",
-      "type": "python",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/skills/podcast_notes_publisher.py",
-      "label": "podcast_notes_publisher.py",
-      "type": "python",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/skills/youtube_transcriber.py",
-      "label": "youtube_transcriber.py",
-      "type": "python",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/skills/grab_receipt_sync.py",
-      "label": "grab_receipt_sync.py",
-      "type": "python",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/skills/knowledge_graph_rebuilder.py",
-      "label": "knowledge_graph_rebuilder.py",
-      "type": "python",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/skills/notion_learning_loop.py",
-      "label": "notion_learning_loop.py",
-      "type": "python",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/skills/animate_logo.py",
-      "label": "animate_logo.py",
-      "type": "python",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/skills/config.py",
-      "label": "config.py",
-      "type": "python",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/skills/performance_analyzer.py",
-      "label": "performance_analyzer.py",
-      "type": "python",
-      "val": 10
-    },
-    {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/skills/discord_guest_puller.py",
+      "id": "Team_Content_Studio/Team_Agent_Content/archive/discord_guest_puller.py",
       "label": "discord_guest_puller.py",
       "type": "python",
       "val": 10
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/skills/generate_sport_influencer_posts.py",
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon",
+      "label": "interview_anupab_sarmoon",
+      "type": "directory",
+      "val": 15
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "label": "2_drafts",
+      "type": "directory",
+      "val": 15
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/learning_base.json",
+      "label": "learning_base.json",
+      "type": "json",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/temp_audio.m4a",
+      "label": "temp_audio.m4a",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/update_hashtags_everywhere.py",
+      "label": "update_hashtags_everywhere.py",
+      "type": "python",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/rerun_state.json",
+      "label": "rerun_state.json",
+      "type": "json",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/check_review_cards.py",
+      "label": "check_review_cards.py",
+      "type": "python",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images",
+      "label": "images",
+      "type": "directory",
+      "val": 15
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/cream_research_notes.md",
+      "label": "cream_research_notes.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/or_audit_report.md",
+      "label": "or_audit_report.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/download_images.py",
+      "label": "download_images.py",
+      "type": "python",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/chris_director_guide.md",
+      "label": "chris_director_guide.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images/07_leather_suit_kangaroo.jpg",
+      "label": "07_leather_suit_kangaroo.jpg",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images/04_yamaha_spark_110.jpg",
+      "label": "04_yamaha_spark_110.jpg",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images/04_motocross_child_training.jpg",
+      "label": "04_motocross_child_training.jpg",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images/06_data_telemetry_analysis.jpg",
+      "label": "06_data_telemetry_analysis.jpg",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images/05_anupab_fitness_gym.jpg",
+      "label": "05_anupab_fitness_gym.jpg",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images/06_motorland_aragon_circuit.jpg",
+      "label": "06_motorland_aragon_circuit.jpg",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images/02_yamaha_yzr_m1_motogp.jpg",
+      "label": "02_yamaha_yzr_m1_motogp.jpg",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images/02_yamaha_r6_wsbk.jpg",
+      "label": "02_yamaha_r6_wsbk.jpg",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images/03_yamaha_spark_racing.jpg",
+      "label": "03_yamaha_spark_racing.jpg",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images/09_chang_international_circuit.jpg",
+      "label": "09_chang_international_circuit.jpg",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images/08_race_cargo_container.jpg",
+      "label": "08_race_cargo_container.jpg",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images/03_yamaha_mio_racing.jpg",
+      "label": "03_yamaha_mio_racing.jpg",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images/07_alpinestars_tech_air_airbag.jpg",
+      "label": "07_alpinestars_tech_air_airbag.jpg",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e1e\u0e40\u0e01\u0e07.md",
+      "label": "text_posts_thu_discord_\u0e1e\u0e40\u0e01\u0e07.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e28\u0e25\u0e1b\u0e19\u0e44\u0e2a\u0e41\u0e2b\u0e07.md",
+      "label": "rerun_thu_\u0e28\u0e25\u0e1b\u0e19\u0e44\u0e2a\u0e41\u0e2b\u0e07.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e42\u0e27\u0e40\u0e01\u0e07.md",
+      "label": "text_posts_sun_discord_\u0e42\u0e27\u0e40\u0e01\u0e07.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e40\u0e0a\u0e1f\u0e44\u0e02.md",
+      "label": "text_posts_sun_discord_\u0e40\u0e0a\u0e1f\u0e44\u0e02.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_regenerated_rerun_sun_\u0e2d\u0e19\u0e1f\u0e25\u0e40\u0e2d\u0e19\u0e40\u0e0b\u0e2d\u0e23\u0e2a\u0e32\u0e22_sport_\u0e17\u0e33\u0e2d\u0e30\u0e44\u0e23\u0e01\u0e19\u0e1a\u0e32\u0e07\u0e43\u0e19\u0e41\u0e15\u0e25\u0e30\u0e27\u0e19.md",
+      "label": "rerun_sun_regenerated_rerun_sun_\u0e2d\u0e19\u0e1f\u0e25\u0e40\u0e2d\u0e19\u0e40\u0e0b\u0e2d\u0e23\u0e2a\u0e32\u0e22_sport_\u0e17\u0e33\u0e2d\u0e30\u0e44\u0e23\u0e01\u0e19\u0e1a\u0e32\u0e07\u0e43\u0e19\u0e41\u0e15\u0e25\u0e30\u0e27\u0e19.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_ai_\u0e21\u0e1c\u0e25\u0e15\u0e2d\u0e2d\u0e32\u0e0a\u0e1e\u0e28\u0e25\u0e1b\u0e19\u0e08\u0e23\u0e07\u0e2b\u0e23\u0e2d\u0e44\u0e21.md",
+      "label": "rerun_thu_ai_\u0e21\u0e1c\u0e25\u0e15\u0e2d\u0e2d\u0e32\u0e0a\u0e1e\u0e28\u0e25\u0e1b\u0e19\u0e08\u0e23\u0e07\u0e2b\u0e23\u0e2d\u0e44\u0e21.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_regenerated_rerun_sun_location_manager_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e15\u0e2d\u0e07\u0e17\u0e33\u0e2d\u0e30\u0e44\u0e23\u0e1a\u0e32\u0e07.md",
+      "label": "rerun_sun_regenerated_rerun_sun_location_manager_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e15\u0e2d\u0e07\u0e17\u0e33\u0e2d\u0e30\u0e44\u0e23\u0e1a\u0e32\u0e07.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e01\u0e1f_muzcali_\u0e04\u0e19\u0e44\u0e17\u0e22\u0e04\u0e19\u0e40\u0e14\u0e22\u0e27_\u0e17\u0e44\u0e14\u0e40\u0e1b\u0e19_global_brand_ambassador_\u0e43\u0e19\u0e27\u0e07\u0e01\u0e32\u0e23\u0e08\u0e01\u0e23\u0e22\u0e32\u0e19__what_the_job_ss3_ep2.md",
+      "label": "rerun_sun_\u0e01\u0e1f_muzcali_\u0e04\u0e19\u0e44\u0e17\u0e22\u0e04\u0e19\u0e40\u0e14\u0e22\u0e27_\u0e17\u0e44\u0e14\u0e40\u0e1b\u0e19_global_brand_ambassador_\u0e43\u0e19\u0e27\u0e07\u0e01\u0e32\u0e23\u0e08\u0e01\u0e23\u0e22\u0e32\u0e19__what_the_job_ss3_ep2.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_regenerated_rerun_sun_\u0e01\u0e1f_muzcali_\u0e04\u0e19\u0e44\u0e17\u0e22\u0e04\u0e19\u0e40\u0e14\u0e22\u0e27_\u0e17\u0e44\u0e14\u0e40\u0e1b\u0e19_global_brand_ambassador_\u0e43\u0e19\u0e27\u0e07\u0e01\u0e32\u0e23\u0e08\u0e01\u0e23\u0e22\u0e32\u0e19__what_the_job_ss3_ep2.md",
+      "label": "rerun_sun_regenerated_rerun_sun_\u0e01\u0e1f_muzcali_\u0e04\u0e19\u0e44\u0e17\u0e22\u0e04\u0e19\u0e40\u0e14\u0e22\u0e27_\u0e17\u0e44\u0e14\u0e40\u0e1b\u0e19_global_brand_ambassador_\u0e43\u0e19\u0e27\u0e07\u0e01\u0e32\u0e23\u0e08\u0e01\u0e23\u0e22\u0e32\u0e19__what_the_job_ss3_ep2.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_location_manager_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e15\u0e2d\u0e07\u0e17\u0e33\u0e2d\u0e30\u0e44\u0e23\u0e1a\u0e32\u0e07.md",
+      "label": "rerun_thu_location_manager_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e15\u0e2d\u0e07\u0e17\u0e33\u0e2d\u0e30\u0e44\u0e23\u0e1a\u0e32\u0e07.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_ai_\u0e21\u0e1c\u0e25\u0e15\u0e2d\u0e2d\u0e32\u0e0a\u0e1e\u0e28\u0e25\u0e1b\u0e19\u0e08\u0e23\u0e07\u0e2b\u0e23\u0e2d\u0e44\u0e21.md",
+      "label": "rerun_sun_ai_\u0e21\u0e1c\u0e25\u0e15\u0e2d\u0e2d\u0e32\u0e0a\u0e1e\u0e28\u0e25\u0e1b\u0e19\u0e08\u0e23\u0e07\u0e2b\u0e23\u0e2d\u0e44\u0e21.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e0a\u0e27\u0e15\u0e40\u0e0b\u0e1f\u0e21\u0e2d\u0e2d\u0e32\u0e0a\u0e1e__\u0e40\u0e1a\u0e2d\u0e07\u0e2b\u0e25\u0e07\u0e04\u0e23\u0e27\u0e41\u0e25\u0e30\u0e40\u0e04\u0e25\u0e14\u0e25\u0e1a\u0e17\u0e33\u0e2d\u0e32\u0e2b\u0e32\u0e23\u0e23\u0e30\u0e14\u0e1a\u0e21\u0e2d\u0e42\u0e1b\u0e23.md",
+      "label": "rerun_thu_\u0e0a\u0e27\u0e15\u0e40\u0e0b\u0e1f\u0e21\u0e2d\u0e2d\u0e32\u0e0a\u0e1e__\u0e40\u0e1a\u0e2d\u0e07\u0e2b\u0e25\u0e07\u0e04\u0e23\u0e27\u0e41\u0e25\u0e30\u0e40\u0e04\u0e25\u0e14\u0e25\u0e1a\u0e17\u0e33\u0e2d\u0e32\u0e2b\u0e32\u0e23\u0e23\u0e30\u0e14\u0e1a\u0e21\u0e2d\u0e42\u0e1b\u0e23.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e0a\u0e32\u0e07\u0e44\u0e17\u0e22\u0e21\u0e32\u0e01\u0e1d\u0e21\u0e2d\u0e17\u0e25\u0e01\u0e04\u0e32\u0e44\u0e27\u0e43\u0e08\u0e16\u0e2d\u0e22\u0e23\u0e16\u0e43\u0e2b\u0e21\u0e04\u0e19\u0e40\u0e1b\u0e19\u0e25\u0e32\u0e19__\u0e21\u0e32\u0e43\u0e2b\u0e04\u0e2a\u0e15\u0e2d\u0e21\u0e15\u0e07\u0e41\u0e15\u0e2d\u0e2d\u0e01\u0e28\u0e19\u0e22_\u0e41\u0e1a\u0e1a\u0e22\u0e07\u0e44\u0e21\u0e44\u0e14\u0e02.md",
+      "label": "rerun_thu_\u0e0a\u0e32\u0e07\u0e44\u0e17\u0e22\u0e21\u0e32\u0e01\u0e1d\u0e21\u0e2d\u0e17\u0e25\u0e01\u0e04\u0e32\u0e44\u0e27\u0e43\u0e08\u0e16\u0e2d\u0e22\u0e23\u0e16\u0e43\u0e2b\u0e21\u0e04\u0e19\u0e40\u0e1b\u0e19\u0e25\u0e32\u0e19__\u0e21\u0e32\u0e43\u0e2b\u0e04\u0e2a\u0e15\u0e2d\u0e21\u0e15\u0e07\u0e41\u0e15\u0e2d\u0e2d\u0e01\u0e28\u0e19\u0e22_\u0e41\u0e1a\u0e1a\u0e22\u0e07\u0e44\u0e21\u0e44\u0e14\u0e02.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e18\u0e23\u0e01\u0e08\u0e23\u0e32\u0e19\u0e01\u0e32\u0e41\u0e1f_\u0e41\u0e25\u0e30_\u0e1a\u0e32\u0e23\u0e2a\u0e15\u0e32.md",
+      "label": "rerun_thu_\u0e18\u0e23\u0e01\u0e08\u0e23\u0e32\u0e19\u0e01\u0e32\u0e41\u0e1f_\u0e41\u0e25\u0e30_\u0e1a\u0e32\u0e23\u0e2a\u0e15\u0e32.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e40\u0e1a\u0e2d\u0e07\u0e2b\u0e25\u0e07\u0e2d\u0e32\u0e0a\u0e1e_dj_\u0e17\u0e04\u0e13\u0e2d\u0e32\u0e08\u0e44\u0e21\u0e40\u0e04\u0e22\u0e23.md",
+      "label": "rerun_sun_\u0e40\u0e1a\u0e2d\u0e07\u0e2b\u0e25\u0e07\u0e2d\u0e32\u0e0a\u0e1e_dj_\u0e17\u0e04\u0e13\u0e2d\u0e32\u0e08\u0e44\u0e21\u0e40\u0e04\u0e22\u0e23.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e19\u0e32\u0e22\u0e01_\u0e2d\u0e1a\u0e08_\u0e25\u0e33\u0e1e\u0e19.md",
+      "label": "text_posts_sun_discord_\u0e19\u0e32\u0e22\u0e01_\u0e2d\u0e1a\u0e08_\u0e25\u0e33\u0e1e\u0e19.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/reels_under1min_\u0e0a\u0e32\u0e07\u0e41\u0e15\u0e07\u0e2b\u0e19\u0e32\u0e2a\u0e0a\u0e27\u0e15.md",
+      "label": "reels_under1min_\u0e0a\u0e32\u0e07\u0e41\u0e15\u0e07\u0e2b\u0e19\u0e32\u0e2a\u0e0a\u0e27\u0e15.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_consult_\u0e01\u0e2d\u0e2a\u0e23\u0e32\u0e07_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e08\u0e33\u0e40\u0e1b\u0e19\u0e15\u0e2d\u0e07\u0e21\u0e21\u0e22__\u0e08\u0e32\u0e07\u0e21\u0e32\u0e41\u0e25\u0e27\u0e44\u0e14\u0e2d\u0e30\u0e44\u0e23.md",
+      "label": "rerun_thu_consult_\u0e01\u0e2d\u0e2a\u0e23\u0e32\u0e07_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e08\u0e33\u0e40\u0e1b\u0e19\u0e15\u0e2d\u0e07\u0e21\u0e21\u0e22__\u0e08\u0e32\u0e07\u0e21\u0e32\u0e41\u0e25\u0e27\u0e44\u0e14\u0e2d\u0e30\u0e44\u0e23.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e1e\u0e40\u0e01\u0e32.md",
+      "label": "text_posts_sun_discord_\u0e1e\u0e40\u0e01\u0e32.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e0a\u0e32\u0e07\u0e20\u0e32\u0e1e\u0e07\u0e32\u0e19\u0e41\u0e15\u0e07_\u0e2d\u0e32\u0e0a\u0e1e\u0e17\u0e14\u0e2a\u0e27\u0e22\u0e2b\u0e23_\u0e41\u0e15\u0e40\u0e1a\u0e2d\u0e07\u0e2b\u0e25\u0e07\u0e41\u0e25\u0e01\u0e21\u0e32\u0e14\u0e27\u0e22\u0e2d\u0e30\u0e44\u0e23__what_the_job_s3_ep1.md",
+      "label": "rerun_sun_\u0e0a\u0e32\u0e07\u0e20\u0e32\u0e1e\u0e07\u0e32\u0e19\u0e41\u0e15\u0e07_\u0e2d\u0e32\u0e0a\u0e1e\u0e17\u0e14\u0e2a\u0e27\u0e22\u0e2b\u0e23_\u0e41\u0e15\u0e40\u0e1a\u0e2d\u0e07\u0e2b\u0e25\u0e07\u0e41\u0e25\u0e01\u0e21\u0e32\u0e14\u0e27\u0e22\u0e2d\u0e30\u0e44\u0e23__what_the_job_s3_ep1.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_regenerated_rerun_thu_ai_\u0e21\u0e1c\u0e25\u0e15\u0e2d\u0e2d\u0e32\u0e0a\u0e1e\u0e28\u0e25\u0e1b\u0e19\u0e08\u0e23\u0e07\u0e2b\u0e23\u0e2d\u0e44\u0e21.md",
+      "label": "rerun_thu_regenerated_rerun_thu_ai_\u0e21\u0e1c\u0e25\u0e15\u0e2d\u0e2d\u0e32\u0e0a\u0e1e\u0e28\u0e25\u0e1b\u0e19\u0e08\u0e23\u0e07\u0e2b\u0e23\u0e2d\u0e44\u0e21.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_regenerated_rerun_sun_\u0e01\u0e27\u0e32\u0e08\u0e30\u0e21\u0e32\u0e40\u0e1b\u0e19\u0e0a\u0e32\u0e07\u0e2a\u0e01_\u0e17\u0e2a\u0e32\u0e21\u0e32\u0e32\u0e23\u0e16\u0e40\u0e25\u0e22\u0e07\u0e15\u0e27\u0e44\u0e14_\u0e44\u0e1b\u0e1f\u0e07\u0e01\u0e19\u0e08\u0e32.md",
+      "label": "rerun_sun_regenerated_rerun_sun_\u0e01\u0e27\u0e32\u0e08\u0e30\u0e21\u0e32\u0e40\u0e1b\u0e19\u0e0a\u0e32\u0e07\u0e2a\u0e01_\u0e17\u0e2a\u0e32\u0e21\u0e32\u0e32\u0e23\u0e16\u0e40\u0e25\u0e22\u0e07\u0e15\u0e27\u0e44\u0e14_\u0e44\u0e1b\u0e1f\u0e07\u0e01\u0e19\u0e08\u0e32.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_regenerated_rerun_thu_\u0e42\u0e04\u0e0a\u0e15\u0e19_\u0e01\u0e1a\u0e40\u0e23\u0e2d\u0e07\u0e23\u0e32\u0e27\u0e02\u0e2d\u0e07\u0e2d\u0e32\u0e0a\u0e1e\u0e44\u0e1e\u0e23\u0e40\u0e27\u0e17\u0e40\u0e17\u0e23\u0e19\u0e40\u0e19\u0e2d\u0e23.md",
+      "label": "rerun_thu_regenerated_rerun_thu_\u0e42\u0e04\u0e0a\u0e15\u0e19_\u0e01\u0e1a\u0e40\u0e23\u0e2d\u0e07\u0e23\u0e32\u0e27\u0e02\u0e2d\u0e07\u0e2d\u0e32\u0e0a\u0e1e\u0e44\u0e1e\u0e23\u0e40\u0e27\u0e17\u0e40\u0e17\u0e23\u0e19\u0e40\u0e19\u0e2d\u0e23.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_regenerated_rerun_thu_consult_\u0e01\u0e2d\u0e2a\u0e23\u0e32\u0e07_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e08\u0e33\u0e40\u0e1b\u0e19\u0e15\u0e2d\u0e07\u0e21\u0e21\u0e22__\u0e08\u0e32\u0e07\u0e21\u0e32\u0e41\u0e25\u0e27\u0e44\u0e14\u0e2d\u0e30\u0e44\u0e23.md",
+      "label": "rerun_thu_regenerated_rerun_thu_consult_\u0e01\u0e2d\u0e2a\u0e23\u0e32\u0e07_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e08\u0e33\u0e40\u0e1b\u0e19\u0e15\u0e2d\u0e07\u0e21\u0e21\u0e22__\u0e08\u0e32\u0e07\u0e21\u0e32\u0e41\u0e25\u0e27\u0e44\u0e14\u0e2d\u0e30\u0e44\u0e23.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_1_\u0e27\u0e19\u0e43\u0e19\u0e01\u0e32\u0e23\u0e17\u0e33\u0e1f\u0e32\u0e23\u0e21\u0e07\u0e2a\u0e27\u0e22\u0e07\u0e32\u0e21.md",
+      "label": "rerun_sun_1_\u0e27\u0e19\u0e43\u0e19\u0e01\u0e32\u0e23\u0e17\u0e33\u0e1f\u0e32\u0e23\u0e21\u0e07\u0e2a\u0e27\u0e22\u0e07\u0e32\u0e21.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_regenerated_rerun_sun_1_\u0e27\u0e19\u0e43\u0e19\u0e01\u0e32\u0e23\u0e17\u0e33\u0e1f\u0e32\u0e23\u0e21\u0e07\u0e2a\u0e27\u0e22\u0e07\u0e32\u0e21.md",
+      "label": "rerun_sun_regenerated_rerun_sun_1_\u0e27\u0e19\u0e43\u0e19\u0e01\u0e32\u0e23\u0e17\u0e33\u0e1f\u0e32\u0e23\u0e21\u0e07\u0e2a\u0e27\u0e22\u0e07\u0e32\u0e21.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e1e\u0e32\u0e0a\u0e21\u0e1f\u0e32\u0e23\u0e21\u0e2b\u0e19\u0e40\u0e2b\u0e22\u0e2d.md",
+      "label": "rerun_sun_\u0e1e\u0e32\u0e0a\u0e21\u0e1f\u0e32\u0e23\u0e21\u0e2b\u0e19\u0e40\u0e2b\u0e22\u0e2d.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_regenerated_rerun_sun_ai_\u0e21\u0e1c\u0e25\u0e15\u0e2d\u0e2d\u0e32\u0e0a\u0e1e\u0e28\u0e25\u0e1b\u0e19\u0e08\u0e23\u0e07\u0e2b\u0e23\u0e2d\u0e44\u0e21.md",
+      "label": "rerun_sun_regenerated_rerun_sun_ai_\u0e21\u0e1c\u0e25\u0e15\u0e2d\u0e2d\u0e32\u0e0a\u0e1e\u0e28\u0e25\u0e1b\u0e19\u0e08\u0e23\u0e07\u0e2b\u0e23\u0e2d\u0e44\u0e21.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_location_manager_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e15\u0e2d\u0e07\u0e17\u0e33\u0e2d\u0e30\u0e44\u0e23\u0e1a\u0e32\u0e07.md",
+      "label": "rerun_sun_location_manager_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e15\u0e2d\u0e07\u0e17\u0e33\u0e2d\u0e30\u0e44\u0e23\u0e1a\u0e32\u0e07.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_regenerated_rerun_thu_\u0e15\u0e44\u0e21\u0e19\u0e33\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e02\u0e2d\u0e07\u0e08\u0e23\u0e07\u0e2b\u0e23\u0e2d\u0e02\u0e2d\u0e07\u0e1b\u0e25\u0e2d\u0e21_\u0e40\u0e25\u0e22\u0e07\u0e41\u0e25\u0e27\u0e15\u0e2d\u0e07\u0e14\u0e41\u0e25\u0e21\u0e22.md",
+      "label": "rerun_thu_regenerated_rerun_thu_\u0e15\u0e44\u0e21\u0e19\u0e33\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e02\u0e2d\u0e07\u0e08\u0e23\u0e07\u0e2b\u0e23\u0e2d\u0e02\u0e2d\u0e07\u0e1b\u0e25\u0e2d\u0e21_\u0e40\u0e25\u0e22\u0e07\u0e41\u0e25\u0e27\u0e15\u0e2d\u0e07\u0e14\u0e41\u0e25\u0e21\u0e22.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_regenerated_rerun_thu_\u0e01\u0e2d\u0e25\u0e1f\u0e1a\u0e32\u0e23\u0e40\u0e17\u0e19\u0e40\u0e14\u0e2d\u0e23_\u0e1c\u0e44\u0e21\u0e40\u0e04\u0e22\u0e22\u0e2d\u0e21\u0e41\u0e1e_\u0e08\u0e19\u0e44\u0e1b\u0e04\u0e27\u0e32\u0e23\u0e32\u0e07\u0e27\u0e25\u0e23\u0e30\u0e14\u0e1a\u0e42\u0e25\u0e01\u0e21\u0e32\u0e08\u0e19\u0e44\u0e14.md",
+      "label": "rerun_thu_regenerated_rerun_thu_\u0e01\u0e2d\u0e25\u0e1f\u0e1a\u0e32\u0e23\u0e40\u0e17\u0e19\u0e40\u0e14\u0e2d\u0e23_\u0e1c\u0e44\u0e21\u0e40\u0e04\u0e22\u0e22\u0e2d\u0e21\u0e41\u0e1e_\u0e08\u0e19\u0e44\u0e1b\u0e04\u0e27\u0e32\u0e23\u0e32\u0e07\u0e27\u0e25\u0e23\u0e30\u0e14\u0e1a\u0e42\u0e25\u0e01\u0e21\u0e32\u0e08\u0e19\u0e44\u0e14.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_regenerated_rerun_thu_vlog_\u0e01\u0e2d\u0e1f_midlife_crisis.md",
+      "label": "rerun_thu_regenerated_rerun_thu_vlog_\u0e01\u0e2d\u0e1f_midlife_crisis.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/reels_under1min_transcript_\u0e0a\u0e32\u0e07\u0e20\u0e32\u0e1e\u0e2d\u0e32\u0e0a\u0e1e.md",
+      "label": "reels_under1min_transcript_\u0e0a\u0e32\u0e07\u0e20\u0e32\u0e1e\u0e2d\u0e32\u0e0a\u0e1e.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_regenerated_rerun_thu_\u0e28\u0e25\u0e1b\u0e19\u0e44\u0e2a\u0e41\u0e2b\u0e07.md",
+      "label": "rerun_thu_regenerated_rerun_thu_\u0e28\u0e25\u0e1b\u0e19\u0e44\u0e2a\u0e41\u0e2b\u0e07.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e1e\u0e40\u0e01\u0e07_wall_painting_\u0e08\u0e32\u0e01\u0e01\u0e33\u0e41\u0e1e\u0e07\u0e40\u0e1b\u0e25\u0e32\u0e2a\u0e1c\u0e25\u0e07\u0e32\u0e19\u0e28\u0e25\u0e1b\u0e30\u0e17\u0e2a\u0e23\u0e32\u0e07\u0e23\u0e32\u0e22\u0e44\u0e14\u0e40\u0e25\u0e22\u0e07\u0e0a\u0e1e__what_the_job_ss3_ep3.md",
+      "label": "rerun_thu_\u0e1e\u0e40\u0e01\u0e07_wall_painting_\u0e08\u0e32\u0e01\u0e01\u0e33\u0e41\u0e1e\u0e07\u0e40\u0e1b\u0e25\u0e32\u0e2a\u0e1c\u0e25\u0e07\u0e32\u0e19\u0e28\u0e25\u0e1b\u0e30\u0e17\u0e2a\u0e23\u0e32\u0e07\u0e23\u0e32\u0e22\u0e44\u0e14\u0e40\u0e25\u0e22\u0e07\u0e0a\u0e1e__what_the_job_ss3_ep3.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e40\u0e1b\u0e14\u0e43\u0e08\u0e04\u0e19\u0e02\u0e1a\u0e2a\u0e25\u0e2d\u0e41\u0e14\u0e07_\u0e40\u0e1b\u0e19\u0e08\u0e23\u0e07\u0e2d\u0e22\u0e32\u0e07\u0e0a\u0e32\u0e27\u0e40\u0e19\u0e15\u0e27\u0e32\u0e21\u0e22_\u0e43\u0e19\u0e2d\u0e01\u0e21\u0e21\u0e21\u0e2d\u0e07.md",
+      "label": "rerun_sun_\u0e40\u0e1b\u0e14\u0e43\u0e08\u0e04\u0e19\u0e02\u0e1a\u0e2a\u0e25\u0e2d\u0e41\u0e14\u0e07_\u0e40\u0e1b\u0e19\u0e08\u0e23\u0e07\u0e2d\u0e22\u0e32\u0e07\u0e0a\u0e32\u0e27\u0e40\u0e19\u0e15\u0e27\u0e32\u0e21\u0e22_\u0e43\u0e19\u0e2d\u0e01\u0e21\u0e21\u0e21\u0e2d\u0e07.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_vlog_\u0e01\u0e2d\u0e1f_midlife_crisis.md",
+      "label": "rerun_sun_vlog_\u0e01\u0e2d\u0e1f_midlife_crisis.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_regenerated_rerun_sun_\u0e40\u0e01\u0e29\u0e15\u0e23\u0e01\u0e23\u0e17\u0e33\u0e1f\u0e32\u0e23\u0e21\u0e2b\u0e19\u0e17\u0e2a\u0e32\u0e21\u0e32\u0e23\u0e16\u0e17\u0e33\u0e23\u0e32\u0e22\u0e44\u0e14\u0e16\u0e07_7_\u0e2b\u0e25\u0e01\u0e43\u0e19\u0e40\u0e27\u0e25\u0e32\u0e40\u0e1e\u0e22\u0e07_2_\u0e1b.md",
+      "label": "rerun_sun_regenerated_rerun_sun_\u0e40\u0e01\u0e29\u0e15\u0e23\u0e01\u0e23\u0e17\u0e33\u0e1f\u0e32\u0e23\u0e21\u0e2b\u0e19\u0e17\u0e2a\u0e32\u0e21\u0e32\u0e23\u0e16\u0e17\u0e33\u0e23\u0e32\u0e22\u0e44\u0e14\u0e16\u0e07_7_\u0e2b\u0e25\u0e01\u0e43\u0e19\u0e40\u0e27\u0e25\u0e32\u0e40\u0e1e\u0e22\u0e07_2_\u0e1b.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e08\u0e2a\u0e21\u0e19.md",
+      "label": "text_posts_thu_discord_\u0e08\u0e2a\u0e21\u0e19.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_regenerated_rerun_sun_\u0e2d\u0e32\u0e0a\u0e1e\u0e2d\u0e2a\u0e23\u0e30\u0e17\u0e0a\u0e2d\u0e27\u0e32_stock_photo_\u0e01\u0e1a\u0e23\u0e32\u0e22\u0e44\u0e14_6_\u0e2b\u0e25\u0e01__\u0e40\u0e04\u0e32\u0e17\u0e33\u0e22\u0e07\u0e44\u0e07_\u0e40\u0e23\u0e21\u0e15\u0e19\u0e22\u0e07\u0e44\u0e07_\u0e44\u0e1b\u0e15\u0e14\u0e15\u0e32\u0e21\u0e0a\u0e21\u0e01\u0e19\u0e04\u0e23\u0e1a.md",
+      "label": "rerun_sun_regenerated_rerun_sun_\u0e2d\u0e32\u0e0a\u0e1e\u0e2d\u0e2a\u0e23\u0e30\u0e17\u0e0a\u0e2d\u0e27\u0e32_stock_photo_\u0e01\u0e1a\u0e23\u0e32\u0e22\u0e44\u0e14_6_\u0e2b\u0e25\u0e01__\u0e40\u0e04\u0e32\u0e17\u0e33\u0e22\u0e07\u0e44\u0e07_\u0e40\u0e23\u0e21\u0e15\u0e19\u0e22\u0e07\u0e44\u0e07_\u0e44\u0e1b\u0e15\u0e14\u0e15\u0e32\u0e21\u0e0a\u0e21\u0e01\u0e19\u0e04\u0e23\u0e1a.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e1e\u0e01\u0e1a.md",
+      "label": "text_posts_sun_discord_\u0e1e\u0e01\u0e1a.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e01\u0e27\u0e32\u0e08\u0e30\u0e21\u0e32\u0e40\u0e1b\u0e19\u0e40\u0e08\u0e32\u0e02\u0e2d\u0e07\u0e40\u0e2b\u0e23\u0e22\u0e0d\u0e17\u0e2d\u0e07\u0e0b\u0e40\u0e01\u0e21\u0e2a_\u0e1e\u0e21\u0e30\u0e15\u0e21\u0e19\u0e01\u0e08\u0e01\u0e23\u0e22\u0e32\u0e19\u0e17\u0e21\u0e0a\u0e32\u0e15_\u0e40\u0e15\u0e1a\u0e42\u0e15\u0e21\u0e32\u0e22\u0e07\u0e44\u0e07_\u0e1c\u0e32\u0e19\u0e2d\u0e30\u0e44\u0e23\u0e21\u0e32\u0e1a\u0e32\u0e07.md",
+      "label": "rerun_sun_\u0e01\u0e27\u0e32\u0e08\u0e30\u0e21\u0e32\u0e40\u0e1b\u0e19\u0e40\u0e08\u0e32\u0e02\u0e2d\u0e07\u0e40\u0e2b\u0e23\u0e22\u0e0d\u0e17\u0e2d\u0e07\u0e0b\u0e40\u0e01\u0e21\u0e2a_\u0e1e\u0e21\u0e30\u0e15\u0e21\u0e19\u0e01\u0e08\u0e01\u0e23\u0e22\u0e32\u0e19\u0e17\u0e21\u0e0a\u0e32\u0e15_\u0e40\u0e15\u0e1a\u0e42\u0e15\u0e21\u0e32\u0e22\u0e07\u0e44\u0e07_\u0e1c\u0e32\u0e19\u0e2d\u0e30\u0e44\u0e23\u0e21\u0e32\u0e1a\u0e32\u0e07.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_regenerated_rerun_thu_web_3_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e21\u0e32\u0e2b\u0e32\u0e04\u0e33\u0e15\u0e2d\u0e1a\u0e01\u0e19\u0e43\u0e19\u0e04\u0e25\u0e1b\u0e44\u0e14\u0e40\u0e25\u0e1a\u0e22\u0e04\u0e23\u0e1a.md",
+      "label": "rerun_thu_regenerated_rerun_thu_web_3_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e21\u0e32\u0e2b\u0e32\u0e04\u0e33\u0e15\u0e2d\u0e1a\u0e01\u0e19\u0e43\u0e19\u0e04\u0e25\u0e1b\u0e44\u0e14\u0e40\u0e25\u0e1a\u0e22\u0e04\u0e23\u0e1a.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e40\u0e1b\u0e14\u0e43\u0e08\u0e04\u0e19\u0e02\u0e1a\u0e2a\u0e25\u0e2d\u0e41\u0e14\u0e07_\u0e40\u0e1b\u0e19\u0e08\u0e23\u0e07\u0e2d\u0e22\u0e32\u0e07\u0e0a\u0e32\u0e27\u0e40\u0e19\u0e15\u0e27\u0e32\u0e21\u0e22_\u0e43\u0e19\u0e2d\u0e01\u0e21\u0e21\u0e21\u0e2d\u0e07.md",
+      "label": "rerun_thu_\u0e40\u0e1b\u0e14\u0e43\u0e08\u0e04\u0e19\u0e02\u0e1a\u0e2a\u0e25\u0e2d\u0e41\u0e14\u0e07_\u0e40\u0e1b\u0e19\u0e08\u0e23\u0e07\u0e2d\u0e22\u0e32\u0e07\u0e0a\u0e32\u0e27\u0e40\u0e19\u0e15\u0e27\u0e32\u0e21\u0e22_\u0e43\u0e19\u0e2d\u0e01\u0e21\u0e21\u0e21\u0e2d\u0e07.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e41\u0e04\u0e40\u0e2d\u0e32\u0e40\u0e17_\u0e2b\u0e23\u0e2d_funtion.md",
+      "label": "rerun_sun_\u0e41\u0e04\u0e40\u0e2d\u0e32\u0e40\u0e17_\u0e2b\u0e23\u0e2d_funtion.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e01\u0e1f_muzcali_\u0e04\u0e19\u0e44\u0e17\u0e22\u0e04\u0e19\u0e40\u0e14\u0e22\u0e27_\u0e17\u0e44\u0e14\u0e40\u0e1b\u0e19_global_brand_ambassador_\u0e43\u0e19\u0e27\u0e07\u0e01\u0e32\u0e23\u0e08\u0e01\u0e23\u0e22\u0e32\u0e19__what_the_job_ss3_ep2.md",
+      "label": "rerun_thu_\u0e01\u0e1f_muzcali_\u0e04\u0e19\u0e44\u0e17\u0e22\u0e04\u0e19\u0e40\u0e14\u0e22\u0e27_\u0e17\u0e44\u0e14\u0e40\u0e1b\u0e19_global_brand_ambassador_\u0e43\u0e19\u0e27\u0e07\u0e01\u0e32\u0e23\u0e08\u0e01\u0e23\u0e22\u0e32\u0e19__what_the_job_ss3_ep2.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_regenerated_rerun_thu_\u0e0a\u0e32\u0e07\u0e44\u0e17\u0e22\u0e21\u0e32\u0e01\u0e1d\u0e21\u0e2d\u0e17\u0e25\u0e01\u0e04\u0e32\u0e44\u0e27\u0e43\u0e08\u0e16\u0e2d\u0e22\u0e23\u0e16\u0e43\u0e2b\u0e21\u0e04\u0e19\u0e40\u0e1b\u0e19\u0e25\u0e32\u0e19__\u0e21\u0e32\u0e43\u0e2b\u0e04\u0e2a\u0e15\u0e2d\u0e21\u0e15\u0e07\u0e41\u0e15\u0e2d\u0e2d\u0e01\u0e28\u0e19\u0e22_\u0e41\u0e1a\u0e1a\u0e22\u0e07\u0e44\u0e21\u0e44\u0e14\u0e02.md",
+      "label": "rerun_thu_regenerated_rerun_thu_\u0e0a\u0e32\u0e07\u0e44\u0e17\u0e22\u0e21\u0e32\u0e01\u0e1d\u0e21\u0e2d\u0e17\u0e25\u0e01\u0e04\u0e32\u0e44\u0e27\u0e43\u0e08\u0e16\u0e2d\u0e22\u0e23\u0e16\u0e43\u0e2b\u0e21\u0e04\u0e19\u0e40\u0e1b\u0e19\u0e25\u0e32\u0e19__\u0e21\u0e32\u0e43\u0e2b\u0e04\u0e2a\u0e15\u0e2d\u0e21\u0e15\u0e07\u0e41\u0e15\u0e2d\u0e2d\u0e01\u0e28\u0e19\u0e22_\u0e41\u0e1a\u0e1a\u0e22\u0e07\u0e44\u0e21\u0e44\u0e14\u0e02.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e2d\u0e19\u0e1f\u0e25\u0e40\u0e2d\u0e19\u0e40\u0e0b\u0e2d\u0e23\u0e2a\u0e32\u0e22_sport_\u0e17\u0e33\u0e2d\u0e30\u0e44\u0e23\u0e01\u0e19\u0e1a\u0e32\u0e07\u0e43\u0e19\u0e41\u0e15\u0e25\u0e30\u0e27\u0e19.md",
+      "label": "rerun_sun_\u0e2d\u0e19\u0e1f\u0e25\u0e40\u0e2d\u0e19\u0e40\u0e0b\u0e2d\u0e23\u0e2a\u0e32\u0e22_sport_\u0e17\u0e33\u0e2d\u0e30\u0e44\u0e23\u0e01\u0e19\u0e1a\u0e32\u0e07\u0e43\u0e19\u0e41\u0e15\u0e25\u0e30\u0e27\u0e19.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_\u0e0a\u0e32\u0e07\u0e41\u0e15\u0e07\u0e2b\u0e19\u0e32\u0e2a\u0e0a\u0e27\u0e15.md",
+      "label": "text_posts_sun_\u0e0a\u0e32\u0e07\u0e41\u0e15\u0e07\u0e2b\u0e19\u0e32\u0e2a\u0e0a\u0e27\u0e15.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_regenerated_rerun_thu_\u0e18\u0e23\u0e01\u0e08\u0e23\u0e32\u0e19\u0e01\u0e32\u0e41\u0e1f_\u0e41\u0e25\u0e30_\u0e1a\u0e32\u0e23\u0e2a\u0e15\u0e32.md",
+      "label": "rerun_thu_regenerated_rerun_thu_\u0e18\u0e23\u0e01\u0e08\u0e23\u0e32\u0e19\u0e01\u0e32\u0e41\u0e1f_\u0e41\u0e25\u0e30_\u0e1a\u0e32\u0e23\u0e2a\u0e15\u0e32.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e40\u0e1a\u0e2d\u0e07\u0e2b\u0e25\u0e07\u0e2d\u0e32\u0e0a\u0e1e_dj_\u0e17\u0e04\u0e13\u0e2d\u0e32\u0e08\u0e44\u0e21\u0e40\u0e04\u0e22\u0e23.md",
+      "label": "rerun_thu_\u0e40\u0e1a\u0e2d\u0e07\u0e2b\u0e25\u0e07\u0e2d\u0e32\u0e0a\u0e1e_dj_\u0e17\u0e04\u0e13\u0e2d\u0e32\u0e08\u0e44\u0e21\u0e40\u0e04\u0e22\u0e23.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e0a\u0e07.md",
+      "label": "text_posts_sun_discord_\u0e0a\u0e07.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e19\u0e2d\u0e07\u0e01\u0e1f.md",
+      "label": "text_posts_thu_discord_\u0e19\u0e2d\u0e07\u0e01\u0e1f.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_regenerated_rerun_sun_\u0e40\u0e1b\u0e14\u0e43\u0e08\u0e04\u0e19\u0e02\u0e1a\u0e2a\u0e25\u0e2d\u0e41\u0e14\u0e07_\u0e40\u0e1b\u0e19\u0e08\u0e23\u0e07\u0e2d\u0e22\u0e32\u0e07\u0e0a\u0e32\u0e27\u0e40\u0e19\u0e15\u0e27\u0e32\u0e21\u0e22_\u0e43\u0e19\u0e2d\u0e01\u0e21\u0e21\u0e21\u0e2d\u0e07.md",
+      "label": "rerun_sun_regenerated_rerun_sun_\u0e40\u0e1b\u0e14\u0e43\u0e08\u0e04\u0e19\u0e02\u0e1a\u0e2a\u0e25\u0e2d\u0e41\u0e14\u0e07_\u0e40\u0e1b\u0e19\u0e08\u0e23\u0e07\u0e2d\u0e22\u0e32\u0e07\u0e0a\u0e32\u0e27\u0e40\u0e19\u0e15\u0e27\u0e32\u0e21\u0e22_\u0e43\u0e19\u0e2d\u0e01\u0e21\u0e21\u0e21\u0e2d\u0e07.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e27\u0e23\u0e14\u0e32.md",
+      "label": "text_posts_thu_discord_\u0e27\u0e23\u0e14\u0e32.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e2b\u0e2d\u0e22\u0e02\u0e21\u0e22\u0e01\u0e29\u0e23\u0e19\u0e15\u0e19\u0e30_\u0e23\u0e32\u0e22\u0e44\u0e14\u0e40\u0e2a\u0e23\u0e21\u0e27\u0e19\u0e25\u0e30_2000_\u0e2b\u0e2d\u0e22\u0e02\u0e21\u0e17\u0e21\u0e02\u0e19\u0e32\u0e14\u0e43\u0e2b\u0e0d\u0e40\u0e17\u0e32\u0e44\u0e02\u0e44\u0e01_\u0e40\u0e25\u0e22\u0e07\u0e07\u0e32\u0e22_\u0e42\u0e15\u0e44\u0e27_wtj_wtjtalk.md",
+      "label": "rerun_thu_\u0e2b\u0e2d\u0e22\u0e02\u0e21\u0e22\u0e01\u0e29\u0e23\u0e19\u0e15\u0e19\u0e30_\u0e23\u0e32\u0e22\u0e44\u0e14\u0e40\u0e2a\u0e23\u0e21\u0e27\u0e19\u0e25\u0e30_2000_\u0e2b\u0e2d\u0e22\u0e02\u0e21\u0e17\u0e21\u0e02\u0e19\u0e32\u0e14\u0e43\u0e2b\u0e0d\u0e40\u0e17\u0e32\u0e44\u0e02\u0e44\u0e01_\u0e40\u0e25\u0e22\u0e07\u0e07\u0e32\u0e22_\u0e42\u0e15\u0e44\u0e27_wtj_wtjtalk.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e1e\u0e41\u0e2d\u0e21.md",
+      "label": "text_posts_thu_discord_\u0e1e\u0e41\u0e2d\u0e21.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_regenerated_rerun_thu_\u0e2d\u0e19\u0e1f\u0e25\u0e40\u0e2d\u0e19\u0e40\u0e0b\u0e2d\u0e23\u0e2a\u0e32\u0e22_sport_\u0e17\u0e33\u0e2d\u0e30\u0e44\u0e23\u0e01\u0e19\u0e1a\u0e32\u0e07\u0e43\u0e19\u0e41\u0e15\u0e25\u0e30\u0e27\u0e19.md",
+      "label": "rerun_thu_regenerated_rerun_thu_\u0e2d\u0e19\u0e1f\u0e25\u0e40\u0e2d\u0e19\u0e40\u0e0b\u0e2d\u0e23\u0e2a\u0e32\u0e22_sport_\u0e17\u0e33\u0e2d\u0e30\u0e44\u0e23\u0e01\u0e19\u0e1a\u0e32\u0e07\u0e43\u0e19\u0e41\u0e15\u0e25\u0e30\u0e27\u0e19.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e41\u0e04\u0e40\u0e2d\u0e32\u0e40\u0e17_\u0e2b\u0e23\u0e2d_funtion.md",
+      "label": "rerun_thu_\u0e41\u0e04\u0e40\u0e2d\u0e32\u0e40\u0e17_\u0e2b\u0e23\u0e2d_funtion.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e1e\u0e01\u0e1a.md",
+      "label": "text_posts_thu_discord_\u0e1e\u0e01\u0e1a.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_regenerated_rerun_sun_\u0e28\u0e25\u0e1b\u0e19\u0e44\u0e2a\u0e41\u0e2b\u0e07.md",
+      "label": "rerun_sun_regenerated_rerun_sun_\u0e28\u0e25\u0e1b\u0e19\u0e44\u0e2a\u0e41\u0e2b\u0e07.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e1e\u0e0a.md",
+      "label": "text_posts_thu_discord_\u0e1e\u0e0a.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_regenerated_rerun_thu_\u0e40\u0e1a\u0e2d\u0e07\u0e2b\u0e25\u0e07\u0e2d\u0e32\u0e0a\u0e1e_dj_\u0e17\u0e04\u0e13\u0e2d\u0e32\u0e08\u0e44\u0e21\u0e40\u0e04\u0e22\u0e23.md",
+      "label": "rerun_thu_regenerated_rerun_thu_\u0e40\u0e1a\u0e2d\u0e07\u0e2b\u0e25\u0e07\u0e2d\u0e32\u0e0a\u0e1e_dj_\u0e17\u0e04\u0e13\u0e2d\u0e32\u0e08\u0e44\u0e21\u0e40\u0e04\u0e22\u0e23.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_regenerated_rerun_sun_\u0e01\u0e27\u0e32\u0e08\u0e30\u0e21\u0e32\u0e40\u0e1b\u0e19\u0e40\u0e08\u0e32\u0e02\u0e2d\u0e07\u0e40\u0e2b\u0e23\u0e22\u0e0d\u0e17\u0e2d\u0e07\u0e0b\u0e40\u0e01\u0e21\u0e2a_\u0e1e\u0e21\u0e30\u0e15\u0e21\u0e19\u0e01\u0e08\u0e01\u0e23\u0e22\u0e32\u0e19\u0e17\u0e21\u0e0a\u0e32\u0e15_\u0e40\u0e15\u0e1a\u0e42\u0e15\u0e21\u0e32\u0e22\u0e07\u0e44\u0e07_\u0e1c\u0e32\u0e19\u0e2d\u0e30\u0e44\u0e23\u0e21\u0e32\u0e1a\u0e32\u0e07.md",
+      "label": "rerun_sun_regenerated_rerun_sun_\u0e01\u0e27\u0e32\u0e08\u0e30\u0e21\u0e32\u0e40\u0e1b\u0e19\u0e40\u0e08\u0e32\u0e02\u0e2d\u0e07\u0e40\u0e2b\u0e23\u0e22\u0e0d\u0e17\u0e2d\u0e07\u0e0b\u0e40\u0e01\u0e21\u0e2a_\u0e1e\u0e21\u0e30\u0e15\u0e21\u0e19\u0e01\u0e08\u0e01\u0e23\u0e22\u0e32\u0e19\u0e17\u0e21\u0e0a\u0e32\u0e15_\u0e40\u0e15\u0e1a\u0e42\u0e15\u0e21\u0e32\u0e22\u0e07\u0e44\u0e07_\u0e1c\u0e32\u0e19\u0e2d\u0e30\u0e44\u0e23\u0e21\u0e32\u0e1a\u0e32\u0e07.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e40\u0e01\u0e29\u0e15\u0e23\u0e01\u0e23\u0e07\u0e2a\u0e27\u0e22\u0e07\u0e32\u0e21\u0e01\u0e1a\u0e23\u0e32\u0e22\u0e44\u0e14\u0e16\u0e07_7_\u0e2b\u0e25\u0e01\u0e15\u0e2d\u0e1b.md",
+      "label": "rerun_sun_\u0e40\u0e01\u0e29\u0e15\u0e23\u0e01\u0e23\u0e07\u0e2a\u0e27\u0e22\u0e07\u0e32\u0e21\u0e01\u0e1a\u0e23\u0e32\u0e22\u0e44\u0e14\u0e16\u0e07_7_\u0e2b\u0e25\u0e01\u0e15\u0e2d\u0e1b.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_regenerated_rerun_thu_\u0e1e\u0e32\u0e0a\u0e21\u0e1f\u0e32\u0e23\u0e21\u0e2b\u0e19\u0e40\u0e2b\u0e22\u0e2d.md",
+      "label": "rerun_thu_regenerated_rerun_thu_\u0e1e\u0e32\u0e0a\u0e21\u0e1f\u0e32\u0e23\u0e21\u0e2b\u0e19\u0e40\u0e2b\u0e22\u0e2d.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e2d\u0e19.md",
+      "label": "text_posts_thu_discord_\u0e2d\u0e19.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e28\u0e25\u0e1b\u0e19\u0e44\u0e2a\u0e41\u0e2b\u0e07.md",
+      "label": "rerun_sun_\u0e28\u0e25\u0e1b\u0e19\u0e44\u0e2a\u0e41\u0e2b\u0e07.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e1a\u0e07.md",
+      "label": "text_posts_sun_discord_\u0e1a\u0e07.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_regenerated_rerun_sun_\u0e40\u0e01\u0e29\u0e15\u0e23\u0e01\u0e23\u0e07\u0e2a\u0e27\u0e22\u0e07\u0e32\u0e21\u0e01\u0e1a\u0e23\u0e32\u0e22\u0e44\u0e14\u0e16\u0e07_7_\u0e2b\u0e25\u0e01\u0e15\u0e2d\u0e1b.md",
+      "label": "rerun_sun_regenerated_rerun_sun_\u0e40\u0e01\u0e29\u0e15\u0e23\u0e01\u0e23\u0e07\u0e2a\u0e27\u0e22\u0e07\u0e32\u0e21\u0e01\u0e1a\u0e23\u0e32\u0e22\u0e44\u0e14\u0e16\u0e07_7_\u0e2b\u0e25\u0e01\u0e15\u0e2d\u0e1b.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e44\u0e21\u0e43\u0e0a\u0e41\u0e04\u0e16\u0e32\u0e22\u0e2a\u0e27\u0e22\u0e19\u0e04\u0e2d\u0e01\u0e32\u0e23\u0e17\u0e33\u0e07\u0e32\u0e19\u0e02\u0e2d\u0e07\u0e21\u0e2d\u0e42\u0e1b\u0e23\u0e19\u0e01\u0e1a\u0e19\u0e42\u0e14\u0e23\u0e19.md",
+      "label": "rerun_sun_\u0e44\u0e21\u0e43\u0e0a\u0e41\u0e04\u0e16\u0e32\u0e22\u0e2a\u0e27\u0e22\u0e19\u0e04\u0e2d\u0e01\u0e32\u0e23\u0e17\u0e33\u0e07\u0e32\u0e19\u0e02\u0e2d\u0e07\u0e21\u0e2d\u0e42\u0e1b\u0e23\u0e19\u0e01\u0e1a\u0e19\u0e42\u0e14\u0e23\u0e19.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e19\u0e32\u0e22\u0e01_\u0e2d\u0e1a\u0e08_\u0e25\u0e33\u0e1e\u0e19.md",
+      "label": "text_posts_thu_discord_\u0e19\u0e32\u0e22\u0e01_\u0e2d\u0e1a\u0e08_\u0e25\u0e33\u0e1e\u0e19.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_regenerated_rerun_sun_\u0e15\u0e44\u0e21\u0e19\u0e33\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e02\u0e2d\u0e07\u0e08\u0e23\u0e07\u0e2b\u0e23\u0e2d\u0e02\u0e2d\u0e07\u0e1b\u0e25\u0e2d\u0e21_\u0e40\u0e25\u0e22\u0e07\u0e41\u0e25\u0e27\u0e15\u0e2d\u0e07\u0e14\u0e41\u0e25\u0e21\u0e22.md",
+      "label": "rerun_sun_regenerated_rerun_sun_\u0e15\u0e44\u0e21\u0e19\u0e33\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e02\u0e2d\u0e07\u0e08\u0e23\u0e07\u0e2b\u0e23\u0e2d\u0e02\u0e2d\u0e07\u0e1b\u0e25\u0e2d\u0e21_\u0e40\u0e25\u0e22\u0e07\u0e41\u0e25\u0e27\u0e15\u0e2d\u0e07\u0e14\u0e41\u0e25\u0e21\u0e22.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e01\u0e2d\u0e25\u0e1f\u0e1a\u0e32\u0e23\u0e40\u0e17\u0e19\u0e40\u0e14\u0e2d\u0e23_\u0e1c\u0e44\u0e21\u0e40\u0e04\u0e22\u0e22\u0e2d\u0e21\u0e41\u0e1e_\u0e08\u0e19\u0e44\u0e1b\u0e04\u0e27\u0e32\u0e23\u0e32\u0e07\u0e27\u0e25\u0e23\u0e30\u0e14\u0e1a\u0e42\u0e25\u0e01\u0e21\u0e32\u0e08\u0e19\u0e44\u0e14.md",
+      "label": "rerun_sun_\u0e01\u0e2d\u0e25\u0e1f\u0e1a\u0e32\u0e23\u0e40\u0e17\u0e19\u0e40\u0e14\u0e2d\u0e23_\u0e1c\u0e44\u0e21\u0e40\u0e04\u0e22\u0e22\u0e2d\u0e21\u0e41\u0e1e_\u0e08\u0e19\u0e44\u0e1b\u0e04\u0e27\u0e32\u0e23\u0e32\u0e07\u0e27\u0e25\u0e23\u0e30\u0e14\u0e1a\u0e42\u0e25\u0e01\u0e21\u0e32\u0e08\u0e19\u0e44\u0e14.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e40\u0e01\u0e29\u0e15\u0e23\u0e01\u0e23\u0e07\u0e2a\u0e27\u0e22\u0e07\u0e32\u0e21\u0e01\u0e1a\u0e23\u0e32\u0e22\u0e44\u0e14\u0e16\u0e07_7_\u0e2b\u0e25\u0e01\u0e15\u0e2d\u0e1b.md",
+      "label": "rerun_thu_\u0e40\u0e01\u0e29\u0e15\u0e23\u0e01\u0e23\u0e07\u0e2a\u0e27\u0e22\u0e07\u0e32\u0e21\u0e01\u0e1a\u0e23\u0e32\u0e22\u0e44\u0e14\u0e16\u0e07_7_\u0e2b\u0e25\u0e01\u0e15\u0e2d\u0e1b.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_regenerated_rerun_thu_\u0e2d\u0e32\u0e0a\u0e1e\u0e2d\u0e2a\u0e23\u0e30\u0e17\u0e0a\u0e2d\u0e27\u0e32_stock_photo_\u0e01\u0e1a\u0e23\u0e32\u0e22\u0e44\u0e14_6_\u0e2b\u0e25\u0e01__\u0e40\u0e04\u0e32\u0e17\u0e33\u0e22\u0e07\u0e44\u0e07_\u0e40\u0e23\u0e21\u0e15\u0e19\u0e22\u0e07\u0e44\u0e07_\u0e44\u0e1b\u0e15\u0e14\u0e15\u0e32\u0e21\u0e0a\u0e21\u0e01\u0e19\u0e04\u0e23\u0e1a.md",
+      "label": "rerun_thu_regenerated_rerun_thu_\u0e2d\u0e32\u0e0a\u0e1e\u0e2d\u0e2a\u0e23\u0e30\u0e17\u0e0a\u0e2d\u0e27\u0e32_stock_photo_\u0e01\u0e1a\u0e23\u0e32\u0e22\u0e44\u0e14_6_\u0e2b\u0e25\u0e01__\u0e40\u0e04\u0e32\u0e17\u0e33\u0e22\u0e07\u0e44\u0e07_\u0e40\u0e23\u0e21\u0e15\u0e19\u0e22\u0e07\u0e44\u0e07_\u0e44\u0e1b\u0e15\u0e14\u0e15\u0e32\u0e21\u0e0a\u0e21\u0e01\u0e19\u0e04\u0e23\u0e1a.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_web_3_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e21\u0e32\u0e2b\u0e32\u0e04\u0e33\u0e15\u0e2d\u0e1a\u0e01\u0e19\u0e43\u0e19\u0e04\u0e25\u0e1b\u0e44\u0e14\u0e40\u0e25\u0e1a\u0e22\u0e04\u0e23\u0e1a.md",
+      "label": "rerun_sun_web_3_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e21\u0e32\u0e2b\u0e32\u0e04\u0e33\u0e15\u0e2d\u0e1a\u0e01\u0e19\u0e43\u0e19\u0e04\u0e25\u0e1b\u0e44\u0e14\u0e40\u0e25\u0e1a\u0e22\u0e04\u0e23\u0e1a.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_regenerated_rerun_sun_\u0e2b\u0e2d\u0e22\u0e02\u0e21\u0e22\u0e01\u0e29\u0e23\u0e19\u0e15\u0e19\u0e30_\u0e23\u0e32\u0e22\u0e44\u0e14\u0e40\u0e2a\u0e23\u0e21\u0e27\u0e19\u0e25\u0e30_2000_\u0e2b\u0e2d\u0e22\u0e02\u0e21\u0e17\u0e21\u0e02\u0e19\u0e32\u0e14\u0e43\u0e2b\u0e0d\u0e40\u0e17\u0e32\u0e44\u0e02\u0e44\u0e01_\u0e40\u0e25\u0e22\u0e07\u0e07\u0e32\u0e22_\u0e42\u0e15\u0e44\u0e27_wtj_wtjtalk.md",
+      "label": "rerun_sun_regenerated_rerun_sun_\u0e2b\u0e2d\u0e22\u0e02\u0e21\u0e22\u0e01\u0e29\u0e23\u0e19\u0e15\u0e19\u0e30_\u0e23\u0e32\u0e22\u0e44\u0e14\u0e40\u0e2a\u0e23\u0e21\u0e27\u0e19\u0e25\u0e30_2000_\u0e2b\u0e2d\u0e22\u0e02\u0e21\u0e17\u0e21\u0e02\u0e19\u0e32\u0e14\u0e43\u0e2b\u0e0d\u0e40\u0e17\u0e32\u0e44\u0e02\u0e44\u0e01_\u0e40\u0e25\u0e22\u0e07\u0e07\u0e32\u0e22_\u0e42\u0e15\u0e44\u0e27_wtj_wtjtalk.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e0a\u0e27\u0e15\u0e40\u0e0b\u0e1f\u0e21\u0e2d\u0e2d\u0e32\u0e0a\u0e1e__\u0e40\u0e1a\u0e2d\u0e07\u0e2b\u0e25\u0e07\u0e04\u0e23\u0e27\u0e41\u0e25\u0e30\u0e40\u0e04\u0e25\u0e14\u0e25\u0e1a\u0e17\u0e33\u0e2d\u0e32\u0e2b\u0e32\u0e23\u0e23\u0e30\u0e14\u0e1a\u0e21\u0e2d\u0e42\u0e1b\u0e23.md",
+      "label": "rerun_sun_\u0e0a\u0e27\u0e15\u0e40\u0e0b\u0e1f\u0e21\u0e2d\u0e2d\u0e32\u0e0a\u0e1e__\u0e40\u0e1a\u0e2d\u0e07\u0e2b\u0e25\u0e07\u0e04\u0e23\u0e27\u0e41\u0e25\u0e30\u0e40\u0e04\u0e25\u0e14\u0e25\u0e1a\u0e17\u0e33\u0e2d\u0e32\u0e2b\u0e32\u0e23\u0e23\u0e30\u0e14\u0e1a\u0e21\u0e2d\u0e42\u0e1b\u0e23.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_\u0e0a\u0e32\u0e07\u0e41\u0e15\u0e07\u0e2b\u0e19\u0e32\u0e2a\u0e0a\u0e27\u0e15.md",
+      "label": "text_posts_thu_\u0e0a\u0e32\u0e07\u0e41\u0e15\u0e07\u0e2b\u0e19\u0e32\u0e2a\u0e0a\u0e27\u0e15.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_regenerated_rerun_thu_1_\u0e27\u0e19\u0e43\u0e19\u0e01\u0e32\u0e23\u0e17\u0e33\u0e1f\u0e32\u0e23\u0e21\u0e07\u0e2a\u0e27\u0e22\u0e07\u0e32\u0e21.md",
+      "label": "rerun_thu_regenerated_rerun_thu_1_\u0e27\u0e19\u0e43\u0e19\u0e01\u0e32\u0e23\u0e17\u0e33\u0e1f\u0e32\u0e23\u0e21\u0e07\u0e2a\u0e27\u0e22\u0e07\u0e32\u0e21.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e19\u0e2d\u0e07\u0e01\u0e1f.md",
+      "label": "text_posts_sun_discord_\u0e19\u0e2d\u0e07\u0e01\u0e1f.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e1e\u0e40\u0e01\u0e32.md",
+      "label": "text_posts_thu_discord_\u0e1e\u0e40\u0e01\u0e32.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e40\u0e01\u0e29\u0e15\u0e23\u0e01\u0e23\u0e17\u0e33\u0e1f\u0e32\u0e23\u0e21\u0e2b\u0e19\u0e17\u0e2a\u0e32\u0e21\u0e32\u0e23\u0e16\u0e17\u0e33\u0e23\u0e32\u0e22\u0e44\u0e14\u0e16\u0e07_7_\u0e2b\u0e25\u0e01\u0e43\u0e19\u0e40\u0e27\u0e25\u0e32\u0e40\u0e1e\u0e22\u0e07_2_\u0e1b.md",
+      "label": "rerun_thu_\u0e40\u0e01\u0e29\u0e15\u0e23\u0e01\u0e23\u0e17\u0e33\u0e1f\u0e32\u0e23\u0e21\u0e2b\u0e19\u0e17\u0e2a\u0e32\u0e21\u0e32\u0e23\u0e16\u0e17\u0e33\u0e23\u0e32\u0e22\u0e44\u0e14\u0e16\u0e07_7_\u0e2b\u0e25\u0e01\u0e43\u0e19\u0e40\u0e27\u0e25\u0e32\u0e40\u0e1e\u0e22\u0e07_2_\u0e1b.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e40\u0e01\u0e29\u0e15\u0e23\u0e01\u0e23\u0e17\u0e33\u0e1f\u0e32\u0e23\u0e21\u0e2b\u0e19\u0e17\u0e2a\u0e32\u0e21\u0e32\u0e23\u0e16\u0e17\u0e33\u0e23\u0e32\u0e22\u0e44\u0e14\u0e16\u0e07_7_\u0e2b\u0e25\u0e01\u0e43\u0e19\u0e40\u0e27\u0e25\u0e32\u0e40\u0e1e\u0e22\u0e07_2_\u0e1b.md",
+      "label": "rerun_sun_\u0e40\u0e01\u0e29\u0e15\u0e23\u0e01\u0e23\u0e17\u0e33\u0e1f\u0e32\u0e23\u0e21\u0e2b\u0e19\u0e17\u0e2a\u0e32\u0e21\u0e32\u0e23\u0e16\u0e17\u0e33\u0e23\u0e32\u0e22\u0e44\u0e14\u0e16\u0e07_7_\u0e2b\u0e25\u0e01\u0e43\u0e19\u0e40\u0e27\u0e25\u0e32\u0e40\u0e1e\u0e22\u0e07_2_\u0e1b.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_regenerated_rerun_thu_\u0e40\u0e1b\u0e14\u0e43\u0e08\u0e04\u0e19\u0e02\u0e1a\u0e2a\u0e25\u0e2d\u0e41\u0e14\u0e07_\u0e40\u0e1b\u0e19\u0e08\u0e23\u0e07\u0e2d\u0e22\u0e32\u0e07\u0e0a\u0e32\u0e27\u0e40\u0e19\u0e15\u0e27\u0e32\u0e21\u0e22_\u0e43\u0e19\u0e2d\u0e01\u0e21\u0e21\u0e21\u0e2d\u0e07.md",
+      "label": "rerun_thu_regenerated_rerun_thu_\u0e40\u0e1b\u0e14\u0e43\u0e08\u0e04\u0e19\u0e02\u0e1a\u0e2a\u0e25\u0e2d\u0e41\u0e14\u0e07_\u0e40\u0e1b\u0e19\u0e08\u0e23\u0e07\u0e2d\u0e22\u0e32\u0e07\u0e0a\u0e32\u0e27\u0e40\u0e19\u0e15\u0e27\u0e32\u0e21\u0e22_\u0e43\u0e19\u0e2d\u0e01\u0e21\u0e21\u0e21\u0e2d\u0e07.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_regenerated_rerun_thu_\u0e41\u0e04\u0e40\u0e2d\u0e32\u0e40\u0e17_\u0e2b\u0e23\u0e2d_funtion.md",
+      "label": "rerun_thu_regenerated_rerun_thu_\u0e41\u0e04\u0e40\u0e2d\u0e32\u0e40\u0e17_\u0e2b\u0e23\u0e2d_funtion.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e15\u0e44\u0e21\u0e19\u0e33\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e02\u0e2d\u0e07\u0e08\u0e23\u0e07\u0e2b\u0e23\u0e2d\u0e02\u0e2d\u0e07\u0e1b\u0e25\u0e2d\u0e21_\u0e40\u0e25\u0e22\u0e07\u0e41\u0e25\u0e27\u0e15\u0e2d\u0e07\u0e14\u0e41\u0e25\u0e21\u0e22.md",
+      "label": "rerun_thu_\u0e15\u0e44\u0e21\u0e19\u0e33\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e02\u0e2d\u0e07\u0e08\u0e23\u0e07\u0e2b\u0e23\u0e2d\u0e02\u0e2d\u0e07\u0e1b\u0e25\u0e2d\u0e21_\u0e40\u0e25\u0e22\u0e07\u0e41\u0e25\u0e27\u0e15\u0e2d\u0e07\u0e14\u0e41\u0e25\u0e21\u0e22.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_regenerated_rerun_thu_\u0e40\u0e01\u0e29\u0e15\u0e23\u0e01\u0e23\u0e17\u0e33\u0e1f\u0e32\u0e23\u0e21\u0e2b\u0e19\u0e17\u0e2a\u0e32\u0e21\u0e32\u0e23\u0e16\u0e17\u0e33\u0e23\u0e32\u0e22\u0e44\u0e14\u0e16\u0e07_7_\u0e2b\u0e25\u0e01\u0e43\u0e19\u0e40\u0e27\u0e25\u0e32\u0e40\u0e1e\u0e22\u0e07_2_\u0e1b.md",
+      "label": "rerun_thu_regenerated_rerun_thu_\u0e40\u0e01\u0e29\u0e15\u0e23\u0e01\u0e23\u0e17\u0e33\u0e1f\u0e32\u0e23\u0e21\u0e2b\u0e19\u0e17\u0e2a\u0e32\u0e21\u0e32\u0e23\u0e16\u0e17\u0e33\u0e23\u0e32\u0e22\u0e44\u0e14\u0e16\u0e07_7_\u0e2b\u0e25\u0e01\u0e43\u0e19\u0e40\u0e27\u0e25\u0e32\u0e40\u0e1e\u0e22\u0e07_2_\u0e1b.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_regenerated_rerun_sun_\u0e01\u0e2d\u0e25\u0e1f\u0e1a\u0e32\u0e23\u0e40\u0e17\u0e19\u0e40\u0e14\u0e2d\u0e23_\u0e1c\u0e44\u0e21\u0e40\u0e04\u0e22\u0e22\u0e2d\u0e21\u0e41\u0e1e_\u0e08\u0e19\u0e44\u0e1b\u0e04\u0e27\u0e32\u0e23\u0e32\u0e07\u0e27\u0e25\u0e23\u0e30\u0e14\u0e1a\u0e42\u0e25\u0e01\u0e21\u0e32\u0e08\u0e19\u0e44\u0e14.md",
+      "label": "rerun_sun_regenerated_rerun_sun_\u0e01\u0e2d\u0e25\u0e1f\u0e1a\u0e32\u0e23\u0e40\u0e17\u0e19\u0e40\u0e14\u0e2d\u0e23_\u0e1c\u0e44\u0e21\u0e40\u0e04\u0e22\u0e22\u0e2d\u0e21\u0e41\u0e1e_\u0e08\u0e19\u0e44\u0e1b\u0e04\u0e27\u0e32\u0e23\u0e32\u0e07\u0e27\u0e25\u0e23\u0e30\u0e14\u0e1a\u0e42\u0e25\u0e01\u0e21\u0e32\u0e08\u0e19\u0e44\u0e14.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e1e\u0e32\u0e0a\u0e21\u0e1f\u0e32\u0e23\u0e21\u0e2b\u0e19\u0e40\u0e2b\u0e22\u0e2d.md",
+      "label": "rerun_thu_\u0e1e\u0e32\u0e0a\u0e21\u0e1f\u0e32\u0e23\u0e21\u0e2b\u0e19\u0e40\u0e2b\u0e22\u0e2d.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e01\u0e27\u0e32\u0e08\u0e30\u0e21\u0e32\u0e40\u0e1b\u0e19\u0e40\u0e08\u0e32\u0e02\u0e2d\u0e07\u0e40\u0e2b\u0e23\u0e22\u0e0d\u0e17\u0e2d\u0e07\u0e0b\u0e40\u0e01\u0e21\u0e2a_\u0e1e\u0e21\u0e30\u0e15\u0e21\u0e19\u0e01\u0e08\u0e01\u0e23\u0e22\u0e32\u0e19\u0e17\u0e21\u0e0a\u0e32\u0e15_\u0e40\u0e15\u0e1a\u0e42\u0e15\u0e21\u0e32\u0e22\u0e07\u0e44\u0e07_\u0e1c\u0e32\u0e19\u0e2d\u0e30\u0e44\u0e23\u0e21\u0e32\u0e1a\u0e32\u0e07.md",
+      "label": "rerun_thu_\u0e01\u0e27\u0e32\u0e08\u0e30\u0e21\u0e32\u0e40\u0e1b\u0e19\u0e40\u0e08\u0e32\u0e02\u0e2d\u0e07\u0e40\u0e2b\u0e23\u0e22\u0e0d\u0e17\u0e2d\u0e07\u0e0b\u0e40\u0e01\u0e21\u0e2a_\u0e1e\u0e21\u0e30\u0e15\u0e21\u0e19\u0e01\u0e08\u0e01\u0e23\u0e22\u0e32\u0e19\u0e17\u0e21\u0e0a\u0e32\u0e15_\u0e40\u0e15\u0e1a\u0e42\u0e15\u0e21\u0e32\u0e22\u0e07\u0e44\u0e07_\u0e1c\u0e32\u0e19\u0e2d\u0e30\u0e44\u0e23\u0e21\u0e32\u0e1a\u0e32\u0e07.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e19\u0e01\u0e01\u0e21\u0e44\u0e2b\u0e19.md",
+      "label": "text_posts_sun_discord_\u0e19\u0e01\u0e01\u0e21\u0e44\u0e2b\u0e19.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e2d\u0e19\u0e1f\u0e25\u0e40\u0e2d\u0e19\u0e40\u0e0b\u0e2d\u0e23\u0e2a\u0e32\u0e22_sport_\u0e17\u0e33\u0e2d\u0e30\u0e44\u0e23\u0e01\u0e19\u0e1a\u0e32\u0e07\u0e43\u0e19\u0e41\u0e15\u0e25\u0e30\u0e27\u0e19.md",
+      "label": "rerun_thu_\u0e2d\u0e19\u0e1f\u0e25\u0e40\u0e2d\u0e19\u0e40\u0e0b\u0e2d\u0e23\u0e2a\u0e32\u0e22_sport_\u0e17\u0e33\u0e2d\u0e30\u0e44\u0e23\u0e01\u0e19\u0e1a\u0e32\u0e07\u0e43\u0e19\u0e41\u0e15\u0e25\u0e30\u0e27\u0e19.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e01\u0e2d\u0e25\u0e1f\u0e1a\u0e32\u0e23\u0e40\u0e17\u0e19\u0e40\u0e14\u0e2d\u0e23_\u0e1c\u0e44\u0e21\u0e40\u0e04\u0e22\u0e22\u0e2d\u0e21\u0e41\u0e1e_\u0e08\u0e19\u0e44\u0e1b\u0e04\u0e27\u0e32\u0e23\u0e32\u0e07\u0e27\u0e25\u0e23\u0e30\u0e14\u0e1a\u0e42\u0e25\u0e01\u0e21\u0e32\u0e08\u0e19\u0e44\u0e14.md",
+      "label": "rerun_thu_\u0e01\u0e2d\u0e25\u0e1f\u0e1a\u0e32\u0e23\u0e40\u0e17\u0e19\u0e40\u0e14\u0e2d\u0e23_\u0e1c\u0e44\u0e21\u0e40\u0e04\u0e22\u0e22\u0e2d\u0e21\u0e41\u0e1e_\u0e08\u0e19\u0e44\u0e1b\u0e04\u0e27\u0e32\u0e23\u0e32\u0e07\u0e27\u0e25\u0e23\u0e30\u0e14\u0e1a\u0e42\u0e25\u0e01\u0e21\u0e32\u0e08\u0e19\u0e44\u0e14.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e2d\u0e32\u0e0a\u0e1e\u0e2d\u0e2a\u0e23\u0e30\u0e17\u0e0a\u0e2d\u0e27\u0e32_stock_photo_\u0e01\u0e1a\u0e23\u0e32\u0e22\u0e44\u0e14_6_\u0e2b\u0e25\u0e01__\u0e40\u0e04\u0e32\u0e17\u0e33\u0e22\u0e07\u0e44\u0e07_\u0e40\u0e23\u0e21\u0e15\u0e19\u0e22\u0e07\u0e44\u0e07_\u0e44\u0e1b\u0e15\u0e14\u0e15\u0e32\u0e21\u0e0a\u0e21\u0e01\u0e19\u0e04\u0e23\u0e1a.md",
+      "label": "rerun_thu_\u0e2d\u0e32\u0e0a\u0e1e\u0e2d\u0e2a\u0e23\u0e30\u0e17\u0e0a\u0e2d\u0e27\u0e32_stock_photo_\u0e01\u0e1a\u0e23\u0e32\u0e22\u0e44\u0e14_6_\u0e2b\u0e25\u0e01__\u0e40\u0e04\u0e32\u0e17\u0e33\u0e22\u0e07\u0e44\u0e07_\u0e40\u0e23\u0e21\u0e15\u0e19\u0e22\u0e07\u0e44\u0e07_\u0e44\u0e1b\u0e15\u0e14\u0e15\u0e32\u0e21\u0e0a\u0e21\u0e01\u0e19\u0e04\u0e23\u0e1a.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e2b\u0e2d\u0e22\u0e02\u0e21\u0e22\u0e01\u0e29\u0e23\u0e19\u0e15\u0e19\u0e30_\u0e23\u0e32\u0e22\u0e44\u0e14\u0e40\u0e2a\u0e23\u0e21\u0e27\u0e19\u0e25\u0e30_2000_\u0e2b\u0e2d\u0e22\u0e02\u0e21\u0e17\u0e21\u0e02\u0e19\u0e32\u0e14\u0e43\u0e2b\u0e0d\u0e40\u0e17\u0e32\u0e44\u0e02\u0e44\u0e01_\u0e40\u0e25\u0e22\u0e07\u0e07\u0e32\u0e22_\u0e42\u0e15\u0e44\u0e27_wtj_wtjtalk.md",
+      "label": "rerun_sun_\u0e2b\u0e2d\u0e22\u0e02\u0e21\u0e22\u0e01\u0e29\u0e23\u0e19\u0e15\u0e19\u0e30_\u0e23\u0e32\u0e22\u0e44\u0e14\u0e40\u0e2a\u0e23\u0e21\u0e27\u0e19\u0e25\u0e30_2000_\u0e2b\u0e2d\u0e22\u0e02\u0e21\u0e17\u0e21\u0e02\u0e19\u0e32\u0e14\u0e43\u0e2b\u0e0d\u0e40\u0e17\u0e32\u0e44\u0e02\u0e44\u0e01_\u0e40\u0e25\u0e22\u0e07\u0e07\u0e32\u0e22_\u0e42\u0e15\u0e44\u0e27_wtj_wtjtalk.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_regenerated_rerun_sun_\u0e0a\u0e32\u0e07\u0e44\u0e17\u0e22\u0e21\u0e32\u0e01\u0e1d\u0e21\u0e2d\u0e17\u0e25\u0e01\u0e04\u0e32\u0e44\u0e27\u0e43\u0e08\u0e16\u0e2d\u0e22\u0e23\u0e16\u0e43\u0e2b\u0e21\u0e04\u0e19\u0e40\u0e1b\u0e19\u0e25\u0e32\u0e19__\u0e21\u0e32\u0e43\u0e2b\u0e04\u0e2a\u0e15\u0e2d\u0e21\u0e15\u0e07\u0e41\u0e15\u0e2d\u0e2d\u0e01\u0e28\u0e19\u0e22_\u0e41\u0e1a\u0e1a\u0e22\u0e07\u0e44\u0e21\u0e44\u0e14\u0e02.md",
+      "label": "rerun_sun_regenerated_rerun_sun_\u0e0a\u0e32\u0e07\u0e44\u0e17\u0e22\u0e21\u0e32\u0e01\u0e1d\u0e21\u0e2d\u0e17\u0e25\u0e01\u0e04\u0e32\u0e44\u0e27\u0e43\u0e08\u0e16\u0e2d\u0e22\u0e23\u0e16\u0e43\u0e2b\u0e21\u0e04\u0e19\u0e40\u0e1b\u0e19\u0e25\u0e32\u0e19__\u0e21\u0e32\u0e43\u0e2b\u0e04\u0e2a\u0e15\u0e2d\u0e21\u0e15\u0e07\u0e41\u0e15\u0e2d\u0e2d\u0e01\u0e28\u0e19\u0e22_\u0e41\u0e1a\u0e1a\u0e22\u0e07\u0e44\u0e21\u0e44\u0e14\u0e02.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e19\u0e01\u0e01\u0e21\u0e44\u0e2b\u0e19.md",
+      "label": "text_posts_thu_discord_\u0e19\u0e01\u0e01\u0e21\u0e44\u0e2b\u0e19.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e2d\u0e32\u0e0a\u0e1e\u0e2d\u0e2a\u0e23\u0e30\u0e17\u0e0a\u0e2d\u0e27\u0e32_stock_photo_\u0e01\u0e1a\u0e23\u0e32\u0e22\u0e44\u0e14_6_\u0e2b\u0e25\u0e01__\u0e40\u0e04\u0e32\u0e17\u0e33\u0e22\u0e07\u0e44\u0e07_\u0e40\u0e23\u0e21\u0e15\u0e19\u0e22\u0e07\u0e44\u0e07_\u0e44\u0e1b\u0e15\u0e14\u0e15\u0e32\u0e21\u0e0a\u0e21\u0e01\u0e19\u0e04\u0e23\u0e1a.md",
+      "label": "rerun_sun_\u0e2d\u0e32\u0e0a\u0e1e\u0e2d\u0e2a\u0e23\u0e30\u0e17\u0e0a\u0e2d\u0e27\u0e32_stock_photo_\u0e01\u0e1a\u0e23\u0e32\u0e22\u0e44\u0e14_6_\u0e2b\u0e25\u0e01__\u0e40\u0e04\u0e32\u0e17\u0e33\u0e22\u0e07\u0e44\u0e07_\u0e40\u0e23\u0e21\u0e15\u0e19\u0e22\u0e07\u0e44\u0e07_\u0e44\u0e1b\u0e15\u0e14\u0e15\u0e32\u0e21\u0e0a\u0e21\u0e01\u0e19\u0e04\u0e23\u0e1a.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e1e\u0e40\u0e01\u0e07.md",
+      "label": "text_posts_sun_discord_\u0e1e\u0e40\u0e01\u0e07.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_web_3_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e21\u0e32\u0e2b\u0e32\u0e04\u0e33\u0e15\u0e2d\u0e1a\u0e01\u0e19\u0e43\u0e19\u0e04\u0e25\u0e1b\u0e44\u0e14\u0e40\u0e25\u0e1a\u0e22\u0e04\u0e23\u0e1a.md",
+      "label": "rerun_thu_web_3_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e21\u0e32\u0e2b\u0e32\u0e04\u0e33\u0e15\u0e2d\u0e1a\u0e01\u0e19\u0e43\u0e19\u0e04\u0e25\u0e1b\u0e44\u0e14\u0e40\u0e25\u0e1a\u0e22\u0e04\u0e23\u0e1a.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e0a\u0e32\u0e07\u0e44\u0e17\u0e22\u0e21\u0e32\u0e01\u0e1d\u0e21\u0e2d\u0e17\u0e25\u0e01\u0e04\u0e32\u0e44\u0e27\u0e43\u0e08\u0e16\u0e2d\u0e22\u0e23\u0e16\u0e43\u0e2b\u0e21\u0e04\u0e19\u0e40\u0e1b\u0e19\u0e25\u0e32\u0e19__\u0e21\u0e32\u0e43\u0e2b\u0e04\u0e2a\u0e15\u0e2d\u0e21\u0e15\u0e07\u0e41\u0e15\u0e2d\u0e2d\u0e01\u0e28\u0e19\u0e22_\u0e41\u0e1a\u0e1a\u0e22\u0e07\u0e44\u0e21\u0e44\u0e14\u0e02.md",
+      "label": "rerun_sun_\u0e0a\u0e32\u0e07\u0e44\u0e17\u0e22\u0e21\u0e32\u0e01\u0e1d\u0e21\u0e2d\u0e17\u0e25\u0e01\u0e04\u0e32\u0e44\u0e27\u0e43\u0e08\u0e16\u0e2d\u0e22\u0e23\u0e16\u0e43\u0e2b\u0e21\u0e04\u0e19\u0e40\u0e1b\u0e19\u0e25\u0e32\u0e19__\u0e21\u0e32\u0e43\u0e2b\u0e04\u0e2a\u0e15\u0e2d\u0e21\u0e15\u0e07\u0e41\u0e15\u0e2d\u0e2d\u0e01\u0e28\u0e19\u0e22_\u0e41\u0e1a\u0e1a\u0e22\u0e07\u0e44\u0e21\u0e44\u0e14\u0e02.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_consult_\u0e01\u0e2d\u0e2a\u0e23\u0e32\u0e07_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e08\u0e33\u0e40\u0e1b\u0e19\u0e15\u0e2d\u0e07\u0e21\u0e21\u0e22__\u0e08\u0e32\u0e07\u0e21\u0e32\u0e41\u0e25\u0e27\u0e44\u0e14\u0e2d\u0e30\u0e44\u0e23.md",
+      "label": "rerun_sun_consult_\u0e01\u0e2d\u0e2a\u0e23\u0e32\u0e07_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e08\u0e33\u0e40\u0e1b\u0e19\u0e15\u0e2d\u0e07\u0e21\u0e21\u0e22__\u0e08\u0e32\u0e07\u0e21\u0e32\u0e41\u0e25\u0e27\u0e44\u0e14\u0e2d\u0e30\u0e44\u0e23.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_regenerated_rerun_sun_\u0e41\u0e04\u0e40\u0e2d\u0e32\u0e40\u0e17_\u0e2b\u0e23\u0e2d_funtion.md",
+      "label": "rerun_sun_regenerated_rerun_sun_\u0e41\u0e04\u0e40\u0e2d\u0e32\u0e40\u0e17_\u0e2b\u0e23\u0e2d_funtion.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_regenerated_rerun_sun_\u0e40\u0e1a\u0e2d\u0e07\u0e2b\u0e25\u0e07\u0e2d\u0e32\u0e0a\u0e1e_dj_\u0e17\u0e04\u0e13\u0e2d\u0e32\u0e08\u0e44\u0e21\u0e40\u0e04\u0e22\u0e23.md",
+      "label": "rerun_sun_regenerated_rerun_sun_\u0e40\u0e1a\u0e2d\u0e07\u0e2b\u0e25\u0e07\u0e2d\u0e32\u0e0a\u0e1e_dj_\u0e17\u0e04\u0e13\u0e2d\u0e32\u0e08\u0e44\u0e21\u0e40\u0e04\u0e22\u0e23.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e01\u0e27\u0e32\u0e08\u0e30\u0e21\u0e32\u0e40\u0e1b\u0e19\u0e0a\u0e32\u0e07\u0e2a\u0e01_\u0e17\u0e2a\u0e32\u0e21\u0e32\u0e32\u0e23\u0e16\u0e40\u0e25\u0e22\u0e07\u0e15\u0e27\u0e44\u0e14_\u0e44\u0e1b\u0e1f\u0e07\u0e01\u0e19\u0e08\u0e32.md",
+      "label": "rerun_sun_\u0e01\u0e27\u0e32\u0e08\u0e30\u0e21\u0e32\u0e40\u0e1b\u0e19\u0e0a\u0e32\u0e07\u0e2a\u0e01_\u0e17\u0e2a\u0e32\u0e21\u0e32\u0e32\u0e23\u0e16\u0e40\u0e25\u0e22\u0e07\u0e15\u0e27\u0e44\u0e14_\u0e44\u0e1b\u0e1f\u0e07\u0e01\u0e19\u0e08\u0e32.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_regenerated_rerun_sun_vlog_\u0e01\u0e2d\u0e1f_midlife_crisis.md",
+      "label": "rerun_sun_regenerated_rerun_sun_vlog_\u0e01\u0e2d\u0e1f_midlife_crisis.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_1_\u0e27\u0e19\u0e43\u0e19\u0e01\u0e32\u0e23\u0e17\u0e33\u0e1f\u0e32\u0e23\u0e21\u0e07\u0e2a\u0e27\u0e22\u0e07\u0e32\u0e21.md",
+      "label": "rerun_thu_1_\u0e27\u0e19\u0e43\u0e19\u0e01\u0e32\u0e23\u0e17\u0e33\u0e1f\u0e32\u0e23\u0e21\u0e07\u0e2a\u0e27\u0e22\u0e07\u0e32\u0e21.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e17\u0e33\u0e44\u0e21\u0e15\u0e2d\u0e07\u0e21\u0e04\u0e32\u0e22\u0e40\u0e1e\u0e25\u0e07_\u0e1e\u0e40\u0e21\u0e18_minimal_record.md",
+      "label": "rerun_sun_\u0e17\u0e33\u0e44\u0e21\u0e15\u0e2d\u0e07\u0e21\u0e04\u0e32\u0e22\u0e40\u0e1e\u0e25\u0e07_\u0e1e\u0e40\u0e21\u0e18_minimal_record.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_regenerated_rerun_sun_\u0e42\u0e04\u0e0a\u0e15\u0e19_\u0e01\u0e1a\u0e40\u0e23\u0e2d\u0e07\u0e23\u0e32\u0e27\u0e02\u0e2d\u0e07\u0e2d\u0e32\u0e0a\u0e1e\u0e44\u0e1e\u0e23\u0e40\u0e27\u0e17\u0e40\u0e17\u0e23\u0e19\u0e40\u0e19\u0e2d\u0e23.md",
+      "label": "rerun_sun_regenerated_rerun_sun_\u0e42\u0e04\u0e0a\u0e15\u0e19_\u0e01\u0e1a\u0e40\u0e23\u0e2d\u0e07\u0e23\u0e32\u0e27\u0e02\u0e2d\u0e07\u0e2d\u0e32\u0e0a\u0e1e\u0e44\u0e1e\u0e23\u0e40\u0e27\u0e17\u0e40\u0e17\u0e23\u0e19\u0e40\u0e19\u0e2d\u0e23.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e44\u0e21\u0e43\u0e0a\u0e41\u0e04\u0e16\u0e32\u0e22\u0e2a\u0e27\u0e22\u0e19\u0e04\u0e2d\u0e01\u0e32\u0e23\u0e17\u0e33\u0e07\u0e32\u0e19\u0e02\u0e2d\u0e07\u0e21\u0e2d\u0e42\u0e1b\u0e23\u0e19\u0e01\u0e1a\u0e19\u0e42\u0e14\u0e23\u0e19.md",
+      "label": "rerun_thu_\u0e44\u0e21\u0e43\u0e0a\u0e41\u0e04\u0e16\u0e32\u0e22\u0e2a\u0e27\u0e22\u0e19\u0e04\u0e2d\u0e01\u0e32\u0e23\u0e17\u0e33\u0e07\u0e32\u0e19\u0e02\u0e2d\u0e07\u0e21\u0e2d\u0e42\u0e1b\u0e23\u0e19\u0e01\u0e1a\u0e19\u0e42\u0e14\u0e23\u0e19.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_regenerated_rerun_sun_\u0e44\u0e21\u0e43\u0e0a\u0e41\u0e04\u0e16\u0e32\u0e22\u0e2a\u0e27\u0e22\u0e19\u0e04\u0e2d\u0e01\u0e32\u0e23\u0e17\u0e33\u0e07\u0e32\u0e19\u0e02\u0e2d\u0e07\u0e21\u0e2d\u0e42\u0e1b\u0e23\u0e19\u0e01\u0e1a\u0e19\u0e42\u0e14\u0e23\u0e19.md",
+      "label": "rerun_sun_regenerated_rerun_sun_\u0e44\u0e21\u0e43\u0e0a\u0e41\u0e04\u0e16\u0e32\u0e22\u0e2a\u0e27\u0e22\u0e19\u0e04\u0e2d\u0e01\u0e32\u0e23\u0e17\u0e33\u0e07\u0e32\u0e19\u0e02\u0e2d\u0e07\u0e21\u0e2d\u0e42\u0e1b\u0e23\u0e19\u0e01\u0e1a\u0e19\u0e42\u0e14\u0e23\u0e19.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e42\u0e04\u0e0a\u0e15\u0e19_\u0e01\u0e1a\u0e40\u0e23\u0e2d\u0e07\u0e23\u0e32\u0e27\u0e02\u0e2d\u0e07\u0e2d\u0e32\u0e0a\u0e1e\u0e44\u0e1e\u0e23\u0e40\u0e27\u0e17\u0e40\u0e17\u0e23\u0e19\u0e40\u0e19\u0e2d\u0e23.md",
+      "label": "rerun_thu_\u0e42\u0e04\u0e0a\u0e15\u0e19_\u0e01\u0e1a\u0e40\u0e23\u0e2d\u0e07\u0e23\u0e32\u0e27\u0e02\u0e2d\u0e07\u0e2d\u0e32\u0e0a\u0e1e\u0e44\u0e1e\u0e23\u0e40\u0e27\u0e17\u0e40\u0e17\u0e23\u0e19\u0e40\u0e19\u0e2d\u0e23.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e1e\u0e41\u0e2d\u0e21.md",
+      "label": "text_posts_sun_discord_\u0e1e\u0e41\u0e2d\u0e21.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_regenerated_rerun_sun_consult_\u0e01\u0e2d\u0e2a\u0e23\u0e32\u0e07_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e08\u0e33\u0e40\u0e1b\u0e19\u0e15\u0e2d\u0e07\u0e21\u0e21\u0e22__\u0e08\u0e32\u0e07\u0e21\u0e32\u0e41\u0e25\u0e27\u0e44\u0e14\u0e2d\u0e30\u0e44\u0e23.md",
+      "label": "rerun_sun_regenerated_rerun_sun_consult_\u0e01\u0e2d\u0e2a\u0e23\u0e32\u0e07_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e08\u0e33\u0e40\u0e1b\u0e19\u0e15\u0e2d\u0e07\u0e21\u0e21\u0e22__\u0e08\u0e32\u0e07\u0e21\u0e32\u0e41\u0e25\u0e27\u0e44\u0e14\u0e2d\u0e30\u0e44\u0e23.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e0a\u0e07.md",
+      "label": "text_posts_thu_discord_\u0e0a\u0e07.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e0a\u0e32\u0e07\u0e20\u0e32\u0e1e\u0e07\u0e32\u0e19\u0e41\u0e15\u0e07_\u0e2d\u0e32\u0e0a\u0e1e\u0e17\u0e14\u0e2a\u0e27\u0e22\u0e2b\u0e23_\u0e41\u0e15\u0e40\u0e1a\u0e2d\u0e07\u0e2b\u0e25\u0e07\u0e41\u0e25\u0e01\u0e21\u0e32\u0e14\u0e27\u0e22\u0e2d\u0e30\u0e44\u0e23__what_the_job_s3_ep1.md",
+      "label": "rerun_thu_\u0e0a\u0e32\u0e07\u0e20\u0e32\u0e1e\u0e07\u0e32\u0e19\u0e41\u0e15\u0e07_\u0e2d\u0e32\u0e0a\u0e1e\u0e17\u0e14\u0e2a\u0e27\u0e22\u0e2b\u0e23_\u0e41\u0e15\u0e40\u0e1a\u0e2d\u0e07\u0e2b\u0e25\u0e07\u0e41\u0e25\u0e01\u0e21\u0e32\u0e14\u0e27\u0e22\u0e2d\u0e30\u0e44\u0e23__what_the_job_s3_ep1.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_regenerated_rerun_sun_web_3_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e21\u0e32\u0e2b\u0e32\u0e04\u0e33\u0e15\u0e2d\u0e1a\u0e01\u0e19\u0e43\u0e19\u0e04\u0e25\u0e1b\u0e44\u0e14\u0e40\u0e25\u0e1a\u0e22\u0e04\u0e23\u0e1a.md",
+      "label": "rerun_sun_regenerated_rerun_sun_web_3_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e21\u0e32\u0e2b\u0e32\u0e04\u0e33\u0e15\u0e2d\u0e1a\u0e01\u0e19\u0e43\u0e19\u0e04\u0e25\u0e1b\u0e44\u0e14\u0e40\u0e25\u0e1a\u0e22\u0e04\u0e23\u0e1a.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_regenerated_rerun_thu_\u0e40\u0e01\u0e29\u0e15\u0e23\u0e01\u0e23\u0e07\u0e2a\u0e27\u0e22\u0e07\u0e32\u0e21\u0e01\u0e1a\u0e23\u0e32\u0e22\u0e44\u0e14\u0e16\u0e07_7_\u0e2b\u0e25\u0e01\u0e15\u0e2d\u0e1b.md",
+      "label": "rerun_thu_regenerated_rerun_thu_\u0e40\u0e01\u0e29\u0e15\u0e23\u0e01\u0e23\u0e07\u0e2a\u0e27\u0e22\u0e07\u0e32\u0e21\u0e01\u0e1a\u0e23\u0e32\u0e22\u0e44\u0e14\u0e16\u0e07_7_\u0e2b\u0e25\u0e01\u0e15\u0e2d\u0e1b.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e15\u0e44\u0e21\u0e19\u0e33\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e02\u0e2d\u0e07\u0e08\u0e23\u0e07\u0e2b\u0e23\u0e2d\u0e02\u0e2d\u0e07\u0e1b\u0e25\u0e2d\u0e21_\u0e40\u0e25\u0e22\u0e07\u0e41\u0e25\u0e27\u0e15\u0e2d\u0e07\u0e14\u0e41\u0e25\u0e21\u0e22.md",
+      "label": "rerun_sun_\u0e15\u0e44\u0e21\u0e19\u0e33\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e02\u0e2d\u0e07\u0e08\u0e23\u0e07\u0e2b\u0e23\u0e2d\u0e02\u0e2d\u0e07\u0e1b\u0e25\u0e2d\u0e21_\u0e40\u0e25\u0e22\u0e07\u0e41\u0e25\u0e27\u0e15\u0e2d\u0e07\u0e14\u0e41\u0e25\u0e21\u0e22.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e17\u0e33\u0e44\u0e21\u0e15\u0e2d\u0e07\u0e21\u0e04\u0e32\u0e22\u0e40\u0e1e\u0e25\u0e07_\u0e1e\u0e40\u0e21\u0e18_minimal_record.md",
+      "label": "rerun_thu_\u0e17\u0e33\u0e44\u0e21\u0e15\u0e2d\u0e07\u0e21\u0e04\u0e32\u0e22\u0e40\u0e1e\u0e25\u0e07_\u0e1e\u0e40\u0e21\u0e18_minimal_record.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e42\u0e27\u0e40\u0e01\u0e07.md",
+      "label": "text_posts_thu_discord_\u0e42\u0e27\u0e40\u0e01\u0e07.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e40\u0e0a\u0e1f\u0e44\u0e02.md",
+      "label": "text_posts_thu_discord_\u0e40\u0e0a\u0e1f\u0e44\u0e02.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e01\u0e27\u0e32\u0e08\u0e30\u0e21\u0e32\u0e40\u0e1b\u0e19\u0e0a\u0e32\u0e07\u0e2a\u0e01_\u0e17\u0e2a\u0e32\u0e21\u0e32\u0e32\u0e23\u0e16\u0e40\u0e25\u0e22\u0e07\u0e15\u0e27\u0e44\u0e14_\u0e44\u0e1b\u0e1f\u0e07\u0e01\u0e19\u0e08\u0e32.md",
+      "label": "rerun_thu_\u0e01\u0e27\u0e32\u0e08\u0e30\u0e21\u0e32\u0e40\u0e1b\u0e19\u0e0a\u0e32\u0e07\u0e2a\u0e01_\u0e17\u0e2a\u0e32\u0e21\u0e32\u0e32\u0e23\u0e16\u0e40\u0e25\u0e22\u0e07\u0e15\u0e27\u0e44\u0e14_\u0e44\u0e1b\u0e1f\u0e07\u0e01\u0e19\u0e08\u0e32.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e1a\u0e07.md",
+      "label": "text_posts_thu_discord_\u0e1a\u0e07.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_regenerated_rerun_thu_\u0e01\u0e27\u0e32\u0e08\u0e30\u0e21\u0e32\u0e40\u0e1b\u0e19\u0e40\u0e08\u0e32\u0e02\u0e2d\u0e07\u0e40\u0e2b\u0e23\u0e22\u0e0d\u0e17\u0e2d\u0e07\u0e0b\u0e40\u0e01\u0e21\u0e2a_\u0e1e\u0e21\u0e30\u0e15\u0e21\u0e19\u0e01\u0e08\u0e01\u0e23\u0e22\u0e32\u0e19\u0e17\u0e21\u0e0a\u0e32\u0e15_\u0e40\u0e15\u0e1a\u0e42\u0e15\u0e21\u0e32\u0e22\u0e07\u0e44\u0e07_\u0e1c\u0e32\u0e19\u0e2d\u0e30\u0e44\u0e23\u0e21\u0e32\u0e1a\u0e32\u0e07.md",
+      "label": "rerun_thu_regenerated_rerun_thu_\u0e01\u0e27\u0e32\u0e08\u0e30\u0e21\u0e32\u0e40\u0e1b\u0e19\u0e40\u0e08\u0e32\u0e02\u0e2d\u0e07\u0e40\u0e2b\u0e23\u0e22\u0e0d\u0e17\u0e2d\u0e07\u0e0b\u0e40\u0e01\u0e21\u0e2a_\u0e1e\u0e21\u0e30\u0e15\u0e21\u0e19\u0e01\u0e08\u0e01\u0e23\u0e22\u0e32\u0e19\u0e17\u0e21\u0e0a\u0e32\u0e15_\u0e40\u0e15\u0e1a\u0e42\u0e15\u0e21\u0e32\u0e22\u0e07\u0e44\u0e07_\u0e1c\u0e32\u0e19\u0e2d\u0e30\u0e44\u0e23\u0e21\u0e32\u0e1a\u0e32\u0e07.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e2d\u0e19.md",
+      "label": "text_posts_sun_discord_\u0e2d\u0e19.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_regenerated_rerun_thu_\u0e44\u0e21\u0e43\u0e0a\u0e41\u0e04\u0e16\u0e32\u0e22\u0e2a\u0e27\u0e22\u0e19\u0e04\u0e2d\u0e01\u0e32\u0e23\u0e17\u0e33\u0e07\u0e32\u0e19\u0e02\u0e2d\u0e07\u0e21\u0e2d\u0e42\u0e1b\u0e23\u0e19\u0e01\u0e1a\u0e19\u0e42\u0e14\u0e23\u0e19.md",
+      "label": "rerun_thu_regenerated_rerun_thu_\u0e44\u0e21\u0e43\u0e0a\u0e41\u0e04\u0e16\u0e32\u0e22\u0e2a\u0e27\u0e22\u0e19\u0e04\u0e2d\u0e01\u0e32\u0e23\u0e17\u0e33\u0e07\u0e32\u0e19\u0e02\u0e2d\u0e07\u0e21\u0e2d\u0e42\u0e1b\u0e23\u0e19\u0e01\u0e1a\u0e19\u0e42\u0e14\u0e23\u0e19.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e42\u0e04\u0e0a\u0e15\u0e19_\u0e01\u0e1a\u0e40\u0e23\u0e2d\u0e07\u0e23\u0e32\u0e27\u0e02\u0e2d\u0e07\u0e2d\u0e32\u0e0a\u0e1e\u0e44\u0e1e\u0e23\u0e40\u0e27\u0e17\u0e40\u0e17\u0e23\u0e19\u0e40\u0e19\u0e2d\u0e23.md",
+      "label": "rerun_sun_\u0e42\u0e04\u0e0a\u0e15\u0e19_\u0e01\u0e1a\u0e40\u0e23\u0e2d\u0e07\u0e23\u0e32\u0e27\u0e02\u0e2d\u0e07\u0e2d\u0e32\u0e0a\u0e1e\u0e44\u0e1e\u0e23\u0e40\u0e27\u0e17\u0e40\u0e17\u0e23\u0e19\u0e40\u0e19\u0e2d\u0e23.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_regenerated_rerun_thu_\u0e01\u0e27\u0e32\u0e08\u0e30\u0e21\u0e32\u0e40\u0e1b\u0e19\u0e0a\u0e32\u0e07\u0e2a\u0e01_\u0e17\u0e2a\u0e32\u0e21\u0e32\u0e32\u0e23\u0e16\u0e40\u0e25\u0e22\u0e07\u0e15\u0e27\u0e44\u0e14_\u0e44\u0e1b\u0e1f\u0e07\u0e01\u0e19\u0e08\u0e32.md",
+      "label": "rerun_thu_regenerated_rerun_thu_\u0e01\u0e27\u0e32\u0e08\u0e30\u0e21\u0e32\u0e40\u0e1b\u0e19\u0e0a\u0e32\u0e07\u0e2a\u0e01_\u0e17\u0e2a\u0e32\u0e21\u0e32\u0e32\u0e23\u0e16\u0e40\u0e25\u0e22\u0e07\u0e15\u0e27\u0e44\u0e14_\u0e44\u0e1b\u0e1f\u0e07\u0e01\u0e19\u0e08\u0e32.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e08\u0e2a\u0e21\u0e19.md",
+      "label": "text_posts_sun_discord_\u0e08\u0e2a\u0e21\u0e19.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_vlog_\u0e01\u0e2d\u0e1f_midlife_crisis.md",
+      "label": "rerun_thu_vlog_\u0e01\u0e2d\u0e1f_midlife_crisis.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e27\u0e23\u0e14\u0e32.md",
+      "label": "text_posts_sun_discord_\u0e27\u0e23\u0e14\u0e32.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_regenerated_rerun_thu_\u0e17\u0e33\u0e44\u0e21\u0e15\u0e2d\u0e07\u0e21\u0e04\u0e32\u0e22\u0e40\u0e1e\u0e25\u0e07_\u0e1e\u0e40\u0e21\u0e18_minimal_record.md",
+      "label": "rerun_thu_regenerated_rerun_thu_\u0e17\u0e33\u0e44\u0e21\u0e15\u0e2d\u0e07\u0e21\u0e04\u0e32\u0e22\u0e40\u0e1e\u0e25\u0e07_\u0e1e\u0e40\u0e21\u0e18_minimal_record.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_regenerated_rerun_sun_\u0e18\u0e23\u0e01\u0e08\u0e23\u0e32\u0e19\u0e01\u0e32\u0e41\u0e1f_\u0e41\u0e25\u0e30_\u0e1a\u0e32\u0e23\u0e2a\u0e15\u0e32.md",
+      "label": "rerun_sun_regenerated_rerun_sun_\u0e18\u0e23\u0e01\u0e08\u0e23\u0e32\u0e19\u0e01\u0e32\u0e41\u0e1f_\u0e41\u0e25\u0e30_\u0e1a\u0e32\u0e23\u0e2a\u0e15\u0e32.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e1e\u0e40\u0e01\u0e07_wall_painting_\u0e08\u0e32\u0e01\u0e01\u0e33\u0e41\u0e1e\u0e07\u0e40\u0e1b\u0e25\u0e32\u0e2a\u0e1c\u0e25\u0e07\u0e32\u0e19\u0e28\u0e25\u0e1b\u0e30\u0e17\u0e2a\u0e23\u0e32\u0e07\u0e23\u0e32\u0e22\u0e44\u0e14\u0e40\u0e25\u0e22\u0e07\u0e0a\u0e1e__what_the_job_ss3_ep3.md",
+      "label": "rerun_sun_\u0e1e\u0e40\u0e01\u0e07_wall_painting_\u0e08\u0e32\u0e01\u0e01\u0e33\u0e41\u0e1e\u0e07\u0e40\u0e1b\u0e25\u0e32\u0e2a\u0e1c\u0e25\u0e07\u0e32\u0e19\u0e28\u0e25\u0e1b\u0e30\u0e17\u0e2a\u0e23\u0e32\u0e07\u0e23\u0e32\u0e22\u0e44\u0e14\u0e40\u0e25\u0e22\u0e07\u0e0a\u0e1e__what_the_job_ss3_ep3.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_regenerated_rerun_sun_\u0e17\u0e33\u0e44\u0e21\u0e15\u0e2d\u0e07\u0e21\u0e04\u0e32\u0e22\u0e40\u0e1e\u0e25\u0e07_\u0e1e\u0e40\u0e21\u0e18_minimal_record.md",
+      "label": "rerun_sun_regenerated_rerun_sun_\u0e17\u0e33\u0e44\u0e21\u0e15\u0e2d\u0e07\u0e21\u0e04\u0e32\u0e22\u0e40\u0e1e\u0e25\u0e07_\u0e1e\u0e40\u0e21\u0e18_minimal_record.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e18\u0e23\u0e01\u0e08\u0e23\u0e32\u0e19\u0e01\u0e32\u0e41\u0e1f_\u0e41\u0e25\u0e30_\u0e1a\u0e32\u0e23\u0e2a\u0e15\u0e32.md",
+      "label": "rerun_sun_\u0e18\u0e23\u0e01\u0e08\u0e23\u0e32\u0e19\u0e01\u0e32\u0e41\u0e1f_\u0e41\u0e25\u0e30_\u0e1a\u0e32\u0e23\u0e2a\u0e15\u0e32.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e1e\u0e0a.md",
+      "label": "text_posts_sun_discord_\u0e1e\u0e0a.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_regenerated_rerun_thu_\u0e2b\u0e2d\u0e22\u0e02\u0e21\u0e22\u0e01\u0e29\u0e23\u0e19\u0e15\u0e19\u0e30_\u0e23\u0e32\u0e22\u0e44\u0e14\u0e40\u0e2a\u0e23\u0e21\u0e27\u0e19\u0e25\u0e30_2000_\u0e2b\u0e2d\u0e22\u0e02\u0e21\u0e17\u0e21\u0e02\u0e19\u0e32\u0e14\u0e43\u0e2b\u0e0d\u0e40\u0e17\u0e32\u0e44\u0e02\u0e44\u0e01_\u0e40\u0e25\u0e22\u0e07\u0e07\u0e32\u0e22_\u0e42\u0e15\u0e44\u0e27_wtj_wtjtalk.md",
+      "label": "rerun_thu_regenerated_rerun_thu_\u0e2b\u0e2d\u0e22\u0e02\u0e21\u0e22\u0e01\u0e29\u0e23\u0e19\u0e15\u0e19\u0e30_\u0e23\u0e32\u0e22\u0e44\u0e14\u0e40\u0e2a\u0e23\u0e21\u0e27\u0e19\u0e25\u0e30_2000_\u0e2b\u0e2d\u0e22\u0e02\u0e21\u0e17\u0e21\u0e02\u0e19\u0e32\u0e14\u0e43\u0e2b\u0e0d\u0e40\u0e17\u0e32\u0e44\u0e02\u0e44\u0e01_\u0e40\u0e25\u0e22\u0e07\u0e07\u0e32\u0e22_\u0e42\u0e15\u0e44\u0e27_wtj_wtjtalk.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_regenerated_rerun_thu_location_manager_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e15\u0e2d\u0e07\u0e17\u0e33\u0e2d\u0e30\u0e44\u0e23\u0e1a\u0e32\u0e07.md",
+      "label": "rerun_thu_regenerated_rerun_thu_location_manager_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e15\u0e2d\u0e07\u0e17\u0e33\u0e2d\u0e30\u0e44\u0e23\u0e1a\u0e32\u0e07.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_regenerated_rerun_sun_\u0e1e\u0e32\u0e0a\u0e21\u0e1f\u0e32\u0e23\u0e21\u0e2b\u0e19\u0e40\u0e2b\u0e22\u0e2d.md",
+      "label": "rerun_sun_regenerated_rerun_sun_\u0e1e\u0e32\u0e0a\u0e21\u0e1f\u0e32\u0e23\u0e21\u0e2b\u0e19\u0e40\u0e2b\u0e22\u0e2d.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
+      "label": "workspace",
+      "type": "directory",
+      "val": 15
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard",
+      "label": "dashboard",
+      "type": "directory",
+      "val": 15
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/status_logger.py",
+      "label": "status_logger.py",
+      "type": "python",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workflow.md",
+      "label": "workflow.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/temp_mono_audio.wav",
+      "label": "temp_mono_audio.wav",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/first_pipeline.py",
+      "label": "first_pipeline.py",
+      "type": "python",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/3_final_scripts",
+      "label": "3_final_scripts",
+      "type": "directory",
+      "val": 15
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer",
+      "label": "game_balancer",
+      "type": "directory",
+      "val": 15
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials",
+      "label": "1_raw_materials",
+      "type": "directory",
+      "val": 15
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro",
+      "label": "wtj_intro",
+      "type": "directory",
+      "val": 15
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/podcast_pao_mayor",
+      "label": "podcast_pao_mayor",
+      "type": "directory",
+      "val": 15
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references",
+      "label": "4_design_references",
+      "type": "directory",
+      "val": 15
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer",
+      "label": "sound_engineer",
+      "type": "directory",
+      "val": 15
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/VTuber",
+      "label": "VTuber",
+      "type": "directory",
+      "val": 15
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts",
+      "label": "2_drafts",
+      "type": "directory",
+      "val": 15
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/ray_drafter.err",
+      "label": "ray_drafter.err",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/cover_design_wall_painter.md",
+      "label": "cover_design_wall_painter.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/video_drafter.out",
+      "label": "video_drafter.out",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/brainstorm_viewership_growth.md",
+      "label": "brainstorm_viewership_growth.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/data_analysis_report.md",
+      "label": "data_analysis_report.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/master_fb_video_wed.err",
+      "label": "master_fb_video_wed.err",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/fb_fb_video_mon.out",
+      "label": "fb_fb_video_mon.out",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_logo_on_black.png",
+      "label": "wtj_logo_on_black.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/master_fb_video_wed.out",
+      "label": "master_fb_video_wed.out",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/fb_fb_video_mon.err",
+      "label": "fb_fb_video_mon.err",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/video_drafter.err",
+      "label": "video_drafter.err",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/yt_style_guide.txt",
+      "label": "yt_style_guide.txt",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/posting_schedule.json",
+      "label": "posting_schedule.json",
+      "type": "json",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/ray_drafter.out",
+      "label": "ray_drafter.out",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/auto_scheduler.err",
+      "label": "auto_scheduler.err",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/fb_thu_podcast.out",
+      "label": "fb_thu_podcast.out",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/fb_reels_midday.out",
+      "label": "fb_reels_midday.out",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/youtube_upload_guide.md",
+      "label": "youtube_upload_guide.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/fb_sat_reels.err",
+      "label": "fb_sat_reels.err",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/fb_fri_quote.out",
+      "label": "fb_fri_quote.out",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro_logo.png",
+      "label": "wtj_intro_logo.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/darc_light_logo.png",
+      "label": "darc_light_logo.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/fb_fri_quote.err",
+      "label": "fb_fri_quote.err",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/fb_reels_midday.err",
+      "label": "fb_reels_midday.err",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/fb_thu_podcast.err",
+      "label": "fb_thu_podcast.err",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/fb_sat_reels.out",
+      "label": "fb_sat_reels.out",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/layman_data_report.md",
+      "label": "layman_data_report.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/auto_scheduler.out",
+      "label": "auto_scheduler.out",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/facebook_setup_guide.md",
+      "label": "facebook_setup_guide.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/3_final_scripts/graphic_designer_wtj_draft.txt",
+      "label": "graphic_designer_wtj_draft.txt",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/3_final_scripts/software_developer_wtj_draft.txt",
+      "label": "software_developer_wtj_draft.txt",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/3_final_scripts/photographer_wtj_draft.txt",
+      "label": "photographer_wtj_draft.txt",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images",
+      "label": "images",
+      "type": "directory",
+      "val": 15
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/4_audit_report.md",
+      "label": "4_audit_report.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/3_research_doc.md",
+      "label": "3_research_doc.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/7_storyboard_and_prompts.md",
+      "label": "7_storyboard_and_prompts.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/5_youtube_script.md",
+      "label": "5_youtube_script.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/2_creative_concept.md",
+      "label": "2_creative_concept.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/ray_draft.md",
+      "label": "ray_draft.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/brief_from_keng.md",
+      "label": "brief_from_keng.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/6_critique_script.md",
+      "label": "6_critique_script.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/create_clean_thumbnail.py",
+      "label": "create_clean_thumbnail.py",
+      "type": "python",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/overlay_logo.py",
+      "label": "overlay_logo.py",
+      "type": "python",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/1_idea_card.md",
+      "label": "1_idea_card.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/image_prompts_instructions.txt",
+      "label": "image_prompts_instructions.txt",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/clean_thumbnail_middle.png",
+      "label": "clean_thumbnail_middle.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/thumbnail_option_a.png",
+      "label": "thumbnail_option_a.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/clean_thumbnail_premium_top.png",
+      "label": "clean_thumbnail_premium_top.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/style3_nam_huge.png",
+      "label": "style3_nam_huge.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/clean_thumbnail_dramatic_top.png",
+      "label": "clean_thumbnail_dramatic_top.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/thumbnail_option_b.png",
+      "label": "thumbnail_option_b.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/style2_realistic_huge.png",
+      "label": "style2_realistic_huge.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/clean_thumbnail_dramatic_top_blend.png",
+      "label": "clean_thumbnail_dramatic_top_blend.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/clean_thumbnail_top.png",
+      "label": "clean_thumbnail_top.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/clean_thumbnail_16_9.png",
+      "label": "clean_thumbnail_16_9.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/clean_thumbnail_premium_stacked.png",
+      "label": "clean_thumbnail_premium_stacked.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/test_cropped_logo.png",
+      "label": "test_cropped_logo.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/clean_thumbnail_dramatic_middle.png",
+      "label": "clean_thumbnail_dramatic_middle.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/style1_clay_huge.png",
+      "label": "style1_clay_huge.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/debug_logo_alpha.png",
+      "label": "debug_logo_alpha.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/thumbnail_option_b_with_logo.png",
+      "label": "thumbnail_option_b_with_logo.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/thumbnail_option_a_with_logo.png",
+      "label": "thumbnail_option_a_with_logo.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/test_text_render.png",
+      "label": "test_text_render.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos",
+      "label": "raw_videos",
+      "type": "directory",
+      "val": 15
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/analytics",
+      "label": "analytics",
+      "type": "directory",
+      "val": 15
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/thumbnails",
+      "label": "thumbnails",
+      "type": "directory",
+      "val": 15
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/research_Game_Balancer_profession_insights_pain_points_salary_2026.md",
+      "label": "research_Game_Balancer_profession_insights_pain_points_salary_2026.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/sources_for_notebooklm_Game_Balancer.md",
+      "label": "sources_for_notebooklm_Game_Balancer.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/transcript_Sport_Influencer.md",
+      "label": "transcript_Sport_Influencer.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/transcript_Gwz7rBrIhxQ.md",
+      "label": "transcript_Gwz7rBrIhxQ.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/transcript_TUXVwxumHsg.md",
+      "label": "transcript_TUXVwxumHsg.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/transcript_2SG1BAItYMg.md",
+      "label": "transcript_2SG1BAItYMg.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_short",
+      "label": "raw_vdo_short",
+      "type": "directory",
+      "val": 15
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/fb_videos",
+      "label": "fb_videos",
+      "type": "directory",
+      "val": 15
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/reels",
+      "label": "reels",
+      "type": "directory",
+      "val": 15
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_3-5min",
+      "label": "raw_vdo_3-5min",
+      "type": "directory",
+      "val": 15
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_short/processed",
+      "label": "processed",
+      "type": "directory",
+      "val": 15
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_short/processed/04 \u0e01\u0e34\u0e1f infu cycling global 30 sec.mp4",
+      "label": "04 \u0e01\u0e34\u0e1f infu cycling global 30 sec.mp4",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_short/processed/01   \u0e01\u0e2d\u0e1f \u0e2d\u0e34\u0e19\u0e1e\u0e25\u0e39   30 sec_.mp4",
+      "label": "01   \u0e01\u0e2d\u0e1f \u0e2d\u0e34\u0e19\u0e1e\u0e25\u0e39   30 sec_.mp4",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_short/processed/wtj_intro.mp4",
+      "label": "wtj_intro.mp4",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_short/processed/03 vokeg 30 sec.mp4",
+      "label": "03 vokeg 30 sec.mp4",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_short/processed/02 \u0e40\u0e01\u0e48\u0e07 wall painting 30 sec.mp4",
+      "label": "02 \u0e40\u0e01\u0e48\u0e07 wall painting 30 sec.mp4",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/fb_videos/processed",
+      "label": "processed",
+      "type": "directory",
+      "val": 15
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/reels/processed",
+      "label": "processed",
+      "type": "directory",
+      "val": 15
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_3-5min/processed",
+      "label": "processed",
+      "type": "directory",
+      "val": 15
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_3-5min/processed/03 vokeg 3-5 min.mp4",
+      "label": "03 vokeg 3-5 min.mp4",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_3-5min/processed/04 \u0e01\u0e34\u0e1f infu cycling global 3-5 min.mp4",
+      "label": "04 \u0e01\u0e34\u0e1f infu cycling global 3-5 min.mp4",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_3-5min/processed/02 \u0e40\u0e01\u0e48\u0e07 wall painting 3-5 min.mp4",
+      "label": "02 \u0e40\u0e01\u0e48\u0e07 wall painting 3-5 min.mp4",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_3-5min/processed/01   \u0e01\u0e2d\u0e1f \u0e2d\u0e34\u0e19\u0e1e\u0e25\u0e39   3-5 min.mp4",
+      "label": "01   \u0e01\u0e2d\u0e1f \u0e2d\u0e34\u0e19\u0e1e\u0e25\u0e39   3-5 min.mp4",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/analytics/Chart data.csv",
+      "label": "Chart data.csv",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/analytics/README.md",
+      "label": "README.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/analytics/Table data.csv",
+      "label": "Table data.csv",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/analytics/Totals.csv",
+      "label": "Totals.csv",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/thumbnails/.gitkeep",
+      "label": ".gitkeep",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro/wtj_outro_lofi.png",
+      "label": "wtj_outro_lofi.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro/wtj_outro_template.png",
+      "label": "wtj_outro_template.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro/logo_source.png",
+      "label": "logo_source.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro/wtj_outro_anime.png",
+      "label": "wtj_outro_anime.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro/wtj_intro.mp4",
+      "label": "wtj_intro.mp4",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro/video_prompts.txt",
+      "label": "video_prompts.txt",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro/generate_intro.py",
+      "label": "generate_intro.py",
+      "type": "python",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro/wtj_outro_lofi_v2.png",
+      "label": "wtj_outro_lofi_v2.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro/wtj_flow_prompts.txt",
+      "label": "wtj_flow_prompts.txt",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro/wtj_outro_luxury.png",
+      "label": "wtj_outro_luxury.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/podcast_pao_mayor/script.md",
+      "label": "script.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being",
+      "label": "celestial_being",
+      "type": "directory",
+      "val": 15
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779004052568.png",
+      "label": "media__1779004052568.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779003753896.png",
+      "label": "media__1779003753896.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779003965524.png",
+      "label": "media__1779003965524.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779006410273.png",
+      "label": "media__1779006410273.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779007489632.png",
+      "label": "media__1779007489632.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779006043321.png",
+      "label": "media__1779006043321.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779006287293.png",
+      "label": "media__1779006287293.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779003357678.png",
+      "label": "media__1779003357678.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779003680104.png",
+      "label": "media__1779003680104.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779004001415.png",
+      "label": "media__1779004001415.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779006270573.png",
+      "label": "media__1779006270573.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779006732945.png",
+      "label": "media__1779006732945.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779003940136.png",
+      "label": "media__1779003940136.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779006632729.png",
+      "label": "media__1779006632729.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/images",
+      "label": "images",
+      "type": "directory",
+      "val": 15
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/4_audit_report.md",
+      "label": "4_audit_report.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/3_research_doc.md",
+      "label": "3_research_doc.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/7_storyboard_and_prompts.md",
+      "label": "7_storyboard_and_prompts.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/5_youtube_script.md",
+      "label": "5_youtube_script.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/2_creative_concept.md",
+      "label": "2_creative_concept.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/6_critique_script.md",
+      "label": "6_critique_script.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/1_idea_card.md",
+      "label": "1_idea_card.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/images/scene_8_scene_11:_\u0e04\u0e33\u0e28\u0e31\u0e1e\u0e17\u0e4c\u0e40\u0e09\u0e1e\u0e32\u0e30\u0e17\u0e32\u0e07_-_mastering.png",
+      "label": "scene_8_scene_11:_\u0e04\u0e33\u0e28\u0e31\u0e1e\u0e17\u0e4c\u0e40\u0e09\u0e1e\u0e32\u0e30\u0e17\u0e32\u0e07_-_mastering.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/images/scene_1_scene_1:_hook_-_\u0e40\u0e2a\u0e35\u0e22\u0e07\u0e01\u0e33\u0e25\u0e31\u0e07\u0e1a\u0e07\u0e01\u0e32\u0e23\u0e04\u0e27\u0e32\u0e21\u0e23\u0e39\u0e49\u0e2a\u0e36\u0e01!.png",
+      "label": "scene_1_scene_1:_hook_-_\u0e40\u0e2a\u0e35\u0e22\u0e07\u0e01\u0e33\u0e25\u0e31\u0e07\u0e1a\u0e07\u0e01\u0e32\u0e23\u0e04\u0e27\u0e32\u0e21\u0e23\u0e39\u0e49\u0e2a\u0e36\u0e01!.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/images/scene_5_scene_7:_\u0e23\u0e32\u0e22\u0e44\u0e14\u0e49\u0e17\u0e35\u0e48\u0e41\u0e17\u0e49\u0e08\u0e23\u0e34\u0e07_-_\u0e23\u0e30\u0e14\u0e31\u0e1a\u0e40\u0e23\u0e34\u0e48\u0e21\u0e15\u0e49\u0e19.png",
+      "label": "scene_5_scene_7:_\u0e23\u0e32\u0e22\u0e44\u0e14\u0e49\u0e17\u0e35\u0e48\u0e41\u0e17\u0e49\u0e08\u0e23\u0e34\u0e07_-_\u0e23\u0e30\u0e14\u0e31\u0e1a\u0e40\u0e23\u0e34\u0e48\u0e21\u0e15\u0e49\u0e19.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/images/scene_6_scene_8:_\u0e23\u0e32\u0e22\u0e44\u0e14\u0e49\u0e17\u0e35\u0e48\u0e41\u0e17\u0e49\u0e08\u0e23\u0e34\u0e07_-_\u0e23\u0e30\u0e14\u0e31\u0e1a\u0e01\u0e25\u0e32\u0e07\u0e16\u0e36\u0e07\u0e1c\u0e39\u0e49\u0e40\u0e0a\u0e35\u0e48\u0e22\u0e27\u0e0a\u0e32\u0e0d.png",
+      "label": "scene_6_scene_8:_\u0e23\u0e32\u0e22\u0e44\u0e14\u0e49\u0e17\u0e35\u0e48\u0e41\u0e17\u0e49\u0e08\u0e23\u0e34\u0e07_-_\u0e23\u0e30\u0e14\u0e31\u0e1a\u0e01\u0e25\u0e32\u0e07\u0e16\u0e36\u0e07\u0e1c\u0e39\u0e49\u0e40\u0e0a\u0e35\u0e48\u0e22\u0e27\u0e0a\u0e32\u0e0d.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/images/scene_2_scene_2:_intro_-_\u0e2a\u0e16\u0e32\u0e1b\u0e19\u0e34\u0e01\u0e41\u0e2b\u0e48\u0e07\u0e40\u0e2a\u0e35\u0e22\u0e07.png",
+      "label": "scene_2_scene_2:_intro_-_\u0e2a\u0e16\u0e32\u0e1b\u0e19\u0e34\u0e01\u0e41\u0e2b\u0e48\u0e07\u0e40\u0e2a\u0e35\u0e22\u0e07.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/images/scene_4_scene_4:_\u0e04\u0e27\u0e32\u0e21\u0e08\u0e23\u0e34\u0e07\u0e17\u0e35\u0e48\u0e40\u0e08\u0e47\u0e1a\u0e1b\u0e27\u0e14_2_-_\u0e2b\u0e39\u0e1e\u0e31\u0e07\u0e01\u0e48\u0e2d\u0e19\u0e27\u0e31\u0e22\u0e2d\u0e31\u0e19\u0e04\u0e27\u0e23.png",
+      "label": "scene_4_scene_4:_\u0e04\u0e27\u0e32\u0e21\u0e08\u0e23\u0e34\u0e07\u0e17\u0e35\u0e48\u0e40\u0e08\u0e47\u0e1a\u0e1b\u0e27\u0e14_2_-_\u0e2b\u0e39\u0e1e\u0e31\u0e07\u0e01\u0e48\u0e2d\u0e19\u0e27\u0e31\u0e22\u0e2d\u0e31\u0e19\u0e04\u0e27\u0e23.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/images/scene_3_scene_3:_\u0e04\u0e27\u0e32\u0e21\u0e08\u0e23\u0e34\u0e07\u0e17\u0e35\u0e48\u0e40\u0e08\u0e47\u0e1a\u0e1b\u0e27\u0e14_1_-_\u0e2d\u0e32\u0e0a\u0e35\u0e1e\u0e2b\u0e25\u0e31\u0e07\u0e44\u0e21\u0e04\u0e4c\u0e17\u0e35\u0e48\u0e43\u0e04\u0e23\u0e01\u0e47\u0e21\u0e2d\u0e07\u0e02\u0e49\u0e32\u0e21.png",
+      "label": "scene_3_scene_3:_\u0e04\u0e27\u0e32\u0e21\u0e08\u0e23\u0e34\u0e07\u0e17\u0e35\u0e48\u0e40\u0e08\u0e47\u0e1a\u0e1b\u0e27\u0e14_1_-_\u0e2d\u0e32\u0e0a\u0e35\u0e1e\u0e2b\u0e25\u0e31\u0e07\u0e44\u0e21\u0e04\u0e4c\u0e17\u0e35\u0e48\u0e43\u0e04\u0e23\u0e01\u0e47\u0e21\u0e2d\u0e07\u0e02\u0e49\u0e32\u0e21.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/images/scene_7_scene_9:_\u0e04\u0e33\u0e28\u0e31\u0e1e\u0e17\u0e4c\u0e40\u0e09\u0e1e\u0e32\u0e30\u0e17\u0e32\u0e07_-_daw_(digital_audio_workstation).png",
+      "label": "scene_7_scene_9:_\u0e04\u0e33\u0e28\u0e31\u0e1e\u0e17\u0e4c\u0e40\u0e09\u0e1e\u0e32\u0e30\u0e17\u0e32\u0e07_-_daw_(digital_audio_workstation).png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/VTuber/idea_card.md",
+      "label": "idea_card.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/VTuber/youtube_script.md",
+      "label": "youtube_script.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/VTuber/facebook_text.md",
+      "label": "facebook_text.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/VTuber/image_prompts.md",
+      "label": "image_prompts.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/VTuber/audit_report.md",
+      "label": "audit_report.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/VTuber/critique_research.md",
+      "label": "critique_research.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/VTuber/critique_script.md",
+      "label": "critique_script.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/VTuber/research_doc.md",
+      "label": "research_doc.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/social_highlights_transcript_2SG1BAItYMg.md",
+      "label": "social_highlights_transcript_2SG1BAItYMg.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/reels_under1min_from_video_01___\u0e01\u0e2d\u0e1f_\u0e2d\u0e19\u0e1e\u0e25___30_sec_mp4.md",
+      "label": "reels_under1min_from_video_01___\u0e01\u0e2d\u0e1f_\u0e2d\u0e19\u0e1e\u0e25___30_sec_mp4.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/fb_videos_3-5min_from_video_04_\u0e01\u0e1f_infu_cycling_global_3-5_minmp4.md",
+      "label": "fb_videos_3-5min_from_video_04_\u0e01\u0e1f_infu_cycling_global_3-5_minmp4.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/facebook_text_muscari.md",
+      "label": "facebook_text_muscari.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/sat_reels_draft.md",
+      "label": "sat_reels_draft.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/sat_reels_transcript_\u0e19\u0e2d\u0e07\u0e01\u0e2d\u0e25\u0e1f_sport_influencer\u2028\u2028\u0e19\u0e04\u0e2d\u0e2a\u0e23\u0e1b\u0e40\u0e19\u0e2d\u0e2b\u0e32\u0e41\u0e25\u0e30\u0e16\u0e2d\u0e14\u0e04\u0e27\u0e32\u0e21.md",
+      "label": "sat_reels_transcript_\u0e19\u0e2d\u0e07\u0e01\u0e2d\u0e25\u0e1f_sport_influencer\u2028\u2028\u0e19\u0e04\u0e2d\u0e2a\u0e23\u0e1b\u0e40\u0e19\u0e2d\u0e2b\u0e32\u0e41\u0e25\u0e30\u0e16\u0e2d\u0e14\u0e04\u0e27\u0e32\u0e21.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/wed_teaser_transcript_\u0e19\u0e2d\u0e07\u0e01\u0e2d\u0e25\u0e1f_sport_influencer\u2028\u2028\u0e19\u0e04\u0e2d\u0e2a\u0e23\u0e1b\u0e40\u0e19\u0e2d\u0e2b\u0e32\u0e41\u0e25\u0e30\u0e16\u0e2d\u0e14\u0e04\u0e27\u0e32\u0e21.md",
+      "label": "wed_teaser_transcript_\u0e19\u0e2d\u0e07\u0e01\u0e2d\u0e25\u0e1f_sport_influencer\u2028\u2028\u0e19\u0e04\u0e2d\u0e2a\u0e23\u0e1b\u0e40\u0e19\u0e2d\u0e2b\u0e32\u0e41\u0e25\u0e30\u0e16\u0e2d\u0e14\u0e04\u0e27\u0e32\u0e21.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/facebook_text_wall_painter.md",
+      "label": "facebook_text_wall_painter.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/reels_under1min_from_video_03_vokeg_30_secmp4.md",
+      "label": "reels_under1min_from_video_03_vokeg_30_secmp4.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/fb_videos_3-5min_from_video_01___\u0e01\u0e2d\u0e1f_\u0e2d\u0e19\u0e1e\u0e25___3-5_minmp4.md",
+      "label": "fb_videos_3-5min_from_video_01___\u0e01\u0e2d\u0e1f_\u0e2d\u0e19\u0e1e\u0e25___3-5_minmp4.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/social_highlights_Game_Balancer.md",
+      "label": "social_highlights_Game_Balancer.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/reels_under1min_from_video_wtj_intromp4.md",
+      "label": "reels_under1min_from_video_wtj_intromp4.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/wed_teaser_draft.md",
+      "label": "wed_teaser_draft.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/reels_under1min_from_video_02_\u0e40\u0e01\u0e07_wall_painting_30_secmp4.md",
+      "label": "reels_under1min_from_video_02_\u0e40\u0e01\u0e07_wall_painting_30_secmp4.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/fb_videos_3-5min_from_video_02_\u0e40\u0e01\u0e07_wall_painting_3-5_minmp4.md",
+      "label": "fb_videos_3-5min_from_video_02_\u0e40\u0e01\u0e07_wall_painting_3-5_minmp4.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/fri_quote_draft.md",
+      "label": "fri_quote_draft.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/fri_quote_transcript_\u0e19\u0e2d\u0e07\u0e01\u0e2d\u0e25\u0e1f_sport_influencer\u2028\u2028\u0e19\u0e04\u0e2d\u0e2a\u0e23\u0e1b\u0e40\u0e19\u0e2d\u0e2b\u0e32\u0e41\u0e25\u0e30\u0e16\u0e2d\u0e14\u0e04\u0e27\u0e32\u0e21.md",
+      "label": "fri_quote_transcript_\u0e19\u0e2d\u0e07\u0e01\u0e2d\u0e25\u0e1f_sport_influencer\u2028\u2028\u0e19\u0e04\u0e2d\u0e2a\u0e23\u0e1b\u0e40\u0e19\u0e2d\u0e2b\u0e32\u0e41\u0e25\u0e30\u0e16\u0e2d\u0e14\u0e04\u0e27\u0e32\u0e21.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/facebook_text_\u0e0a\u0e48\u0e32\u0e07\u0e20\u0e32\u0e1e\u0e07\u0e32\u0e19\u0e41\u0e15\u0e48\u0e07.md",
+      "label": "facebook_text_\u0e0a\u0e48\u0e32\u0e07\u0e20\u0e32\u0e1e\u0e07\u0e32\u0e19\u0e41\u0e15\u0e48\u0e07.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/fb_videos_3-5min_from_video_03_vokeg_3-5_minmp4.md",
+      "label": "fb_videos_3-5min_from_video_03_vokeg_3-5_minmp4.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/reels_under1min_from_video_04_\u0e01\u0e1f_infu_cycling_global_30_secmp4.md",
+      "label": "reels_under1min_from_video_04_\u0e01\u0e1f_infu_cycling_global_30_secmp4.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard/index.html",
+      "label": "index.html",
+      "type": "html",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard/notion_calendar_data.js",
+      "label": "notion_calendar_data.js",
+      "type": "javascript",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard/terms.html",
+      "label": "terms.html",
+      "type": "html",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard/wtj_calendar_dashboard.html",
+      "label": "wtj_calendar_dashboard.html",
+      "type": "html",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard/dashboard.html",
+      "label": "dashboard.html",
+      "type": "html",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard/callback.html",
+      "label": "callback.html",
+      "type": "html",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard/style.css",
+      "label": "style.css",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard/tiktok2KL4Ktw7PJLhCI63jKnczSskOmIYeSwm.txt",
+      "label": "tiktok2KL4Ktw7PJLhCI63jKnczSskOmIYeSwm.txt",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard/app.js",
+      "label": "app.js",
+      "type": "javascript",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard/privacy.html",
+      "label": "privacy.html",
+      "type": "html",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/prompts/music_prompt.md",
+      "label": "music_prompt.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/prompts/pie_prompt.md",
+      "label": "pie_prompt.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/prompts/deer_prompt.md",
+      "label": "deer_prompt.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/prompts/creative_prompt.md",
+      "label": "creative_prompt.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/prompts/cri_prompt.md",
+      "label": "cri_prompt.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/prompts/ray_prompt.md",
+      "label": "ray_prompt.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/prompts/q_prompt.md",
+      "label": "q_prompt.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/prompts/researcher_prompt.md",
+      "label": "researcher_prompt.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/prompts/p_prompt.md",
+      "label": "p_prompt.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/prompts/or_prompt.md",
+      "label": "or_prompt.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/prompts/director_prompt.md",
+      "label": "director_prompt.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/legacy_study_course_archive",
+      "label": "legacy_study_course_archive",
+      "type": "directory",
+      "val": 15
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace",
+      "label": "workspace",
+      "type": "directory",
+      "val": 15
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/dashboard",
+      "label": "dashboard",
+      "type": "directory",
+      "val": 15
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/skills",
+      "label": "skills",
+      "type": "directory",
+      "val": 15
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/antia_pipeline.py",
+      "label": "antia_pipeline.py",
+      "type": "python",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/legacy_study_course_archive/gemini_legacy.md",
+      "label": "gemini_legacy.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/legacy_study_course_archive/preferences_legacy.md",
+      "label": "preferences_legacy.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/legacy_study_course_archive/readme_legacy.md",
+      "label": "readme_legacy.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/legacy_study_course_archive/session_summary.md",
+      "label": "session_summary.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/3_final_scripts",
+      "label": "3_final_scripts",
+      "type": "directory",
+      "val": 15
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/1_raw_materials",
+      "label": "1_raw_materials",
+      "type": "directory",
+      "val": 15
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/2_drafts",
+      "label": "2_drafts",
+      "type": "directory",
+      "val": 15
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/3_final_scripts/lesson_hello_world_\u0e23\u0e08\u0e01\u0e01\u0e1a_3_\u0e40\u0e2a\u0e32\u0e2b\u0e25\u0e01_\u0e41\u0e25\u0e30\u0e01\u0e32\u0e23\u0e2a\u0e23\u0e32\u0e07_agent_\u0e15\u0e27\u0e41\u0e23\u0e01.md",
+      "label": "lesson_hello_world_\u0e23\u0e08\u0e01\u0e01\u0e1a_3_\u0e40\u0e2a\u0e32\u0e2b\u0e25\u0e01_\u0e41\u0e25\u0e30\u0e01\u0e32\u0e23\u0e2a\u0e23\u0e32\u0e07_agent_\u0e15\u0e27\u0e41\u0e23\u0e01.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/3_final_scripts/lesson_0_script_legacy.md",
+      "label": "lesson_0_script_legacy.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/1_raw_materials/reference_official_guide.md",
+      "label": "reference_official_guide.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/1_raw_materials/course_outline_antigravity.md",
+      "label": "course_outline_antigravity.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/1_raw_materials/FAQ_antigravity.md",
+      "label": "FAQ_antigravity.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/1_raw_materials/course_outline_v0.md",
+      "label": "course_outline_v0.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/2_drafts/1_idea_card_hello_world_\u0e23\u0e08\u0e01\u0e01\u0e1a_3_\u0e40\u0e2a\u0e32\u0e2b\u0e25\u0e01_\u0e41\u0e25\u0e30\u0e01\u0e32\u0e23\u0e2a\u0e23\u0e32\u0e07_agent_\u0e15\u0e27\u0e41\u0e23\u0e01.md",
+      "label": "1_idea_card_hello_world_\u0e23\u0e08\u0e01\u0e01\u0e1a_3_\u0e40\u0e2a\u0e32\u0e2b\u0e25\u0e01_\u0e41\u0e25\u0e30\u0e01\u0e32\u0e23\u0e2a\u0e23\u0e32\u0e07_agent_\u0e15\u0e27\u0e41\u0e23\u0e01.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/2_drafts/2_creative_concept_hello_world_\u0e23\u0e08\u0e01\u0e01\u0e1a_3_\u0e40\u0e2a\u0e32\u0e2b\u0e25\u0e01_\u0e41\u0e25\u0e30\u0e01\u0e32\u0e23\u0e2a\u0e23\u0e32\u0e07_agent_\u0e15\u0e27\u0e41\u0e23\u0e01.md",
+      "label": "2_creative_concept_hello_world_\u0e23\u0e08\u0e01\u0e01\u0e1a_3_\u0e40\u0e2a\u0e32\u0e2b\u0e25\u0e01_\u0e41\u0e25\u0e30\u0e01\u0e32\u0e23\u0e2a\u0e23\u0e32\u0e07_agent_\u0e15\u0e27\u0e41\u0e23\u0e01.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/2_drafts/3_technical_verification_hello_world_\u0e23\u0e08\u0e01\u0e01\u0e1a_3_\u0e40\u0e2a\u0e32\u0e2b\u0e25\u0e01_\u0e41\u0e25\u0e30\u0e01\u0e32\u0e23\u0e2a\u0e23\u0e32\u0e07_agent_\u0e15\u0e27\u0e41\u0e23\u0e01.md",
+      "label": "3_technical_verification_hello_world_\u0e23\u0e08\u0e01\u0e01\u0e1a_3_\u0e40\u0e2a\u0e32\u0e2b\u0e25\u0e01_\u0e41\u0e25\u0e30\u0e01\u0e32\u0e23\u0e2a\u0e23\u0e32\u0e07_agent_\u0e15\u0e27\u0e41\u0e23\u0e01.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/skills/apple-notes",
+      "label": "apple-notes",
+      "type": "directory",
+      "val": 15
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/skills/apple-notes/SKILL.md",
+      "label": "SKILL.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/skills/crypto_portfolio_sync.py",
+      "label": "crypto_portfolio_sync.py",
+      "type": "python",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/skills/podcast_notes_publisher.py",
+      "label": "podcast_notes_publisher.py",
+      "type": "python",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/skills/youtube_transcriber.py",
+      "label": "youtube_transcriber.py",
+      "type": "python",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/skills/grab_receipt_sync.py",
+      "label": "grab_receipt_sync.py",
+      "type": "python",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/skills/knowledge_graph_rebuilder.py",
+      "label": "knowledge_graph_rebuilder.py",
+      "type": "python",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/skills/notion_learning_loop.py",
+      "label": "notion_learning_loop.py",
+      "type": "python",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/skills/animate_logo.py",
+      "label": "animate_logo.py",
+      "type": "python",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/skills/config.py",
+      "label": "config.py",
+      "type": "python",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/skills/performance_analyzer.py",
+      "label": "performance_analyzer.py",
+      "type": "python",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/skills/generate_sport_influencer_posts.py",
       "label": "generate_sport_influencer_posts.py",
       "type": "python",
       "val": 10
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/skills/youtube_production_pipeline.py",
+      "id": "Team_Content_Studio/Team_Agent_Content/skills/youtube_production_pipeline.py",
       "label": "youtube_production_pipeline.py",
       "type": "python",
       "val": 10
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/skills/youtube_publisher.py",
+      "id": "Team_Content_Studio/Team_Agent_Content/skills/youtube_publisher.py",
       "label": "youtube_publisher.py",
       "type": "python",
       "val": 10
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/skills/discord_helper.py",
+      "id": "Team_Content_Studio/Team_Agent_Content/skills/discord_helper.py",
       "label": "discord_helper.py",
       "type": "python",
       "val": 10
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/skills/schedule_configurator.py",
+      "id": "Team_Content_Studio/Team_Agent_Content/skills/schedule_configurator.py",
       "label": "schedule_configurator.py",
       "type": "python",
       "val": 10
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/skills/facebook_publisher.py",
+      "id": "Team_Content_Studio/Team_Agent_Content/skills/facebook_publisher.py",
       "label": "facebook_publisher.py",
       "type": "python",
       "val": 10
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/skills/tiktok_publisher.py",
+      "id": "Team_Content_Studio/Team_Agent_Content/skills/tiktok_publisher.py",
       "label": "tiktok_publisher.py",
       "type": "python",
       "val": 10
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/skills/fb_draft_generator.py",
+      "id": "Team_Content_Studio/Team_Agent_Content/skills/fb_draft_generator.py",
       "label": "fb_draft_generator.py",
       "type": "python",
       "val": 10
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/skills/youtube_old_video_recycler.py",
+      "id": "Team_Content_Studio/Team_Agent_Content/skills/youtube_old_video_recycler.py",
       "label": "youtube_old_video_recycler.py",
       "type": "python",
       "val": 10
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/skills/wtj_auto_poster.py",
+      "id": "Team_Content_Studio/Team_Agent_Content/skills/wtj_auto_poster.py",
       "label": "wtj_auto_poster.py",
       "type": "python",
       "val": 10
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/skills/sync_to_dashboard.py",
+      "id": "Team_Content_Studio/Team_Agent_Content/skills/sync_to_dashboard.py",
       "label": "sync_to_dashboard.py",
       "type": "python",
       "val": 10
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/skills/notion_archiver.py",
+      "id": "Team_Content_Studio/Team_Agent_Content/skills/notion_archiver.py",
       "label": "notion_archiver.py",
       "type": "python",
       "val": 10
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/skills/notion_helper.py",
+      "id": "Team_Content_Studio/Team_Agent_Content/skills/notion_helper.py",
       "label": "notion_helper.py",
       "type": "python",
       "val": 10
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/skills/source_vault_compiler.py",
+      "id": "Team_Content_Studio/Team_Agent_Content/skills/source_vault_compiler.py",
       "label": "source_vault_compiler.py",
       "type": "python",
       "val": 10
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/skills/setup_notes_folders.py",
+      "id": "Team_Content_Studio/Team_Agent_Content/skills/regenerate_review_drafts.py",
+      "label": "regenerate_review_drafts.py",
+      "type": "python",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/skills/setup_notes_folders.py",
       "label": "setup_notes_folders.py",
       "type": "python",
       "val": 10
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/skills/deploy_dashboard.py",
+      "id": "Team_Content_Studio/Team_Agent_Content/skills/deploy_dashboard.py",
       "label": "deploy_dashboard.py",
       "type": "python",
       "val": 10
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/skills/social_media_extractor.py",
+      "id": "Team_Content_Studio/Team_Agent_Content/skills/social_media_extractor.py",
       "label": "social_media_extractor.py",
       "type": "python",
       "val": 10
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/skills/video_draft_generator.py",
+      "id": "Team_Content_Studio/Team_Agent_Content/skills/video_draft_generator.py",
       "label": "video_draft_generator.py",
       "type": "python",
       "val": 10
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/skills/dashboard_server.py",
+      "id": "Team_Content_Studio/Team_Agent_Content/skills/dashboard_server.py",
       "label": "dashboard_server.py",
       "type": "python",
       "val": 10
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/skills/youtube_researcher.py",
+      "id": "Team_Content_Studio/Team_Agent_Content/skills/youtube_researcher.py",
       "label": "youtube_researcher.py",
       "type": "python",
       "val": 10
     },
     {
-      "id": "WTJ_Content_Studio/Team_Agent_Content/skills/sync_to_notes.py",
+      "id": "Team_Content_Studio/Team_Agent_Content/skills/sync_to_notes.py",
       "label": "sync_to_notes.py",
       "type": "python",
       "val": 10
@@ -4030,7 +4558,12 @@ const graphData = {
     },
     {
       "source": "root",
-      "target": "WTJ_Content_Studio",
+      "target": "Team_Content_Studio",
+      "type": "contains"
+    },
+    {
+      "source": "root",
+      "target": "how_to_post_youtube.md",
       "type": "contains"
     },
     {
@@ -4150,6 +4683,11 @@ const graphData = {
     },
     {
       "source": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks",
+      "target": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/D",
+      "type": "contains"
+    },
+    {
+      "source": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks",
       "target": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/Q",
       "type": "contains"
     },
@@ -4214,6 +4752,36 @@ const graphData = {
       "type": "contains"
     },
     {
+      "source": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/D",
+      "target": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/D/skills",
+      "type": "contains"
+    },
+    {
+      "source": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/D",
+      "target": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/D/d_manual.md",
+      "type": "contains"
+    },
+    {
+      "source": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/D/skills",
+      "target": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/D/skills/ui-ux-design",
+      "type": "contains"
+    },
+    {
+      "source": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/D/skills",
+      "target": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/D/skills/modern-web-guidance",
+      "type": "contains"
+    },
+    {
+      "source": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/D/skills/ui-ux-design",
+      "target": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/D/skills/ui-ux-design/SKILL.md",
+      "type": "contains"
+    },
+    {
+      "source": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/D/skills/modern-web-guidance",
+      "target": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/D/skills/modern-web-guidance/SKILL.md",
+      "type": "contains"
+    },
+    {
       "source": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/Q",
       "target": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/Q/skills",
       "type": "contains"
@@ -4235,12 +4803,32 @@ const graphData = {
     },
     {
       "source": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/Q/q_manual.md",
+      "target": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/D/skills/ui-ux-design/SKILL.md",
+      "type": "references"
+    },
+    {
+      "source": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/Q/q_manual.md",
+      "target": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/D/skills/modern-web-guidance/SKILL.md",
+      "type": "references"
+    },
+    {
+      "source": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/Q/q_manual.md",
       "target": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/Win/skills/crypto-portfolio-sync/SKILL.md",
       "type": "references"
     },
     {
       "source": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/Q/q_manual.md",
       "target": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/Jane/skills/grab-receipt-sync/SKILL.md",
+      "type": "references"
+    },
+    {
+      "source": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/Q/q_manual.md",
+      "target": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/D/skills/ui-ux-design/SKILL.md",
+      "type": "references"
+    },
+    {
+      "source": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/Q/q_manual.md",
+      "target": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/D/skills/modern-web-guidance/SKILL.md",
       "type": "references"
     },
     {
@@ -4345,6 +4933,11 @@ const graphData = {
     },
     {
       "source": "Personal_Assistance_HQ/Personal_Assistance_Team/M/html",
+      "target": "Personal_Assistance_HQ/Personal_Assistance_Team/M/html/knowledge_dashboard.html",
+      "type": "contains"
+    },
+    {
+      "source": "Personal_Assistance_HQ/Personal_Assistance_Team/M/html",
       "target": "Personal_Assistance_HQ/Personal_Assistance_Team/M/html/workflow_status.js",
       "type": "contains"
     },
@@ -4361,6 +4954,21 @@ const graphData = {
     {
       "source": "Personal_Assistance_HQ/Personal_Assistance_Team/M/html",
       "target": "Personal_Assistance_HQ/Personal_Assistance_Team/M/html/notion_calendar_data.js",
+      "type": "contains"
+    },
+    {
+      "source": "Personal_Assistance_HQ/Personal_Assistance_Team/M/html",
+      "target": "Personal_Assistance_HQ/Personal_Assistance_Team/M/html/index.html.recovered",
+      "type": "contains"
+    },
+    {
+      "source": "Personal_Assistance_HQ/Personal_Assistance_Team/M/html",
+      "target": "Personal_Assistance_HQ/Personal_Assistance_Team/M/html/index.html.raw",
+      "type": "contains"
+    },
+    {
+      "source": "Personal_Assistance_HQ/Personal_Assistance_Team/M/html",
+      "target": "Personal_Assistance_HQ/Personal_Assistance_Team/M/html/publisher_dashboard.html",
       "type": "contains"
     },
     {
@@ -4391,6 +4999,11 @@ const graphData = {
     {
       "source": "Personal_Assistance_HQ/Personal_Assistance_Team/M/html",
       "target": "Personal_Assistance_HQ/Personal_Assistance_Team/M/html/content_dashboard.html",
+      "type": "contains"
+    },
+    {
+      "source": "Personal_Assistance_HQ/Personal_Assistance_Team/M/html",
+      "target": "Personal_Assistance_HQ/Personal_Assistance_Team/M/html/knowledge_style.css",
       "type": "contains"
     },
     {
@@ -4925,6 +5538,11 @@ const graphData = {
     },
     {
       "source": "scratch",
+      "target": "scratch/css_layout_guide.md",
+      "type": "contains"
+    },
+    {
+      "source": "scratch",
       "target": "scratch/test_youtube_api.py",
       "type": "contains"
     },
@@ -5080,7 +5698,67 @@ const graphData = {
     },
     {
       "source": "knowledge_base",
+      "target": "knowledge_base/my_style",
+      "type": "contains"
+    },
+    {
+      "source": "knowledge_base",
+      "target": "knowledge_base/ai_references",
+      "type": "contains"
+    },
+    {
+      "source": "knowledge_base",
+      "target": "knowledge_base/wtj_project",
+      "type": "contains"
+    },
+    {
+      "source": "knowledge_base",
       "target": "knowledge_base/db",
+      "type": "contains"
+    },
+    {
+      "source": "knowledge_base",
+      "target": "knowledge_base/ingest_queue",
+      "type": "contains"
+    },
+    {
+      "source": "knowledge_base",
+      "target": "knowledge_base/ingest_sources.py",
+      "type": "contains"
+    },
+    {
+      "source": "knowledge_base/ai_references",
+      "target": "knowledge_base/ai_references/web_Scraped_Web_Page.md",
+      "type": "contains"
+    },
+    {
+      "source": "knowledge_base/ai_references",
+      "target": "knowledge_base/ai_references/yt_YouTube_Video_6iZu48YpXXo.md",
+      "type": "contains"
+    },
+    {
+      "source": "knowledge_base/ai_references",
+      "target": "knowledge_base/ai_references/yt_Create_a_Professional_Dashboard_with_One_Prompt_Using_Claude_AI_In_Just_3_Minute.md",
+      "type": "contains"
+    },
+    {
+      "source": "knowledge_base/ai_references",
+      "target": "knowledge_base/ai_references/yt_Claude_\u0e40\u0e1b\u0e25\u0e35\u0e48\u0e22\u0e19\u0e0a\u0e35\u0e27\u0e34\u0e15\u0e1c\u0e21\u0e44\u0e1b\u0e40\u0e25\u0e22.md",
+      "type": "contains"
+    },
+    {
+      "source": "knowledge_base/ai_references",
+      "target": "knowledge_base/ai_references/yt_Rick_Astley_-_Never_Gonna_Give_You_Up_Official_Video_4K_Remaster.md",
+      "type": "contains"
+    },
+    {
+      "source": "knowledge_base/wtj_project",
+      "target": "knowledge_base/wtj_project/yt_\u0e0a\u0e35\u0e27\u0e34\u0e15\u0e40\u0e0b\u0e1f\u0e21\u0e37\u0e2d\u0e2d\u0e32\u0e0a\u0e35\u0e1e_\u0e40\u0e1a\u0e37\u0e49\u0e2d\u0e07\u0e2b\u0e25\u0e31\u0e07\u0e04\u0e23\u0e31\u0e27\u0e41\u0e25\u0e30\u0e40\u0e04\u0e25\u0e47\u0e14\u0e25\u0e31\u0e1a\u0e17\u0e33\u0e2d\u0e32\u0e2b\u0e32\u0e23\u0e23\u0e30\u0e14\u0e31\u0e1a\u0e21\u0e37\u0e2d\u0e42\u0e1b\u0e23.md",
+      "type": "contains"
+    },
+    {
+      "source": "knowledge_base/wtj_project",
+      "target": "knowledge_base/wtj_project/README_WTJ.md",
       "type": "contains"
     },
     {
@@ -5239,6 +5917,11 @@ const graphData = {
       "type": "contains"
     },
     {
+      "source": "knowledge_base/ingest_queue",
+      "target": "knowledge_base/ingest_queue/urls_to_ingest.txt",
+      "type": "contains"
+    },
+    {
       "source": "Agent_Lab",
       "target": "Agent_Lab/tests",
       "type": "contains"
@@ -5276,6 +5959,11 @@ const graphData = {
     {
       "source": "Agent_Lab/bug_vault",
       "target": "Agent_Lab/bug_vault/.gitkeep",
+      "type": "contains"
+    },
+    {
+      "source": "Agent_Lab/logs",
+      "target": "Agent_Lab/logs/ingest_run.log",
       "type": "contains"
     },
     {
@@ -5339,2233 +6027,2563 @@ const graphData = {
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio",
-      "target": "WTJ_Content_Studio/Team_Agent_Content",
+      "source": "Team_Content_Studio",
+      "target": "Team_Content_Studio/Team_Agent_Content",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge",
+      "source": "Team_Content_Studio/Team_Agent_Content",
+      "target": "Team_Content_Studio/Team_Agent_Content/Team_Lounge",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace",
+      "source": "Team_Content_Studio/Team_Agent_Content",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Podcast_Project",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project",
+      "source": "Team_Content_Studio/Team_Agent_Content",
+      "target": "Team_Content_Studio/Team_Agent_Content/archive",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/prompts",
+      "source": "Team_Content_Studio/Team_Agent_Content",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project",
+      "source": "Team_Content_Studio/Team_Agent_Content",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/skills",
+      "source": "Team_Content_Studio/Team_Agent_Content",
+      "target": "Team_Content_Studio/Team_Agent_Content/prompts",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/director_agent.py",
+      "source": "Team_Content_Studio/Team_Agent_Content",
+      "target": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/director_agent.py",
+      "source": "Team_Content_Studio/Team_Agent_Content",
+      "target": "Team_Content_Studio/Team_Agent_Content/skills",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content",
+      "target": "Team_Content_Studio/Team_Agent_Content/director_agent.py",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/director_agent.py",
       "target": "model_router.py",
       "type": "references"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/director_agent.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/director_agent.py",
       "target": "model_router.py",
       "type": "references"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/music_agent.py",
+      "source": "Team_Content_Studio/Team_Agent_Content",
+      "target": "Team_Content_Studio/Team_Agent_Content/music_agent.py",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/music_agent.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/music_agent.py",
       "target": "model_router.py",
       "type": "references"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/music_agent.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/music_agent.py",
       "target": "model_router.py",
       "type": "references"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/creative_agent.py",
+      "source": "Team_Content_Studio/Team_Agent_Content",
+      "target": "Team_Content_Studio/Team_Agent_Content/creative_agent.py",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/creative_agent.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/creative_agent.py",
       "target": "model_router.py",
       "type": "references"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/creative_agent.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/creative_agent.py",
       "target": "model_router.py",
       "type": "references"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/researcher_agent.py",
+      "source": "Team_Content_Studio/Team_Agent_Content",
+      "target": "Team_Content_Studio/Team_Agent_Content/researcher_agent.py",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/researcher_agent.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/researcher_agent.py",
       "target": "model_router.py",
       "type": "references"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/researcher_agent.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/researcher_agent.py",
       "target": "model_router.py",
       "type": "references"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/README.md",
+      "source": "Team_Content_Studio/Team_Agent_Content",
+      "target": "Team_Content_Studio/Team_Agent_Content/README.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/pie_agent.py",
+      "source": "Team_Content_Studio/Team_Agent_Content",
+      "target": "Team_Content_Studio/Team_Agent_Content/pie_agent.py",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/pie_agent.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/pie_agent.py",
       "target": "model_router.py",
       "type": "references"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/pie_agent.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/pie_agent.py",
       "target": "model_router.py",
       "type": "references"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Music",
+      "source": "Team_Content_Studio/Team_Agent_Content/Team_Lounge",
+      "target": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Music",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Pie",
+      "source": "Team_Content_Studio/Team_Agent_Content/Team_Lounge",
+      "target": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Pie",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Chris",
+      "source": "Team_Content_Studio/Team_Agent_Content/Team_Lounge",
+      "target": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Chris",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Nam",
+      "source": "Team_Content_Studio/Team_Agent_Content/Team_Lounge",
+      "target": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Nam",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Cream",
+      "source": "Team_Content_Studio/Team_Agent_Content/Team_Lounge",
+      "target": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Cream",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Cri",
+      "source": "Team_Content_Studio/Team_Agent_Content/Team_Lounge",
+      "target": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Cri",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Or",
+      "source": "Team_Content_Studio/Team_Agent_Content/Team_Lounge",
+      "target": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Or",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Ray",
+      "source": "Team_Content_Studio/Team_Agent_Content/Team_Lounge",
+      "target": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Ray",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Deer",
+      "source": "Team_Content_Studio/Team_Agent_Content/Team_Lounge",
+      "target": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Deer",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/P",
+      "source": "Team_Content_Studio/Team_Agent_Content/Team_Lounge",
+      "target": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/P",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Music",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Music/music_manual.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Music",
+      "target": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Music/music_manual.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Pie",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Pie/pie_manual.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Pie",
+      "target": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Pie/pie_manual.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Chris",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Chris/chris_manual.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Chris",
+      "target": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Chris/chris_manual.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Nam",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Nam/nam_first_ideas.txt",
+      "source": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Nam",
+      "target": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Nam/nam_first_ideas.txt",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Nam",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Nam/nam_manual.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Nam",
+      "target": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Nam/nam_manual.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Cream",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Cream/cream_manual.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Cream",
+      "target": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Cream/cream_manual.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Cri",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Cri/cri_manual.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Cri",
+      "target": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Cri/cri_manual.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Or",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Or/or_manual.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Or",
+      "target": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Or/or_manual.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Ray",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Ray/skills",
+      "source": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Ray",
+      "target": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Ray/skills",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Ray",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Ray/ray_manual.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Ray",
+      "target": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Ray/ray_manual.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Ray/skills",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Ray/skills/facebook-draft-generator",
+      "source": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Ray/skills",
+      "target": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Ray/skills/facebook-draft-generator",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Ray/skills/facebook-draft-generator",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Ray/skills/facebook-draft-generator/SKILL.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Ray/skills/facebook-draft-generator",
+      "target": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Ray/skills/facebook-draft-generator/SKILL.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Deer",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Deer/deer_manual.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Deer",
+      "target": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Deer/deer_manual.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/P",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/P/p_manual.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/P",
+      "target": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/P/p_manual.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon",
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Podcast_Project",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Podcast_Project/workspace",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Podcast_Project/workspace",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Podcast_Project/workspace/3_final_scripts",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/learning_base.json",
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Podcast_Project/workspace",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Podcast_Project/workspace/1_raw_materials",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/temp_audio.m4a",
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Podcast_Project/workspace",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Podcast_Project/workspace/2_drafts",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/update_hashtags_everywhere.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Podcast_Project/workspace/3_final_scripts",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Podcast_Project/workspace/3_final_scripts/.gitkeep",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/rerun_state.json",
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Podcast_Project/workspace/1_raw_materials",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Podcast_Project/workspace/1_raw_materials/raw_videos",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/check_review_cards.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Podcast_Project/workspace/1_raw_materials",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Podcast_Project/workspace/1_raw_materials/thumbnails",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images",
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Podcast_Project/workspace/1_raw_materials/raw_videos",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Podcast_Project/workspace/1_raw_materials/raw_videos/\u0e15\u0e23\u0e35\u0e19\u0e31\u0e01\u0e41\u0e02\u0e48\u0e07 Moto.mov",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/cream_research_notes.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Podcast_Project/workspace/1_raw_materials/thumbnails",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Podcast_Project/workspace/1_raw_materials/thumbnails/.gitkeep",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/or_audit_report.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Podcast_Project/workspace/1_raw_materials/thumbnails",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Podcast_Project/workspace/1_raw_materials/thumbnails/\u0e15\u0e23\u0e35\u0e19\u0e31\u0e01\u0e41\u0e02\u0e48\u0e07 Moto.png",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/download_images.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Podcast_Project/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Podcast_Project/workspace/2_drafts/.gitkeep",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/chris_director_guide.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/archive",
+      "target": "Team_Content_Studio/Team_Agent_Content/archive/discord_guest_puller.py",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images/07_leather_suit_kangaroo.jpg",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images/04_yamaha_spark_110.jpg",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images/04_motocross_child_training.jpg",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images/06_data_telemetry_analysis.jpg",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images/05_anupab_fitness_gym.jpg",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images/06_motorland_aragon_circuit.jpg",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images/02_yamaha_yzr_m1_motogp.jpg",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images/02_yamaha_r6_wsbk.jpg",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images/03_yamaha_spark_racing.jpg",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images/09_chang_international_circuit.jpg",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images/08_race_cargo_container.jpg",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images/03_yamaha_mio_racing.jpg",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images/07_alpinestars_tech_air_airbag.jpg",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e1e\u0e40\u0e01\u0e07.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e28\u0e25\u0e1b\u0e19\u0e44\u0e2a\u0e41\u0e2b\u0e07.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e42\u0e27\u0e40\u0e01\u0e07.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e40\u0e0a\u0e1f\u0e44\u0e02.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_ai_\u0e21\u0e1c\u0e25\u0e15\u0e2d\u0e2d\u0e32\u0e0a\u0e1e\u0e28\u0e25\u0e1b\u0e19\u0e08\u0e23\u0e07\u0e2b\u0e23\u0e2d\u0e44\u0e21.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e01\u0e1f_muzcali_\u0e04\u0e19\u0e44\u0e17\u0e22\u0e04\u0e19\u0e40\u0e14\u0e22\u0e27_\u0e17\u0e44\u0e14\u0e40\u0e1b\u0e19_global_brand_ambassador_\u0e43\u0e19\u0e27\u0e07\u0e01\u0e32\u0e23\u0e08\u0e01\u0e23\u0e22\u0e32\u0e19__what_the_job_ss3_ep2.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_location_manager_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e15\u0e2d\u0e07\u0e17\u0e33\u0e2d\u0e30\u0e44\u0e23\u0e1a\u0e32\u0e07.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_ai_\u0e21\u0e1c\u0e25\u0e15\u0e2d\u0e2d\u0e32\u0e0a\u0e1e\u0e28\u0e25\u0e1b\u0e19\u0e08\u0e23\u0e07\u0e2b\u0e23\u0e2d\u0e44\u0e21.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e0a\u0e27\u0e15\u0e40\u0e0b\u0e1f\u0e21\u0e2d\u0e2d\u0e32\u0e0a\u0e1e__\u0e40\u0e1a\u0e2d\u0e07\u0e2b\u0e25\u0e07\u0e04\u0e23\u0e27\u0e41\u0e25\u0e30\u0e40\u0e04\u0e25\u0e14\u0e25\u0e1a\u0e17\u0e33\u0e2d\u0e32\u0e2b\u0e32\u0e23\u0e23\u0e30\u0e14\u0e1a\u0e21\u0e2d\u0e42\u0e1b\u0e23.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e0a\u0e32\u0e07\u0e44\u0e17\u0e22\u0e21\u0e32\u0e01\u0e1d\u0e21\u0e2d\u0e17\u0e25\u0e01\u0e04\u0e32\u0e44\u0e27\u0e43\u0e08\u0e16\u0e2d\u0e22\u0e23\u0e16\u0e43\u0e2b\u0e21\u0e04\u0e19\u0e40\u0e1b\u0e19\u0e25\u0e32\u0e19__\u0e21\u0e32\u0e43\u0e2b\u0e04\u0e2a\u0e15\u0e2d\u0e21\u0e15\u0e07\u0e41\u0e15\u0e2d\u0e2d\u0e01\u0e28\u0e19\u0e22_\u0e41\u0e1a\u0e1a\u0e22\u0e07\u0e44\u0e21\u0e44\u0e14\u0e02.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e18\u0e23\u0e01\u0e08\u0e23\u0e32\u0e19\u0e01\u0e32\u0e41\u0e1f_\u0e41\u0e25\u0e30_\u0e1a\u0e32\u0e23\u0e2a\u0e15\u0e32.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e40\u0e1a\u0e2d\u0e07\u0e2b\u0e25\u0e07\u0e2d\u0e32\u0e0a\u0e1e_dj_\u0e17\u0e04\u0e13\u0e2d\u0e32\u0e08\u0e44\u0e21\u0e40\u0e04\u0e22\u0e23.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e19\u0e32\u0e22\u0e01_\u0e2d\u0e1a\u0e08_\u0e25\u0e33\u0e1e\u0e19.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/reels_under1min_\u0e0a\u0e32\u0e07\u0e41\u0e15\u0e07\u0e2b\u0e19\u0e32\u0e2a\u0e0a\u0e27\u0e15.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_consult_\u0e01\u0e2d\u0e2a\u0e23\u0e32\u0e07_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e08\u0e33\u0e40\u0e1b\u0e19\u0e15\u0e2d\u0e07\u0e21\u0e21\u0e22__\u0e08\u0e32\u0e07\u0e21\u0e32\u0e41\u0e25\u0e27\u0e44\u0e14\u0e2d\u0e30\u0e44\u0e23.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e1e\u0e40\u0e01\u0e32.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e0a\u0e32\u0e07\u0e20\u0e32\u0e1e\u0e07\u0e32\u0e19\u0e41\u0e15\u0e07_\u0e2d\u0e32\u0e0a\u0e1e\u0e17\u0e14\u0e2a\u0e27\u0e22\u0e2b\u0e23_\u0e41\u0e15\u0e40\u0e1a\u0e2d\u0e07\u0e2b\u0e25\u0e07\u0e41\u0e25\u0e01\u0e21\u0e32\u0e14\u0e27\u0e22\u0e2d\u0e30\u0e44\u0e23__what_the_job_s3_ep1.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_1_\u0e27\u0e19\u0e43\u0e19\u0e01\u0e32\u0e23\u0e17\u0e33\u0e1f\u0e32\u0e23\u0e21\u0e07\u0e2a\u0e27\u0e22\u0e07\u0e32\u0e21.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e1e\u0e32\u0e0a\u0e21\u0e1f\u0e32\u0e23\u0e21\u0e2b\u0e19\u0e40\u0e2b\u0e22\u0e2d.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_location_manager_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e15\u0e2d\u0e07\u0e17\u0e33\u0e2d\u0e30\u0e44\u0e23\u0e1a\u0e32\u0e07.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/reels_under1min_transcript_\u0e0a\u0e32\u0e07\u0e20\u0e32\u0e1e\u0e2d\u0e32\u0e0a\u0e1e.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e1e\u0e40\u0e01\u0e07_wall_painting_\u0e08\u0e32\u0e01\u0e01\u0e33\u0e41\u0e1e\u0e07\u0e40\u0e1b\u0e25\u0e32\u0e2a\u0e1c\u0e25\u0e07\u0e32\u0e19\u0e28\u0e25\u0e1b\u0e30\u0e17\u0e2a\u0e23\u0e32\u0e07\u0e23\u0e32\u0e22\u0e44\u0e14\u0e40\u0e25\u0e22\u0e07\u0e0a\u0e1e__what_the_job_ss3_ep3.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e40\u0e1b\u0e14\u0e43\u0e08\u0e04\u0e19\u0e02\u0e1a\u0e2a\u0e25\u0e2d\u0e41\u0e14\u0e07_\u0e40\u0e1b\u0e19\u0e08\u0e23\u0e07\u0e2d\u0e22\u0e32\u0e07\u0e0a\u0e32\u0e27\u0e40\u0e19\u0e15\u0e27\u0e32\u0e21\u0e22_\u0e43\u0e19\u0e2d\u0e01\u0e21\u0e21\u0e21\u0e2d\u0e07.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_vlog_\u0e01\u0e2d\u0e1f_midlife_crisis.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e08\u0e2a\u0e21\u0e19.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e1e\u0e01\u0e1a.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e01\u0e27\u0e32\u0e08\u0e30\u0e21\u0e32\u0e40\u0e1b\u0e19\u0e40\u0e08\u0e32\u0e02\u0e2d\u0e07\u0e40\u0e2b\u0e23\u0e22\u0e0d\u0e17\u0e2d\u0e07\u0e0b\u0e40\u0e01\u0e21\u0e2a_\u0e1e\u0e21\u0e30\u0e15\u0e21\u0e19\u0e01\u0e08\u0e01\u0e23\u0e22\u0e32\u0e19\u0e17\u0e21\u0e0a\u0e32\u0e15_\u0e40\u0e15\u0e1a\u0e42\u0e15\u0e21\u0e32\u0e22\u0e07\u0e44\u0e07_\u0e1c\u0e32\u0e19\u0e2d\u0e30\u0e44\u0e23\u0e21\u0e32\u0e1a\u0e32\u0e07.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e40\u0e1b\u0e14\u0e43\u0e08\u0e04\u0e19\u0e02\u0e1a\u0e2a\u0e25\u0e2d\u0e41\u0e14\u0e07_\u0e40\u0e1b\u0e19\u0e08\u0e23\u0e07\u0e2d\u0e22\u0e32\u0e07\u0e0a\u0e32\u0e27\u0e40\u0e19\u0e15\u0e27\u0e32\u0e21\u0e22_\u0e43\u0e19\u0e2d\u0e01\u0e21\u0e21\u0e21\u0e2d\u0e07.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e41\u0e04\u0e40\u0e2d\u0e32\u0e40\u0e17_\u0e2b\u0e23\u0e2d_funtion.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e01\u0e1f_muzcali_\u0e04\u0e19\u0e44\u0e17\u0e22\u0e04\u0e19\u0e40\u0e14\u0e22\u0e27_\u0e17\u0e44\u0e14\u0e40\u0e1b\u0e19_global_brand_ambassador_\u0e43\u0e19\u0e27\u0e07\u0e01\u0e32\u0e23\u0e08\u0e01\u0e23\u0e22\u0e32\u0e19__what_the_job_ss3_ep2.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e2d\u0e19\u0e1f\u0e25\u0e40\u0e2d\u0e19\u0e40\u0e0b\u0e2d\u0e23\u0e2a\u0e32\u0e22_sport_\u0e17\u0e33\u0e2d\u0e30\u0e44\u0e23\u0e01\u0e19\u0e1a\u0e32\u0e07\u0e43\u0e19\u0e41\u0e15\u0e25\u0e30\u0e27\u0e19.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_\u0e0a\u0e32\u0e07\u0e41\u0e15\u0e07\u0e2b\u0e19\u0e32\u0e2a\u0e0a\u0e27\u0e15.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e40\u0e1a\u0e2d\u0e07\u0e2b\u0e25\u0e07\u0e2d\u0e32\u0e0a\u0e1e_dj_\u0e17\u0e04\u0e13\u0e2d\u0e32\u0e08\u0e44\u0e21\u0e40\u0e04\u0e22\u0e23.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e0a\u0e07.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e19\u0e2d\u0e07\u0e01\u0e1f.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e27\u0e23\u0e14\u0e32.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e2b\u0e2d\u0e22\u0e02\u0e21\u0e22\u0e01\u0e29\u0e23\u0e19\u0e15\u0e19\u0e30_\u0e23\u0e32\u0e22\u0e44\u0e14\u0e40\u0e2a\u0e23\u0e21\u0e27\u0e19\u0e25\u0e30_2000_\u0e2b\u0e2d\u0e22\u0e02\u0e21\u0e17\u0e21\u0e02\u0e19\u0e32\u0e14\u0e43\u0e2b\u0e0d\u0e40\u0e17\u0e32\u0e44\u0e02\u0e44\u0e01_\u0e40\u0e25\u0e22\u0e07\u0e07\u0e32\u0e22_\u0e42\u0e15\u0e44\u0e27_wtj_wtjtalk.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e1e\u0e41\u0e2d\u0e21.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e41\u0e04\u0e40\u0e2d\u0e32\u0e40\u0e17_\u0e2b\u0e23\u0e2d_funtion.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e1e\u0e01\u0e1a.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e1e\u0e0a.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e40\u0e01\u0e29\u0e15\u0e23\u0e01\u0e23\u0e07\u0e2a\u0e27\u0e22\u0e07\u0e32\u0e21\u0e01\u0e1a\u0e23\u0e32\u0e22\u0e44\u0e14\u0e16\u0e07_7_\u0e2b\u0e25\u0e01\u0e15\u0e2d\u0e1b.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e2d\u0e19.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e28\u0e25\u0e1b\u0e19\u0e44\u0e2a\u0e41\u0e2b\u0e07.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e1a\u0e07.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e44\u0e21\u0e43\u0e0a\u0e41\u0e04\u0e16\u0e32\u0e22\u0e2a\u0e27\u0e22\u0e19\u0e04\u0e2d\u0e01\u0e32\u0e23\u0e17\u0e33\u0e07\u0e32\u0e19\u0e02\u0e2d\u0e07\u0e21\u0e2d\u0e42\u0e1b\u0e23\u0e19\u0e01\u0e1a\u0e19\u0e42\u0e14\u0e23\u0e19.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e19\u0e32\u0e22\u0e01_\u0e2d\u0e1a\u0e08_\u0e25\u0e33\u0e1e\u0e19.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e01\u0e2d\u0e25\u0e1f\u0e1a\u0e32\u0e23\u0e40\u0e17\u0e19\u0e40\u0e14\u0e2d\u0e23_\u0e1c\u0e44\u0e21\u0e40\u0e04\u0e22\u0e22\u0e2d\u0e21\u0e41\u0e1e_\u0e08\u0e19\u0e44\u0e1b\u0e04\u0e27\u0e32\u0e23\u0e32\u0e07\u0e27\u0e25\u0e23\u0e30\u0e14\u0e1a\u0e42\u0e25\u0e01\u0e21\u0e32\u0e08\u0e19\u0e44\u0e14.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e40\u0e01\u0e29\u0e15\u0e23\u0e01\u0e23\u0e07\u0e2a\u0e27\u0e22\u0e07\u0e32\u0e21\u0e01\u0e1a\u0e23\u0e32\u0e22\u0e44\u0e14\u0e16\u0e07_7_\u0e2b\u0e25\u0e01\u0e15\u0e2d\u0e1b.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_web_3_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e21\u0e32\u0e2b\u0e32\u0e04\u0e33\u0e15\u0e2d\u0e1a\u0e01\u0e19\u0e43\u0e19\u0e04\u0e25\u0e1b\u0e44\u0e14\u0e40\u0e25\u0e1a\u0e22\u0e04\u0e23\u0e1a.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e0a\u0e27\u0e15\u0e40\u0e0b\u0e1f\u0e21\u0e2d\u0e2d\u0e32\u0e0a\u0e1e__\u0e40\u0e1a\u0e2d\u0e07\u0e2b\u0e25\u0e07\u0e04\u0e23\u0e27\u0e41\u0e25\u0e30\u0e40\u0e04\u0e25\u0e14\u0e25\u0e1a\u0e17\u0e33\u0e2d\u0e32\u0e2b\u0e32\u0e23\u0e23\u0e30\u0e14\u0e1a\u0e21\u0e2d\u0e42\u0e1b\u0e23.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_\u0e0a\u0e32\u0e07\u0e41\u0e15\u0e07\u0e2b\u0e19\u0e32\u0e2a\u0e0a\u0e27\u0e15.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e19\u0e2d\u0e07\u0e01\u0e1f.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e1e\u0e40\u0e01\u0e32.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e40\u0e01\u0e29\u0e15\u0e23\u0e01\u0e23\u0e17\u0e33\u0e1f\u0e32\u0e23\u0e21\u0e2b\u0e19\u0e17\u0e2a\u0e32\u0e21\u0e32\u0e23\u0e16\u0e17\u0e33\u0e23\u0e32\u0e22\u0e44\u0e14\u0e16\u0e07_7_\u0e2b\u0e25\u0e01\u0e43\u0e19\u0e40\u0e27\u0e25\u0e32\u0e40\u0e1e\u0e22\u0e07_2_\u0e1b.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e40\u0e01\u0e29\u0e15\u0e23\u0e01\u0e23\u0e17\u0e33\u0e1f\u0e32\u0e23\u0e21\u0e2b\u0e19\u0e17\u0e2a\u0e32\u0e21\u0e32\u0e23\u0e16\u0e17\u0e33\u0e23\u0e32\u0e22\u0e44\u0e14\u0e16\u0e07_7_\u0e2b\u0e25\u0e01\u0e43\u0e19\u0e40\u0e27\u0e25\u0e32\u0e40\u0e1e\u0e22\u0e07_2_\u0e1b.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e15\u0e44\u0e21\u0e19\u0e33\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e02\u0e2d\u0e07\u0e08\u0e23\u0e07\u0e2b\u0e23\u0e2d\u0e02\u0e2d\u0e07\u0e1b\u0e25\u0e2d\u0e21_\u0e40\u0e25\u0e22\u0e07\u0e41\u0e25\u0e27\u0e15\u0e2d\u0e07\u0e14\u0e41\u0e25\u0e21\u0e22.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e1e\u0e32\u0e0a\u0e21\u0e1f\u0e32\u0e23\u0e21\u0e2b\u0e19\u0e40\u0e2b\u0e22\u0e2d.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e01\u0e27\u0e32\u0e08\u0e30\u0e21\u0e32\u0e40\u0e1b\u0e19\u0e40\u0e08\u0e32\u0e02\u0e2d\u0e07\u0e40\u0e2b\u0e23\u0e22\u0e0d\u0e17\u0e2d\u0e07\u0e0b\u0e40\u0e01\u0e21\u0e2a_\u0e1e\u0e21\u0e30\u0e15\u0e21\u0e19\u0e01\u0e08\u0e01\u0e23\u0e22\u0e32\u0e19\u0e17\u0e21\u0e0a\u0e32\u0e15_\u0e40\u0e15\u0e1a\u0e42\u0e15\u0e21\u0e32\u0e22\u0e07\u0e44\u0e07_\u0e1c\u0e32\u0e19\u0e2d\u0e30\u0e44\u0e23\u0e21\u0e32\u0e1a\u0e32\u0e07.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e19\u0e01\u0e01\u0e21\u0e44\u0e2b\u0e19.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e2d\u0e19\u0e1f\u0e25\u0e40\u0e2d\u0e19\u0e40\u0e0b\u0e2d\u0e23\u0e2a\u0e32\u0e22_sport_\u0e17\u0e33\u0e2d\u0e30\u0e44\u0e23\u0e01\u0e19\u0e1a\u0e32\u0e07\u0e43\u0e19\u0e41\u0e15\u0e25\u0e30\u0e27\u0e19.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e01\u0e2d\u0e25\u0e1f\u0e1a\u0e32\u0e23\u0e40\u0e17\u0e19\u0e40\u0e14\u0e2d\u0e23_\u0e1c\u0e44\u0e21\u0e40\u0e04\u0e22\u0e22\u0e2d\u0e21\u0e41\u0e1e_\u0e08\u0e19\u0e44\u0e1b\u0e04\u0e27\u0e32\u0e23\u0e32\u0e07\u0e27\u0e25\u0e23\u0e30\u0e14\u0e1a\u0e42\u0e25\u0e01\u0e21\u0e32\u0e08\u0e19\u0e44\u0e14.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e2d\u0e32\u0e0a\u0e1e\u0e2d\u0e2a\u0e23\u0e30\u0e17\u0e0a\u0e2d\u0e27\u0e32_stock_photo_\u0e01\u0e1a\u0e23\u0e32\u0e22\u0e44\u0e14_6_\u0e2b\u0e25\u0e01__\u0e40\u0e04\u0e32\u0e17\u0e33\u0e22\u0e07\u0e44\u0e07_\u0e40\u0e23\u0e21\u0e15\u0e19\u0e22\u0e07\u0e44\u0e07_\u0e44\u0e1b\u0e15\u0e14\u0e15\u0e32\u0e21\u0e0a\u0e21\u0e01\u0e19\u0e04\u0e23\u0e1a.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e2b\u0e2d\u0e22\u0e02\u0e21\u0e22\u0e01\u0e29\u0e23\u0e19\u0e15\u0e19\u0e30_\u0e23\u0e32\u0e22\u0e44\u0e14\u0e40\u0e2a\u0e23\u0e21\u0e27\u0e19\u0e25\u0e30_2000_\u0e2b\u0e2d\u0e22\u0e02\u0e21\u0e17\u0e21\u0e02\u0e19\u0e32\u0e14\u0e43\u0e2b\u0e0d\u0e40\u0e17\u0e32\u0e44\u0e02\u0e44\u0e01_\u0e40\u0e25\u0e22\u0e07\u0e07\u0e32\u0e22_\u0e42\u0e15\u0e44\u0e27_wtj_wtjtalk.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e19\u0e01\u0e01\u0e21\u0e44\u0e2b\u0e19.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e2d\u0e32\u0e0a\u0e1e\u0e2d\u0e2a\u0e23\u0e30\u0e17\u0e0a\u0e2d\u0e27\u0e32_stock_photo_\u0e01\u0e1a\u0e23\u0e32\u0e22\u0e44\u0e14_6_\u0e2b\u0e25\u0e01__\u0e40\u0e04\u0e32\u0e17\u0e33\u0e22\u0e07\u0e44\u0e07_\u0e40\u0e23\u0e21\u0e15\u0e19\u0e22\u0e07\u0e44\u0e07_\u0e44\u0e1b\u0e15\u0e14\u0e15\u0e32\u0e21\u0e0a\u0e21\u0e01\u0e19\u0e04\u0e23\u0e1a.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e1e\u0e40\u0e01\u0e07.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_web_3_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e21\u0e32\u0e2b\u0e32\u0e04\u0e33\u0e15\u0e2d\u0e1a\u0e01\u0e19\u0e43\u0e19\u0e04\u0e25\u0e1b\u0e44\u0e14\u0e40\u0e25\u0e1a\u0e22\u0e04\u0e23\u0e1a.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e0a\u0e32\u0e07\u0e44\u0e17\u0e22\u0e21\u0e32\u0e01\u0e1d\u0e21\u0e2d\u0e17\u0e25\u0e01\u0e04\u0e32\u0e44\u0e27\u0e43\u0e08\u0e16\u0e2d\u0e22\u0e23\u0e16\u0e43\u0e2b\u0e21\u0e04\u0e19\u0e40\u0e1b\u0e19\u0e25\u0e32\u0e19__\u0e21\u0e32\u0e43\u0e2b\u0e04\u0e2a\u0e15\u0e2d\u0e21\u0e15\u0e07\u0e41\u0e15\u0e2d\u0e2d\u0e01\u0e28\u0e19\u0e22_\u0e41\u0e1a\u0e1a\u0e22\u0e07\u0e44\u0e21\u0e44\u0e14\u0e02.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_consult_\u0e01\u0e2d\u0e2a\u0e23\u0e32\u0e07_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e08\u0e33\u0e40\u0e1b\u0e19\u0e15\u0e2d\u0e07\u0e21\u0e21\u0e22__\u0e08\u0e32\u0e07\u0e21\u0e32\u0e41\u0e25\u0e27\u0e44\u0e14\u0e2d\u0e30\u0e44\u0e23.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e01\u0e27\u0e32\u0e08\u0e30\u0e21\u0e32\u0e40\u0e1b\u0e19\u0e0a\u0e32\u0e07\u0e2a\u0e01_\u0e17\u0e2a\u0e32\u0e21\u0e32\u0e32\u0e23\u0e16\u0e40\u0e25\u0e22\u0e07\u0e15\u0e27\u0e44\u0e14_\u0e44\u0e1b\u0e1f\u0e07\u0e01\u0e19\u0e08\u0e32.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_1_\u0e27\u0e19\u0e43\u0e19\u0e01\u0e32\u0e23\u0e17\u0e33\u0e1f\u0e32\u0e23\u0e21\u0e07\u0e2a\u0e27\u0e22\u0e07\u0e32\u0e21.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e17\u0e33\u0e44\u0e21\u0e15\u0e2d\u0e07\u0e21\u0e04\u0e32\u0e22\u0e40\u0e1e\u0e25\u0e07_\u0e1e\u0e40\u0e21\u0e18_minimal_record.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e44\u0e21\u0e43\u0e0a\u0e41\u0e04\u0e16\u0e32\u0e22\u0e2a\u0e27\u0e22\u0e19\u0e04\u0e2d\u0e01\u0e32\u0e23\u0e17\u0e33\u0e07\u0e32\u0e19\u0e02\u0e2d\u0e07\u0e21\u0e2d\u0e42\u0e1b\u0e23\u0e19\u0e01\u0e1a\u0e19\u0e42\u0e14\u0e23\u0e19.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e42\u0e04\u0e0a\u0e15\u0e19_\u0e01\u0e1a\u0e40\u0e23\u0e2d\u0e07\u0e23\u0e32\u0e27\u0e02\u0e2d\u0e07\u0e2d\u0e32\u0e0a\u0e1e\u0e44\u0e1e\u0e23\u0e40\u0e27\u0e17\u0e40\u0e17\u0e23\u0e19\u0e40\u0e19\u0e2d\u0e23.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e1e\u0e41\u0e2d\u0e21.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e0a\u0e07.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e0a\u0e32\u0e07\u0e20\u0e32\u0e1e\u0e07\u0e32\u0e19\u0e41\u0e15\u0e07_\u0e2d\u0e32\u0e0a\u0e1e\u0e17\u0e14\u0e2a\u0e27\u0e22\u0e2b\u0e23_\u0e41\u0e15\u0e40\u0e1a\u0e2d\u0e07\u0e2b\u0e25\u0e07\u0e41\u0e25\u0e01\u0e21\u0e32\u0e14\u0e27\u0e22\u0e2d\u0e30\u0e44\u0e23__what_the_job_s3_ep1.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e15\u0e44\u0e21\u0e19\u0e33\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e02\u0e2d\u0e07\u0e08\u0e23\u0e07\u0e2b\u0e23\u0e2d\u0e02\u0e2d\u0e07\u0e1b\u0e25\u0e2d\u0e21_\u0e40\u0e25\u0e22\u0e07\u0e41\u0e25\u0e27\u0e15\u0e2d\u0e07\u0e14\u0e41\u0e25\u0e21\u0e22.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e17\u0e33\u0e44\u0e21\u0e15\u0e2d\u0e07\u0e21\u0e04\u0e32\u0e22\u0e40\u0e1e\u0e25\u0e07_\u0e1e\u0e40\u0e21\u0e18_minimal_record.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e42\u0e27\u0e40\u0e01\u0e07.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e40\u0e0a\u0e1f\u0e44\u0e02.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e01\u0e27\u0e32\u0e08\u0e30\u0e21\u0e32\u0e40\u0e1b\u0e19\u0e0a\u0e32\u0e07\u0e2a\u0e01_\u0e17\u0e2a\u0e32\u0e21\u0e32\u0e32\u0e23\u0e16\u0e40\u0e25\u0e22\u0e07\u0e15\u0e27\u0e44\u0e14_\u0e44\u0e1b\u0e1f\u0e07\u0e01\u0e19\u0e08\u0e32.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e1a\u0e07.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e2d\u0e19.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e42\u0e04\u0e0a\u0e15\u0e19_\u0e01\u0e1a\u0e40\u0e23\u0e2d\u0e07\u0e23\u0e32\u0e27\u0e02\u0e2d\u0e07\u0e2d\u0e32\u0e0a\u0e1e\u0e44\u0e1e\u0e23\u0e40\u0e27\u0e17\u0e40\u0e17\u0e23\u0e19\u0e40\u0e19\u0e2d\u0e23.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e08\u0e2a\u0e21\u0e19.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_vlog_\u0e01\u0e2d\u0e1f_midlife_crisis.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e27\u0e23\u0e14\u0e32.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e1e\u0e40\u0e01\u0e07_wall_painting_\u0e08\u0e32\u0e01\u0e01\u0e33\u0e41\u0e1e\u0e07\u0e40\u0e1b\u0e25\u0e32\u0e2a\u0e1c\u0e25\u0e07\u0e32\u0e19\u0e28\u0e25\u0e1b\u0e30\u0e17\u0e2a\u0e23\u0e32\u0e07\u0e23\u0e32\u0e22\u0e44\u0e14\u0e40\u0e25\u0e22\u0e07\u0e0a\u0e1e__what_the_job_ss3_ep3.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e18\u0e23\u0e01\u0e08\u0e23\u0e32\u0e19\u0e01\u0e32\u0e41\u0e1f_\u0e41\u0e25\u0e30_\u0e1a\u0e32\u0e23\u0e2a\u0e15\u0e32.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e1e\u0e0a.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/status_logger.py",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workflow.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/temp_mono_audio.wav",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/first_pipeline.py",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/first_pipeline.py",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/status_logger.py",
-      "type": "references"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/first_pipeline.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/archive/discord_guest_puller.py",
       "target": "model_router.py",
       "type": "references"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/3_final_scripts",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/learning_base.json",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/temp_audio.m4a",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/podcast_pao_mayor",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/update_hashtags_everywhere.py",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/rerun_state.json",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/check_review_cards.py",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/VTuber",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/cream_research_notes.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/ray_drafter.err",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/or_audit_report.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/cover_design_wall_painter.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/download_images.py",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/video_drafter.out",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/chris_director_guide.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/brainstorm_viewership_growth.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images/07_leather_suit_kangaroo.jpg",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/data_analysis_report.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images/04_yamaha_spark_110.jpg",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/fb_fb_video_mon.out",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images/04_motocross_child_training.jpg",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_logo_on_black.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images/06_data_telemetry_analysis.jpg",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/fb_fb_video_mon.err",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images/05_anupab_fitness_gym.jpg",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/video_drafter.err",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images/06_motorland_aragon_circuit.jpg",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/yt_style_guide.txt",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images/02_yamaha_yzr_m1_motogp.jpg",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/posting_schedule.json",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images/02_yamaha_r6_wsbk.jpg",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/ray_drafter.out",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images/03_yamaha_spark_racing.jpg",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/auto_scheduler.err",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images/09_chang_international_circuit.jpg",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/fb_thu_podcast.out",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images/08_race_cargo_container.jpg",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/fb_reels_midday.out",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images/03_yamaha_mio_racing.jpg",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/youtube_upload_guide.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/interview_anupab_sarmoon/images/07_alpinestars_tech_air_airbag.jpg",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/fb_sat_reels.err",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e1e\u0e40\u0e01\u0e07.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/fb_fri_quote.out",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e28\u0e25\u0e1b\u0e19\u0e44\u0e2a\u0e41\u0e2b\u0e07.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro_logo.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e42\u0e27\u0e40\u0e01\u0e07.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/darc_light_logo.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e40\u0e0a\u0e1f\u0e44\u0e02.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/fb_fri_quote.err",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_regenerated_rerun_sun_\u0e2d\u0e19\u0e1f\u0e25\u0e40\u0e2d\u0e19\u0e40\u0e0b\u0e2d\u0e23\u0e2a\u0e32\u0e22_sport_\u0e17\u0e33\u0e2d\u0e30\u0e44\u0e23\u0e01\u0e19\u0e1a\u0e32\u0e07\u0e43\u0e19\u0e41\u0e15\u0e25\u0e30\u0e27\u0e19.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/fb_reels_midday.err",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_ai_\u0e21\u0e1c\u0e25\u0e15\u0e2d\u0e2d\u0e32\u0e0a\u0e1e\u0e28\u0e25\u0e1b\u0e19\u0e08\u0e23\u0e07\u0e2b\u0e23\u0e2d\u0e44\u0e21.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/fb_thu_podcast.err",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_regenerated_rerun_sun_location_manager_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e15\u0e2d\u0e07\u0e17\u0e33\u0e2d\u0e30\u0e44\u0e23\u0e1a\u0e32\u0e07.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/fb_sat_reels.out",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e01\u0e1f_muzcali_\u0e04\u0e19\u0e44\u0e17\u0e22\u0e04\u0e19\u0e40\u0e14\u0e22\u0e27_\u0e17\u0e44\u0e14\u0e40\u0e1b\u0e19_global_brand_ambassador_\u0e43\u0e19\u0e27\u0e07\u0e01\u0e32\u0e23\u0e08\u0e01\u0e23\u0e22\u0e32\u0e19__what_the_job_ss3_ep2.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/layman_data_report.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_regenerated_rerun_sun_\u0e01\u0e1f_muzcali_\u0e04\u0e19\u0e44\u0e17\u0e22\u0e04\u0e19\u0e40\u0e14\u0e22\u0e27_\u0e17\u0e44\u0e14\u0e40\u0e1b\u0e19_global_brand_ambassador_\u0e43\u0e19\u0e27\u0e07\u0e01\u0e32\u0e23\u0e08\u0e01\u0e23\u0e22\u0e32\u0e19__what_the_job_ss3_ep2.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/auto_scheduler.out",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_location_manager_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e15\u0e2d\u0e07\u0e17\u0e33\u0e2d\u0e30\u0e44\u0e23\u0e1a\u0e32\u0e07.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/facebook_setup_guide.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_ai_\u0e21\u0e1c\u0e25\u0e15\u0e2d\u0e2d\u0e32\u0e0a\u0e1e\u0e28\u0e25\u0e1b\u0e19\u0e08\u0e23\u0e07\u0e2b\u0e23\u0e2d\u0e44\u0e21.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/3_final_scripts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/3_final_scripts/graphic_designer_wtj_draft.txt",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e0a\u0e27\u0e15\u0e40\u0e0b\u0e1f\u0e21\u0e2d\u0e2d\u0e32\u0e0a\u0e1e__\u0e40\u0e1a\u0e2d\u0e07\u0e2b\u0e25\u0e07\u0e04\u0e23\u0e27\u0e41\u0e25\u0e30\u0e40\u0e04\u0e25\u0e14\u0e25\u0e1a\u0e17\u0e33\u0e2d\u0e32\u0e2b\u0e32\u0e23\u0e23\u0e30\u0e14\u0e1a\u0e21\u0e2d\u0e42\u0e1b\u0e23.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/3_final_scripts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/3_final_scripts/software_developer_wtj_draft.txt",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e0a\u0e32\u0e07\u0e44\u0e17\u0e22\u0e21\u0e32\u0e01\u0e1d\u0e21\u0e2d\u0e17\u0e25\u0e01\u0e04\u0e32\u0e44\u0e27\u0e43\u0e08\u0e16\u0e2d\u0e22\u0e23\u0e16\u0e43\u0e2b\u0e21\u0e04\u0e19\u0e40\u0e1b\u0e19\u0e25\u0e32\u0e19__\u0e21\u0e32\u0e43\u0e2b\u0e04\u0e2a\u0e15\u0e2d\u0e21\u0e15\u0e07\u0e41\u0e15\u0e2d\u0e2d\u0e01\u0e28\u0e19\u0e22_\u0e41\u0e1a\u0e1a\u0e22\u0e07\u0e44\u0e21\u0e44\u0e14\u0e02.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/3_final_scripts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/3_final_scripts/photographer_wtj_draft.txt",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e18\u0e23\u0e01\u0e08\u0e23\u0e32\u0e19\u0e01\u0e32\u0e41\u0e1f_\u0e41\u0e25\u0e30_\u0e1a\u0e32\u0e23\u0e2a\u0e15\u0e32.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e40\u0e1a\u0e2d\u0e07\u0e2b\u0e25\u0e07\u0e2d\u0e32\u0e0a\u0e1e_dj_\u0e17\u0e04\u0e13\u0e2d\u0e32\u0e08\u0e44\u0e21\u0e40\u0e04\u0e22\u0e23.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/4_audit_report.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e19\u0e32\u0e22\u0e01_\u0e2d\u0e1a\u0e08_\u0e25\u0e33\u0e1e\u0e19.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/3_research_doc.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/reels_under1min_\u0e0a\u0e32\u0e07\u0e41\u0e15\u0e07\u0e2b\u0e19\u0e32\u0e2a\u0e0a\u0e27\u0e15.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/7_storyboard_and_prompts.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_consult_\u0e01\u0e2d\u0e2a\u0e23\u0e32\u0e07_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e08\u0e33\u0e40\u0e1b\u0e19\u0e15\u0e2d\u0e07\u0e21\u0e21\u0e22__\u0e08\u0e32\u0e07\u0e21\u0e32\u0e41\u0e25\u0e27\u0e44\u0e14\u0e2d\u0e30\u0e44\u0e23.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/5_youtube_script.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e1e\u0e40\u0e01\u0e32.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/2_creative_concept.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e0a\u0e32\u0e07\u0e20\u0e32\u0e1e\u0e07\u0e32\u0e19\u0e41\u0e15\u0e07_\u0e2d\u0e32\u0e0a\u0e1e\u0e17\u0e14\u0e2a\u0e27\u0e22\u0e2b\u0e23_\u0e41\u0e15\u0e40\u0e1a\u0e2d\u0e07\u0e2b\u0e25\u0e07\u0e41\u0e25\u0e01\u0e21\u0e32\u0e14\u0e27\u0e22\u0e2d\u0e30\u0e44\u0e23__what_the_job_s3_ep1.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/ray_draft.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_regenerated_rerun_thu_ai_\u0e21\u0e1c\u0e25\u0e15\u0e2d\u0e2d\u0e32\u0e0a\u0e1e\u0e28\u0e25\u0e1b\u0e19\u0e08\u0e23\u0e07\u0e2b\u0e23\u0e2d\u0e44\u0e21.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/brief_from_keng.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_regenerated_rerun_sun_\u0e01\u0e27\u0e32\u0e08\u0e30\u0e21\u0e32\u0e40\u0e1b\u0e19\u0e0a\u0e32\u0e07\u0e2a\u0e01_\u0e17\u0e2a\u0e32\u0e21\u0e32\u0e32\u0e23\u0e16\u0e40\u0e25\u0e22\u0e07\u0e15\u0e27\u0e44\u0e14_\u0e44\u0e1b\u0e1f\u0e07\u0e01\u0e19\u0e08\u0e32.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/6_critique_script.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_regenerated_rerun_thu_\u0e42\u0e04\u0e0a\u0e15\u0e19_\u0e01\u0e1a\u0e40\u0e23\u0e2d\u0e07\u0e23\u0e32\u0e27\u0e02\u0e2d\u0e07\u0e2d\u0e32\u0e0a\u0e1e\u0e44\u0e1e\u0e23\u0e40\u0e27\u0e17\u0e40\u0e17\u0e23\u0e19\u0e40\u0e19\u0e2d\u0e23.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/create_clean_thumbnail.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_regenerated_rerun_thu_consult_\u0e01\u0e2d\u0e2a\u0e23\u0e32\u0e07_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e08\u0e33\u0e40\u0e1b\u0e19\u0e15\u0e2d\u0e07\u0e21\u0e21\u0e22__\u0e08\u0e32\u0e07\u0e21\u0e32\u0e41\u0e25\u0e27\u0e44\u0e14\u0e2d\u0e30\u0e44\u0e23.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/overlay_logo.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_1_\u0e27\u0e19\u0e43\u0e19\u0e01\u0e32\u0e23\u0e17\u0e33\u0e1f\u0e32\u0e23\u0e21\u0e07\u0e2a\u0e27\u0e22\u0e07\u0e32\u0e21.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/1_idea_card.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_regenerated_rerun_sun_1_\u0e27\u0e19\u0e43\u0e19\u0e01\u0e32\u0e23\u0e17\u0e33\u0e1f\u0e32\u0e23\u0e21\u0e07\u0e2a\u0e27\u0e22\u0e07\u0e32\u0e21.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/image_prompts_instructions.txt",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e1e\u0e32\u0e0a\u0e21\u0e1f\u0e32\u0e23\u0e21\u0e2b\u0e19\u0e40\u0e2b\u0e22\u0e2d.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/clean_thumbnail_middle.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_regenerated_rerun_sun_ai_\u0e21\u0e1c\u0e25\u0e15\u0e2d\u0e2d\u0e32\u0e0a\u0e1e\u0e28\u0e25\u0e1b\u0e19\u0e08\u0e23\u0e07\u0e2b\u0e23\u0e2d\u0e44\u0e21.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/thumbnail_option_a.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_location_manager_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e15\u0e2d\u0e07\u0e17\u0e33\u0e2d\u0e30\u0e44\u0e23\u0e1a\u0e32\u0e07.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/clean_thumbnail_premium_top.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_regenerated_rerun_thu_\u0e15\u0e44\u0e21\u0e19\u0e33\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e02\u0e2d\u0e07\u0e08\u0e23\u0e07\u0e2b\u0e23\u0e2d\u0e02\u0e2d\u0e07\u0e1b\u0e25\u0e2d\u0e21_\u0e40\u0e25\u0e22\u0e07\u0e41\u0e25\u0e27\u0e15\u0e2d\u0e07\u0e14\u0e41\u0e25\u0e21\u0e22.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/style3_nam_huge.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_regenerated_rerun_thu_\u0e01\u0e2d\u0e25\u0e1f\u0e1a\u0e32\u0e23\u0e40\u0e17\u0e19\u0e40\u0e14\u0e2d\u0e23_\u0e1c\u0e44\u0e21\u0e40\u0e04\u0e22\u0e22\u0e2d\u0e21\u0e41\u0e1e_\u0e08\u0e19\u0e44\u0e1b\u0e04\u0e27\u0e32\u0e23\u0e32\u0e07\u0e27\u0e25\u0e23\u0e30\u0e14\u0e1a\u0e42\u0e25\u0e01\u0e21\u0e32\u0e08\u0e19\u0e44\u0e14.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/clean_thumbnail_dramatic_top.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_regenerated_rerun_thu_vlog_\u0e01\u0e2d\u0e1f_midlife_crisis.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/thumbnail_option_b.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/reels_under1min_transcript_\u0e0a\u0e32\u0e07\u0e20\u0e32\u0e1e\u0e2d\u0e32\u0e0a\u0e1e.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/style2_realistic_huge.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_regenerated_rerun_thu_\u0e28\u0e25\u0e1b\u0e19\u0e44\u0e2a\u0e41\u0e2b\u0e07.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/clean_thumbnail_dramatic_top_blend.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e1e\u0e40\u0e01\u0e07_wall_painting_\u0e08\u0e32\u0e01\u0e01\u0e33\u0e41\u0e1e\u0e07\u0e40\u0e1b\u0e25\u0e32\u0e2a\u0e1c\u0e25\u0e07\u0e32\u0e19\u0e28\u0e25\u0e1b\u0e30\u0e17\u0e2a\u0e23\u0e32\u0e07\u0e23\u0e32\u0e22\u0e44\u0e14\u0e40\u0e25\u0e22\u0e07\u0e0a\u0e1e__what_the_job_ss3_ep3.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/clean_thumbnail_top.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e40\u0e1b\u0e14\u0e43\u0e08\u0e04\u0e19\u0e02\u0e1a\u0e2a\u0e25\u0e2d\u0e41\u0e14\u0e07_\u0e40\u0e1b\u0e19\u0e08\u0e23\u0e07\u0e2d\u0e22\u0e32\u0e07\u0e0a\u0e32\u0e27\u0e40\u0e19\u0e15\u0e27\u0e32\u0e21\u0e22_\u0e43\u0e19\u0e2d\u0e01\u0e21\u0e21\u0e21\u0e2d\u0e07.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/clean_thumbnail_16_9.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_vlog_\u0e01\u0e2d\u0e1f_midlife_crisis.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/clean_thumbnail_premium_stacked.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_regenerated_rerun_sun_\u0e40\u0e01\u0e29\u0e15\u0e23\u0e01\u0e23\u0e17\u0e33\u0e1f\u0e32\u0e23\u0e21\u0e2b\u0e19\u0e17\u0e2a\u0e32\u0e21\u0e32\u0e23\u0e16\u0e17\u0e33\u0e23\u0e32\u0e22\u0e44\u0e14\u0e16\u0e07_7_\u0e2b\u0e25\u0e01\u0e43\u0e19\u0e40\u0e27\u0e25\u0e32\u0e40\u0e1e\u0e22\u0e07_2_\u0e1b.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/test_cropped_logo.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e08\u0e2a\u0e21\u0e19.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/clean_thumbnail_dramatic_middle.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_regenerated_rerun_sun_\u0e2d\u0e32\u0e0a\u0e1e\u0e2d\u0e2a\u0e23\u0e30\u0e17\u0e0a\u0e2d\u0e27\u0e32_stock_photo_\u0e01\u0e1a\u0e23\u0e32\u0e22\u0e44\u0e14_6_\u0e2b\u0e25\u0e01__\u0e40\u0e04\u0e32\u0e17\u0e33\u0e22\u0e07\u0e44\u0e07_\u0e40\u0e23\u0e21\u0e15\u0e19\u0e22\u0e07\u0e44\u0e07_\u0e44\u0e1b\u0e15\u0e14\u0e15\u0e32\u0e21\u0e0a\u0e21\u0e01\u0e19\u0e04\u0e23\u0e1a.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/style1_clay_huge.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e1e\u0e01\u0e1a.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/debug_logo_alpha.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e01\u0e27\u0e32\u0e08\u0e30\u0e21\u0e32\u0e40\u0e1b\u0e19\u0e40\u0e08\u0e32\u0e02\u0e2d\u0e07\u0e40\u0e2b\u0e23\u0e22\u0e0d\u0e17\u0e2d\u0e07\u0e0b\u0e40\u0e01\u0e21\u0e2a_\u0e1e\u0e21\u0e30\u0e15\u0e21\u0e19\u0e01\u0e08\u0e01\u0e23\u0e22\u0e32\u0e19\u0e17\u0e21\u0e0a\u0e32\u0e15_\u0e40\u0e15\u0e1a\u0e42\u0e15\u0e21\u0e32\u0e22\u0e07\u0e44\u0e07_\u0e1c\u0e32\u0e19\u0e2d\u0e30\u0e44\u0e23\u0e21\u0e32\u0e1a\u0e32\u0e07.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/thumbnail_option_b_with_logo.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_regenerated_rerun_thu_web_3_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e21\u0e32\u0e2b\u0e32\u0e04\u0e33\u0e15\u0e2d\u0e1a\u0e01\u0e19\u0e43\u0e19\u0e04\u0e25\u0e1b\u0e44\u0e14\u0e40\u0e25\u0e1a\u0e22\u0e04\u0e23\u0e1a.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/thumbnail_option_a_with_logo.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e40\u0e1b\u0e14\u0e43\u0e08\u0e04\u0e19\u0e02\u0e1a\u0e2a\u0e25\u0e2d\u0e41\u0e14\u0e07_\u0e40\u0e1b\u0e19\u0e08\u0e23\u0e07\u0e2d\u0e22\u0e32\u0e07\u0e0a\u0e32\u0e27\u0e40\u0e19\u0e15\u0e27\u0e32\u0e21\u0e22_\u0e43\u0e19\u0e2d\u0e01\u0e21\u0e21\u0e21\u0e2d\u0e07.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/test_text_render.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e41\u0e04\u0e40\u0e2d\u0e32\u0e40\u0e17_\u0e2b\u0e23\u0e2d_funtion.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e01\u0e1f_muzcali_\u0e04\u0e19\u0e44\u0e17\u0e22\u0e04\u0e19\u0e40\u0e14\u0e22\u0e27_\u0e17\u0e44\u0e14\u0e40\u0e1b\u0e19_global_brand_ambassador_\u0e43\u0e19\u0e27\u0e07\u0e01\u0e32\u0e23\u0e08\u0e01\u0e23\u0e22\u0e32\u0e19__what_the_job_ss3_ep2.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/analytics",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_regenerated_rerun_thu_\u0e0a\u0e32\u0e07\u0e44\u0e17\u0e22\u0e21\u0e32\u0e01\u0e1d\u0e21\u0e2d\u0e17\u0e25\u0e01\u0e04\u0e32\u0e44\u0e27\u0e43\u0e08\u0e16\u0e2d\u0e22\u0e23\u0e16\u0e43\u0e2b\u0e21\u0e04\u0e19\u0e40\u0e1b\u0e19\u0e25\u0e32\u0e19__\u0e21\u0e32\u0e43\u0e2b\u0e04\u0e2a\u0e15\u0e2d\u0e21\u0e15\u0e07\u0e41\u0e15\u0e2d\u0e2d\u0e01\u0e28\u0e19\u0e22_\u0e41\u0e1a\u0e1a\u0e22\u0e07\u0e44\u0e21\u0e44\u0e14\u0e02.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/research_Game_Balancer_profession_insights_pain_points_salary_2026.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e2d\u0e19\u0e1f\u0e25\u0e40\u0e2d\u0e19\u0e40\u0e0b\u0e2d\u0e23\u0e2a\u0e32\u0e22_sport_\u0e17\u0e33\u0e2d\u0e30\u0e44\u0e23\u0e01\u0e19\u0e1a\u0e32\u0e07\u0e43\u0e19\u0e41\u0e15\u0e25\u0e30\u0e27\u0e19.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/sources_for_notebooklm_Game_Balancer.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_\u0e0a\u0e32\u0e07\u0e41\u0e15\u0e07\u0e2b\u0e19\u0e32\u0e2a\u0e0a\u0e27\u0e15.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/transcript_Sport_Influencer.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_regenerated_rerun_thu_\u0e18\u0e23\u0e01\u0e08\u0e23\u0e32\u0e19\u0e01\u0e32\u0e41\u0e1f_\u0e41\u0e25\u0e30_\u0e1a\u0e32\u0e23\u0e2a\u0e15\u0e32.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/transcript_Gwz7rBrIhxQ.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e40\u0e1a\u0e2d\u0e07\u0e2b\u0e25\u0e07\u0e2d\u0e32\u0e0a\u0e1e_dj_\u0e17\u0e04\u0e13\u0e2d\u0e32\u0e08\u0e44\u0e21\u0e40\u0e04\u0e22\u0e23.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/transcript_TUXVwxumHsg.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e0a\u0e07.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/transcript_2SG1BAItYMg.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e19\u0e2d\u0e07\u0e01\u0e1f.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_short",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_regenerated_rerun_sun_\u0e40\u0e1b\u0e14\u0e43\u0e08\u0e04\u0e19\u0e02\u0e1a\u0e2a\u0e25\u0e2d\u0e41\u0e14\u0e07_\u0e40\u0e1b\u0e19\u0e08\u0e23\u0e07\u0e2d\u0e22\u0e32\u0e07\u0e0a\u0e32\u0e27\u0e40\u0e19\u0e15\u0e27\u0e32\u0e21\u0e22_\u0e43\u0e19\u0e2d\u0e01\u0e21\u0e21\u0e21\u0e2d\u0e07.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/fb_videos",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e27\u0e23\u0e14\u0e32.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/reels",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e2b\u0e2d\u0e22\u0e02\u0e21\u0e22\u0e01\u0e29\u0e23\u0e19\u0e15\u0e19\u0e30_\u0e23\u0e32\u0e22\u0e44\u0e14\u0e40\u0e2a\u0e23\u0e21\u0e27\u0e19\u0e25\u0e30_2000_\u0e2b\u0e2d\u0e22\u0e02\u0e21\u0e17\u0e21\u0e02\u0e19\u0e32\u0e14\u0e43\u0e2b\u0e0d\u0e40\u0e17\u0e32\u0e44\u0e02\u0e44\u0e01_\u0e40\u0e25\u0e22\u0e07\u0e07\u0e32\u0e22_\u0e42\u0e15\u0e44\u0e27_wtj_wtjtalk.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_3-5min",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e1e\u0e41\u0e2d\u0e21.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_short",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_short/processed",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_regenerated_rerun_thu_\u0e2d\u0e19\u0e1f\u0e25\u0e40\u0e2d\u0e19\u0e40\u0e0b\u0e2d\u0e23\u0e2a\u0e32\u0e22_sport_\u0e17\u0e33\u0e2d\u0e30\u0e44\u0e23\u0e01\u0e19\u0e1a\u0e32\u0e07\u0e43\u0e19\u0e41\u0e15\u0e25\u0e30\u0e27\u0e19.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_short/processed",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_short/processed/04 \u0e01\u0e34\u0e1f infu cycling global 30 sec.mp4",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e41\u0e04\u0e40\u0e2d\u0e32\u0e40\u0e17_\u0e2b\u0e23\u0e2d_funtion.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_short/processed",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_short/processed/01   \u0e01\u0e2d\u0e1f \u0e2d\u0e34\u0e19\u0e1e\u0e25\u0e39   30 sec_.mp4",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e1e\u0e01\u0e1a.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_short/processed",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_short/processed/wtj_intro.mp4",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_regenerated_rerun_sun_\u0e28\u0e25\u0e1b\u0e19\u0e44\u0e2a\u0e41\u0e2b\u0e07.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_short/processed",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_short/processed/03 vokeg 30 sec.mp4",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e1e\u0e0a.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_short/processed",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_short/processed/02 \u0e40\u0e01\u0e48\u0e07 wall painting 30 sec.mp4",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_regenerated_rerun_thu_\u0e40\u0e1a\u0e2d\u0e07\u0e2b\u0e25\u0e07\u0e2d\u0e32\u0e0a\u0e1e_dj_\u0e17\u0e04\u0e13\u0e2d\u0e32\u0e08\u0e44\u0e21\u0e40\u0e04\u0e22\u0e23.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/fb_videos",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/fb_videos/processed",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_regenerated_rerun_sun_\u0e01\u0e27\u0e32\u0e08\u0e30\u0e21\u0e32\u0e40\u0e1b\u0e19\u0e40\u0e08\u0e32\u0e02\u0e2d\u0e07\u0e40\u0e2b\u0e23\u0e22\u0e0d\u0e17\u0e2d\u0e07\u0e0b\u0e40\u0e01\u0e21\u0e2a_\u0e1e\u0e21\u0e30\u0e15\u0e21\u0e19\u0e01\u0e08\u0e01\u0e23\u0e22\u0e32\u0e19\u0e17\u0e21\u0e0a\u0e32\u0e15_\u0e40\u0e15\u0e1a\u0e42\u0e15\u0e21\u0e32\u0e22\u0e07\u0e44\u0e07_\u0e1c\u0e32\u0e19\u0e2d\u0e30\u0e44\u0e23\u0e21\u0e32\u0e1a\u0e32\u0e07.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/reels",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/reels/processed",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e40\u0e01\u0e29\u0e15\u0e23\u0e01\u0e23\u0e07\u0e2a\u0e27\u0e22\u0e07\u0e32\u0e21\u0e01\u0e1a\u0e23\u0e32\u0e22\u0e44\u0e14\u0e16\u0e07_7_\u0e2b\u0e25\u0e01\u0e15\u0e2d\u0e1b.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_3-5min",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_3-5min/processed",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_regenerated_rerun_thu_\u0e1e\u0e32\u0e0a\u0e21\u0e1f\u0e32\u0e23\u0e21\u0e2b\u0e19\u0e40\u0e2b\u0e22\u0e2d.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_3-5min/processed",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_3-5min/processed/03 vokeg 3-5 min.mp4",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e2d\u0e19.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_3-5min/processed",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_3-5min/processed/04 \u0e01\u0e34\u0e1f infu cycling global 3-5 min.mp4",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e28\u0e25\u0e1b\u0e19\u0e44\u0e2a\u0e41\u0e2b\u0e07.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_3-5min/processed",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_3-5min/processed/02 \u0e40\u0e01\u0e48\u0e07 wall painting 3-5 min.mp4",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e1a\u0e07.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_3-5min/processed",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_3-5min/processed/01   \u0e01\u0e2d\u0e1f \u0e2d\u0e34\u0e19\u0e1e\u0e25\u0e39   3-5 min.mp4",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_regenerated_rerun_sun_\u0e40\u0e01\u0e29\u0e15\u0e23\u0e01\u0e23\u0e07\u0e2a\u0e27\u0e22\u0e07\u0e32\u0e21\u0e01\u0e1a\u0e23\u0e32\u0e22\u0e44\u0e14\u0e16\u0e07_7_\u0e2b\u0e25\u0e01\u0e15\u0e2d\u0e1b.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/analytics",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/analytics/Chart data.csv",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e44\u0e21\u0e43\u0e0a\u0e41\u0e04\u0e16\u0e32\u0e22\u0e2a\u0e27\u0e22\u0e19\u0e04\u0e2d\u0e01\u0e32\u0e23\u0e17\u0e33\u0e07\u0e32\u0e19\u0e02\u0e2d\u0e07\u0e21\u0e2d\u0e42\u0e1b\u0e23\u0e19\u0e01\u0e1a\u0e19\u0e42\u0e14\u0e23\u0e19.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/analytics",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/analytics/README.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e19\u0e32\u0e22\u0e01_\u0e2d\u0e1a\u0e08_\u0e25\u0e33\u0e1e\u0e19.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/analytics",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/analytics/Table data.csv",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_regenerated_rerun_sun_\u0e15\u0e44\u0e21\u0e19\u0e33\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e02\u0e2d\u0e07\u0e08\u0e23\u0e07\u0e2b\u0e23\u0e2d\u0e02\u0e2d\u0e07\u0e1b\u0e25\u0e2d\u0e21_\u0e40\u0e25\u0e22\u0e07\u0e41\u0e25\u0e27\u0e15\u0e2d\u0e07\u0e14\u0e41\u0e25\u0e21\u0e22.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/analytics",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/analytics/Totals.csv",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e01\u0e2d\u0e25\u0e1f\u0e1a\u0e32\u0e23\u0e40\u0e17\u0e19\u0e40\u0e14\u0e2d\u0e23_\u0e1c\u0e44\u0e21\u0e40\u0e04\u0e22\u0e22\u0e2d\u0e21\u0e41\u0e1e_\u0e08\u0e19\u0e44\u0e1b\u0e04\u0e27\u0e32\u0e23\u0e32\u0e07\u0e27\u0e25\u0e23\u0e30\u0e14\u0e1a\u0e42\u0e25\u0e01\u0e21\u0e32\u0e08\u0e19\u0e44\u0e14.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro/wtj_outro_lofi.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e40\u0e01\u0e29\u0e15\u0e23\u0e01\u0e23\u0e07\u0e2a\u0e27\u0e22\u0e07\u0e32\u0e21\u0e01\u0e1a\u0e23\u0e32\u0e22\u0e44\u0e14\u0e16\u0e07_7_\u0e2b\u0e25\u0e01\u0e15\u0e2d\u0e1b.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro/wtj_outro_template.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_regenerated_rerun_thu_\u0e2d\u0e32\u0e0a\u0e1e\u0e2d\u0e2a\u0e23\u0e30\u0e17\u0e0a\u0e2d\u0e27\u0e32_stock_photo_\u0e01\u0e1a\u0e23\u0e32\u0e22\u0e44\u0e14_6_\u0e2b\u0e25\u0e01__\u0e40\u0e04\u0e32\u0e17\u0e33\u0e22\u0e07\u0e44\u0e07_\u0e40\u0e23\u0e21\u0e15\u0e19\u0e22\u0e07\u0e44\u0e07_\u0e44\u0e1b\u0e15\u0e14\u0e15\u0e32\u0e21\u0e0a\u0e21\u0e01\u0e19\u0e04\u0e23\u0e1a.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro/logo_source.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_web_3_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e21\u0e32\u0e2b\u0e32\u0e04\u0e33\u0e15\u0e2d\u0e1a\u0e01\u0e19\u0e43\u0e19\u0e04\u0e25\u0e1b\u0e44\u0e14\u0e40\u0e25\u0e1a\u0e22\u0e04\u0e23\u0e1a.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro/wtj_outro_anime.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_regenerated_rerun_sun_\u0e2b\u0e2d\u0e22\u0e02\u0e21\u0e22\u0e01\u0e29\u0e23\u0e19\u0e15\u0e19\u0e30_\u0e23\u0e32\u0e22\u0e44\u0e14\u0e40\u0e2a\u0e23\u0e21\u0e27\u0e19\u0e25\u0e30_2000_\u0e2b\u0e2d\u0e22\u0e02\u0e21\u0e17\u0e21\u0e02\u0e19\u0e32\u0e14\u0e43\u0e2b\u0e0d\u0e40\u0e17\u0e32\u0e44\u0e02\u0e44\u0e01_\u0e40\u0e25\u0e22\u0e07\u0e07\u0e32\u0e22_\u0e42\u0e15\u0e44\u0e27_wtj_wtjtalk.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro/wtj_intro.mp4",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e0a\u0e27\u0e15\u0e40\u0e0b\u0e1f\u0e21\u0e2d\u0e2d\u0e32\u0e0a\u0e1e__\u0e40\u0e1a\u0e2d\u0e07\u0e2b\u0e25\u0e07\u0e04\u0e23\u0e27\u0e41\u0e25\u0e30\u0e40\u0e04\u0e25\u0e14\u0e25\u0e1a\u0e17\u0e33\u0e2d\u0e32\u0e2b\u0e32\u0e23\u0e23\u0e30\u0e14\u0e1a\u0e21\u0e2d\u0e42\u0e1b\u0e23.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro/video_prompts.txt",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_\u0e0a\u0e32\u0e07\u0e41\u0e15\u0e07\u0e2b\u0e19\u0e32\u0e2a\u0e0a\u0e27\u0e15.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro/generate_intro.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_regenerated_rerun_thu_1_\u0e27\u0e19\u0e43\u0e19\u0e01\u0e32\u0e23\u0e17\u0e33\u0e1f\u0e32\u0e23\u0e21\u0e07\u0e2a\u0e27\u0e22\u0e07\u0e32\u0e21.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro/wtj_outro_lofi_v2.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e19\u0e2d\u0e07\u0e01\u0e1f.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro/wtj_flow_prompts.txt",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e1e\u0e40\u0e01\u0e32.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro/wtj_outro_luxury.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e40\u0e01\u0e29\u0e15\u0e23\u0e01\u0e23\u0e17\u0e33\u0e1f\u0e32\u0e23\u0e21\u0e2b\u0e19\u0e17\u0e2a\u0e32\u0e21\u0e32\u0e23\u0e16\u0e17\u0e33\u0e23\u0e32\u0e22\u0e44\u0e14\u0e16\u0e07_7_\u0e2b\u0e25\u0e01\u0e43\u0e19\u0e40\u0e27\u0e25\u0e32\u0e40\u0e1e\u0e22\u0e07_2_\u0e1b.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/podcast_pao_mayor",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/podcast_pao_mayor/script.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e40\u0e01\u0e29\u0e15\u0e23\u0e01\u0e23\u0e17\u0e33\u0e1f\u0e32\u0e23\u0e21\u0e2b\u0e19\u0e17\u0e2a\u0e32\u0e21\u0e32\u0e23\u0e16\u0e17\u0e33\u0e23\u0e32\u0e22\u0e44\u0e14\u0e16\u0e07_7_\u0e2b\u0e25\u0e01\u0e43\u0e19\u0e40\u0e27\u0e25\u0e32\u0e40\u0e1e\u0e22\u0e07_2_\u0e1b.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_regenerated_rerun_thu_\u0e40\u0e1b\u0e14\u0e43\u0e08\u0e04\u0e19\u0e02\u0e1a\u0e2a\u0e25\u0e2d\u0e41\u0e14\u0e07_\u0e40\u0e1b\u0e19\u0e08\u0e23\u0e07\u0e2d\u0e22\u0e32\u0e07\u0e0a\u0e32\u0e27\u0e40\u0e19\u0e15\u0e27\u0e32\u0e21\u0e22_\u0e43\u0e19\u0e2d\u0e01\u0e21\u0e21\u0e21\u0e2d\u0e07.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779004691974.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_regenerated_rerun_thu_\u0e41\u0e04\u0e40\u0e2d\u0e32\u0e40\u0e17_\u0e2b\u0e23\u0e2d_funtion.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779005034869.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e15\u0e44\u0e21\u0e19\u0e33\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e02\u0e2d\u0e07\u0e08\u0e23\u0e07\u0e2b\u0e23\u0e2d\u0e02\u0e2d\u0e07\u0e1b\u0e25\u0e2d\u0e21_\u0e40\u0e25\u0e22\u0e07\u0e41\u0e25\u0e27\u0e15\u0e2d\u0e07\u0e14\u0e41\u0e25\u0e21\u0e22.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779004052568.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_regenerated_rerun_thu_\u0e40\u0e01\u0e29\u0e15\u0e23\u0e01\u0e23\u0e17\u0e33\u0e1f\u0e32\u0e23\u0e21\u0e2b\u0e19\u0e17\u0e2a\u0e32\u0e21\u0e32\u0e23\u0e16\u0e17\u0e33\u0e23\u0e32\u0e22\u0e44\u0e14\u0e16\u0e07_7_\u0e2b\u0e25\u0e01\u0e43\u0e19\u0e40\u0e27\u0e25\u0e32\u0e40\u0e1e\u0e22\u0e07_2_\u0e1b.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779003753896.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_regenerated_rerun_sun_\u0e01\u0e2d\u0e25\u0e1f\u0e1a\u0e32\u0e23\u0e40\u0e17\u0e19\u0e40\u0e14\u0e2d\u0e23_\u0e1c\u0e44\u0e21\u0e40\u0e04\u0e22\u0e22\u0e2d\u0e21\u0e41\u0e1e_\u0e08\u0e19\u0e44\u0e1b\u0e04\u0e27\u0e32\u0e23\u0e32\u0e07\u0e27\u0e25\u0e23\u0e30\u0e14\u0e1a\u0e42\u0e25\u0e01\u0e21\u0e32\u0e08\u0e19\u0e44\u0e14.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779003965524.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e1e\u0e32\u0e0a\u0e21\u0e1f\u0e32\u0e23\u0e21\u0e2b\u0e19\u0e40\u0e2b\u0e22\u0e2d.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779006410273.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e01\u0e27\u0e32\u0e08\u0e30\u0e21\u0e32\u0e40\u0e1b\u0e19\u0e40\u0e08\u0e32\u0e02\u0e2d\u0e07\u0e40\u0e2b\u0e23\u0e22\u0e0d\u0e17\u0e2d\u0e07\u0e0b\u0e40\u0e01\u0e21\u0e2a_\u0e1e\u0e21\u0e30\u0e15\u0e21\u0e19\u0e01\u0e08\u0e01\u0e23\u0e22\u0e32\u0e19\u0e17\u0e21\u0e0a\u0e32\u0e15_\u0e40\u0e15\u0e1a\u0e42\u0e15\u0e21\u0e32\u0e22\u0e07\u0e44\u0e07_\u0e1c\u0e32\u0e19\u0e2d\u0e30\u0e44\u0e23\u0e21\u0e32\u0e1a\u0e32\u0e07.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779004735801.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e19\u0e01\u0e01\u0e21\u0e44\u0e2b\u0e19.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779007489632.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e2d\u0e19\u0e1f\u0e25\u0e40\u0e2d\u0e19\u0e40\u0e0b\u0e2d\u0e23\u0e2a\u0e32\u0e22_sport_\u0e17\u0e33\u0e2d\u0e30\u0e44\u0e23\u0e01\u0e19\u0e1a\u0e32\u0e07\u0e43\u0e19\u0e41\u0e15\u0e25\u0e30\u0e27\u0e19.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779004662914.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e01\u0e2d\u0e25\u0e1f\u0e1a\u0e32\u0e23\u0e40\u0e17\u0e19\u0e40\u0e14\u0e2d\u0e23_\u0e1c\u0e44\u0e21\u0e40\u0e04\u0e22\u0e22\u0e2d\u0e21\u0e41\u0e1e_\u0e08\u0e19\u0e44\u0e1b\u0e04\u0e27\u0e32\u0e23\u0e32\u0e07\u0e27\u0e25\u0e23\u0e30\u0e14\u0e1a\u0e42\u0e25\u0e01\u0e21\u0e32\u0e08\u0e19\u0e44\u0e14.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779006043321.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e2d\u0e32\u0e0a\u0e1e\u0e2d\u0e2a\u0e23\u0e30\u0e17\u0e0a\u0e2d\u0e27\u0e32_stock_photo_\u0e01\u0e1a\u0e23\u0e32\u0e22\u0e44\u0e14_6_\u0e2b\u0e25\u0e01__\u0e40\u0e04\u0e32\u0e17\u0e33\u0e22\u0e07\u0e44\u0e07_\u0e40\u0e23\u0e21\u0e15\u0e19\u0e22\u0e07\u0e44\u0e07_\u0e44\u0e1b\u0e15\u0e14\u0e15\u0e32\u0e21\u0e0a\u0e21\u0e01\u0e19\u0e04\u0e23\u0e1a.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779006287293.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e2b\u0e2d\u0e22\u0e02\u0e21\u0e22\u0e01\u0e29\u0e23\u0e19\u0e15\u0e19\u0e30_\u0e23\u0e32\u0e22\u0e44\u0e14\u0e40\u0e2a\u0e23\u0e21\u0e27\u0e19\u0e25\u0e30_2000_\u0e2b\u0e2d\u0e22\u0e02\u0e21\u0e17\u0e21\u0e02\u0e19\u0e32\u0e14\u0e43\u0e2b\u0e0d\u0e40\u0e17\u0e32\u0e44\u0e02\u0e44\u0e01_\u0e40\u0e25\u0e22\u0e07\u0e07\u0e32\u0e22_\u0e42\u0e15\u0e44\u0e27_wtj_wtjtalk.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779003357678.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_regenerated_rerun_sun_\u0e0a\u0e32\u0e07\u0e44\u0e17\u0e22\u0e21\u0e32\u0e01\u0e1d\u0e21\u0e2d\u0e17\u0e25\u0e01\u0e04\u0e32\u0e44\u0e27\u0e43\u0e08\u0e16\u0e2d\u0e22\u0e23\u0e16\u0e43\u0e2b\u0e21\u0e04\u0e19\u0e40\u0e1b\u0e19\u0e25\u0e32\u0e19__\u0e21\u0e32\u0e43\u0e2b\u0e04\u0e2a\u0e15\u0e2d\u0e21\u0e15\u0e07\u0e41\u0e15\u0e2d\u0e2d\u0e01\u0e28\u0e19\u0e22_\u0e41\u0e1a\u0e1a\u0e22\u0e07\u0e44\u0e21\u0e44\u0e14\u0e02.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779003680104.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e19\u0e01\u0e01\u0e21\u0e44\u0e2b\u0e19.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779004001415.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e2d\u0e32\u0e0a\u0e1e\u0e2d\u0e2a\u0e23\u0e30\u0e17\u0e0a\u0e2d\u0e27\u0e32_stock_photo_\u0e01\u0e1a\u0e23\u0e32\u0e22\u0e44\u0e14_6_\u0e2b\u0e25\u0e01__\u0e40\u0e04\u0e32\u0e17\u0e33\u0e22\u0e07\u0e44\u0e07_\u0e40\u0e23\u0e21\u0e15\u0e19\u0e22\u0e07\u0e44\u0e07_\u0e44\u0e1b\u0e15\u0e14\u0e15\u0e32\u0e21\u0e0a\u0e21\u0e01\u0e19\u0e04\u0e23\u0e1a.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779006270573.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e1e\u0e40\u0e01\u0e07.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779006732945.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_web_3_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e21\u0e32\u0e2b\u0e32\u0e04\u0e33\u0e15\u0e2d\u0e1a\u0e01\u0e19\u0e43\u0e19\u0e04\u0e25\u0e1b\u0e44\u0e14\u0e40\u0e25\u0e1a\u0e22\u0e04\u0e23\u0e1a.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779005182796.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e0a\u0e32\u0e07\u0e44\u0e17\u0e22\u0e21\u0e32\u0e01\u0e1d\u0e21\u0e2d\u0e17\u0e25\u0e01\u0e04\u0e32\u0e44\u0e27\u0e43\u0e08\u0e16\u0e2d\u0e22\u0e23\u0e16\u0e43\u0e2b\u0e21\u0e04\u0e19\u0e40\u0e1b\u0e19\u0e25\u0e32\u0e19__\u0e21\u0e32\u0e43\u0e2b\u0e04\u0e2a\u0e15\u0e2d\u0e21\u0e15\u0e07\u0e41\u0e15\u0e2d\u0e2d\u0e01\u0e28\u0e19\u0e22_\u0e41\u0e1a\u0e1a\u0e22\u0e07\u0e44\u0e21\u0e44\u0e14\u0e02.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779003940136.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_consult_\u0e01\u0e2d\u0e2a\u0e23\u0e32\u0e07_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e08\u0e33\u0e40\u0e1b\u0e19\u0e15\u0e2d\u0e07\u0e21\u0e21\u0e22__\u0e08\u0e32\u0e07\u0e21\u0e32\u0e41\u0e25\u0e27\u0e44\u0e14\u0e2d\u0e30\u0e44\u0e23.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779007053066.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_regenerated_rerun_sun_\u0e41\u0e04\u0e40\u0e2d\u0e32\u0e40\u0e17_\u0e2b\u0e23\u0e2d_funtion.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779007006715.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_regenerated_rerun_sun_\u0e40\u0e1a\u0e2d\u0e07\u0e2b\u0e25\u0e07\u0e2d\u0e32\u0e0a\u0e1e_dj_\u0e17\u0e04\u0e13\u0e2d\u0e32\u0e08\u0e44\u0e21\u0e40\u0e04\u0e22\u0e23.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779005010309.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e01\u0e27\u0e32\u0e08\u0e30\u0e21\u0e32\u0e40\u0e1b\u0e19\u0e0a\u0e32\u0e07\u0e2a\u0e01_\u0e17\u0e2a\u0e32\u0e21\u0e32\u0e32\u0e23\u0e16\u0e40\u0e25\u0e22\u0e07\u0e15\u0e27\u0e44\u0e14_\u0e44\u0e1b\u0e1f\u0e07\u0e01\u0e19\u0e08\u0e32.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779006632729.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_regenerated_rerun_sun_vlog_\u0e01\u0e2d\u0e1f_midlife_crisis.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779006980180.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_1_\u0e27\u0e19\u0e43\u0e19\u0e01\u0e32\u0e23\u0e17\u0e33\u0e1f\u0e32\u0e23\u0e21\u0e07\u0e2a\u0e27\u0e22\u0e07\u0e32\u0e21.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/images",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e17\u0e33\u0e44\u0e21\u0e15\u0e2d\u0e07\u0e21\u0e04\u0e32\u0e22\u0e40\u0e1e\u0e25\u0e07_\u0e1e\u0e40\u0e21\u0e18_minimal_record.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/4_audit_report.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_regenerated_rerun_sun_\u0e42\u0e04\u0e0a\u0e15\u0e19_\u0e01\u0e1a\u0e40\u0e23\u0e2d\u0e07\u0e23\u0e32\u0e27\u0e02\u0e2d\u0e07\u0e2d\u0e32\u0e0a\u0e1e\u0e44\u0e1e\u0e23\u0e40\u0e27\u0e17\u0e40\u0e17\u0e23\u0e19\u0e40\u0e19\u0e2d\u0e23.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/3_research_doc.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e44\u0e21\u0e43\u0e0a\u0e41\u0e04\u0e16\u0e32\u0e22\u0e2a\u0e27\u0e22\u0e19\u0e04\u0e2d\u0e01\u0e32\u0e23\u0e17\u0e33\u0e07\u0e32\u0e19\u0e02\u0e2d\u0e07\u0e21\u0e2d\u0e42\u0e1b\u0e23\u0e19\u0e01\u0e1a\u0e19\u0e42\u0e14\u0e23\u0e19.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/7_storyboard_and_prompts.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_regenerated_rerun_sun_\u0e44\u0e21\u0e43\u0e0a\u0e41\u0e04\u0e16\u0e32\u0e22\u0e2a\u0e27\u0e22\u0e19\u0e04\u0e2d\u0e01\u0e32\u0e23\u0e17\u0e33\u0e07\u0e32\u0e19\u0e02\u0e2d\u0e07\u0e21\u0e2d\u0e42\u0e1b\u0e23\u0e19\u0e01\u0e1a\u0e19\u0e42\u0e14\u0e23\u0e19.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/5_youtube_script.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e42\u0e04\u0e0a\u0e15\u0e19_\u0e01\u0e1a\u0e40\u0e23\u0e2d\u0e07\u0e23\u0e32\u0e27\u0e02\u0e2d\u0e07\u0e2d\u0e32\u0e0a\u0e1e\u0e44\u0e1e\u0e23\u0e40\u0e27\u0e17\u0e40\u0e17\u0e23\u0e19\u0e40\u0e19\u0e2d\u0e23.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/2_creative_concept.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e1e\u0e41\u0e2d\u0e21.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/6_critique_script.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_regenerated_rerun_sun_consult_\u0e01\u0e2d\u0e2a\u0e23\u0e32\u0e07_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e08\u0e33\u0e40\u0e1b\u0e19\u0e15\u0e2d\u0e07\u0e21\u0e21\u0e22__\u0e08\u0e32\u0e07\u0e21\u0e32\u0e41\u0e25\u0e27\u0e44\u0e14\u0e2d\u0e30\u0e44\u0e23.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/1_idea_card.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e0a\u0e07.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/images",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/images/scene_8_scene_11:_\u0e04\u0e33\u0e28\u0e31\u0e1e\u0e17\u0e4c\u0e40\u0e09\u0e1e\u0e32\u0e30\u0e17\u0e32\u0e07_-_mastering.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e0a\u0e32\u0e07\u0e20\u0e32\u0e1e\u0e07\u0e32\u0e19\u0e41\u0e15\u0e07_\u0e2d\u0e32\u0e0a\u0e1e\u0e17\u0e14\u0e2a\u0e27\u0e22\u0e2b\u0e23_\u0e41\u0e15\u0e40\u0e1a\u0e2d\u0e07\u0e2b\u0e25\u0e07\u0e41\u0e25\u0e01\u0e21\u0e32\u0e14\u0e27\u0e22\u0e2d\u0e30\u0e44\u0e23__what_the_job_s3_ep1.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/images",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/images/scene_1_scene_1:_hook_-_\u0e40\u0e2a\u0e35\u0e22\u0e07\u0e01\u0e33\u0e25\u0e31\u0e07\u0e1a\u0e07\u0e01\u0e32\u0e23\u0e04\u0e27\u0e32\u0e21\u0e23\u0e39\u0e49\u0e2a\u0e36\u0e01!.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_regenerated_rerun_sun_web_3_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e21\u0e32\u0e2b\u0e32\u0e04\u0e33\u0e15\u0e2d\u0e1a\u0e01\u0e19\u0e43\u0e19\u0e04\u0e25\u0e1b\u0e44\u0e14\u0e40\u0e25\u0e1a\u0e22\u0e04\u0e23\u0e1a.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/images",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/images/scene_5_scene_7:_\u0e23\u0e32\u0e22\u0e44\u0e14\u0e49\u0e17\u0e35\u0e48\u0e41\u0e17\u0e49\u0e08\u0e23\u0e34\u0e07_-_\u0e23\u0e30\u0e14\u0e31\u0e1a\u0e40\u0e23\u0e34\u0e48\u0e21\u0e15\u0e49\u0e19.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_regenerated_rerun_thu_\u0e40\u0e01\u0e29\u0e15\u0e23\u0e01\u0e23\u0e07\u0e2a\u0e27\u0e22\u0e07\u0e32\u0e21\u0e01\u0e1a\u0e23\u0e32\u0e22\u0e44\u0e14\u0e16\u0e07_7_\u0e2b\u0e25\u0e01\u0e15\u0e2d\u0e1b.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/images",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/images/scene_6_scene_8:_\u0e23\u0e32\u0e22\u0e44\u0e14\u0e49\u0e17\u0e35\u0e48\u0e41\u0e17\u0e49\u0e08\u0e23\u0e34\u0e07_-_\u0e23\u0e30\u0e14\u0e31\u0e1a\u0e01\u0e25\u0e32\u0e07\u0e16\u0e36\u0e07\u0e1c\u0e39\u0e49\u0e40\u0e0a\u0e35\u0e48\u0e22\u0e27\u0e0a\u0e32\u0e0d.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e15\u0e44\u0e21\u0e19\u0e33\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e02\u0e2d\u0e07\u0e08\u0e23\u0e07\u0e2b\u0e23\u0e2d\u0e02\u0e2d\u0e07\u0e1b\u0e25\u0e2d\u0e21_\u0e40\u0e25\u0e22\u0e07\u0e41\u0e25\u0e27\u0e15\u0e2d\u0e07\u0e14\u0e41\u0e25\u0e21\u0e22.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/images",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/images/scene_2_scene_2:_intro_-_\u0e2a\u0e16\u0e32\u0e1b\u0e19\u0e34\u0e01\u0e41\u0e2b\u0e48\u0e07\u0e40\u0e2a\u0e35\u0e22\u0e07.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e17\u0e33\u0e44\u0e21\u0e15\u0e2d\u0e07\u0e21\u0e04\u0e32\u0e22\u0e40\u0e1e\u0e25\u0e07_\u0e1e\u0e40\u0e21\u0e18_minimal_record.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/images",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/images/scene_4_scene_4:_\u0e04\u0e27\u0e32\u0e21\u0e08\u0e23\u0e34\u0e07\u0e17\u0e35\u0e48\u0e40\u0e08\u0e47\u0e1a\u0e1b\u0e27\u0e14_2_-_\u0e2b\u0e39\u0e1e\u0e31\u0e07\u0e01\u0e48\u0e2d\u0e19\u0e27\u0e31\u0e22\u0e2d\u0e31\u0e19\u0e04\u0e27\u0e23.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e42\u0e27\u0e40\u0e01\u0e07.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/images",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/images/scene_3_scene_3:_\u0e04\u0e27\u0e32\u0e21\u0e08\u0e23\u0e34\u0e07\u0e17\u0e35\u0e48\u0e40\u0e08\u0e47\u0e1a\u0e1b\u0e27\u0e14_1_-_\u0e2d\u0e32\u0e0a\u0e35\u0e1e\u0e2b\u0e25\u0e31\u0e07\u0e44\u0e21\u0e04\u0e4c\u0e17\u0e35\u0e48\u0e43\u0e04\u0e23\u0e01\u0e47\u0e21\u0e2d\u0e07\u0e02\u0e49\u0e32\u0e21.png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e40\u0e0a\u0e1f\u0e44\u0e02.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/images",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/images/scene_7_scene_9:_\u0e04\u0e33\u0e28\u0e31\u0e1e\u0e17\u0e4c\u0e40\u0e09\u0e1e\u0e32\u0e30\u0e17\u0e32\u0e07_-_daw_(digital_audio_workstation).png",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_\u0e01\u0e27\u0e32\u0e08\u0e30\u0e21\u0e32\u0e40\u0e1b\u0e19\u0e0a\u0e32\u0e07\u0e2a\u0e01_\u0e17\u0e2a\u0e32\u0e21\u0e32\u0e32\u0e23\u0e16\u0e40\u0e25\u0e22\u0e07\u0e15\u0e27\u0e44\u0e14_\u0e44\u0e1b\u0e1f\u0e07\u0e01\u0e19\u0e08\u0e32.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/VTuber",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/VTuber/idea_card.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_thu_discord_\u0e1a\u0e07.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/VTuber",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/VTuber/youtube_script.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_regenerated_rerun_thu_\u0e01\u0e27\u0e32\u0e08\u0e30\u0e21\u0e32\u0e40\u0e1b\u0e19\u0e40\u0e08\u0e32\u0e02\u0e2d\u0e07\u0e40\u0e2b\u0e23\u0e22\u0e0d\u0e17\u0e2d\u0e07\u0e0b\u0e40\u0e01\u0e21\u0e2a_\u0e1e\u0e21\u0e30\u0e15\u0e21\u0e19\u0e01\u0e08\u0e01\u0e23\u0e22\u0e32\u0e19\u0e17\u0e21\u0e0a\u0e32\u0e15_\u0e40\u0e15\u0e1a\u0e42\u0e15\u0e21\u0e32\u0e22\u0e07\u0e44\u0e07_\u0e1c\u0e32\u0e19\u0e2d\u0e30\u0e44\u0e23\u0e21\u0e32\u0e1a\u0e32\u0e07.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/VTuber",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/VTuber/facebook_text.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e2d\u0e19.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/VTuber",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/VTuber/image_prompts.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_regenerated_rerun_thu_\u0e44\u0e21\u0e43\u0e0a\u0e41\u0e04\u0e16\u0e32\u0e22\u0e2a\u0e27\u0e22\u0e19\u0e04\u0e2d\u0e01\u0e32\u0e23\u0e17\u0e33\u0e07\u0e32\u0e19\u0e02\u0e2d\u0e07\u0e21\u0e2d\u0e42\u0e1b\u0e23\u0e19\u0e01\u0e1a\u0e19\u0e42\u0e14\u0e23\u0e19.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/VTuber",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/VTuber/audit_report.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e42\u0e04\u0e0a\u0e15\u0e19_\u0e01\u0e1a\u0e40\u0e23\u0e2d\u0e07\u0e23\u0e32\u0e27\u0e02\u0e2d\u0e07\u0e2d\u0e32\u0e0a\u0e1e\u0e44\u0e1e\u0e23\u0e40\u0e27\u0e17\u0e40\u0e17\u0e23\u0e19\u0e40\u0e19\u0e2d\u0e23.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/VTuber",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/VTuber/critique_research.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_regenerated_rerun_thu_\u0e01\u0e27\u0e32\u0e08\u0e30\u0e21\u0e32\u0e40\u0e1b\u0e19\u0e0a\u0e32\u0e07\u0e2a\u0e01_\u0e17\u0e2a\u0e32\u0e21\u0e32\u0e32\u0e23\u0e16\u0e40\u0e25\u0e22\u0e07\u0e15\u0e27\u0e44\u0e14_\u0e44\u0e1b\u0e1f\u0e07\u0e01\u0e19\u0e08\u0e32.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/VTuber",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/VTuber/critique_script.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e08\u0e2a\u0e21\u0e19.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/VTuber",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/VTuber/research_doc.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_vlog_\u0e01\u0e2d\u0e1f_midlife_crisis.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/social_highlights_transcript_2SG1BAItYMg.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e27\u0e23\u0e14\u0e32.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/reels_under1min_from_video_01___\u0e01\u0e2d\u0e1f_\u0e2d\u0e19\u0e1e\u0e25___30_sec_mp4.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_regenerated_rerun_thu_\u0e17\u0e33\u0e44\u0e21\u0e15\u0e2d\u0e07\u0e21\u0e04\u0e32\u0e22\u0e40\u0e1e\u0e25\u0e07_\u0e1e\u0e40\u0e21\u0e18_minimal_record.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/fb_videos_3-5min_from_video_04_\u0e01\u0e1f_infu_cycling_global_3-5_minmp4.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_regenerated_rerun_sun_\u0e18\u0e23\u0e01\u0e08\u0e23\u0e32\u0e19\u0e01\u0e32\u0e41\u0e1f_\u0e41\u0e25\u0e30_\u0e1a\u0e32\u0e23\u0e2a\u0e15\u0e32.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/facebook_text_muscari.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e1e\u0e40\u0e01\u0e07_wall_painting_\u0e08\u0e32\u0e01\u0e01\u0e33\u0e41\u0e1e\u0e07\u0e40\u0e1b\u0e25\u0e32\u0e2a\u0e1c\u0e25\u0e07\u0e32\u0e19\u0e28\u0e25\u0e1b\u0e30\u0e17\u0e2a\u0e23\u0e32\u0e07\u0e23\u0e32\u0e22\u0e44\u0e14\u0e40\u0e25\u0e22\u0e07\u0e0a\u0e1e__what_the_job_ss3_ep3.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/sat_reels_draft.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_regenerated_rerun_sun_\u0e17\u0e33\u0e44\u0e21\u0e15\u0e2d\u0e07\u0e21\u0e04\u0e32\u0e22\u0e40\u0e1e\u0e25\u0e07_\u0e1e\u0e40\u0e21\u0e18_minimal_record.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/sat_reels_transcript_\u0e19\u0e2d\u0e07\u0e01\u0e2d\u0e25\u0e1f_sport_influencer\u2028\u2028\u0e19\u0e04\u0e2d\u0e2a\u0e23\u0e1b\u0e40\u0e19\u0e2d\u0e2b\u0e32\u0e41\u0e25\u0e30\u0e16\u0e2d\u0e14\u0e04\u0e27\u0e32\u0e21.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_\u0e18\u0e23\u0e01\u0e08\u0e23\u0e32\u0e19\u0e01\u0e32\u0e41\u0e1f_\u0e41\u0e25\u0e30_\u0e1a\u0e32\u0e23\u0e2a\u0e15\u0e32.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/wed_teaser_transcript_\u0e19\u0e2d\u0e07\u0e01\u0e2d\u0e25\u0e1f_sport_influencer\u2028\u2028\u0e19\u0e04\u0e2d\u0e2a\u0e23\u0e1b\u0e40\u0e19\u0e2d\u0e2b\u0e32\u0e41\u0e25\u0e30\u0e16\u0e2d\u0e14\u0e04\u0e27\u0e32\u0e21.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/text_posts_sun_discord_\u0e1e\u0e0a.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/facebook_text_wall_painter.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_regenerated_rerun_thu_\u0e2b\u0e2d\u0e22\u0e02\u0e21\u0e22\u0e01\u0e29\u0e23\u0e19\u0e15\u0e19\u0e30_\u0e23\u0e32\u0e22\u0e44\u0e14\u0e40\u0e2a\u0e23\u0e21\u0e27\u0e19\u0e25\u0e30_2000_\u0e2b\u0e2d\u0e22\u0e02\u0e21\u0e17\u0e21\u0e02\u0e19\u0e32\u0e14\u0e43\u0e2b\u0e0d\u0e40\u0e17\u0e32\u0e44\u0e02\u0e44\u0e01_\u0e40\u0e25\u0e22\u0e07\u0e07\u0e32\u0e22_\u0e42\u0e15\u0e44\u0e27_wtj_wtjtalk.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/reels_under1min_from_video_03_vokeg_30_secmp4.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_thu_regenerated_rerun_thu_location_manager_\u0e04\u0e2d\u0e2d\u0e30\u0e44\u0e23_\u0e15\u0e2d\u0e07\u0e17\u0e33\u0e2d\u0e30\u0e44\u0e23\u0e1a\u0e32\u0e07.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/fb_videos_3-5min_from_video_01___\u0e01\u0e2d\u0e1f_\u0e2d\u0e19\u0e1e\u0e25___3-5_minmp4.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/workspace/2_drafts/rerun_sun_regenerated_rerun_sun_\u0e1e\u0e32\u0e0a\u0e21\u0e1f\u0e32\u0e23\u0e21\u0e2b\u0e19\u0e40\u0e2b\u0e22\u0e2d.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/social_highlights_Game_Balancer.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/reels_under1min_from_video_wtj_intromp4.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/wed_teaser_draft.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/status_logger.py",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/reels_under1min_from_video_02_\u0e40\u0e01\u0e07_wall_painting_30_secmp4.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workflow.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/fb_videos_3-5min_from_video_02_\u0e40\u0e01\u0e07_wall_painting_3-5_minmp4.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/temp_mono_audio.wav",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/fri_quote_draft.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/first_pipeline.py",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/fri_quote_transcript_\u0e19\u0e2d\u0e07\u0e01\u0e2d\u0e25\u0e1f_sport_influencer\u2028\u2028\u0e19\u0e04\u0e2d\u0e2a\u0e23\u0e1b\u0e40\u0e19\u0e2d\u0e2b\u0e32\u0e41\u0e25\u0e30\u0e16\u0e2d\u0e14\u0e04\u0e27\u0e32\u0e21.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/facebook_text_\u0e0a\u0e48\u0e32\u0e07\u0e20\u0e32\u0e1e\u0e07\u0e32\u0e19\u0e41\u0e15\u0e48\u0e07.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/fb_videos_3-5min_from_video_03_vokeg_3-5_minmp4.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/reels_under1min_from_video_04_\u0e01\u0e1f_infu_cycling_global_30_secmp4.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard/index.html",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard/notion_calendar_data.js",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard/terms.html",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard/wtj_calendar_dashboard.html",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard/dashboard.html",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard/callback.html",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard/style.css",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard/tiktok2KL4Ktw7PJLhCI63jKnczSskOmIYeSwm.txt",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard/app.js",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard/privacy.html",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/prompts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/prompts/music_prompt.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/prompts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/prompts/pie_prompt.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/prompts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/prompts/deer_prompt.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/prompts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/prompts/creative_prompt.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/prompts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/prompts/cri_prompt.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/prompts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/prompts/ray_prompt.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/prompts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/prompts/q_prompt.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/prompts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/prompts/researcher_prompt.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/prompts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/prompts/p_prompt.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/prompts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/prompts/or_prompt.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/prompts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/prompts/director_prompt.md",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/legacy_study_course_archive",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/dashboard",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/skills",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/antia_pipeline.py",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/antia_pipeline.py",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/status_logger.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/first_pipeline.py",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/status_logger.py",
       "type": "references"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/antia_pipeline.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/first_pipeline.py",
       "target": "model_router.py",
       "type": "references"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/antia_pipeline.py",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/WTJ_Story_Project/status_logger.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/3_final_scripts",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/podcast_pao_mayor",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/VTuber",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/ray_drafter.err",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/cover_design_wall_painter.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/video_drafter.out",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/brainstorm_viewership_growth.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/data_analysis_report.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/master_fb_video_wed.err",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/fb_fb_video_mon.out",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_logo_on_black.png",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/master_fb_video_wed.out",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/fb_fb_video_mon.err",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/video_drafter.err",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/yt_style_guide.txt",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/posting_schedule.json",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/ray_drafter.out",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/auto_scheduler.err",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/fb_thu_podcast.out",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/fb_reels_midday.out",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/youtube_upload_guide.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/fb_sat_reels.err",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/fb_fri_quote.out",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro_logo.png",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/darc_light_logo.png",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/fb_fri_quote.err",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/fb_reels_midday.err",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/fb_thu_podcast.err",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/fb_sat_reels.out",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/layman_data_report.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/auto_scheduler.out",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/facebook_setup_guide.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/3_final_scripts",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/3_final_scripts/graphic_designer_wtj_draft.txt",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/3_final_scripts",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/3_final_scripts/software_developer_wtj_draft.txt",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/3_final_scripts",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/3_final_scripts/photographer_wtj_draft.txt",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/4_audit_report.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/3_research_doc.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/7_storyboard_and_prompts.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/5_youtube_script.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/2_creative_concept.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/ray_draft.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/brief_from_keng.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/6_critique_script.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/create_clean_thumbnail.py",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/overlay_logo.py",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/1_idea_card.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/image_prompts_instructions.txt",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/clean_thumbnail_middle.png",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/thumbnail_option_a.png",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/clean_thumbnail_premium_top.png",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/style3_nam_huge.png",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/clean_thumbnail_dramatic_top.png",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/thumbnail_option_b.png",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/style2_realistic_huge.png",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/clean_thumbnail_dramatic_top_blend.png",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/clean_thumbnail_top.png",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/clean_thumbnail_16_9.png",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/clean_thumbnail_premium_stacked.png",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/test_cropped_logo.png",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/clean_thumbnail_dramatic_middle.png",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/style1_clay_huge.png",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/debug_logo_alpha.png",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/thumbnail_option_b_with_logo.png",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/thumbnail_option_a_with_logo.png",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/game_balancer/images/test_text_render.png",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/analytics",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/thumbnails",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/research_Game_Balancer_profession_insights_pain_points_salary_2026.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/sources_for_notebooklm_Game_Balancer.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/transcript_Sport_Influencer.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/transcript_Gwz7rBrIhxQ.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/transcript_TUXVwxumHsg.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/transcript_2SG1BAItYMg.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_short",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/fb_videos",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/reels",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_3-5min",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_short",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_short/processed",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_short/processed",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_short/processed/04 \u0e01\u0e34\u0e1f infu cycling global 30 sec.mp4",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_short/processed",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_short/processed/01   \u0e01\u0e2d\u0e1f \u0e2d\u0e34\u0e19\u0e1e\u0e25\u0e39   30 sec_.mp4",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_short/processed",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_short/processed/wtj_intro.mp4",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_short/processed",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_short/processed/03 vokeg 30 sec.mp4",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_short/processed",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_short/processed/02 \u0e40\u0e01\u0e48\u0e07 wall painting 30 sec.mp4",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/fb_videos",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/fb_videos/processed",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/reels",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/reels/processed",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_3-5min",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_3-5min/processed",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_3-5min/processed",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_3-5min/processed/03 vokeg 3-5 min.mp4",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_3-5min/processed",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_3-5min/processed/04 \u0e01\u0e34\u0e1f infu cycling global 3-5 min.mp4",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_3-5min/processed",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_3-5min/processed/02 \u0e40\u0e01\u0e48\u0e07 wall painting 3-5 min.mp4",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_3-5min/processed",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/raw_videos/raw_vdo_3-5min/processed/01   \u0e01\u0e2d\u0e1f \u0e2d\u0e34\u0e19\u0e1e\u0e25\u0e39   3-5 min.mp4",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/analytics",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/analytics/Chart data.csv",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/analytics",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/analytics/README.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/analytics",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/analytics/Table data.csv",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/analytics",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/analytics/Totals.csv",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/thumbnails",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/1_raw_materials/thumbnails/.gitkeep",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro/wtj_outro_lofi.png",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro/wtj_outro_template.png",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro/logo_source.png",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro/wtj_outro_anime.png",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro/wtj_intro.mp4",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro/video_prompts.txt",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro/generate_intro.py",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro/wtj_outro_lofi_v2.png",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro/wtj_flow_prompts.txt",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/wtj_intro/wtj_outro_luxury.png",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/podcast_pao_mayor",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/podcast_pao_mayor/script.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779004052568.png",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779003753896.png",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779003965524.png",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779006410273.png",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779007489632.png",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779006043321.png",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779006287293.png",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779003357678.png",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779003680104.png",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779004001415.png",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779006270573.png",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779006732945.png",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779003940136.png",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/4_design_references/celestial_being/media__1779006632729.png",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/images",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/4_audit_report.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/3_research_doc.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/7_storyboard_and_prompts.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/5_youtube_script.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/2_creative_concept.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/6_critique_script.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/1_idea_card.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/images",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/images/scene_8_scene_11:_\u0e04\u0e33\u0e28\u0e31\u0e1e\u0e17\u0e4c\u0e40\u0e09\u0e1e\u0e32\u0e30\u0e17\u0e32\u0e07_-_mastering.png",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/images",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/images/scene_1_scene_1:_hook_-_\u0e40\u0e2a\u0e35\u0e22\u0e07\u0e01\u0e33\u0e25\u0e31\u0e07\u0e1a\u0e07\u0e01\u0e32\u0e23\u0e04\u0e27\u0e32\u0e21\u0e23\u0e39\u0e49\u0e2a\u0e36\u0e01!.png",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/images",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/images/scene_5_scene_7:_\u0e23\u0e32\u0e22\u0e44\u0e14\u0e49\u0e17\u0e35\u0e48\u0e41\u0e17\u0e49\u0e08\u0e23\u0e34\u0e07_-_\u0e23\u0e30\u0e14\u0e31\u0e1a\u0e40\u0e23\u0e34\u0e48\u0e21\u0e15\u0e49\u0e19.png",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/images",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/images/scene_6_scene_8:_\u0e23\u0e32\u0e22\u0e44\u0e14\u0e49\u0e17\u0e35\u0e48\u0e41\u0e17\u0e49\u0e08\u0e23\u0e34\u0e07_-_\u0e23\u0e30\u0e14\u0e31\u0e1a\u0e01\u0e25\u0e32\u0e07\u0e16\u0e36\u0e07\u0e1c\u0e39\u0e49\u0e40\u0e0a\u0e35\u0e48\u0e22\u0e27\u0e0a\u0e32\u0e0d.png",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/images",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/images/scene_2_scene_2:_intro_-_\u0e2a\u0e16\u0e32\u0e1b\u0e19\u0e34\u0e01\u0e41\u0e2b\u0e48\u0e07\u0e40\u0e2a\u0e35\u0e22\u0e07.png",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/images",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/images/scene_4_scene_4:_\u0e04\u0e27\u0e32\u0e21\u0e08\u0e23\u0e34\u0e07\u0e17\u0e35\u0e48\u0e40\u0e08\u0e47\u0e1a\u0e1b\u0e27\u0e14_2_-_\u0e2b\u0e39\u0e1e\u0e31\u0e07\u0e01\u0e48\u0e2d\u0e19\u0e27\u0e31\u0e22\u0e2d\u0e31\u0e19\u0e04\u0e27\u0e23.png",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/images",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/images/scene_3_scene_3:_\u0e04\u0e27\u0e32\u0e21\u0e08\u0e23\u0e34\u0e07\u0e17\u0e35\u0e48\u0e40\u0e08\u0e47\u0e1a\u0e1b\u0e27\u0e14_1_-_\u0e2d\u0e32\u0e0a\u0e35\u0e1e\u0e2b\u0e25\u0e31\u0e07\u0e44\u0e21\u0e04\u0e4c\u0e17\u0e35\u0e48\u0e43\u0e04\u0e23\u0e01\u0e47\u0e21\u0e2d\u0e07\u0e02\u0e49\u0e32\u0e21.png",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/images",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/sound_engineer/images/scene_7_scene_9:_\u0e04\u0e33\u0e28\u0e31\u0e1e\u0e17\u0e4c\u0e40\u0e09\u0e1e\u0e32\u0e30\u0e17\u0e32\u0e07_-_daw_(digital_audio_workstation).png",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/VTuber",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/VTuber/idea_card.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/VTuber",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/VTuber/youtube_script.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/VTuber",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/VTuber/facebook_text.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/VTuber",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/VTuber/image_prompts.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/VTuber",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/VTuber/audit_report.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/VTuber",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/VTuber/critique_research.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/VTuber",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/VTuber/critique_script.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/VTuber",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/VTuber/research_doc.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/social_highlights_transcript_2SG1BAItYMg.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/reels_under1min_from_video_01___\u0e01\u0e2d\u0e1f_\u0e2d\u0e19\u0e1e\u0e25___30_sec_mp4.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/fb_videos_3-5min_from_video_04_\u0e01\u0e1f_infu_cycling_global_3-5_minmp4.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/facebook_text_muscari.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/sat_reels_draft.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/sat_reels_transcript_\u0e19\u0e2d\u0e07\u0e01\u0e2d\u0e25\u0e1f_sport_influencer\u2028\u2028\u0e19\u0e04\u0e2d\u0e2a\u0e23\u0e1b\u0e40\u0e19\u0e2d\u0e2b\u0e32\u0e41\u0e25\u0e30\u0e16\u0e2d\u0e14\u0e04\u0e27\u0e32\u0e21.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/wed_teaser_transcript_\u0e19\u0e2d\u0e07\u0e01\u0e2d\u0e25\u0e1f_sport_influencer\u2028\u2028\u0e19\u0e04\u0e2d\u0e2a\u0e23\u0e1b\u0e40\u0e19\u0e2d\u0e2b\u0e32\u0e41\u0e25\u0e30\u0e16\u0e2d\u0e14\u0e04\u0e27\u0e32\u0e21.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/facebook_text_wall_painter.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/reels_under1min_from_video_03_vokeg_30_secmp4.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/fb_videos_3-5min_from_video_01___\u0e01\u0e2d\u0e1f_\u0e2d\u0e19\u0e1e\u0e25___3-5_minmp4.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/social_highlights_Game_Balancer.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/reels_under1min_from_video_wtj_intromp4.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/wed_teaser_draft.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/reels_under1min_from_video_02_\u0e40\u0e01\u0e07_wall_painting_30_secmp4.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/fb_videos_3-5min_from_video_02_\u0e40\u0e01\u0e07_wall_painting_3-5_minmp4.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/fri_quote_draft.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/fri_quote_transcript_\u0e19\u0e2d\u0e07\u0e01\u0e2d\u0e25\u0e1f_sport_influencer\u2028\u2028\u0e19\u0e04\u0e2d\u0e2a\u0e23\u0e1b\u0e40\u0e19\u0e2d\u0e2b\u0e32\u0e41\u0e25\u0e30\u0e16\u0e2d\u0e14\u0e04\u0e27\u0e32\u0e21.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/facebook_text_\u0e0a\u0e48\u0e32\u0e07\u0e20\u0e32\u0e1e\u0e07\u0e32\u0e19\u0e41\u0e15\u0e48\u0e07.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/fb_videos_3-5min_from_video_03_vokeg_3-5_minmp4.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/workspace/2_drafts/reels_under1min_from_video_04_\u0e01\u0e1f_infu_cycling_global_30_secmp4.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard/index.html",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard/notion_calendar_data.js",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard/terms.html",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard/wtj_calendar_dashboard.html",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard/dashboard.html",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard/callback.html",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard/style.css",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard/tiktok2KL4Ktw7PJLhCI63jKnczSskOmIYeSwm.txt",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard/app.js",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/dashboard/privacy.html",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/prompts",
+      "target": "Team_Content_Studio/Team_Agent_Content/prompts/music_prompt.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/prompts",
+      "target": "Team_Content_Studio/Team_Agent_Content/prompts/pie_prompt.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/prompts",
+      "target": "Team_Content_Studio/Team_Agent_Content/prompts/deer_prompt.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/prompts",
+      "target": "Team_Content_Studio/Team_Agent_Content/prompts/creative_prompt.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/prompts",
+      "target": "Team_Content_Studio/Team_Agent_Content/prompts/cri_prompt.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/prompts",
+      "target": "Team_Content_Studio/Team_Agent_Content/prompts/ray_prompt.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/prompts",
+      "target": "Team_Content_Studio/Team_Agent_Content/prompts/q_prompt.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/prompts",
+      "target": "Team_Content_Studio/Team_Agent_Content/prompts/researcher_prompt.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/prompts",
+      "target": "Team_Content_Studio/Team_Agent_Content/prompts/p_prompt.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/prompts",
+      "target": "Team_Content_Studio/Team_Agent_Content/prompts/or_prompt.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/prompts",
+      "target": "Team_Content_Studio/Team_Agent_Content/prompts/director_prompt.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project",
+      "target": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/legacy_study_course_archive",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project",
+      "target": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project",
+      "target": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/dashboard",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project",
+      "target": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/skills",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project",
+      "target": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/antia_pipeline.py",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/antia_pipeline.py",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/status_logger.py",
       "type": "references"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/legacy_study_course_archive",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/legacy_study_course_archive/gemini_legacy.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/antia_pipeline.py",
+      "target": "model_router.py",
+      "type": "references"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/antia_pipeline.py",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Story_Project/status_logger.py",
+      "type": "references"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/legacy_study_course_archive",
+      "target": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/legacy_study_course_archive/gemini_legacy.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/legacy_study_course_archive",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/legacy_study_course_archive/preferences_legacy.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/legacy_study_course_archive",
+      "target": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/legacy_study_course_archive/preferences_legacy.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/legacy_study_course_archive",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/legacy_study_course_archive/readme_legacy.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/legacy_study_course_archive",
+      "target": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/legacy_study_course_archive/readme_legacy.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/legacy_study_course_archive",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/legacy_study_course_archive/session_summary.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/legacy_study_course_archive",
+      "target": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/legacy_study_course_archive/session_summary.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/3_final_scripts",
+      "source": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace",
+      "target": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/3_final_scripts",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/1_raw_materials",
+      "source": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace",
+      "target": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/1_raw_materials",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/2_drafts",
+      "source": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace",
+      "target": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/2_drafts",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/3_final_scripts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/3_final_scripts/lesson_hello_world_\u0e23\u0e08\u0e01\u0e01\u0e1a_3_\u0e40\u0e2a\u0e32\u0e2b\u0e25\u0e01_\u0e41\u0e25\u0e30\u0e01\u0e32\u0e23\u0e2a\u0e23\u0e32\u0e07_agent_\u0e15\u0e27\u0e41\u0e23\u0e01.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/3_final_scripts",
+      "target": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/3_final_scripts/lesson_hello_world_\u0e23\u0e08\u0e01\u0e01\u0e1a_3_\u0e40\u0e2a\u0e32\u0e2b\u0e25\u0e01_\u0e41\u0e25\u0e30\u0e01\u0e32\u0e23\u0e2a\u0e23\u0e32\u0e07_agent_\u0e15\u0e27\u0e41\u0e23\u0e01.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/3_final_scripts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/3_final_scripts/lesson_0_script_legacy.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/3_final_scripts",
+      "target": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/3_final_scripts/lesson_0_script_legacy.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/1_raw_materials",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/1_raw_materials/reference_official_guide.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/1_raw_materials",
+      "target": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/1_raw_materials/reference_official_guide.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/1_raw_materials",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/1_raw_materials/course_outline_antigravity.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/1_raw_materials",
+      "target": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/1_raw_materials/course_outline_antigravity.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/1_raw_materials",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/1_raw_materials/FAQ_antigravity.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/1_raw_materials",
+      "target": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/1_raw_materials/FAQ_antigravity.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/1_raw_materials",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/1_raw_materials/course_outline_v0.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/1_raw_materials",
+      "target": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/1_raw_materials/course_outline_v0.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/2_drafts/1_idea_card_hello_world_\u0e23\u0e08\u0e01\u0e01\u0e1a_3_\u0e40\u0e2a\u0e32\u0e2b\u0e25\u0e01_\u0e41\u0e25\u0e30\u0e01\u0e32\u0e23\u0e2a\u0e23\u0e32\u0e07_agent_\u0e15\u0e27\u0e41\u0e23\u0e01.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/2_drafts/1_idea_card_hello_world_\u0e23\u0e08\u0e01\u0e01\u0e1a_3_\u0e40\u0e2a\u0e32\u0e2b\u0e25\u0e01_\u0e41\u0e25\u0e30\u0e01\u0e32\u0e23\u0e2a\u0e23\u0e32\u0e07_agent_\u0e15\u0e27\u0e41\u0e23\u0e01.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/2_drafts/2_creative_concept_hello_world_\u0e23\u0e08\u0e01\u0e01\u0e1a_3_\u0e40\u0e2a\u0e32\u0e2b\u0e25\u0e01_\u0e41\u0e25\u0e30\u0e01\u0e32\u0e23\u0e2a\u0e23\u0e32\u0e07_agent_\u0e15\u0e27\u0e41\u0e23\u0e01.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/2_drafts/2_creative_concept_hello_world_\u0e23\u0e08\u0e01\u0e01\u0e1a_3_\u0e40\u0e2a\u0e32\u0e2b\u0e25\u0e01_\u0e41\u0e25\u0e30\u0e01\u0e32\u0e23\u0e2a\u0e23\u0e32\u0e07_agent_\u0e15\u0e27\u0e41\u0e23\u0e01.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/2_drafts",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/2_drafts/3_technical_verification_hello_world_\u0e23\u0e08\u0e01\u0e01\u0e1a_3_\u0e40\u0e2a\u0e32\u0e2b\u0e25\u0e01_\u0e41\u0e25\u0e30\u0e01\u0e32\u0e23\u0e2a\u0e23\u0e32\u0e07_agent_\u0e15\u0e27\u0e41\u0e23\u0e01.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/workspace/2_drafts/3_technical_verification_hello_world_\u0e23\u0e08\u0e01\u0e01\u0e1a_3_\u0e40\u0e2a\u0e32\u0e2b\u0e25\u0e01_\u0e41\u0e25\u0e30\u0e01\u0e32\u0e23\u0e2a\u0e23\u0e32\u0e07_agent_\u0e15\u0e27\u0e41\u0e23\u0e01.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/skills",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/skills/apple-notes",
+      "source": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/skills",
+      "target": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/skills/apple-notes",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/skills/apple-notes",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/skills/apple-notes/SKILL.md",
+      "source": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/skills/apple-notes",
+      "target": "Team_Content_Studio/Team_Agent_Content/ANTIA_AI_Project/skills/apple-notes/SKILL.md",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/skills",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/skills/crypto_portfolio_sync.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/skills",
+      "target": "Team_Content_Studio/Team_Agent_Content/skills/crypto_portfolio_sync.py",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/skills",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/skills/podcast_notes_publisher.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/skills",
+      "target": "Team_Content_Studio/Team_Agent_Content/skills/podcast_notes_publisher.py",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/skills",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/skills/youtube_transcriber.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/skills",
+      "target": "Team_Content_Studio/Team_Agent_Content/skills/youtube_transcriber.py",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/skills",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/skills/grab_receipt_sync.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/skills",
+      "target": "Team_Content_Studio/Team_Agent_Content/skills/grab_receipt_sync.py",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/skills",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/skills/knowledge_graph_rebuilder.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/skills",
+      "target": "Team_Content_Studio/Team_Agent_Content/skills/knowledge_graph_rebuilder.py",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/skills/knowledge_graph_rebuilder.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/skills/knowledge_graph_rebuilder.py",
       "target": "Trader_Agent/signal/config.py",
       "type": "references"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/skills",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/skills/notion_learning_loop.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/skills",
+      "target": "Team_Content_Studio/Team_Agent_Content/skills/notion_learning_loop.py",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/skills",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/skills/animate_logo.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/skills",
+      "target": "Team_Content_Studio/Team_Agent_Content/skills/animate_logo.py",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/skills",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/skills/config.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/skills",
+      "target": "Team_Content_Studio/Team_Agent_Content/skills/config.py",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/skills",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/skills/performance_analyzer.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/skills",
+      "target": "Team_Content_Studio/Team_Agent_Content/skills/performance_analyzer.py",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/skills",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/skills/discord_guest_puller.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/skills",
+      "target": "Team_Content_Studio/Team_Agent_Content/skills/generate_sport_influencer_posts.py",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/skills/discord_guest_puller.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/skills/generate_sport_influencer_posts.py",
       "target": "model_router.py",
       "type": "references"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/skills",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/skills/generate_sport_influencer_posts.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/skills",
+      "target": "Team_Content_Studio/Team_Agent_Content/skills/youtube_production_pipeline.py",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/skills/generate_sport_influencer_posts.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/skills/youtube_production_pipeline.py",
       "target": "model_router.py",
       "type": "references"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/skills",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/skills/youtube_production_pipeline.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/skills",
+      "target": "Team_Content_Studio/Team_Agent_Content/skills/youtube_publisher.py",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/skills/youtube_production_pipeline.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/skills",
+      "target": "Team_Content_Studio/Team_Agent_Content/skills/discord_helper.py",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/skills",
+      "target": "Team_Content_Studio/Team_Agent_Content/skills/schedule_configurator.py",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/skills",
+      "target": "Team_Content_Studio/Team_Agent_Content/skills/facebook_publisher.py",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/skills/facebook_publisher.py",
+      "target": "Team_Content_Studio/Team_Agent_Content/skills/discord_helper.py",
+      "type": "references"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/skills",
+      "target": "Team_Content_Studio/Team_Agent_Content/skills/tiktok_publisher.py",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/skills/tiktok_publisher.py",
+      "target": "Team_Content_Studio/Team_Agent_Content/skills/discord_helper.py",
+      "type": "references"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/skills",
+      "target": "Team_Content_Studio/Team_Agent_Content/skills/fb_draft_generator.py",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/skills/fb_draft_generator.py",
       "target": "model_router.py",
       "type": "references"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/skills",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/skills/youtube_publisher.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/skills",
+      "target": "Team_Content_Studio/Team_Agent_Content/skills/youtube_old_video_recycler.py",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/skills",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/skills/discord_helper.py",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/skills",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/skills/schedule_configurator.py",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/skills",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/skills/facebook_publisher.py",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/skills/facebook_publisher.py",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/skills/discord_helper.py",
-      "type": "references"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/skills",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/skills/tiktok_publisher.py",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/skills/tiktok_publisher.py",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/skills/discord_helper.py",
-      "type": "references"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/skills",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/skills/fb_draft_generator.py",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/skills/fb_draft_generator.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/skills/youtube_old_video_recycler.py",
       "target": "model_router.py",
       "type": "references"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/skills",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/skills/youtube_old_video_recycler.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/skills",
+      "target": "Team_Content_Studio/Team_Agent_Content/skills/wtj_auto_poster.py",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/skills/youtube_old_video_recycler.py",
-      "target": "model_router.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/skills/wtj_auto_poster.py",
+      "target": "Team_Content_Studio/Team_Agent_Content/skills/facebook_publisher.py",
       "type": "references"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/skills",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/skills/wtj_auto_poster.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/skills/wtj_auto_poster.py",
+      "target": "Team_Content_Studio/Team_Agent_Content/skills/youtube_publisher.py",
+      "type": "references"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/skills/wtj_auto_poster.py",
+      "target": "Team_Content_Studio/Team_Agent_Content/skills/tiktok_publisher.py",
+      "type": "references"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/skills/wtj_auto_poster.py",
+      "target": "Team_Content_Studio/Team_Agent_Content/skills/discord_helper.py",
+      "type": "references"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/skills",
+      "target": "Team_Content_Studio/Team_Agent_Content/skills/sync_to_dashboard.py",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/skills/wtj_auto_poster.py",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/skills/facebook_publisher.py",
-      "type": "references"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/skills/wtj_auto_poster.py",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/skills/youtube_publisher.py",
-      "type": "references"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/skills/wtj_auto_poster.py",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/skills/tiktok_publisher.py",
-      "type": "references"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/skills/wtj_auto_poster.py",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/skills/discord_helper.py",
-      "type": "references"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/skills",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/skills/sync_to_dashboard.py",
-      "type": "contains"
-    },
-    {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/skills/sync_to_dashboard.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/skills/sync_to_dashboard.py",
       "target": "Trader_Agent/signal/config.py",
       "type": "references"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/skills/sync_to_dashboard.py",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/skills/config.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/skills/sync_to_dashboard.py",
+      "target": "Team_Content_Studio/Team_Agent_Content/skills/config.py",
       "type": "references"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/skills",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/skills/notion_archiver.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/skills",
+      "target": "Team_Content_Studio/Team_Agent_Content/skills/notion_archiver.py",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/skills",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/skills/notion_helper.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/skills",
+      "target": "Team_Content_Studio/Team_Agent_Content/skills/notion_helper.py",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/skills",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/skills/source_vault_compiler.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/skills",
+      "target": "Team_Content_Studio/Team_Agent_Content/skills/source_vault_compiler.py",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/skills",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/skills/setup_notes_folders.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/skills",
+      "target": "Team_Content_Studio/Team_Agent_Content/skills/regenerate_review_drafts.py",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/skills",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/skills/deploy_dashboard.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/skills/regenerate_review_drafts.py",
+      "target": "model_router.py",
+      "type": "references"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/skills/regenerate_review_drafts.py",
+      "target": "Team_Content_Studio/Team_Agent_Content/skills/notion_helper.py",
+      "type": "references"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/skills/regenerate_review_drafts.py",
+      "target": "Team_Content_Studio/Team_Agent_Content/skills/youtube_old_video_recycler.py",
+      "type": "references"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/skills",
+      "target": "Team_Content_Studio/Team_Agent_Content/skills/setup_notes_folders.py",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/skills/deploy_dashboard.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/skills",
+      "target": "Team_Content_Studio/Team_Agent_Content/skills/deploy_dashboard.py",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/skills/deploy_dashboard.py",
       "target": "Trader_Agent/signal/config.py",
       "type": "references"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/skills/deploy_dashboard.py",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/skills/config.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/skills/deploy_dashboard.py",
+      "target": "Team_Content_Studio/Team_Agent_Content/skills/config.py",
       "type": "references"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/skills",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/skills/social_media_extractor.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/skills",
+      "target": "Team_Content_Studio/Team_Agent_Content/skills/social_media_extractor.py",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/skills",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/skills/video_draft_generator.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/skills",
+      "target": "Team_Content_Studio/Team_Agent_Content/skills/video_draft_generator.py",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/skills/video_draft_generator.py",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/skills/notion_helper.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/skills/video_draft_generator.py",
+      "target": "Team_Content_Studio/Team_Agent_Content/skills/notion_helper.py",
       "type": "references"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/skills",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/skills/dashboard_server.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/skills",
+      "target": "Team_Content_Studio/Team_Agent_Content/skills/dashboard_server.py",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/skills/dashboard_server.py",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/skills/notion_helper.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/skills/dashboard_server.py",
+      "target": "Team_Content_Studio/Team_Agent_Content/skills/notion_helper.py",
       "type": "references"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/skills",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/skills/youtube_researcher.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/skills/dashboard_server.py",
+      "target": "knowledge_base/ingest_sources.py",
+      "type": "references"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/skills/dashboard_server.py",
+      "target": "knowledge_base/ingest_sources.py",
+      "type": "references"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/skills/dashboard_server.py",
+      "target": "knowledge_base/ingest_sources.py",
+      "type": "references"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/skills",
+      "target": "Team_Content_Studio/Team_Agent_Content/skills/youtube_researcher.py",
       "type": "contains"
     },
     {
-      "source": "WTJ_Content_Studio/Team_Agent_Content/skills",
-      "target": "WTJ_Content_Studio/Team_Agent_Content/skills/sync_to_notes.py",
+      "source": "Team_Content_Studio/Team_Agent_Content/skills",
+      "target": "Team_Content_Studio/Team_Agent_Content/skills/sync_to_notes.py",
       "type": "contains"
     }
   ]

@@ -2,7 +2,7 @@
 
 เออ หวัดดีเก่ง! ที่นี่คือศูนย์รวมพลังของทีมงานเรา ชั้นแบ่งงานกันชัดเจนแล้วนะแก ไม่ปนกันแน่นอน
 
-🔗 **ทางเข้าด่วน:** [🦉 เปิดหน้าบ้าน (Management Hub)](Personal_Assistance_HQ/Personal_Assistance_HQ/Personal_Assistance_Team/M/html/index.html) | [ดูผังระบบการทำงาน (Workflow Dashboard)](Personal_Assistance_HQ/Personal_Assistance_HQ/Personal_Assistance_Team/M/html/workflow_dashboard.html) | [ดู Dashboard คริปโต](Personal_Assistance_HQ/Personal_Assistance_HQ/Personal_Assistance_Team/M/html/portfolio_dashboard.html) | [ดูโครงสร้าง Obsidian Graph](Personal_Assistance_HQ/Personal_Assistance_HQ/Personal_Assistance_Team/M/html/graph_view.html) | [🧪 ห้องทดลองระบบ (Agent Lab)](Agent_Lab/README.md)
+🔗 **ทางเข้าด่วน:** [🦉 เปิดหน้าบ้าน (Management Hub)](Personal_Assistance_HQ/Personal_Assistance_Team/M/html/index.html) | [ดูผังระบบการทำงาน (Workflow Dashboard)](Personal_Assistance_HQ/Personal_Assistance_Team/M/html/publisher_dashboard.html) | [ดู Dashboard คริปโต](Personal_Assistance_HQ/Personal_Assistance_Team/M/html/portfolio_dashboard.html) | [ดูโครงสร้าง Obsidian Graph](Personal_Assistance_HQ/Personal_Assistance_Team/M/html/graph_view.html) | [📸 สตูดิโอภาพถ่าย (Photography Project)](Team_Content_Studio/Team_Agent_Content/Photography_Project/README.md) | [🧪 ห้องทดลองระบบ (Agent Lab)](Agent_Lab/README.md)
 
 ---
 
@@ -66,50 +66,51 @@
 ---
 
 ## 🎬 4. ทีมงานผลิตคอนเทนต์ (Content Team)
-*(ตั้งอยู่ที่โฟลเดอร์: `./WTJ_Content_Studio/Team_Agent_Content/`)*
+*(ตั้งอยู่ที่โฟลเดอร์: `./Team_Content_Studio/Team_Agent_Content/`)*
 
-ทีมนี้รับผิดชอบดูแล 2 รายการหลักของเก่ง:
+ทีมนี้รับผิดชอบดูแล 3 รายการหลักของเก่ง:
 1. **WTJ Podcast / Talk:** รายการสัมภาษณ์พูดคุยกับแขกรับเชิญ ดำเนินรายการโดยพี่เก่ง ออนแอร์ทุกวันพฤหัสบดี เวลา 20:00 น.
 2. **WTJ Story:** รายการเล่าเรื่องเดี่ยวโดยพี่เก่ง โดยทีมงานหาข้อมูลให้พี่เก่งนั่งเล่าคนเดียว ออนแอร์ทุกวันอาทิตย์ เวลา 18:00 น.
+3. **Photography Project:** โครงการระบบออโต้โพสต์ภาพถ่ายสะสมพอร์ตโฟลิโอสำหรับเพจถ่ายภาพอาหาร และเพจภาพบุคคล/เช่าสตูดิโอ [📸 ดูรายละเอียดห้องทำงาน](Team_Content_Studio/Team_Agent_Content/Photography_Project/README.md)
 
 ### 🎬 พี่คริส (Chris) - ผู้กำกับ (Creative Director) *(สมาชิกใหม่ / สแตนด์บาย)*
 - **หน้าที่:** พี่ใหญ่ผู้ควบคุมทิศทางสร้างสรรค์ของสคริปต์และงานภาพทั้งหมดในโครงการ WTJ Story สไตล์คริสโตเฟอร์ โนแลน (ช่วงนี้ไม่มีงานภาพ ให้สแตนด์บายไว้ก่อน)
-- **คู่มือ:** [chris_manual.md](WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Chris/chris_manual.md)
+- **คู่มือ:** [chris_manual.md](Team_Content_Studio/Team_Agent_Content/Team_Lounge/Chris/chris_manual.md)
 
 ### 🦌 เดียร์ (Deer) - นักสร้าง Idea Card (Idea Architect)
 - **หน้าที่:** รับหัวข้อจากเก่ง แล้วแปลงออกมาเป็น Idea Card ที่ส่งให้น้ำนำไปคิดต่อ
 - **บุคลิก:** ช่างสงสัย, มีระบบ, กระชับ, ไม่ยึดติดความสมบูรณ์แบบ
-- **คู่มือ:** [deer_manual.md](WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Deer/deer_manual.md)
+- **คู่มือ:** [deer_manual.md](Team_Content_Studio/Team_Agent_Content/Team_Lounge/Deer/deer_manual.md)
 
 ### 💅 น้ำ (Nam) - ครีเอทีฟและคอนเทนต์ครีเอเตอร์ (Creative & Content Creator) *(สมาชิกใหม่)*
 - **หน้าที่:** รับไอเดียการ์ดจากเดียร์มาคิด "มุมมองการนำเสนอและรูปแบบการเล่าเรื่องที่แปลกใหม่ว้าวซ่า" เพื่อตบคอนเซปต์ส่งต่อให้มิวสิค
-- **คู่มือ:** [nam_manual.md](WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Nam/nam_manual.md)
+- **คู่มือ:** [nam_manual.md](Team_Content_Studio/Team_Agent_Content/Team_Lounge/Nam/nam_manual.md)
 
 ### 🔬 ครีม (Cream) - นักวิจัย (Research doc)
 - **หน้าที่:** รับคอนเซปต์การเล่าเรื่องจากน้ำและมิวสิค แล้ววิจัยข้อมูลสนับสนุนเชิงลึก
 - **ผู้ตรวจสอบ:** ออ (Audit)
-- **คู่มือ:** [cream_manual.md](WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Cream/cream_manual.md)
+- **คู่มือ:** [cream_manual.md](Team_Content_Studio/Team_Agent_Content/Team_Lounge/Cream/cream_manual.md)
 
 ### ✅ ออ (Or) - ผู้ตรวจสอบ (Auditor) *(สมาชิกใหม่)*
 - **หน้าที่:** ตรวจสอบความถูกต้องของข้อมูลวิจัยของครีม
-- **คู่มือ:** [or_manual.md](WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Or/or_manual.md)
+- **คู่มือ:** [or_manual.md](Team_Content_Studio/Team_Agent_Content/Team_Lounge/Or/or_manual.md)
 
 ### 🎭 คริ (Cri) - นักวิจารณ์ (Critic) *(สมาชิกใหม่)*
 - **หน้าที่:** วิจารณ์ตรวจสอบคุณภาพของสคริปต์ที่เรย์เขียน (ในขั้นตอนร่างบท)
-- **คู่มือ:** [cri_manual.md](WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Cri/cri_manual.md)
+- **คู่มือ:** [cri_manual.md](Team_Content_Studio/Team_Agent_Content/Team_Lounge/Cri/cri_manual.md)
 
 ### ✍️ เรย์ (Ray) - นักเขียน (Writer) *(สมาชิกใหม่)*
 - **หน้าที่:** รับงานวิจัยจากครีม แล้วเขียนเป็นสคริปต์ YouTube
 - **Output:** Youtube Script → Facebook Text
-- **คู่มือ:** [ray_manual.md](WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Ray/ray_manual.md)
+- **คู่มือ:** [ray_manual.md](Team_Content_Studio/Team_Agent_Content/Team_Lounge/Ray/ray_manual.md)
 
 ### 🛹 มิวสิค (Music) - นักการตลาด (Creative Marketer) *(สมาชิกใหม่)*
 - **หน้าที่:** ปรับกลยุทธ์/มีมในไอเดียการ์ด และช่วยเรย์ปรับปรุง Hook / ข้อความโพสต์โซเชียลเพื่อปั้นยอดแชร์ไวรัลและแคมเปญสปอนเซอร์
-- **คู่มือ:** [music_manual.md](WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Music/music_manual.md)
+- **คู่มือ:** [music_manual.md](Team_Content_Studio/Team_Agent_Content/Team_Lounge/Music/music_manual.md)
 
 ### 📊 ปาย (Pie) - นักวิเคราะห์ข้อมูลหลังบ้าน (Data Analyst) *(สมาชิกใหม่)*
 - **หน้าที่:** วิเคราะห์สถิติจุดผู้ชมปิดคลิป (Retention), อัตราการกดดู (CTR) และการมีส่วนร่วมของ Facebook/YouTube เพื่อปรับปรุงคอนเทนต์ และป้อน Insight ส่งตรงให้เดียร์, น้ำ และมิวสิค พร้อมกัน
-- **คู่มือ:** [pie_manual.md](WTJ_Content_Studio/Team_Agent_Content/Team_Lounge/Pie/pie_manual.md)
+- **คู่มือ:** [pie_manual.md](Team_Content_Studio/Team_Agent_Content/Team_Lounge/Pie/pie_manual.md)
 
 ---
 

@@ -38,7 +38,7 @@ description: Guidelines and procedure for migrating agent workspaces, source fil
 <key>ProgramArguments</key>
 <array>
     <string>/Users/chz/Desktop/ChZ_Agent_Corp/venv/bin/python3</string>
-    <string>/Users/chz/Desktop/ChZ_Agent_Corp/WTJ_Content_Studio/Team_Agent_Content/skills/grab_receipt_sync.py</string>
+    <string>/Users/chz/Desktop/ChZ_Agent_Corp/Team_Content_Studio/Team_Agent_Content/skills/grab_receipt_sync.py</string>
 </array>
 <key>WorkingDirectory</key>
 <string>/Users/chz/Desktop/ChZ_Agent_Corp</string>

@@ -5,8 +5,8 @@ import subprocess
 PROJECT_ROOT = "/Users/chz/Desktop/ChZ_Agent_Corp"
 LAUNCH_AGENTS_DIR = os.path.expanduser("~/Library/LaunchAgents")
 PYTHON3_PATH = os.path.join(PROJECT_ROOT, "venv", "bin", "python")
-MASTER_SCRIPT = os.path.join(PROJECT_ROOT, "WTJ_Content_Studio", "Team_Agent_Content", "skills", "wtj_auto_poster.py")
-CONTENT_DIR = os.path.join(PROJECT_ROOT, "WTJ_Content_Studio", "Team_Agent_Content", "WTJ_Story_Project")
+MASTER_SCRIPT = os.path.join(PROJECT_ROOT, "Team_Content_Studio", "Team_Agent_Content", "skills", "wtj_auto_poster.py")
+CONTENT_DIR = os.path.join(PROJECT_ROOT, "Team_Content_Studio", "Team_Agent_Content", "WTJ_Story_Project")
 
 label = "com.wtj.master.temp_test"
 plist_path = os.path.join(LAUNCH_AGENTS_DIR, f"{label}.plist")

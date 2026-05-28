@@ -42,7 +42,7 @@ description: Syncs cryptocurrency trading orders from Bitkub and Binance TH APIs
 รันสคริปต์หลักผ่านทาง Terminal ภายใต้ Virtual Environment ของโปรเจกต์:
 ```bash
 cd /Users/chz/Desktop/ChZ_Agent_Corp
-./venv/bin/python3 WTJ_Content_Studio/Team_Agent_Content/skills/crypto_portfolio_sync.py
+./venv/bin/python3 Team_Content_Studio/Team_Agent_Content/skills/crypto_portfolio_sync.py
 ```
 > [!IMPORTANT]
 > - ต้องมั่นใจว่าในไฟล์ `.env` ที่ root ของโปรเจกต์มี API Key และ Secret ของ Bitkub / Binance TH ที่ถูกต้องเรียบร้อยแล้ว

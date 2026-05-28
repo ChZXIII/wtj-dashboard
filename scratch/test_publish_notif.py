@@ -3,7 +3,7 @@ import os
 import subprocess
 from datetime import datetime, timezone, timedelta
 
-sys.path.append(os.path.join('/Users/chz/Desktop/ChZ_Agent_Corp/', 'WTJ_Content_Studio', 'Team_Agent_Content', 'skills'))
+sys.path.append(os.path.join('/Users/chz/Desktop/ChZ_Agent_Corp/', 'Team_Content_Studio', 'Team_Agent_Content', 'skills'))
 from notion_helper import NotionHelper
 
 def main():
@@ -50,7 +50,7 @@ def main():
         # 2. Run facebook_publisher.py in dry-run mode for Reels queue
         print("🚀 Running facebook_publisher.py --from-notes --queue Reels_Under1Min --dry-run...")
         cmd = ["/Users/chz/Desktop/ChZ_Agent_Corp/venv/bin/python3", 
-               "/Users/chz/Desktop/ChZ_Agent_Corp/WTJ_Content_Studio/Team_Agent_Content/skills/facebook_publisher.py", 
+               "/Users/chz/Desktop/ChZ_Agent_Corp/Team_Content_Studio/Team_Agent_Content/skills/facebook_publisher.py", 
                "--from-notes", "--queue", "Reels_Under1Min", "--dry-run"]
         proc = subprocess.run(cmd, capture_output=True, text=True)
         print("\n--- Command Output ---")

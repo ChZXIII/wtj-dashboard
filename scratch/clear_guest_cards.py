@@ -12,8 +12,8 @@ while PROJECT_ROOT != os.path.dirname(PROJECT_ROOT):
 
 if PROJECT_ROOT not in sys.path:
     sys.path.append(PROJECT_ROOT)
-# Add WTJ_Content_Studio/Team_Agent_Content/skills to sys.path
-skills_dir = os.path.join(PROJECT_ROOT, "WTJ_Content_Studio", "Team_Agent_Content", "skills")
+# Add Team_Content_Studio/Team_Agent_Content/skills to sys.path
+skills_dir = os.path.join(PROJECT_ROOT, "Team_Content_Studio", "Team_Agent_Content", "skills")
 if skills_dir not in sys.path:
     sys.path.append(skills_dir)
 

@@ -23,8 +23,9 @@
 ## 📐 กฎเหล็กของดี (Aesthetic Rules)
 1. **Ptolemy Light:** ต้องขาว-เทา-ดำ เนี้ยบ คลีน ไร้เงานีออนเรืองแสงสะท้อนเลอะเทอะเด็ดขาด
 2. **Veda Neon Dark:** เน้นแสงสีฟ้านีออนและสีเขียวสะท้อนแสง มีเงามอนิเตอร์ด้านในสุดล้ำ
-3. **Razor-sharp borders:** ใช้เส้นขอบ 2px และไม่ใช้ขอบมน (border-radius: 0) บนองค์ประกอบเหล็กหรือปุ่ม Cockpit
-4. **Chamfered Bevel Corners:** กล่องพาเนลควบคุมหลักต้องใช้มุมตัดเฉียง 45 องศา (clip-path หรือเฉียงมุม) เพื่ออารมณ์คอนโซลยานรบ Ptolemaios
+3. **Razor-sharp borders:** ใช้เส้นขอบ 2px และไม่ใช้ขอบมน (border-radius: 0) บนองค์ประกอบเหล็กหรือปุ่ม Cockpit (เฉพาะธีม Celestial Being)
+4. **Chamfered Bevel Corners:** กล่องพาเนลควบคุมหลักต้องใช้มุมตัดเฉียง 45 องศา (clip-path หรือเฉียงมุม) เพื่ออารมณ์คอนโซลยานรบ Ptolemaios (เฉพาะธีม Celestial Being)
+5. **Bento Grid Style (Variation A - High Contrast Split):** ขาวสะอาด (หรือดำสนิทใน Dark Mode) จัดระเบียบข้อมูลด้วย Card ขนาดต่างๆ แยกช่องไฟกว้างสไตล์ Apple/Notion และใช้ Sidebar สีเข้ม/ดำฝั่งซ้ายแบบ Icon-only พร้อมจุดเน้น (Accent) สีแดงจุดเดียว (เฉพาะธีม Bento Grid)
 
 ---
 
