@@ -949,8 +949,8 @@ function drawSvgChart(data) {
   const textColor = isDark ? '#e2e8f0' : '#0f172a';
   const gridColor = isDark ? '#475569' : '#e2e8f0';
   
-  const incomeColor = isDark ? '#34d399' : '#10b981';
-  const expenseColor = isDark ? '#fca5a5' : '#ef4444';
+  const incomeColor = isDark ? '#10b981' : '#10b981';
+  const expenseColor = isDark ? '#ef4444' : '#ef4444';
   
   // SVG generation
   let svg = `<svg viewBox="0 0 ${width} ${height}" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style="font-family: var(--font-heading); font-size: 11px;">`;
@@ -1067,13 +1067,13 @@ function calculateAndRenderInsights(data) {
       <p style="margin-top: 6px;">${statusText}</p>
     </div>
     <div class="insight-item">
-      <strong><span class="emoji-icon">🏆</span> เดือนรายรับสูงสุด:</strong> ${maxIncomeMonth.month} (฿${maxIncomeMonth.val.toLocaleString()})
+      <strong><svg class="emoji-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 16px; height: 16px; color: #fbbf24;"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" /><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" /><path d="M4 22h16" /><path d="M10 14.66V17c0 .55-.45 1-1 1H4v2h16v-2h-5c-.55 0-1-.45-1-1v-2.34" /><path d="M12 2a6 6 0 0 1 6 6v3.5a6 6 0 0 1-6 6 6 6 0 0 1-6-6V8a6 6 0 0 1 6-6z" /></svg> เดือนรายรับสูงสุด:</strong> ${maxIncomeMonth.month} (฿${maxIncomeMonth.val.toLocaleString()})
     </div>
     <div class="insight-item">
-      <strong><span class="emoji-icon">⚠️\uFE0F</span> เดือนรายจ่ายสูงสุด:</strong> ${maxExpenseMonth.month} (฿${maxExpenseMonth.val.toLocaleString()})
+      <strong><svg class="emoji-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 16px; height: 16px; color: #ef4444;"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" /><line x1="12" y1="9" x2="12" y2="13" /><line x1="12" y1="17" x2="12.01" y2="17" /></svg> เดือนรายจ่ายสูงสุด:</strong> ${maxExpenseMonth.month} (฿${maxExpenseMonth.val.toLocaleString()})
     </div>
     <div class="insight-item">
-      <strong><span class="emoji-icon">📊</span> อัตราส่วนรายจ่ายต่อรายรับ:</strong> ${ratio.toFixed(1)}% (ยอดคงเหลือหลังหักจ่าย ฿${profit.toLocaleString()})
+      <strong><svg class="emoji-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 16px; height: 16px; color: #3b82f6;"><line x1="18" y1="20" x2="18" y2="10" /><line x1="12" y1="20" x2="12" y2="4" /><line x1="6" y1="20" x2="6" y2="14" /></svg> อัตราส่วนรายจ่ายต่อรายรับ:</strong> ${ratio.toFixed(1)}% (ยอดคงเหลือหลังหักจ่าย ฿${profit.toLocaleString()})
     </div>
   `;
   
