@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ระบบบันทึกรายรับของเก่ง | Income Tracker</title>
+  
+  <!-- Google Fonts according to Typography standard -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&family=Prompt:wght@300;400;500;600;700&family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=Share+Tech+Mono&family=Roboto+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Main CSS Stylesheet (3D Solid Shadow Theme) -->
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- PWA Meta Tags & Manifest -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="manifest" href="manifest.json">
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js')
+          .then(reg => console.log('Service Worker Registered!', reg))
+          .catch(err => console.error('Service Worker registration failed', err));
+      });
+    }
+  </script>
+</head>
+<body>
+
+  <!-- Mobile Top Navigation Header -->
+  <div class="mobile-header-bar">
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <button class="menu-toggle-btn" id="menuToggle" aria-label="เปิดเมนูนำทาง">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:24px;height:24px;">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+      <div class="logo-icon">฿</div>
+      <span style="font-weight:700;font-size:15px;letter-spacing:0.5px;">IncomeTracker</span>
+    </div>
+    <button class="theme-icon-btn" id="mobileThemeToggle" aria-label="เปลี่ยนโหมดสีสว่าง/มืด">
+      <svg class="mode-icon" viewBox="0 0 24 24" width="20" height="20">
+        <path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m10.607 10.607l.707-.707M12 7a5 5 0 100 10 5 5 0 000-10z" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"></path>
+      </svg>
+    </button>
+  </div>
+
+  <div class="app-container">
+    
+    <!-- Sidebar Navigation Menu -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-icon">฿</div>
+        <span class="logo-text">IncomeTracker</span>
+      </div>
+      
+      <ul class="sidebar-menu">
+        <li>
+          <a class="menu-item active" data-view="record-view" id="menuRecord">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            บันทึกรายรับ
+          </a>
+        </li>
+        <li>
+          <a class="menu-item" data-view="dashboard-view" id="menuDashboard">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 002 2h2a2 2 0 002-2z" />
+            </svg>
+            แดชบอร์ดสรุปผล
+          </a>
+        </li>
+        <li>
+          <a class="menu-item" data-view="history-view" id="menuHistory">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+            </svg>
+            ประวัติการบันทึก
+          </a>
+        </li>
+        <li>
+          <a class="menu-item" data-view="document-view" id="menuDocuments">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            ออกเอกสารการเงิน
+          </a>
+        </li>
+        <li>
+          <a class="menu-item" data-view="settings-view" id="menuSettings">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            การตั้งค่าเชื่อมต่อ
+          </a>
+        </li>
+      </ul>
+      
+      <div class="sidebar-footer">
+        <div class="user-profile">
+          <div class="avatar-icon">K</div>
+          <div class="user-info">
+            <span class="user-name">คุณเก่ง (Keng)</span>
+            <span class="user-role">ChZ Manager</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Panel -->
+    <main class="main-content">
+      
+      <!-- Top header on Desktop view -->
+      <header class="main-header">
+        <div class="page-title-area">
+          <h1 id="viewTitleHeader">บันทึกรายรับของแก</h1>
+          <p id="viewSubtitleHeader">เลือกประเภทรายรับ กรอกรายละเอียด เพื่อคีย์ลงชีตโดยตรง</p>
+        </div>
+        <div style="display: flex; align-items: center; gap: 16px;">
+          <button class="btn-secondary theme-toggle-btn" id="darkModeToggle">
+            <svg class="mode-icon-sun" viewBox="0 0 24 24" width="16" height="16" style="fill:none;stroke:currentColor;stroke-width:2;">
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <span>เปลี่ยนโหมดสี</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- View 1: Record Form View -->
+      <section id="record-view" class="view-panel active">
+        
+        <!-- API URL Status Banner -->
+        <div id="connectionWarning" class="alert-banner warning">
+          <div class="alert-content">
+            <svg class="alert-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            <div class="alert-text">
+              <strong>ยังไม่ได้ตั้งค่า Web App URL!</strong> ข้อมูลจะถูกบันทึกไว้ในเครื่องชั่วคราว ไปที่เมนู <span class="link-span" onclick="switchToView('settings-view')">การตั้งค่าเชื่อมต่อ</span> เพื่อผูก Google Sheets ของแกจ้า
+            </div>
+          </div>
+        </div>
+
+        <div class="type-selector-card">
+          <h2 class="section-title">เลือกรายการที่ต้องการบันทึก</h2>
+          <div class="btn-group-brutalist">
+            <button class="selector-btn active" id="btnSelectGeneral" onclick="switchIncomeType('general')">
+              <svg class="btn-svg-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
+              รายรับ Feltz Studio
+            </button>
+            <button class="selector-btn" id="btnSelectExpense" onclick="switchIncomeType('expense')">
+              <svg class="btn-svg-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z" />
+              </svg>
+              รายจ่าย Feltz Studio
+            </button>
+            <button class="selector-btn" id="btnSelectGrab" onclick="switchIncomeType('grab')">
+              <svg class="btn-svg-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+              </svg>
+              รายได้วิ่ง Grab
+            </button>
+          </div>
+        </div>
+
+        <!-- Form 1: General Income Form -->
+        <div id="formGeneral" class="form-container-card">
+          <div class="form-header">
+            <h3>บันทึกรายรับ Feltz Studio</h3>
+            <p>เขียนบันทึกธุรกรรมรายรับลงในตารางปฏิทินของ Feltz Studio อัตโนมัติ</p>
+          </div>
+          
+          <form id="jsFormGeneral">
+            <div class="form-grid">
+              
+              <div class="form-group">
+                <label for="genDate">วันที่บันทึก</label>
+                <input type="date" id="genDate" name="genDate" autocomplete="off" required>
+              </div>
+              
+              <div class="form-group">
+                <label for="genTime">เวลา</label>
+                <input type="time" id="genTime" name="genTime" autocomplete="off" required>
+              </div>
+
+              <div class="form-group">
+                <label for="genDesc">รายละเอียดงาน</label>
+                <input type="text" id="genDesc" name="genDesc" placeholder="เช่น True AF 19-22/03…" autocomplete="off" required>
+              </div>
+
+              <div class="form-group">
+                <label for="genAmount">จำนวนเงิน (บาท)</label>
+                <div class="input-with-suffix">
+                  <input type="text" id="genAmount" name="genAmount" placeholder="เช่น 150.00 หรือ 1500+200…" autocomplete="off" required>
+                  <span class="suffix-label">บาท</span>
+                </div>
+              </div>
+              
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn-primary" id="btnSubmitGeneral">
+                <svg class="btn-svg-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                </svg>
+                บันทึกรายรับลง Google Sheets
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Form 3: Feltz Studio Expense Form -->
+        <div id="formExpense" class="form-container-card" style="display: none;">
+          <div class="form-header">
+            <h3>บันทึกรายจ่าย Feltz Studio</h3>
+            <p>เขียนบันทึกธุรกรรมรายจ่ายลงในตารางปฏิทินของ Feltz Studio อัตโนมัติ</p>
+          </div>
+          
+          <form id="jsFormExpense">
+            <div class="form-grid">
+              
+              <div class="form-group full-width">
+                <label for="fixedCostSelect">ตัวเลือกด่วน Fix Cost</label>
+                <select id="fixedCostSelect">
+                  <option value="">-- เลือกรายการ Fix Cost --</option>
+                </select>
+              </div>
+
+              <div class="form-group full-width">
+                <button type="button" class="btn-secondary" id="btnSubmitAllFixedCosts" style="margin-top: -5px; padding: 10px; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                  <svg class="btn-svg-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                  </svg>
+                  บันทึก Fix Cost ทั้งหมด (ทุกรายการ)
+                </button>
+              </div>
+              
+              <div class="form-group">
+                <label for="expDate">วันที่บันทึก</label>
+                <input type="date" id="expDate" name="expDate" autocomplete="off" required>
+              </div>
+              
+              <div class="form-group">
+                <label for="expTime">เวลา</label>
+                <input type="time" id="expTime" name="expTime" autocomplete="off" required>
+              </div>
+
+              <div class="form-group">
+                <label for="expDesc">รายละเอียดรายจ่าย</label>
+                <input type="text" id="expDesc" name="expDesc" placeholder="เช่น ซื้อแรม, ค่ากาแฟลูกค้า…" autocomplete="off" required>
+              </div>
+
+              <div class="form-group">
+                <label for="expAmount">จำนวนเงิน (บาท)</label>
+                <div class="input-with-suffix">
+                  <input type="text" id="expAmount" name="expAmount" placeholder="เช่น 250.00 หรือ 1500+200…" autocomplete="off" required>
+                  <span class="suffix-label">บาท</span>
+                </div>
+              </div>
+              
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn-primary" id="btnSubmitExpense">
+                <svg class="btn-svg-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                </svg>
+                บันทึกรายจ่ายลง Google Sheets
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Form 2: Grab Income Form -->
+        <div id="formGrab" class="form-container-card" style="display: none;">
+          <div class="form-header">
+            <h3>บันทึกรายได้วิ่ง Grab</h3>
+            <p>บันทึกประวัติการวิ่ง ข้อมูลการใช้แบต ระยะทาง และรายได้ ลงในตาราง Grab ประจำปีออโต้</p>
+          </div>
+          
+          <form id="jsFormGrab">
+            <div class="form-grid">
+              
+              <div class="form-group">
+                <label for="grabDate">วันที่วิ่งงาน</label>
+                <input type="date" id="grabDate" name="grabDate" autocomplete="off" required>
+              </div>
+              
+              <div class="form-group">
+                <label for="grabTime">เวลาบันทึก (เสร็จงาน)</label>
+                <input type="time" id="grabTime" name="grabTime" autocomplete="off" required>
+              </div>
+
+              <div class="form-group">
+                <label for="grabBattery">แบตเตอรี่ที่ใช้ (%)</label>
+                <input type="text" id="grabBattery" name="grabBattery" placeholder="เช่น 100-50 หรือ 50…" autocomplete="off" required>
+                <span class="field-tip">ระบุเป็นเปอร์เซ็นต์ หรือระบุแบตเริ่ม-จบ (เช่น 100-45) เพื่อให้ระบบลบอัตโนมัติ</span>
+              </div>
+
+              <div class="form-group">
+                <label for="grabDistance">ระยะทางที่วิ่งได้ (กิโลเมตร)</label>
+                <div class="input-with-suffix">
+                  <input type="number" id="grabDistance" name="grabDistance" min="0" step="0.1" placeholder="เช่น 25.5…" autocomplete="off" required>
+                  <span class="suffix-label">กม.</span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="grabAmount">รายได้รวม Grab (บาท)</label>
+                <div class="input-with-suffix">
+                  <input type="number" id="grabAmount" name="grabAmount" min="0" step="0.01" placeholder="เช่น 350.00…" autocomplete="off" required>
+                  <span class="suffix-label">บาท</span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="grabTip">Tip ที่ได้รับจากลูกค้า (บาท)</label>
+                <div class="input-with-suffix">
+                  <input type="number" id="grabTip" name="grabTip" min="0" step="0.01" placeholder="เช่น 20.00…" value="0" autocomplete="off">
+                  <span class="suffix-label">บาท</span>
+                </div>
+              </div>
+              
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn-primary" id="btnSubmitGrab">
+                <svg class="btn-svg-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                </svg>
+                บันทึกสถิติ Grab ลง Google Sheets
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Submission Status Modal (Simulated) -->
+        <div id="statusPopup" class="popup-overlay" style="display: none;">
+          <div class="popup-box">
+            <div class="popup-icon-area" id="popupIconArea">
+              <!-- Success / Error Icon injected by JS -->
+            </div>
+            <h4 id="popupTitle">ส่งข้อมูลสำเร็จ!</h4>
+            <p id="popupMessage">ข้อมูลถูกบันทึกสำเร็จลงตารางแล้วเรียบร้อย</p>
+            <button class="btn-primary" onclick="closePopup()" style="width: 100%; margin-top: 15px;">ตกลง</button>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- View 4: Dashboard View -->
+      <section id="dashboard-view" class="view-panel">
+        
+        <!-- API URL Status Banner for Dashboard -->
+        <div id="dashboardConnectionBanner" class="alert-banner warning">
+          <div class="alert-content">
+            <svg class="alert-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            <div class="alert-text">
+              <strong>กำลังแสดงข้อมูลจำลอง (Mock Data)!</strong> ยังไม่ได้เชื่อมต่อ Google Sheets หรือไม่มี Spreadsheet ID ไปที่เมนู <span class="link-span" onclick="switchToView('settings-view')">การตั้งค่าเชื่อมต่อ</span> เพื่อผูก Google Sheets สำหรับรายรับ-รายจ่ายของ Feltz Studio ของแกเพื่อดูข้อมูลจริงจ้า
+            </div>
+          </div>
+        </div>
+
+        <!-- KPI Cards Row -->
+        <div class="dashboard-kpi-row">
+          <div class="kpi-card income">
+            <span class="kpi-label">รายรับสะสม</span>
+            <span class="kpi-value" id="kpiTotalIncome">฿0.00</span>
+          </div>
+          <div class="kpi-card expense">
+            <span class="kpi-label">รายจ่ายสะสม</span>
+            <span class="kpi-value" id="kpiTotalExpense">฿0.00</span>
+          </div>
+          <div class="kpi-card profit">
+            <span class="kpi-label">กำไรสุทธิสะสม</span>
+            <span class="kpi-value" id="kpiNetProfit">฿0.00</span>
+          </div>
+          <div class="kpi-card savings">
+            <span class="kpi-label">เงินเก็บสะสม 10%</span>
+            <span class="kpi-value" id="kpiTotalSavings">฿0.00</span>
+          </div>
+        </div>
+
+        <!-- Chart Container Card -->
+        <div class="chart-container-card">
+          <div class="form-header" style="display:flex; justify-content:space-between; align-items:center; border-bottom:none; margin-bottom:15px; padding-bottom:0;">
+            <div>
+              <h3>เปรียบเทียบ รายรับ VS รายจ่าย ปี 2026</h3>
+              <p>แสดงผลรวมแบ่งตามรายเดือน ม.ค. - ธ.ค. 2026</p>
+            </div>
+            <button class="btn-primary" id="btnRefreshDashboard" style="padding: 10px 20px; font-size: 14px;">
+              <svg class="btn-svg-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 7.89H18v3" />
+              </svg>
+              ดึงข้อมูลใหม่
+            </button>
+          </div>
+          <div class="chart-wrapper" id="chartWrapper">
+            <!-- SVG chart generated dynamically -->
+          </div>
+        </div>
+
+        <!-- Dashboard Bottom Grid -->
+        <div class="dashboard-bottom-grid">
+          <!-- Fixed Cost Summary Card -->
+          <div class="table-container-card" style="margin-bottom:0;">
+            <div class="form-header" style="border-bottom:none; margin-bottom:15px; padding-bottom:0;">
+              <h3>ตารางสรุป Fix Cost ในตารางชีต</h3>
+              <p>รายการค่าใช้จ่ายคงที่รายเดือนที่บันทึกแล้ว</p>
+            </div>
+            <div class="table-responsive">
+              <table class="brutalist-table">
+                <thead>
+                  <tr>
+                    <th>รายการ</th>
+                    <th>จำนวนเงิน (บาท)</th>
+                  </tr>
+                </thead>
+                <tbody id="dashboardFixedCostBody">
+                  <tr>
+                    <td colspan="2" class="empty-row-msg">ไม่มีข้อมูล Fix Cost</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Insight & Critique Card -->
+          <div class="form-container-card" style="margin-bottom:0;">
+            <div class="form-header" style="border-bottom:none; margin-bottom:15px; padding-bottom:0;">
+              <h3>บทวิเคราะห์วิจารณ์ผลงาน</h3>
+              <p>สรุปมุมมองทางการเงินและจุดที่ต้องปรับปรุงแก</p>
+            </div>
+            <div class="insight-content" id="dashboardInsightContent">
+              <!-- Insight content injected by JS -->
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- View 2: History Log View -->
+      <section id="history-view" class="view-panel">
+        <div class="table-container-card">
+          <div class="table-header">
+            <div>
+              <h3 class="section-title" style="margin-bottom: 4px;">ประวัติการคีย์ข้อมูลล่าสุด</h3>
+              <p style="font-size: 13px; color: var(--ink-muted);">รายการที่แกบันทึกผ่านแอปนี้ (เก็บข้อมูลไว้เฉพาะบนเบราว์เซอร์ของแก)</p>
+            </div>
+            <button class="btn-secondary" onclick="clearHistoryLog()" style="padding: 6px 12px; font-size: 12px; margin-bottom: 0;">
+              <svg class="btn-svg-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+              ล้างประวัติเครื่อง
+            </button>
+          </div>
+          
+          <div class="table-responsive">
+            <table class="brutalist-table" id="historyTable">
+              <thead>
+                <tr>
+                  <th>วันที่/เวลา</th>
+                  <th>ประเภท</th>
+                  <th>รายละเอียด</th>
+                  <th>จำนวนเงิน</th>
+                  <th>สถานะชีต</th>
+                </tr>
+              </thead>
+              <tbody id="historyTableBody">
+                <!-- Data rows injected by JS -->
+                <tr>
+                  <td colspan="5" class="empty-row-msg">ไม่มีประวัติการบันทึกข้อมูล</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- View 5: Financial Documents View -->
+      <section id="document-view" class="view-panel">
+        
+        <div class="document-layout-container">
+          
+          <!-- Column 1: Document Editor Form -->
+          <div class="document-editor-panel form-container-card">
+            <div class="form-header" style="border-bottom:none; margin-bottom:15px; padding-bottom:0;">
+              <h3>สร้างเอกสารทางการเงิน</h3>
+              <p>เลือกประเภท ป้อนข้อมูล และพรีวิวในหน้ากระดาษ A4 ขวามือแก</p>
+            </div>
+            
+            <!-- Document Type Tabs -->
+            <div class="btn-group-brutalist" style="margin-bottom: 25px; display: flex;">
+              <button type="button" class="selector-btn active" id="btnDocTypeQuotation" onclick="setDocType('quotation')" style="flex: 1; text-align: center; justify-content: center; font-size: 13px; padding: 10px 5px;">
+                ใบเสนอราคา
+              </button>
+              <button type="button" class="selector-btn" id="btnDocTypeInvoice" onclick="setDocType('invoice')" style="flex: 1; text-align: center; justify-content: center; font-size: 13px; padding: 10px 5px;">
+                ใบวางบิล
+              </button>
+              <button type="button" class="selector-btn" id="btnDocTypeReceipt" onclick="setDocType('receipt')" style="flex: 1; text-align: center; justify-content: center; font-size: 13px; padding: 10px 5px;">
+                ใบเสร็จรับเงิน
+              </button>
+            </div>
+
+            <!-- Seller Settings Details -->
+            <details class="brutalist-details" style="margin-bottom: 20px;">
+              <summary style="font-weight: 700; cursor: pointer; padding: 10px 14px; border: var(--card-border); background: var(--bg-card); border-radius: var(--border-radius-button); box-shadow: 2px 2px 0px 0px var(--ink-dark); font-size: 13px; display: flex; align-items: center; justify-content: space-between;">
+                <span>⚙️ ตั้งค่าผู้ออกเอกสาร (Seller Settings)</span>
+              </summary>
+              <div class="form-grid" style="margin-top: 15px; padding: 15px; border: var(--card-border); background: var(--bg-app); border-radius: var(--border-radius-input);">
+                <div class="form-group">
+                  <label for="docSellerName">ชื่อผู้ขาย / บุคคลธรรมดา</label>
+                  <input type="text" id="docSellerName" placeholder="มงคล วงศ์สกุลยานนท์ (Feltz Studio)" value="มงคล วงศ์สกุลยานนท์ (Feltz Studio)">
+                </div>
+                <div class="form-group">
+                  <label for="docSellerTaxId">เลขประจำตัวผู้เสียภาษี (เลขบัตร ปชช.)</label>
+                  <input type="text" id="docSellerTaxId" placeholder="3509900218949" value="3509900218949">
+                </div>
+                <div class="form-group full-width">
+                  <label for="docSellerAddress">ที่อยู่ผู้ขาย</label>
+                  <textarea id="docSellerAddress" rows="2" style="font-family: inherit; font-size: 13px; padding: 8px; border: var(--card-border); border-radius: var(--border-radius-input); width:100%; box-sizing: border-box;">65/1 ถ.ต้นขาม2 ต.ท่าศาลา อ.เมือง จ.เชียงใหม่</textarea>
+                </div>
+                <div class="form-group">
+                  <label for="docSellerPhone">เบอร์โทรผู้ขาย</label>
+                  <input type="text" id="docSellerPhone" value="0895544355">
+                </div>
+                <div class="form-group">
+                  <label for="docSellerEmail">อีเมลผู้ขาย</label>
+                  <input type="email" id="docSellerEmail" value="feltzstudio@gmail.com">
+                </div>
+              </div>
+            </details>
+
+            <!-- Client Info Form Section -->
+            <div class="form-header" style="border-bottom:none; margin-bottom:10px; padding-bottom:0; margin-top: 20px;">
+              <h4 style="font-size: 14px; font-weight: 700;">ข้อมูลลูกค้า (Client Details)</h4>
+            </div>
+            <div class="form-grid">
+              <div class="form-group full-width">
+                <label for="docClientName">ชื่อลูกค้า / บริษัท</label>
+                <input type="text" id="docClientName" placeholder="เช่น บริษัท เจนจำกัด มหาชน" autocomplete="off">
+              </div>
+              <div class="form-group full-width">
+                <label for="docClientAddress">ที่อยู่ลูกค้า</label>
+                <input type="text" id="docClientAddress" placeholder="เช่น 888 ซอยสุขุมวิท แขวงคลองเตย เขตคลองเตย กทม." autocomplete="off">
+              </div>
+              <div class="form-group">
+                <label for="docClientTaxId">เลขผู้เสียภาษีลูกค้า (ถ้ามี)</label>
+                <input type="text" id="docClientTaxId" placeholder="เลขผู้เสียภาษี 13 หลัก" autocomplete="off">
+              </div>
+              <div class="form-group">
+                <label for="docClientPhone">เบอร์โทรลูกค้า</label>
+                <input type="text" id="docClientPhone" placeholder="เช่น 089-XXX-XXXX" autocomplete="off">
+              </div>
+            </div>
+
+            <!-- Document Meta Info Section -->
+            <div class="form-header" style="border-bottom:none; margin-bottom:10px; padding-bottom:0; margin-top: 20px;">
+              <h4 style="font-size: 14px; font-weight: 700;">ข้อมูลเอกสาร (Document Info)</h4>
+            </div>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="docNumber">เลขที่เอกสาร</label>
+                <input type="text" id="docNumber" placeholder="เช่น QT2026-0601" autocomplete="off">
+              </div>
+              <div class="form-group">
+                <label for="docDate">วันที่ออกเอกสาร</label>
+                <input type="date" id="docDate">
+              </div>
+              <div class="form-group" id="groupDocDueDate">
+                <label for="docDueDate">วันที่ครบกำหนดชำระ</label>
+                <input type="date" id="docDueDate">
+              </div>
+              <div class="form-group" id="groupDocPaymentTerm">
+                <label for="docPaymentTerm">เงื่อนไขชำระเงิน</label>
+                <input type="text" id="docPaymentTerm" placeholder="เช่น 30 วัน, ชำระทันที" value="ชำระทันที">
+              </div>
+            </div>
+
+            <!-- Items Table Input -->
+            <div class="form-header" style="border-bottom:none; margin-bottom:10px; padding-bottom:0; margin-top: 25px; display: flex; justify-content: space-between; align-items: center;">
+              <h4 style="font-size: 14px; font-weight: 700; margin-bottom:0;">รายการสินค้า/บริการ (Items List)</h4>
+              <button type="button" class="btn-secondary" id="btnAddDocItem" style="padding: 4px 10px; font-size: 12px; margin-bottom:0;">+ เพิ่มรายการ</button>
+            </div>
+            <div class="table-responsive" style="margin-bottom: 20px; border: var(--card-border); border-radius: var(--border-radius-input); background: var(--bg-card);">
+              <table class="brutalist-table" id="editorItemsTable" style="font-size: 12px; margin-bottom:0; border:none;">
+                <thead>
+                  <tr style="background: var(--ink-dark); color: var(--bg-card);">
+                    <th>รายละเอียดสินค้า/บริการ</th>
+                    <th style="width: 60px; text-align: center;">จำนวน</th>
+                    <th style="width: 50px; text-align: center;">หน่วย</th>
+                    <th style="width: 90px; text-align: right;">ราคาต่อหน่วย</th>
+                    <th style="width: 50px; text-align: center;">ลบ</th>
+                  </tr>
+                </thead>
+                <tbody id="editorItemsBody">
+                  <!-- Injected via JavaScript -->
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Tax Calculations Options -->
+            <div class="form-header" style="border-bottom:none; margin-bottom:10px; padding-bottom:0; margin-top: 20px;">
+              <h4 style="font-size: 14px; font-weight: 700;">การตั้งค่าภาษีและการเงิน</h4>
+            </div>
+            <div class="form-grid">
+              <div class="form-group">
+                <label>คิดภาษีมูลค่าเพิ่ม 7% (VAT)</label>
+                <div style="display: flex; align-items: center; gap: 8px; height: 40px; border: var(--card-border); border-radius: var(--border-radius-input); padding: 0 12px; background: var(--bg-card);">
+                  <input type="checkbox" id="docVatCheckbox" style="width: 18px; height: 18px; cursor: pointer;">
+                  <label for="docVatCheckbox" style="margin-bottom: 0; cursor: pointer; font-weight: normal; font-size: 13px;">คิดภาษี VAT 7%</label>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="docWhtSelect">ภาษีหัก ณ ที่จ่าย (Withholding Tax)</label>
+                <select id="docWhtSelect" style="width: 100%; height: 40px; border: var(--card-border); border-radius: var(--border-radius-input); background: var(--bg-card); padding: 0 8px;">
+                  <option value="0">ไม่มีการหัก</option>
+                  <option value="1">หัก ณ ที่จ่าย 1% (ค่าขนส่ง)</option>
+                  <option value="3">หัก ณ ที่จ่าย 3% (ค่าบริการ/จ้างทำของ)</option>
+                </select>
+              </div>
+              <div class="form-group full-width">
+                <label for="docBankDetails">ข้อมูลการชำระเงิน (บัญชีธนาคาร)</label>
+                <input type="text" id="docBankDetails" placeholder="เช่น ธ.กสิกรไทย เลขที่ 123-4-56789-0 ชื่อบัญชี มงคล วงศ์สกุลยานนท์" value="ธ.กสิกรไทย เลขที่ 123-4-56789-0 ชื่อบัญชี มงคล วงศ์สกุลยานนท์">
+              </div>
+              <div class="form-group">
+                <label for="docSignerName">ชื่อผู้ลงนาม (Authorized Signer)</label>
+                <input type="text" id="docSignerName" value="มงคล วงศ์สกุลยานนท์">
+              </div>
+              <div class="form-group">
+                <label for="docProjectName">ชื่อโครงการ/ชื่องาน (ไม่บังคับ)</label>
+                <input type="text" id="docProjectName" placeholder="เช่น ถ่ายภาพพรีเวดดิ้ง, ถ่ายโฆษณา" autocomplete="off">
+              </div>
+            </div>
+
+            <!-- Print Trigger Button -->
+            <div style="margin-top: 30px;">
+              <button type="button" class="btn-primary" id="btnExportDocPdf" style="width: 100%; padding: 15px; font-size: 16px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                <svg class="btn-svg-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width: 20px; height: 20px;">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                </svg>
+                สั่งพิมพ์ / เซฟเป็น PDF (A4)
+              </button>
+            </div>
+            
+          </div>
+
+          <!-- Column 2: Live A4 PDF Preview Page -->
+          <div class="document-preview-panel">
+            <div class="preview-panel-header" style="margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center;">
+              <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 0;">💻 ตัวอย่างหน้ากระดาษ A4 (Live Preview)</h4>
+              <span style="font-size: 12px; color: var(--ink-muted);">ขนาดจริงมาตราส่วนตอนพิมพ์ A4 เป๊ะๆ</span>
+            </div>
+            
+            <div class="paper-container">
+              <div class="print-paper" id="print-paper">
+                
+                <!-- A4 Header -->
+                <div class="doc-header-row">
+                  <div class="doc-issuer-block">
+                    <div class="doc-logo" id="prevLogoText">Feltz Studio</div>
+                    <div class="doc-issuer-details">
+                      <strong id="prevSellerName">มงคล วงศ์สกุลยานนท์ (Feltz Studio)</strong><br>
+                      <span id="prevSellerAddress">65/1 ถ.ต้นขาม2 ต.ท่าศาลา อ.เมือง จ.เชียงใหม่</span><br>
+                      โทร: <span id="prevSellerPhone">0895544355</span> | อีเมล: <span id="prevSellerEmail">feltzstudio@gmail.com</span><br>
+                      เลขประจำตัวผู้เสียภาษี: <span id="prevSellerTaxId">3509900218949</span>
+                    </div>
+                  </div>
+                  <div class="doc-title-block">
+                    <h1 id="prevDocTitleText">ใบเสนอราคา</h1>
+                    <h2 id="prevDocTitleEnText">QUOTATION</h2>
+                    <div class="doc-meta-table">
+                      <div class="meta-row">
+                        <span class="meta-label">เลขที่ / No.</span>
+                        <span class="meta-val" id="prevDocNoVal">-</span>
+                      </div>
+                      <div class="meta-row">
+                        <span class="meta-label">วันที่ / Date</span>
+                        <span class="meta-val" id="prevDocDateVal">-</span>
+                      </div>
+                      <div class="meta-row" id="prevDocDueDateRow">
+                        <span class="meta-label">ครบกำหนด / Due</span>
+                        <span class="meta-val" id="prevDocDueDateVal">-</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Horizontal Line Divider -->
+                <div class="doc-divider"></div>
+
+                <!-- Client Info & Project Info -->
+                <div class="doc-billto-row">
+                  <div class="doc-billto-block">
+                    <div class="section-title">ลูกค้า / Client:</div>
+                    <div class="client-details-preview">
+                      <strong id="prevClientName">-</strong><br>
+                      <span id="prevClientAddress">-</span><br>
+                      โทร: <span id="prevClientPhone">-</span><br>
+                      เลขประจำตัวผู้เสียภาษี: <span id="prevClientTaxId">-</span>
+                    </div>
+                  </div>
+                  <div class="doc-project-block">
+                    <div class="section-title">โครงการ / Project:</div>
+                    <div id="prevProjectNameVal">-</div>
+                    <div class="section-title" style="margin-top: 10px;" id="prevPaymentTermTitle">เงื่อนไขการชำระเงิน / Terms:</div>
+                    <div id="prevPaymentTermVal">ชำระทันที</div>
+                  </div>
+                </div>
+
+                <!-- Document Items Table -->
+                <table class="preview-items-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 8%; text-align: center;">ลำดับ</th>
+                      <th style="width: 52%; text-align: left;">รายละเอียดสินค้า/บริการ (Description)</th>
+                      <th style="width: 10%; text-align: center;">จำนวน</th>
+                      <th style="width: 10%; text-align: center;">หน่วย</th>
+                      <th style="width: 10%; text-align: right;">ราคา/หน่วย</th>
+                      <th style="width: 10%; text-align: right;">จำนวนเงิน</th>
+                    </tr>
+                  </thead>
+                  <tbody id="prevItemsBody">
+                    <!-- Preview rows dynamically appended here -->
+                  </tbody>
+                </table>
+
+                <!-- Summary block -->
+                <div class="preview-summary-area">
+                  <div class="baht-text-box">
+                    จำนวนเงินตัวอักษร: <strong id="prevBahtTextVal">ศูนย์บาทถ้วน</strong>
+                  </div>
+                  <div class="summary-table">
+                    <div class="summary-row">
+                      <span>รวมเงิน (Subtotal):</span>
+                      <span id="prevSubtotalVal">฿0.00</span>
+                    </div>
+                    <div class="summary-row" id="prevVatRow" style="display: none;">
+                      <span>ภาษีมูลค่าเพิ่ม 7% (VAT):</span>
+                      <span id="prevVatVal">฿0.00</span>
+                    </div>
+                    <div class="summary-row" id="prevWhtRow" style="display: none;">
+                      <span>หัก ณ ที่จ่าย (<span id="prevWhtRateVal">0</span>%):</span>
+                      <span id="prevWhtVal">-฿0.00</span>
+                    </div>
+                    <div class="summary-row grand-total">
+                      <span>ยอดชำระสุทธิ (Net Payable):</span>
+                      <strong id="prevGrandTotalVal">฿0.00</strong>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Payment Details preview -->
+                <div class="payment-preview-info">
+                  <strong>ข้อมูลการชำระเงิน (Payment Method):</strong><br>
+                  ชำระเงินผ่านบัญชีธนาคาร: <span id="prevBankDetailsVal">ธ.กสิกรไทย เลขที่ 123-4-56789-0 ชื่อบัญชี มงคล วงศ์สกุลยานนท์</span>
+                </div>
+
+                <!-- Signatures -->
+                <div class="doc-signatures-row">
+                  <div class="signature-box">
+                    <p>ผู้รับเอกสาร / Customer Signature</p>
+                    <div class="sig-line"></div>
+                    <p>วันที่ / Date: ......./......./.......</p>
+                  </div>
+                  <div class="signature-box">
+                    <p>ผู้รับเงิน / Authorized Signature</p>
+                    <div class="sig-line">
+                      <span class="signer-preview-name" id="prevSignerNameVal">มงคล วงศ์สกุลยานนท์</span>
+                    </div>
+                    <p>วันที่ / Date: ......./......./.......</p>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            
+          </div>
+          
+        </div>
+        
+      </section>
+
+      <!-- View 3: Settings View -->
+      <section id="settings-view" class="view-panel">
+        <div class="form-container-card">
+          <div class="form-header">
+            <h3>การตั้งค่าระบบเชื่อมต่อ Google Sheets</h3>
+            <p>ผูกแอปเข้ากับสิทธิ์ Google Sheets ของแกผ่าน API หรือ Google Apps Script</p>
+          </div>
+
+          <form id="settingsForm">
+            <div class="form-grid">
+              
+              <div class="form-group full-width">
+                <label for="scriptUrlInput">Google Apps Script Web App URL</label>
+                <input type="url" id="scriptUrlInput" name="scriptUrl" placeholder="https://script.google.com/macros/s/…/exec" autocomplete="off" required>
+                <span class="field-tip">นำลิงก์ Web App URL ที่ได้จากการดีพลอยสคริปต์ใน Google Sheets มาวางที่นี่จ้า</span>
+              </div>
+
+              <div class="form-group">
+                <label for="grabSheetIdInput">Grab Spreadsheet ID</label>
+                <input type="text" id="grabSheetIdInput" name="grabSheetId" placeholder="เช่น 1Uhpj9avRUogJLE6pplkhNsMvTgYFLtX93vqe5CPNjE0…" autocomplete="off" required>
+                <span class="field-tip">ID ของ Google Sheets สำหรับรายได้ Grab (ดูจาก URL ของชีต)</span>
+              </div>
+
+              <div class="form-group">
+                <label for="generalSheetIdInput">Feltz Studio Spreadsheet ID (รายรับ-รายจ่าย)</label>
+                <input type="text" id="generalSheetIdInput" name="generalSheetId" placeholder="เช่น 1DmoFUVKBP24Q7s8_F-zF_9yZzLYJJDBv2iEPWBuggmw…" autocomplete="off" required>
+                <span class="field-tip">ID ของ Google Sheets สำหรับรายรับ-รายจ่ายของ Feltz Studio (ดูจาก URL ของชีต)</span>
+              </div>
+
+            </div>
+
+            <div class="form-actions" style="margin-top: 25px;">
+              <button type="submit" class="btn-primary">
+                <svg class="btn-svg-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+                </svg>
+                บันทึกการตั้งค่าลิงก์
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Fixed Cost Management Card -->
+        <div class="form-container-card" style="margin-top: 30px;">
+          <div class="form-header">
+            <h3>จัดการรายการ Fix Cost มาตรฐาน (Fixed Cost List)</h3>
+            <p>เพิ่มหรือลบรายการค่าใช้จ่ายประจำเดือนมาตรฐานเพื่อใช้เป็นทางลัดในฟอร์มรายจ่าย</p>
+          </div>
+          
+          <div class="form-grid" style="margin-bottom: 20px;">
+            <div class="form-group">
+              <label for="newFixedCostDesc">คำอธิบายรายการ</label>
+              <input type="text" id="newFixedCostDesc" placeholder="เช่น ค่าเช่าเซิร์ฟเวอร์, ค่าอินเทอร์เน็ต…" autocomplete="off">
+            </div>
+            <div class="form-group">
+              <label for="newFixedCostAmount">จำนวนเงิน (บาท)</label>
+              <div class="input-with-suffix">
+                <input type="number" id="newFixedCostAmount" min="0.01" step="0.01" placeholder="เช่น 1500.00…" autocomplete="off">
+                <span class="suffix-label">บาท</span>
+              </div>
+            </div>
+          </div>
+          
+          <div style="display: flex; justify-content: flex-end; margin-bottom: 20px;">
+            <button type="button" class="btn-primary" id="btnAddFixedCost" style="padding: 10px 20px; font-size: 14px;">
+              <svg class="btn-svg-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
+              </svg>
+              เพิ่มรายการ Fix Cost
+            </button>
+          </div>
+          
+          <div class="table-responsive">
+            <table class="brutalist-table" id="fixedCostsTable">
+              <thead>
+                <tr>
+                  <th>คำอธิบาย</th>
+                  <th style="width: 150px;">จำนวนเงิน</th>
+                  <th style="width: 80px; text-align: center;">จัดการ</th>
+                </tr>
+              </thead>
+              <tbody id="fixedCostsTableBody">
+                <!-- Data rows injected by JS -->
+                <tr>
+                  <td colspan="3" class="empty-row-msg">ไม่มีรายการ Fix Cost มาตรฐาน</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Setup Guide Card -->
+        <div class="form-container-card" style="margin-top: 30px;">
+          <div class="form-header">
+            <h3>🛠️ วิธีการติดตั้ง Google Apps Script ในตาราง Google Sheets ของแก</h3>
+            <p>ทำตาม 5 ขั้นตอนสั้นๆ นี้เพื่อรับลิงก์สำหรับคีย์ข้อมูลอัตโนมัติ:</p>
+          </div>
+          
+          <div class="guide-steps">
+            <div class="guide-step">
+              <span class="step-num">01</span>
+              <div class="step-content">
+                <strong>เปิด Google Sheet:</strong> เปิดชีตรายรับของแก (เช่น Grab 2026) ขึ้นมาในเบราว์เซอร์
+              </div>
+            </div>
+            <div class="guide-step">
+              <span class="step-num">02</span>
+              <div class="step-content">
+                <strong>เข้าสู่หน้าเขียนโค้ด:</strong> ไปที่เมนูด้านบน เลือก <strong>Extensions (ส่วนขยาย)</strong> &gt; <strong>Apps Script</strong>
+              </div>
+            </div>
+            <div class="guide-step">
+              <span class="step-num">03</span>
+              <div class="step-content">
+                <strong>วางโค้ดสคริปต์:</strong> ลบโค้ดเริ่มต้นทั้งหมดออก แล้วคัดลอกโค้ดสคริปต์จากคู่มือ <span class="link-span" id="readmeLinkBtn">README.md</span> ไปวางทับในกล่องโค้ด จากนั้นกดปุ่มเซฟ (รูปแผ่นดิสก์)
+              </div>
+            </div>
+            <div class="guide-step">
+              <span class="step-num">04</span>
+              <div class="step-content">
+                <strong>เริ่มการดีพลอย (Deploy):</strong> กดปุ่มสีน้ำเงิน <strong>Deploy (การใช้งานได้จริง)</strong> &gt; <strong>New deployment (การติดตั้งใช้งานใหม่)</strong>
+                <ul class="step-sub-list">
+                  <li>เลือกประเภทเฟือง (Select type) เป็น <strong>Web app (เว็บแอป)</strong></li>
+                  <li>ช่อง Execute as (เรียกใช้ในฐานะ) เลือกเป็น <strong>Me (บัญชีของแกเอง)</strong></li>
+                  <li>ช่อง Who has access (ผู้มีสิทธิ์เข้าถึง) เลือกเป็น <strong>Anyone (ทุกคน)</strong></li>
+                </ul>
+              </div>
+            </div>
+            <div class="guide-step">
+              <span class="step-num">05</span>
+              <div class="step-content">
+                <strong>คัดลอกลิงก์:</strong> กดปุ่ม Deploy ระบบจะถามขอสิทธิ์เข้าถึงชีตให้กดยอมรับ สิทธิ์จะโหลดหน้าต่างความปลอดภัยขึ้นมา ให้เลือก Advanced &gt; Go to script จากนั้นคัดลอกลิงก์ <strong>Web app URL</strong> มาใส่ในแท็บการตั้งค่าด้านบนได้ทันทีเลยแก!
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Main app script -->
+  <script src="app.js"></script>
+</body>
+</html>
