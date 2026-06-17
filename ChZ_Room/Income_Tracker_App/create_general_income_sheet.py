@@ -193,31 +193,32 @@ def main():
         # แถวแรก: ยอดรวมทั้งเดือน
         values.append(['', 'ยอดรวมทั้งเดือน', total_income_formula, '', total_expense_formula, total_tax_formula, total_savings_formula])
         
-        # แถวสอง: ค่าคอมมิชชัน (ป้ายชื่ออยู่คอลัมน์ B และสูตรค่าใช้จ่ายอยู่คอลัมน์ E)
+        # แถวสอง: รายได้สุทธิประจำเดือน (ฝั่งรายรับ) และค่าคอมมิชชัน (ฝั่งรายจ่าย)
         commission_formula = f"=IF(C{summary_row_idx}<=70000, C{summary_row_idx}*10%, IF(C{summary_row_idx}<=100000, C{summary_row_idx}*15%, C{summary_row_idx}*20%))"
-        values.append(['', 'ค่าคอมมิชชัน', '', '', commission_formula, '', ''])
-        
-        # แถวสาม: รายได้สุทธิ (สูตรแบบใหม่ C_Total - E_Total - E_Commission เขียนลงคอลัมน์ C)
         net_income_formula = f"=C{summary_row_idx}-E{summary_row_idx}-E{summary_row_idx+1}"
-        values.append(['', 'รายได้สุทธิ', net_income_formula, '', '', '', ''])
+        values.append(['', 'รายได้สุทธิ', net_income_formula, 'ค่าคอมมิชชัน', commission_formula, '', ''])
         
-        # แถวสี่: ยอดรวมเงินเก็บสะสม 10% (สูตรเดิมดึงจาก G_Total เขียนลงคอลัมน์ C)
+        # แถวสาม: ยอดรวมเงินเก็บสะสม 10% (สูตรเดิมดึงจาก G_Total เขียนลงคอลัมน์ C)
         values.append(['', 'ยอดรวมเงินเก็บสะสม 10%', f"=G{summary_row_idx}", '', '', '', ''])
         
-        # แถวห้า: ยอดยกมาจากเดือนก่อน (เขียนลงคอลัมน์ C)
+        # แถวสี่: ยอดยกมาจากเดือนก่อน (เขียนลงคอลัมน์ C)
         if m_num == '01':
             carryover_formula = "0"
         else:
             prev_m_num = months_keys[months_keys.index(m_num) - 1]
             prev_m_title = MONTHS_TH[prev_m_num]
             prev_num_days = calendar.monthrange(2026, int(prev_m_num))[1]
-            carryover_formula = f"='{prev_m_title}'!C{prev_num_days + 8}"
+            carryover_formula = f"='{prev_m_title}'!C{prev_num_days + 7}"
         values.append(['', 'ยอดยกมาจากเดือนก่อน', carryover_formula, '', '', '', ''])
         
-        # แถวหก: รายได้สุทธิสะสมรวม (เขียนลงคอลัมน์ C)
-        accum_net_formula = f"=C{summary_row_idx+2}+C{summary_row_idx+4}"
+        # แถวห้า: รายได้สุทธิสะสมรวม (เขียนลงคอลัมน์ C)
+        accum_net_formula = f"=C{summary_row_idx+1}+C{summary_row_idx+3}"
         values.append(['', 'รายได้สุทธิสะสมรวม', accum_net_formula, '', '', '', ''])
         
+        # เติมแถวว่าง 3 แถวท้ายตารางเพื่อลบเศษซากแถวสรุปเก่าในประวัติ (ถ้ามี)
+        for _ in range(3):
+            values.append(['', '', '', '', '', '', ''])
+            
         # อัปเดตข้อมูลลงชีตในแท็บเดือนนั้นๆ
         update_range = f"'{m_title}'!A1:G{len(values)}"
         service.spreadsheets().values().update(
@@ -369,7 +370,7 @@ def main():
                 'range': {
                     'sheetId': sheet_id,
                     'startRowIndex': summary_row_idx - 1,
-                    'endRowIndex': summary_row_idx + 6,
+                    'endRowIndex': summary_row_idx + 4,
                     'startColumnIndex': 0,
                     'endColumnIndex': 7
                 },
@@ -388,7 +389,7 @@ def main():
                 'range': {
                     'sheetId': sheet_id,
                     'startRowIndex': 0,
-                    'endRowIndex': num_days + 8,
+                    'endRowIndex': num_days + 7,
                     'startColumnIndex': 0,
                     'endColumnIndex': 7
                 },
@@ -426,7 +427,7 @@ def main():
                 'range': {
                     'sheetId': sheet_id,
                     'startRowIndex': 1,
-                    'endRowIndex': num_days + 8,
+                    'endRowIndex': num_days + 7,
                     'startColumnIndex': 2,
                     'endColumnIndex': 3
                 },
@@ -448,7 +449,7 @@ def main():
                 'range': {
                     'sheetId': sheet_id,
                     'startRowIndex': 1,
-                    'endRowIndex': num_days + 8,
+                    'endRowIndex': num_days + 7,
                     'startColumnIndex': 4,
                     'endColumnIndex': 7
                 },
@@ -470,7 +471,7 @@ def main():
                 'range': {
                     'sheetId': sheet_id,
                     'startRowIndex': summary_row_idx - 1,
-                    'endRowIndex': summary_row_idx + 6,
+                    'endRowIndex': summary_row_idx + 4,
                     'startColumnIndex': 0,
                     'endColumnIndex': 7
                 },
@@ -491,7 +492,7 @@ def main():
                 'range': {
                     'sheetId': sheet_id,
                     'startRowIndex': summary_row_idx - 1,
-                    'endRowIndex': summary_row_idx + 6,
+                    'endRowIndex': summary_row_idx + 4,
                     'startColumnIndex': 1,
                     'endColumnIndex': 2
                 },
@@ -509,7 +510,7 @@ def main():
                 'range': {
                     'sheetId': sheet_id,
                     'startRowIndex': summary_row_idx - 1,
-                    'endRowIndex': summary_row_idx + 6,
+                    'endRowIndex': summary_row_idx + 4,
                     'startColumnIndex': 3,
                     'endColumnIndex': 4
                 },
