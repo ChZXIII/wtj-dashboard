@@ -119,6 +119,13 @@ function doPost(e) {
       })).setMimeType(ContentService.MimeType.JSON);
     }
     
+    if (!data.date || data.date.split('/').length !== 3) {
+      return ContentService.createTextOutput(JSON.stringify({
+        "status": "error",
+        "message": "ไม่พบข้อมูลวันที่ หรือรูปแบบวันที่ผิดรูปแบบนะแก! (คาดหวัง DD/MM/YYYY)"
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+    
     // ดึงข้อมูลวันที่ และฟอร์แมตให้อยู่ในรูปต่างๆ
     var dateParts = data.date.split('/'); // คาดหวัง DD/MM/YYYY
     var dayStr = dateParts[0].padStart(2, '0');
