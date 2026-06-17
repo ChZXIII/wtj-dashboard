@@ -134,6 +134,13 @@ function switchToView(viewId) {
     viewTitle.textContent = 'ออกเอกสารการเงิน';
     viewSubtitle.textContent = 'สร้างและพิมพ์ใบเสนอราคา ใบวางบิล และใบเสร็จรับเงินเป็น PDF ในรูปแบบมาตรฐานแก';
   }
+
+  // Manage document title dynamic changes for professional PDF export names
+  if (viewId === 'document-view') {
+    updateDynamicDocTitle();
+  } else {
+    document.title = 'ระบบบันทึกรายรับของเก่ง | Income Tracker';
+  }
   
   // Close sidebar on mobile
   const sidebar = document.getElementById('sidebar');
@@ -1189,42 +1196,8 @@ function initDocumentGenerator() {
   const btnExportDocPdf = document.getElementById('btnExportDocPdf');
   if (btnExportDocPdf) {
     btnExportDocPdf.addEventListener('click', () => {
-      // 1. Get current document details to build a professional filename
-      const docTypeSelect = document.querySelector('input[name="docType"]:checked');
-      const docNoInput = document.getElementById('docNoInput');
-      const docClientInput = document.getElementById('docClientInput');
-      
-      let docTypeName = 'เอกสารการเงิน';
-      if (docTypeSelect) {
-        const val = docTypeSelect.value;
-        if (val === 'quotation') docTypeName = 'ใบเสนอราคา';
-        else if (val === 'invoice') docTypeName = 'ใบวางบิล';
-        else if (val === 'receipt') docTypeName = 'ใบเสร็จรับเงิน';
-      }
-      
-      const docNo = docNoInput ? docNoInput.value.trim() : '';
-      const docClient = docClientInput ? docClientInput.value.trim() : '';
-      
-      // Clean up customer name and document number for safe filename
-      const cleanClient = docClient.replace(/[^a-zA-Z0-9ก-๙\s-_]/g, '').replace(/\s+/g, '_');
-      const cleanDocNo = docNo.replace(/[^a-zA-Z0-9-_]/g, '');
-      
-      // Construct filename: e.g. ใบเสนอราคา_QT2606-001_ลูกค้า
-      let filename = docTypeName;
-      if (cleanDocNo) filename += `_${cleanDocNo}`;
-      if (cleanClient) filename += `_${cleanClient}`;
-      
-      // 2. Backup old title and set new title (Safari will use this as PDF filename)
-      const oldTitle = document.title;
-      document.title = filename;
-      
-      // 3. Trigger print dialog
+      // document.title is continuously updated via syncDocPreview/switchToView
       window.print();
-      
-      // 4. Restore old title after a short delay (so dialog has already captured the filename)
-      setTimeout(() => {
-        document.title = oldTitle;
-      }, 800);
     });
   }
 
@@ -1568,6 +1541,12 @@ function syncDocPreview() {
   // Update dynamic elements
   renderDocItemsTable();
   calculateDocTotals();
+  
+  // Update title dynamically if we are currently viewing the document view
+  const docView = document.getElementById('document-view');
+  if (docView && docView.classList.contains('active')) {
+    updateDynamicDocTitle();
+  }
 }
 
 function formatDocDate(dateStr) {
@@ -1648,6 +1627,34 @@ function thaiBahtText(amount) {
   }
   
   return bahtStr + satangStr;
+}
+
+function updateDynamicDocTitle() {
+  const docTypeSelect = document.querySelector('input[name="docType"]:checked');
+  const docNumberInput = document.getElementById('docNumber');
+  const docClientInput = document.getElementById('docClientName');
+  
+  let docTypeName = 'เอกสารการเงิน';
+  if (docTypeSelect) {
+    const val = docTypeSelect.value;
+    if (val === 'quotation') docTypeName = 'ใบเสนอราคา';
+    else if (val === 'invoice') docTypeName = 'ใบวางบิล';
+    else if (val === 'receipt') docTypeName = 'ใบเสร็จรับเงิน';
+  }
+  
+  const docNo = docNumberInput ? docNumberInput.value.trim() : '';
+  const docClient = docClientInput ? docClientInput.value.trim() : '';
+  
+  // Clean up client name and document number for safe filename
+  const cleanClient = docClient.replace(/[^a-zA-Z0-9ก-๙\s-_]/g, '').replace(/\s+/g, '_');
+  const cleanDocNo = docNo.replace(/[^a-zA-Z0-9-_]/g, '');
+  
+  // Construct title: e.g. ใบเสนอราคา_QT2606-001_ลูกค้า
+  let filename = docTypeName;
+  if (cleanDocNo) filename += `_${cleanDocNo}`;
+  if (cleanClient) filename += `_${cleanClient}`;
+  
+  document.title = filename;
 }
 
 // Expose callback handlers to the global window scope for inline HTML event triggers
