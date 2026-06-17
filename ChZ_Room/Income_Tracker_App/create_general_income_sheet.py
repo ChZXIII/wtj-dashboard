@@ -271,82 +271,97 @@ def main():
             }
         })
         
-        # 1. จัดสีพื้นหลังให้แต่ละกลุ่มคอลัมน์ (Column Group Backgrounds)
-        # คอลัมน์ A: วันที่ (Slate 50)
-        format_requests.append({
-            'repeatCell': {
-                'range': {
-                    'sheetId': sheet_id,
-                    'startRowIndex': 1,
-                    'endRowIndex': num_days + 1,
-                    'startColumnIndex': 0,
-                    'endColumnIndex': 1
-                },
-                'cell': {
-                    'userEnteredFormat': {
-                        'backgroundColor': {'red': 0.97, 'green': 0.98, 'blue': 0.99}
-                    }
-                },
-                'fields': 'userEnteredFormat.backgroundColor'
-            }
-        })
-        
-        # คอลัมน์ B & C: รายรับ (Emerald 50)
-        format_requests.append({
-            'repeatCell': {
-                'range': {
-                    'sheetId': sheet_id,
-                    'startRowIndex': 1,
-                    'endRowIndex': num_days + 1,
-                    'startColumnIndex': 1,
-                    'endColumnIndex': 3
-                },
-                'cell': {
-                    'userEnteredFormat': {
-                        'backgroundColor': {'red': 0.93, 'green': 0.99, 'blue': 0.96}
-                    }
-                },
-                'fields': 'userEnteredFormat.backgroundColor'
-            }
-        })
-        
-        # คอลัมน์ D & E: รายจ่าย (Red 50)
-        format_requests.append({
-            'repeatCell': {
-                'range': {
-                    'sheetId': sheet_id,
-                    'startRowIndex': 1,
-                    'endRowIndex': num_days + 1,
-                    'startColumnIndex': 3,
-                    'endColumnIndex': 5
-                },
-                'cell': {
-                    'userEnteredFormat': {
-                        'backgroundColor': {'red': 1.0, 'green': 0.96, 'blue': 0.96}
-                    }
-                },
-                'fields': 'userEnteredFormat.backgroundColor'
-            }
-        })
-        
-        # คอลัมน์ F & G: หัก ณ ที่จ่าย & เงินเก็บ (Sky 50)
-        format_requests.append({
-            'repeatCell': {
-                'range': {
-                    'sheetId': sheet_id,
-                    'startRowIndex': 1,
-                    'endRowIndex': num_days + 1,
-                    'startColumnIndex': 5,
-                    'endColumnIndex': 7
-                },
-                'cell': {
-                    'userEnteredFormat': {
-                        'backgroundColor': {'red': 0.94, 'green': 0.98, 'blue': 1.0}
-                    }
-                },
-                'fields': 'userEnteredFormat.backgroundColor'
-            }
-        })
+        # 1. จัดสีพื้นหลังสลับเข้ม-อ่อนรายแถว (Zebra Striping)
+        for day in range(1, num_days + 1):
+            row_idx = day # 0-indexed row index is equal to day (day 1 is row 1)
+            is_odd = (day % 2 != 0)
+            
+            if is_odd:
+                col_a_color = {'red': 0.97, 'green': 0.98, 'blue': 0.99}     # Slate 50 (#f8fafc)
+                col_bc_color = {'red': 0.93, 'green': 0.99, 'blue': 0.96}    # Emerald 50 (#ecfdf5)
+                col_de_color = {'red': 1.0, 'green': 0.96, 'blue': 0.96}     # Red 50 (#fff5f5)
+                col_fg_color = {'red': 0.94, 'green': 0.98, 'blue': 1.0}     # Sky 50 (#f0f9ff)
+            else:
+                col_a_color = {'red': 0.95, 'green': 0.96, 'blue': 0.98}     # Slate 100 (#f1f5f9)
+                col_bc_color = {'red': 0.86, 'green': 0.99, 'blue': 0.91}    # Emerald 100 (#dcfce7)
+                col_de_color = {'red': 1.0, 'green': 0.89, 'blue': 0.89}     # Red 100 (#fee2e2)
+                col_fg_color = {'red': 0.88, 'green': 0.95, 'blue': 1.0}     # Sky 100 (#e0f2fe)
+            
+            # คอลัมน์ A: วันที่
+            format_requests.append({
+                'repeatCell': {
+                    'range': {
+                        'sheetId': sheet_id,
+                        'startRowIndex': row_idx,
+                        'endRowIndex': row_idx + 1,
+                        'startColumnIndex': 0,
+                        'endColumnIndex': 1
+                    },
+                    'cell': {
+                        'userEnteredFormat': {
+                            'backgroundColor': col_a_color
+                        }
+                    },
+                    'fields': 'userEnteredFormat.backgroundColor'
+                }
+            })
+            
+            # คอลัมน์ B & C: รายรับ
+            format_requests.append({
+                'repeatCell': {
+                    'range': {
+                        'sheetId': sheet_id,
+                        'startRowIndex': row_idx,
+                        'endRowIndex': row_idx + 1,
+                        'startColumnIndex': 1,
+                        'endColumnIndex': 3
+                    },
+                    'cell': {
+                        'userEnteredFormat': {
+                            'backgroundColor': col_bc_color
+                        }
+                    },
+                    'fields': 'userEnteredFormat.backgroundColor'
+                }
+            })
+            
+            # คอลัมน์ D & E: รายจ่าย
+            format_requests.append({
+                'repeatCell': {
+                    'range': {
+                        'sheetId': sheet_id,
+                        'startRowIndex': row_idx,
+                        'endRowIndex': row_idx + 1,
+                        'startColumnIndex': 3,
+                        'endColumnIndex': 5
+                    },
+                    'cell': {
+                        'userEnteredFormat': {
+                            'backgroundColor': col_de_color
+                        }
+                    },
+                    'fields': 'userEnteredFormat.backgroundColor'
+                }
+            })
+            
+            # คอลัมน์ F & G: หัก ณ ที่จ่าย & เงินเก็บ
+            format_requests.append({
+                'repeatCell': {
+                    'range': {
+                        'sheetId': sheet_id,
+                        'startRowIndex': row_idx,
+                        'endRowIndex': row_idx + 1,
+                        'startColumnIndex': 5,
+                        'endColumnIndex': 7
+                    },
+                    'cell': {
+                        'userEnteredFormat': {
+                            'backgroundColor': col_fg_color
+                        }
+                    },
+                    'fields': 'userEnteredFormat.backgroundColor'
+                }
+            })
         
         # 2. ไฮไลต์แถบสรุปท้ายตาราง (Summary Rows Background - Slate 100)
         format_requests.append({
