@@ -271,6 +271,121 @@ def main():
             }
         })
         
+        # 1. จัดสีพื้นหลังให้แต่ละกลุ่มคอลัมน์ (Column Group Backgrounds)
+        # คอลัมน์ A: วันที่ (Slate 50)
+        format_requests.append({
+            'repeatCell': {
+                'range': {
+                    'sheetId': sheet_id,
+                    'startRowIndex': 1,
+                    'endRowIndex': num_days + 1,
+                    'startColumnIndex': 0,
+                    'endColumnIndex': 1
+                },
+                'cell': {
+                    'userEnteredFormat': {
+                        'backgroundColor': {'red': 0.97, 'green': 0.98, 'blue': 0.99}
+                    }
+                },
+                'fields': 'userEnteredFormat.backgroundColor'
+            }
+        })
+        
+        # คอลัมน์ B & C: รายรับ (Emerald 50)
+        format_requests.append({
+            'repeatCell': {
+                'range': {
+                    'sheetId': sheet_id,
+                    'startRowIndex': 1,
+                    'endRowIndex': num_days + 1,
+                    'startColumnIndex': 1,
+                    'endColumnIndex': 3
+                },
+                'cell': {
+                    'userEnteredFormat': {
+                        'backgroundColor': {'red': 0.93, 'green': 0.99, 'blue': 0.96}
+                    }
+                },
+                'fields': 'userEnteredFormat.backgroundColor'
+            }
+        })
+        
+        # คอลัมน์ D & E: รายจ่าย (Red 50)
+        format_requests.append({
+            'repeatCell': {
+                'range': {
+                    'sheetId': sheet_id,
+                    'startRowIndex': 1,
+                    'endRowIndex': num_days + 1,
+                    'startColumnIndex': 3,
+                    'endColumnIndex': 5
+                },
+                'cell': {
+                    'userEnteredFormat': {
+                        'backgroundColor': {'red': 1.0, 'green': 0.96, 'blue': 0.96}
+                    }
+                },
+                'fields': 'userEnteredFormat.backgroundColor'
+            }
+        })
+        
+        # คอลัมน์ F & G: หัก ณ ที่จ่าย & เงินเก็บ (Sky 50)
+        format_requests.append({
+            'repeatCell': {
+                'range': {
+                    'sheetId': sheet_id,
+                    'startRowIndex': 1,
+                    'endRowIndex': num_days + 1,
+                    'startColumnIndex': 5,
+                    'endColumnIndex': 7
+                },
+                'cell': {
+                    'userEnteredFormat': {
+                        'backgroundColor': {'red': 0.94, 'green': 0.98, 'blue': 1.0}
+                    }
+                },
+                'fields': 'userEnteredFormat.backgroundColor'
+            }
+        })
+        
+        # 2. ไฮไลต์แถบสรุปท้ายตาราง (Summary Rows Background - Slate 100)
+        format_requests.append({
+            'repeatCell': {
+                'range': {
+                    'sheetId': sheet_id,
+                    'startRowIndex': summary_row_idx - 1,
+                    'endRowIndex': summary_row_idx + 6,
+                    'startColumnIndex': 0,
+                    'endColumnIndex': 7
+                },
+                'cell': {
+                    'userEnteredFormat': {
+                        'backgroundColor': {'red': 0.95, 'green': 0.96, 'blue': 0.98}
+                    }
+                },
+                'fields': 'userEnteredFormat.backgroundColor'
+            }
+        })
+
+        # 3. ตีเส้นตารางสีเทาบางเฉียบ (Explicit Thin Gridlines)
+        format_requests.append({
+            'updateBorders': {
+                'range': {
+                    'sheetId': sheet_id,
+                    'startRowIndex': 0,
+                    'endRowIndex': num_days + 8,
+                    'startColumnIndex': 0,
+                    'endColumnIndex': 7
+                },
+                'top': {'style': 'SOLID', 'width': 1, 'color': {'red': 0.88, 'green': 0.91, 'blue': 0.94}},
+                'bottom': {'style': 'SOLID', 'width': 1, 'color': {'red': 0.88, 'green': 0.91, 'blue': 0.94}},
+                'left': {'style': 'SOLID', 'width': 1, 'color': {'red': 0.88, 'green': 0.91, 'blue': 0.94}},
+                'right': {'style': 'SOLID', 'width': 1, 'color': {'red': 0.88, 'green': 0.91, 'blue': 0.94}},
+                'innerHorizontal': {'style': 'SOLID', 'width': 1, 'color': {'red': 0.88, 'green': 0.91, 'blue': 0.94}},
+                'innerVertical': {'style': 'SOLID', 'width': 1, 'color': {'red': 0.88, 'green': 0.91, 'blue': 0.94}}
+            }
+        })
+        
         # จัดตัวหนังสือคอลัมน์ A (วันที่) ให้อยู่กึ่งกลาง
         format_requests.append({
             'repeatCell': {
