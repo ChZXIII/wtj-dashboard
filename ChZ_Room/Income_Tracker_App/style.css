@@ -913,12 +913,20 @@ input[type="time"] {
   color: var(--alert-warn-text);
 }
 
+.emoji-icon {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 6px;
+  font-size: 1.1em;
+  line-height: 1;
+}
+
 /* Mobile responsive adjustments */
 .mobile-header-bar {
   display: none;
   height: calc(60px + env(safe-area-inset-top, 0px));
   background-color: var(--bg-sidebar);
-  color: #ffffff;
+  color: var(--ink-dark);
   padding: env(safe-area-inset-top, 0px) 16px 0 16px;
   align-items: center;
   justify-content: space-between;
@@ -934,7 +942,7 @@ input[type="time"] {
 .menu-toggle-btn {
   background: none;
   border: none;
-  color: #ffffff;
+  color: var(--ink-dark);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -944,7 +952,7 @@ input[type="time"] {
 .theme-icon-btn {
   background: none;
   border: none;
-  color: #ffffff;
+  color: var(--ink-dark);
   cursor: pointer;
 }
 
@@ -1434,7 +1442,8 @@ input[type="time"] {
   /* Exact A4 printing rules */
   .print-paper {
     width: 210mm !important;
-    height: 297mm !important;
+    height: 276mm !important;
+    min-height: 276mm !important;
     margin: 0 !important;
     padding: 10mm 15mm !important;
     box-shadow: none !important;

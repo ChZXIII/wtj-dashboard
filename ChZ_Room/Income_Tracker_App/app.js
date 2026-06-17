@@ -1060,13 +1060,13 @@ function calculateAndRenderInsights(data) {
       <p style="margin-top: 6px;">${statusText}</p>
     </div>
     <div class="insight-item">
-      <strong>🏆 เดือนรายรับสูงสุด:</strong> ${maxIncomeMonth.month} (฿${maxIncomeMonth.val.toLocaleString()})
+      <strong><span class="emoji-icon">🏆</span> เดือนรายรับสูงสุด:</strong> ${maxIncomeMonth.month} (฿${maxIncomeMonth.val.toLocaleString()})
     </div>
     <div class="insight-item">
-      <strong>⚠️ เดือนรายจ่ายสูงสุด:</strong> ${maxExpenseMonth.month} (฿${maxExpenseMonth.val.toLocaleString()})
+      <strong><span class="emoji-icon">⚠️\uFE0F</span> เดือนรายจ่ายสูงสุด:</strong> ${maxExpenseMonth.month} (฿${maxExpenseMonth.val.toLocaleString()})
     </div>
     <div class="insight-item">
-      <strong>📊 อัตราส่วนรายจ่ายต่อรายรับ:</strong> ${ratio.toFixed(1)}% (ยอดคงเหลือหลังหักจ่าย ฿${profit.toLocaleString()})
+      <strong><span class="emoji-icon">📊</span> อัตราส่วนรายจ่ายต่อรายรับ:</strong> ${ratio.toFixed(1)}% (ยอดคงเหลือหลังหักจ่าย ฿${profit.toLocaleString()})
     </div>
   `;
   
@@ -1189,7 +1189,42 @@ function initDocumentGenerator() {
   const btnExportDocPdf = document.getElementById('btnExportDocPdf');
   if (btnExportDocPdf) {
     btnExportDocPdf.addEventListener('click', () => {
+      // 1. Get current document details to build a professional filename
+      const docTypeSelect = document.querySelector('input[name="docType"]:checked');
+      const docNoInput = document.getElementById('docNoInput');
+      const docClientInput = document.getElementById('docClientInput');
+      
+      let docTypeName = 'เอกสารการเงิน';
+      if (docTypeSelect) {
+        const val = docTypeSelect.value;
+        if (val === 'quotation') docTypeName = 'ใบเสนอราคา';
+        else if (val === 'invoice') docTypeName = 'ใบวางบิล';
+        else if (val === 'receipt') docTypeName = 'ใบเสร็จรับเงิน';
+      }
+      
+      const docNo = docNoInput ? docNoInput.value.trim() : '';
+      const docClient = docClientInput ? docClientInput.value.trim() : '';
+      
+      // Clean up customer name and document number for safe filename
+      const cleanClient = docClient.replace(/[^a-zA-Z0-9ก-๙\s-_]/g, '').replace(/\s+/g, '_');
+      const cleanDocNo = docNo.replace(/[^a-zA-Z0-9-_]/g, '');
+      
+      // Construct filename: e.g. ใบเสนอราคา_QT2606-001_ลูกค้า
+      let filename = docTypeName;
+      if (cleanDocNo) filename += `_${cleanDocNo}`;
+      if (cleanClient) filename += `_${cleanClient}`;
+      
+      // 2. Backup old title and set new title (Safari will use this as PDF filename)
+      const oldTitle = document.title;
+      document.title = filename;
+      
+      // 3. Trigger print dialog
       window.print();
+      
+      // 4. Restore old title after a short delay (so dialog has already captured the filename)
+      setTimeout(() => {
+        document.title = oldTitle;
+      }, 800);
     });
   }
 
