@@ -99,13 +99,29 @@ class NotionHelper:
         return self._title_property_name
 
     def fetch_pages_by_status(self, status_name):
-        """Fetches all pages with a specific Status select option."""
-        filter_params = {
-            "property": "Status",
-            "select": {
-                "equals": status_name
+        """Fetches all pages with a specific Status select/status option."""
+        # Query database schema to check Status type
+        db_url = f"https://api.notion.com/v1/databases/{self.database_id}"
+        db_schema = self._make_request(db_url, method="GET")
+        schema_props = db_schema.get("properties", {}) if db_schema else {}
+        
+        status_prop = schema_props.get("Status", {})
+        status_type = status_prop.get("type")
+        
+        if status_type == "status":
+            filter_params = {
+                "property": "Status",
+                "status": {
+                    "equals": status_name
+                }
             }
-        }
+        else:
+            filter_params = {
+                "property": "Status",
+                "select": {
+                    "equals": status_name
+                }
+            }
         res = self.query_database(filter_params)
         pages = []
         if res and "results" in res:
@@ -150,9 +166,14 @@ class NotionHelper:
         return pages
 
     def create_page(self, title, status_name="1_Ideation", publish_date=None, platform_tags=None):
-        """Creates a new page in the database."""
+        """Creates a new page in the database dynamically based on schema."""
         url = "https://api.notion.com/v1/pages"
         title_prop_name = self.get_title_property_name()
+        
+        # Fetch database schema to check properties dynamically
+        db_url = f"https://api.notion.com/v1/databases/{self.database_id}"
+        db_schema = self._make_request(db_url, method="GET")
+        schema_props = db_schema.get("properties", {}) if db_schema else {}
         
         properties = {
             title_prop_name: {
@@ -163,20 +184,35 @@ class NotionHelper:
                         }
                     }
                 ]
-            },
-            "Status": {
+            }
+        }
+        
+        # Check Status property type
+        status_prop = schema_props.get("Status", {}) if schema_props else {}
+        status_type = status_prop.get("type")
+        if status_type == "status":
+            properties["Status"] = {
+                "status": {
+                    "name": status_name
+                }
+            }
+        else: # default fallback to select
+            properties["Status"] = {
                 "select": {
                     "name": status_name
                 }
             }
-        }
-        if publish_date:
+            
+        # Check if Publish Date exists in schema
+        if schema_props and "Publish Date" in schema_props and publish_date:
             properties["Publish Date"] = {
                 "date": {
                     "start": publish_date
                 }
             }
-        if platform_tags:
+            
+        # Check if Platform exists in schema
+        if schema_props and "Platform" in schema_props and platform_tags:
             properties["Platform"] = {
                 "multi_select": [{"name": p} for p in platform_tags]
             }
@@ -188,15 +224,34 @@ class NotionHelper:
         return self._make_request(url, method="POST", data=data)
 
     def update_page_status(self, page_id, new_status):
-        """Updates the Status property of a page."""
+        """Updates the Status property of a page dynamically based on schema."""
         url = f"https://api.notion.com/v1/pages/{page_id}"
+        
+        # Fetch schema to detect status type
+        db_url = f"https://api.notion.com/v1/databases/{self.database_id}"
+        db_schema = self._make_request(db_url, method="GET")
+        schema_props = db_schema.get("properties", {}) if db_schema else {}
+        
+        status_prop = schema_props.get("Status", {}) if schema_props else {}
+        status_type = status_prop.get("type")
+        
+        status_payload = {}
+        if status_type == "status":
+            status_payload = {
+                "status": {
+                    "name": new_status
+                }
+            }
+        else: # default fallback to select
+            status_payload = {
+                "select": {
+                    "name": new_status
+                }
+            }
+            
         data = {
             "properties": {
-                "Status": {
-                    "select": {
-                        "name": new_status
-                    }
-                }
+                "Status": status_payload
             }
         }
         return self._make_request(url, method="PATCH", data=data)
@@ -231,47 +286,66 @@ class NotionHelper:
         return self._make_request(url, method="PATCH", data=data)
 
     def get_page_content_text(self, page_id):
-        """Retrieves page text content (combining paragraph block texts)."""
+        """Retrieves page text content (combining paragraph and other text block texts)."""
         url = f"https://api.notion.com/v1/blocks/{page_id}/children"
         res = self._make_request(url, method="GET")
         text_lines = []
         if res and "results" in res:
             for block in res["results"]:
                 block_type = block.get("type")
-                if block_type == "paragraph":
-                    rich_text = block.get("paragraph", {}).get("rich_text", [])
+                if not block_type:
+                    continue
+                
+                # Check if it has a rich_text property inside its type dictionary
+                block_data = block.get(block_type, {})
+                if isinstance(block_data, dict) and "rich_text" in block_data:
+                    rich_text = block_data.get("rich_text", [])
                     line = "".join([t.get("text", {}).get("content", "") for t in rich_text])
-                    text_lines.append(line)
-                elif block_type == "heading_1" or block_type == "heading_2" or block_type == "heading_3":
-                    rich_text = block.get(block_type, {}).get("rich_text", [])
-                    line = "".join([t.get("text", {}).get("content", "") for t in rich_text])
-                    text_lines.append(f"\n{line}\n")
+                    
+                    if block_type.startswith("heading_"):
+                        text_lines.append(f"\n{line}\n")
+                    elif block_type == "bulleted_list_item":
+                        text_lines.append(f"- {line}")
+                    elif block_type == "numbered_list_item":
+                        text_lines.append(f"1. {line}")
+                    elif block_type == "quote":
+                        text_lines.append(f"> {line}")
+                    else:
+                        text_lines.append(line)
         return "\n".join(text_lines)
 
     def write_page_content_text(self, page_id, text_content):
-        """Appends text content to a page as paragraph blocks."""
+        """Appends text content to a page as paragraph blocks, grouping adjacent lines into single blocks."""
         url = f"https://api.notion.com/v1/blocks/{page_id}/children"
         
-        # Split text into lines/paragraphs
-        paragraphs = text_content.split("\n")
-        children_blocks = []
+        # Group adjacent lines into single paragraph blocks to prevent wide line spacing in Notion
+        normalized_content = text_content.replace("\r\n", "\n")
+        import re
+        paragraph_groups = re.split(r'\n\s*\n', normalized_content)
         
-        for p in paragraphs:
-            # Skip empty lines to prevent cluttering block updates, or represent as empty paragraphs
-            children_blocks.append({
-                "object": "block",
-                "type": "paragraph",
-                "paragraph": {
-                    "rich_text": [
-                        {
-                            "type": "text",
-                            "text": {
-                                "content": p
+        children_blocks = []
+        for group in paragraph_groups:
+            group = group.strip()
+            if not group:
+                continue
+                
+            # Chunk group content if it exceeds 1900 characters to bypass Notion's 2000-char limit per block
+            group_chunks = [group[i:i+1900] for i in range(0, len(group), 1900)]
+            for chunk in group_chunks:
+                children_blocks.append({
+                    "object": "block",
+                    "type": "paragraph",
+                    "paragraph": {
+                        "rich_text": [
+                            {
+                                "type": "text",
+                                "text": {
+                                    "content": chunk
+                                }
                             }
-                        }
-                    ]
-                }
-            })
+                        ]
+                    }
+                })
             
         # Notion limit for appending blocks is 100 per request, chunk if necessary
         chunk_size = 50
@@ -287,6 +361,8 @@ class NotionHelper:
         res = self._make_request(url, method="GET")
         if res and "results" in res:
             for block in res["results"]:
+                if block.get("archived"):
+                    continue
                 block_id = block["id"]
                 del_url = f"https://api.notion.com/v1/blocks/{block_id}"
                 self._make_request(del_url, method="DELETE")

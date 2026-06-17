@@ -1,6 +1,9 @@
 import os
 import sys
 import warnings
+import asyncio
+import threading
+import queue
 from dotenv import load_dotenv
 
 # Silence legacy deprecation warnings from Google Generative AI
@@ -19,6 +22,14 @@ try:
     HAS_GEMINI = True
 except ImportError:
     pass
+
+HAS_ANTIGRAVITY = False
+# try:
+#     import google.antigravity
+#     from google.antigravity import Agent as AgtAgent, LocalAgentConfig as AgtLocalAgentConfig
+#     HAS_ANTIGRAVITY = True
+# except ImportError:
+#     pass
 
 HAS_ANTHROPIC = False
 try:
@@ -119,6 +130,35 @@ def get_routing_info(agent_name):
     return "gemini", GEMINI_FLASH_MODEL
 
 
+def run_async_sync(coro):
+    """Runs an async coroutine synchronously, even if called from a running event loop."""
+    try:
+        loop = asyncio.get_running_loop()
+    except RuntimeError:
+        # No running loop, we can just run it
+        return asyncio.run(coro)
+    
+    # A loop is running, run the coroutine in a separate thread and wait for result
+    q = queue.Queue()
+    
+    def worker():
+        try:
+            result = asyncio.run(coro)
+            q.put((True, result))
+        except Exception as ex:
+            q.put((False, ex))
+            
+    t = threading.Thread(target=worker)
+    t.start()
+    t.join()
+    
+    success, val = q.get()
+    if success:
+        return val
+    else:
+        raise val
+
+
 class ModelResponse:
     """Wrapper to mimic the Gemini API response structure (.text)"""
     def __init__(self, text):
@@ -136,11 +176,17 @@ class UnifiedChatSession:
         self.gemini_chat = None
         self.anthropic_client = None
         
+        # Antigravity SDK
+        self.agt_agent = None
+        
         self._init_session()
         
     def _init_session(self):
         if self.model_type == "gemini":
-            if HAS_GEMINI:
+            if HAS_ANTIGRAVITY:
+                # We will initialize it lazily or here. Let's do it lazily in _send_agt_message
+                pass
+            elif HAS_GEMINI:
                 model = legacy_genai.GenerativeModel(
                     model_name=self.model_name,
                     system_instruction=self.system_instruction
@@ -154,8 +200,56 @@ class UnifiedChatSession:
             else:
                 raise RuntimeError("ไม่สามารถเริ่มการเชื่อมต่อกับ Anthropic ได้เนื่องจากไลบรารีไม่ถูกติดตั้ง")
 
+    async def _init_agt_agent(self):
+        # Determine skills paths based on agent name or load globally
+        skills_paths = []
+        
+        # Ensure GEMINI_API_KEY is populated
+        if "GOOGLE_API_KEY" in os.environ and "GEMINI_API_KEY" not in os.environ:
+            os.environ["GEMINI_API_KEY"] = os.environ["GOOGLE_API_KEY"]
+            
+        # Register Coder Studio skills
+        q_skills = os.path.join(PROJECT_ROOT, "Coder_Studio", "Q", "skills")
+        if os.path.isdir(q_skills):
+            skills_paths.append(q_skills)
+            
+        # Register Win skills if they exist
+        win_skills = os.path.join(PROJECT_ROOT, "Personal_Assistance_HQ", "Personal_Assistance_Team", "Team_Desks", "Win", "skills")
+        if os.path.isdir(win_skills):
+            skills_paths.append(win_skills)
+            
+        config = AgtLocalAgentConfig(
+            model=self.model_name,
+            system_instructions=self.system_instruction,
+            skills_paths=skills_paths if skills_paths else None
+        )
+        
+        self.agt_agent = AgtAgent(config=config)
+        await self.agt_agent.__aenter__()
+
+    async def _send_agt_message(self, message_text):
+        if not self.agt_agent:
+            await self._init_agt_agent()
+        response = await self.agt_agent.chat(message_text)
+        return await response.text()
+
     def send_message(self, message_text):
         if self.model_type == "gemini":
+            if HAS_ANTIGRAVITY:
+                try:
+                    res_text = run_async_sync(self._send_agt_message(message_text))
+                    return ModelResponse(res_text)
+                except Exception as e:
+                    print(f"[ModelRouter Warning]: Antigravity Agent error: {e}. Fallback to legacy gemini", file=sys.stderr)
+            
+            # Legacy Gemini or Fallback
+            if not self.gemini_chat and HAS_GEMINI:
+                model = legacy_genai.GenerativeModel(
+                    model_name=self.model_name,
+                    system_instruction=self.system_instruction
+                )
+                self.gemini_chat = model.start_chat()
+            
             try:
                 response = self.gemini_chat.send_message(message_text)
                 return ModelResponse(response.text)
@@ -169,7 +263,6 @@ class UnifiedChatSession:
                         system_instruction=self.system_instruction
                     )
                     self.gemini_chat = model.start_chat()
-                    # Replay previous history if we want, or just send the message
                     response = self.gemini_chat.send_message(message_text)
                     return ModelResponse(response.text)
                 else:
@@ -178,7 +271,6 @@ class UnifiedChatSession:
             # Anthropic Chat
             self.history.append({"role": "user", "content": message_text})
             try:
-                # Build call args
                 kwargs = {
                     "model": self.model_name,
                     "max_tokens": 4000,
@@ -187,7 +279,6 @@ class UnifiedChatSession:
                 if self.system_instruction:
                     kwargs["system"] = self.system_instruction
                 
-                # Check if we should enable thinking for 3.7 sonnet or opus
                 if "sonnet" in self.model_name and ("3-7" in self.model_name or "latest" in self.model_name):
                     kwargs["thinking"] = {"type": "enabled", "budget_tokens": 2048}
                     kwargs["max_tokens"] = 8000
@@ -201,21 +292,35 @@ class UnifiedChatSession:
                 self.history.append({"role": "assistant", "content": response_text})
                 return ModelResponse(response_text)
             except Exception as e:
-                # Fallback to Gemini Pro/Flash on Claude error
                 print(f"[ModelRouter Fallback]: Claude API เกิดข้อผิดพลาด: {e}. สลับไปใช้งาน Gemini อัตโนมัติ", file=sys.stderr)
                 self.model_type = "gemini"
                 self.model_name = GEMINI_FLASH_MODEL
+                
+                if HAS_ANTIGRAVITY:
+                    try:
+                        res_text = run_async_sync(self._send_agt_message(message_text))
+                        return ModelResponse(res_text)
+                    except Exception as agt_err:
+                        print(f"[ModelRouter Fallback Warning]: Antigravity fallback error: {agt_err}", file=sys.stderr)
+                
                 if HAS_GEMINI:
                     model = legacy_genai.GenerativeModel(
                         model_name=self.model_name,
                         system_instruction=self.system_instruction
                     )
                     self.gemini_chat = model.start_chat()
-                    # Play the message
                     response = self.gemini_chat.send_message(message_text)
                     return ModelResponse(response.text)
                 else:
                     raise e
+
+    def __del__(self):
+        # Clean up agent session on delete
+        if self.agt_agent:
+            try:
+                run_async_sync(self.agt_agent.__aexit__(None, None, None))
+            except Exception:
+                pass
 
 
 class UnifiedModel:
@@ -224,9 +329,29 @@ class UnifiedModel:
         self.agent_name = agent_name
         self.system_instruction = system_instruction
         self.model_type, self.model_name = get_routing_info(agent_name)
-        
+
+    async def _generate_agt_content(self, prompt):
+        # Ensure GEMINI_API_KEY is populated
+        if "GOOGLE_API_KEY" in os.environ and "GEMINI_API_KEY" not in os.environ:
+            os.environ["GEMINI_API_KEY"] = os.environ["GOOGLE_API_KEY"]
+            
+        config = AgtLocalAgentConfig(
+            model=self.model_name,
+            system_instructions=self.system_instruction
+        )
+        async with AgtAgent(config=config) as agent:
+            response = await agent.chat(prompt)
+            return await response.text()
+
     def generate_content(self, prompt):
         if self.model_type == "gemini":
+            if HAS_ANTIGRAVITY:
+                try:
+                    res_text = run_async_sync(self._generate_agt_content(prompt))
+                    return ModelResponse(res_text)
+                except Exception as e:
+                    print(f"[ModelRouter Warning]: Antigravity Agent error: {e}. Fallback to legacy gemini", file=sys.stderr)
+            
             try:
                 model = legacy_genai.GenerativeModel(
                     model_name=self.model_name,
@@ -273,6 +398,14 @@ class UnifiedModel:
                 return ModelResponse(response_text)
             except Exception as e:
                 print(f"[ModelRouter Fallback]: Claude API เกิดข้อผิดพลาด: {e}. สลับไปใช้งาน Gemini อัตโนมัติ", file=sys.stderr)
+                
+                if HAS_ANTIGRAVITY:
+                    try:
+                        res_text = run_async_sync(self._generate_agt_content(prompt))
+                        return ModelResponse(res_text)
+                    except Exception as agt_err:
+                        print(f"[ModelRouter Fallback Warning]: Antigravity fallback error: {agt_err}", file=sys.stderr)
+                
                 model = legacy_genai.GenerativeModel(
                     model_name=GEMINI_FLASH_MODEL,
                     system_instruction=self.system_instruction

@@ -86,9 +86,10 @@ def get_data_from_notes():
 def setup_new_month_sheet(service, spreadsheet_id, new_month_num, new_year, all_sheets):
     new_tab_name = MONTHS_TH[new_month_num]
     prev_sheet_id = all_sheets[-1]['properties']['sheetId']
-    
+    prev_tab_name = all_sheets[-1]['properties']['title']
+
     print(f"Creating new tab '{new_tab_name}' in Grab Sheet by duplicating sheet ID {prev_sheet_id}...")
-    
+
     body = {
         "requests": [
             {
@@ -102,29 +103,73 @@ def setup_new_month_sheet(service, spreadsheet_id, new_month_num, new_year, all_
     }
     response = service.spreadsheets().batchUpdate(spreadsheetId=spreadsheet_id, body=body).execute()
     new_sheet_id = response['replies'][0]['duplicateSheet']['properties']['sheetId']
-    
+
+    # Clear เฉพาะ data rows (B-N) ไม่แตะ summary
     service.spreadsheets().values().clear(
         spreadsheetId=spreadsheet_id,
-        range=f"'{new_tab_name}'!B3:L33"
+        range=f"'{new_tab_name}'!B3:N33"
     ).execute()
-    
+
     num_days = calendar.monthrange(int(new_year), int(new_month_num))[1]
-    dates = []
-    for day in range(1, num_days + 1):
-        dates.append([f"{day:02d}/{new_month_num}/{new_year}"])
-        
+
+    # ใส่วันที่เดือนใหม่ใน col A (row 3 ถึง 3+num_days-1)
+    dates = [[f"{day:02d}/{new_month_num}/{new_year}"] for day in range(1, num_days + 1)]
     service.spreadsheets().values().update(
         spreadsheetId=spreadsheet_id,
         range=f"'{new_tab_name}'!A3:A{3 + num_days - 1}",
         valueInputOption='USER_ENTERED',
         body={'values': dates}
     ).execute()
-    
+
+    # Clear เฉพาะ data rows ส่วนเกิน (ถ้าเดือนน้อยกว่า 31 วัน)
+    # หยุดที่ row 36 เพื่อไม่ทับ summary rows ที่ 38+
     if num_days < 31:
-        service.spreadsheets().values().clear(
+        clear_start = 3 + num_days
+        clear_end = 36  # summary rows เริ่มที่ 38 เว้น buffer ไว้ที่ 37
+        if clear_start <= clear_end:
+            service.spreadsheets().values().clear(
+                spreadsheetId=spreadsheet_id,
+                range=f"'{new_tab_name}'!A{clear_start}:N{clear_end}"
+            ).execute()
+
+    # ดึง summary template จาก tab เดือนก่อนหน้า แล้วใส่ใน tab ใหม่ (row 38-45)
+    try:
+        r_summary = service.spreadsheets().values().get(
             spreadsheetId=spreadsheet_id,
-            range=f"'{new_tab_name}'!A{3 + num_days}:N100"
+            range=f"'{prev_tab_name}'!A38:N45"
         ).execute()
+        prev_summary = r_summary.get('values', [])
+
+        # สร้าง summary template พร้อม formula ที่อ้างอิงข้อมูลเดือนใหม่
+        data_end_row = 3 + num_days - 1  # แถวสุดท้ายของข้อมูล
+        row38 = [''] * 14
+        row38[10] = f'=IFERROR(SUM(K3:K{data_end_row}),0)'  # นับวันที่วิ่ง
+        # เก็บ target dist จาก tab เดือนก่อน (col L=index 11)
+        row38[11] = prev_summary[0][11] if prev_summary and len(prev_summary[0]) > 11 else '2000'
+
+        summary_rows = [
+            row38,
+            ['', '', 'เฉลี่ยแบต 1% วิ่งได้', '', '', '', '', 'ยอดรวมทั้งเดือน', '', 'เฉลี่ยทั้งเดือน', '', '', '', ''],
+            ['', '', f'=IFERROR(SUM(D3:D{data_end_row})/(SUM(C3:C{data_end_row})*100),0)', '', '', '', '',
+             f'=IFERROR(SUM(H3:H{data_end_row}),0)',
+             f'=IFERROR(AVERAGEIF(H3:H{data_end_row},">0"),0)',
+             f'=IFERROR(H40/K38,0)', '', '', '', ''],
+            ['', '', '', '', '', '', '', '', 'เฉลี่ยทั้งเดือน', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', '', f'=IFERROR(H40/COUNTIF(K3:K{data_end_row},"=1"),0)', '', '', '', '', ''],
+            [''] * 14,
+            ['', '', '', '', '', '', '', 'คำนวน Vat', '', 'คำนวน 10%', '', '', '', ''],
+            [''] * 14,
+        ]
+
+        service.spreadsheets().values().update(
+            spreadsheetId=spreadsheet_id,
+            range=f"'{new_tab_name}'!A38:N45",
+            valueInputOption='USER_ENTERED',
+            body={'values': summary_rows}
+        ).execute()
+        print(f"Summary rows 38-45 restored for '{new_tab_name}' ✅")
+    except Exception as e:
+        print(f"Warning: Could not restore summary rows: {e}")
 
     print(f"New month '{new_tab_name}' setup successfully in Grab sheet.")
     return new_tab_name
@@ -241,11 +286,78 @@ def clear_notes_data(next_date_str):
         print(f"Note reset successfully: {result.stdout.strip()}")
         print(f"Note reset with template for {next_date_str}")
 
+def get_sheets_service():
+    """สร้าง Google Sheets service โดยใช้ token จาก credentials/"""
+    creds = None
+    token_path = os.path.join(PROJECT_ROOT, 'credentials', 'token_sheets.json')
+    if os.path.exists(token_path):
+        creds = Credentials.from_authorized_user_file(token_path, SCOPES)
+    if not creds or not creds.valid:
+        if creds and creds.expired and creds.refresh_token:
+            try:
+                print("Refreshing credentials...")
+                creds.refresh(Request())
+            except Exception as e:
+                print(f"Error refreshing credentials: {e}")
+                if os.path.exists(token_path):
+                    try:
+                        os.remove(token_path)
+                        print(f"Deleted invalid token file at: {token_path}")
+                    except Exception as re:
+                        print(f"Failed to delete invalid token file: {re}")
+                return None
+        else:
+            print("Credentials invalid or missing. Opening browser to re-auth...")
+            flow = InstalledAppFlow.from_client_secrets_file(os.path.join(PROJECT_ROOT, 'credentials', 'client_secret.json'), SCOPES)
+            creds = flow.run_local_server(port=0)
+            with open(token_path, 'w') as token:
+                token.write(creds.to_json())
+    return build('sheets', 'v4', credentials=creds)
+
+def check_and_create_new_month_tab(service, spreadsheet_id):
+    """ถ้าวันนี้คือวันที่ 1 ของเดือน และ tab เดือนนี้ยังไม่มี ให้สร้างอัตโนมัติ"""
+    now = datetime.datetime.now()
+    if now.day != 1:
+        return
+    
+    current_month_str = f"{now.month:02d}"
+    current_month_tab = MONTHS_TH.get(current_month_str)
+    if not current_month_tab:
+        return
+    
+    sheet_metadata = service.spreadsheets().get(spreadsheetId=spreadsheet_id).execute()
+    all_sheets = sheet_metadata.get('sheets', [])
+    sheet_titles = [s.get('properties', {}).get('title', '') for s in all_sheets]
+    
+    if current_month_tab not in sheet_titles:
+        print(f"[Auto Month Rollover] วันที่ 1 ของเดือน - ยังไม่มี tab '{current_month_tab}' กำลังสร้าง...")
+        new_tab = setup_new_month_sheet(service, spreadsheet_id, current_month_str, str(now.year), all_sheets)
+        link_savings_sheet(service, spreadsheet_id, new_tab)
+        print(f"[Auto Month Rollover] สร้าง tab '{current_month_tab}' เรียบร้อยแล้ว ✅")
+    else:
+        print(f"[Auto Month Rollover] tab '{current_month_tab}' มีอยู่แล้ว ไม่ต้องสร้างใหม่")
+
 def main():
     now = datetime.datetime.now()
     tomorrow = now + datetime.timedelta(days=1)
     tomorrow_str = f"{tomorrow.day:02d}/{tomorrow.month:02d}"
     
+    current_year = str(now.year)
+    target_spreadsheet_id = SPREADSHEET_ID  # default 2026
+
+    # --- Auto Month Rollover: ขึ้น tab เดือนใหม่อัตโนมัติทุกวันที่ 1 ---
+    if now.day == 1:
+        service_early = get_sheets_service()
+        if service_early:
+            if current_year == '2026':
+                rollover_sheet_id = SPREADSHEET_ID
+            else:
+                try:
+                    rollover_sheet_id = get_or_create_spreadsheet(service_early, current_year)
+                except:
+                    rollover_sheet_id = SPREADSHEET_ID
+            check_and_create_new_month_tab(service_early, rollover_sheet_id)
+
     # ดึงข้อมูลจาก Note
     row_data = get_data_from_notes()
     
@@ -281,37 +393,15 @@ def main():
         return
 
     day_str, month_str = date_val.split('/')
-    current_year = str(now.year)
     tab_name = MONTHS_TH.get(month_str.zfill(2))
     
     if not tab_name:
         print(f"Invalid month parsed: {month_str}")
         return
 
-    creds = None
-    token_path = os.path.join(PROJECT_ROOT, 'credentials', 'token_sheets.json')
-    if os.path.exists(token_path):
-        creds = Credentials.from_authorized_user_file(token_path, SCOPES)
-    
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            try:
-                print("Refreshing credentials...")
-                creds.refresh(Request())
-            except Exception as e:
-                print(f"Error refreshing credentials: {e}")
-                print("Token has been revoked or expired. Initiating full re-authentication...")
-                creds = None
-        
-        if not creds:
-            print("Credentials invalid or missing. Opening browser to re-auth...")
-            from google_auth_oauthlib.flow import InstalledAppFlow
-            flow = InstalledAppFlow.from_client_secrets_file(os.path.join(PROJECT_ROOT, 'credentials', 'client_secret.json'), SCOPES)
-            creds = flow.run_local_server(port=0)
-            with open(token_path, 'w') as token:
-                token.write(creds.to_json())
-
-    service = build('sheets', 'v4', credentials=creds)
+    service = get_sheets_service()
+    if not service:
+        return
     
     # Dynamically find or create the Grab Spreadsheet for the current year
     if current_year == '2026':

@@ -40,7 +40,7 @@ from notion_helper import NotionHelper
 from youtube_transcript_api import YouTubeTranscriptApi
 
 # Constants
-CSV_PATH = os.path.join(PROJECT_ROOT, "Team_Content_Studio", "Team_Agent_Content", "WTJ_Story_Project", "workspace", "1_raw_materials", "analytics", "Table data.csv")
+CSV_PATH = os.path.join(PROJECT_ROOT, "Team_Content_Studio", "Team_Agent_Content", "WTJ_Project", "WTJ_Story", "workspace", "1_raw_materials", "analytics", "Table data.csv")
 STATE_PATH = os.path.join(PROJECT_ROOT, "Team_Content_Studio", "Team_Agent_Content", "workspace", "rerun_state.json")
 DRAFTS_DIR = os.path.join(PROJECT_ROOT, "Team_Content_Studio", "Team_Agent_Content", "workspace", "2_drafts")
 

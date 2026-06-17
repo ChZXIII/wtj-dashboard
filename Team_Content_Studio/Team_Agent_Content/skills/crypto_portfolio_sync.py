@@ -293,22 +293,286 @@ def record_portfolio_snapshot_and_update_dashboard(service):
 
     # 5. Update HTML Dashboard
     html_path = os.path.join(PROJECT_ROOT, 'Personal_Assistance_HQ', 'Personal_Assistance_Team', 'M', 'html', 'portfolio_dashboard.html')
+    if os.path.exists(html_path):
+        try:
+            with open(html_path, 'r') as f:
+                html_content = f.read()
+
+            bC_str = "[\n            " + ",\n            ".join([json.dumps(x) for x in bC_data]) + "\n        ]"
+            bkC_str = "[\n            " + ",\n            ".join([json.dumps(x) for x in bkC_data]) + "\n        ]"
+            
+            html_content = re.sub(r'const\s+bC\s*=\s*\[.*?\];', f'const bC = {bC_str};', html_content, flags=re.DOTALL)
+            html_content = re.sub(r'const\s+bkC\s*=\s*\[.*?\];', f'const bkC = {bkC_str};', html_content, flags=re.DOTALL)
+            html_content = re.sub(r'const\s+tC_v\s*=\s*[\d\.]+;', f'const tC_v = {round(tC_v, 2)};', html_content)
+
+            with open(html_path, 'w') as f:
+                f.write(html_content)
+            print("HTML Dashboard updated successfully.")
+        except Exception as e:
+            print(f"Error updating HTML: {e}")
+    else:
+        print("HTML Dashboard file does not exist, skipping update.")
+
+MONTHS_TH = {
+    1: 'ม.ค.', 2: 'ก.พ.', 3: 'มี.ค.', 4: 'เม.ย.',
+    5: 'พ.ค.', 6: 'มิ.ย.', 7: 'ก.ค.', 8: 'ส.ค.',
+    9: 'ก.ย.', 10: 'ต.ค.', 11: 'พ.ย.', 12: 'ธ.ค.'
+}
+
+def check_and_rollover_btc_tab(service):
+    """ตรวจวัดการเปลี่ยนเดือนของแท็บ BTC อัตโนมัติทุกวันที่ 1"""
     try:
-        with open(html_path, 'r') as f:
-            html_content = f.read()
+        now = datetime.datetime.now()
+        current_month = MONTHS_TH.get(now.month)
+        if not current_month:
+            return
 
-        bC_str = "[\n            " + ",\n            ".join([json.dumps(x) for x in bC_data]) + "\n        ]"
-        bkC_str = "[\n            " + ",\n            ".join([json.dumps(x) for x in bkC_data]) + "\n        ]"
-        
-        html_content = re.sub(r'const\s+bC\s*=\s*\[.*?\];', f'const bC = {bC_str};', html_content, flags=re.DOTALL)
-        html_content = re.sub(r'const\s+bkC\s*=\s*\[.*?\];', f'const bkC = {bkC_str};', html_content, flags=re.DOTALL)
-        html_content = re.sub(r'const\s+tC_v\s*=\s*[\d\.]+;', f'const tC_v = {round(tC_v, 2)};', html_content)
+        # อ่านค่าใน B1 เพื่อดูว่าบิลเดือนไหนที่ยังเปิดใช้งานอยู่
+        res = service.spreadsheets().values().get(
+            spreadsheetId=PORTFOLIO_SPREADSHEET_ID,
+            range='BTC!B1'
+        ).execute()
+        res_val = res.get('values', [])
+        active_month = res_val[0][0].strip() if res_val and res_val[0] else ''
 
-        with open(html_path, 'w') as f:
-            f.write(html_content)
-        print("HTML Dashboard updated successfully.")
+        if active_month and active_month != current_month:
+            print(f"[Auto Month Rollover] เปลี่ยนเดือนจาก '{active_month}' เป็น '{current_month}' สำหรับแท็บ BTC...")
+            
+            # 1. ดึงยอดสรุปของเดือนเก่า (Row 36)
+            res_totals = service.spreadsheets().values().get(
+                spreadsheetId=PORTFOLIO_SPREADSHEET_ID,
+                range='BTC!B36:D36'
+            ).execute()
+            totals_val = res_totals.get('values', [])
+            totals = totals_val[0] if totals_val and totals_val[0] else [0, 0, 0]
+            
+            def parse_float(val):
+                try:
+                    return float(str(val).replace(',', '').strip())
+                except:
+                    return 0.0
+            
+            thb_total = parse_float(totals[0]) if len(totals) > 0 else 0.0
+            avg_price = parse_float(totals[1]) if len(totals) > 1 else 0.0
+            btc_total = parse_float(totals[2]) if len(totals) > 2 else 0.0
+            
+            # 2. ค้นหาแถวของเดือนเก่าในประวัติการ DCA (คอลัมน์ F)
+            res_history = service.spreadsheets().values().get(
+                spreadsheetId=PORTFOLIO_SPREADSHEET_ID,
+                range='BTC!F1:F30'
+            ).execute()
+            history_rows = res_history.get('values', [])
+            
+            old_month_row_idx = None
+            for idx, row in enumerate(history_rows):
+                if row and row[0].strip() == active_month:
+                    old_month_row_idx = idx + 1
+                    break
+                    
+            if not old_month_row_idx:
+                print(f"Warning: ไม่พบแถวของเดือน '{active_month}' ในประวัติ ค้นหาตำแหน่งว่างแทน...")
+                # ค้นหาตำแหน่งว่างแรกถัดจากปี 2026
+                for idx, row in enumerate(history_rows):
+                    if idx >= 5 and (not row or not row[0].strip()):
+                        old_month_row_idx = idx + 1
+                        break
+            
+            if old_month_row_idx:
+                # 3. แปลงค่าผลลัพธ์เดือนเก่าให้เป็น Static
+                service.spreadsheets().values().update(
+                    spreadsheetId=PORTFOLIO_SPREADSHEET_ID,
+                    range=f'BTC!F{old_month_row_idx}:I{old_month_row_idx}',
+                    valueInputOption='USER_ENTERED',
+                    body={'values': [[active_month, thb_total, avg_price, btc_total]]}
+                ).execute()
+                print(f"กู้คืน/เขียนประวัติ '{active_month}' เป็นค่าคงที่เรียบร้อย")
+
+                # 4. เขียนแถวประวัติเดือนใหม่ (เช่น มิ.ย.) อิงสูตรสรุปยอด
+                new_month_row_idx = old_month_row_idx + 1
+                service.spreadsheets().values().update(
+                    spreadsheetId=PORTFOLIO_SPREADSHEET_ID,
+                    range=f'BTC!F{new_month_row_idx}:I{new_month_row_idx}',
+                    valueInputOption='USER_ENTERED',
+                    body={'values': [[current_month, '=B36', '=C36', '=D36']]}
+                ).execute()
+                print(f"สร้างแถวใหม่สำหรับเดือน '{current_month}' เรียบร้อย")
+                
+                # 5. จัดการหน้าตา เส้นขอบตาราง (Borders) และสีของเดือนใหม่และเดือนเก่า
+                meta = service.spreadsheets().get(spreadsheetId=PORTFOLIO_SPREADSHEET_ID).execute()
+                btc_sheet_id = None
+                for s in meta['sheets']:
+                    if s['properties']['title'] == 'BTC':
+                        btc_sheet_id = s['properties']['sheetId']
+                        break
+                
+                if btc_sheet_id is not None:
+                    DARK_BG = {'red': 0.21960784, 'green': 0.23921569, 'blue': 0.27450982}
+                    LIGHT_BG = {'red': 0.94509804, 'green': 0.94509804, 'blue': 0.9607843}
+                    TEXT_LIGHT = {'red': 0.89411765, 'green': 0.89411765, 'blue': 0.91764706}
+                    TEXT_DARK = {'red': 0.2, 'green': 0.2, 'blue': 0.24705882}
+                    GOLD_BORDER = {'red': 0.7176471, 'green': 0.5803922, 'blue': 0.23529412}
+                    GREY_BORDER = {'red': 0.29803923, 'green': 0.32941177, 'blue': 0.3764706}
+                    
+                    fmt_reqs = [
+                        # เปลี่ยนขอบล่างของแถวเดิมให้เป็นเส้นบาง
+                        {
+                            'updateBorders': {
+                                'range': {
+                                    'sheetId': btc_sheet_id,
+                                    'startRowIndex': old_month_row_idx - 1,
+                                    'endRowIndex': old_month_row_idx,
+                                    'startColumnIndex': 5,
+                                    'endColumnIndex': 9
+                                },
+                                'bottom': {'style': 'SOLID', 'color': GREY_BORDER}
+                            }
+                        },
+                        # จัดฟอร์แมตแถวใหม่ (F: คอลัมน์เดือน)
+                        {
+                            'repeatCell': {
+                                'range': {
+                                    'sheetId': btc_sheet_id,
+                                    'startRowIndex': new_month_row_idx - 1,
+                                    'endRowIndex': new_month_row_idx,
+                                    'startColumnIndex': 5,
+                                    'endColumnIndex': 6
+                                },
+                                'cell': {
+                                    'userEnteredFormat': {
+                                        'backgroundColor': DARK_BG,
+                                        'textFormat': {
+                                            'foregroundColor': TEXT_LIGHT,
+                                            'fontFamily': 'Google Sans Code',
+                                            'fontSize': 10,
+                                            'bold': True
+                                        },
+                                        'horizontalAlignment': 'CENTER',
+                                        'borders': {
+                                            'left': {'style': 'SOLID_MEDIUM', 'color': GOLD_BORDER},
+                                            'right': {'style': 'SOLID', 'color': GREY_BORDER},
+                                            'top': {'style': 'SOLID', 'color': GREY_BORDER},
+                                            'bottom': {'style': 'SOLID_MEDIUM', 'color': GOLD_BORDER}
+                                        }
+                                    }
+                                },
+                                'fields': 'userEnteredFormat'
+                            }
+                        },
+                        # จัดฟอร์แมตแถวใหม่ (G: ยอดเงิน)
+                        {
+                            'repeatCell': {
+                                'range': {
+                                    'sheetId': btc_sheet_id,
+                                    'startRowIndex': new_month_row_idx - 1,
+                                    'endRowIndex': new_month_row_idx,
+                                    'startColumnIndex': 6,
+                                    'endColumnIndex': 7
+                                },
+                                'cell': {
+                                    'userEnteredFormat': {
+                                        'backgroundColor': LIGHT_BG,
+                                        'textFormat': {
+                                            'foregroundColor': TEXT_DARK,
+                                            'fontFamily': 'Google Sans Code',
+                                            'fontSize': 10
+                                        },
+                                        'horizontalAlignment': 'CENTER',
+                                        'numberFormat': {'type': 'NUMBER', 'pattern': '#,##0.00'},
+                                        'borders': {
+                                            'left': {'style': 'SOLID', 'color': GREY_BORDER},
+                                            'right': {'style': 'SOLID', 'color': GREY_BORDER},
+                                            'top': {'style': 'SOLID', 'color': GREY_BORDER},
+                                            'bottom': {'style': 'SOLID_MEDIUM', 'color': GOLD_BORDER}
+                                        }
+                                    }
+                                },
+                                'fields': 'userEnteredFormat'
+                            }
+                        },
+                        # จัดฟอร์แมตแถวใหม่ (H: ราคาเฉลี่ย)
+                        {
+                            'repeatCell': {
+                                'range': {
+                                    'sheetId': btc_sheet_id,
+                                    'startRowIndex': new_month_row_idx - 1,
+                                    'endRowIndex': new_month_row_idx,
+                                    'startColumnIndex': 7,
+                                    'endColumnIndex': 8
+                                },
+                                'cell': {
+                                    'userEnteredFormat': {
+                                        'backgroundColor': LIGHT_BG,
+                                        'textFormat': {
+                                            'foregroundColor': TEXT_DARK,
+                                            'fontFamily': 'Google Sans Code',
+                                            'fontSize': 10
+                                        },
+                                        'horizontalAlignment': 'CENTER',
+                                        'numberFormat': {'type': 'NUMBER', 'pattern': '#,##0'},
+                                        'borders': {
+                                            'left': {'style': 'SOLID', 'color': GREY_BORDER},
+                                            'right': {'style': 'SOLID', 'color': GREY_BORDER},
+                                            'top': {'style': 'SOLID', 'color': GREY_BORDER},
+                                            'bottom': {'style': 'SOLID_MEDIUM', 'color': GOLD_BORDER}
+                                        }
+                                    }
+                                },
+                                'fields': 'userEnteredFormat'
+                            }
+                        },
+                        # จัดฟอร์แมตแถวใหม่ (I: จำนวน BTC)
+                        {
+                            'repeatCell': {
+                                'range': {
+                                    'sheetId': btc_sheet_id,
+                                    'startRowIndex': new_month_row_idx - 1,
+                                    'endRowIndex': new_month_row_idx,
+                                    'startColumnIndex': 8,
+                                    'endColumnIndex': 9
+                                },
+                                'cell': {
+                                    'userEnteredFormat': {
+                                        'backgroundColor': LIGHT_BG,
+                                        'textFormat': {
+                                            'foregroundColor': TEXT_DARK,
+                                            'fontFamily': 'Google Sans Code',
+                                            'fontSize': 10
+                                        },
+                                        'horizontalAlignment': 'CENTER',
+                                        'numberFormat': {'type': 'NUMBER', 'pattern': '0.00000000'},
+                                        'borders': {
+                                            'left': {'style': 'SOLID', 'color': GREY_BORDER},
+                                            'right': {'style': 'SOLID_MEDIUM', 'color': GOLD_BORDER},
+                                            'top': {'style': 'SOLID', 'color': GREY_BORDER},
+                                            'bottom': {'style': 'SOLID_MEDIUM', 'color': GOLD_BORDER}
+                                        }
+                                    }
+                                },
+                                'fields': 'userEnteredFormat'
+                            }
+                        }
+                    ]
+                    service.spreadsheets().batchUpdate(spreadsheetId=PORTFOLIO_SPREADSHEET_ID, body={'requests': fmt_reqs}).execute()
+                    print("จัดขอบและสีทองของแถวประวัติเรียบร้อย")
+
+                # 6. ล้างข้อมูลตาราง B3:D33
+                service.spreadsheets().values().clear(
+                    spreadsheetId=PORTFOLIO_SPREADSHEET_ID,
+                    range='BTC!B3:D33'
+                ).execute()
+                print("ล้างข้อมูลตาราง B3:D33 เรียบร้อย")
+
+                # 7. เขียนชื่อเดือนใหม่ใน B1
+                service.spreadsheets().values().update(
+                    spreadsheetId=PORTFOLIO_SPREADSHEET_ID,
+                    range='BTC!B1',
+                    valueInputOption='USER_ENTERED',
+                    body={'values': [[current_month]]}
+                ).execute()
+                print(f"เปลี่ยนหัวกระดาษเป็นเดือน '{current_month}' เรียบร้อยแล้ว")
+                
     except Exception as e:
-        print(f"Error updating HTML: {e}")
+        print(f"Error during BTC Auto Rollover: {e}")
 
 def sync_trades():
     print(f"🕒 Starting Trade Sync: {datetime.datetime.now()}")
@@ -353,6 +617,9 @@ def sync_trades():
             return
 
     service = build('sheets', 'v4', credentials=creds)
+    
+    # --- Auto Month Rollover: แท็บ BTC ---
+    check_and_rollover_btc_tab(service)
 
     if all_trades:
         print(f"✅ Found {len(all_trades)} NEW trades to process!")

@@ -31,7 +31,7 @@ def load_env():
 
 load_env()
 
-LEARNING_BASE_PATH = os.path.join(PROJECT_ROOT, "Team_Content_Studio", "Team_Agent_Content", "workspace", "learning_base.json")
+LEARNING_BASE_PATH = os.path.join(PROJECT_ROOT, "Team_Content_Studio", "Team_Agent_Content", "WTJ_Project", "workspace", "learning_base.json")
 
 def load_learning_base():
     if os.path.exists(LEARNING_BASE_PATH):
@@ -84,13 +84,12 @@ def run_learning_loop():
     for i, page in enumerate(pages):
         page_id = page["id"]
         title = page["title"]
-        approved_copy = page["approved_copy"]
         
         # ข้ามถ้าเรียนรู้ไปแล้ว
         if page_id in learned_ids:
             continue
             
-        print(f"[{i+1}/{len(pages)}] 📝 กำลังเรียนรู้จากหัวข้อ: '{title}'")
+        print(f"[{i+1}/{len(pages)}] 📝 กำลังพิจารณาเรียนรู้จากหัวข้อ: '{title}'")
         
         # 3. ดึงเนื้อหาภายในเพจ Notion
         raw_body = notion.get_page_content_text(page_id)
@@ -98,55 +97,73 @@ def run_learning_loop():
             print(f"⚠️ ข้าม: หน้า '{title}' ไม่มีเนื้อหาในเพจ")
             continue
             
-        # 4. สกัดหาดราฟต์ตั้งต้น (Draft Options) ที่บอทเขียน
-        draft_options = ""
-        draft_headers = [
-            "## 📝 Draft Options",
-            "## 📝 Draft Options (โดย ทีม Content Agent)",
-            "Draft Options"
-        ]
+        # สกัดชื่อไฟล์วิดีโอเพื่อหาไฟล์สำรอง
+        body_lines = [l.strip() for l in raw_body.splitlines() if l.strip()]
+        first_line_body = body_lines[0] if body_lines else ""
         
-        for header in draft_headers:
-            if header in raw_body:
-                parts = raw_body.split(header, 1)
-                draft_options = parts[1].strip()
-                break
+        video_filename = None
+        if first_line_body:
+            clean_first = re.sub(r'^Headline\s+', '', first_line_body, flags=re.IGNORECASE).strip()
+            # สกัดหาชื่อไฟล์
+            match_file = re.search(r'\]\s*(.*\.(?:mp4|mov|mkv|avi|webm))', clean_first, re.IGNORECASE)
+            if match_file:
+                video_filename = match_file.group(1).strip()
+            elif any(clean_first.lower().endswith(ext) for ext in ['.mp4', '.mov', '.mkv', '.avi', '.webm']):
+                video_filename = clean_first
                 
-        # หากหาจากหัวข้อตรงๆ ไม่เจอ ให้ลองใช้ regex หรือเช็คคำว่า "ทางเลือก"
-        if not draft_options:
-            match = re.search(r'(##?\s*.*?Draft.*?)\n(.*)', raw_body, re.DOTALL | re.IGNORECASE)
-            if match:
-                draft_options = match.group(2).strip()
-            elif "ทางเลือกที่ 1" in raw_body or "Option 1" in raw_body or "ทางเลือก" in raw_body:
-                draft_options = raw_body.strip()
-                
-        # 5. สกัดหาข้อความที่พี่เก่งอนุมัติ (Final Approved Copy)
-        final_approved = approved_copy.strip() if approved_copy else ""
-        
-        # หาก approved_copy ว่าง ให้ดึงจากเนื้อหาก่อนแบ่ง Draft Options
-        if not final_approved:
-            # ใช้เนื้อหาครึ่งแรกก่อนถึงสัญลักษณ์แยก
-            first_part = raw_body
-            if "## 📝 Draft Options" in first_part:
-                first_part = first_part.split("## 📝 Draft Options")[0].strip()
-            if "---" in first_part:
-                first_part = first_part.split("---")[0].strip()
+        if not video_filename:
+            match_file = re.search(r'\]\s*(.*\.(?:mp4|mov|mkv|avi|webm))', title, re.IGNORECASE)
+            if match_file:
+                video_filename = match_file.group(1).strip()
+            elif any(title.lower().endswith(ext) for ext in ['.mp4', '.mov', '.mkv', '.avi', '.webm']):
+                video_filename = title
+
+        # ดึงประเภทคิวงานจากหัวข้อ (เช่น [YT_Videos_Full Video Draft] -> YT_Videos_Full)
+        match_queue = re.match(r'^\[([\w\-]+)(?:\s+Video\s+Draft)?\]', title)
+        queue_name = match_queue.group(1) if match_queue else "YT_Videos_Full"
+        if "Spoiler" in title:
+            queue_name = "Spoiler"
             
-            final_approved = first_part.strip()
+        # 4. โหลดดราฟต์แรกสุดของบอทจากไฟล์สำรองในเครื่อง (Local Backup)
+        draft_options = None
+        if video_filename:
+            file_slug = re.sub(r'[^\w\s-]', '', video_filename).strip().replace(" ", "_").lower()
+            backup_filename = f"{queue_name.lower()}_from_video_{file_slug}.md"
+            
+            search_dirs = [
+                os.path.join(PROJECT_ROOT, "Team_Content_Studio", "Team_Agent_Content", "WTJ_Project", "WTJ_Story", "workspace", "2_drafts"),
+                os.path.join(PROJECT_ROOT, "Team_Content_Studio", "Team_Agent_Content", "WTJ_Project", "WTJ_Podcast", "workspace", "2_drafts"),
+                os.path.join(PROJECT_ROOT, "Team_Content_Studio", "Team_Agent_Content", "WTJ_Project", "workspace", "2_drafts")
+            ]
+            
+            for d in search_dirs:
+                p = os.path.join(d, backup_filename)
+                if os.path.exists(p):
+                    try:
+                        with open(p, "r", encoding="utf-8") as f:
+                            draft_options = f.read().strip()
+                            break
+                    except Exception as e:
+                        print(f"⚠️ ไม่สามารถอ่านไฟล์สำรองได้: {p} - {e}")
+                        
+        # 5. สกัดหาข้อความที่พี่เก่งเกลาอนุมัติ (Final Approved Copy จาก Notion Page Body)
+        # โดยการลบบรรทัดแรกสุดที่เป็น Headline บอกทางออกไป
+        content_lines = raw_body.splitlines()
+        if content_lines and first_line_body and (first_line_body in content_lines[0] or any(ext in content_lines[0].lower() for ext in ['.mp4', '.mov', '.mkv', '.avi', '.webm'])):
+            content_lines = content_lines[1:]
+        final_approved = "\n".join(content_lines).strip()
             
         # เช็คความสมบูรณ์ของข้อมูลก่อนบันทึก
         if not draft_options or len(draft_options) < 10:
-            print(f"⚠️ ข้าม: หาดราฟต์ต้นฉบับในเพจไม่พบ")
+            print(f"⚠️ ข้าม: หาดราฟต์ต้นฉบับสำรองในโฟลเดอร์ 2_drafts ไม่พบสำหรับ '{video_filename}'")
             continue
             
-        if not final_approved or len(final_approved) < 10 or final_approved == raw_body.strip():
-            # ถ้าสุดท้ายดันได้ตัวเดิมหรือไม่มีการแก้ไขเลย อาจจะข้าม
-            print(f"⚠️ ข้าม: ไม่มีตัวอย่างข้อความที่พี่เก่งตรวจ/อนุมัติที่เป็นชิ้นเป็นอัน")
+        if not final_approved or len(final_approved) < 10 or final_approved == draft_options:
+            print(f"⚠️ ข้าม: ไม่มีตัวอย่างข้อความที่พี่เก่งตรวจแก้ไขเพิ่มเติม (หรือข้อความเหมือนดราฟต์แรก)")
             continue
             
-        # 6. ดึงทรานสคริปต์ย่อ เพื่อเป็นคอนเทกต์สั้นๆ
-        # เอาเนื้อหาตอนบนสุดของเพจ หรือ 500 ตัวแรกมาเป็นไกด์
-        transcript_snippet = raw_body.split("\n\n")[0][:500].strip()
+        # 6. ดึงทรานสคริปต์ย่อเพื่อเป็นบริบท (Context)
+        transcript_snippet = final_approved.split("\n\n")[0][:500].strip()
         
         # 7. เพิ่มเข้าคลังเรียนรู้
         learning_base.append({
@@ -158,7 +175,7 @@ def run_learning_loop():
             "learned_at": True
         })
         
-        print(f"✨ เรียนรู้สไตล์สำเร็จ! จับคู่ (ดราฟต์เดิม ➔ ข้อความสุดท้ายหลังเกลา)")
+        print(f"✨ เรียนรู้สไตล์การเกลาคำสำเร็จแล้วแก! (เปรียบเทียบดราฟต์ต้นฉบับ ➔ ข้อความเกลาเสร็จของพี่เก่ง)")
         new_learnings += 1
         
     if new_learnings > 0:

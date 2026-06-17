@@ -20,8 +20,8 @@ while PROJECT_ROOT != os.path.dirname(PROJECT_ROOT):
         break
     PROJECT_ROOT = os.path.dirname(PROJECT_ROOT)
 
-SCHEDULE_FILE = os.path.join(PROJECT_ROOT, "Team_Content_Studio", "Team_Agent_Content", "WTJ_Story_Project", "workspace", "posting_schedule.json")
-DASHBOARD_DIR = os.path.join(PROJECT_ROOT, "Team_Content_Studio", "Team_Agent_Content", "WTJ_Story_Project", "dashboard")
+SCHEDULE_FILE = os.path.join(PROJECT_ROOT, "Team_Content_Studio", "Team_Agent_Content", "WTJ_Project", "workspace", "posting_schedule.json")
+DASHBOARD_DIR = os.path.join(PROJECT_ROOT, "Team_Content_Studio", "Team_Agent_Content", "WTJ_Project", "WTJ_Story", "dashboard")
 DASHBOARD_HTML = os.path.join(DASHBOARD_DIR, "index.html")
 
 # Map ชื่อโฟลเดอร์ → id ใน HTML

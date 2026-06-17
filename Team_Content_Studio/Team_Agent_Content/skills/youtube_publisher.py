@@ -30,7 +30,7 @@ from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
 import googleapiclient.errors
 
-SCOPES = ['https://www.googleapis.com/auth/youtube.upload']
+SCOPES = ['https://www.googleapis.com/auth/youtube']
 TOKEN_FILENAME = os.path.join("credentials", "token_youtube.json")
 CLIENT_SECRET_FILENAME = os.path.join("credentials", "client_secret.json")
 
@@ -71,7 +71,7 @@ def get_youtube_client():
                 sys.exit(1)
             print("🔑 กำลังเปิดหน้าต่างเบราว์เซอร์เพื่อขอสิทธิ์เข้าถึง YouTube (OAuth)...")
             flow = InstalledAppFlow.from_client_secrets_file(client_secret_path, SCOPES)
-            creds = flow.run_local_server(port=0)
+            creds = flow.run_local_server(port=0, prompt='select_account')
             
             # บันทึก token เก็บไว้
             with open(token_path, 'w', encoding='utf-8') as token_file:
@@ -89,16 +89,6 @@ def find_video_file(filename):
     # ล้างอักขระพิเศษหรือช่องว่างส่วนเกิน
     filename = filename.strip()
     
-    search_dirs = [
-        os.path.join(PROJECT_ROOT, "Team_Content_Studio", "Team_Agent_Content", "WTJ_Story_Project", "workspace", "1_raw_materials", "raw_videos", "raw_vdo_short", "processed"),
-        os.path.join(PROJECT_ROOT, "Team_Content_Studio", "Team_Agent_Content", "WTJ_Story_Project", "workspace", "1_raw_materials", "raw_videos", "raw_vdo_3-5min", "processed"),
-        os.path.join(PROJECT_ROOT, "Team_Content_Studio", "Team_Agent_Content", "WTJ_Story_Project", "workspace", "1_raw_materials", "raw_videos", "raw_vdo_short"),
-        os.path.join(PROJECT_ROOT, "Team_Content_Studio", "Team_Agent_Content", "WTJ_Story_Project", "workspace", "1_raw_materials", "raw_videos", "raw_vdo_3-5min"),
-        os.path.join(PROJECT_ROOT, "Team_Content_Studio", "Team_Agent_Content", "WTJ_Story_Project", "workspace", "1_raw_materials", "raw_videos"),
-        os.path.join(PROJECT_ROOT, "Team_Content_Studio", "Team_Agent_Content", "WTJ_Podcast_Project", "workspace", "1_raw_materials", "raw_videos", "processed"),
-        os.path.join(PROJECT_ROOT, "Team_Content_Studio", "Team_Agent_Content", "WTJ_Podcast_Project", "workspace", "1_raw_materials", "raw_videos"),
-    ]
-    
     # 1. เช็คถ้าเป็น Absolute path อยู่แล้ว
     if os.path.isabs(filename) and os.path.exists(filename):
         return filename
@@ -107,48 +97,133 @@ def find_video_file(filename):
     if os.path.exists(filename):
         return os.path.abspath(filename)
         
-    # 3. ค้นหาในโฟลเดอร์เป้าหมายต่างๆ
-    for d in search_dirs:
-        full_path = os.path.join(d, filename)
-        if os.path.exists(full_path):
-            return os.path.abspath(full_path)
-            
-    # 4. ค้นหาแบบ Recursive ใต้โฟลเดอร์ดิบ
-    base_searches = [
-        os.path.join(PROJECT_ROOT, "Team_Content_Studio", "Team_Agent_Content", "WTJ_Story_Project", "workspace", "1_raw_materials", "raw_videos"),
-        os.path.join(PROJECT_ROOT, "Team_Content_Studio", "Team_Agent_Content", "WTJ_Podcast_Project", "workspace", "1_raw_materials", "raw_videos"),
-    ]
-    for base_search in base_searches:
-        if os.path.exists(base_search):
-            for root, _, files in os.walk(base_search):
-                if filename in files:
-                    return os.path.abspath(os.path.join(root, filename))
+    # 3. ค้นหาแบบกว้าง (Recursive) ใต้โฟลเดอร์ทีมคอนเทนต์
+    base_search = os.path.join(PROJECT_ROOT, "Team_Content_Studio", "Team_Agent_Content")
+    if os.path.exists(base_search):
+        for root, _, files in os.walk(base_search):
+            if filename in files:
+                return os.path.abspath(os.path.join(root, filename))
                 
     return None
 
 def extract_filename_from_title(title):
-    """สกัดหาชื่อไฟล์วิดีโอ MP4 จากชื่อหัวข้อการ์ด Notion"""
+    """สกัดหาชื่อไฟล์วิดีโอ (MP4/MOV/etc) จากชื่อหัวข้อการ์ด Notion"""
     # เช่น: "[Reels_Under1Min Video Draft] 01   กอฟ อินพลู   30 sec_.mp4" -> "01   กอฟ อินพลู   30 sec_.mp4"
-    match = re.search(r'\]\s*(.*\.mp4)', title, re.IGNORECASE)
+    # สนับสนุนนามสกุล .mp4, .mov, .mkv, .avi, .webm
+    match = re.search(r'\]\s*(.*\.(?:mp4|mov|mkv|avi|webm))', title, re.IGNORECASE)
     if match:
         return match.group(1).strip()
         
-    # ถ้าชื่อหน้าลงท้ายด้วย .mp4 อยู่แล้ว
-    if title.strip().lower().endswith('.mp4'):
+    # ถ้าชื่อหน้าลงท้ายด้วยนามสกุลวิดีโอที่กำหนดอยู่แล้ว
+    title_clean = title.strip().lower()
+    if any(title_clean.endswith(ext) for ext in ['.mp4', '.mov', '.mkv', '.avi', '.webm']):
         return title.strip()
         
     return None
 
-def upload_video_to_youtube(youtube, video_path, title, description="", tags=None, privacy_status="draft", dry_run=False, thumbnail_path=None):
+def get_or_create_playlist(youtube, playlist_name):
+    """ค้นหา playlist ID จากชื่อ ถ้าไม่มีให้สร้างใหม่ (หรือรีเทิร์น None)"""
+    try:
+        # ค้นหา playlist ที่มีอยู่แล้ว
+        request = youtube.playlists().list(
+            part="snippet",
+            mine=True,
+            maxResults=50
+        )
+        response = request.execute()
+        
+        for item in response.get("items", []):
+            title = item.get("snippet", {}).get("title", "")
+            if title.strip().lower() == playlist_name.strip().lower():
+                return item.get("id")
+                
+        # ถ้าไม่มี ให้สร้างใหม่
+        print(f"➕ ไม่พบ Playlist '{playlist_name}' ในช่อง ยูทูบ กำลังสร้างใหม่ให้แก...")
+        request_create = youtube.playlists().insert(
+            part="snippet,status",
+            body={
+                "snippet": {
+                    "title": playlist_name,
+                    "description": f"รายการ {playlist_name} อัตโนมัติ - สร้างโดยบอท WTJ",
+                    "defaultLanguage": "th"
+                },
+                "status": {
+                    "privacyStatus": "public"
+                }
+            }
+        )
+        response_create = request_create.execute()
+        playlist_id = response_create.get("id")
+        print(f"✅ สร้าง Playlist '{playlist_name}' (ID: {playlist_id}) เรียบร้อยแล้วแก!")
+        return playlist_id
+    except Exception as e:
+        print(f"⚠️ Playlist Lookup/Creation Warning: {e}")
+        return None
+
+def add_video_to_playlist(youtube, video_id, playlist_id):
+    """เพิ่มวิดีโอเข้า playlist"""
+    try:
+        request = youtube.playlistItems().insert(
+            part="snippet",
+            body={
+                "snippet": {
+                    "playlistId": playlist_id,
+                    "resourceId": {
+                        "kind": "youtube#video",
+                        "videoId": video_id
+                    }
+                }
+            }
+        )
+        request.execute()
+        print(f"✅ เพิ่มวิดีโอ {video_id} เข้า Playlist เรียบร้อยแล้วแก!")
+        return True
+    except Exception as e:
+        print(f"⚠️ ไม่สามารถเพิ่มวิดีโอเข้า playlist ได้: {e}")
+        return False
+
+def upload_video_to_youtube(youtube, video_path, title, description="", tags=None, privacy_status="draft", dry_run=False, thumbnail_path=None, publish_at=None, paid_promotion=False, playlist_name=None, category_id=None):
     """อัปโหลดวิดีโอขึ้น YouTube แบบ Resumable Chunked Upload"""
     if not os.path.exists(video_path):
         print(f"❌ Error: ไม่พบไฟล์วิดีโอที่: {video_path}")
         return False
         
+    # ลบส่วนที่เป็น Tags: ... หรือ แท็ก: ... ออกจาก description เพื่อไม่ให้ปรากฏใต้คลิป (ป้องกัน Tag Stuffing ตามกฎ YouTube)
+    if description:
+        desc_lines = []
+        for line in description.splitlines():
+            line_strip = line.strip()
+            # ตรวจสอบบรรทัดที่เป็นแท็ก
+            if re.match(r'^(?:\*\*|)?(?:Tags|แท็ก)(?:\*\*|)?\s*:', line_strip, re.IGNORECASE):
+                continue
+            desc_lines.append(line)
+        description = "\n".join(desc_lines).strip()
+
     # กรองความยาวของ Title ห้ามเกิน 100 ตัวอักษรตามเกณฑ์ YouTube
     if len(title) > 100:
         print(f"⚠️ Warning: ชื่อคลิปยาวเกิน 100 ตัวอักษร (ยาว {len(title)} ตัวอักษร) กำลังตัดคำท้ายออก...")
         title = title[:97] + "..."
+        
+    # ทำความสะอาดและกรอง Tags ให้ปลอดภัยตามเกณฑ์ของ YouTube
+    if tags:
+        cleaned_tags = []
+        for tag in tags:
+            # ลบเครื่องหมายต้องห้ามและอักขระพิเศษแปลกปลอม
+            t = re.sub(r'[<>*\[\]\{\}]', '', tag).strip()
+            if t and len(t) > 1:
+                cleaned_tags.append(t)
+        cleaned_tags = list(set(cleaned_tags))
+        
+        # คุมความยาวรวมไม่ให้เกิน 400 ตัวอักษร (เกณฑ์ YouTube คือ 500)
+        final_tags = []
+        total_len = 0
+        for t in cleaned_tags:
+            if total_len + len(t) + 1 <= 400:
+                final_tags.append(t)
+                total_len += len(t) + 1
+        tags = final_tags
+    else:
+        tags = []
         
     print(f"\n==================================================")
     print(f"🎬 ข้อมูลที่จะอัปโหลด YouTube:")
@@ -157,8 +232,14 @@ def upload_video_to_youtube(youtube, video_path, title, description="", tags=Non
         print(f"🖼️ ภาพหน้าปก: {thumbnail_path}")
     print(f"🏷️ ชื่อคลิป (Title): {title}")
     print(f"🔒 สถานะความเป็นส่วนตัว: {privacy_status.upper()}")
+    if publish_at:
+        print(f"⏰ เวลาเผยแพร่ (Scheduled UTC): {publish_at}")
     if tags:
         print(f"🔑 แท็ก: {', '.join(tags)}")
+    print(f"💰 สปอนเซอร์ (Paid Promotion): {'เปิด' if paid_promotion else 'ปิด'}")
+    if playlist_name:
+        print(f"📁 เพลย์ลิสต์ (Playlist): {playlist_name}")
+    print(f"🗂️ หมวดหมู่ (Category ID): {category_id or '27'}")
     print(f"==================================================\n")
     
     if dry_run:
@@ -169,8 +250,8 @@ def upload_video_to_youtube(youtube, video_path, title, description="", tags=Non
         'snippet': {
             'title': title,
             'description': description,
-            'tags': tags or [],
-            'categoryId': '27',  # Education (หรือ '22' สำหรับ People & Blogs)
+            'tags': tags,
+            'categoryId': category_id or '27',  # Education (หรือ '22' สำหรับ People & Blogs)
             'defaultLanguage': 'th',
             'defaultAudioLanguage': 'th'
         },
@@ -179,9 +260,15 @@ def upload_video_to_youtube(youtube, video_path, title, description="", tags=Non
             'selfDeclaredMadeForKids': False,
             'license': 'youtube',
             'embeddable': True,
-            'publicStatsViewable': True
+            'publicStatsViewable': True,
+            'hasPaidProductPlacement': paid_promotion
         }
     }
+    
+    if publish_at:
+        # YouTube API requires privacyStatus to be 'private' if publishAt is specified for scheduling
+        body['status']['privacyStatus'] = 'private'
+        body['status']['publishAt'] = publish_at
     
     # อัปโหลดแบบ Chunk ละ 2MB (ต้องเป็นผลคูณของ 256KB)
     media = MediaFileUpload(video_path, mimetype='video/*', chunksize=2*1024*1024, resumable=True)
@@ -216,6 +303,12 @@ def upload_video_to_youtube(youtube, video_path, title, description="", tags=Non
                 print("   ✅ ตั้งค่าภาพหน้าปกสำเร็จ!")
             except Exception as e:
                 print(f"   ⚠️ เกิดข้อผิดพลาดในการตั้งหน้าปกคลิป: {e}")
+                
+        # เพิ่มเข้า Playlist
+        if playlist_name and youtube:
+            playlist_id = get_or_create_playlist(youtube, playlist_name)
+            if playlist_id:
+                add_video_to_playlist(youtube, video_id, playlist_id)
                 
         return True
         

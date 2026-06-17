@@ -6,7 +6,7 @@
 โค้ชต้น ไพรเวทเทรนเนอร์ของเราวันนี้ เล่าว่าลูกค้ายุคนี้มีหลายแบบนะ แต่ที่พีคสุดๆ คือ "ฉันไม่อยากออกกำลังกายเลย แต่ฉันยอมจ่ายเงินเพื่อให้เทรนเนอร์มาบังคับฉัน" ตรงใจใครบ้างยกมือขึ้น! 🙋‍♀️
 คุณเป็นคนประเภทไหน หรือเคยจ้างเทรนเนอร์เพราะอะไรกัน? มาแชร์ประสบการณ์กันจ้า!
 
-#WhatTheJob #WTJ #WTJTALK #WTJSTORY #WTJPODCAST #PODCAST #PrivateTrainer #FitnessMotivation
+#WhatTheJob #PrivateTrainer #FitnessMotivation #WTJ #WTJTALK #WTJSTORY #WTJPODCAST #PODCAST
 ดูคลิปเต็มได้ที่นี่เลย: https://youtu.be/tkzTISyvF60
 
 ทางเลือกที่ 2:
@@ -14,7 +14,7 @@
 โค้ชต้นทิ้งงานการตลาดผ้าไหมที่ทำมา 10 ปี เพื่อมาเป็นไพรเวทเทรนเนอร์เต็มตัว เพราะแพสชันล้วนๆ! 💪 การตัดสินใจครั้งใหญ่แบบนี้ มันต้องใช้ความกล้าหาญขนาดไหนนะ?
 แล้วคุณล่ะ มีงานที่อยากเปลี่ยนไปทำตามฝันเหมือนโค้ชต้นบ้างรึเปล่า? มาคุยกันหน่อยสิว่าอะไรคือสิ่งที่ทำให้เรากล้าหรือยังไม่กล้าก้าวออกจาก Comfort Zone?
 
-#WhatTheJob #WTJ #WTJTALK #WTJSTORY #WTJPODCAST #PODCAST #CareerChange #PassionJob
+#WhatTheJob #CareerChange #PassionJob #WTJ #WTJTALK #WTJSTORY #WTJPODCAST #PODCAST
 ดูคลิปเต็มได้ที่นี่เลย: https://youtu.be/tkzTISyvF60
 
 ทางเลือกที่ 3:
@@ -22,5 +22,5 @@
 ยิมของโค้ชต้นนี่คือตอบโจทย์สายไพรเวทมากๆ เพราะลูกค้าจะได้ออกกำลังกายแบบตัวต่อตัว หรือมากับเพื่อน/กรุ๊ปเล็กๆ ที่สนิท ไม่ต้องเจอใครเยอะแยะเลยนะ
 คุณคิดว่าข้อดีข้อเสียของการออกกำลังกายในฟิตเนสใหญ่ๆ กับยิมส่วนตัวมันต่างกันยังไง? มาโหวตให้ทีมที่คุณชอบหน่อยสิ!
 
-#WhatTheJob #WTJ #WTJTALK #WTJSTORY #WTJPODCAST #PODCAST #PrivateGym #FitnessLifestyle
+#WhatTheJob #PrivateGym #FitnessLifestyle #WTJ #WTJTALK #WTJSTORY #WTJPODCAST #PODCAST
 ดูคลิปเต็มได้ที่นี่เลย: https://youtu.be/tkzTISyvF60

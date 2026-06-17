@@ -41,7 +41,7 @@ def generate_social_posts(transcript_title, transcript_content):
     print("🧠 [Skill Generation] ส่งทรานสคริปต์ตอนย่อยให้เอเจนต์ (น้ำ, มิวสิค, เรย์) ร่วมกันปั้นโพสต์ระดับพรีเมียม...")
     
     # ดึงประวัติการเรียนรู้จากพี่เก่งมาเสริม
-    learning_base_path = os.path.join(PROJECT_ROOT, "Team_Content_Studio", "Team_Agent_Content", "workspace", "learning_base.json")
+    learning_base_path = os.path.join(PROJECT_ROOT, "Team_Content_Studio", "Team_Agent_Content", "WTJ_Project", "workspace", "learning_base.json")
     learning_examples_str = ""
     if os.path.exists(learning_base_path):
         try:

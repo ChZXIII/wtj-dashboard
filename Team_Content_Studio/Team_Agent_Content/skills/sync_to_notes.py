@@ -44,7 +44,7 @@ def compile_and_sync(topic_name):
     
     possible_dirs = [
         os.path.join(os.path.dirname(__file__), "..", "workspace", safe_topic),
-        os.path.join(os.path.dirname(__file__), "..", "WTJ_Story_Project", "workspace", safe_topic)
+        os.path.join(os.path.dirname(__file__), "..", "WTJ_Project", "WTJ_Story", "workspace", safe_topic)
     ]
     
     workspace_dir = None

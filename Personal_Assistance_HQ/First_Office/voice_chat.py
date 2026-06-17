@@ -9,7 +9,7 @@ from google.genai import types
 
 # Load environment variables
 current_dir = os.path.dirname(os.path.abspath(__file__))
-project_root = os.path.dirname(current_dir)
+project_root = os.path.dirname(os.path.dirname(current_dir))
 load_dotenv(os.path.join(project_root, ".env"))
 
 # Import model router

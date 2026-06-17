@@ -1,80 +1,78 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th" class="dark-theme">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>1st Agent Knowledge Graph</title>
+    <title>ChZ Data - Knowledge Graph Explorer</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="graph_data.js"></script>
+    
+    <!-- Immediate Theme Loader -->
+    <script>
+        (function() {
+            let savedTheme = 'dark';
+            try {
+                savedTheme = localStorage.getItem('wtj-theme') || 'dark';
+            } catch (e) {}
+            document.documentElement.className = savedTheme + '-theme';
+        })();
+    </script>
+    
     <style>
         :root {
-            /* --- Ptolemy Light Theme (Default) --- */
-            --bg-color: #f3f4f1;
-            --text-color: #111111;
-            --panel-bg: #ffffff;
-            --border-color: rgba(17, 17, 17, 0.15);
-            --node-dir: #1976d2;
-            --node-py: #e65100;
-            --node-html: #7b1fa2;
-            --node-md: #2e7d32;
-            --node-other: #555555;
-            --link-color: rgba(0, 0, 0, 0.15);
-            --header-color: #1976d2;
-            --scanline-opacity: 0;
-            --grid-color: rgba(0, 0, 0, 0.08);
-            --blueprint-opacity: 0.8;
+            /* Colors - Premium Dark Theme (#070a13) */
+            --bg-main: #070a13;
+            --panel-bg: rgba(12, 16, 31, 0.85);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --text-primary: #cbd5e1;
+            --text-muted: #64748b;
+            --text-title: #ffffff;
+            
+            --accent: #3b82f6;
+            --accent-glow: rgba(59, 130, 246, 0.25);
+            --grid-color: rgba(255, 255, 255, 0.02);
+            --link-color: rgba(255, 255, 255, 0.04);
         }
 
-        html.dark-theme {
-            /* --- Veda Flat Dark Theme --- */
-            --bg-color: #13141d;
-            --text-color: #eceff4;
-            --panel-bg: #1e1f29;
-            --border-color: rgba(229, 229, 229, 0.15);
-            --node-dir: #81a1c1;
-            --node-py: #ebcb8b;
-            --node-html: #88c0d0;
-            --node-md: #a3be8c;
-            --node-other: #d8dee9;
-            --link-color: rgba(255, 255, 255, 0.1);
-            --header-color: #81a1c1;
-            --scanline-opacity: 0;
-            --grid-color: rgba(255, 255, 255, 0.06);
-            --blueprint-opacity: 0.6;
+        html.light-theme {
+            /* Fallback Light Theme */
+            --bg-main: #f8fafc;
+            --panel-bg: rgba(255, 255, 255, 0.9);
+            --border-color: rgba(0, 0, 0, 0.08);
+            --text-primary: #334155;
+            --text-muted: #64748b;
+            --text-title: #0f172a;
+            
+            --accent: #2563eb;
+            --accent-glow: rgba(37, 99, 235, 0.15);
+            --grid-color: rgba(0, 0, 0, 0.03);
+            --link-color: rgba(0, 0, 0, 0.05);
         }
 
-        html.color-theme {
-            /* --- Veda Neon Dark Theme (Color mode) --- */
-            --bg-color: #05070a;
-            --text-color: #e2e8f0;
-            --panel-bg: rgba(10, 15, 24, 0.85);
-            --border-color: rgba(0, 240, 255, 0.15);
-            --node-dir: #bd93f9;
-            --node-py: #ffaa00;
-            --node-html: #00f0ff;
-            --node-md: #39ff14;
-            --node-other: #64748b;
-            --link-color: rgba(0, 240, 255, 0.15);
-            --header-color: #00f0ff;
-            --scanline-opacity: 0.25;
-            --grid-color: rgba(0, 240, 255, 0.06);
-            --blueprint-opacity: 1;
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body, html {
-            margin: 0;
-            padding: 0;
             width: 100%;
             height: 100%;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             overflow: hidden;
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            font-family: 'Inter', -apple-system, sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        /* Ambient Cyber Grid Background */
-        body::before {
-            content: "";
+        /* Ambient Grid Background */
+        .grid-bg {
             position: fixed;
             top: 0;
             left: 0;
@@ -83,335 +81,1035 @@
             background-image: 
                 linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
                 linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
-            background-size: 40px 40px;
+            background-size: 50px 50px;
             pointer-events: none;
             z-index: -1;
-            opacity: var(--blueprint-opacity);
-            transition: opacity 0.25s ease;
         }
 
-        /* CRT Scanlines Overlay */
-        .scanlines {
+        #graph-canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
+            z-index: 10;
+        }
+
+        /* Layout Right Sidebar */
+        .control-sidebar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: auto;
+            width: 320px;
             height: 100%;
-            background: linear-gradient(
-                rgba(18, 16, 16, 0) 50%, 
-                rgba(0, 0, 0, 0.25) 50%
-            );
-            background-size: 100% 4px;
-            z-index: 9999;
-            pointer-events: none;
-            opacity: var(--scanline-opacity);
-        }
-
-        #graph-container {
-            width: 100%;
-            height: 100%;
-        }
-
-        .node circle {
-            stroke: var(--bg-color);
-            stroke-width: 0.5px;
-            transition: r 0.2s, stroke-width 0.2s;
-        }
-
-        .node text {
-            font-size: 10px;
-            pointer-events: none;
-            text-anchor: middle;
-            fill: var(--text-color);
-            opacity: 0.7;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.8);
-        }
-
-        .link {
-            stroke: var(--link-color);
-            stroke-opacity: 0.6;
-            stroke-width: 1px;
-        }
-
-        #ui-overlay {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            pointer-events: none;
-        }
-
-        h1 {
-            margin: 0;
-            font-size: 1.5rem;
-            font-weight: 300;
-            letter-spacing: 2px;
-            color: var(--header-color);
-        }
-
-        .legend {
-            margin-top: 10px;
-            font-size: 0.8rem;
+            background: var(--panel-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-left: 1px solid var(--border-color);
+            z-index: 100;
             display: flex;
-            gap: 15px;
-            pointer-events: auto;
+            flex-direction: column;
+            padding: 24px 20px;
+            transform: translateX(0);
+            transition: transform 0.3s ease, background-color 0.3s ease;
         }
 
-        .legend-item { display: flex; align-items: center; gap: 5px; }
-        .dot { width: 8px; height: 8px; border-radius: 50%; }
+        .control-sidebar.collapsed {
+            transform: translateX(320px);
+        }
 
+        /* Collapse Sidebar Trigger Button */
+        .sidebar-toggle {
+            position: absolute;
+            top: 25px;
+            left: -45px;
+            right: auto;
+            width: 45px;
+            height: 45px;
+            background: var(--panel-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-right: none;
+            border-radius: 10px 0 0 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .brand-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 12px;
+        }
+
+        .brand-title {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 1.25rem;
+            color: var(--text-title);
+        }
+
+        .brand-subtitle {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Control Sections */
+        .control-section {
+            margin-bottom: 20px;
+        }
+
+        .control-label {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: var(--text-muted);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        /* Search input bar */
+        .search-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .search-input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 8px 14px 8px 36px;
+            font-size: 0.85rem;
+            color: var(--text-title);
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .search-input:focus {
+            border-color: var(--accent);
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            pointer-events: none;
+            font-size: 0.9rem;
+        }
+
+        /* Filters and Checkboxes */
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding-left: 26px;
+            margin-bottom: 6px;
+            cursor: pointer;
+            font-size: 0.82rem;
+            color: var(--text-primary);
+            user-select: none;
+            font-weight: 500;
+        }
+
+        .checkbox-container input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+        .checkmark {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            height: 16px;
+            width: 16px;
+            background-color: transparent;
+            border: 2px solid var(--border-color);
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .checkbox-container:hover input ~ .checkmark {
+            border-color: var(--accent);
+        }
+
+        .checkbox-container input:checked ~ .checkmark {
+            background-color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+
+        .checkbox-container input:checked ~ .checkmark:after {
+            display: block;
+        }
+
+        .checkbox-container .checkmark:after {
+            left: 4px;
+            top: 1px;
+            width: 4px;
+            height: 7px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        /* Color Dot Indicators */
+        .dot-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+
+        /* Sidebar Bottom Actions */
+        .sidebar-bottom {
+            margin-top: auto;
+            border-top: 1px solid var(--border-color);
+            padding-top: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .btn-action {
+            width: 100%;
+            padding: 10px;
+            border-radius: 12px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-align: center;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            opacity: 0.9;
+        }
+
+        .btn-secondary {
+            background: rgba(0, 0, 0, 0.2);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-1px);
+            border-color: var(--accent);
+        }
+
+        /* Theme Selector Panel in Top Left */
+        .top-left-controls {
+            position: fixed;
+            top: 25px;
+            left: 25px;
+            z-index: 90;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .theme-switch {
+            display: flex;
+            background-color: var(--panel-bg);
+            backdrop-filter: blur(8px);
+            padding: 4px;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+        }
+
+        .theme-switch-btn {
+            background: none;
+            border: none;
+            padding: 6px 12px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+        }
+
+        .theme-switch-btn.active {
+            background-color: var(--accent);
+            color: #ffffff;
+        }
+
+        /* Tooltip details */
         #tooltip {
             position: absolute;
-            background: var(--panel-bg);
+            background: rgba(7, 10, 19, 0.95);
             border: 1px solid var(--border-color);
-            color: var(--text-color);
-            padding: 5px 10px;
-            border-radius: 4px;
+            color: var(--text-primary);
+            padding: 10px 14px;
+            border-radius: 12px;
             font-size: 0.8rem;
             display: none;
             pointer-events: none;
-        }
-        
-        .floating-hub-btn {
-            transition: all 0.3s ease !important;
-            pointer-events: auto !important;
-        }
-        .floating-hub-btn:hover {
-            background: rgba(129, 161, 193, 0.35) !important;
-            box-shadow: 0 0 20px rgba(129, 161, 193, 0.5) !important;
-            transform: translateY(-2px) !important;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            z-index: 1000;
+            backdrop-filter: blur(8px);
         }
 
-        /* 3-Mode Theme Selector */
-        .theme-switcher-container {
-            position: fixed;
-            top: 20px;
-            right: 130px;
-            z-index: 10000;
-            background: var(--panel-bg);
-            border: 1px solid var(--border-color);
-            padding: 4px 8px;
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        /* Smooth Tooltip Transitions */
+        #tooltip {
+            transition: opacity 0.2s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+            opacity: 0;
+            transform: scale(0.95);
         }
-        .theme-switcher-label {
-            font-size: 0.65rem;
-            color: var(--text-color);
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-        .theme-switcher {
-            display: flex;
-            gap: 2px;
-        }
-        .theme-btn {
-            background: transparent;
-            border: none;
-            color: var(--text-color);
-            padding: 4px 10px;
-            font-family: inherit;
-            font-size: 0.7rem;
-            font-weight: bold;
-            cursor: pointer;
-            text-transform: uppercase;
-            transition: all 0.25s ease;
-            border-radius: 12px;
-        }
-        .theme-btn.active {
-            background: var(--header-color);
-            color: var(--bg-color);
+
+        #tooltip.visible {
+            opacity: 1;
+            transform: scale(1);
         }
     </style>
-    <script>
-        // Initialize Theme immediately to prevent flash
-        let savedTheme = 'light';
-        try {
-            savedTheme = localStorage.getItem('wtj-theme') || 'light';
-        } catch (e) {
-            console.warn('localStorage is not accessible:', e);
-        }
-        document.documentElement.className = savedTheme + '-theme';
+</head>
+<body>
+    
+    <!-- Ambient Grid -->
+    <div class="grid-bg"></div>
+
+    <!-- UI Tooltip -->
+    <div id="tooltip"></div>
+
+    <!-- Top Left Controls (Theme switcher & Wiki Hub link) -->
+    <div class="top-left-controls">
+        <a href="system_manuals.html" class="btn-action btn-secondary" style="border-radius: 16px; padding: 8px 16px; font-weight: 750; background: var(--panel-bg); backdrop-filter: blur(8px); width: auto;">
+            <span>📖</span> Wiki Hub
+        </a>
         
-        window.setTheme = function(theme) {
-            document.body.className = theme + '-theme';
+        <div class="theme-switch">
+            <button class="theme-switch-btn" id="theme-btn-light" onclick="setTheme('light')">Light</button>
+            <button class="theme-switch-btn active" id="theme-btn-dark" onclick="setTheme('dark')">Dark</button>
+        </div>
+    </div>
+
+    <!-- Collapsible Right Sidebar Panel -->
+    <aside class="control-sidebar" id="control-sidebar">
+        <!-- Collapse Trigger -->
+        <button class="sidebar-toggle" onclick="toggleSidebar()" id="sidebar-toggle-btn">◀</button>
+        
+        <div class="brand-header">
+            <div>
+                <h1 class="brand-title">ChZ Graph Explorer</h1>
+                <span class="brand-subtitle">Knowledge Base Relations</span>
+            </div>
+        </div>
+
+        <!-- 1. Search Box -->
+        <div class="control-section">
+            <span class="control-label">ค้นหาความเชื่อมโยง (Search)</span>
+            <div class="search-container">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="search-nodes" class="search-input" placeholder="ค้นหาโฟลเดอร์/ไฟล์..." onkeyup="handleSearch()">
+            </div>
+        </div>
+
+        <!-- 2. Node Info Section -->
+        <div class="control-section" id="node-info-section" style="border-bottom: 1px solid var(--border-color); padding-bottom: 16px; margin-bottom: 16px;">
+            <span class="control-label">NODE INFO</span>
+            <div id="node-info-content" style="font-size: 0.8rem; line-height: 1.4; min-height: 50px; color: var(--text-muted);">
+                คลิกเลือกโหนดในกราฟเพื่อดูรายละเอียด
+            </div>
+        </div>
+
+        <!-- 3. Communities Filters Section -->
+        <div class="control-section" style="flex: 1; overflow-y: auto; padding-right: 4px; margin-bottom: 10px;">
+            <span class="control-label">COMMUNITIES</span>
+            
+            <label class="checkbox-container" style="font-weight: 700; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; margin-bottom: 12px;">
+                <input type="checkbox" id="comm-select-all" onchange="toggleAllCommunities(this)" checked>
+                <span class="checkmark" style="background-color: var(--accent); border-color: var(--accent);"></span>
+                Select All
+            </label>
+            
+            <div id="communities-list-panel" style="display: flex; flex-direction: column; gap: 8px;">
+                <!-- Dynamically generated with JS -->
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="sidebar-bottom">
+            <button class="btn-action btn-primary" onclick="resetZoom()">
+                <span>🔄</span> รีเซ็ตมุมมอง (Reset Zoom)
+            </button>
+        </div>
+    </aside>
+
+    <!-- Canvas viewport for Force Layout -->
+    <canvas id="graph-canvas"></canvas>
+
+    <!-- UI Logics & D3 Layout Engines -->
+    <script>
+        // --- 1. Theme Logic (Support Light, Dark with safe try-catch wrapper) ---
+        function setTheme(theme) {
             document.documentElement.className = theme + '-theme';
+            document.body.className = theme + '-theme';
+            
+            document.querySelectorAll('.theme-switch-btn').forEach(btn => btn.classList.remove('active'));
+            const activeBtn = document.getElementById(`theme-btn-${theme}`);
+            if (activeBtn) activeBtn.classList.add('active');
+            
             try {
                 localStorage.setItem('wtj-theme', theme);
             } catch (e) {
                 console.warn('localStorage is not writable:', e);
             }
-            document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
-            const activeBtn = document.getElementById(`theme-btn-${theme}`);
-            if (activeBtn) activeBtn.classList.add('active');
-        };
-        
-        document.addEventListener('DOMContentLoaded', () => {
-            // Apply theme class to body once DOM is ready
-            document.body.className = savedTheme + '-theme';
             
-            // Sync UI buttons on load
-            const activeBtn = document.getElementById(`theme-btn-${savedTheme}`);
-            if (activeBtn) {
-                document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
-                activeBtn.classList.add('active');
-            }
-        });
-    </script>
-</head>
-<body>
-    <!-- CRT scanlines overlay -->
-    <div class="scanlines"></div>
-
-    <!-- 3-Mode Theme Selector -->
-    <div class="theme-switcher-container">
-        <span class="theme-switcher-label">THEME</span>
-        <div class="theme-switcher">
-            <button class="theme-btn active" id="theme-btn-light" onclick="setTheme('light')">LIGHT</button>
-            <button class="theme-btn" id="theme-btn-dark" onclick="setTheme('dark')">DARK</button>
-            <button class="theme-btn" id="theme-btn-color" onclick="setTheme('color')">COLOR</button>
-        </div>
-    </div>
-
-    <!-- Floating Hub Button -->
-    <a href="index.html" class="floating-hub-btn" style="position: fixed; top: 20px; right: 20px; z-index: 10000; background: rgba(129, 161, 193, 0.1); border: 1px solid #81a1c1; color: #81a1c1; padding: 10px 18px; border-radius: 30px; text-decoration: none; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 0.85rem; font-weight: bold; backdrop-filter: blur(10px); display: flex; align-items: center; gap: 8px;">
-        <span>🦉 HUB</span>
-    </a>
-    <div id="ui-overlay">
-        <h1>1st AGENT GRAPH VIEW</h1>
-        <div class="legend">
-            <div class="legend-item"><div class="dot" style="background: var(--node-dir)"></div> Directory</div>
-            <div class="legend-item"><div class="dot" style="background: var(--node-py)"></div> Python</div>
-            <div class="legend-item"><div class="dot" style="background: var(--node-md)"></div> Markdown</div>
-            <div class="legend-item"><div class="dot" style="background: var(--node-html)"></div> HTML</div>
-        </div>
-    </div>
-    <div id="tooltip"></div>
-    <svg id="graph-container"></svg>
-
-    <script>
-        const width = window.innerWidth;
-        const height = window.innerHeight;
-
-        // Check if data and d3 are loaded
-        if (typeof graphData === 'undefined') {
-            document.body.innerHTML = "<div style='display:flex; justify-content:center; align-items:center; height:100vh; color:red; font-family:sans-serif;'><h2>Error: Could not load graph_data.js</h2></div>";
-            console.error("graphData is not defined. Check if graph_data.js is in the same folder.");
-        } else if (typeof d3 === 'undefined') {
-            document.body.innerHTML = "<div style='display:flex; justify-content:center; align-items:center; height:100vh; color:red; font-family:sans-serif;'><h2>Error: Could not load D3.js library</h2></div>";
-            console.error("D3 is not defined. Check internet connection or D3 CDN path.");
-        } else {
-            try {
-                const svg = d3.select("#graph-container")
-                    .attr("width", width)
-                    .attr("height", height);
-
-                const g = svg.append("g");
-
-                // Zoom & Pan
-                svg.call(d3.zoom()
-                    .scaleExtent([0.1, 8])
-                    .on("zoom", (event) => {
-                        g.attr("transform", event.transform);
-                    }));
-
-                const getColor = (type) => {
-                    switch(type) {
-                        case 'directory': return 'var(--node-dir)';
-                        case 'python': return 'var(--node-py)';
-                        case 'html': return 'var(--node-html)';
-                        case 'markdown': return 'var(--node-md)';
-                        default: return 'var(--node-other)';
-                    }
-                };
-
-                const simulation = d3.forceSimulation(graphData.nodes)
-                    .force("link", d3.forceLink(graphData.links).id(d => d.id).distance(100))
-                    .force("charge", d3.forceManyBody().strength(-300))
-                    .force("center", d3.forceCenter(width / 2, height / 2))
-                    .force("collision", d3.forceCollide().radius(d => d.val + 5));
-
-                const link = g.append("g")
-                    .attr("class", "links")
-                    .selectAll("line")
-                    .data(graphData.links)
-                    .join("line")
-                    .attr("class", "link");
-
-                const node = g.append("g")
-                    .attr("class", "nodes")
-                    .selectAll(".node")
-                    .data(graphData.nodes)
-                    .join("g")
-                    .attr("class", "node")
-                    .call(d3.drag()
-                        .on("start", dragstarted)
-                        .on("drag", dragged)
-                        .on("end", dragended));
-
-                node.append("circle")
-                    .attr("r", d => d.val)
-                    .attr("fill", d => getColor(d.type))
-                    .on("mouseover", (event, d) => {
-                        d3.select("#tooltip")
-                            .style("display", "block")
-                            .html(`<strong>${d.label}</strong><br>Type: ${d.type}`);
-                    })
-                    .on("mousemove", (event) => {
-                        d3.select("#tooltip")
-                            .style("left", (event.pageX + 10) + "px")
-                            .style("top", (event.pageY - 20) + "px");
-                    })
-                    .on("mouseout", () => {
-                        d3.select("#tooltip").style("display", "none");
-                    });
-
-                node.append("text")
-                    .attr("dy", d => d.val + 12)
-                    .text(d => d.label)
-                    .style("opacity", d => d.type === 'directory' ? 1 : 0.4);
-
-                simulation.on("tick", () => {
-                    link
-                        .attr("x1", d => d.source.x)
-                        .attr("y1", d => d.source.y)
-                        .attr("x2", d => d.target.x)
-                        .attr("y2", d => d.target.y);
-
-                    node.attr("transform", d => `translate(${d.x},${d.y})`);
-                });
-
-                function dragstarted(event, d) {
-                    if (!event.active) simulation.alphaTarget(0.3).restart();
-                    d.fx = d.x;
-                    d.fy = d.y;
-                }
-
-                function dragged(event, d) {
-                    d.fx = event.x;
-                    d.fy = event.y;
-                }
-
-                function dragended(event, d) {
-                    if (!event.active) simulation.alphaTarget(0);
-                    d.fx = null;
-                    d.fy = null;
-                }
-
-                // Handle Resize
-                window.addEventListener('resize', () => {
-                    svg.attr("width", window.innerWidth).attr("height", window.innerHeight);
-                    simulation.force("center", d3.forceCenter(window.innerWidth / 2, window.innerHeight / 2));
-                    simulation.alpha(0.3).restart();
-                });
-            } catch (e) {
-                console.error("Error rendering D3 graph:", e);
-                document.body.innerHTML = `<div style='display:flex; justify-content:center; align-items:center; height:100vh; color:red; font-family:sans-serif;'><h2>Error rendering graph: ${e.message}</h2></div>`;
+            // Re-draw Canvas when theme changes
+            if (window.triggerCanvasRedraw) {
+                window.triggerCanvasRedraw();
             }
         }
+
+        // --- 2. Collapsible Sidebar ---
+        function toggleSidebar() {
+            const sidebar = document.getElementById('control-sidebar');
+            const btn = document.getElementById('sidebar-toggle-btn');
+            if (!sidebar || !btn) return;
+            
+            sidebar.classList.toggle('collapsed');
+            const isCollapsed = sidebar.classList.contains('collapsed');
+            
+            if (isCollapsed) {
+                btn.textContent = '◀'; // Point left to indicate open action
+            } else {
+                btn.textContent = '▶'; // Point right to indicate close action
+            }
+            
+            try {
+                localStorage.setItem('wtj-sidebar-collapsed', isCollapsed ? 'true' : 'false');
+            } catch (e) {
+                console.warn('localStorage is not writable:', e);
+            }
+        }
+
+        // --- 3. Community Detection & Colors mapping ---
+        const COMMUNITIES_LIST = [
+            '🦉 Management (First)',
+            '💎 Crypto Portfolio (Win)',
+            '🚗 Grab Accounting (Jane)',
+            '📊 Dashboard & Data (M)',
+            '🎨 UI/UX Design (D)',
+            '🎓 AI Sidekick Course',
+            '📸 Food/Portrait Photo',
+            '🎬 WTJ Podcast & Stories',
+            '✂️ Video Editor (Cut)',
+            '🧑💻 Coder Workspace (Q)',
+            '🕵️♀️ Code Auditor',
+            '👑 ChZ Room (Private)',
+            '📈 Trade Speculation (Jaa)',
+            '🧪 Agent Lab (Sandbox)',
+            '🔑 Credentials Cabinet',
+            '📚 Shared Knowledge Base',
+            '🛠️ Root Utilities'
+        ];
+
+        const COMMUNITY_MAPPING = [
+            { key: 'Personal_Assistance_HQ/First_Office', name: '🦉 Management (First)' },
+            { key: 'Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/Win', name: '💎 Crypto Portfolio (Win)' },
+            { key: 'Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/Jane', name: '🚗 Grab Accounting (Jane)' },
+            { key: 'Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/M', name: '📊 Dashboard & Data (M)' },
+            { key: 'M/', name: '📊 Dashboard & Data (M)' },
+            { key: 'Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/D', name: '🎨 UI/UX Design (D)' },
+            { key: 'Team_Content_Studio/Team_Agent_Content/AI_Sidekick_Project', name: '🎓 AI Sidekick Course' },
+            { key: 'Team_Content_Studio/Team_Agent_Content/Photography_Project', name: '📸 Food/Portrait Photo' },
+            { key: 'Team_Content_Studio', name: '🎬 WTJ Podcast & Stories' },
+            { key: 'Editor_Studio', name: '✂️ Video Editor (Cut)' },
+            { key: 'Coder_Studio/Q/', name: '🧑💻 Coder Workspace (Q)' },
+            { key: 'Coder_Studio/Aom/', name: '🕵️♀️ Code Auditor' },
+            { key: 'Coder_Studio', name: '🧑💻 Coder Workspace (Q)' },
+            { key: 'ChZ_Room', name: '👑 ChZ Room (Private)' },
+            { key: 'Trader_Agent', name: '📈 Trade Speculation (Jaa)' },
+            { key: 'Agent_Lab', name: '🧪 Agent Lab (Sandbox)' },
+            { key: 'credentials', name: '🔑 Credentials Cabinet' },
+            { key: 'knowledge_base', name: '📚 Shared Knowledge Base' }
+        ];
+
+        function getCommunity(nodeId) {
+            if (!nodeId || nodeId === 'root') return '🛠️ Root Utilities';
+            
+            for (const mapping of COMMUNITY_MAPPING) {
+                if (nodeId.includes(mapping.key)) {
+                    return mapping.name;
+                }
+            }
+            return '🛠️ Root Utilities';
+        }
+
+        // Generate community colors with solid and fade representations
+        const COMMUNITY_COLORS = {};
+        COMMUNITIES_LIST.forEach((comm, idx) => {
+            const hue = (idx * 360 / COMMUNITIES_LIST.length) % 360;
+            COMMUNITY_COLORS[comm] = {
+                solid: `hsl(${hue}, 75%, 60%)`,
+                fade: `hsla(${hue}, 75%, 60%, 0.12)`
+            };
+        });
+
+        // Initialize active communities
+        let activeCommunities = new Set(COMMUNITIES_LIST);
+
+        function countNodesPerCommunity() {
+            const counts = {};
+            COMMUNITIES_LIST.forEach(c => counts[c] = 0);
+            
+            graphData.nodes.forEach(n => {
+                const comm = getCommunity(n.id);
+                if (counts[comm] !== undefined) {
+                    counts[comm]++;
+                } else {
+                    counts[comm] = 1;
+                }
+            });
+            return counts;
+        }
+
+        function renderCommunitiesSelector() {
+            const panel = document.getElementById('communities-list-panel');
+            if (!panel) return;
+            
+            panel.innerHTML = '';
+            const counts = countNodesPerCommunity();
+            
+            COMMUNITIES_LIST.forEach((comm, idx) => {
+                const color = COMMUNITY_COLORS[comm] ? COMMUNITY_COLORS[comm].solid : '#94a3b8';
+                const count = counts[comm] || 0;
+                
+                const label = document.createElement('label');
+                label.className = 'checkbox-container';
+                label.style.fontSize = '0.8rem';
+                label.style.marginBottom = '4px';
+                label.style.display = 'flex';
+                label.style.alignItems = 'center';
+                label.style.justifyContent = 'space-between';
+                label.style.width = '100%';
+                
+                label.innerHTML = `
+                    <span style="display: flex; align-items: center; gap: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; max-width: 80%;">
+                        <input type="checkbox" class="comm-checkbox" value="${comm}" ${activeCommunities.has(comm) ? 'checked' : ''} onchange="onCommunityFilterChange(this)">
+                        <span class="checkmark" style="border-color: ${color}; background-color: ${activeCommunities.has(comm) ? color : 'transparent'}"></span>
+                        <span class="comm-text" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${comm}">${comm}</span>
+                    </span>
+                    <span style="font-family: 'Share Tech Mono', monospace; font-size: 0.75rem; color: var(--text-muted); font-weight: 600; margin-left: auto; padding-left: 8px;">${count}</span>
+                `;
+                panel.appendChild(label);
+            });
+        }
+
+        function onCommunityFilterChange(cb) {
+            const comm = cb.value;
+            const checkmark = cb.nextElementSibling;
+            const color = COMMUNITY_COLORS[comm] ? COMMUNITY_COLORS[comm].solid : '#94a3b8';
+            
+            if (cb.checked) {
+                activeCommunities.add(comm);
+                checkmark.style.backgroundColor = color;
+            } else {
+                activeCommunities.delete(comm);
+                checkmark.style.backgroundColor = 'transparent';
+            }
+            
+            const selectAll = document.getElementById('comm-select-all');
+            if (activeCommunities.size === COMMUNITIES_LIST.length) {
+                selectAll.checked = true;
+                selectAll.nextElementSibling.style.backgroundColor = 'var(--accent)';
+            } else if (activeCommunities.size === 0) {
+                selectAll.checked = false;
+                selectAll.nextElementSibling.style.backgroundColor = 'transparent';
+            } else {
+                selectAll.checked = false;
+                selectAll.nextElementSibling.style.backgroundColor = 'transparent';
+            }
+            
+            refreshLayout();
+        }
+
+        function toggleAllCommunities(cb) {
+            const checkmarked = cb.checked;
+            const checkboxes = document.querySelectorAll('.comm-checkbox');
+            
+            checkboxes.forEach(c => {
+                c.checked = checkmarked;
+                const comm = c.value;
+                const checkmark = c.nextElementSibling;
+                const color = COMMUNITY_COLORS[comm] ? COMMUNITY_COLORS[comm].solid : '#94a3b8';
+                
+                if (checkmarked) {
+                    activeCommunities.add(comm);
+                    checkmark.style.backgroundColor = color;
+                } else {
+                    activeCommunities.delete(comm);
+                    checkmark.style.backgroundColor = 'transparent';
+                }
+            });
+            
+            cb.nextElementSibling.style.backgroundColor = checkmarked ? 'var(--accent)' : 'transparent';
+            
+            refreshLayout();
+        }
+
+        // --- 4. D3 Graph & Data Engine ---
+        let width = window.innerWidth;
+        let height = window.innerHeight;
+
+        function getNodeRadius(d) {
+            if (d.id === 'root') return 15;
+            return d.type === 'directory' ? 10 : 5.5;
+        }
+
+        function isCommunityHub(d) {
+            if (d.id === 'root') return true;
+            if (d.type !== 'directory') return false;
+            
+            const parts = d.id.split('/');
+            return parts.length <= 3; // First level folders are community hubs
+        }
+
+        function getNodeColor(d) {
+            const comm = getCommunity(d.id);
+            return (COMMUNITY_COLORS[comm] && COMMUNITY_COLORS[comm].solid) || '#94a3b8';
+        }
+
+        // Setup dimensions
+        window.addEventListener('resize', () => {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            
+            const canvasEl = document.getElementById("graph-canvas");
+            if (canvasEl) {
+                canvasEl.width = width;
+                canvasEl.height = height;
+            }
+            refreshLayout();
+        });
+
+        // Check if data is loaded
+        if (typeof graphData === 'undefined') {
+            document.body.innerHTML = "<div style='display:flex; justify-content:center; align-items:center; height:100vh; color:red; font-family:sans-serif;'><h2>Error: Could not load graph_data.js</h2></div>";
+            console.error("graphData is not defined.");
+        } else {
+            // Initial render
+            setTimeout(() => {
+                renderCommunitiesSelector();
+                refreshLayout();
+            }, 100);
+        }
+
+        // Reset viewport zoom behavior
+        function resetZoom() {
+            const canvas = d3.select("#graph-canvas");
+            if (canvas.node() && canvasZoom) {
+                canvasTransform = d3.zoomIdentity.translate(width / 2 - 160, height / 2).scale(0.65);
+                canvas.transition()
+                    .duration(750)
+                    .call(canvasZoom.transform, canvasTransform);
+            }
+        }
+
+        function refreshLayout() {
+            const filteredNodesList = graphData.nodes.filter(n => {
+                if (n.id === 'root') return true;
+                const comm = getCommunity(n.id);
+                return activeCommunities.has(comm);
+            });
+            
+            renderForceLayout(filteredNodesList);
+            handleSearch();
+        }
+
+        // --- ENGINE: FORCE-DIRECTED CANVAS LAYOUT ---
+        let simulation = null;
+        let canvasZoom = null;
+        let canvasTransform = d3.zoomIdentity;
+        let hoveredNode = null;
+        let selectedNode = null;
+
+        function selectNode(node) {
+            selectedNode = node;
+            const infoContent = document.getElementById('node-info-content');
+            if (node) {
+                const commName = getCommunity(node.id);
+                const commColorObj = COMMUNITY_COLORS[commName];
+                const commColor = commColorObj ? commColorObj.solid : 'inherit';
+                infoContent.innerHTML = `
+                    <div style="font-weight: 700; color: var(--text-title); margin-bottom: 6px; font-size: 0.9rem; word-break: break-all;">${node.label}</div>
+                    <div style="margin-bottom: 4px;"><span style="color: var(--text-muted);">Type:</span> <span style="font-family: 'Share Tech Mono', monospace; text-transform: uppercase; font-size: 0.72rem;">${node.type}</span></div>
+                    <div style="margin-bottom: 4px;"><span style="color: var(--text-muted);">Community:</span> <span style="color: ${commColor}; font-weight: 600; font-size: 0.78rem;">${commName}</span></div>
+                    <div style="word-break: break-all;"><span style="color: var(--text-muted);">Path:</span> <span style="font-size: 0.72rem; font-family: monospace;">${node.id}</span></div>
+                `;
+            } else {
+                infoContent.innerHTML = `<span style="color: var(--text-muted);">คลิกเลือกโหนดในกราฟเพื่อดูรายละเอียด</span>`;
+            }
+        }
+
+        function renderForceLayout(filteredNodesList) {
+            const canvas = d3.select("#graph-canvas");
+            const context = canvas.node().getContext("2d");
+            
+            // Fix canvas resolution bounds
+            canvas.attr("width", width).attr("height", height);
+            
+            // Find valid links containing filtered nodes
+            const nodeIds = new Set(filteredNodesList.map(n => n.id));
+            const filteredLinks = graphData.links.filter(l => {
+                const sId = typeof l.source === 'object' ? l.source.id : l.source;
+                const tId = typeof l.target === 'object' ? l.target.id : l.target;
+                return nodeIds.has(sId) && nodeIds.has(tId);
+            }).map(l => {
+                const sNode = typeof l.source === 'object' ? l.source : filteredNodesList.find(n => n.id === l.source);
+                const tNode = typeof l.target === 'object' ? l.target : filteredNodesList.find(n => n.id === l.target);
+                return {
+                    source: sNode,
+                    target: tNode
+                };
+            }).filter(l => l.source && l.target);
+
+            simulation = d3.forceSimulation(filteredNodesList)
+                .force("link", d3.forceLink(filteredLinks).id(d => d.id).distance(30))
+                .force("charge", d3.forceManyBody().strength(-60))
+                .force("center", d3.forceCenter(0, 0))
+                .force("collision", d3.forceCollide().radius(d => getNodeRadius(d) + 6));
+
+            // Stop simulation and pre-calculate coordinates in background silently (no jelly wiggling)
+            simulation.stop();
+            for (let i = 0; i < 200; ++i) {
+                simulation.tick();
+            }
+
+            // Canvas Redraw Logic
+            function drawCanvas() {
+                context.save();
+                context.clearRect(0, 0, width, height);
+                
+                // Apply zoom transformation
+                context.translate(canvasTransform.x, canvasTransform.y);
+                context.scale(canvasTransform.k, canvasTransform.k);
+                
+                // 1. Draw links (Grouped by color to minimize GPU Draw Calls & eliminate String Replace Risk)
+                const linksByColor = new Map();
+                const defaultFade = 'rgba(255, 255, 255, 0.05)';
+                
+                filteredLinks.forEach(l => {
+                    const sourceComm = getCommunity(l.source.id);
+                    const colorObj = COMMUNITY_COLORS[sourceComm];
+                    const strokeColor = colorObj ? colorObj.fade : defaultFade;
+                    
+                    if (!linksByColor.has(strokeColor)) {
+                        linksByColor.set(strokeColor, []);
+                    }
+                    linksByColor.get(strokeColor).push(l);
+                });
+                
+                context.lineWidth = 1.5;
+                linksByColor.forEach((links, strokeColor) => {
+                    context.strokeStyle = strokeColor;
+                    context.beginPath();
+                    links.forEach(l => {
+                        context.moveTo(l.source.x, l.source.y);
+                        context.lineTo(l.target.x, l.target.y);
+                    });
+                    context.stroke();
+                });
+                
+                const query = document.getElementById('search-nodes').value.toLowerCase().trim();
+                
+                // 2. Draw nodes circles
+                filteredNodesList.forEach(d => {
+                    const r = getNodeRadius(d);
+                    const isHovered = hoveredNode === d;
+                    const isMatched = query !== "" && d.label.toLowerCase().includes(query);
+                    const isSelected = selectedNode === d;
+                    
+                    if (query === "" || isMatched || isHovered) {
+                        context.globalAlpha = 1.0;
+                    } else {
+                        context.globalAlpha = 0.12;
+                    }
+                    
+                    context.beginPath();
+                    context.arc(d.x, d.y, r, 0, 2 * Math.PI);
+                    context.fillStyle = getNodeColor(d);
+                    context.fill();
+                    
+                    const isDark = document.documentElement.classList.contains("dark-theme");
+                    context.strokeStyle = isDark ? "#070a13" : "#f8fafc";
+                    context.lineWidth = 1.0;
+                    context.stroke();
+                    
+                    if (isMatched || isSelected) {
+                        context.beginPath();
+                        context.arc(d.x, d.y, r + 5.0, 0, 2 * Math.PI);
+                        context.strokeStyle = "var(--accent)";
+                        context.lineWidth = 4.0;
+                        context.stroke();
+                    }
+                });
+                
+                // 3. Draw text labels on top
+                filteredNodesList.forEach(d => {
+                    const isHovered = hoveredNode === d;
+                    const isMatched = query !== "" && d.label.toLowerCase().includes(query);
+                    const isHub = isCommunityHub(d);
+                    
+                    if (isHovered || isMatched || isHub) {
+                        context.save();
+                        context.globalAlpha = 1.0;
+                        
+                        context.font = isHub ? "600 12px Inter, sans-serif" : "400 10px Inter, sans-serif";
+                        const textWidth = context.measureText(d.label).width;
+                        
+                        const r = getNodeRadius(d);
+                        const offsetY = r + 10;
+                        const bubbleY = r + 2;
+                        
+                        // Text background bubble
+                        const isDark = document.documentElement.classList.contains("dark-theme");
+                        context.fillStyle = isDark ? "rgba(7, 10, 19, 0.85)" : "rgba(248, 250, 252, 0.85)";
+                        context.fillRect(d.x - textWidth / 2 - 4, d.y + bubbleY, textWidth + 8, 16);
+                        
+                        // Draw label text
+                        context.fillStyle = isHovered || isMatched ? (isDark ? "#ffffff" : "#0f172a") : (isDark ? "#a0aec0" : "#475569");
+                        context.textAlign = "center";
+                        context.textBaseline = "middle";
+                        context.fillText(d.label, d.x, d.y + offsetY);
+                        
+                        context.restore();
+                    }
+                });
+                
+                context.restore();
+            }
+
+            // Bind Zoom to Canvas
+            canvasZoom = d3.zoom()
+                .scaleExtent([0.02, 12])
+                .on("zoom", (event) => {
+                    canvasTransform = event.transform;
+                    drawCanvas();
+                });
+            canvas.call(canvasZoom);
+
+            // Bind Drag nodes to Canvas
+            let draggedNode = null;
+            canvas.call(d3.drag()
+                .subject((event) => {
+                    const [mouseX, mouseY] = d3.pointer(event);
+                    const activeX = (mouseX - canvasTransform.x) / canvasTransform.k;
+                    const activeY = (mouseY - canvasTransform.y) / canvasTransform.k;
+                    
+                    for (const d of filteredNodesList) {
+                        const r = getNodeRadius(d);
+                        const dist = Math.sqrt((d.x - activeX) ** 2 + (d.y - activeY) ** 2);
+                        if (dist <= r + 8) return d;
+                    }
+                })
+                .on("start", (event) => {
+                    draggedNode = event.subject;
+                    if (draggedNode) {
+                        draggedNode.fx = draggedNode.x;
+                        draggedNode.fy = draggedNode.y;
+                    }
+                })
+                .on("drag", (event) => {
+                    if (draggedNode) {
+                        const [mouseX, mouseY] = d3.pointer(event, canvas.node());
+                        const activeX = (mouseX - canvasTransform.x) / canvasTransform.k;
+                        const activeY = (mouseY - canvasTransform.y) / canvasTransform.k;
+                        
+                        draggedNode.x = activeX;
+                        draggedNode.y = activeY;
+                        draggedNode.fx = activeX;
+                        draggedNode.fy = activeY;
+                        
+                        drawCanvas();
+                    }
+                })
+                .on("end", () => {
+                    if (draggedNode) {
+                        draggedNode.fx = null;
+                        draggedNode.fy = null;
+                        draggedNode = null;
+                    }
+                })
+            );
+
+            // Spatial Detection mousemove for tooltip & label preview
+            canvas.on("mousemove", (event) => {
+                const [mouseX, mouseY] = d3.pointer(event);
+                const activeX = (mouseX - canvasTransform.x) / canvasTransform.k;
+                const activeY = (mouseY - canvasTransform.y) / canvasTransform.k;
+                
+                let foundHover = null;
+                for (const d of filteredNodesList) {
+                    const r = getNodeRadius(d);
+                    const dist = Math.sqrt((d.x - activeX) ** 2 + (d.y - activeY) ** 2);
+                    if (dist <= r + 8) {
+                        foundHover = d;
+                        break;
+                    }
+                }
+                
+                if (foundHover !== hoveredNode) {
+                    hoveredNode = foundHover;
+                    if (hoveredNode) {
+                        showTooltip(event, hoveredNode);
+                        canvas.style("cursor", "pointer");
+                    } else {
+                        hideTooltip();
+                        canvas.style("cursor", "default");
+                    }
+                    drawCanvas();
+                }
+            });
+
+            canvas.on("click", (event) => {
+                const [mouseX, mouseY] = d3.pointer(event);
+                const activeX = (mouseX - canvasTransform.x) / canvasTransform.k;
+                const activeY = (mouseY - canvasTransform.y) / canvasTransform.k;
+                
+                let clicked = null;
+                for (const d of filteredNodesList) {
+                    const r = getNodeRadius(d);
+                    const dist = Math.sqrt((d.x - activeX) ** 2 + (d.y - activeY) ** 2);
+                    if (dist <= r + 8) {
+                        clicked = d;
+                        break;
+                    }
+                }
+                
+                selectNode(clicked);
+                drawCanvas();
+            });
+
+            canvas.on("mouseout", () => {
+                if (hoveredNode) {
+                    hoveredNode = null;
+                    hideTooltip();
+                    drawCanvas();
+                }
+            });
+
+            // Initial center translation on start
+            canvasTransform = d3.zoomIdentity.translate(width / 2 - 160, height / 2).scale(0.65);
+            canvas.call(canvasZoom.transform, canvasTransform);
+            
+            drawCanvas();
+            window.triggerCanvasRedraw = drawCanvas;
+        }
+
+        // --- TOOLTIP CONTROLLERS ---
+        let tooltipTimeout = null;
+        function showTooltip(event, d) {
+            if (tooltipTimeout) clearTimeout(tooltipTimeout);
+            const tooltip = d3.select("#tooltip");
+            tooltip.html(`
+                <div style="font-weight: 700; margin-bottom: 4px; color: var(--text-title);">${d.label}</div>
+                <div style="font-size: 0.72rem; color: var(--text-muted); font-family: 'Share Tech Mono', monospace; text-transform: uppercase;">Type: ${d.type}</div>
+                <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 2px; font-weight: 500;">Community: ${getCommunity(d.id)}</div>
+                <div style="font-size: 0.65rem; color: var(--text-muted); margin-top: 2px;">Path: ${d.id}</div>
+            `);
+            tooltip.style("display", "block");
+            
+            requestAnimationFrame(() => {
+                tooltip.classed("visible", true);
+            });
+            moveTooltip(event);
+        }
+
+        function moveTooltip(event) {
+            d3.select("#tooltip")
+                .style("left", (event.pageX + 16) + "px")
+                .style("top", (event.pageY - 28) + "px");
+        }
+
+        function hideTooltip() {
+            const tooltip = d3.select("#tooltip");
+            tooltip.classed("visible", false);
+            
+            if (tooltipTimeout) clearTimeout(tooltipTimeout);
+            tooltipTimeout = setTimeout(() => {
+                if (!tooltip.classed("visible")) {
+                    tooltip.style("display", "none");
+                }
+            }, 200);
+        }
+
+        // --- SEARCH ENGINE REALTIME HIGHLIGHT ---
+        function handleSearch() {
+            if (window.triggerCanvasRedraw) {
+                window.triggerCanvasRedraw();
+            }
+        }
+        
+        // Initial Theme & Sidebar Load from localStorage safely
+        (function() {
+            let savedTheme = 'dark';
+            let sidebarCollapsed = false;
+            try {
+                savedTheme = localStorage.getItem('wtj-theme') || 'dark';
+                sidebarCollapsed = localStorage.getItem('wtj-sidebar-collapsed') === 'true';
+            } catch (e) {}
+            
+            setTheme(savedTheme);
+            
+            if (sidebarCollapsed) {
+                const sidebar = document.getElementById('control-sidebar');
+                const btn = document.getElementById('sidebar-toggle-btn');
+                if (sidebar && btn) {
+                    sidebar.classList.add('collapsed');
+                    btn.textContent = '◀';
+                }
+            } else {
+                const sidebar = document.getElementById('control-sidebar');
+                const btn = document.getElementById('sidebar-toggle-btn');
+                if (sidebar && btn) {
+                    btn.textContent = '▶';
+                }
+            }
+        })();
     </script>
 </body>
 </html>

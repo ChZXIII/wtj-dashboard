@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WTJ TEAM WORKFLOW DASHBOARD</title>
-    <!-- Premium Fonts: Outfit, Inter, and Space Mono for a tactical cyber look -->
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Premium Fonts: Outfit, Inter, and Share Tech Mono for a tactical cyber look -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@300;400;500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <script src="workflow_status.js"></script>
     <script>
         // Initialize Theme immediately to prevent flash
@@ -226,7 +226,7 @@
         }
 
         .logo-section p {
-            font-family: 'Space Mono', monospace;
+            font-family: 'Share Tech Mono', monospace;
             font-size: 0.8rem;
             color: var(--logo-sub-text-color);
             margin-top: 5px;
@@ -272,7 +272,7 @@
         }
 
         .theme-switcher-label {
-            font-family: 'Space Mono', monospace;
+            font-family: 'Share Tech Mono', monospace;
             font-size: 0.7rem;
             color: var(--text-muted);
             text-transform: uppercase;
@@ -293,7 +293,7 @@
             border: none;
             color: var(--text-primary);
             padding: 4px 10px;
-            font-family: 'Space Mono', monospace;
+            font-family: 'Share Tech Mono', monospace;
             font-size: 0.75rem;
             font-weight: bold;
             cursor: pointer;
@@ -474,7 +474,7 @@
         .node-subtitle {
             font-size: 0.65rem;
             color: #8a8f9f;
-            font-family: 'Space Mono', monospace;
+            font-family: 'Share Tech Mono', monospace;
             text-transform: uppercase;
         }
 
@@ -482,7 +482,7 @@
         .swimlane-label {
             position: absolute;
             left: 10px;
-            font-family: 'Space Mono', monospace;
+            font-family: 'Share Tech Mono', monospace;
             font-size: 0.75rem;
             font-weight: 700;
             color: rgba(255, 255, 255, 0.15);
@@ -521,7 +521,7 @@
         }
 
         .detail-role {
-            font-family: 'Space Mono', monospace;
+            font-family: 'Share Tech Mono', monospace;
             font-size: 0.75rem;
             color: var(--neon-blue);
             margin-top: 5px;
@@ -534,7 +534,7 @@
 
         .detail-section-title {
             font-size: 0.8rem;
-            font-family: 'Space Mono', monospace;
+            font-family: 'Share Tech Mono', monospace;
             color: #8a8f9f;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -609,7 +609,7 @@
             border: 1px solid rgba(255, 255, 255, 0.15);
             padding: 10px 24px;
             border-radius: 30px;
-            font-family: 'Space Mono', monospace;
+            font-family: 'Share Tech Mono', monospace;
             font-size: 0.8rem;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -654,7 +654,7 @@
         footer {
             text-align: center;
             color: #4a4f5f;
-            font-family: 'Space Mono', monospace;
+            font-family: 'Share Tech Mono', monospace;
             font-size: 0.75rem;
             margin-top: 40px;
             border-top: 1px solid rgba(255, 255, 255, 0.04);
@@ -791,7 +791,7 @@
             box-shadow: var(--glow-blue);
         }
         .step-number {
-            font-family: 'Space Mono', monospace;
+            font-family: 'Share Tech Mono', monospace;
             font-size: 1.8rem;
             font-weight: 800;
             color: rgba(255, 255, 255, 0.1);
@@ -803,7 +803,6 @@
             color: var(--neon-green);
         }
         .step-icon-wrapper {
-            font-size: 1.8rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -813,6 +812,16 @@
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.05);
             transition: all 0.3s ease;
+        }
+        .step-icon-wrapper svg {
+            width: 20px;
+            height: 20px;
+            stroke: currentColor;
+            stroke-width: 2px;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+            display: inline-block;
         }
         .step-card:hover .step-icon-wrapper {
             background: rgba(255, 255, 255, 0.08);
@@ -846,7 +855,7 @@
             flex-wrap: wrap;
         }
         .step-tag {
-            font-family: 'Space Mono', monospace;
+            font-family: 'Share Tech Mono', monospace;
             font-size: 0.65rem;
             padding: 2px 8px;
             border-radius: 4px;
@@ -865,7 +874,7 @@
             font-weight: 700;
             letter-spacing: 0.5px;
             text-transform: uppercase;
-            font-family: 'Space Mono', monospace;
+            font-family: 'Share Tech Mono', monospace;
             border: 1px solid transparent;
             transition: all 0.3s ease;
         }
@@ -944,13 +953,13 @@
     <div class="scanlines"></div>
 
     <!-- Floating Hub Button -->
-    <a href="../../../index.html" class="floating-hub-btn" style="position: fixed; top: 20px; right: 20px; z-index: 10000; background: rgba(189, 147, 249, 0.15); border: 1px solid var(--neon-purple); color: var(--neon-purple); padding: 10px 18px; border-radius: 30px; text-decoration: none; font-family: 'Space Mono', monospace; font-size: 0.85rem; font-weight: bold; box-shadow: var(--glow-purple); backdrop-filter: blur(10px); display: flex; align-items: center; gap: 8px;">
-        <span>🦉 HUB</span>
+    <a href="../../../index.html" class="floating-hub-btn" style="position: fixed; top: 20px; right: 20px; z-index: 10000; background: rgba(189, 147, 249, 0.15); border: 1px solid var(--neon-purple); color: var(--neon-purple); padding: 10px 18px; border-radius: 30px; text-decoration: none; font-family: 'Share Tech Mono', monospace; font-size: 0.85rem; font-weight: bold; box-shadow: var(--glow-purple); backdrop-filter: blur(10px); display: flex; align-items: center; gap: 8px;">
+        <span>HUB</span>
     </a>
 
     <!-- Mobile view toggle -->
     <div class="mobile-sim-panel">
-        <button id="sim-btn" class="sim-btn" onclick="toggleMobileSimulation()">📱 TOGGLE MOBILE VIEW SIMULATION</button>
+        <button id="sim-btn" class="sim-btn" onclick="toggleMobileSimulation()">TOGGLE MOBILE VIEW SIMULATION</button>
     </div>
 
     <!-- MAIN HEADER -->
@@ -976,12 +985,12 @@
 
     <!-- PIPELINE SELECTOR MENU -->
     <div class="pipeline-selector">
-        <button class="selector-btn active" id="btn-all" onclick="selectPipeline('all')">🌐 ALL OVERVIEW</button>
-        <button class="selector-btn" id="btn-master-wf" onclick="selectPipeline('master-wf')">📋 WTJ MASTER WORKFLOW</button>
-        <button class="selector-btn" id="btn-story" onclick="selectPipeline('story')">🎬 WTJ STORY PIPELINE</button>
-        <button class="selector-btn" id="btn-podcast" onclick="selectPipeline('podcast')">🎙️ WTJ PODCAST PIPELINE</button>
-        <!-- <button class="selector-btn" id="btn-dacrlight" onclick="selectPipeline('dacrlight')">📸 DACRLIGHT PIPELINE</button> -->
-        <button class="selector-btn" id="btn-data" onclick="selectPipeline('data')">📊 DATA FEEDBACK LOOP</button>
+        <button class="selector-btn active" id="btn-all" onclick="selectPipeline('all')">ALL OVERVIEW</button>
+        <button class="selector-btn" id="btn-master-wf" onclick="selectPipeline('master-wf')">WTJ MASTER WORKFLOW</button>
+        <button class="selector-btn" id="btn-story" onclick="selectPipeline('story')">WTJ STORY PIPELINE</button>
+        <button class="selector-btn" id="btn-podcast" onclick="selectPipeline('podcast')">WTJ PODCAST PIPELINE</button>
+        <!-- <button class="selector-btn" id="btn-dacrlight" onclick="selectPipeline('dacrlight')">DACRLIGHT PIPELINE</button> -->
+        <button class="selector-btn" id="btn-data" onclick="selectPipeline('data')">DATA FEEDBACK LOOP</button>
     </div>
 
     <!-- MAIN GRID LAYOUT -->
@@ -1121,6 +1130,12 @@
                     <span class="node-subtitle">Coder / Developer</span>
                 </div>
 
+                <!-- AUDITOR (CODE AUDITOR) -->
+                <div class="node-card node-audit" id="node-auditor" style="left: 440px; top: 540px;" onclick="showAgentDetails('auditor')">
+                    <span class="node-title">น้องออม (Aom)</span>
+                    <span class="node-subtitle">Code Auditor</span>
+                </div>
+
                 <!-- CHRIS (DIRECTOR) -->
                 <div class="node-card node-special" id="node-chris" style="left: 1000px; top: 90px;" onclick="showAgentDetails('chris')">
                     <span class="node-title">พี่คริส (Chris)</span>
@@ -1133,7 +1148,7 @@
                     <span class="node-subtitle">Support</span>
                 </div>
             </div>
-            
+
             <!-- Master Workflow Stepper View -->
             <div class="master-workflow-view" id="master-workflow-view" style="display: none;">
                 <div class="timeline-track">
@@ -1141,7 +1156,7 @@
                     <!-- Step 1 -->
                     <div class="step-card" onclick="showStepDetails(0)">
                         <div class="step-number">01</div>
-                        <div class="step-icon-wrapper">💡</div>
+                        <div class="step-icon-wrapper"><svg viewBox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A5.5 5.5 0 0 0 7 8c0 1.3.5 2.6 1.5 3.5.8.8 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg></div>
                         <div class="step-content">
                             <div class="step-title-row">
                                 <span class="step-title">หัวข้อ & Grill Session</span>
@@ -1158,7 +1173,7 @@
                     <!-- Step 2 -->
                     <div class="step-card" onclick="showStepDetails(1)">
                         <div class="step-number">02</div>
-                        <div class="step-icon-wrapper">📝</div>
+                        <div class="step-icon-wrapper"><svg viewBox="0 0 24 24"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" x2="8" y1="13" y2="13"></line><line x1="16" x2="8" y1="17" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></div>
                         <div class="step-content">
                             <div class="step-title-row">
                                 <span class="step-title">สรุปบรีฟหลัง Grill (Consolidated Brief)</span>
@@ -1174,7 +1189,7 @@
                     <!-- Step 3 -->
                     <div class="step-card" onclick="showStepDetails(2)">
                         <div class="step-number">03</div>
-                        <div class="step-icon-wrapper">🤝</div>
+                        <div class="step-icon-wrapper"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></div>
                         <div class="step-content">
                             <div class="step-title-row">
                                 <span class="step-title">ประชุมทีมเบรนสตรอม (Team Brainstorming)</span>
@@ -1191,7 +1206,7 @@
                     <!-- Step 4 -->
                     <div class="step-card" onclick="showStepDetails(3)">
                         <div class="step-number">04</div>
-                        <div class="step-icon-wrapper">🛠️</div>
+                        <div class="step-icon-wrapper"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg></div>
                         <div class="step-content">
                             <div class="step-title-row">
                                 <span class="step-title">แยกย้ายผลิตเนื้อหา (Production Pipeline)</span>
@@ -1207,7 +1222,7 @@
                     <!-- Step 5 -->
                     <div class="step-card" onclick="showStepDetails(4)">
                         <div class="step-number">05</div>
-                        <div class="step-icon-wrapper">📤</div>
+                        <div class="step-icon-wrapper"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg></div>
                         <div class="step-content">
                             <div class="step-title-row">
                                 <span class="step-title">จัดเก็บงานลงคลัง Notes (Sync to Apple Notes)</span>
@@ -1224,7 +1239,7 @@
                     <!-- Step 6 -->
                     <div class="step-card" onclick="showStepDetails(5)">
                         <div class="step-number">06</div>
-                        <div class="step-icon-wrapper">🔄</div>
+                        <div class="step-icon-wrapper"><svg viewBox="0 0 24 24"><path d="M23 4v6h-6"></path><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg></div>
                         <div class="step-content">
                             <div class="step-title-row">
                                 <span class="step-title">ตรวจทาน & สั่งปรับแก้ (Review & Revisions)</span>
@@ -1257,7 +1272,7 @@
 
                     <div class="detail-section">
                         <div class="detail-section-title">
-                            <span>📝 DESCRIPTION</span>
+                            <span>DESCRIPTION</span>
                         </div>
                         <div class="detail-body" id="panel-agent-desc">
                             กรุณาคลิกเลือกตำแหน่งในแผนผังเพื่อดูบทบาท หน้าที่ความรับผิดชอบ และการเชื่อมโยงระบบการทำงานของทีม WTJ Story
@@ -1266,7 +1281,7 @@
 
                     <div class="detail-section" id="panel-io-section" style="display:none;">
                         <div class="detail-section-title">
-                            <span>📥 INPUT & OUTPUT</span>
+                            <span>INPUT & OUTPUT</span>
                         </div>
                         <div class="detail-body">
                             <div style="font-weight:600; color:var(--neon-blue); font-size:0.8rem;">INPUTS:</div>
@@ -1278,7 +1293,7 @@
                 </div>
 
                 <a href="#" class="manual-btn disabled" id="panel-agent-manual" target="_blank">
-                    📖 เปิดดูคู่มือของเอเจนท์ (Manual File)
+                    เปิดดูคู่มือของเอเจนท์ (Manual File)
                 </a>
             </div>
 
@@ -1295,7 +1310,7 @@
 
                     <div class="detail-section">
                         <div class="detail-section-title">
-                            <span>📝 DESCRIPTION</span>
+                            <span>DESCRIPTION</span>
                         </div>
                         <div class="detail-body" id="panel-step-desc">
                             -
@@ -1304,7 +1319,7 @@
 
                     <div class="detail-section">
                         <div class="detail-section-title">
-                            <span>👥 RESPONSIBLE AGENTS</span>
+                            <span>RESPONSIBLE AGENTS</span>
                         </div>
                         <div class="detail-body" id="panel-step-agents">
                             -
@@ -1313,9 +1328,9 @@
                     
                     <div class="detail-section" style="margin-top: auto;">
                         <div class="detail-section-title">
-                            <span>🔗 NODES INVOLVED</span>
+                            <span>NODES INVOLVED</span>
                         </div>
-                        <div class="detail-body" id="panel-step-nodes-hint" style="font-size: 0.8rem; color: var(--neon-blue); font-family: 'Space Mono', monospace;">
+                        <div class="detail-body" id="panel-step-nodes-hint" style="font-size: 0.8rem; color: var(--neon-blue); font-family: 'Share Tech Mono', monospace;">
                             -
                         </div>
                     </div>
@@ -1331,7 +1346,7 @@
                 
                 <div class="detail-section">
                     <div class="detail-section-title">
-                        <span>🤖 ACTIVE STEP</span>
+                        <span>ACTIVE STEP</span>
                     </div>
                     <div class="io-badge" id="live-active-step" style="border-color: var(--neon-purple); color: #fff; font-weight: 600; text-align: center; text-transform: uppercase;">
                         IDLE
@@ -1340,16 +1355,16 @@
 
                 <div class="detail-section" style="flex-grow: 1; display: flex; flex-direction: column; min-height: 200px;">
                     <div class="detail-section-title">
-                        <span>💻 LIVE EXECUTION LOGS</span>
+                        <span>LIVE EXECUTION LOGS</span>
                     </div>
-                    <div id="live-logs-terminal" style="background: rgba(0, 0, 0, 0.6); border: 1px solid var(--border-color); border-radius: 12px; padding: 12px; font-family: 'Space Mono', monospace; font-size: 0.75rem; color: #a6accd; flex-grow: 1; overflow-y: auto; max-height: 220px; line-height: 1.4;">
+                    <div id="live-logs-terminal" style="background: rgba(0, 0, 0, 0.6); border: 1px solid var(--border-color); border-radius: 12px; padding: 12px; font-family: 'Share Tech Mono', monospace; font-size: 0.75rem; color: #a6accd; flex-grow: 1; overflow-y: auto; max-height: 220px; line-height: 1.4;">
                         <div style="color: #676e95;">[System] รอการทำงานเริ่มขบวน...</div>
                     </div>
                 </div>
 
                 <div class="detail-section" style="margin-top: 15px;">
                     <div class="detail-section-title">
-                        <span>📦 GENERATED ARTIFACTS</span>
+                        <span>GENERATED ARTIFACTS</span>
                     </div>
                     <div id="live-artifacts-list" style="display: flex; flex-direction: column; gap: 8px;">
                         <div style="color: #676e95; font-size: 0.85rem;">ยังไม่มีไฟล์ผลลัพธ์ในรอบการทำงานนี้</div>
@@ -1494,7 +1509,15 @@
                 desc: "เขียนโค้ดระบบจริง (HTML/CSS/JS) ตามที่น้องดีออกแบบ พร้อมพัฒนาระบบสคริปต์หลังบ้านและระบบการรันอัตโนมัติ (Auto-Run) ทั้งหมดของทีม",
                 inputs: "งานออกแบบ UX/UI จากน้องดี และบรีฟระบบหลังบ้าน",
                 outputs: "ไฟล์โค้ดระบบ แดชบอร์ดจริงที่เปิดรันใช้งานได้ และสคริปต์อัตโนมัติบนเซิร์ฟเวอร์",
-                manual: "file:///Users/chz/Desktop/ChZ_Agent_Corp/Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/Q/q_manual.md"
+                manual: "file:///Users/chz/Desktop/ChZ_Agent_Corp/Coder_Studio/Q/q_manual.md"
+            },
+            auditor: {
+                name: "น้องออม (Aom - Code Auditor)",
+                role: "ผู้ตรวจสอบความถูกต้องและรักษามาตรฐานโค้ด",
+                desc: "ตรวจสอบเช็คโครงสร้างโค้ด การจัดเก็บไฟล์ ความปลอดภัยของ API Tokens และความเรียบง่ายตามหลักปฏิบัติ ก่อนนำสคริปต์หรือระบบขึ้นดีพลอยจริง",
+                inputs: "ไฟล์โค้ดแผนงานและบรีฟระบบจากน้องคิว",
+                outputs: "Audit Report (รายงานผลการตรวจสอบโค้ดและอนุมัติผ่านงาน)",
+                manual: "file:///Users/chz/Desktop/ChZ_Agent_Corp/Coder_Studio/Aom/aom_manual.md"
             },
             chris: {
                 name: "พี่คริส (Chris - Creative Director Visual)",
@@ -1556,6 +1579,7 @@
             m: { x: 360, y: 540 },
             d: { x: 360, y: 430 },
             q: { x: 500, y: 430 },
+            auditor: { x: 500, y: 540 },
             content_team: { x: 360, y: 280 },
             deer: { x: 500, y: 280 },
             nam: { x: 640, y: 280 },
@@ -1612,7 +1636,8 @@
             // Developer & Design Flow (Bento UI updates)
             { from: 'm', to: 'd', color: 'var(--neon-blue)', pipelines: ['all', 'data'] },
             { from: 'd', to: 'q', color: 'var(--neon-blue)', pipelines: ['all', 'data'] },
-            { from: 'q', to: 'm', color: 'var(--neon-blue)', pipelines: ['all', 'data'] },
+            { from: 'q', to: 'auditor', color: 'var(--neon-green)', pipelines: ['all', 'data'] },
+            { from: 'auditor', to: 'm', color: 'var(--neon-blue)', pipelines: ['all', 'data'] },
 
             // Visual Production Track (Top lane)
             { from: 'content_team', to: 'chris', color: 'var(--neon-purple)', pipelines: ['all', 'story'] },
@@ -1673,42 +1698,42 @@
                 num: "STEP 1 // START INITIATION",
                 desc: "พี่เก่งเสนอหัวข้อรายการที่สนใจเข้ามาให้ในแชท เฟิส (First) จะทำการสัมภาษณ์สัมมนา (Grill) เพื่อดึงทิศทางที่ชัดเจนที่สุด รวมถึงแก่นที่ต้องการขยี้ หัวข้อที่สงสัย และคุมไม่ให้เนื้อหาฟุ้งซ่าน",
                 agents: "แก (Keng - Channel Owner) สั่งการนำเข้า // เฟิส (First - Manager) ดำเนินสัมภาษณ์",
-                nodes: "Keng [node-me] ➔ First [node-first_agent]"
+                nodes: "Keng [node-me] -> First [node-first_agent]"
             },
             {
                 name: "สรุปบรีฟหลัง Grill",
                 num: "STEP 2 // BRIEF CONSOLIDATION",
                 desc: "เมื่อ Grill ได้ประเด็นครบถ้วนแล้ว เฟิส (First) จะเขียนสรุปบรีฟที่สมบูรณ์ออกมาเป็นไฟล์ brief_from_keng.md เพื่อรวบรวมประเด็นที่ต้องใช้ และแนวทางการเขียนที่จะให้น้องๆ นำไปใช้ในขั้นตอนต่อไป",
                 agents: "เฟิส (First - Manager) เป็นผู้รวบรวมข้อมูลดิบและเขียนเอกสารสรุปบรีฟ",
-                nodes: "First [node-first_agent] ➔ brief_from_keng.md"
+                nodes: "First [node-first_agent] -> brief_from_keng.md"
             },
             {
                 name: "ประชุมทีมเบรนสตรอม",
                 num: "STEP 3 // TEAM ALIGNMENT & PLANNING",
                 desc: "เฟิสเรียกสมาชิกทีมงานเนื้อหาคอนเทนต์ทั้งหมดมาลุยอ่านบรีฟและหารือ เพื่อระดมสมองและตบคอนเซปต์ร่วมกัน ให้แน่ใจว่าทุกคนเห็นทิศทางมู้ดแอนด์โทนของตอนนั้นตรงกันก่อนลงมือทำงาน",
                 agents: "สมาชิกทีมงาน WTJ Story Content ทั้งหมด ประชุมตระหนักรู้งานร่วมกัน",
-                nodes: "First ➔ Content Production Team [node-content_team]"
+                nodes: "First -> Content Production Team [node-content_team]"
             },
             {
                 name: "แยกย้ายผลิตเนื้อหาและพัฒนาระบบ",
                 num: "STEP 4 // DISTRIBUTED PIPELINE & SYSTEM DEV",
-                desc: "สมาชิกทีมงานแยกย้ายลุยทำงานตามหน้าที่: เดียร์ (สร้าง Idea Card) ➔ น้ำ (ตบคอนเซปต์สร้างสรรค์) ➔ มิวสิค (ขัดเกลา Hooks การตลาด) ➔ ครีม (วิจัยประเด็นสนับสนุน) ➔ ออ (Fact-Check ข้อมูล) ➔ เรย์ (เขียนบทสคริปต์) ➔ คริ (วิจารณ์บท) ➔ พี่คริส (ควบคุมทิศทางสร้างสรรค์และมู้ดโทนภาพยนตร์) ➔ ดี (ออกแบบดีไซน์หน้าเว็บ UX/UI) ➔ คิว (เขียนโค้ดหลังบ้านและระบบออโต้รัน)",
+                desc: "สมาชิกทีมงานแยกย้ายลุยทำงานตามหน้าที่: เดียร์ (สร้าง Idea Card) -> น้ำ (ตบคอนเซปต์สร้างสรรค์) -> มิวสิค (ขัดเกลา Hooks การตลาด) -> ครีม (วิจัยประเด็นสนับสนุน) -> ออ (Fact-Check ข้อมูล) -> เรย์ (เขียนบทสคริปต์) -> คริ (วิจารณ์บท) -> พี่คริส (ควบคุมทิศทางสร้างสรรค์และมู้ดโทนภาพยนตร์) -> ดี (ออกแบบดีไซน์หน้าเว็บ UX/UI) -> คิว (เขียนโค้ดหลังบ้านและระบบออโต้รัน)",
                 agents: "ทีมคอนเทนต์และผู้ช่วยระบบ (Deer, Nam, Music, Cream, Or, Ray, Cri, Chris, D, Q)",
-                nodes: "Deer ➔ Nam ➔ Music ➔ Cream [Or] ➔ Ray [Cri] ➔ Chris ➔ UI/Code [D & Q]"
+                nodes: "Deer -> Nam -> Music -> Cream [Or] -> Ray [Cri] -> Chris -> UI/Code [D & Q]"
             },
             {
                 name: "จัดเก็บงานลงคลัง Notes",
                 num: "STEP 5 // ARTIFACT COMPILATION & SYNC",
                 desc: "เมื่อสคริปต์และงานภาพผ่านการวิจารณ์และอนุมัติรอบสุดท้ายเรียบร้อย ระบบบอทจะทำการ Sync รวบรวมสคริปต์ บันทึกการวิจัย สตอรี่บอร์ดภาพประกอบ และดราฟต์สำหรับโพสต์โซเชียลทั้งหมด เข้าสู่ Apple Notes โฟลเดอร์ WTJ > WTJ Story เพื่อเป็นแหล่งจัดเก็บข้อมูลที่พร้อมใช้งาน",
                 agents: "เฟิส (First) ควบคุมการรวบรวมข้อมูลและ Sync ผ่านสคริปต์ออโต้เข้า Apple Notes",
-                nodes: "Compiled Deliverables ➔ Apple Notes Storage [node-notes]"
+                nodes: "Compiled Deliverables -> Apple Notes Storage [node-notes]"
             },
             {
                 name: "ตรวจทาน & สั่งปรับแก้",
                 num: "STEP 6 // OWNER AUDIT & FINAL REVISION",
                 desc: "พี่เก่งทำการตรวจทานสคริปต์และภาพจาก Apple Notes ด้วยตัวเอง หากมีจุดที่อยากขัดเกลาหรือแก้สำนวน จะสั่งแก้ไขงานผ่านแชทอีกรอบ เมื่อสมบูรณ์แล้วจึงถือเป็นจุดสิ้นสุดของขบวนงาน (IDLE)",
                 agents: "พี่เก่ง (Keng) ตรวจงานรอบสุดท้าย // ทีมงานแก้ไขตามคำสั่ง (ถ้ามี)",
-                nodes: "Apple Notes ➔ Keng Review [node-me] ➔ Release"
+                nodes: "Apple Notes -> Keng Review [node-me] -> Release"
             }
         ];
 
@@ -1920,11 +1945,11 @@
             if (info.manual) {
                 manualBtn.href = info.manual;
                 manualBtn.classList.remove('disabled');
-                manualBtn.innerText = `📖 เปิดดูคู่มือของน้อง ${info.name.split(' ')[0]}`;
+                manualBtn.innerText = `เปิดดูคู่มือของน้อง ${info.name.split(' ')[0]}`;
             } else {
                 manualBtn.href = '#';
                 manualBtn.classList.add('disabled');
-                manualBtn.innerText = '⚠️ ไม่มีคู่มือภายนอกสำหรับบทบาทนี้';
+                manualBtn.innerText = 'ไม่มีคู่มือภายนอกสำหรับบทบาทนี้';
             }
         }
 
@@ -2104,7 +2129,7 @@
                         a.style.boxShadow = 'none';
                     };
                     
-                    a.innerHTML = `📄 <span style="flex-grow: 1;">${name}</span> <span style="font-size: 0.7rem; opacity: 0.7;">เปิดไฟล์ ↗</span>`;
+                    a.innerHTML = ` <span style="flex-grow: 1;">${name}</span> <span style="font-size: 0.7rem; opacity: 0.7;">เปิดไฟล์ [เปิด]</span>`;
                     artifactsContainer.appendChild(a);
                 }
             }

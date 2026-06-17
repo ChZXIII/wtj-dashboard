@@ -723,9 +723,9 @@
 
 </head>
 <body>
-    <!-- Floating Hub Button -->
-    <a href="index.html" class="floating-hub-btn" style="position: fixed; top: 20px; right: 20px; z-index: 10000; background: rgba(0, 0, 0, 0.05); border: 2px solid var(--border-color); color: var(--text-color); padding: 10px 18px; border-radius: 30px; text-decoration: none; font-family: 'Share Tech Mono', sans-serif; font-size: 0.85rem; font-weight: bold; backdrop-filter: blur(10px); display: flex; align-items: center; gap: 8px;">
-        <span>🦉 HUB</span>
+    <!-- Floating Wiki Hub Button -->
+    <a href="system_manuals.html" class="floating-hub-btn" style="position: fixed; top: 20px; right: 20px; z-index: 10000; background: rgba(0, 0, 0, 0.05); border: 2px solid var(--border-color); color: var(--text-color); padding: 10px 18px; border-radius: 30px; text-decoration: none; font-family: 'Share Tech Mono', sans-serif; font-size: 0.85rem; font-weight: bold; backdrop-filter: blur(10px); display: flex; align-items: center; gap: 8px;">
+        <span>📖 WIKI HUB</span>
     </a>
 
     <!-- Tactical Top Header -->
@@ -1332,30 +1332,9 @@
             }
         }
 
-        // Initialize App
-        // Auto-sync from Notion Live API (if served from local python server)
-        async function fetchNotionData() {
-            try {
-                const response = await fetch('/api/notion_data');
-                if (response.ok) {
-                    const data = await response.json();
-                    window.NOTION_CALENDAR_DATA = data;
-                    renderCalendar();
-                    console.log("LIVE SYNC: ดึงข้อมูลจาก Notion สำเร็จแก!");
-                }
-            } catch (e) {
-                // Ignore errors if run as file:// without local server
-            }
-        }
-
         window.onload = function() {
             renderMonthTabs();
             renderCalendar();
-            
-            // Start Live Sync check
-            fetchNotionData();
-            // Check every 30 seconds
-            setInterval(fetchNotionData, 30000);
         }
     </script>
 </body>

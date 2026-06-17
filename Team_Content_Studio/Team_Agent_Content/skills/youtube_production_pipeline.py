@@ -176,7 +176,7 @@ def execute_pipeline(topic):
         return
 
     # Step 6: Ray (Writer)
-    print("[6/9] ✍️ เรย์ (Writer): กำลังประกอบร่างสคริปต์บทพูดและดราฟต์โซเชียล...")
+    print("[6/9] ✍️ เรย์ (Writer): กำลังประกอบร่างสคริปต์บทพูด...")
     try:
         ray_prompt_msg = f"รบกวนปั้นสคริปต์บทพูดสำหรับพี่เก่งตามโครงสร้าง WTJ Story ด้วยนะ\n\n[ข้อมูลวิจัยที่ผ่านออดิต]:\n{research_draft}\n\n[รายงานออดิตจากออ]:\n{audit_res.text}\n\n[ครีเอทีฟคอนเซปต์]:\n{music_res.text}"
         ray_res = ray_model.generate_content(ray_prompt_msg)

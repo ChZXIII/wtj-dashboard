@@ -39,7 +39,7 @@ import model_router
 from notion_helper import NotionHelper
 from youtube_old_video_recycler import fetch_transcript, download_audio
 
-LEARNING_BASE_PATH = os.path.join(PROJECT_ROOT, "Team_Content_Studio", "Team_Agent_Content", "workspace", "learning_base.json")
+LEARNING_BASE_PATH = os.path.join(PROJECT_ROOT, "Team_Content_Studio", "Team_Agent_Content", "WTJ_Project", "workspace", "learning_base.json")
 DRAFTS_DIR = os.path.join(PROJECT_ROOT, "Team_Content_Studio", "Team_Agent_Content", "workspace", "2_drafts")
 
 def load_filtered_examples(day_type):

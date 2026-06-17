@@ -1,4 +1,4 @@
-# 🦉 First's Agent Hub — Startup Instructions
+# First's Agent Hub — Startup Instructions
 
 ## ⚡ อ่านก่อนทำอะไรทั้งนั้น (Read First, Always)
 

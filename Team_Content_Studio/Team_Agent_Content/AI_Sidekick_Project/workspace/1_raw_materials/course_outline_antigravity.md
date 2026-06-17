@@ -1,4 +1,4 @@
-# 🦉 ANTIA Course Outline - Lesson 1: Hello World with Google Antigravity SDK
+# 🦉 AI Sidekick Course Outline - Lesson 1: Hello World with Google Antigravity SDK
 
 ## 📋 Course Information
 - **Course Name:** เริ่มต้นสร้าง AI Agent อัจฉริยะด้วย Google Antigravity SDK

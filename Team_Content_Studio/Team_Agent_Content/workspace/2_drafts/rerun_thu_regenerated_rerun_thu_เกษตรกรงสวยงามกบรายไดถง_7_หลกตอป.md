@@ -6,7 +6,7 @@
 
 แล้วคุณล่ะ เคยเจออาชีพไหนที่ฟังดูแปลก แต่เบื้องหลังทำรายได้ปังๆ แบบเกินคาดบ้าง มาแชร์กันหน่อยจ้า!
 
-#WhatTheJob #WTJ #WTJTALK #WTJSTORY #WTJPODCAST #PODCAST #เกษตรกรงู #อาชีพแปลกแต่รวย
+#WhatTheJob #เกษตรกรงู #อาชีพแปลกแต่รวย #WTJ #WTJTALK #WTJSTORY #WTJPODCAST #PODCAST
 ดูคลิปเต็มได้ที่นี่เลย: https://youtu.be/NevbHzmY2Mo
 
 ทางเลือกที่ 2:
@@ -14,7 +14,7 @@
 
 แล้วคุณล่ะ ตอนนี้กำลังเล่นเกม "Winner’s Game" แบบไหนอยู่ในชีวิตบ้าง? มาเล่าสู่กันฟังหน่อยนะ!
 
-#WhatTheJob #WTJ #WTJTALK #WTJSTORY #WTJPODCAST #PODCAST #WinnerGame #Passionสร้างเงิน
+#WhatTheJob #WinnerGame #Passionสร้างเงิน #WTJ #WTJTALK #WTJSTORY #WTJPODCAST #PODCAST
 ดูคลิปเต็มได้ที่นี่เลย: https://youtu.be/NevbHzmY2Mo
 
 ทางเลือกที่ 3:
@@ -22,5 +22,5 @@
 
 แล้วถ้าให้คุณเลือกสิ่งของที่ไม่คาดคิดว่าจะราคาแพง (แบบเจ้า Titanium King Snake) คุณคิดว่าอะไรที่มีมูลค่าเกินตัว และทำไมถึงเป็นแบบนั้น? มาคุยกันหน่อย!
 
-#WhatTheJob #WTJ #WTJTALK #WTJSTORY #WTJPODCAST #PODCAST #งูสวยงาม #ของแพงเกินคาด
+#WhatTheJob #งูสวยงาม #ของแพงเกินคาด #WTJ #WTJTALK #WTJSTORY #WTJPODCAST #PODCAST
 ดูคลิปเต็มได้ที่นี่เลย: https://youtu.be/NevbHzmY2Mo

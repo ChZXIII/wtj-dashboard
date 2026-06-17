@@ -1,17 +1,6 @@
 /* 🧑‍💻 Q — Home Portal JS (Veda Behavior & Telemetry System) */
 
-// Protocol check to redirect user from file:// to localhost (only if server is actually online)
-if (window.location.protocol === 'file:') {
-    fetch('http://localhost:8000/api/knowledge_status')
-        .then(res => {
-            if (confirm('⚠️ ตรวจพบว่าเซิร์ฟเวอร์หลังบ้านกำลังรันอยู่ (http://localhost:8000)\n\nต้องการเปลี่ยนเส้นทางไปใช้เวอร์ชันเซิร์ฟเวอร์เพื่อให้เปิดใช้งานฟังก์ชันอัปเดตข้อมูลและบอทหลังบ้านออโต้เลยไหมแก?')) {
-                window.location.href = 'http://localhost:8000/index.html';
-            }
-        })
-        .catch(err => {
-            console.log('Backend server is offline, staying in static mode safely.');
-        });
-}
+
 
 let telemetryInterval = null;
 
@@ -199,7 +188,7 @@ const initializeApp = () => {
                 { label: "Content Output:", value: "128 Files", class: "" },
                 { label: "Weekly CTR Average:", value: "8.42%", class: "online" }
             ],
-            link: "content_dashboard.html",
+            link: "system_manuals.html",
             btnText: "ACCESS DRIVE"
         },
         briefing: {

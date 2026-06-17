@@ -41,12 +41,12 @@ This skill provides a structured framework for evaluating and designing modern, 
 ## 3. Theme Integration and Token Systems
 To avoid hardcoded styles, always design with CSS custom properties (variables) that adapt to themes:
 
-| Element | Ptolemy Light Mode | Veda Flat Dark Mode | Veda Neon Dark (Color Mode) |
-| :--- | :--- | :--- | :--- |
-| **Background** | Clean, gray-white (`#f3f4f1`) | Deep matte navy (`#13141d`) | Space black (`#05070a`) |
-| **Borders** | Solid black/dark gray (`#111111`) | Crisp white-gray (`#e5e5e5`) | Neon cyan/green (`#00f0ff` / `#00e676`) |
-| **Shadows & Glows** | Solid offset shadow, no glow | Flat dark offset shadow | Glowing box-shadows, glow filters |
-| **Text Primary** | Dark charcoal (`#111111`) | Light gray (`#e5e5e5`) | Radiant neon cyber cyan (`#00f0ff`) |
+| Element | Ptolemy Light Mode | Veda Flat Dark Mode | Veda Neon Dark (Color Mode) | Dark Sky Blue Flow |
+| :--- | :--- | :--- | :--- | :--- |
+| **Background** | Clean, gray-white (`#f3f4f1`) | Deep matte navy (`#13141d`) | Space black (`#05070a`) | Dark navy-sky-blue (`#0b1120`) |
+| **Borders** | Solid black/dark gray (`#111111`) | Crisp white-gray (`#e5e5e5`) | Neon cyan/green (`#00f0ff` / `#00e676`) | Cyan outline border (`rgba(34, 211, 238, 0.12)`) |
+| **Shadows & Glows** | Solid offset shadow, no glow | Flat dark offset shadow | Glowing box-shadows, glow filters | Heavy drop shadow (`rgba(0, 0, 0, 0.65)`) + Cyan Glow on hover |
+| **Text Primary** | Dark charcoal (`#111111`) | Light gray (`#e5e5e5`) | Radiant neon cyber cyan (`#00f0ff`) | Bright silver (`#f0f6fc`) |
 
 ---
 

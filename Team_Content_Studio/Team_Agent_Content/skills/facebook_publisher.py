@@ -27,6 +27,50 @@ from notion_helper import NotionHelper
 from discord_helper import DiscordHelper
 
 
+def upload_to_tmpfiles(video_path):
+    """อัปโหลดไฟล์วิดีโอไปที่ tmpfiles.org เพื่อสร้าง direct download link ชั่วคราว (เก็บไว้ 60 นาที)"""
+    if not os.path.exists(video_path):
+        print(f"❌ Error: ไม่พบไฟล์วิดีโอที่: {video_path}")
+        return None
+    
+    print(f"📦 กำลังอัปโหลดวิดีโอ {os.path.basename(video_path)} ไปยัง tmpfiles.org เพื่อสร้างลิงก์ชั่วคราว...")
+    url = "https://tmpfiles.org/api/v1/upload"
+    try:
+        import requests
+        with open(video_path, 'rb') as f:
+            files = {'file': f}
+            response = requests.post(url, files=files)
+            response.raise_for_status()
+            res_data = response.json()
+            
+            # ตัวอย่างผลลัพธ์: https://tmpfiles.org/12345/video.mp4
+            upload_url = res_data.get("data", {}).get("url")
+            if upload_url:
+                # แปลงเป็น direct link: https://tmpfiles.org/dl/12345/video.mp4
+                direct_url = upload_url.replace("https://tmpfiles.org/", "https://tmpfiles.org/dl/")
+                print(f"✅ อัปโหลดสำเร็จ! ลิงก์ดาวน์โหลดชั่วคราว: {direct_url}")
+                return direct_url
+            else:
+                print(f"❌ อัปโหลดล้มเหลว: ไม่ได้ URL กลับมา: {res_data}")
+                return None
+    except Exception as e:
+        print(f"❌ เกิดข้อผิดพลาดในการอัปโหลดไป tmpfiles.org: {e}")
+        return None
+
+def send_to_make_webhook(webhook_url, payload):
+    """ส่งข้อมูลโพสต์ไปยัง Make.com Webhook"""
+    print(f"🔗 กำลังส่งข้อมูลไปยัง Make.com Webhook...")
+    try:
+        import requests
+        response = requests.post(webhook_url, json=payload)
+        response.raise_for_status()
+        print(f"✅ ส่งข้อมูลเข้า Webhook สำเร็จ! (Response: {response.text})")
+        return True
+    except Exception as e:
+        print(f"❌ ส่งข้อมูลเข้า Webhook ล้มเหลว: {e}")
+        return False
+
+
 def load_env(env_path=".env"):
     """โหลด Environment Variables จากไฟล์ .env แบบดั้งเดิม (ไม่ต้องลง library เพิ่ม)"""
     possible_paths = [
@@ -142,6 +186,23 @@ def post_facebook_comment(post_id, comment_text, access_token, dry_run=False):
 
 def publish_to_facebook(message, page_id, access_token, dry_run=False):
     """ส่งคำสั่งโพสต์ไปยัง Facebook Graph API พร้อมระบบคัดแยกลิงก์ไปคอมเมนต์แรกเพื่อหลีกเลี่ยงการกั้นสายตา"""
+    webhook_url = os.environ.get("MAKE_FB_WEBHOOK_URL")
+    if webhook_url:
+        print("💡 ตรวจพบ MAKE_FB_WEBHOOK_URL: กำลังสวิตช์ไปส่งข้อมูลผ่าน Make.com Webhook...")
+        payload = {
+            "type": "text",
+            "message": message,
+            "page_id": page_id
+        }
+        if dry_run:
+            print("\n=== 🔍 [DRY-RUN WEBHOOK] ===")
+            print(f"Webhook URL: {webhook_url}")
+            print(f"Payload: {payload}")
+            print("===========================")
+            return "dry_run_webhook_success"
+        success = send_to_make_webhook(webhook_url, payload)
+        return "webhook_success" if success else False
+
     cleaned_message, extracted_lines = extract_and_remove_urls(message)
     
     url = f"https://graph.facebook.com/v19.0/{page_id}/feed"
@@ -198,6 +259,33 @@ def publish_to_facebook(message, page_id, access_token, dry_run=False):
 
 def upload_video_to_facebook_reels(video_path, page_id, access_token, description, dry_run=False):
     """อัปโหลดวิดีโอขึ้น Facebook Reels โดยใช้ 3-step Reels Publishing API"""
+    webhook_url = os.environ.get("MAKE_FB_WEBHOOK_URL")
+    if webhook_url:
+        print("💡 ตรวจพบ MAKE_FB_WEBHOOK_URL: กำลังสวิตช์ไปส่งข้อมูลผ่าน Make.com Webhook...")
+        if dry_run:
+            print("\n=== 🔍 [DRY-RUN WEBHOOK REELS] ===")
+            print(f"Webhook URL: {webhook_url}")
+            print(f"Video Path: {video_path}")
+            print(f"Description: {description}")
+            print("==================================")
+            return "dry_run_webhook_reels_success"
+        
+        # อัปโหลดไฟล์ไปที่ tmpfiles.org เพื่อเอา direct link
+        video_url = upload_to_tmpfiles(video_path)
+        if not video_url:
+            print("❌ อัปโหลดไฟล์ชั่วคราวล้มเหลว ยกเลิกการส่ง Webhook")
+            return False
+            
+        payload = {
+            "type": "reels",
+            "description": description,
+            "video_url": video_url,
+            "filename": os.path.basename(video_path),
+            "page_id": page_id
+        }
+        success = send_to_make_webhook(webhook_url, payload)
+        return "webhook_reels_success" if success else False
+
     if not os.path.exists(video_path):
         print(f"❌ Error: ไม่พบไฟล์วิดีโอที่: {video_path}")
         return False
@@ -284,6 +372,33 @@ def upload_video_to_facebook_reels(video_path, page_id, access_token, descriptio
 
 def upload_video_to_facebook_page(video_path, page_id, access_token, description, dry_run=False):
     """อัปโหลดวิดีโอขึ้น Facebook Page (คลิปวิดีโอยาว) โดยใช้ multipart/form-data request"""
+    webhook_url = os.environ.get("MAKE_FB_WEBHOOK_URL")
+    if webhook_url:
+        print("💡 ตรวจพบ MAKE_FB_WEBHOOK_URL: กำลังสวิตช์ไปส่งข้อมูลผ่าน Make.com Webhook...")
+        if dry_run:
+            print("\n=== 🔍 [DRY-RUN WEBHOOK VIDEO] ===")
+            print(f"Webhook URL: {webhook_url}")
+            print(f"Video Path: {video_path}")
+            print(f"Description: {description}")
+            print("==================================")
+            return "dry_run_webhook_video_success"
+        
+        # อัปโหลดไฟล์ไปที่ tmpfiles.org เพื่อเอา direct link
+        video_url = upload_to_tmpfiles(video_path)
+        if not video_url:
+            print("❌ อัปโหลดไฟล์ชั่วคราวล้มเหลว ยกเลิกการส่ง Webhook")
+            return False
+            
+        payload = {
+            "type": "video",
+            "description": description,
+            "video_url": video_url,
+            "filename": os.path.basename(video_path),
+            "page_id": page_id
+        }
+        success = send_to_make_webhook(webhook_url, payload)
+        return "webhook_video_success" if success else False
+
     if not os.path.exists(video_path):
         print(f"❌ Error: ไม่พบไฟล์วิดีโอที่: {video_path}")
         return False

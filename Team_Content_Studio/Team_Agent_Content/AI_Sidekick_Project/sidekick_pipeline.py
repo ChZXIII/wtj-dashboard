@@ -10,18 +10,18 @@ if project_root not in sys.path:
     sys.path.append(project_root)
 
 # Add WTJ Story Project to sys.path to import status_logger
-wtj_path = os.path.join(project_root, "Team_Content_Studio", "Team_Agent_Content", "WTJ_Story_Project")
+wtj_path = os.path.join(project_root, "Team_Content_Studio", "Team_Agent_Content", "WTJ_Project", "WTJ_Story")
 if wtj_path not in sys.path:
     sys.path.append(wtj_path)
 
 import model_router
-import status_logger
+import sidekick_logger
 
 # Load environment variables
 dotenv.load_dotenv(os.path.join(project_root, ".env"))
 
 # Prompts Directory
-PROMPTS_DIR = os.path.join(project_root, "Team_Content_Studio", "Team_Agent_Content", "prompts")
+PROMPTS_DIR = os.path.join(current_dir, "prompts")
 
 def load_prompt(filename):
     prompt_path = os.path.join(PROMPTS_DIR, filename)
@@ -46,13 +46,31 @@ sdk_content = ""
 if os.path.exists(skill_doc_path):
     with open(skill_doc_path, "r", encoding="utf-8") as f:
         sdk_content = f.read()
+
+# Load FAQ_antigravity.md for additional context
+faq_doc_path = os.path.join(current_dir, "workspace", "1_raw_materials", "FAQ_antigravity.md")
+faq_content = ""
+if os.path.exists(faq_doc_path):
+    with open(faq_doc_path, "r", encoding="utf-8") as f:
+        faq_content = f.read()
         
-# Add architectural reference to research prompt
+# researcher_instruction and or_instruction already have FAQ and SDK content, no override warning needed
 researcher_instruction = f"""{researcher_prompt}
+
+---
+นี่คือคู่มือคำถาม-คำตอบ (FAQ) และบริบทการสอนคอร์ส Antigravity สำหรับคนทั่วไป (Non-Programmer) รวมถึงความแตกต่างของผลิตภัณฑ์:
+{faq_content}
 
 ---
 นี่คือข้อมูลทางเทคนิคของ Google Antigravity SDK ที่คุณสามารถใช้อ้างอิงเพื่อตรวจสอบความถูกต้องของโค้ดและการทำงาน:
 {sdk_content}
+"""
+
+or_instruction = f"""{or_prompt}
+
+---
+นี่คือคู่มือคำถาม-คำตอบ (FAQ) และบริบทการสอนคอร์ส Antigravity สำหรับคนทั่วไป (Non-Programmer) รวมถึงความแตกต่างของผลิตภัณฑ์:
+{faq_content}
 """
 
 # Initialize models
@@ -60,26 +78,56 @@ deer_model = model_router.get_model("deer", system_instruction=deer_prompt)
 creative_model = model_router.get_model("creative", system_instruction=creative_prompt)
 music_model = model_router.get_model("music", system_instruction=music_prompt)
 researcher_model = model_router.get_model("researcher", system_instruction=researcher_instruction)
-or_model = model_router.get_model("or", system_instruction=or_prompt)
+or_model = model_router.get_model("or", system_instruction=or_instruction)
 ray_model = model_router.get_model("ray", system_instruction=ray_prompt)
 cri_model = model_router.get_model("cri", system_instruction=cri_prompt)
+
 
 def process_course_outline(outline_file):
     if not os.path.exists(outline_file):
         print(f"Error: ไม่พบไฟล์โครงร่างคอร์สที่ {outline_file}")
+        sidekick_logger.update_pipeline_status(
+            "idle",
+            "เกิดข้อผิดพลาดในการโหลดไฟล์",
+            f"Error: ไม่พบไฟล์โครงร่างคอร์สที่ {outline_file}"
+        )
         return
         
     with open(outline_file, "r", encoding="utf-8") as f:
         outline_content = f.read()
         
+    # Check if this is a no-code course
+    is_nocode = False
+    if "non-programmer" in outline_file.lower() or "non-programmer" in outline_content.lower() or "ไม่ต้องเขียนโค้ด" in outline_content or "ผู้ใช้ทั่วไป" in outline_content:
+        is_nocode = True
+        print("💡 Detected NO-CODE / Non-Programmer course outline. Adapting pipeline prompts...")
+        
     # Extract lesson title
-    title_match = re.search(r'Lesson Title:\s*(.*)', outline_content)
+    title_match = re.search(r'(?:Lesson Title|ชื่อหัวข้อ):\s*(.*)', outline_content)
+    # Also fallback support for Lesson Name or general H1
+    if not title_match:
+        title_match = re.search(r'#\s*(.*)', outline_content)
+    
     lesson_title = title_match.group(1).strip() if title_match else "lesson_draft"
-    safe_title = re.sub(r'[^\w\s-]', '', lesson_title).strip().replace(" ", "_").lower()
+    
+    # Map lesson titles to clean Thai folder names
+    folder_mapping = {
+        "AI Agent คืออะไร และการติดตั้งเครื่องมือเริ่มต้น (โดยไม่ต้องเขียนโค้ด)": "2_ai_agent_คืออะไร",
+        "คุมให้อยู่หมัด! วิธีสร้างและควบคุม AI Agent ตัวแรกของคุณ": "3_คุมให้อยู่หมัด"
+    }
+    
+    if lesson_title in folder_mapping:
+        safe_title = folder_mapping[lesson_title]
+    else:
+        safe_title = re.sub(r'[^\w\s\u0e00-\u0e7f-]', '', lesson_title).strip().replace(" ", "_").lower()
+    
+    workspace_dir = os.path.join(current_dir, "workspace", safe_title)
+    os.makedirs(workspace_dir, exist_ok=True)
+
     
     # 1. Deer (Idea Card)
     print("\n[1/6] 🦌 เดียร์ (Idea Card): กำลังวิเคราะห์โครงสร้างหลักสูตรและจัดลำดับเนื้อหา...")
-    status_logger.update_pipeline_status(
+    sidekick_logger.update_pipeline_status(
         "deer",
         "เดียร์กำลังร่างโครงสร้างบทเรียน...",
         f"รับบทเรียน '{lesson_title}' ส่งต่อให้ น้องเดียร์ เพื่อทำ Idea Card",
@@ -92,17 +140,17 @@ def process_course_outline(outline_file):
         idea_card = deer_res.text
         
         # Save draft
-        with open(os.path.join(current_dir, "workspace", "2_drafts", f"1_idea_card_{safe_title}.md"), "w", encoding="utf-8") as f:
+        with open(os.path.join(workspace_dir, "1_idea_card.md"), "w", encoding="utf-8") as f:
             f.write(idea_card)
         print("✅ ร่าง Idea Card สำเร็จ")
     except Exception as e:
-        status_logger.update_pipeline_status("deer", "เดียร์เกิดข้อผิดพลาด", f"Error: {e}")
+        sidekick_logger.update_pipeline_status("deer", "เดียร์เกิดข้อผิดพลาด", f"Error: {e}")
         print(f"Error in Deer: {e}")
         return
 
     # 2. Nam (Creative Concept) & Music (Marketing/Hooks)
     print("[2/6] 💅 คอนเทนต์ & การตลาด (น้ำ & มิวสิค): กำลังปรับแต่งสำนวน เพิ่มตัวอย่างเปรียบเทียบ และลูกเล่นให้สนุกสนาน...")
-    status_logger.update_pipeline_status(
+    sidekick_logger.update_pipeline_status(
         "creative",
         "น้ำและมิวสิคกำลังแต่งเติมสีสันและความสนุก...",
         "Idea Card พร้อมแล้ว ส่งต่อน้องน้ำและน้องมิวสิคเพื่อดีไซน์ Concept และท่อน Hook ประดับคอร์สเรียน"
@@ -113,94 +161,127 @@ def process_course_outline(outline_file):
         nam_res = creative_model.generate_content(nam_prompt_msg)
         nam_draft = nam_res.text
         
-        music_prompt_msg = f"นี่คือแนวคิดการสอนของน้ำ ช่วยเขียนท่อนเปิดหัว (Hook) ของคลิปวิชาการตัวนี้ และใส่ Meme ประกอบการเขียนโค้ดให้นักพัฒนาเข้าใจง่ายหน่อย:\n\n{nam_draft}"
+        if is_nocode:
+            music_prompt_msg = f"นี่คือแนวคิดการสอนของน้ำ ช่วยเขียนท่อนเปิดหัว (Hook) ของคลิปวิชาการตัวนี้ และใส่ Meme หรือตัวอย่างเปรียบเทียบที่ตลกและเข้าใจง่ายสำหรับคนทั่วไปที่ไม่ใช่โปรแกรมเมอร์หน่อย:\n\n{nam_draft}"
+        else:
+            music_prompt_msg = f"นี่คือแนวคิดการสอนของน้ำ ช่วยเขียนท่อนเปิดหัว (Hook) ของคลิปวิชาการตัวนี้ และใส่ Meme ประกอบการเขียนโค้ดให้นักพัฒนาเข้าใจง่ายหน่อย:\n\n{nam_draft}"
+            
         music_res = music_model.generate_content(music_prompt_msg)
         creative_concept = music_res.text
         
         # Save draft
-        with open(os.path.join(current_dir, "workspace", "2_drafts", f"2_creative_concept_{safe_title}.md"), "w", encoding="utf-8") as f:
+        with open(os.path.join(workspace_dir, "2_creative_concept.md"), "w", encoding="utf-8") as f:
             f.write(creative_concept)
         print("✅ ปรับแต่งไอเดียสร้างสรรค์และการตลาดสำเร็จ")
     except Exception as e:
-        status_logger.update_pipeline_status("creative", "น้ำ/มิวสิคเกิดข้อผิดพลาด", f"Error: {e}")
+        sidekick_logger.update_pipeline_status("creative", "น้ำ/มิวสิคเกิดข้อผิดพลาด", f"Error: {e}")
         print(f"Error in Nam/Music: {e}")
         return
 
     # 3. Cream (Researcher) & Or (Auditor)
-    print("[3/6] 🔬 ตรวจสอบโค้ดและเทคนิค (ครีม & ออ): กำลังตรวจสอบโค้ด SDK และความถูกต้องเชิงวิชาการ...")
-    status_logger.update_pipeline_status(
+    if is_nocode:
+        print("[3/6] 🔬 ตรวจสอบการใช้งานและเทคนิค (ครีม & ออ): กำลังตรวจสอบขั้นตอนการติดตั้ง การตั้งค่า และความถูกต้องเชิงวิชาการ...")
+    else:
+        print("[3/6] 🔬 ตรวจสอบโค้ดและเทคนิค (ครีม & ออ): กำลังตรวจสอบโค้ด SDK และความถูกต้องเชิงวิชาการ...")
+        
+    sidekick_logger.update_pipeline_status(
         "researcher",
         "ครีมและออตรวจสอบความถูกต้องทางเทคนิค...",
         "ส่งต่อข้อมูลบทเรียนให้น้องครีมเพื่อตรวจสอบโค้ดตัวอย่างกับคู่มือทางการของ SDK"
     )
     
     try:
-        cream_prompt_msg = f"โปรดค้นคว้าโค้ดตัวอย่างอย่างง่ายและการทำงานของเสาหลักทั้ง 3 ในคู่มือ Antigravity และตรวจความถูกต้องของโค้ดในแนวคิดนี้:\n\n{creative_concept}"
+        if is_nocode:
+            cream_prompt_msg = f"โปรดค้นคว้าข้อมูลขั้นตอนการติดตั้ง การดาวน์โหลด การตั้งค่าเริ่มต้น และการใช้งานแอปพลิเคชัน Antigravity (เน้น Antigravity 2.0 Desktop app สำหรับคนทั่วไป ไม่ใช่การเขียนโค้ด Python) ในคู่มือ Antigravity และตรวจความถูกต้องของขั้นตอนทั้งหมดในแนวคิดนี้ เพื่อทำข้อมูลสนับสนุน:\n\n{creative_concept}"
+        else:
+            cream_prompt_msg = f"โปรดค้นคว้าโค้ดตัวอย่างอย่างง่ายและการทำงานของเสาหลักทั้ง 3 ในคู่มือ Antigravity และตรวจความถูกต้องของโค้ดในแนวคิดนี้:\n\n{creative_concept}"
+            
         cream_res = researcher_model.generate_content(cream_prompt_msg)
         cream_draft = cream_res.text
         
-        or_prompt_msg = f"นี่คือรายงานเทคนิคและการสาธิตโค้ดของครีม ช่วยทำ Fact-check และยืนยันความถูกต้องเชิงลึกว่าสอดคล้องกับ SDK อย่างสมบูรณ์แบบ:\n\n{cream_draft}"
+        if is_nocode:
+            or_prompt_msg = f"นี่คือรายงานขั้นตอนการติดตั้งและการตั้งค่าของครีม ช่วยทำ Fact-check และยืนยันความถูกต้องเชิงลึกว่าสอดคล้องกับแอป Antigravity 2.0 อย่างสมบูรณ์แบบ:\n\n{cream_draft}"
+        else:
+            or_prompt_msg = f"นี่คือรายงานเทคนิคและการสาธิตโค้ดของครีม ช่วยทำ Fact-check และยืนยันความถูกต้องเชิงลึกว่าสอดคล้องกับ SDK อย่างสมบูรณ์แบบ:\n\n{cream_draft}"
+            
         or_res = or_model.generate_content(or_prompt_msg)
         audit_report = or_res.text
         
         # Save draft
-        with open(os.path.join(current_dir, "workspace", "2_drafts", f"3_technical_verification_{safe_title}.md"), "w", encoding="utf-8") as f:
+        with open(os.path.join(workspace_dir, "3_technical_verification.md"), "w", encoding="utf-8") as f:
             f.write(f"=== RESEARCH DRAFT ===\n\n{cream_draft}\n\n=== AUDIT REPORT ===\n\n{audit_report}")
-        print("✅ ตรวจสอบเทคนิคและโค้ดตัวอย่างสำเร็จ")
+        print("✅ ตรวจสอบเทคนิคและข้อมูลการติดตั้งสำเร็จ")
     except Exception as e:
-        status_logger.update_pipeline_status("researcher", "ครีม/ออเกิดข้อผิดพลาด", f"Error: {e}")
+        sidekick_logger.update_pipeline_status("researcher", "ครีม/ออเกิดข้อผิดพลาด", f"Error: {e}")
         print(f"Error in Cream/Or: {e}")
         return
 
     # 4. Ray (Writer) & Cri (Critic)
-    print("[4/6] ✍️ ประกอบร่างสคริปต์ (เรย์ & คริ): กำลังเขียนบทพูดคำต่อคำ และ Pacing ฉากสาธิต...")
-    status_logger.update_pipeline_status(
+    if is_nocode:
+        print("[4/6] ✍️ ประกอบร่างสคริปต์ (เรย์ & คริ): กำลังเขียนบทพูดคำต่อคำ และการสาธิตการใช้แอป...")
+    else:
+        print("[4/6] ✍️ ประกอบร่างสคริปต์ (เรย์ & คริ): กำลังเขียนบทพูดคำต่อคำ และ Pacing ฉากสาธิต...")
+        
+    sidekick_logger.update_pipeline_status(
         "ray",
         "เรย์กำลังแต่งเขียนสคริปต์ฉบับสมบูรณ์...",
         "ผ่านการรับรองทางเทคนิคแล้ว ส่งต่อน้องเรย์เพื่อเขียนบทพูดตัวเต็มสไตล์ผู้สอนคู่หูเป็นกันเอง"
     )
     
     try:
-        ray_prompt_msg = f"ช่วยปั้นสคริปต์วิดีโอสอนการเขียนโค้ดฉบับเต็มทีครับ โดยมีบทพูดคำต่อคำ (ภาษาไทยเป็นกันเอง วัยรุ่นคุยกัน) และระบุ Visual Cues / โค้ดที่แสดงบนหน้าจอ:\n\n[แนวคิดการนำเสนอ]:\n{creative_concept}\n\n[โค้ดและวิจัยที่ถูกต้อง]:\n{cream_draft}\n\n[ข้อเสนอแนะออดิต]:\n{audit_report}"
+        if is_nocode:
+            ray_prompt_msg = f"ช่วยปั้นสคริปต์วิดีโอสอนการใช้งานฉบับเต็มทีครับ โดยมีบทพูดคำต่อคำ (ภาษาไทยเป็นกันเอง วัยรุ่นคุยกัน) และระบุ Visual Cues / สิ่งที่ต้องแสดงหรือทำบนหน้าจอแอปพลิเคชัน Antigravity 2.0 (ห้ามนำเสนอการเขียนโค้ด Python เด็ดขาด เน้นเรื่องการทำงานโดยไม่ต้องใช้ IDE/ไม่ต้องโค้ด และขั้นตอนการติดตั้ง/ตั้งค่าแอป):\n\n[แนวคิดการนำเสนอ]:\n{creative_concept}\n\n[ข้อมูลวิจัยและคู่มือการติดตั้งที่ถูกต้อง]:\n{cream_draft}\n\n[ข้อเสนอแนะออดิต]:\n{audit_report}"
+        else:
+            ray_prompt_msg = f"ช่วยปั้นสคริปต์วิดีโอสอนการเขียนโค้ดฉบับเต็มทีครับ โดยมีบทพูดคำต่อคำ (ภาษาไทยเป็นกันเอง วัยรุ่นคุยกัน) และระบุ Visual Cues / โค้ดที่แสดงบนหน้าจอ:\n\n[แนวคิดการนำเสนอ]:\n{creative_concept}\n\n[โค้ดและวิจัยที่ถูกต้อง]:\n{cream_draft}\n\n[ข้อเสนอแนะออดิต]:\n{audit_report}"
+            
         ray_res = ray_model.generate_content(ray_prompt_msg)
         script_draft = ray_res.text
         
-        cri_prompt_msg = f"ช่วยวิจารณ์ความลื่นไหล Pacing และความสนุกในการอธิบายเรื่องยากๆ ของสคริปต์การสอนตัวนี้ให้ทีครับ:\n\n{script_draft}"
+        if is_nocode:
+            cri_prompt_msg = f"ช่วยวิจารณ์ความลื่นไหล Pacing และความสนุกในการอธิบายการติดตั้งและการใช้งานให้คนทั่วไปเข้าใจง่ายของสคริปต์การสอนตัวนี้ให้ทีครับ:\n\n{script_draft}"
+        else:
+            cri_prompt_msg = f"ช่วยวิจารณ์ความลื่นไหล Pacing และความสนุกในการอธิบายเรื่องยากๆ ของสคริปต์การสอนตัวนี้ให้ทีครับ:\n\n{script_draft}"
+            
         cri_res = cri_model.generate_content(cri_prompt_msg)
         critique = cri_res.text
         
         # Combine script and critique into final delivery
         final_delivery = f"""# บทเรียน: {lesson_title}
-
+ 
 {script_draft}
-
+ 
 ---
-
+ 
 ## 🎭 บทวิจารณ์ Pacing และความลื่นไหลจากคริ (Critic)
 {critique}
 """
         
-        # Save to final_scripts
-        final_path = os.path.join(current_dir, "workspace", "3_final_scripts", f"lesson_{safe_title}.md")
+        # Save to topic directory
+        final_path = os.path.join(workspace_dir, "4_final_script.md")
         with open(final_path, "w", encoding="utf-8") as f:
             f.write(final_delivery)
             
         print(f"✅ บันทึกไฟล์บทเรียนเสร็จสิ้นที่: {final_path}")
         
-        # Register artifact to M's dashboard
+        # Register artifact
         abs_final_path = os.path.abspath(final_path)
-        status_logger.register_artifact(f"ANTIA Lesson: {lesson_title}", f"file://{abs_final_path}")
-        status_logger.update_pipeline_status(
+        sidekick_logger.register_artifact(f"AI Sidekick Topic: {lesson_title}", f"file://{abs_final_path}")
+        sidekick_logger.update_pipeline_status(
             "idle",
-            "ผลิตคอร์สเรียน ANTIA สำเร็จ - IDLE",
-            f"บันทึกไฟล์บทเรียน {lesson_title} เสร็จสมบูรณ์แล้วแก!"
+            "ผลิตหัวข้อคอนเทนต์ AI Sidekick สำเร็จ - IDLE",
+            f"บันทึกไฟล์หัวข้อ '{lesson_title}' เสร็จสมบูรณ์แล้วแก!"
         )
         
     except Exception as e:
-        status_logger.update_pipeline_status("ray", "เรย์/คริเกิดข้อผิดพลาด", f"Error: {e}")
+        sidekick_logger.update_pipeline_status("ray", "เรย์/คริเกิดข้อผิดพลาด", f"Error: {e}")
         print(f"Error in Ray/Cri: {e}")
         return
 
 if __name__ == "__main__":
-    outline_path = os.path.join(current_dir, "workspace", "1_raw_materials", "course_outline_antigravity.md")
+    if len(sys.argv) > 1:
+        outline_path = sys.argv[1]
+    else:
+        outline_path = os.path.join(current_dir, "workspace", "1_raw_materials", "course_outline_antigravity.md")
+    
+    print(f"Starting Sidekick Pipeline with outline: {outline_path}")
     process_course_outline(outline_path)

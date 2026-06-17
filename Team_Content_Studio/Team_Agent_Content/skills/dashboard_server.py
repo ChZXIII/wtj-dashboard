@@ -31,6 +31,7 @@ QUEUE_FILE = os.path.join(KB_DIR, "ingest_queue", "urls_to_ingest.txt")
 MY_STYLE_DIR = os.path.join(KB_DIR, "my_style")
 AI_REF_DIR = os.path.join(KB_DIR, "ai_references")
 WTJ_PROJ_DIR = os.path.join(KB_DIR, "wtj_project")
+SYSTEM_MANUALS_DIR = os.path.join(KB_DIR, "system_manuals")
 RUN_LOG_FILE = os.path.join(PROJECT_ROOT, "Agent_Lab", "logs", "ingest_run.log")
 INGEST_SCRIPT = os.path.join(KB_DIR, "ingest_sources.py")
 
@@ -38,6 +39,12 @@ class DashboardHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
         # Serve static files from the dashboard HTML folder
         super().__init__(*args, directory=HTML_DIR, **kwargs)
+
+    def end_headers(self):
+        self.send_header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
+        self.send_header('Pragma', 'no-cache')
+        self.send_header('Expires', '0')
+        super().end_headers()
 
     def do_GET(self):
         if self.path == '/api/notion_data':
@@ -48,6 +55,8 @@ class DashboardHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
             self.handle_api_view_file()
         elif self.path == '/api/ingest_logs':
             self.handle_api_ingest_logs()
+        elif self.path == '/api/pipeline_logs':
+            self.handle_api_pipeline_logs()
         else:
             super().do_GET()
 
@@ -91,6 +100,8 @@ class DashboardHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
             self.handle_api_ingest()
         elif self.path == '/api/run_ingest':
             self.handle_api_run_ingest()
+        elif self.path == '/api/run_pipeline':
+            self.handle_api_run_pipeline()
         elif self.path == '/api/create_note':
             self.handle_api_create_note()
         elif self.path == '/api/ingest_now':
@@ -99,6 +110,13 @@ class DashboardHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
             self.handle_api_save_bookmark()
         else:
             self.send_error(404, "Not Found")
+
+    def do_OPTIONS(self):
+        self.send_response(200)
+        self.send_header('Access-Control-Allow-Origin', '*')
+        self.send_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
+        self.send_header('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+        self.end_headers()
 
     def read_post_body(self):
         content_length = int(self.headers.get('Content-Length', 0))
@@ -148,6 +166,19 @@ class DashboardHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
                             "modified": datetime.fromtimestamp(stat.st_mtime).strftime('%Y-%m-%d %H:%M:%S')
                         })
             
+            # 3.5. Scan files in system_manuals
+            system_manuals_files = []
+            if os.path.exists(SYSTEM_MANUALS_DIR):
+                for f in os.listdir(SYSTEM_MANUALS_DIR):
+                    p = os.path.join(SYSTEM_MANUALS_DIR, f)
+                    if os.path.isfile(p) and not f.startswith('.'):
+                        stat = os.stat(p)
+                        system_manuals_files.append({
+                            "name": f,
+                            "size": stat.st_size,
+                            "modified": datetime.fromtimestamp(stat.st_mtime).strftime('%Y-%m-%d %H:%M:%S')
+                        })
+
             # 4. Read queue
             queue_urls = []
             if os.path.exists(QUEUE_FILE):
@@ -164,6 +195,8 @@ class DashboardHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
                 "ai_references_files": ai_ref_files,
                 "wtj_project_count": len(wtj_proj_files),
                 "wtj_project_files": wtj_proj_files,
+                "system_manuals_count": len(system_manuals_files),
+                "system_manuals_files": system_manuals_files,
                 "queue_count": len(queue_urls),
                 "queue_urls": queue_urls
             }
@@ -419,12 +452,75 @@ class DashboardHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
         try:
             logs = ""
             if os.path.exists(RUN_LOG_FILE):
-                with open(RUN_LOG_FILE, "r", encoding="utf-8") as f:
+                with open(RUN_LOG_FILE, "r", encoding="utf-8", errors="replace") as f:
                     lines = f.readlines()
                     # Return last 50 lines
                     logs = "".join(lines[-50:])
             else:
                 logs = "No log file found. Click 'RUN PIPELINE' to start the process."
+                
+            response_bytes = json.dumps({"logs": logs}, ensure_ascii=False).encode('utf-8')
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json; charset=utf-8')
+            self.send_header('Content-Length', len(response_bytes))
+            self.send_header('Access-Control-Allow-Origin', '*')
+            self.end_headers()
+            self.wfile.write(response_bytes)
+        except Exception as e:
+            self.send_error(500, str(e))
+
+    def handle_api_run_pipeline(self):
+        try:
+            body = self.read_post_body()
+            project = "story"
+            if body:
+                try:
+                    data = json.loads(body)
+                    project = data.get("project", "story")
+                except:
+                    pass
+
+            import subprocess
+            
+            # Use same Python virtualenv interpreter
+            python_exec = os.path.join(PROJECT_ROOT, "venv", "bin", "python")
+            if not os.path.exists(python_exec):
+                python_exec = sys.executable
+                
+            script_path = os.path.join(PROJECT_ROOT, "Team_Content_Studio", "Team_Agent_Content", "skills", "video_draft_generator.py")
+            
+            # Setup log path
+            log_dir = os.path.join(PROJECT_ROOT, "Agent_Lab", "logs")
+            os.makedirs(log_dir, exist_ok=True)
+            run_log_file = os.path.join(log_dir, "video_draft_run.log")
+            
+            # Start script in background (-u = unbuffered so logs appear immediately)
+            log_file = open(run_log_file, "w", encoding="utf-8")
+            subprocess.Popen(
+                [python_exec, "-u", script_path, "--project", project],
+                stdout=log_file,
+                stderr=subprocess.STDOUT,
+                cwd=PROJECT_ROOT
+            )
+            
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json')
+            self.send_header('Access-Control-Allow-Origin', '*')
+            self.end_headers()
+            self.wfile.write(json.dumps({"status": "success", "message": f"Pipeline for {project} started."}).encode('utf-8'))
+        except Exception as e:
+            self.send_error(500, str(e))
+
+    def handle_api_pipeline_logs(self):
+        try:
+            log_path = os.path.join(PROJECT_ROOT, "Agent_Lab", "logs", "video_draft_run.log")
+            logs = ""
+            if os.path.exists(log_path):
+                with open(log_path, "r", encoding="utf-8", errors="replace") as f:
+                    lines = f.readlines()
+                    logs = "".join(lines[-55:])
+            else:
+                logs = "ยังไม่มีประวัติการรันบอทสแกนล่าสุด กดเริ่มทำงานเพื่อรันบอทเลยแก"
                 
             response_bytes = json.dumps({"logs": logs}, ensure_ascii=False).encode('utf-8')
             self.send_response(200)

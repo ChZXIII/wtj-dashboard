@@ -231,11 +231,12 @@ def find_video_file(filename):
     filename = filename.strip()
     
     search_dirs = [
-        os.path.join(PROJECT_ROOT, "Team_Content_Studio", "Team_Agent_Content", "WTJ_Story_Project", "workspace", "1_raw_materials", "raw_videos", "raw_vdo_short", "processed"),
-        os.path.join(PROJECT_ROOT, "Team_Content_Studio", "Team_Agent_Content", "WTJ_Story_Project", "workspace", "1_raw_materials", "raw_videos", "raw_vdo_3-5min", "processed"),
-        os.path.join(PROJECT_ROOT, "Team_Content_Studio", "Team_Agent_Content", "WTJ_Story_Project", "workspace", "1_raw_materials", "raw_videos", "raw_vdo_short"),
-        os.path.join(PROJECT_ROOT, "Team_Content_Studio", "Team_Agent_Content", "WTJ_Story_Project", "workspace", "1_raw_materials", "raw_videos", "raw_vdo_3-5min"),
-        os.path.join(PROJECT_ROOT, "Team_Content_Studio", "Team_Agent_Content", "WTJ_Story_Project", "workspace", "1_raw_materials", "raw_videos"),
+        os.path.join(PROJECT_ROOT, "Team_Content_Studio", "Team_Agent_Content", "WTJ_Project", "WTJ_Story", "workspace", "1_raw_materials", "raw_vdo_short", "processed"),
+        os.path.join(PROJECT_ROOT, "Team_Content_Studio", "Team_Agent_Content", "WTJ_Project", "WTJ_Story", "workspace", "1_raw_materials", "raw_vdo_3-5min", "processed"),
+        os.path.join(PROJECT_ROOT, "Team_Content_Studio", "Team_Agent_Content", "WTJ_Project", "WTJ_Story", "workspace", "1_raw_materials", "raw_vdo_short"),
+        os.path.join(PROJECT_ROOT, "Team_Content_Studio", "Team_Agent_Content", "WTJ_Project", "WTJ_Story", "workspace", "1_raw_materials", "raw_vdo_3-5min"),
+        os.path.join(PROJECT_ROOT, "Team_Content_Studio", "Team_Agent_Content", "WTJ_Project", "WTJ_Story", "workspace", "1_raw_materials", "raw_vdo_full"),
+        os.path.join(PROJECT_ROOT, "Team_Content_Studio", "Team_Agent_Content", "WTJ_Project", "WTJ_Story", "workspace", "1_raw_materials"),
     ]
     
     if os.path.isabs(filename) and os.path.exists(filename):
@@ -249,7 +250,7 @@ def find_video_file(filename):
         if os.path.exists(full_path):
             return os.path.abspath(full_path)
             
-    base_search = os.path.join(PROJECT_ROOT, "Team_Content_Studio", "Team_Agent_Content", "WTJ_Story_Project", "workspace", "1_raw_materials", "raw_videos")
+    base_search = os.path.join(PROJECT_ROOT, "Team_Content_Studio", "Team_Agent_Content", "WTJ_Project", "WTJ_Story", "workspace", "1_raw_materials")
     if os.path.exists(base_search):
         for root, _, files in os.walk(base_search):
             if filename in files:

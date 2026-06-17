@@ -20,13 +20,15 @@ while PROJECT_ROOT != os.path.dirname(PROJECT_ROOT):
         break
     PROJECT_ROOT = os.path.dirname(PROJECT_ROOT)
 
-SCHEDULE_FILE = os.path.join(PROJECT_ROOT, "Team_Content_Studio", "Team_Agent_Content", "WTJ_Story_Project", "workspace", "posting_schedule.json")
+SCHEDULE_FILE = os.path.join(PROJECT_ROOT, "Team_Content_Studio", "Team_Agent_Content", "WTJ_Project", "workspace", "posting_schedule.json")
 MASTER_SCRIPT = os.path.join(PROJECT_ROOT, "Team_Content_Studio", "Team_Agent_Content", "skills", "wtj_auto_poster.py")
-CONTENT_DIR = os.path.join(PROJECT_ROOT, "Team_Content_Studio", "Team_Agent_Content", "WTJ_Story_Project")
+CONTENT_DIR = os.path.join(PROJECT_ROOT, "Team_Content_Studio", "Team_Agent_Content", "WTJ_Project", "WTJ_Story")
 LAUNCH_AGENTS_DIR = os.path.expanduser("~/Library/LaunchAgents")
 
-# ใช้ Python ใน Virtual Environment ของโปรเจกต์โดยตรงเพื่อความถูกต้อง
-PYTHON3_PATH = os.path.join(PROJECT_ROOT, "venv", "bin", "python")
+# ใช้ Python ใน Virtual Environment ของโปรเจกต์โดยตรงเพื่อความถูกต้อง (ใช้นอก Desktop เพื่อเลี่ยง TCC)
+PYTHON3_PATH = "/Users/chz/ChZ_Agent_Corp_venv/bin/python"
+if not os.path.exists(PYTHON3_PATH):
+    PYTHON3_PATH = os.path.join(PROJECT_ROOT, "venv", "bin", "python")
 if not os.path.exists(PYTHON3_PATH):
     PYTHON3_PATH = "/usr/bin/python3" # Fallback
 
@@ -34,7 +36,13 @@ if not os.path.exists(PYTHON3_PATH):
 QUEUE_MAP = {
     "reels": "Reels_Under1Min",
     "fb_video": "FB_Videos_3-5Min",
-    "text_post": "Text_Posts"
+    "text_post": "Text_Posts",
+    "rerun_tue": "Text_Posts",
+    "rerun_fri": "Text_Posts",
+    "spoiler_thu": "Text_Posts",
+    "spoiler_sun": "Text_Posts",
+    "youtube_podcast": "YT_Videos_Full",
+    "youtube_story": "YT_Videos_Full"
 }
 
 def unload_old_agents():
@@ -67,7 +75,7 @@ def create_launch_agent_generic(platform_prefix, script_path, agent_key, args_li
     """สร้าง LaunchAgent plist สำหรับสคริปต์, แพลตฟอร์ม และเวลาที่ระบุ"""
     label = f"com.wtj.{platform_prefix}.{agent_key.lower()}"
     plist_path = os.path.join(LAUNCH_AGENTS_DIR, f"{label}.plist")
-    log_base = os.path.join(CONTENT_DIR, "workspace", f"{platform_prefix}_{agent_key.lower()}")
+    log_base = os.path.join(PROJECT_ROOT, "Team_Content_Studio", "Team_Agent_Content", "WTJ_Project", "workspace", "logs", f"{platform_prefix}_{agent_key.lower()}")
 
     # จัดเตรียมเวลาในการทริกเกอร์
     calendar_interval = {
@@ -180,9 +188,31 @@ def main():
     else:
         print("   ❌ สร้าง LaunchAgent Notion Archiver ไม่สำเร็จ")
 
+    # 📺 YouTube Daily Pre-uploader (Run every day at 04:15 AM)
+    print()
+    print("📺 ตั้งค่าระบบ YouTube Daily Pre-uploader อัตโนมัติ...")
+    success_yt_daily, plist_yt_daily = create_launch_agent_generic(
+        "master", MASTER_SCRIPT, "yt_videos_full_daily", ["-q", "YT_Videos_Full"], None, 4, 15
+    )
+    if success_yt_daily:
+        print("   ✅ YouTube Daily Pre-uploader (wtj_auto_poster.py -q YT_Videos_Full) → ทุกวัน เวลา 04:15 น.")
+    else:
+        print("   ❌ สร้าง LaunchAgent YouTube Daily Pre-uploader ไม่สำเร็จ")
+
+    # 📺 YouTube Shorts Daily Pre-uploader (Run every day at 04:30 AM)
+    print()
+    print("📺 ตั้งค่าระบบ YouTube Shorts Daily Pre-uploader อัตโนมัติ...")
+    success_shorts_daily, plist_shorts_daily = create_launch_agent_generic(
+        "master", MASTER_SCRIPT, "yt_shorts_daily", ["-q", "Reels_Under1Min"], None, 4, 30
+    )
+    if success_shorts_daily:
+        print("   ✅ YouTube Shorts Daily Pre-uploader (wtj_auto_poster.py -q Reels_Under1Min) → ทุกวัน เวลา 04:30 น.")
+    else:
+        print("   ❌ สร้าง LaunchAgent YouTube Shorts Daily Pre-uploader ไม่สำเร็จ")
+
     print()
     print("=" * 60)
-    print(f"🎉 เสร็จสิ้น! ตั้งบอทโพสและระบบเคลียร์บ้านสำเร็จ {success_count + (1 if success_archiver else 0)}/{total_agents + 1} รายการ")
+    print(f"🎉 เสร็จสิ้น! ตั้งบอทโพสและระบบเคลียร์บ้านสำเร็จ {success_count + (1 if success_archiver else 0) + (1 if success_yt_daily else 0) + (1 if success_shorts_daily else 0)}/{total_agents + 3} รายการ")
     print("=" * 60)
 
 if __name__ == "__main__":

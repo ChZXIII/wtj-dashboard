@@ -11,7 +11,7 @@ print(f"Reading client secret from: {client_secret_path}")
 print(f"Will save token to: {token_path}")
 
 flow = InstalledAppFlow.from_client_secrets_file(client_secret_path, SCOPES)
-creds = flow.run_local_server(port=0)
+creds = flow.run_local_server(port=0, prompt='consent')
 
 with open(token_path, 'w') as token:
     token.write(creds.to_json())

@@ -1,17 +1,17 @@
-# Skill: ส่ง Note เข้า Apple Notes (ANTIA)
+# Skill: ส่ง Note เข้า Apple Notes (AI Sidekick)
 
 ---
 
 ## วิธีใช้ Skill นี้
 
-ใช้เมื่อต้องการส่ง script หรือเนื้อหาคอร์สเข้า Apple Notes โดยจัดโครงสร้างโฟลเดอร์ตามช่อง ANTIA และแยก Subfolder ตาม Lesson
+ใช้เมื่อต้องการส่ง script หรือเนื้อหาคอร์สเข้า Apple Notes โดยจัดโครงสร้างโฟลเดอร์ตามช่อง AI Sidekick และแยก Subfolder ตาม Lesson
 
 ---
 
 ## โครงสร้างโฟลเดอร์ใน Apple Notes
 
 ```
-📁 ANTIA
+📁 AI Sidekick
   └── 📁 Lesson 0
         └── 📝 [ชื่อ Note]
   └── 📁 Lesson 1
@@ -42,7 +42,7 @@
 
 ```applescript
 set htmlContent to "[HTML ของ note ที่นี่]"
-set targetFolder to "ANTIA"        -- ชื่อ folder หลัก
+set targetFolder to "AI Sidekick"        -- ชื่อ folder หลัก
 set targetSubFolder to "Lesson 0"  -- ชื่อ subfolder
 set noteName to "ชื่อ Note"        -- ชื่อ note
 
@@ -89,7 +89,7 @@ end tell
 ```html
 <h1>🎬 [ชื่อ Lesson]</h1>
 
-<p><b>คอร์ส:</b> AI ทำงานแทนคุณ ด้วย Antigravity &nbsp;|&nbsp; <b>ช่อง:</b> ANTIA &nbsp;|&nbsp; <b>ความยาว:</b> X–Y นาที</p>
+<p><b>คอร์ส:</b> AI ทำงานแทนคุณ ด้วย Antigravity &nbsp;|&nbsp; <b>ช่อง:</b> AI Sidekick &nbsp;|&nbsp; <b>ความยาว:</b> X–Y นาที</p>
 <p><b>สไตล์:</b> Teleprompter &nbsp;|&nbsp; <b>โทน:</b> ตรงไปตรงมา ไม่อ้อมค้อม</p>
 
 <br><h2>🎙 INTRO — 0:00–X:XX</h2>
@@ -117,4 +117,4 @@ end tell
 - Test ใน Notes app ว่า HTML render ถูกต้องก่อน push จริง
 
 ---
-*สร้าง: 2026-05-20 | ใช้ใน: Study_Course_Agent / ANTIA channel*
+*สร้าง: 2026-05-20 | ใช้ใน: Study_Course_Agent / AI Sidekick channel*

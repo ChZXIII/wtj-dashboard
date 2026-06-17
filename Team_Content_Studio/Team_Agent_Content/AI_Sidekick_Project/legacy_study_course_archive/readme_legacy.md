@@ -5,9 +5,9 @@
 ---
 
 ## 🎬 ข้อมูล Brand / ช่อง
-- **ชื่อช่อง:** ANTIA
-- **อ่านว่า:** แอน-เทีย
-- **ความหมายซ่อน:** ANTI + A (AI) — มาจาก Antigravity + ตำนานกรีก
+- **ชื่อช่อง:** AI Sidekick
+- **อ่านว่า:** เอไอ ไซด์คิก
+- **ความหมายซ่อน:** คู่หู AI ข้างกาย
 - **แพลตฟอร์มหลัก:** YouTube (ไทย) + อนาคต English version ด้วย AI พากย์เสียง
 - **Demo หลักในคอร์ส:** Content Creator Pipeline (Agent + Subagent)
 
@@ -17,7 +17,7 @@
 - [x] ออกแบบโครงสร้างคอร์ส 5 Lesson
 - [x] รวบรวม FAQ 13 ข้อ
 - [x] บันทึกคู่มืออย่างเป็นทางการจาก NotebookLM
-- [x] ล็อคชื่อช่อง: ANTIA
+- [x] ล็อคชื่อช่อง: AI Sidekick
 - [ ] เขียน Script Lesson 0 (ดาวน์โหลด + ติดตั้ง)
 - [ ] สร้าง Demo: Content Creator Agent
 

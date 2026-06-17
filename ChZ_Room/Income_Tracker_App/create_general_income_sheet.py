@@ -193,9 +193,9 @@ def main():
         # แถวแรก: ยอดรวมทั้งเดือน
         values.append(['ยอดรวมทั้งเดือน', '', total_income_formula, '', total_expense_formula, total_tax_formula, total_savings_formula])
         
-        # แถวสอง: ค่าคอมมิชชัน (เขียนสูตรลงคอลัมน์ E รายจ่าย)
+        # แถวสอง: ค่าคอมมิชชัน (เขียนรายละเอียดในคอลัมน์ D และเขียนสูตรลงคอลัมน์ E รายจ่าย)
         commission_formula = f"=IF(C{summary_row_idx}<=70000, C{summary_row_idx}*10%, IF(C{summary_row_idx}<=100000, C{summary_row_idx}*15%, C{summary_row_idx}*20%))"
-        values.append(['ค่าคอมมิชชัน', '', '', '', commission_formula, '', ''])
+        values.append(['', '', '', 'ค่าคอมมิชชัน', commission_formula, '', ''])
         
         # แถวสาม: รายได้สุทธิ (สูตรแบบใหม่ C_Total - E_Total - E_Commission เขียนลงคอลัมน์ C)
         net_income_formula = f"=C{summary_row_idx}-E{summary_row_idx}-E{summary_row_idx+1}"
