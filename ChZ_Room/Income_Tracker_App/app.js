@@ -1640,8 +1640,8 @@ function thaiBahtText(amount) {
         bahtStr += 'เอ็ด';
       } else {
         bahtStr += textNumbers[digit];
+        bahtStr += textPositions[pos % 6];
       }
-      bahtStr += textPositions[pos % 6];
     }
     if (pos > 0 && pos % 6 === 0) {
       bahtStr += 'ล้าน';
