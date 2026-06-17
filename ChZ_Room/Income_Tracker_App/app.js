@@ -1111,6 +1111,42 @@ function renderDashboardFixedCosts(data) {
   `).join('');
 }
 
+function autoCalculateDueDate() {
+  const docDateInput = document.getElementById('docDate');
+  const docPaymentTermInput = document.getElementById('docPaymentTerm');
+  const docDueDateInput = document.getElementById('docDueDate');
+  
+  if (!docDateInput || !docPaymentTermInput || !docDueDateInput) return;
+  
+  const dateVal = docDateInput.value;
+  if (!dateVal) return;
+  
+  const termVal = docPaymentTermInput.value || '';
+  const dayMatch = termVal.match(/\d+/);
+  let days = 0;
+  if (dayMatch) {
+    days = parseInt(dayMatch[0], 10);
+  } else {
+    days = 0;
+  }
+  
+  const parts = dateVal.split('-');
+  if (parts.length === 3) {
+    const year = parseInt(parts[0], 10);
+    const month = parseInt(parts[1], 10) - 1;
+    const day = parseInt(parts[2], 10);
+    
+    const date = new Date(year, month, day);
+    date.setDate(date.getDate() + days);
+    
+    const dy = date.getFullYear();
+    const dm = String(date.getMonth() + 1).padStart(2, '0');
+    const dd = String(date.getDate()).padStart(2, '0');
+    
+    docDueDateInput.value = `${dy}-${dm}-${dd}`;
+  }
+}
+
 // --- 10. Financial Documents Generator Module ---
 let docItems = [];
 let currentDocType = 'quotation'; // quotation, invoice, receipt
@@ -1164,6 +1200,9 @@ function initDocumentGenerator() {
     const el = document.getElementById(id);
     if (el) {
       el.addEventListener('input', () => {
+        if (id === 'docDate' || id === 'docPaymentTerm') {
+          autoCalculateDueDate();
+        }
         syncDocPreview();
         // Save seller & bank details dynamically
         if (id.startsWith('docSeller') || id === 'docBankDetails' || id === 'docSignerName') {
@@ -1171,6 +1210,9 @@ function initDocumentGenerator() {
         }
       });
       el.addEventListener('change', () => {
+        if (id === 'docDate' || id === 'docPaymentTerm') {
+          autoCalculateDueDate();
+        }
         syncDocPreview();
         if (id.startsWith('docSeller') || id === 'docBankDetails' || id === 'docSignerName') {
           saveSellerSettings();
@@ -1201,6 +1243,9 @@ function initDocumentGenerator() {
       window.print();
     });
   }
+
+  // Calculate default due date on load
+  autoCalculateDueDate();
 
   // Render first time
   setDocType('quotation');
@@ -1296,7 +1341,7 @@ function setDocType(type) {
   } else {
     if (groupDueDate) groupDueDate.style.display = 'block';
     if (groupPaymentTerm) groupPaymentTerm.style.display = 'block';
-    if (prevDueDateRow) prevDueDateRow.style.display = 'flex';
+    if (prevDueDateRow) prevDueDateRow.style.display = (type === 'quotation') ? 'none' : 'flex';
     if (prevPaymentTermTitle) prevPaymentTermTitle.style.display = 'block';
     if (prevPaymentTermVal) prevPaymentTermVal.style.display = 'block';
   }
