@@ -916,10 +916,10 @@ input[type="time"] {
 /* Mobile responsive adjustments */
 .mobile-header-bar {
   display: none;
-  height: 60px;
+  height: calc(60px + env(safe-area-inset-top, 0px));
   background-color: var(--bg-sidebar);
   color: #ffffff;
-  padding: 0 16px;
+  padding: env(safe-area-inset-top, 0px) 16px 0 16px;
   align-items: center;
   justify-content: space-between;
   border-bottom: var(--card-border);
@@ -928,6 +928,7 @@ input[type="time"] {
   left: 0;
   right: 0;
   z-index: 150;
+  box-sizing: border-box;
 }
 
 .menu-toggle-btn {
@@ -950,6 +951,9 @@ input[type="time"] {
 @media (max-width: 900px) {
   .sidebar {
     transform: translateX(-100%);
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    box-sizing: border-box;
   }
   
   .sidebar.mobile-open {
@@ -958,7 +962,7 @@ input[type="time"] {
   
   .main-content {
     margin-left: 0;
-    padding: 86px 20px 30px; /* 60px header + 26px padding */
+    padding: calc(86px + env(safe-area-inset-top, 0px)) 20px calc(30px + env(safe-area-inset-bottom, 0px));
   }
   
   .mobile-header-bar {

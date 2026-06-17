@@ -82,6 +82,12 @@ function initNavigation() {
       e.preventDefault();
       const targetView = item.getAttribute('data-view');
       switchToView(targetView);
+      
+      // Auto-close sidebar on mobile after clicking
+      const sidebar = document.getElementById('sidebar');
+      if (sidebar) {
+        sidebar.classList.remove('mobile-open');
+      }
     });
   });
 }
