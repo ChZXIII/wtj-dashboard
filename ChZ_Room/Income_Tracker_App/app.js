@@ -1346,6 +1346,11 @@ function setDocType(type) {
     if (prevPaymentTermVal) prevPaymentTermVal.style.display = 'block';
   }
 
+  const prevDepositTerms = document.getElementById('prevDepositTermsBlock');
+  if (prevDepositTerms) {
+    prevDepositTerms.style.display = (type === 'quotation') ? 'block' : 'none';
+  }
+
   // Update document title and number
   const prevTitle = document.getElementById('prevDocTitleText');
   const prevTitleEn = document.getElementById('prevDocTitleEnText');

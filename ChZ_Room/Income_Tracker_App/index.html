@@ -596,7 +596,13 @@
               </div>
               <div class="form-group" id="groupDocPaymentTerm">
                 <label for="docPaymentTerm">เงื่อนไขชำระเงิน</label>
-                <input type="text" id="docPaymentTerm" placeholder="เช่น 30 วัน, ชำระทันที" value="ชำระทันที">
+                <select id="docPaymentTerm">
+                  <option value="ชำระทันที">ชำระทันที</option>
+                  <option value="3 วัน">3 วัน</option>
+                  <option value="7 วัน">7 วัน</option>
+                  <option value="15 วัน">15 วัน</option>
+                  <option value="30 วัน">30 วัน</option>
+                </select>
               </div>
             </div>
 
@@ -777,6 +783,11 @@
                 <div class="payment-preview-info">
                   <strong>ข้อมูลการชำระเงิน (Payment Method):</strong><br>
                   ชำระเงินผ่านบัญชีธนาคาร: <span id="prevBankDetailsVal">ธ.กสิกรไทย เลขที่ 123-4-56789-0 ชื่อบัญชี มงคล วงศ์สกุลยานนท์</span>
+                  <div id="prevDepositTermsBlock" style="margin-top: 8px; padding-top: 8px; border-top: 1px dashed #e2e8f0; font-size: 11px; color: #475569; display: none;">
+                    <strong>เงื่อนไขการชำระเงิน / Payment Terms:</strong><br>
+                    ชำระเงินมัดจำ 50% เพื่อยืนยันการจองคิวงาน และชำระส่วนที่เหลืออีก 50% หลังส่งมอบงานเสร็จสิ้น<br>
+                    <span style="font-size: 10px; color: #64748b; font-style: italic;">(50% deposit is required to confirm the booking, and the remaining 50% is due upon final work delivery.)</span>
+                  </div>
                 </div>
 
                 <!-- Signatures -->
