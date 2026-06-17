@@ -70,11 +70,11 @@ function doPost(e) {
             totalIncome = parseFloat(mSheet.getRange("C" + totalRowIdx).getValue() || 0);
             totalExpense = parseFloat(mSheet.getRange("E" + totalRowIdx).getValue() || 0);
             
-            // รายได้สุทธิ อยู่ถัดจากแถวยอดรวมไป 2 แถว (คอลัมน์ C)
-            netProfit = parseFloat(mSheet.getRange("C" + (totalRowIdx + 2)).getValue() || (totalIncome - totalExpense));
+            // รายได้สุทธิ อยู่ถัดจากแถวยอดรวมไป 1 แถว (คอลัมน์ C)
+            netProfit = parseFloat(mSheet.getRange("C" + (totalRowIdx + 1)).getValue() || (totalIncome - totalExpense));
             
-            // ยอดรวมเงินเก็บสะสม 10% อยู่ถัดจากแถวยอดรวมไป 3 แถว (คอลัมน์ C)
-            totalSavings = parseFloat(mSheet.getRange("C" + (totalRowIdx + 3)).getValue() || (totalIncome * 0.1));
+            // ยอดรวมเงินเก็บสะสม 10% อยู่ถัดจากแถวยอดรวมไป 2 แถว (คอลัมน์ C)
+            totalSavings = parseFloat(mSheet.getRange("C" + (totalRowIdx + 2)).getValue() || (totalIncome * 0.1));
             
             // ดึงข้อมูลรายการ Fix Cost จากตารางชีต (ตั้งแต่แถว 2 จนถึงแถวก่อนแถวยอดรวม คอลัมน์ D และ E)
             var maxDataRow = totalRowIdx - 2; // แถวก่อนแถวว่างและแถวยอดรวม
