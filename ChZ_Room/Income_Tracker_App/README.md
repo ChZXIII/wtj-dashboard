@@ -249,6 +249,7 @@ function doPost(e) {
       if (sheetType === "general") {
         var genDescVal = data.genDesc || "";
         var amountVal = data.amount;
+        var hasTax = data.hasTaxWithholding || false;
         
         // เขียนข้อมูลลงคอลัมน์ B (รายละเอียดงาน) และ C (รายรับ)
         sheet.getRange("B" + targetRow).setValue(genDescVal);
@@ -256,6 +257,13 @@ function doPost(e) {
           sheet.getRange("C" + targetRow).setFormula(amountVal);
         } else {
           sheet.getRange("C" + targetRow).setValue(parseFloat(amountVal || 0));
+        }
+        
+        // บันทึก/คำนวณ หัก ณ ที่จ่าย 3% ลงคอลัมน์ F
+        if (hasTax) {
+          sheet.getRange("F" + targetRow).setFormula("=C" + targetRow + "*3%");
+        } else {
+          sheet.getRange("F" + targetRow).setValue("");
         }
         
         return ContentService.createTextOutput(JSON.stringify({

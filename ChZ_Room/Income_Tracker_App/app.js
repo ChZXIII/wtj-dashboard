@@ -274,6 +274,7 @@ async function handleFormSubmit(e, type) {
     payload.date = dateFormatted;
     payload.time = document.getElementById('genTime').value;
     payload.genDesc = document.getElementById('genDesc').value.trim();
+    payload.hasTaxWithholding = document.getElementById('genTaxWithholding').checked;
     
     const amountInput = document.getElementById('genAmount').value.trim();
     if (amountInput.startsWith('=')) {

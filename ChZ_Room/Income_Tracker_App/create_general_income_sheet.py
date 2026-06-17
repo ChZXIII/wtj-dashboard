@@ -138,13 +138,14 @@ def main():
         sheet_id = sheet_map[m_title]
         num_days = calendar.monthrange(2026, int(m_num))[1]
         
-        # ดึงข้อมูลเดิมที่มีอยู่แล้วในแท็บนี้ (ถ้ามี) เพื่อถนอมข้อมูลบันทึกของแก
+        # ดึงข้อมูลเดิมที่มีอยู่แล้วในแท็บนี้ (ถ้ามี) เพื่อถนอมข้อมูลบันทึกของแก (ดึงสูตรดิบมาใช้)
         existing_values = []
         if is_existing:
             try:
                 res = service.spreadsheets().values().get(
                     spreadsheetId=spreadsheet_id,
-                    range=f"'{m_title}'!A1:G100"
+                    range=f"'{m_title}'!A1:G100",
+                    valueRenderOption='FORMULA'
                 ).execute()
                 existing_values = res.get('values', [])
             except Exception:
@@ -159,14 +160,14 @@ def main():
         for day in range(1, num_days + 1):
             row_idx = day + 1 # row index (1-based, index 1 คือ header)
             date_str = f"{day:02d}/{m_num}/2026"
-            tax_formula = f"=C{row_idx}*3%"
-            savings_formula = f"=C{row_idx}*10%"
             
             # ถนอมค่าเดิมที่แกคีย์ไว้
             orig_desc = ''
             orig_income = ''
             orig_exp_desc = ''
             orig_expense = ''
+            orig_tax = f"=C{row_idx}*3%"
+            orig_savings = f"=C{row_idx}*10%"
             
             if len(existing_values) > day: # row_idx - 1
                 row_data = existing_values[day]
@@ -174,8 +175,10 @@ def main():
                 if len(row_data) > 2: orig_income = row_data[2]
                 if len(row_data) > 3: orig_exp_desc = row_data[3]
                 if len(row_data) > 4: orig_expense = row_data[4]
+                if len(row_data) > 5: orig_tax = row_data[5]
+                if len(row_data) > 6: orig_savings = row_data[6]
                 
-            values.append([date_str, orig_desc, orig_income, orig_exp_desc, orig_expense, tax_formula, savings_formula])
+            values.append([date_str, orig_desc, orig_income, orig_exp_desc, orig_expense, orig_tax, orig_savings])
             
         # เติมแถวว่าง 1 แถวเพื่อเว้นระยะ
         values.append(['', '', '', '', '', '', ''])
