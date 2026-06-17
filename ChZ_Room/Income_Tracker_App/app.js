@@ -53,6 +53,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+let cachedDashboardData = null;
+
 // --- 1. Theme Management ---
 function initTheme() {
   const themeToggle = document.getElementById('darkModeToggle');
@@ -68,6 +70,9 @@ function initTheme() {
   const toggleAction = () => {
     const isDark = document.documentElement.classList.toggle('dark-theme');
     localStorage.setItem('income_tracker_theme', isDark ? 'dark' : 'light');
+    if (cachedDashboardData) {
+      drawSvgChart(cachedDashboardData);
+    }
   };
   
   if (themeToggle) themeToggle.addEventListener('click', toggleAction);
@@ -840,6 +845,7 @@ async function refreshDashboardData(forceRealSheetData = false) {
   
   if (!hasConnection) {
     if (banner) banner.style.display = 'block';
+    cachedDashboardData = MOCK_MONTHLY_DATA;
     updateKpis(MOCK_MONTHLY_DATA);
     drawSvgChart(MOCK_MONTHLY_DATA);
     calculateAndRenderInsights(MOCK_MONTHLY_DATA);
@@ -878,6 +884,7 @@ async function refreshDashboardData(forceRealSheetData = false) {
     const result = await response.json();
     
     if (result.status === 'success' && result.data && result.data.length > 0) {
+      cachedDashboardData = result.data;
       updateKpis(result.data);
       drawSvgChart(result.data);
       calculateAndRenderInsights(result.data);
@@ -889,6 +896,7 @@ async function refreshDashboardData(forceRealSheetData = false) {
     console.error('Fetch Dashboard Error:', err);
     alert('ไม่สามารถดึงข้อมูลจริงจากชีตได้ จึงสลับมาใช้ข้อมูลจำลองแทนจ้าแก: ' + err.message);
     if (banner) banner.style.display = 'block';
+    cachedDashboardData = MOCK_MONTHLY_DATA;
     updateKpis(MOCK_MONTHLY_DATA);
     drawSvgChart(MOCK_MONTHLY_DATA);
     calculateAndRenderInsights(MOCK_MONTHLY_DATA);

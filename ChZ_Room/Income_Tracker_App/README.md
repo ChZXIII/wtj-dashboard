@@ -48,12 +48,12 @@ function doPost(e) {
         var mSheet = activeSpreadsheet.getSheetByName(mName);
         
         if (mSheet) {
-          // ค้นหาแถวยอดรวมโดยการค้นหาข้อความ "ยอดรวมทั้งเดือน" ในคอลัมน์ A (เพื่อรองรับเดือนที่มีจำนวนวันต่างกันอย่างไดนามิก)
+          // ค้นหาแถวยอดรวมโดยการค้นหาข้อความ "ยอดรวมทั้งเดือน" ในคอลัมน์ B (เพื่อรองรับเดือนที่มีจำนวนวันต่างกันอย่างไดนามิก)
           var lastRow = mSheet.getLastRow();
-          var colAValues = mSheet.getRange("A1:A" + lastRow).getValues();
+          var colBValues = mSheet.getRange("B1:B" + lastRow).getValues();
           var totalRowIdx = -1;
-          for (var r = 0; r < colAValues.length; r++) {
-            if (colAValues[r][0] && colAValues[r][0].toString().trim() === "ยอดรวมทั้งเดือน") {
+          for (var r = 0; r < colBValues.length; r++) {
+            if (colBValues[r][0] && colBValues[r][0].toString().trim() === "ยอดรวมทั้งเดือน") {
               totalRowIdx = r + 1; // แปลงเป็น 1-indexed
               break;
             }
