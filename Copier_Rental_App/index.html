@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ระบบจัดการเครื่องถ่ายเอกสารให้เช่า | Copier Rental Dashboard</title>
+  
+  <!-- Google Fonts according to Typography standard -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&family=Prompt:wght@300;400;500;600;700&family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  
+  <!-- Main CSS Stylesheet (Clean 3D Shadow Theme) -->
+  <link rel="stylesheet" href="style.css?v=2.0">
+</head>
+<body>
+
+  <!-- Mobile Top Navigation Header -->
+  <div class="mobile-header-bar">
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <button class="menu-toggle-btn" id="menuToggle">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:24px;height:24px;">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+      <div class="logo-icon" style="width:30px;height:30px;font-size:16px;">C</div>
+      <span style="font-weight:700;font-size:15px;letter-spacing:0.5px;">CopierRent</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80" alt="Profile" class="avatar" style="width:28px;height:28px;">
+    </div>
+  </div>
+
+  <div class="app-container">
+    
+    <!-- Sidebar Navigation Menu -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-icon">C</div>
+        <span class="logo-text">CopierRent</span>
+      </div>
+      
+      <ul class="sidebar-menu">
+        <li>
+          <a class="menu-item active" data-view="dashboard-view">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2v-4zM14 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2v-4z" />
+            </svg>
+            Dashboard
+          </a>
+        </li>
+        <li>
+          <a class="menu-item" data-view="tech-view">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+            ตารางงานและตั๋ว
+          </a>
+        </li>
+        <li>
+          <a class="menu-item" data-view="parts-view">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m-8-4V7m8 4v10M8 8v.01M12 12v.01M16 8v.01" />
+            </svg>
+            คลังอะไหล่สตอค
+          </a>
+        </li>
+        <li>
+          <a class="menu-item" data-view="shops-view">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+            </svg>
+            ข้อมูลร้านเช่า
+          </a>
+        </li>
+        <li>
+          <a class="menu-item" data-view="manuals-view">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+            </svg>
+            คู่มือการบำรุงรักษา
+          </a>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- Main Content Panel -->
+    <main class="main-content">
+      
+      <!-- Top header on Desktop view -->
+      <header class="main-header">
+        <div class="page-title-area">
+          <h1 id="viewTitleHeader">แดชบอร์ดจัดการเครื่องถ่ายเอกสารให้เช่า</h1>
+          <p id="viewSubtitleHeader">ติดตามช่าง อะไหล่ ประวัติบริการบำรุงรักษา และสถิติด่วนประจำวัน</p>
+        </div>
+        <div style="display: flex; align-items: center; gap: 16px;">
+          <button class="btn-secondary" id="darkModeToggle" style="padding: 8px 12px; margin-bottom:0; box-shadow:2px 2px 0px var(--ink-dark); display: flex; align-items: center; gap: 6px; font-size: 13px;">
+            <svg class="mode-icon" style="width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="4.22" x2="19.78" y2="5.64"></line>
+            </svg>
+            <span id="darkModeToggleText">โหมดมืด</span>
+          </button>
+          <div class="user-profile">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80" alt="Profile" class="avatar">
+            <span class="username">คุณเก่ง (Manager)</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- 1. DASHBOARD VIEW -->
+      <section id="dashboard-view" class="view-section active">
+        
+        <!-- Stats summary counters -->
+        <div class="stats-grid">
+          
+          <!-- Accent Card displaying system health -->
+          <div class="card">
+            <h3 id="alertCardTitle">ระบบปกติ</h3>
+            <p class="stat-subtext" id="alertLabel">ตรวจพบว่าเครื่องเช่าทั้งหมดได้รับการบำรุงรักษาแล้ว</p>
+            <div class="progress-bar-container">
+              <div class="progress-bar" id="alertProgress"></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="stat-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:22px;height:22px;">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+              </svg>
+            </div>
+            <div class="stat-label">ช่างที่ยังว่าง</div>
+            <div class="stat-value" id="statFreeTechs">0 / 0</div>
+            <div class="stat-subtext">พร้อมมอบหมายงาน</div>
+          </div>
+
+          <div class="card">
+            <div class="stat-icon" style="color:#b45309; background-color:#fef3c7;">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:22px;height:22px;">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2" />
+              </svg>
+            </div>
+            <div class="stat-label">กำลังทำงาน</div>
+            <div class="stat-value" id="statActiveJobs">0</div>
+            <div class="stat-subtext">ซ่อมแซมหน้างาน</div>
+          </div>
+
+          <div class="card">
+            <div class="stat-icon" style="color:#ef4444; background-color:#fee2e2;">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:22px;height:22px;">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m-8-4V7m8 4v10M8 8v.01M12 12v.01M16 8v.01" />
+              </svg>
+            </div>
+            <div class="stat-label">อะไหล่แนะนำให้สั่ง</div>
+            <div class="stat-value" id="statLowStock" style="color:#ef4444;">0</div>
+            <div class="stat-subtext">ต่ำกว่าระดับเซฟตี้สตอค</div>
+          </div>
+
+          <div class="card">
+            <div class="stat-icon" style="color:#ef4444; background-color:#fee2e2;">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:22px;height:22px;">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div class="stat-label">เลยกำหนดเช็กระยะ</div>
+            <div class="stat-value" id="statOverdue" style="color:#ef4444;">0</div>
+            <div class="stat-subtext">ต้องนัดหมายเข้าตรวจเช็ก</div>
+          </div>
+        </div>
+
+        <!-- Dashboard list of active tickets -->
+        <div class="card">
+          <h2 style="font-size:16px; margin-bottom:18px; display:flex; align-items:center; gap:8px;">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:20px;height:20px;color:var(--primary)">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2" />
+            </svg>
+            รายการใบสั่งงานซ่อมค้างรอปิดงาน (Active Tickets)
+          </h2>
+          <div class="list-container" id="dashActiveJobsList">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. TECHNICIANS VIEW (Dispatch Board) -->
+      <section id="tech-view" class="view-section">
+        <div class="dispatch-layout">
+          
+          <!-- Column Left: Job Tickets Manager -->
+          <div class="dispatch-left" style="display: flex; flex-direction: column; gap: 20px;">
+            <div class="filter-bar" style="justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+              <div style="display:flex; gap:12px; align-items:center;">
+                <span style="font-weight:600; font-size:13px; color:var(--ink-muted);">ตัวกรองตั๋ว:</span>
+                <select class="filter-select" id="filterTicketStatus" style="min-width:130px;">
+                  <option value="all">ตั๋วทั้งหมด</option>
+                  <option value="Pending">รอดำเนินการ</option>
+                  <option value="In Progress">กำลังซ่อม</option>
+                  <option value="Completed">เสร็จสิ้น</option>
+                </select>
+              </div>
+              <div style="display:flex; gap:8px;">
+                <button class="btn-secondary" id="btnExportTicketsCSV" style="padding: 6px 12px; margin-bottom:0; box-shadow:2px 2px 0px var(--ink-dark); display: flex; align-items: center; gap: 6px; font-size: 11px;">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:14px;height:14px;">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                  </svg>
+                  ส่งออก CSV
+                </button>
+                <button class="btn-primary" id="btnOpenNewTicketModal" style="padding: 6px 12px; margin-bottom:0; font-size: 11px;">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:14px;height:14px;">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
+                  </svg>
+                  ตั๋วใหม่
+                </button>
+              </div>
+            </div>
+
+            <div class="card" style="margin-top:0;">
+              <h2 style="font-size:16px; margin-bottom:18px;">ตั๋วคำขอแจ้งซ่อมและการส่งงาน</h2>
+              <div class="list-container" id="ticketsList">
+                <!-- Rendered dynamically -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Column Right: Calendar and Techs Status -->
+          <div class="dispatch-right" style="display: flex; flex-direction: column; gap: 20px;">
+            <!-- Calendar Card -->
+            <div class="card" style="margin-top:0;">
+              <div class="calendar-controls">
+                <div class="calendar-nav">
+                  <button class="btn-secondary" id="calPrevBtn" style="padding: 6px 12px; margin-bottom:0;">ย้อน</button>
+                  <button class="btn-secondary" id="calTodayBtn" style="padding: 6px 12px; margin-bottom:0;">วันนี้</button>
+                  <button class="btn-secondary" id="calNextBtn" style="padding: 6px 12px; margin-bottom:0;">ถัดไป</button>
+                </div>
+                
+                <h2 class="calendar-title" id="calendarTitle">มิถุนายน 2569</h2>
+                
+                <div class="calendar-views-toggle">
+                  <button class="btn-secondary active" id="btnViewMonth" data-view="month" style="padding: 6px 12px; margin-bottom:0;">รายเดือน</button>
+                  <button class="btn-secondary" id="btnViewWeek" data-view="week" style="padding: 6px 12px; margin-bottom:0;">รายอาทิตย์</button>
+                  <button class="btn-secondary" id="btnViewDay" data-view="day" style="padding: 6px 12px; margin-bottom:0;">รายวัน</button>
+                </div>
+              </div>
+              
+              <div class="calendar-container">
+                <!-- Month View -->
+                <div id="calendarMonthView" class="calendar-view-panel active">
+                  <div class="calendar-weekdays">
+                    <div>อา.</div><div>จ.</div><div>อ.</div><div>พ.</div><div>พฤ.</div><div>ศ.</div><div>ส.</div>
+                  </div>
+                  <div class="calendar-days-grid" id="calendarDaysGrid">
+                    <!-- Rendered dynamically -->
+                  </div>
+                </div>
+                
+                <!-- Week View -->
+                <div id="calendarWeekView" class="calendar-view-panel">
+                  <div class="calendar-week-grid" id="calendarWeekGrid">
+                    <!-- Rendered dynamically -->
+                  </div>
+                </div>
+                
+                <!-- Day View -->
+                <div id="calendarDayView" class="calendar-view-panel">
+                  <div class="calendar-day-schedule" id="calendarDaySchedule">
+                    <!-- Rendered dynamically -->
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Technicians status list -->
+            <div class="card" style="margin-top:0;">
+              <h2 style="font-size:16px; margin-bottom:18px;">รายชื่อช่างและสถานะปฏิบัติงานด่วน</h2>
+              <div class="list-container" id="techList">
+                <!-- Rendered dynamically -->
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- 3. SPARE PARTS INVENTORY VIEW -->
+      <section id="parts-view" class="view-section">
+        <div class="filter-bar">
+          <div class="search-input-wrapper">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input type="text" class="search-input" id="searchPartsInput" placeholder="ค้นหาชื่ออะไหล่ หรือรุ่นเครื่องที่รองรับ...">
+          </div>
+          <select class="filter-select" id="filterPartsStock">
+            <option value="all">แสดงอะไหล่ทั้งหมด</option>
+            <option value="low">เฉพาะอะไหล่ใกล้หมด (Low Stock)</option>
+          </select>
+        </div>
+
+        <!-- 3D Cabinet Card -->
+        <div class="card cabinet-card" style="padding: 24px;">
+          <h2 style="font-size:16px; margin-bottom:8px;">ตู้ลิ้นชักอะไหล่แยกตามรุ่นเครื่องถ่ายเอกสาร (Spare Parts Drawer Cabinet)</h2>
+          <p class="row-sub-text" style="margin-bottom:24px;">เอาเมาส์ชี้เพื่อสไลด์ลิ้นชักยื่นออกมา และกดคลิกเปิดเพื่อดรอปดาวน์ข้อมูลอะไหล่ทั้งหมดใต้ตัวเครื่อง</p>
+          
+          <div class="parts-cabinet">
+            <!-- Drawer Group 1: Canon -->
+            <div class="drawer-group" id="group-canon">
+              <div class="drawer-slot">
+                <div class="cabinet-drawer" data-model="Canon iR-A 4535">
+                  <div class="drawer-face">
+                    <div class="drawer-handle"></div>
+                    <div class="drawer-info">
+                      <span class="drawer-label">Canon iR-A 4535</span>
+                      <span class="drawer-stock-indicator badge" id="summary-canon">กำลังเช็ก...</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="drawer-dropdown-details" id="details-canon">
+                <div class="drawer-dropdown-inner">
+                  <div class="drawer-dropdown-header" style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1.5px dashed var(--ink-dark); padding-bottom:8px; margin-bottom:12px;">
+                    <h3 style="font-size:14px; color:var(--ink-dark);">อะไหล่ภายในลิ้นชัก: Canon iR-A 4535</h3>
+                    <button class="btn-secondary btn-close-drawer-inside" data-target="Canon iR-A 4535" style="padding:4px 8px; font-size:11px; margin-bottom:0; box-shadow:2px 2px 0px var(--ink-dark);">ปิดลิ้นชัก</button>
+                  </div>
+                  <div class="list-container drawer-parts-list" id="list-canon">
+                    <!-- Rendered dynamically -->
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Drawer Group 2: Ricoh -->
+            <div class="drawer-group" id="group-ricoh">
+              <div class="drawer-slot">
+                <div class="cabinet-drawer" data-model="Ricoh IM C3000">
+                  <div class="drawer-face">
+                    <div class="drawer-handle"></div>
+                    <div class="drawer-info">
+                      <span class="drawer-label">Ricoh IM C3000</span>
+                      <span class="drawer-stock-indicator badge" id="summary-ricoh">กำลังเช็ก...</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="drawer-dropdown-details" id="details-ricoh">
+                <div class="drawer-dropdown-inner">
+                  <div class="drawer-dropdown-header" style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1.5px dashed var(--ink-dark); padding-bottom:8px; margin-bottom:12px;">
+                    <h3 style="font-size:14px; color:var(--ink-dark);">อะไหล่ภายในลิ้นชัก: Ricoh IM C3000</h3>
+                    <button class="btn-secondary btn-close-drawer-inside" data-target="Ricoh IM C3000" style="padding:4px 8px; font-size:11px; margin-bottom:0; box-shadow:2px 2px 0px var(--ink-dark);">ปิดลิ้นชัก</button>
+                  </div>
+                  <div class="list-container drawer-parts-list" id="list-ricoh">
+                    <!-- Rendered dynamically -->
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Drawer Group 3: HP -->
+            <div class="drawer-group" id="group-hp">
+              <div class="drawer-slot">
+                <div class="cabinet-drawer" data-model="HP LaserJet Managed E82560">
+                  <div class="drawer-face">
+                    <div class="drawer-handle"></div>
+                    <div class="drawer-info">
+                      <span class="drawer-label">HP LaserJet Managed E82560</span>
+                      <span class="drawer-stock-indicator badge" id="summary-hp">กำลังเช็ก...</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="drawer-dropdown-details" id="details-hp">
+                <div class="drawer-dropdown-inner">
+                  <div class="drawer-dropdown-header" style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1.5px dashed var(--ink-dark); padding-bottom:8px; margin-bottom:12px;">
+                    <h3 style="font-size:14px; color:var(--ink-dark);">อะไหล่ภายในลิ้นชัก: HP LaserJet Managed E82560</h3>
+                    <button class="btn-secondary btn-close-drawer-inside" data-target="HP LaserJet Managed E82560" style="padding:4px 8px; font-size:11px; margin-bottom:0; box-shadow:2px 2px 0px var(--ink-dark);">ปิดลิ้นชัก</button>
+                  </div>
+                  <div class="list-container drawer-parts-list" id="list-hp">
+                    <!-- Rendered dynamically -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. RENTAL SHOPS VIEW -->
+      <section id="shops-view" class="view-section">
+        <div class="filter-bar">
+          <div class="search-input-wrapper">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input type="text" class="search-input" id="searchShopsInput" placeholder="ค้นหาชื่อร้านเช่า รุ่นเครื่อง ซีเรียลนัมเบอร์...">
+          </div>
+        </div>
+
+        <!-- Split Layout for Interactive Map & Info -->
+        <div class="shops-split-layout">
+          <!-- Map Column -->
+          <div class="card map-card" style="padding:20px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+              <h2 style="font-size:16px;">แผนที่ตำแหน่งร้านเช่า (อ.เมืองเชียงใหม่)</h2>
+              <div style="display:flex; gap:12px; font-size:11px; font-weight:600;">
+                <span style="display:flex; align-items:center; gap:4px;">
+                  <span style="width:10px; height:10px; border-radius:50%; background-color:#22c55e; border:1px solid #0f172a; display:inline-block;"></span>ปกติ
+                </span>
+                <span style="display:flex; align-items:center; gap:4px;">
+                  <span style="width:10px; height:10px; border-radius:50%; background-color:#ef4444; border:1px solid #0f172a; display:inline-block;" class="map-pulse-red-dot"></span>เลยกำหนดเช็ก
+                </span>
+              </div>
+            </div>
+            
+            <div class="map-container">
+              <svg viewBox="0 0 600 500" class="chiangmai-svg-map" id="chiangmaiMap">
+                <!-- Chang Phueak (North) -->
+                <path class="map-tambon" d="M 100 50 L 500 50 L 450 190 L 310 190 L 230 190 L 150 190 Z" id="tambon-changphueak" />
+                <!-- Suthep (West) -->
+                <path class="map-tambon" d="M 50 190 L 230 190 L 230 290 L 180 380 L 50 380 Z" id="tambon-suthep" />
+                <!-- Old City Moat (Center) -->
+                <rect class="map-tambon moat-rect" x="230" y="190" width="80" height="100" rx="6" id="tambon-moat" />
+                <!-- Wat Ket & Fa Ham (East) -->
+                <path class="map-tambon" d="M 310 190 L 450 190 L 550 290 L 450 350 L 310 290 Z" id="tambon-watket" />
+                <!-- Chang Khlan / Nong Hoi (Southeast) -->
+                <path class="map-tambon" d="M 310 290 L 450 350 L 400 450 L 310 450 L 270 380 Z" id="tambon-changkhlan" />
+                <!-- Pa Daet (South) -->
+                <path class="map-tambon" d="M 180 380 L 270 380 L 310 450 L 200 450 L 150 420 Z" id="tambon-padaet" />
+
+                <!-- Text Labels for sub-districts -->
+                <text x="280" y="110" class="map-label">ต.ช้างเผือก</text>
+                <text x="130" y="290" class="map-label">ต.สุเทพ</text>
+                <text x="270" y="245" class="map-label moat-label">คูเมือง</text>
+                <text x="400" y="260" class="map-label">ต.วัดเกต / ฟ้าฮ่าม</text>
+                <text x="340" y="370" class="map-label">ต.หนองหอย / ช้างคลาน</text>
+                <text x="220" y="420" class="map-label">ต.ป่าแดด</text>
+
+                <!-- Dynamic Pins Group -->
+                <g id="mapPinsGroup"></g>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Shops Info/Detail Column -->
+          <div class="shops-info-panel">
+            <!-- Selected Shop Card -->
+            <div class="card" id="selectedShopDetailCard" style="display:none; border-color:var(--primary); transition: all 0.3s ease;">
+              <!-- Rendered dynamically -->
+            </div>
+
+            <!-- List Card -->
+            <div class="card">
+              <h2 style="font-size:16px; margin-bottom:18px;" id="shopsListHeader">รายชื่อร้านค้าทั้งหมด</h2>
+              <div class="list-container" id="shopsList">
+                <!-- Rendered dynamically -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. MAINTENANCE MANUALS VIEW -->
+      <section id="manuals-view" class="view-section">
+        <div class="filter-bar">
+          <span style="font-weight:600; font-size:13px; color:var(--ink-muted);">เลือกรุ่นเครื่องถ่ายเอกสาร:</span>
+          <select class="filter-select" id="manualModelSelect" style="min-width:260px;">
+            <!-- Options dynamically rendered -->
+          </select>
+        </div>
+
+        <!-- Interactive Troubleshooting Card -->
+        <div class="card" style="margin-bottom: 24px;">
+          <h2 style="font-size:16px; margin-bottom:18px; display:flex; align-items:center; gap:8px;">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:20px;height:20px;color:var(--primary)">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+            </svg>
+            ระบบช่วยวินิจฉัยปัญหา (Interactive Troubleshooting)
+          </h2>
+
+          <!-- Dropdown for selecting specific issues of the selected model -->
+          <div style="display:flex; gap:16px; align-items:center; margin-bottom:20px; flex-wrap:wrap;">
+            <div style="display:flex; gap:12px; align-items:center; width:100%;">
+              <span style="font-weight:600; font-size:13px; color:var(--ink-muted); flex-shrink:0;">เลือกอาการ/ปัญหาที่พบ:</span>
+              <select class="filter-select" id="manualIssueSelect" style="min-width:320px; width:100%; max-width:480px;">
+                <!-- Options dynamically rendered via JS based on selected model -->
+              </select>
+            </div>
+          </div>
+          
+          <div id="troubleshooterContainer" style="background:var(--light-bg); border:var(--card-border); border-radius:12px; padding:24px; text-align:left; min-height:160px; box-shadow:inset 3px 3px 6px rgba(0,0,0,0.05); position:relative;">
+            
+            <!-- This timeline container will hold all dynamic cascading steps -->
+            <div id="tsStepsTimeline" style="display:flex; flex-direction:column; gap:18px; position:relative; width:100%;">
+              <!-- Rendered dynamically by JS -->
+            </div>
+
+            <!-- Bottom control action bar -->
+            <div style="display:flex; gap:16px; justify-content:center; width:100%; border-top:1.5px dashed var(--ink-dark); padding-top:16px; margin-top:20px;">
+              <button class="btn-secondary" id="btnTsReset" style="padding:6px 14px; font-size:12px; display:flex; align-items:center; gap:4px; box-shadow:2px 2px 0px var(--ink-dark); margin-bottom:0;">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 8H18.2" /></svg>
+                เริ่มต้นใหม่
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="card">
+          <h2 id="manualModelHeader" style="font-size:18px; margin-bottom:24px; padding-bottom:12px; border-bottom:1.5px dashed var(--ink-dark)">
+            คู่มือการบำรุงรักษาและประวัติการแก้ปัญหาเสร็จสิ้น
+          </h2>
+          
+          <div class="section-layout-split">
+            <div>
+              <h3 style="font-size:14px; margin-bottom:16px; display:flex; align-items:center; gap:8px;">
+                <span style="width:22px; height:22px; border-radius:50%; background-color:#dcfce7; color:#15803d; display:inline-flex; align-items:center; justify-content:center; font-size:11px; border:1px solid #15803d;">✓</span>
+                รายการเช็กระยะมาตรฐาน (Standard Checklist)
+              </h3>
+              <div id="manualChecklist">
+                <!-- Rendered dynamically -->
+              </div>
+            </div>
+            
+            <div>
+              <h3 style="font-size:14px; margin-bottom:16px; display:flex; align-items:center; gap:8px;">
+                <span style="width:22px; height:22px; border-radius:50%; background-color:#fee2e2; color:#ef4444; display:inline-flex; align-items:center; justify-content:center; font-size:11px; border:1px solid #ef4444;">⚠</span>
+                ประวัติอาการที่พบบ่อยและแนวทางแก้ไขที่ใช้แล้วสำเร็จ
+              </h3>
+              <div id="manualIssues">
+                <!-- Rendered dynamically -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+
+    </main>
+  </div>
+
+  <!-- Dynamic Modal Overlay System -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div></div>
+        <button class="modal-close" id="modalClose">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:24px;height:24px;">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <div id="modalBody">
+        <!-- Injected via app.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Mock Data JS followed by Core App JS -->
+  <script src="data.js"></script>
+  <script src="app.js?v=2.0"></script>
+</body>
+</html>

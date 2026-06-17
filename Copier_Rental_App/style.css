@@ -1,0 +1,1490 @@
+/* สไตล์ดีไซน์ระบบเช่าและซ่อมบำรุงเครื่องถ่ายเอกสาร - 3D Solid Offset Shadow (Clean Slate/Blue Theme) */
+
+:root {
+  --primary: #4f46e5;       /* Indigo Accent */
+  --primary-hover: #4338ca;
+  --dark-bg: #1e293b;       /* Slate 800 Sidebar */
+  --light-bg: #f8fafc;      /* Clean Light Gray/Slate background */
+  --card-bg: #ffffff;
+  
+  /* Ink Colors */
+  --ink-dark: #0f172a;      /* Slate 900 for borders & primary text */
+  --ink-muted: #64748b;     /* Slate 500 for secondary text */
+  
+  /* Status Colors (Soft pastel background with dark text) */
+  --status-available-bg: #dcfce7;
+  --status-available-text: #15803d;
+  --status-working-bg: #fef3c7;
+  --status-working-text: #b45309;
+  --status-break-bg: #f1f5f9;
+  --status-break-text: #475569;
+  --status-danger-bg: #fee2e2;
+  --status-danger-text: #b91c1c;
+
+  /* Fonts */
+  --font-title: 'Outfit', 'Prompt', sans-serif;
+  --font-body: 'Inter', 'Prompt', sans-serif;
+  --font-mono: 'Share Tech Mono', monospace;
+  
+  /* 3D Solid Offset shadow & border (ความหนา 3 มิติคมชัดเยื้องมุม) */
+  --card-border: 1.5px solid var(--ink-dark);
+  --solid-shadow: 4px 4px 0px 0px var(--ink-dark);
+  --solid-shadow-hover: 6px 6px 0px 0px var(--ink-dark);
+  --solid-shadow-active: 1px 1px 0px 0px var(--ink-dark);
+}
+
+body.dark-mode {
+  --primary: #ff4500;       /* Sunset Glow */
+  --primary-hover: #ff7300;
+  --dark-bg: #15171a;       /* Sunken Base */
+  --light-bg: #181a1d;      /* Matte Charcoal background */
+  --card-bg: #202327;       /* Matte Card */
+  
+  /* Ink Colors */
+  --ink-dark: #ffffff;      /* White for text/borders in dark mode */
+  --ink-muted: #94a3b8;     /* Lighter slate for muted text */
+  
+  /* Status Colors */
+  --status-available-bg: #064e3b;
+  --status-available-text: #34d399;
+  --status-working-bg: #78350f;
+  --status-working-text: #fbbf24;
+  --status-break-bg: #334155;
+  --status-break-text: #cbd5e1;
+  --status-danger-bg: #7f1d1d;
+  --status-danger-text: #fca5a5;
+
+  /* Re-declare variables to force browser re-evaluation with --ink-dark (#ffffff) in dark mode */
+  --card-border: 1.5px solid var(--ink-dark);
+  --solid-shadow: 4px 4px 0px 0px var(--ink-dark);
+  --solid-shadow-hover: 6px 6px 0px 0px var(--ink-dark);
+  --solid-shadow-active: 1px 1px 0px 0px var(--ink-dark);
+}
+
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--light-bg);
+  color: var(--ink-dark);
+  font-family: var(--font-body);
+  min-height: 100vh;
+  display: flex;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-title);
+  font-weight: 600;
+  color: var(--ink-dark);
+}
+
+.app-container {
+  display: flex;
+  width: 100vw;
+  min-height: 100vh;
+}
+
+/* Sidebar Layout (Slate 800, Clean outline) */
+.sidebar {
+  width: 260px;
+  background-color: var(--card-bg);
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+  z-index: 100;
+  border-right: var(--card-border);
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 8px;
+  margin-bottom: 32px;
+  border-bottom: 1.5px dashed rgba(15, 23, 42, 0.1);
+  padding-bottom: 20px;
+}
+
+.logo-icon {
+  width: 36px;
+  height: 36px;
+  background-color: #ffd250; /* Playful yellow logo badge */
+  border: var(--card-border);
+  box-shadow: 2px 2px 0px var(--ink-dark);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-dark);
+  font-weight: 800;
+  font-size: 20px;
+  font-family: var(--font-title);
+}
+
+.logo-text {
+  color: var(--ink-dark);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.sidebar-menu {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  color: var(--ink-muted);
+  text-decoration: none;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  border: 1.5px solid transparent;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.menu-item svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+}
+
+.menu-item:hover {
+  color: var(--ink-dark);
+  background-color: rgba(15, 23, 42, 0.05);
+}
+
+.menu-item.active {
+  color: var(--ink-dark);
+  background-color: #ffd250;
+  border: var(--card-border);
+  box-shadow: 3px 3px 0px var(--ink-dark);
+  transform: translate(-2px, -2px);
+}
+
+.menu-item.active svg {
+  stroke: var(--ink-dark);
+}
+
+/* Main Content Wrapper */
+.main-content {
+  flex-grow: 1;
+  padding: 40px;
+  overflow-y: auto;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+/* Header & Profile */
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: var(--card-border);
+  padding-bottom: 20px;
+}
+
+.page-title-area h1 {
+  font-size: 26px;
+  letter-spacing: -0.5px;
+}
+
+.page-title-area p {
+  color: var(--ink-muted);
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background-color: var(--card-bg);
+  padding: 6px 14px;
+  border-radius: 12px;
+  border: var(--card-border);
+  box-shadow: var(--solid-shadow);
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid var(--ink-dark);
+}
+
+.username {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* Quick Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  gap: 20px;
+}
+
+/* 3D Solid Shadow Cards (มีความหนา 3 มิติแบบทึบตามรูปตัวอย่าง) */
+.card {
+  background-color: var(--card-bg);
+  border-radius: 16px;
+  border: var(--card-border);
+  box-shadow: var(--solid-shadow);
+  padding: 24px;
+  position: relative;
+}
+
+/* High Contrast Accent Card */
+.card.accent-dark {
+  background-color: var(--ink-dark);
+  color: white;
+}
+
+.card.accent-dark h3, .card.accent-dark p, .card.accent-dark .stat-value {
+  color: white;
+}
+
+.card.accent-dark .stat-label {
+  color: #a7f3d0;
+}
+
+.card.accent-dark .stat-icon {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffd250;
+}
+
+/* Card Elements */
+.stat-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background-color: #f1f5f9;
+  border: var(--card-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  margin-bottom: 16px;
+}
+
+.stat-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat-value {
+  font-size: 30px;
+  font-weight: 700;
+  margin-top: 8px;
+  font-family: var(--font-mono);
+}
+
+.stat-subtext {
+  font-size: 12px;
+  color: var(--ink-muted);
+  margin-top: 4px;
+}
+
+.progress-bar-container {
+  width: 100%;
+  height: 8px;
+  background-color: rgba(15, 23, 42, 0.1);
+  border: 1.5px solid var(--ink-dark);
+  border-radius: 10px;
+  margin-top: 16px;
+  overflow: hidden;
+}
+
+.card.accent-dark .progress-bar-container {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: #ffffff;
+}
+
+.progress-bar {
+  height: 100%;
+  background-color: var(--primary);
+  width: 0%;
+  border-radius: 10px;
+  transition: width 0.5s ease;
+}
+
+/* View Section Wrapper */
+.view-section {
+  display: none;
+  animation: fadeIn 0.2s ease;
+}
+
+.view-section.active {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Filters & Search Block */
+.filter-bar {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.search-input-wrapper {
+  position: relative;
+  flex-grow: 1;
+}
+
+.search-input-wrapper svg {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--ink-muted);
+  width: 18px;
+  height: 18px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 16px 10px 44px;
+  border-radius: 12px;
+  border: var(--card-border);
+  font-size: 14px;
+  font-family: var(--font-body);
+  background-color: var(--card-bg);
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.search-input:focus {
+  box-shadow: 2px 2px 0px 0px var(--ink-dark);
+}
+
+.filter-select {
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: var(--card-border);
+  font-size: 13px;
+  font-weight: 600;
+  background-color: var(--card-bg);
+  outline: none;
+  cursor: pointer;
+}
+
+/* 3D Solid Buttons */
+.btn-primary {
+  padding: 10px 20px;
+  background-color: var(--primary);
+  color: #ffffff;
+  border: var(--card-border);
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  box-shadow: var(--solid-shadow);
+}
+
+.btn-primary:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: var(--solid-shadow-hover);
+}
+
+.btn-primary:active {
+  transform: translate(2px, 2px);
+  box-shadow: var(--solid-shadow-active);
+}
+
+.btn-secondary {
+  padding: 10px 20px;
+  background-color: var(--card-bg);
+  color: var(--ink-dark);
+  border: var(--card-border);
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  box-shadow: var(--solid-shadow);
+}
+
+.btn-secondary:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: var(--solid-shadow-hover);
+}
+
+.btn-secondary:active {
+  transform: translate(2px, 2px);
+  box-shadow: var(--solid-shadow-active);
+}
+
+/* Beautiful Row Cards with Solid 3D Shadows */
+.list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.row-card {
+  background-color: var(--card-bg);
+  border-radius: 16px;
+  border: var(--card-border);
+  box-shadow: var(--solid-shadow);
+  padding: 18px 22px;
+  display: grid;
+  grid-template-columns: 2.5fr 1.5fr 1.5fr 1fr;
+  align-items: center;
+  gap: 16px;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  cursor: pointer;
+}
+
+.row-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: var(--solid-shadow-hover);
+}
+
+.row-card:active:not(:has(button:active)) {
+  transform: translate(2px, 2px);
+  box-shadow: var(--solid-shadow-active);
+}
+
+.row-card-title {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.row-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background-color: #f8fafc;
+  border: var(--card-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-muted);
+}
+
+.row-card:hover .row-icon {
+  color: var(--ink-dark);
+  background-color: #f1f5f9;
+}
+
+.row-main-text {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.row-sub-text {
+  font-size: 12px;
+  color: var(--ink-muted);
+  margin-top: 2px;
+}
+
+.row-info-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.row-info-label {
+  font-size: 11px;
+  color: var(--ink-muted);
+}
+
+.row-info-value {
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+/* Status Badges with Thin Borders */
+.badge {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  border: 1px solid var(--ink-dark);
+}
+
+.badge.available {
+  background-color: var(--status-available-bg);
+  color: var(--status-available-text);
+}
+
+.badge.working {
+  background-color: var(--status-working-bg);
+  color: var(--status-working-text);
+}
+
+.badge.break {
+  background-color: var(--status-break-bg);
+  color: var(--status-break-text);
+}
+
+.badge.danger {
+  background-color: var(--status-danger-bg);
+  color: var(--status-danger-text);
+}
+
+/* Modals with 3D shadow offset */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(15, 23, 42, 0.3);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background-color: var(--card-bg);
+  border-radius: 20px;
+  border: var(--card-border);
+  box-shadow: 6px 6px 0px 0px var(--ink-dark);
+  width: 90%;
+  max-width: 500px;
+  padding: 32px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--ink-muted);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-muted);
+}
+
+.form-control {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: var(--card-border);
+  outline: none;
+  font-size: 14px;
+}
+
+.form-control:focus {
+  box-shadow: 2px 2px 0px 0px var(--ink-dark);
+}
+
+/* Split layout */
+.section-layout-split {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+}
+
+/* Manual lists */
+.manual-checklist-item, .manual-issue-item {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+  align-items: flex-start;
+}
+
+.manual-checklist-item svg {
+  color: var(--status-available-text);
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.manual-issue-item svg {
+  color: var(--status-danger-text);
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.manual-text-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.manual-issue-title {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.manual-issue-solution {
+  font-size: 12px;
+  color: var(--ink-muted);
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+/* QR Scanner simulation */
+.qr-scanner-box {
+  border: 2px dashed var(--ink-dark);
+  border-radius: 12px;
+  padding: 30px;
+  text-align: center;
+  background-color: var(--light-bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.qr-placeholder-svg {
+  width: 80px;
+  height: 80px;
+  stroke: var(--ink-dark);
+  stroke-width: 1.5;
+  fill: none;
+}
+
+/* Mobile responsive bar */
+.mobile-header-bar {
+  display: none;
+  background-color: var(--dark-bg);
+  color: white;
+  padding: 16px;
+  align-items: center;
+  justify-content: space-between;
+  width: 100vw;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  border-bottom: var(--card-border);
+}
+
+.menu-toggle-btn {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+/* ==========================================
+   NEW STYLES: Calendar, Cabinet, Map
+   ========================================== */
+
+/* 1. Calendar styles */
+.calendar-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.calendar-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ink-dark);
+  font-family: var(--font-title);
+  min-width: 150px;
+  text-align: center;
+}
+
+.calendar-nav, .calendar-views-toggle {
+  display: flex;
+  gap: 6px;
+}
+
+.calendar-views-toggle .btn-secondary.active {
+  background-color: var(--ink-dark);
+  color: #ffffff;
+  box-shadow: 2px 2px 0px 0px var(--ink-dark);
+}
+
+.calendar-container {
+  background-color: var(--card-bg);
+  border: var(--card-border);
+  box-shadow: var(--solid-shadow);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.calendar-view-panel {
+  display: none;
+}
+
+.calendar-view-panel.active {
+  display: block;
+}
+
+.calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-weight: 700;
+  font-size: 12px;
+  padding: 12px 0;
+  background-color: var(--light-bg);
+  border-bottom: 1.5px solid var(--ink-dark);
+}
+
+.calendar-weekdays div {
+  color: var(--ink-muted);
+}
+
+.calendar-weekdays div:first-child {
+  color: var(--status-danger-text);
+}
+
+.calendar-days-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.calendar-day-cell {
+  min-height: 95px;
+  padding: 8px;
+  border-right: 1.5px solid var(--light-bg);
+  border-bottom: 1.5px solid var(--light-bg);
+  background-color: var(--card-bg);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: background-color 0.2s ease;
+  position: relative;
+}
+
+.calendar-day-cell:nth-child(7n) {
+  border-right: none;
+}
+
+.calendar-day-cell:hover {
+  background-color: #f1f5f9;
+}
+
+.calendar-day-cell.inactive {
+  background-color: #f8fafc;
+}
+
+.calendar-day-cell.inactive .day-number {
+  color: #cbd5e1;
+}
+
+.calendar-day-cell .day-number {
+  font-family: var(--font-title);
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--ink-dark);
+}
+
+.calendar-day-cell.today {
+  background-color: #eff6ff;
+}
+
+.calendar-day-cell.today .day-number {
+  color: var(--primary);
+  background-color: #dbeafe;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1px solid var(--primary);
+}
+
+.calendar-day-jobs {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  overflow-y: auto;
+  max-height: 60px;
+}
+
+.calendar-job-badge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 5px;
+  border-radius: 4px;
+  border: 1px solid var(--ink-dark);
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  box-shadow: 1px 1px 0px var(--ink-dark);
+}
+
+.calendar-job-badge.Pending {
+  background-color: var(--status-danger-bg);
+  color: var(--status-danger-text);
+}
+
+.calendar-job-badge.In-Progress {
+  background-color: var(--status-working-bg);
+  color: var(--status-working-text);
+}
+
+.calendar-job-badge.Completed {
+  background-color: var(--status-available-bg);
+  color: var(--status-available-text);
+}
+
+/* Week View styles */
+.calendar-week-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  min-height: 350px;
+}
+
+.calendar-week-col {
+  border-right: 1.5px solid var(--light-bg);
+  display: flex;
+  flex-direction: column;
+  background-color: var(--card-bg);
+}
+
+.calendar-week-col:last-child {
+  border-right: none;
+}
+
+.calendar-week-header {
+  padding: 10px 6px;
+  text-align: center;
+  background-color: var(--light-bg);
+  border-bottom: 1.5px solid var(--ink-dark);
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.calendar-week-header.today {
+  background-color: #dbeafe;
+  color: var(--primary);
+}
+
+.calendar-week-body {
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.calendar-week-job {
+  padding: 6px;
+  background-color: var(--card-bg);
+  border: 1px solid var(--ink-dark);
+  border-radius: 6px;
+  box-shadow: 2px 2px 0px var(--ink-dark);
+  font-size: 11px;
+}
+
+.calendar-week-job-time {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--ink-muted);
+}
+
+.calendar-week-job-title {
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+/* Day View styles */
+.calendar-day-schedule {
+  padding: 16px;
+  background-color: var(--card-bg);
+}
+
+.calendar-day-timeline-item {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  border-bottom: 1px dashed #e2e8f0;
+  padding: 12px 0;
+  align-items: center;
+}
+
+.calendar-day-timeline-item:last-child {
+  border-bottom: none;
+}
+
+.calendar-day-time {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--ink-muted);
+}
+
+.calendar-day-job-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.calendar-day-job-card {
+  padding: 12px 16px;
+  background-color: var(--card-bg);
+  border: 1.5px solid var(--ink-dark);
+  border-radius: 12px;
+  box-shadow: 3px 3px 0px var(--ink-dark);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* 2. Parts Drawer Cabinet styles */
+.parts-cabinet {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background-color: var(--light-bg);
+  border: 2px solid var(--ink-dark);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: inset 4px 4px 10px rgba(0, 0, 0, 0.05), 4px 4px 0px var(--ink-dark);
+}
+
+.drawer-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.drawer-dropdown-details {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease, padding 0.35s ease, margin 0.35s ease, border-width 0.35s ease;
+  background-color: var(--card-bg);
+  border: 0px solid var(--ink-dark);
+  box-shadow: none;
+  border-radius: 12px;
+  padding: 0 16px;
+  margin-top: 0;
+}
+
+.drawer-dropdown-details.open {
+  max-height: 850px;
+  opacity: 1;
+  padding: 20px;
+  margin-top: 14px;
+  margin-bottom: 12px;
+  border: 1.5px solid var(--ink-dark);
+  box-shadow: var(--solid-shadow);
+}
+
+/* Scrollable Parts List within Drawer details */
+.drawer-parts-list {
+  max-height: 360px;
+  overflow-y: auto;
+  padding-right: 8px;
+  display: block;
+}
+
+/* Chunky Scrollbar styling matching the CI */
+.drawer-parts-list::-webkit-scrollbar {
+  width: 8px;
+}
+.drawer-parts-list::-webkit-scrollbar-track {
+  background: var(--light-bg);
+  border: 1px solid var(--ink-dark);
+  border-radius: 4px;
+}
+.drawer-parts-list::-webkit-scrollbar-thumb {
+  background: var(--ink-dark);
+  border-radius: 4px;
+}
+
+/* High-Density Parts Table */
+.parts-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  font-size: 13px;
+  border: 1.5px solid var(--ink-dark);
+  box-shadow: 2px 2px 0px var(--ink-dark);
+  background-color: var(--card-bg);
+}
+
+.parts-table th {
+  background-color: var(--light-bg);
+  border-bottom: 1.5px solid var(--ink-dark);
+  border-right: 1px solid var(--ink-dark);
+  padding: 10px 14px;
+  font-family: var(--font-title);
+  font-weight: 700;
+  color: var(--ink-dark);
+  font-size: 12px;
+  letter-spacing: 0.5px;
+}
+
+.parts-table th:last-child {
+  border-right: none;
+}
+
+.parts-table td {
+  border-bottom: 1px solid #e2e8f0;
+  border-right: 1px solid #e2e8f0;
+  padding: 10px 14px;
+  vertical-align: middle;
+  color: var(--ink-dark);
+}
+
+.parts-table td:last-child {
+  border-right: none;
+}
+
+.parts-table tr:last-child td {
+  border-bottom: none;
+}
+
+.parts-table tr:hover {
+  background-color: #f8fafc;
+}
+
+/* Subtle indicator for low stock items */
+.parts-table tr.low-stock-row {
+  background-color: #fffaf0;
+}
+
+.parts-table tr.low-stock-row td:first-child {
+  border-left: 4px solid #ef4444;
+}
+
+.drawer-slot {
+  background-color: #0f172a; /* Empty drawer space shadow */
+  border-radius: 12px;
+  border: 1.5px solid var(--ink-dark);
+  height: 85px;
+  position: relative;
+  overflow: visible; /* to allow drawer face to slide outside bounds */
+}
+
+.cabinet-drawer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--card-bg);
+  border-radius: 10px;
+  border: 1.5px solid var(--ink-dark);
+  cursor: pointer;
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.25s ease;
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  z-index: 10;
+}
+
+/* Tactile sliding out drawer effect */
+.cabinet-drawer:hover {
+  transform: translate(-10px, 8px); /* Moves out forward-left */
+  box-shadow: 10px -8px 0px 0px var(--ink-dark);
+}
+
+.cabinet-drawer.active {
+  transform: translate(-18px, 14px); /* Moves out even further when opened */
+  box-shadow: 18px -14px 0px 0px var(--ink-dark);
+  background-color: #eff6ff;
+}
+
+.drawer-face {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.drawer-handle {
+  width: 70px;
+  height: 14px;
+  background-color: #cbd5e1;
+  border: 1.5px solid var(--ink-dark);
+  border-radius: 4px;
+  box-shadow: 2px 2px 0px var(--ink-dark);
+  position: relative;
+}
+
+.drawer-handle::after {
+  content: '';
+  position: absolute;
+  width: 40px;
+  height: 5px;
+  background-color: #94a3b8;
+  border-radius: 2px;
+  top: 3px;
+  left: 15px;
+}
+
+.drawer-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-grow: 1;
+  padding-left: 24px;
+  justify-content: space-between;
+}
+
+.drawer-label {
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--ink-dark);
+}
+
+.drawer-stock-indicator {
+  padding: 4px 12px;
+}
+
+/* 3. Chiang Mai Map styles */
+.shops-split-layout {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 24px;
+}
+
+.map-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.map-container {
+  width: 100%;
+  height: 420px;
+  background-color: #f0f7ff; /* Watery blue background */
+  border: var(--card-border);
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: inset 2px 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.chiangmai-svg-map {
+  width: 100%;
+  height: 100%;
+  user-select: none;
+}
+
+.map-tambon {
+  fill: var(--card-bg);
+  stroke: var(--ink-dark);
+  stroke-width: 1.5;
+  transition: fill 0.2s ease, stroke-width 0.2s ease;
+  cursor: pointer;
+}
+
+.map-tambon:hover {
+  fill: #e0f2fe; /* Light sky blue */
+  stroke-width: 2;
+}
+
+.map-tambon.selected {
+  fill: #bae6fd;
+  stroke-width: 2.5;
+}
+
+.moat-rect {
+  fill: #fef08a; /* Accent Yellow for city center moat */
+}
+
+.moat-rect:hover {
+  fill: #fef08a !important; /* Keep it yellow but maybe darken */
+  opacity: 0.9;
+}
+
+.map-label {
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 700;
+  fill: #475569;
+  text-anchor: middle;
+  pointer-events: none;
+}
+
+.moat-label {
+  fill: #b45309;
+}
+
+/* Pulsing pins on map */
+.map-pin-group {
+  cursor: pointer;
+}
+
+.map-pin-core {
+  stroke: var(--ink-dark);
+  stroke-width: 1.5;
+  transition: transform 0.15s ease;
+}
+
+.map-pin-group:hover .map-pin-core {
+  transform: scale(1.3);
+}
+
+@keyframes markerPulse {
+  0% {
+    r: 6px;
+    opacity: 0.8;
+  }
+  100% {
+    r: 18px;
+    opacity: 0;
+  }
+}
+
+.map-pin-pulse {
+  animation: markerPulse 1.8s infinite ease-out;
+  pointer-events: none;
+}
+
+.dot-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+@keyframes indicatorPulse {
+  0% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(1); opacity: 0.8; }
+}
+
+.map-pulse-red-dot {
+  animation: indicatorPulse 1.2s infinite ease-in-out;
+}
+
+.shops-info-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ==========================================
+   Media Queries
+   ========================================== */
+@media (max-width: 1200px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .stats-grid .card:first-child {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 992px) {
+  .section-layout-split {
+    grid-template-columns: 1fr;
+  }
+  .row-card {
+    grid-template-columns: 1.5fr 1fr 1fr;
+  }
+  .row-card .row-card-title {
+    grid-column: span 3;
+  }
+  .shops-split-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    flex-direction: column;
+  }
+  
+  .mobile-header-bar {
+    display: flex;
+  }
+  
+  .sidebar {
+    position: fixed;
+    top: 60px;
+    left: -260px;
+    height: calc(100vh - 60px);
+    width: 260px;
+    box-shadow: 5px 0 15px rgba(0,0,0,0.1);
+  }
+  
+  .sidebar.open {
+    left: 0;
+  }
+  
+  .main-content {
+    padding: 20px;
+    height: auto;
+    overflow-y: visible;
+  }
+  
+  .main-header {
+    display: none;
+  }
+  
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .stats-grid .card:first-child {
+    grid-column: span 1;
+  }
+  
+  .row-card {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 16px;
+  }
+  
+  .row-card .row-card-title {
+    grid-column: span 1;
+  }
+  
+  .calendar-controls {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .calendar-title {
+    order: -1;
+    text-align: left;
+  }
+}
+
+/* Dispatch Board Two-Column Layout */
+.dispatch-layout {
+  display: grid;
+  grid-template-columns: 1.2fr 1.8fr;
+  gap: 24px;
+  align-items: start;
+}
+
+@media (max-width: 1024px) {
+  .dispatch-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Requisition & Parts Return Table Styles inside Modals */
+.requisition-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  font-size: 13px;
+  border: 1.5px solid var(--ink-dark);
+  box-shadow: 2px 2px 0px var(--ink-dark);
+  background-color: #ffffff;
+}
+
+.requisition-table th {
+  background-color: var(--light-bg);
+  border-bottom: 1.5px solid var(--ink-dark);
+  padding: 10px;
+  font-weight: 700;
+  color: var(--ink-dark);
+}
+
+.requisition-table td {
+  border-bottom: 1px solid rgba(15, 23, 42, 0.1);
+  padding: 10px;
+  vertical-align: middle;
+}
+
+.requisition-input {
+  width: 70px;
+  padding: 5px;
+  border: 1.5px solid var(--ink-dark);
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  text-align: center;
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow: 1px 1px 0px var(--ink-dark);
+}
+
+.requisition-input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+/* Theme-specific Overrides */
+body.dark-mode .calendar-day-cell.today {
+  background-color: rgba(255, 69, 0, 0.15);
+}
+body.dark-mode .calendar-day-cell.today .day-number {
+  color: var(--primary);
+  background-color: rgba(255, 69, 0, 0.25);
+  border-color: var(--primary);
+}
+body.dark-mode .calendar-week-header.today {
+  background-color: rgba(255, 69, 0, 0.15);
+}
+body.dark-mode .parts-table tr.low-stock-row {
+  background-color: rgba(245, 158, 11, 0.08);
+}
+body.dark-mode .cabinet-drawer.active {
+  background-color: rgba(255, 69, 0, 0.1);
+}
+body.dark-mode .map-container {
+  background-color: #0d0f12;
+}
+body.dark-mode .map-tambon:hover {
+  fill: rgba(255, 69, 0, 0.2);
+}
+body.dark-mode .map-tambon.selected {
+  fill: rgba(255, 69, 0, 0.35);
+}
+body.dark-mode .moat-rect {
+  fill: rgba(255, 210, 80, 0.2);
+}
+body.dark-mode .moat-rect:hover {
+  fill: rgba(255, 210, 80, 0.35) !important;
+}
+
