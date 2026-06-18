@@ -102,6 +102,14 @@ var BANK_REC_HEADERS = [
   "ผู้กระทบยอด (Reconciled By)"
 ];
 
+var DOCHUB_HEADERS = [
+  "ชื่อเอกสาร (Document Name)",
+  "หมวดหมู่ (Category)",
+  "ลิงก์เอกสาร Google Drive (URL)",
+  "วันที่อัปเดต (Date)",
+  "รายละเอียด (Description)"
+];
+
 function doPost(e) {
   var lock = LockService.getScriptLock();
   lock.tryLock(10000); // ล็อกสคริปต์ 10 วินาทีป้องกันสัญญานยิงชนกัน
@@ -178,7 +186,8 @@ function doPost(e) {
         { name: "รายจ่าย", headers: EXPENSE_HEADERS },
         { name: "เงินสดย่อย", headers: PETTY_CASH_HEADERS },
         { name: "เงินเดือน", headers: PAYROLL_HEADERS },
-        { name: "กระทบยอดธนาคาร", headers: BANK_REC_HEADERS }
+        { name: "กระทบยอดธนาคาร", headers: BANK_REC_HEADERS },
+        { name: "คลังเอกสาร", headers: DOCHUB_HEADERS }
       ];
       
       var createdSheets = [];
@@ -225,6 +234,74 @@ function doPost(e) {
       return ContentService.createTextOutput(JSON.stringify({
         "status": "success",
         "message": "เตรียมโครงสร้างชีตสำเร็จแล้วแก! (สร้างแท็บใหม่: " + createdSheets.join(", ") + " | ตรวจทานแท็บเดิม: " + checkedSheets.join(", ") + " | ล้างแถวมีปัญหาออก: " + deletedBuggyRows + " แถว)"
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+    
+    // ----------------------------------------------------
+    // CASE 3: อ่านข้อมูลแท็บใดๆ (Read)
+    // ----------------------------------------------------
+    else if (data.type === "read") {
+      var sheetName = data.sheetName;
+      if (!sheetName) {
+        return ContentService.createTextOutput(JSON.stringify({
+          "status": "error",
+          "message": "ไม่ระบุชื่อแท็บชีต (sheetName) นะแก!"
+        })).setMimeType(ContentService.MimeType.JSON);
+      }
+      
+      var sheet = activeSpreadsheet.getSheetByName(sheetName);
+      if (!sheet) {
+        return ContentService.createTextOutput(JSON.stringify({
+          "status": "error",
+          "message": "ไม่พบแท็บชีตชื่อ '" + sheetName + "' นะแก!"
+        })).setMimeType(ContentService.MimeType.JSON);
+      }
+      
+      var lastRow = sheet.getLastRow();
+      var lastCol = sheet.getLastColumn();
+      var values = [];
+      if (lastRow > 1 && lastCol > 0) {
+        values = sheet.getRange(2, 1, lastRow - 1, lastCol).getDisplayValues();
+      }
+      
+      return ContentService.createTextOutput(JSON.stringify({
+        "status": "success",
+        "values": values
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+    
+    // ----------------------------------------------------
+    // CASE 4: เขียนทับข้อมูลทั้งหมดในแท็บ (Overwrite)
+    // ----------------------------------------------------
+    else if (data.type === "overwrite") {
+      var sheetName = data.sheetName;
+      var headers = data.headers;
+      var rows = data.rows;
+      
+      if (!sheetName) {
+        return ContentService.createTextOutput(JSON.stringify({
+          "status": "error",
+          "message": "ไม่ระบุชื่อแท็บชีต (sheetName) นะแก!"
+        })).setMimeType(ContentService.MimeType.JSON);
+      }
+      
+      var sheet = activeSpreadsheet.getSheetByName(sheetName);
+      if (!sheet) {
+        sheet = activeSpreadsheet.insertSheet(sheetName);
+      }
+      
+      sheet.clear(); // ล้างข้อมูลเก่าทั้งหมด
+      if (headers && headers.length > 0) {
+        sheet.appendRow(headers);
+      }
+      if (rows && rows.length > 0) {
+        sheet.getRange(2, 1, rows.length, rows[0].length).setValues(rows);
+      }
+      beautifySheet(sheet, sheetName);
+      
+      return ContentService.createTextOutput(JSON.stringify({
+        "status": "success",
+        "message": "เขียนทับข้อมูลแท็บ '" + sheetName + "' เรียบร้อยแล้วแก!"
       })).setMimeType(ContentService.MimeType.JSON);
     }
     

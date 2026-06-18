@@ -2722,13 +2722,27 @@ function fetchDocHubFromSheets(showToast = false) {
   .then(res => {
     if (res.status === 'success') {
       if (res.values && Array.isArray(res.values)) {
-        docHubLinks = res.values.map(row => ({
-          name: row[0] || '',
-          category: row[1] || '',
-          url: row[2] || '',
-          date: row[3] || '',
-          desc: row[4] || ''
-        }));
+        docHubLinks = res.values.map(row => {
+          let dateVal = row[3] || '';
+          if (dateVal && typeof dateVal === 'string' && dateVal.includes('T') && dateVal.includes('Z')) {
+            try {
+              const d = new Date(dateVal);
+              const day = String(d.getDate()).padStart(2, '0');
+              const month = String(d.getMonth() + 1).padStart(2, '0');
+              const year = d.getFullYear();
+              dateVal = `${day}/${month}/${year}`;
+            } catch (e) {
+              console.error('Error parsing ISO date:', e);
+            }
+          }
+          return {
+            name: row[0] || '',
+            category: row[1] || '',
+            url: row[2] || '',
+            date: dateVal,
+            desc: row[4] || ''
+          };
+        });
         safeStorage.setItem('ghn168_doc_hub', JSON.stringify(docHubLinks));
         renderDocHubList();
         renderDashboardDocHubShortcuts();
