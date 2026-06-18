@@ -1620,18 +1620,32 @@ function syncDocPreview() {
       prevDepositTermsBlock.style.paddingTop = '0';
       prevDepositTermsBlock.style.marginTop = '0';
     }
+  } else if (currentDocType === 'invoice') {
+    if (prevCustomerSigBox) prevCustomerSigBox.style.display = 'block';
+    if (prevAuthorizedSigTitle) prevAuthorizedSigTitle.textContent = 'ในนาม เจ้าของกิจการ Feltz Studio';
+    if (prevSignerNameVal) prevSignerNameVal.textContent = '(นาย มงคล วงศ์สกุลยานนท์)';
+    if (prevSignerRoleVal) prevSignerRoleVal.style.display = 'none';
+    if (sigRow) sigRow.style.justifyContent = 'space-between'; // ลายเซ็นแบบ 2 ช่องแยกซ้ายขวาตามปกติ
+    
+    // แสดงข้อมูลธนาคารสำหรับเอกสารแจ้งหนี้/รับเงิน และจัดเรียงกล่องมัดจำตามปกติ
+    if (prevBankPaymentDetailsBlock) prevBankPaymentDetailsBlock.style.display = 'block';
+    if (prevDepositTermsBlock) {
+      prevDepositTermsBlock.style.borderTop = '1px dashed #e2e8f0';
+      prevDepositTermsBlock.style.paddingTop = '8px';
+      prevDepositTermsBlock.style.marginTop = '8px';
+    }
   } else {
     if (prevCustomerSigBox) prevCustomerSigBox.style.display = 'block';
     if (prevAuthorizedSigTitle) {
-      prevAuthorizedSigTitle.textContent = currentDocType === 'invoice' 
-        ? 'ผู้ออกเอกสาร / Authorized Signature' 
-        : 'ผู้รับเงิน / Authorized Signature';
+      prevAuthorizedSigTitle.textContent = 'ผู้รับเงิน';
     }
     if (prevSignerNameVal) {
-      const docSignerName = document.getElementById('docSignerName');
-      prevSignerNameVal.textContent = docSignerName ? (docSignerName.value || 'มงคล วงศ์สกุลยานนท์') : 'มงคล วงศ์สกุลยานนท์';
+      prevSignerNameVal.textContent = '(นาย มงคล วงศ์สกุลยานนท์)';
     }
-    if (prevSignerRoleVal) prevSignerRoleVal.style.display = 'none';
+    if (prevSignerRoleVal) {
+      prevSignerRoleVal.textContent = 'ในนาม เจ้าของกิจการ Feltz Studio';
+      prevSignerRoleVal.style.display = 'block';
+    }
     if (sigRow) sigRow.style.justifyContent = 'space-between'; // ลายเซ็นแบบ 2 ช่องแยกซ้ายขวาตามปกติ
     
     // แสดงข้อมูลธนาคารสำหรับเอกสารแจ้งหนี้/รับเงิน และจัดเรียงกล่องมัดจำตามปกติ
