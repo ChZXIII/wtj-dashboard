@@ -1386,6 +1386,20 @@ textarea.form-control {
     box-sizing: border-box !important;
   }
 
+  /* iOS Safari date input styling and overflow reset */
+  input[type="date"].form-control {
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    min-height: 46px !important;
+  }
+
+  input[type="date"]::-webkit-date-and-time-value {
+    margin: 0 !important;
+    padding: 0 !important;
+    text-align: left !important;
+    min-height: 1.5em !important;
+  }
+
   /* Prevent table squishing and vertical header text wrapping */
   .table th,
   .table td,
