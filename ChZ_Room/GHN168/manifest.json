@@ -1,0 +1,17 @@
+{
+  "name": "GHN168 Account",
+  "short_name": "GHN168",
+  "description": "GHN168 Accounting & Document Hub",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#181a1d",
+  "theme_color": "#ff4500",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
