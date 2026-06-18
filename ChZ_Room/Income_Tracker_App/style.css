@@ -1383,6 +1383,7 @@ input[type="time"] {
     background: #ffffff !important;
     color: #000000 !important;
     height: auto !important;
+    min-height: 0 !important;
     margin: 0 !important;
     padding: 0 !important;
     overflow: visible !important;
@@ -1396,6 +1397,8 @@ input[type="time"] {
     display: block !important;
     width: 100% !important;
     background: #ffffff !important;
+    height: auto !important;
+    min-height: 0 !important;
   }
 
   .sidebar, 
@@ -1423,6 +1426,8 @@ input[type="time"] {
     width: 100% !important;
     margin: 0 !important;
     padding: 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
   }
 
   .document-preview-panel {
@@ -1431,6 +1436,8 @@ input[type="time"] {
     padding: 0 !important;
     margin: 0 !important;
     overflow: visible !important;
+    height: auto !important;
+    min-height: 0 !important;
   }
 
   .paper-container {
@@ -1441,6 +1448,8 @@ input[type="time"] {
     background: transparent !important;
     display: block !important;
     width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
   }
 
   /* Exact A4 printing rules */
