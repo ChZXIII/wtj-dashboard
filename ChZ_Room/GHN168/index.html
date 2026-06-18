@@ -1,0 +1,1906 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GHN168 | Accounting & Document Hub</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-mode">
+  <div class="app-container">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="brand">
+        <img src="sidebar_logo_dark.png" alt="GHN168" class="brand-logo-img logo-dark-only">
+        <img src="sidebar_logo_light.png" alt="GHN168" class="brand-logo-img logo-light-only">
+      </div>
+      
+      <ul class="nav-links">
+        <li class="nav-item active" data-view="dashboard">
+          <button>
+            <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+            </svg>
+            Dashboard
+          </button>
+        </li>
+        <li class="nav-item" data-view="docgen">
+          <button>
+            <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            ออกเอกสาร (QT/IV/RE/WHT)
+          </button>
+        </li>
+        <li class="nav-item" data-view="dochub">
+          <button>
+            <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+            </svg>
+            คลังเอกสารสำคัญ
+          </button>
+        </li>
+        <li class="nav-item" data-view="expense">
+          <button>
+            <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+            </svg>
+            บันทึกรายจ่าย
+          </button>
+        </li>
+        <li class="nav-item" data-view="pettycash">
+          <button>
+            <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            เงินสดย่อย (Petty Cash)
+          </button>
+        </li>
+        <li class="nav-item" data-view="payroll">
+          <button>
+            <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+            เงินเดือน (Payroll)
+          </button>
+        </li>
+        <li class="nav-item" data-view="bankrec">
+          <button>
+            <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+            </svg>
+            กระทบยอดธนาคาร
+          </button>
+        </li>
+        <li class="nav-item" data-view="taxexport">
+          <button>
+            <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+            ยื่นภาษีออนไลน์
+          </button>
+        </li>
+        <li class="nav-item" data-view="settings">
+          <button>
+            <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            การตั้งค่าเชื่อมต่อ
+          </button>
+        </li>
+      </ul>
+
+
+      <div class="sidebar-footer">
+        <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleTheme()">
+          <svg class="theme-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707.707M12 8a4 4 0 100 8 4 4 0 000-8z" />
+          </svg>
+          โหมดสว่าง (Light)
+        </button>
+        
+        <!-- Accounting Agent Profile Widget -->
+        <div class="agent-profile">
+          <div class="agent-avatar">พ</div>
+          <div class="agent-info">
+            <span class="agent-name">น้องพิม (Pim)</span>
+            <span class="agent-role">Corporate Accountant</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Workspace -->
+    <main class="main-content">
+      
+      <!-- VIEW 1: DASHBOARD -->
+      <section id="dashboard-view" class="view-section active">
+        <div class="view-header">
+          <div class="view-title-group">
+            <h1>Dashboard</h1>
+            <p>ภาพรวมการเงินและการออกเอกสารของ บริษัท จีเอชเอ็น 168 มีเดีย แอนด์ ครีเอชั่น จำกัด</p>
+          </div>
+        </div>
+        
+        <!-- Stat Grid -->
+        <div class="grid-cols-3">
+          <div class="card stat-card">
+            <span class="stat-label">รายรับสะสม (อิงใบเสร็จ)</span>
+            <span id="dashTotalIncome" class="stat-value income">฿0.00</span>
+          </div>
+          <div class="card stat-card">
+            <span class="stat-label">รายจ่ายสะสม (อิง 50 ทวิ)</span>
+            <span id="dashTotalExpense" class="stat-value expense">฿0.00</span>
+          </div>
+          <div class="card stat-card">
+            <span class="stat-label">ดุลการเงินคงเหลือ</span>
+            <span id="dashNetBalance" class="stat-value">฿0.00</span>
+          </div>
+        </div>
+
+        <div class="grid-cols-2">
+          <!-- Sync Status Card -->
+          <div class="card">
+            <div class="card-title">สถานะคิวการซิงค์ชีต (Sync Status)</div>
+            <div class="grid-cols-2" style="gap: 16px;">
+              <div style="border: 2px solid var(--border-color); padding: 12px; text-align:center;">
+                <span class="stat-label">ซิงค์สำเร็จแล้ว</span>
+                <h3 id="dashSyncedCount" class="mono" style="font-size: 28px; margin-top: 8px;">0</h3>
+              </div>
+              <div style="border: 2px solid var(--border-color); padding: 12px; text-align:center; display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                  <span class="stat-label">ค้างซิงค์ในเครื่อง</span>
+                  <h3 id="dashPendingCount" class="mono" style="font-size: 28px; margin-top: 8px; color: var(--accent-color);">0</h3>
+                </div>
+                <!-- Retry Pending Sync Button (ADVISORY) -->
+                <button id="btnSyncPendingDocs" class="btn-secondary" style="padding: 4px 8px; font-size:11px; margin-top:10px; width:100%; display:none;" onclick="syncPendingDocs()">
+                  <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 7.89M9 11l3-3 3 3m-3-3v12" />
+                  </svg>
+                  ซิงค์รายการค้างส่ง
+                </button>
+              </div>
+            </div>
+            <p style="font-size:12px; color: var(--text-secondary); margin-top: 12px; line-height: 1.4;">
+              * รายการค้างซิงค์จะเกิดเมื่อไม่มีอินเทอร์เน็ตหรือ Apps Script ล่มชั่วคราว ระบบจะเซฟเก็บประวัติแบบออฟไลน์ไว้ในเครื่อง และซิงค์ต่อทันทีเมื่อกดบันทึกในครั้งถัดไปแก
+            </p>
+          </div>
+
+          <!-- Quick Access Doc Hub -->
+          <div class="card" style="display:flex; flex-direction:column;">
+            <div class="card-title">
+              <span>ทางด่วนไฟล์สำคัญ</span>
+              <button class="btn-secondary" style="padding:4px 8px; font-size:11px;" onclick="switchView('dochub')">ดูทั้งหมด</button>
+            </div>
+            <p style="font-size:13px; color:var(--text-secondary); margin-bottom:12px;">เอกสารเปิดบ่อยจาก Google Drive บริษัท:</p>
+            <div id="dashDocHubShortcutContainer" style="display:flex; flex-direction:column; gap:8px;">
+              <a href="https://drive.google.com" target="_blank" class="btn-secondary" style="justify-content:flex-start; text-decoration:none; font-weight:700;">📂 เข้าสู่ Google Drive หลักของบริษัท</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Individual Sales & Fund Summary (Retro Brutalist style) -->
+        <div class="card" style="margin-top: 24px;">
+          <div class="card-title">สรุปผลงานและการหักเงินสะสมรายบุคคล (Sales Share & Reserve Fund)</div>
+          <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 16px;">
+            คำนวณจากใบเสร็จรับเงินที่ซิงค์สำเร็จแล้ว เพื่อใช้คำนวณสัดส่วนปันผลและยอดเงินสะสมส่วนตัวที่จะคืนเมื่อปิดงบปีแก
+          </p>
+          
+          <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: stretch; margin-top: 16px;">
+            <!-- Donut Chart Container (Left Column - Fixed Width to stay square-ish) -->
+            <div style="width: 250px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; border: 2px solid var(--border-color); background: var(--card-bg); box-shadow: 4px 4px 0px var(--shadow-color); border-radius: 4px;">
+              <div class="donut-chart-container">
+                <div id="salesDonutChart" style="width: 100%; height: 100%; border-radius: 50%; background: #e5e7eb; border: 2px solid var(--border-color); transition: background 0.3s ease;"></div>
+                <div id="donutCenterHole" style="position: absolute; width: 96px; height: 96px; background: var(--card-bg); border-radius: 50%; border: 2px solid var(--border-color); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+                  <span style="font-size: 8px; color: var(--text-secondary); font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;">ยอดปันผลรวม</span>
+                  <strong id="donutTotalRevenue" class="mono" style="font-size: 11px; margin-top: 2px; font-weight: 700; color: var(--text-primary);">฿0.00</strong>
+                </div>
+              </div>
+              <div style="display: flex; gap: 12px; margin-top: 16px; font-size: 11px; font-weight: 700; flex-wrap: wrap; justify-content: center; color: var(--text-primary);">
+                <div style="display: flex; align-items: center; gap: 6px;"><span style="display: inline-block; width: 10px; height: 10px; background: #e52521; border: 1px solid var(--border-color); border-radius: 2px;"></span>เก่ง</div>
+                <div style="display: flex; align-items: center; gap: 6px;"><span style="display: inline-block; width: 10px; height: 10px; background: #2563eb; border: 1px solid var(--border-color); border-radius: 2px;"></span>พี่นิค</div>
+                <div style="display: flex; align-items: center; gap: 6px;"><span style="display: inline-block; width: 10px; height: 10px; background: #16a34a; border: 1px solid var(--border-color); border-radius: 2px;"></span>หอม</div>
+              </div>
+            </div>
+
+            <!-- Individual Share Stats List (Right Column - Flex Column of Rows) -->
+            <div style="flex: 1; min-width: 300px; display: flex; flex-direction: column; gap: 12px; justify-content: space-between;">
+              <!-- เก่ง -->
+              <div class="sales-performance-card" style="border: 2px solid var(--border-color); padding: 12px 16px; background: var(--input-bg); box-shadow: 3px 3px 0px var(--shadow-color); border-radius: 4px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex: 1;">
+                <div style="display: flex; align-items: center; gap: 12px; min-width: 140px; flex-shrink: 0;">
+                  <div style="width: 32px; height: 32px; background: #e52521; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; border: 1px solid var(--border-color); border-radius: 4px;">ก</div>
+                  <div>
+                    <h4 style="margin: 0; font-size: 14px; color: var(--text-primary); font-weight: 700;">เก่ง (Keng)</h4>
+                    <span style="font-size: 10px; color: var(--text-secondary);">ผู้ร่วมก่อตั้ง</span>
+                  </div>
+                </div>
+                <div style="display: flex; gap: 24px; flex-wrap: wrap; flex: 1; justify-content: flex-end; text-align: right; color: var(--text-primary);">
+                  <div style="min-width: 90px;">
+                    <span style="font-size: 8px; color: var(--text-secondary); display: block; text-transform: uppercase;">ยอดขายที่ทำได้</span>
+                    <strong id="salesRevenue_เก่ง" style="font-size: 12px;">฿0.00</strong>
+                  </div>
+                  <div style="min-width: 80px;">
+                    <span style="font-size: 8px; color: var(--text-secondary); display: block; text-transform: uppercase;">สัดส่วนปันผล</span>
+                    <strong id="salesShare_เก่ง" style="font-size: 12px;">0.0%</strong>
+                  </div>
+                  <div style="min-width: 90px; border-left: 1px dashed var(--border-color); padding-left: 16px;">
+                    <span style="font-size: 8px; color: var(--text-secondary); display: block; text-transform: uppercase;">เงินสะสมเข้า บ.</span>
+                    <strong id="salesRetained_เก่ง" style="color: #ef4444; font-size: 12px;">฿0.00</strong>
+                  </div>
+                </div>
+              </div>
+
+              <!-- พี่นิค -->
+              <div class="sales-performance-card" style="border: 2px solid var(--border-color); padding: 12px 16px; background: var(--input-bg); box-shadow: 3px 3px 0px var(--shadow-color); border-radius: 4px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex: 1;">
+                <div style="display: flex; align-items: center; gap: 12px; min-width: 140px; flex-shrink: 0;">
+                  <div style="width: 32px; height: 32px; background: #2563eb; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; border: 1px solid var(--border-color); border-radius: 4px;">น</div>
+                  <div>
+                    <h4 style="margin: 0; font-size: 14px; color: var(--text-primary); font-weight: 700;">พี่นิค (Nick)</h4>
+                    <span style="font-size: 10px; color: var(--text-secondary);">ผู้ร่วมก่อตั้ง</span>
+                  </div>
+                </div>
+                <div style="display: flex; gap: 24px; flex-wrap: wrap; flex: 1; justify-content: flex-end; text-align: right; color: var(--text-primary);">
+                  <div style="min-width: 90px;">
+                    <span style="font-size: 8px; color: var(--text-secondary); display: block; text-transform: uppercase;">ยอดขายที่ทำได้</span>
+                    <strong id="salesRevenue_พี่นิค" style="font-size: 12px;">฿0.00</strong>
+                  </div>
+                  <div style="min-width: 80px;">
+                    <span style="font-size: 8px; color: var(--text-secondary); display: block; text-transform: uppercase;">สัดส่วนปันผล</span>
+                    <strong id="salesShare_พี่นิค" style="font-size: 12px;">0.0%</strong>
+                  </div>
+                  <div style="min-width: 90px; border-left: 1px dashed var(--border-color); padding-left: 16px;">
+                    <span style="font-size: 8px; color: var(--text-secondary); display: block; text-transform: uppercase;">เงินสะสมเข้า บ.</span>
+                    <strong id="salesRetained_พี่นิค" style="color: #ef4444; font-size: 12px;">฿0.00</strong>
+                  </div>
+                </div>
+              </div>
+
+              <!-- หอม -->
+              <div class="sales-performance-card" style="border: 2px solid var(--border-color); padding: 12px 16px; background: var(--input-bg); box-shadow: 3px 3px 0px var(--shadow-color); border-radius: 4px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex: 1;">
+                <div style="display: flex; align-items: center; gap: 12px; min-width: 140px; flex-shrink: 0;">
+                  <div style="width: 32px; height: 32px; background: #16a34a; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; border: 1px solid var(--border-color); border-radius: 4px;">ห</div>
+                  <div>
+                    <h4 style="margin: 0; font-size: 14px; color: var(--text-primary); font-weight: 700;">หอม (Hom)</h4>
+                    <span style="font-size: 10px; color: var(--text-secondary);">ผู้ร่วมก่อตั้ง</span>
+                  </div>
+                </div>
+                <div style="display: flex; gap: 24px; flex-wrap: wrap; flex: 1; justify-content: flex-end; text-align: right; color: var(--text-primary);">
+                  <div style="min-width: 90px;">
+                    <span style="font-size: 8px; color: var(--text-secondary); display: block; text-transform: uppercase;">ยอดขายที่ทำได้</span>
+                    <strong id="salesRevenue_หอม" style="font-size: 12px;">฿0.00</strong>
+                  </div>
+                  <div style="min-width: 80px;">
+                    <span style="font-size: 8px; color: var(--text-secondary); display: block; text-transform: uppercase;">สัดส่วนปันผล</span>
+                    <strong id="salesShare_หอม" style="font-size: 12px;">0.0%</strong>
+                  </div>
+                  <div style="min-width: 90px; border-left: 1px dashed var(--border-color); padding-left: 16px;">
+                    <span style="font-size: 8px; color: var(--text-secondary); display: block; text-transform: uppercase;">เงินสะสมเข้า บ.</span>
+                    <strong id="salesRetained_หอม" style="color: #ef4444; font-size: 12px;">฿0.00</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tax & VAT Summary Card -->
+        <div class="card" style="margin-top: 24px;">
+          <div class="card-title" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+            <span>สรุปภาษีและรายได้รายโครงการประจำเดือน (Monthly Tax & Project Profitability)</span>
+            <div style="display: flex; gap: 8px;">
+              <select id="taxFilterMonth" class="form-control" style="width: 160px; padding: 4px 8px; font-size: 13px; font-weight: 700; height: auto;">
+                <!-- Dynamically filled with month options -->
+              </select>
+            </div>
+          </div>
+          
+          <div class="grid-cols-3" style="gap: 16px; margin-top: 16px;">
+            <!-- VAT Summary -->
+            <div style="border: 2px solid var(--border-color); padding: 16px; background: var(--input-bg); box-shadow: 3px 3px 0px var(--shadow-color); border-radius: 4px;">
+              <h4 style="margin: 0 0 12px 0; font-size: 14px; border-bottom: 2px solid var(--border-color); padding-bottom: 6px; color: var(--text-primary); font-weight: 700;">ภาษีมูลค่าเพิ่ม (ภ.พ.30)</h4>
+              <div style="display: flex; flex-direction: column; gap: 8px; font-size: 13px; color: var(--text-primary);">
+                <div style="display: flex; justify-content: space-between;">
+                  <span>ภาษีขาย (Output VAT):</span>
+                  <strong id="summaryOutputVat" class="mono">฿0.00</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                  <span>ภาษีซื้อ (Input VAT):</span>
+                  <strong id="summaryInputVat" class="mono">฿0.00</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; border-top: 1px dashed var(--border-color); padding-top: 8px; font-weight: 700;">
+                  <span>ภาษีสุทธิ:</span>
+                  <strong id="summaryNetVat" class="mono" style="color: var(--accent-color);">฿0.00</strong>
+                </div>
+              </div>
+            </div>
+            
+            <!-- WHT Summary -->
+            <div style="border: 2px solid var(--border-color); padding: 16px; background: var(--input-bg); box-shadow: 3px 3px 0px var(--shadow-color); border-radius: 4px;">
+              <h4 style="margin: 0 0 12px 0; font-size: 14px; border-bottom: 2px solid var(--border-color); padding-bottom: 6px; color: var(--text-primary); font-weight: 700;">ภาษีหัก ณ ที่จ่าย (WHT)</h4>
+              <div style="display: flex; flex-direction: column; gap: 8px; font-size: 13px; color: var(--text-primary);">
+                <div style="display: flex; justify-content: space-between;">
+                  <span>นำส่ง ภ.ง.ด.3 (บุคคล):</span>
+                  <strong id="summaryPnd3" class="mono">฿0.00</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                  <span>นำส่ง ภ.ง.ด.53 (นิติ):</span>
+                  <strong id="summaryPnd53" class="mono">฿0.00</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; border-top: 1px dashed var(--border-color); padding-top: 8px; font-weight: 700;">
+                  <span>ภาษีถูกหักสะสม:</span>
+                  <strong id="summaryWithheldTax" class="mono" style="color: #16a34a;">฿0.00</strong>
+                </div>
+              </div>
+            </div>
+
+            <!-- Financial Summary -->
+            <div style="border: 2px solid var(--border-color); padding: 16px; background: var(--input-bg); box-shadow: 3px 3px 0px var(--shadow-color); border-radius: 4px; display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <h4 style="margin: 0 0 12px 0; font-size: 14px; border-bottom: 2px solid var(--border-color); padding-bottom: 6px; color: var(--text-primary); font-weight: 700;">สัดส่วนทางการเงินสะสม</h4>
+                <div style="display: flex; flex-direction: column; gap: 8px; font-size: 13px; color: var(--text-primary);">
+                  <div style="display: flex; justify-content: space-between;">
+                    <span>รายรับรวมเดือนนี้:</span>
+                    <strong id="summaryMonthIncome" class="mono">฿0.00</strong>
+                  </div>
+                  <div style="display: flex; justify-content: space-between;">
+                    <span>รายจ่ายรวมเดือนนี้:</span>
+                    <strong id="summaryMonthExpense" class="mono">฿0.00</strong>
+                  </div>
+                </div>
+              </div>
+              <div style="border-top: 1px dashed var(--border-color); padding-top: 8px; font-size: 13px; font-weight: 700; display: flex; justify-content: space-between; align-items: center;">
+                <span>ดุลสะสมเดือนนี้:</span>
+                <span id="summaryMonthBalance" class="mono">฿0.00</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Project Profitability -->
+          <div style="margin-top: 20px; border-top: 2px solid var(--border-color); padding-top: 16px;">
+            <h4 style="margin: 0 0 12px 0; font-size: 14px; color: var(--text-primary); font-weight: 700;">งบกำไรขาดทุนรายโครงการประจำเดือน (Project Profitability Breakdown)</h4>
+            <div style="overflow-x: auto;">
+              <table class="doc-table" style="font-size: 12px; border-collapse: collapse; width: 100%;">
+                <thead>
+                  <tr style="background-color: var(--input-bg); font-weight:700;">
+                    <th>ชื่อโครงการ / งานบริการ</th>
+                    <th style="text-align: right; width: 150px;">รายรับ (Revenue)</th>
+                    <th style="text-align: right; width: 150px;">รายจ่ายตรง (Direct Cost)</th>
+                    <th style="text-align: right; width: 150px;">กำไรขั้นต้น (Margin)</th>
+                    <th style="text-align: center; width: 120px;">อัตรากำไร (%)</th>
+                  </tr>
+                </thead>
+                <tbody id="summaryProjectProfitabilityBody">
+                  <!-- Rendered dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Transactions -->
+        <div class="card">
+          <div class="card-title">ประวัติการออกเอกสารล่าสุด (Recent Documents)</div>
+          <div class="table-container">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th style="width: 120px;">วันที่ออก</th>
+                  <th style="width: 140px;">เลขที่เอกสาร</th>
+                  <th style="width: 100px;">ประเภท</th>
+                  <th>ชื่อลูกค้า / ผู้รับเงิน</th>
+                  <th style="text-align: right; width: 150px;">จำนวนเงิน</th>
+                  <th style="text-align: center; width: 120px;">สถานะชีต</th>
+                </tr>
+              </thead>
+              <tbody id="dashRecentTransactionsBody">
+                <!-- Rendered dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 2: DOCUMENT GENERATOR -->
+      <section id="docgen-view" class="view-section">
+        <div class="view-header">
+          <div class="view-title-group">
+            <h1>ออกเอกสารธุรกรรม</h1>
+            <p>สร้าง พิมพ์ไฟล์ PDF ใบเสนอราคา ใบวางบิล ใบเสร็จรับเงิน และ 50 ทวิ พร้อมระบบคีย์งบออโต้</p>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button id="btnDocTypeQuotation" class="btn-secondary active">ใบเสนอราคา (QT)</button>
+            <button id="btnDocTypeInvoice" class="btn-secondary">ใบวางบิล (IV)</button>
+            <button id="btnDocTypeReceipt" class="btn-secondary">ใบเสร็จรับเงิน (RE)</button>
+            <button id="btnDocTypeWht" class="btn-secondary">ใบหัก ณ ที่จ่าย (50 ทวิ)</button>
+          </div>
+        </div>
+
+        <div class="doc-gen-container">
+          
+          <!-- Left Editor Panel -->
+          <div class="doc-editor-panel">
+            
+            <!-- HITL Alert Holder -->
+            <div id="hitlWarningPanel" style="display: none;"></div>
+
+            <!-- Standard Document Editor Forms -->
+            <div id="formGroupStandardDetails" class="card">
+              <div class="card-title">รายละเอียดเอกสาร</div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="docNumber">เลขที่เอกสาร</label>
+                  <input type="text" id="docNumber" class="form-control mono" style="font-weight: 700;">
+                </div>
+                <div class="form-group" id="groupDocInvoiceNo">
+                  <label for="docInvoiceNo">เลขที่ใบวางบิลอ้างอิง</label>
+                  <input type="text" id="docInvoiceNo" class="form-control mono" placeholder="เช่น IV69001">
+                </div>
+                <div class="form-group">
+                  <label for="docDate">วันที่ออก</label>
+                  <input type="date" id="docDate" class="form-control">
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group" id="groupDocPaymentTerm">
+                  <label for="docPaymentTerm">เครดิต / กำหนดชำระ</label>
+                  <input type="text" id="docPaymentTerm" class="form-control" placeholder="เช่น 30 วัน" value="30 วัน">
+                </div>
+                <div class="form-group" id="groupDocDueDate">
+                  <label for="docDueDate">วันที่ครบกำหนด</label>
+                  <input type="date" id="docDueDate" class="form-control">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="docProjectName">รายละเอียดงาน / ชื่อโครงการ</label>
+                <input type="text" id="docProjectName" class="form-control" placeholder="เช่น บริการถ่ายทำวีดีโอพรีเซนต์องค์กร">
+              </div>
+
+              <div class="card-title" style="margin-top: 24px; font-size: 16px;">ข้อมูลผู้ซื้อ / ลูกค้า</div>
+              
+              <div class="form-group">
+                <label for="docClientName">ชื่อบริษัท / ลูกค้า</label>
+                <input type="text" id="docClientName" class="form-control" placeholder="บริษัท เอบีซี จำกัด (มหาชน)">
+              </div>
+
+              <div class="form-row">
+                <div class="form-group" style="flex: 2;">
+                  <label for="docClientTaxId">เลขประจำตัวผู้เสียภาษี</label>
+                  <input type="text" id="docClientTaxId" class="form-control mono" placeholder="1234567890123">
+                  <!-- Tax ID Warning (ADVISORY) -->
+                  <span id="clientTaxIdWarning" style="color: #ef4444; font-size: 11px; display: none;">* เลขผู้เสียภาษีต้องเป็นตัวเลข 13 หลักนะแก</span>
+                </div>
+                <div class="form-group" style="flex: 1;">
+                  <label for="docClientBranch">รหัสสาขา</label>
+                  <input type="text" id="docClientBranch" class="form-control mono" placeholder="00000" value="00000">
+                </div>
+                <div class="form-group" style="flex: 1;">
+                  <label for="docClientPhone">เบอร์โทรติดต่อ</label>
+                  <input type="text" id="docClientPhone" class="form-control" placeholder="081-234-5678">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="docClientAddress">ที่อยู่ลูกค้า</label>
+                <textarea id="docClientAddress" class="form-control" placeholder="ที่อยู่ในการออกใบกำกับภาษี"></textarea>
+              </div>
+            </div>
+            
+             <!-- Internal Project Details Card -->
+            <div id="formGroupInternalDetails" class="card">
+              <div class="card-title">ข้อมูลภายในบริษัท (คนดีลงานหลัก & การหักเงินเข้า บ.)</div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="docOwner">คนดีลงานหลัก (ค่าเริ่มต้นสำหรับรายการใหม่)</label>
+                  <select id="docOwner" class="form-control">
+                    <option value="เก่ง">เก่ง</option>
+                    <option value="พี่นิค">พี่นิค</option>
+                    <option value="หอม">หอม</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="docRetentionRate">หักเก็บเข้าบริษัท (%)</label>
+                  <input type="number" id="docRetentionRate" class="form-control" value="10" min="0" max="100">
+                </div>
+              </div>
+
+              <!-- Calculation preview labels -->
+              <div class="form-row" style="margin-top: 12px; font-size: 13px; font-weight: 700; gap: 16px; background: #f9fafb; padding: 10px; border: 1px solid var(--border-color);">
+                <div>ยอดหักเข้า บ. รวม: <span id="internalRetainedAmount" class="mono" style="color: #b91c1c;">฿0.00</span></div>
+                <div>สัดส่วนจ่ายคนทำงานรวม: <span id="internalPayoutAmount" class="mono" style="color: #15803d;">฿0.00</span></div>
+              </div>
+
+              <div class="form-row" style="margin-top: 12px;">
+                <div class="form-group">
+                  <label for="docReceivingBank">บัญชีธนาคารที่รับเงิน</label>
+                  <select id="docReceivingBank" class="form-control">
+                    <option value="KBank">กสิกรไทย (KBank)</option>
+                    <option value="SCB">ไทยพาณิชย์ (SCB)</option>
+                    <option value="Cash">เงินสด (Cash)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="docPaymentStatus">สถานะการชำระเงิน</label>
+                  <select id="docPaymentStatus" class="form-control">
+                    <option value="ชำระเงินแล้ว">ชำระเงินแล้ว</option>
+                    <option value="วางบิลแล้ว">วางบิลแล้ว</option>
+                    <option value="รอวางบิล">รอวางบิล</option>
+                    <option value="ค้างชำระ">ค้างชำระ</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="docActualPaymentDate">วันที่เงินเข้าจริง</label>
+                  <input type="date" id="docActualPaymentDate" class="form-control">
+                </div>
+              </div>
+
+              <div class="form-row" style="margin-top: 12px;">
+                <div class="form-group" style="flex: 1;">
+                  <label for="docRecordedBy">ผู้บันทึกรายการ</label>
+                  <select id="docRecordedBy" class="form-control">
+                    <option value="เก่ง">เก่ง</option>
+                    <option value="เฟิส">เฟิส</option>
+                    <option value="พิม">พิม</option>
+                    <option value="เจน">เจน</option>
+                  </select>
+                </div>
+                <div class="form-group" style="flex: 2;">
+                  <label for="docRemarks">หมายเหตุเพิ่มเติม</label>
+                  <input type="text" id="docRemarks" class="form-control" placeholder="ระบุหมายเหตุถ้ามี">
+                </div>
+              </div>
+            </div>
+
+            <!-- Withholding Tax (50 Tawi) Specific Form -->
+            <div id="formGroupWhtDetails" class="card" style="display: none;">
+              <div class="card-title">ข้อมูลใบหัก ณ ที่จ่าย (50 ทวิ)</div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="whtDocNumber">เลขที่เอกสาร 50 ทวิ</label>
+                  <input type="text" id="whtDocNumber" class="form-control mono" style="font-weight: 700;">
+                </div>
+                <div class="form-group">
+                  <label for="whtDate">วันที่หักภาษี</label>
+                  <input type="date" id="whtDate" class="form-control">
+                </div>
+              </div>
+
+              <div class="card-title" style="margin-top: 20px; font-size: 16px;">ข้อมูลผู้รับเงิน (ผู้ถูกหักภาษี)</div>
+              <div class="form-group">
+                <label for="whtPayeeName">ชื่อผู้รับเงิน / พนักงาน / ซัพพลายเออร์</label>
+                <input type="text" id="whtPayeeName" class="form-control" placeholder="เช่น นายสมคิด มีทรัพย์ หรือ หจก.มีเดียโปรดักชั่น">
+              </div>
+
+              <div class="form-row">
+                <div class="form-group" style="flex: 2;">
+                  <label for="whtPayeeTaxId">เลขผู้เสียภาษี / เลขบัตรประชาชน</label>
+                  <input type="text" id="whtPayeeTaxId" class="form-control mono" placeholder="1234567890123">
+                  <!-- Tax ID Warning (ADVISORY) -->
+                  <span id="payeeTaxIdWarning" style="color: #ef4444; font-size: 11px; display: none;">* เลขผู้เสียภาษีต้องเป็นตัวเลข 13 หลักนะแก</span>
+                </div>
+                <div class="form-group" style="flex: 1;">
+                  <label for="whtPayeeBranch">รหัสสาขา</label>
+                  <input type="text" id="whtPayeeBranch" class="form-control mono" placeholder="00000" value="00000">
+                </div>
+              </div>
+
+              <div class="form-group" style="margin-top: 12px;">
+                <label for="whtPayeeAddress">ที่อยู่ผู้รับเงิน</label>
+                <input type="text" id="whtPayeeAddress" class="form-control" placeholder="ที่อยู่ตามทะเบียนบ้าน/หนังสือรับรองสำหรับการจัดส่งใบ 50 ทวิ">
+              </div>
+
+              <div class="card-title" style="margin-top: 20px; font-size: 16px;">รายการหัก ณ ที่จ่าย & การจัดสรรต้นทุน</div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="whtCategory">หมวดหมู่ค่าใช้จ่าย</label>
+                  <select id="whtCategory" class="form-control">
+                    <option value="101 - ค่าจ้างทีมงานภายนอก/ฟรีแลนซ์ (Freelance Crew Fee)">101 - ค่าจ้างทีมงานภายนอก/ฟรีแลนซ์ (Freelance Crew Fee)</option>
+                    <option value="102 - ค่าตัวนักแสดง/พิธีกร/อินฟลูเอนเซอร์ (Talent Fee)">102 - ค่าตัวนักแสดง/พิธีกร/อินฟลูเอนเซอร์ (Talent Fee)</option>
+                    <option value="103 - ค่าตัดต่อ/ทำซีจี/โพสต์โปรดักชัน (Post-Production Fee)">103 - ค่าตัดต่อ/ทำซีจี/โพสต์โปรดักชัน (Post-Production Fee)</option>
+                    <option value="104 - ค่าเช่าสตูดิโอและอุปกรณ์ถ่ายทำ (Studio Rental)">104 - ค่าเช่าสตูดิโอและอุปกรณ์ถ่ายทำ (Studio Rental)</option>
+                    <option value="105 - ค่าเดินทางและพาหนะกองถ่าย (Production Travel & Transport)">105 - ค่าเดินทางและพาหนะกองถ่าย (Production Travel & Transport)</option>
+                    <option value="202 - ค่าสปอนเซอร์และประชาสัมพันธ์ (Sponsorship & PR)">202 - ค่าสปอนเซอร์และประชาสัมพันธ์ (Sponsorship & PR)</option>
+                    <option value="303 - ค่าเช่าสำนักงาน (Office Rent)">303 - ค่าเช่าสำนักงาน (Office Rent)</option>
+                    <option value="306 - ค่าธรรมเนียมวิชาชีพ (Professional Fees)">306 - ค่าธรรมเนียมวิชาชีพ (Professional Fees)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="whtProjectLink">โครงการที่ผูก</label>
+                  <select id="whtProjectLink" class="form-control">
+                    <option value="">-- ไม่ผูกโครงการ (ทั่วไป) --</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group" style="margin-top: 12px;">
+                <label for="whtDescription">ประเภทเงินได้ที่จ่าย (รายละเอียดงาน)</label>
+                <input type="text" id="whtDescription" class="form-control" placeholder="เช่น ค่าจ้างตัดต่อวีดีโอโฆษณา, ค่าเช่าสตูดิโอ" value="ค่าจ้างถ่ายทำและตัดต่อวีดีโอ">
+              </div>
+
+              <div class="form-row" style="margin-top: 12px;">
+                <div class="form-group">
+                  <label for="whtGrossAmount">จำนวนเงินที่จ่าย (ก่อนหักภาษี)</label>
+                  <input type="number" id="whtGrossAmount" class="form-control mono" placeholder="0.00" step="0.01">
+                </div>
+                <div class="form-group">
+                  <label for="whtRateSelect">อัตราภาษีที่หัก</label>
+                  <select id="whtRateSelect" class="form-control">
+                    <option value="3" selected>3% (ค่าจ้างทำของ/บริการ/วิชาชีพอิสระ)</option>
+                    <option value="1">1% (ค่าขนส่ง)</option>
+                    <option value="5">5% (ค่าเช่า/ค่าโฆษณา/รางวัล)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-row" style="margin-top: 12px;">
+                <div class="form-group">
+                  <label for="whtPaymentMethod">ช่องทางการชำระเงิน</label>
+                  <select id="whtPaymentMethod" class="form-control">
+                    <option value="KBank">กสิกรไทย (KBank)</option>
+                    <option value="SCB">ไทยพาณิชย์ (SCB)</option>
+                    <option value="Cash">เงินสด (Cash)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="whtPaymentStatus">สถานะการจ่ายเงิน</label>
+                  <select id="whtPaymentStatus" class="form-control">
+                    <option value="จ่ายเงินแล้ว">จ่ายเงินแล้ว</option>
+                    <option value="อนุมัติแล้ว">อนุมัติแล้ว</option>
+                    <option value="รออนุมัติจ่าย">รออนุมัติจ่าย</option>
+                    <option value="ยกเลิก">ยกเลิก</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="whtActualPaidDate">วันที่จ่ายเงินจริง</label>
+                  <input type="date" id="whtActualPaidDate" class="form-control">
+                </div>
+              </div>
+
+              <div class="form-row" style="margin-top: 12px;">
+                <div class="form-group" style="flex: 1;">
+                  <label for="whtTaxFilingStatus">สถานะการยื่นภาษี WHT</label>
+                  <select id="whtTaxFilingStatus" class="form-control">
+                    <option value="ยังไม่ได้ยื่น">ยังไม่ได้ยื่น</option>
+                    <option value="ยื่นแล้ว">ยื่นแล้ว</option>
+                  </select>
+                </div>
+                <div class="form-group" style="flex: 2;">
+                  <label for="whtRemarks">หมายเหตุเพิ่มเติม</label>
+                  <input type="text" id="whtRemarks" class="form-control" placeholder="ระบุหมายเหตุถ้ามี">
+                </div>
+              </div>
+
+              <div class="form-row" style="margin-top: 16px;">
+                <div class="form-group">
+                  <label for="whtAmountResult">ภาษีที่หักและนำส่งไว้</label>
+                  <input type="text" id="whtAmountResult" class="form-control mono" style="font-weight: 700; color: var(--accent-color);" readonly value="0.00">
+                </div>
+                <div class="form-group">
+                  <label for="whtNetPayResult">ยอดจ่ายสุทธิหลังหักภาษี</label>
+                  <input type="text" id="whtNetPayResult" class="form-control mono" style="font-weight: 700; color: #10b981;" readonly value="0.00">
+                </div>
+              </div>
+            </div>
+
+            <!-- Dynamic Items Form Group (For QT, IV, RE) -->
+            <div id="formGroupDocItems" class="card">
+              <div class="card-title">
+                <span>รายการสินค้า / บริการ</span>
+                <button type="button" id="btnAddDocItem" class="btn-secondary" style="padding: 4px 10px; font-size: 12px;">+ เพิ่มรายการ</button>
+              </div>
+              <div class="table-container" style="border: none; margin-bottom: 20px;">
+                <table class="editor-items-table">
+                  <thead>
+                    <tr>
+                      <th>รายละเอียดสินค้าหรือบริการ</th>
+                      <th style="width: 80px;">จำนวน</th>
+                      <th style="width: 80px;">หน่วย</th>
+                      <th style="width: 140px;">ราคาต่อหน่วย</th>
+                      <th style="width: 120px;">ผู้รับผิดชอบ</th>
+                      <th style="width: 60px;">ลบ</th>
+                    </tr>
+                  </thead>
+                  <tbody id="editorItemsBody">
+                    <!-- Rendered dynamically -->
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="form-row" style="margin-top: 16px;">
+                <div class="form-group">
+                  <label class="checkbox-label">
+                    <input type="checkbox" id="docVatCheckbox" checked> คำนวณภาษีมูลค่าเพิ่ม (VAT 7%)
+                  </label>
+                </div>
+                <div class="form-group">
+                  <label for="docWhtSelect">หัก ณ ที่จ่าย (WHT)</label>
+                  <select id="docWhtSelect" class="form-control">
+                    <option value="0" selected>ไม่หักภาษี ณ ที่จ่าย</option>
+                    <option value="3">หัก 3% (ค่าบริการ/รับจ้าง)</option>
+                    <option value="1">หัก 1% (ค่าขนส่ง)</option>
+                    <option value="5">หัก 5% (ค่าเช่า/โฆษณา)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Control Buttons Panel -->
+            <div class="card" style="display:flex; flex-direction:column; gap:12px;">
+              <button id="btnExportDocPdf" class="btn-primary" style="width: 100%;">
+                <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                </svg>
+                พิมพ์เอกสาร / เซฟไฟล์ PDF (Cmd/Ctrl + P)
+              </button>
+              <button id="btnSaveAndSyncDoc" class="btn-secondary" style="width: 100%; border-color: var(--border-color); background-color: var(--bg-primary);">
+                <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+                </svg>
+                พิมพ์ใบเสร็จ & บันทึกเข้าระบบ Sheets
+              </button>
+            </div>
+
+          </div>
+
+          <!-- Right Preview Panel (A4 Document Frame) -->
+          <div class="doc-preview-panel">
+            
+            <!-- Standard Quotation / Invoice / Receipt Paper -->
+            <div id="previewStandardDoc" class="doc-paper">
+              
+              <!-- Header -->
+              <div class="doc-header-grid">
+                <div class="doc-logo-section">
+                  <img src="logo.png" alt="GHN168" class="doc-logo-img">
+                  <strong id="prevSellerName" class="doc-logo-sub">บริษัท จีเอชเอ็น 168 มีเดีย แอนด์ ครีเอชั่น จำกัด</strong>
+                  <div id="prevSellerNameEn" class="doc-logo-sub-en">GHN 168 MEDIA & CREATION COMPANY LIMITED</div>
+                  <p style="font-size:11px; margin-top:4px;">
+                    เลขผู้เสียภาษี: <span id="prevSellerTaxId" class="mono">-</span><br>
+                    ที่อยู่: <span id="prevSellerAddress">-</span><br>
+                    โทร: <span id="prevSellerPhone">-</span> | อีเมล: <span id="prevSellerEmail">-</span>
+                  </p>
+                </div>
+                
+                <div class="doc-meta-section">
+                  <div id="prevDocTitleText" class="doc-title-th">ใบเสร็จรับเงิน / ใบกำกับภาษี</div>
+                  <div id="prevDocTitleEnText" class="doc-title-en">RECEIPT / TAX INVOICE</div>
+                  
+                  <table class="doc-info-table">
+                    <tr>
+                      <td>เลขที่เอกสาร / No.</td>
+                      <td id="prevDocNoVal" class="mono" style="font-weight: 700;">-</td>
+                    </tr>
+                    <tr>
+                      <td>วันที่ออก / Date</td>
+                      <td id="prevDocDateVal">-</td>
+                    </tr>
+                    <tr id="prevDocDueDateRow">
+                      <td>ครบกำหนด / Due</td>
+                      <td id="prevDocDueDateVal">-</td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+
+              <!-- Addresses -->
+              <div class="doc-addresses-grid">
+                <div class="address-box">
+                  <h4>ข้อมูลลูกค้า / Customer Details</h4>
+                  <strong id="prevClientName">-</strong>
+                  <p id="prevClientAddress" style="font-size:11px; margin-top:2px;">-</p>
+                  <p style="font-size:11px; margin-top:4px;" id="prevClientTaxIdRow">
+                    เลขประจำตัวผู้เสียภาษี: <span id="prevClientTaxId" class="mono">-</span>
+                  </p>
+                </div>
+                <div class="address-box">
+                  <h4>รายละเอียดโครงการ / Project</h4>
+                  <strong id="prevProjectNameVal">-</strong>
+                  <p style="margin-top: 12px;" id="prevPaymentTermTitle">เงื่อนไขการชำระเงิน / Payment Terms:</p>
+                  <strong id="prevPaymentTermVal">-</strong>
+                </div>
+              </div>
+
+              <!-- Table Items -->
+              <table class="paper-table">
+                <thead>
+                  <tr>
+                    <th style="width: 40px;">ลำดับ<br>No.</th>
+                    <th>รายละเอียดสินค้าหรือบริการ<br>Description</th>
+                    <th style="width: 60px;">จำนวน<br>Qty</th>
+                    <th style="width: 60px;">หน่วย<br>Unit</th>
+                    <th style="width: 120px;">ราคา/หน่วย<br>Unit Price</th>
+                    <th style="width: 140px;">จำนวนเงิน (บาท)<br>Amount (THB)</th>
+                  </tr>
+                </thead>
+                <tbody id="prevItemsBody">
+                  <!-- Rendered dynamically -->
+                </tbody>
+                
+                <!-- Summary rows -->
+                <tfoot>
+                  <tr class="total-row">
+                    <td id="prevBahtTextCell" colspan="4" rowspan="4" style="vertical-align: middle; padding: 0;">
+                      <div id="prevBahtTextVal" class="doc-baht-text-container">ศูนย์บาทถ้วน</div>
+                    </td>
+                    <td style="text-align: right; font-size:11px;">รวมเงิน / Subtotal</td>
+                    <td id="prevSubtotalVal" style="text-align: right;" class="bordered">-</td>
+                  </tr>
+                  <tr class="total-row" id="prevVatRow">
+                    <td style="text-align: right; font-size:11px;">ภาษีมูลค่าเพิ่ม / VAT 7%</td>
+                    <td id="prevVatVal" style="text-align: right;" class="bordered">-</td>
+                  </tr>
+                  <tr class="total-row" id="prevWhtRow">
+                    <td style="text-align: right; font-size:11px;">หัก ณ ที่จ่าย / WHT <span id="prevWhtRateVal">3</span>%</td>
+                    <td id="prevWhtVal" style="text-align: right; color:#b91c1c;" class="bordered">-</td>
+                  </tr>
+                  <tr class="total-row">
+                    <td style="text-align: right; font-weight:800;">ยอดเงินสุทธิ / Net Total</td>
+                    <td id="prevGrandTotalVal" style="text-align: right; font-weight:800; border: 2px solid #000000; background-color:#f3f4f6;" class="bordered">-</td>
+                  </tr>
+                </tfoot>
+              </table>
+
+              <!-- Bottom section -->
+              <p style="font-size:11px; color:#4b5563; margin-top:20px; line-height: 1.4;">
+                * ในกรณีชำระเงินด้วยเช็ค ใบเสร็จรับเงินนี้จะสมบูรณ์เมื่อเช็คได้เรียกเก็บเงินผ่านบัญชีธนาคารเรียบร้อยแล้ว<br>
+                * ข้อมูลรายละเอียดบัญชีรับโอน: <strong id="prevBankDetailsVal">-</strong>
+              </p>
+
+              <!-- Signatures -->
+              <div class="doc-signatures-grid">
+                <div class="signature-box">
+                  <div class="signature-line" style="margin-top: 40px;"></div>
+                  <span class="signature-label">ผู้รับเงิน / ชำระเงิน</span>
+                </div>
+                <div class="signature-box">
+                  <img src="GHN_company_seal.png" class="company-seal-img" alt="ตราประทับบริษัท">
+                  <div class="signature-line" style="margin-top: 40px;"></div>
+                  <strong style="font-size:12px;" id="prevSignerNameVal">-</strong>
+                  <span class="signature-label" style="margin-top: -30px;">ผู้ออกเอกสาร / ผู้มีอำนาจลงนาม</span>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Withholding Tax 50 Tawi Paper -->
+            <div id="previewWhtDoc" class="wht-card-paper" style="display: none;">
+              <div class="wht-header-box">
+                หนังสือรับรองการหักภาษี ณ ที่จ่าย (50 ทวิ)
+              </div>
+              
+              <div class="wht-sections">
+                <div class="wht-row">
+                  <div class="wht-col-title">ผู้มีหน้าที่หักภาษี ณ ที่จ่าย</div>
+                  <div class="wht-col-content">
+                    <strong id="prevWhtSellerName">-</strong><br>
+                    เลขประจำตัวผู้เสียภาษี: <span id="prevWhtSellerTaxId" class="mono">-</span><br>
+                    ที่อยู่: <span id="prevWhtSellerAddress">-</span>
+                  </div>
+                </div>
+
+                <div class="wht-row">
+                  <div class="wht-col-title">ผู้ถูกหักภาษี ณ ที่จ่าย</div>
+                  <div class="wht-col-content">
+                    <strong id="prevWhtPayeeName">-</strong><br>
+                    เลขประจำตัวผู้เสียภาษี / บัตรประชาชน: <span id="prevWhtPayeeTaxId" class="mono">-</span><br>
+                    ที่อยู่: <span id="prevWhtPayeeAddress">-</span>
+                  </div>
+                </div>
+
+                <div class="wht-row">
+                  <div class="wht-col-title">ข้อมูลเอกสาร</div>
+                  <div class="wht-col-content" style="display:flex; gap: 40px;">
+                    <div>เลขที่เอกสาร: <strong id="prevWhtDocNo" class="mono">-</strong></div>
+                    <div>วันที่จ่ายเงิน: <strong id="prevWhtDate">-</strong></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Money table -->
+              <table class="wht-table">
+                <thead>
+                  <tr style="background-color: #f3f4f6; font-weight:700;">
+                    <th>ประเภทเงินได้ที่จ่าย (Description)</th>
+                    <th style="width: 140px; text-align:center;">อัตราภาษี (Rate)</th>
+                    <th style="width: 160px; text-align:right;">จำนวนเงินที่จ่าย (Gross)</th>
+                    <th style="width: 160px; text-align:right;">ภาษีที่หักและนำส่ง (Tax)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td id="prevWhtDescription">-</td>
+                    <td style="text-align:center;" id="prevWhtRate">-</td>
+                    <td style="text-align:right;" id="prevWhtGross">-</td>
+                    <td style="text-align:right;" id="prevWhtTax">-</td>
+                  </tr>
+                  <tr style="font-weight: 700; background-color:#f9fafb;">
+                    <td colspan="2" style="text-align: right;">รวมเงินที่จ่ายและภาษีที่นำส่ง (Total)</td>
+                    <td style="text-align:right;" id="prevWhtTotalGross">-</td>
+                    <td style="text-align:right;" id="prevWhtTotalTax">-</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div class="wht-row" style="border: 1px solid #000000; padding:10px; font-weight:700; background-color:#f9fafb; margin-top:5px;">
+                ตัวหนังสือยอดเงินภาษีสุทธิ: <span id="prevWhtNetText" style="margin-left: 10px;">-</span>
+              </div>
+
+              <p style="font-size:10px; color:#4b5563; margin-top:10px; line-height: 1.3;">
+                ขอรับรองว่าข้อความและตัวเลขภาษีที่หักและนำส่งไว้นี้ถูกต้องตรงกับความเป็นจริงทุกประการ
+              </p>
+
+              <div class="doc-signatures-grid" style="margin-top: 25px;">
+                <div class="signature-box" style="grid-column: 2;">
+                  <img src="GHN_company_seal.png" class="company-seal-img" alt="ตราประทับบริษัท">
+                  <div class="signature-line" style="margin-top: 30px;"></div>
+                  <strong style="font-size:11px;" id="prevWhtSigner">-</strong>
+                  <span class="signature-label" style="margin-top: -30px;">ผู้มีอำนาจนำส่งภาษี</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      <!-- VIEW 3: DOCUMENT HUB -->
+      <section id="dochub-view" class="view-section">
+        <div class="view-header">
+          <div class="view-title-group">
+            <h1>คลังเอกสารสำคัญ (Document Hub)</h1>
+            <p>รวมรวมลิงก์ด่วนทางบัญชี ทะเบียนบริษัท และเอกสารสำคัญของ GHN168 บน Google Drive</p>
+          </div>
+          <button id="btnOpenAddDocModal" class="btn-primary">+ เพิ่มลิงก์เอกสารใหม่</button>
+        </div>
+
+        <div class="card">
+          <div class="card-title">รายการเอกสารคลาวด์บริษัท (Cloud File Registry)</div>
+          <div id="docHubListContainer" class="doc-hub-list">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+
+        <div class="card" style="border-color: var(--accent-color);">
+          <div class="card-title" style="color: var(--accent-color); border-bottom-color: var(--accent-color);">💡 คำแนะนำจากน้องพิม</div>
+          <p style="font-size: 14px; line-height: 1.6;">
+            แกสามารถสร้างโฟลเดอร์ใน Google Drive ของ Gmail บริษัท จากนั้นอัปโหลดไฟล์สแกน PDF ต่างๆ ขึ้นไป แล้วตั้งค่าแชร์ไฟล์เป็น <strong>"ทุกคนที่มีลิงก์มีสิทธิ์อ่าน" (Anyone with the link can view)</strong> จากนั้นนำคัดลอกแชร์ลิงก์ดังกล่าวมากดปุ่ม "+ เพิ่มลิงก์เอกสารใหม่" ด้านบน เพื่อเก็บประวัติไว้ในคลังนี้ เพื่อเรียกใช้งานเอกสารทางภาษีได้อย่างรวดเร็วและปลอดภัยจากทุกอุปกรณ์นะแก!
+          </p>
+        </div>
+      </section>
+
+      <!-- VIEW: EXPENSE TRACKER -->
+      <section id="expense-view" class="view-section">
+        <div class="view-header">
+          <div class="view-title-group">
+            <h1>บันทึกรายจ่ายบริษัท (Expense Tracker)</h1>
+            <p>บันทึกค่าใช้จ่ายและออกใบสำคัญจ่ายของบริษัท GHN168 พร้อมซิงค์เข้า Google Sheets</p>
+          </div>
+          <button id="btnOpenAddExpenseModal" class="btn-primary">+ บันทึกรายจ่ายใหม่</button>
+        </div>
+
+        <div class="card">
+          <div class="card-title">รายการรายจ่ายบริษัท (Expense Registry)</div>
+          <div style="overflow-x: auto;">
+            <table class="doc-table">
+              <thead>
+                <tr>
+                  <th style="width: 100px;">วันที่</th>
+                  <th style="width: 120px;">เลขที่บิล/PV</th>
+                  <th>ผู้รับเงิน</th>
+                  <th>หมวดหมู่</th>
+                  <th>รายละเอียด</th>
+                  <th style="text-align:right; width: 110px;">ยอดก่อน VAT</th>
+                  <th style="text-align:right; width: 110px;">ยอดจ่ายสุทธิ</th>
+                  <th style="text-align:center; width: 90px;">สถานะ</th>
+                  <th style="text-align:center; width: 220px;">การจัดการ</th>
+                </tr>
+              </thead>
+              <tbody id="expenseListBody">
+                <!-- Rendered dynamically -->
+              </tbody>
+            </table>
+        </div>
+      </section>
+
+      <!-- VIEW: PETTY CASH -->
+      <section id="pettycash-view" class="view-section">
+        <div class="view-header">
+          <div class="view-title-group">
+            <h1>ระบบควบคุมเงินสดย่อย (Petty Cash Ledger)</h1>
+            <p>บันทึกการรับจ่ายเงินสดจุกจิกหน้างาน พร้อมเช็คยอดเงินในกล่องเซฟของบริษัท</p>
+          </div>
+          <button id="btnOpenAddPettyCashModal" class="btn-primary">+ จ่ายเงินสดย่อยใหม่</button>
+        </div>
+
+        <div class="grid-cols-3" style="margin-bottom: 24px;">
+          <div class="card" style="border-left: 6px solid var(--accent-color); box-shadow: 4px 4px 0 var(--border-color); border-radius:4px; padding: 16px;">
+            <div class="card-title" style="font-size: 13px; color: var(--text-secondary); margin-bottom: 8px;">เงินสดย่อยคงเหลือในกล่องเซฟ</div>
+            <h2 style="font-size: 24px; font-weight: 900; margin-top: 8px;" id="pettyCashSafeBalance" class="mono">฿10,000.00</h2>
+          </div>
+          <div class="card" style="border-left: 6px solid #2563eb; box-shadow: 4px 4px 0 var(--border-color); border-radius:4px; padding: 16px;">
+            <div class="card-title" style="font-size: 13px; color: var(--text-secondary); margin-bottom: 8px;">ยอดจ่ายเงินสดย่อยสะสม</div>
+            <h2 style="font-size: 24px; font-weight: 900; margin-top: 8px;" id="pettyCashTotalPaid" class="mono">฿0.00</h2>
+          </div>
+          <div class="card" style="border-left: 6px solid #16a34a; box-shadow: 4px 4px 0 var(--border-color); border-radius:4px; padding: 16px;">
+            <div class="card-title" style="font-size: 13px; color: var(--text-secondary); margin-bottom: 8px;">วงเงินสดย่อยสำรองทั้งหมด</div>
+            <h2 style="font-size: 24px; font-weight: 900; margin-top: 8px;" class="mono">฿10,000.00</h2>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">ประวัติการจ่ายเงินสดย่อย (Petty Cash Registry)</div>
+          <div style="overflow-x: auto;">
+            <table class="doc-table">
+              <thead>
+                <tr>
+                  <th style="width: 110px;">เลขที่ใบสำคัญ</th>
+                  <th style="width: 90px; text-align: center;">วันที่</th>
+                  <th style="width: 100px;">ผู้ขอเบิก</th>
+                  <th>หมวดหมู่ค่าใช้จ่าย</th>
+                  <th>รายละเอียด</th>
+                  <th style="text-align:right; width: 110px;">ยอดจ่ายจริง</th>
+                  <th style="text-align:right; width: 110px;">ยอดคงเหลือ</th>
+                  <th style="text-align:center; width: 90px;">ผู้อนุมัติ</th>
+                  <th style="text-align:center; width: 120px;">การจัดการ</th>
+                </tr>
+              </thead>
+              <tbody id="pettyCashListBody">
+                <!-- Rendered dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW: PAYROLL -->
+      <section id="payroll-view" class="view-section">
+        <div class="view-header">
+          <div class="view-title-group">
+            <h1>ระบบเงินเดือนพนักงาน (Payroll Registry)</h1>
+            <p>บันทึกเงินเดือนพนักงานประจำ หักนำส่งเงินสมทบประกันสังคม และคำนวณแบบ ภ.ง.ด.1</p>
+          </div>
+          <button id="btnOpenAddPayrollModal" class="btn-primary">+ บันทึกรอบจ่ายเงินเดือน</button>
+        </div>
+
+        <div class="card">
+          <div class="card-title">รายการเงินเดือนพนักงาน (Employee Payroll Register)</div>
+          <div style="overflow-x: auto;">
+            <table class="doc-table">
+              <thead>
+                <tr>
+                  <th style="width: 100px;">รหัสรอบจ่าย</th>
+                  <th style="width: 120px;">ชื่อพนักงาน</th>
+                  <th style="text-align:right; width: 110px;">เงินเดือน</th>
+                  <th style="text-align:right; width: 90px;">โบนัส/ Allowance</th>
+                  <th style="text-align:right; width: 110px;">ยอดรวมรายได้</th>
+                  <th style="text-align:right; width: 90px;">หักประกันสังคม</th>
+                  <th style="text-align:right; width: 90px;">หัก ภ.ง.ด.1</th>
+                  <th style="text-align:right; width: 110px;">ยอดโอนสุทธิ</th>
+                  <th style="text-align:center; width: 100px;">สถานะ</th>
+                  <th style="text-align:center; width: 120px;">การจัดการ</th>
+                </tr>
+              </thead>
+              <tbody id="payrollListBody">
+                <!-- Rendered dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW: BANK RECONCILIATION -->
+      <section id="bankrec-view" class="view-section">
+        <div class="view-header">
+          <div class="view-title-group">
+            <h1>ระบบกระทบยอดเงินฝากธนาคาร (Bank Reconciliation)</h1>
+            <p>ตรวจสอบและสอบทานความถูกต้องระหว่างสมุดบัญชีบริษัทกับใบแจ้งยอดธนาคาร (Bank Statement)</p>
+          </div>
+          <button id="btnOpenAddBankRecModal" class="btn-primary">+ บันทึกงบกระทบยอดใหม่</button>
+        </div>
+
+        <div class="card">
+          <div class="card-title">ประวัติการทำงบกระทบยอดธนาคาร (Reconciliation Registry)</div>
+          <div style="overflow-x: auto;">
+            <table class="doc-table">
+              <thead>
+                <tr>
+                  <th style="width: 120px;">รหัสรายงาน</th>
+                  <th style="width: 100px;">งวดเดือน</th>
+                  <th>บัญชีธนาคาร</th>
+                  <th style="text-align:right;">ยอด Statement</th>
+                  <th style="text-align:right;">ยอดบัญชีบริษัท</th>
+                  <th style="text-align:right; width: 110px;">ยอดปรับปรุงแล้ว</th>
+                  <th style="text-align:right; width: 100px; color: var(--accent-color);">ผลต่าง</th>
+                  <th>ผู้จัดทำ</th>
+                  <th style="text-align:center; width: 120px;">การจัดการ</th>
+                </tr>
+              </thead>
+              <tbody id="bankRecListBody">
+                <!-- Rendered dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW: TAX EXPORT -->
+      <section id="taxexport-view" class="view-section">
+        <div class="view-header">
+          <div class="view-title-group">
+            <h1>ระบบจัดเตรียมยื่นภาษีออนไลน์ (RD Prep E-Filing Export)</h1>
+            <p>กรองภาษีหัก ณ ที่จ่าย (WHT) ประจำงวดเดือน และส่งออกเป็นไฟล์นำส่งสำหรับกรมสรรพากรโดยตรง</p>
+          </div>
+        </div>
+
+        <div class="grid-cols-2" style="margin-bottom: 24px;">
+          <!-- Filter Card -->
+          <div class="card">
+            <div class="card-title">คัดกรองข้อมูลนำส่งภาษี</div>
+            <div class="form-row" style="display: flex; gap: 12px; margin-bottom: 12px;">
+              <div class="form-group" style="flex: 1;">
+                <label for="taxExportPeriod">เลือกงวดประจำเดือนที่ชำระเงิน</label>
+                <input type="month" id="taxExportPeriod" class="form-control" value="2026-06">
+              </div>
+              <div class="form-group" style="flex: 1;">
+                <label for="taxExportFormType">ประเภทแบบยื่นภาษี WHT</label>
+                <select id="taxExportFormType" class="form-control">
+                  <option value="pnd3">ภ.ง.ด.3 (บุคคลธรรมดา)</option>
+                  <option value="pnd53">ภ.ง.ด.53 (นิติบุคคล)</option>
+                </select>
+              </div>
+            </div>
+            <div style="display: flex; gap: 12px; margin-top: 16px;">
+              <button id="btnPreviewTaxFiling" class="btn-secondary" style="flex: 1; padding: 10px;" onclick="previewTaxFiling()">🔍 แสดงตัวอย่างรายงาน</button>
+              <button id="btnDownloadRDPrepText" class="btn-primary" style="flex: 1; padding: 10px;" onclick="downloadRDPrepText()">💾 ดาวน์โหลดไฟล์ยื่นออนไลน์ (.txt)</button>
+            </div>
+          </div>
+
+          <!-- Advice Card -->
+          <div class="card" style="border-left: 6px solid var(--accent-color);">
+            <div class="card-title" style="color: var(--accent-color);">💡 ขั้นตอนการอัปโหลดไฟล์เข้าระบบสรรพากร</div>
+            <ol style="font-size: 13px; line-height: 1.6; margin-left: 16px; margin-top: 8px;">
+              <li>เลือกเดือนภาษีและประเภทแบบ (ภ.ง.ด.3 หรือ ภ.ง.ด.53) ด้านซ้าย แล้วกดปุ่มดาวน์โหลดไฟล์</li>
+              <li>เปิดโปรแกรม <strong>RD Prep</strong> ของกรมสรรพากร แล้วเลือก "โอนย้ายข้อมูล"</li>
+              <li>เลือกประเภทแบบภาษี และนำเข้าไฟล์ <code>.txt</code> ที่ดาวน์โหลดไปจากที่นี่</li>
+              <li>ตั้งค่าตัวคั่นข้อมูลเป็นเครื่องหมาย Pipe (<code>|</code>) และตั้งค่าการจับคู่คอลัมน์ตามคู่มือ</li>
+              <li>กดตรวจยอดเงินนำส่งรวมให้ตรงกับระบบ จากนั้นแปลงไฟล์เพื่ออัปโหลดขึ้นเว็บ rd.go.th ยื่นภาษีได้ทันที!</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title" id="taxExportTableTitle">รายการภาษีหัก ณ ที่จ่าย (WHT Registry Preview)</div>
+          <div style="overflow-x: auto;">
+            <table class="doc-table">
+              <thead>
+                <tr>
+                  <th style="width: 130px;">เลขประจำตัวผู้เสียภาษี</th>
+                  <th style="width: 80px;">สาขา</th>
+                  <th style="width: 150px;">ผู้ถูกหักภาษี</th>
+                  <th>ที่อยู่</th>
+                  <th style="width: 90px; text-align: center;">วันที่จ่าย</th>
+                  <th style="width: 120px;">ประเภทเงินได้</th>
+                  <th style="width: 70px; text-align: center;">อัตรา %</th>
+                  <th style="text-align:right; width: 100px;">ยอดเงินจ่าย</th>
+                  <th style="text-align:right; width: 90px;">ภาษีที่หัก</th>
+                </tr>
+              </thead>
+              <tbody id="taxExportListBody">
+                <tr>
+                  <td colspan="9" style="text-align: center; color: var(--text-secondary); padding: 20px;">กรุณากดปุ่มแสดงตัวอย่างรายงานด้านบนจ้าแก!</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- VIEW 4: SETTINGS -->
+      <section id="settings-view" class="view-section">
+        <div class="view-header">
+          <div class="view-title-group">
+            <h1>การตั้งค่าระบบเชื่อมต่อ (Connection & Company Settings)</h1>
+            <p>ตั้งค่าคีย์ Google Sheets และที่อยู่ของบริษัทสำหรับออกหัวบิล</p>
+          </div>
+        </div>
+
+        <div class="grid-cols-2">
+          <!-- Connection & Backup Settings -->
+          <div style="display: flex; flex-direction: column; gap: 24px;">
+            <div class="card">
+              <div class="card-title">เชื่อมต่อ Google Sheets API</div>
+              
+              <div class="form-group">
+                <label for="settingScriptUrl">Google Apps Script Web App URL</label>
+                <input type="text" id="settingScriptUrl" class="form-control mono" placeholder="https://script.google.com/macros/s/.../exec">
+                <p style="font-size: 11px; color: var(--text-secondary); line-height: 1.4; margin-top:4px;">
+                  * ลิงก์ปลายทาง Apps Script ที่แกดีพลอยไว้เพื่อยิงประวัติเข้าชีต (ลงท้ายด้วย /exec)
+                </p>
+              </div>
+
+              <div class="form-group" style="margin-top: 16px;">
+                <label for="settingSheetId">Google Spreadsheet ID</label>
+                <input type="text" id="settingSheetId" class="form-control mono" placeholder="เช่น 1aBcDeFgHiJkLmNoPqRsTuVwXyZ...">
+                <p style="font-size: 11px; color: var(--text-secondary); line-height: 1.4; margin-top:4px;">
+                  * คัดลอกจาก URL ของชีตปฏิทินบัญชีบริษัทแกตรงช่องหลัง /d/ ในบราวเซอร์
+                </p>
+              </div>
+
+              <div class="form-group" style="margin-top: 16px;">
+                <label for="settingCompanyDriveUrl">ลิงก์ Google Drive หลักของบริษัท</label>
+                <input type="text" id="settingCompanyDriveUrl" class="form-control mono" placeholder="https://drive.google.com/drive/folders/...">
+                <p style="font-size: 11px; color: var(--text-secondary); line-height: 1.4; margin-top:4px;">
+                  * ลิงก์โฟลเดอร์ Google Drive หลักของบริษัท สำหรับกดเข้าด่วนที่หน้าแรกแก
+                </p>
+              </div>
+
+              <button id="btnSaveConfig" class="btn-primary" style="margin-top: 16px; width: 100%;">
+                <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+                </svg>
+                บันทึกการเชื่อมต่อบัญชี
+              </button>
+            </div>
+
+            <!-- Backup & Restore Data Card (ADVISORY) -->
+            <div class="card">
+              <div class="card-title">จัดการข้อมูลสำรอง (Backup & Restore)</div>
+              <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.4;">
+                ดาวน์โหลดประวัติธุรกรรม เอกสาร Google Drive และการตั้งค่าทั้งหมดมาสำรองเก็บไว้ในเครื่องแก หรือกู้คืนข้อมูลเพื่อสลับไปใช้บนเครื่องอื่น
+              </p>
+              <div style="display: flex; gap: 12px;">
+                <button id="btnExportBackup" class="btn-secondary" style="flex: 1; justify-content: center;">
+                  <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                  </svg>
+                  ส่งออกข้อมูลสำรอง (Export)
+                </button>
+                <button id="btnImportBackup" class="btn-secondary" style="flex: 1; justify-content: center;">
+                  <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                  </svg>
+                  นำเข้าข้อมูลสำรอง (Import)
+                </button>
+              </div>
+              <input type="file" id="importBackupFile" style="display: none;" accept=".json">
+            </div>
+          </div>
+
+          <!-- Company Profile Settings -->
+          <div class="card">
+            <div class="card-title">ข้อมูลบริษัทผู้เสียภาษี (Seller profile)</div>
+            
+            <div class="form-group">
+              <label for="doc_sellerName">ชื่อบริษัท (ภาษาไทย)</label>
+              <input type="text" id="doc_sellerName" class="form-control">
+            </div>
+
+            <div class="form-group">
+              <label for="doc_sellerNameEn">ชื่อบริษัท (ภาษาอังกฤษ)</label>
+              <input type="text" id="doc_sellerNameEn" class="form-control">
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="doc_sellerTaxId">เลขผู้เสียภาษี 13 หลัก</label>
+                <input type="text" id="doc_sellerTaxId" class="form-control mono">
+                <!-- Tax ID Warning (ADVISORY) -->
+                <span id="sellerTaxIdWarning" style="color: #ef4444; font-size: 11px; display: none;">* เลขผู้เสียภาษีต้องเป็นตัวเลข 13 หลักนะแก</span>
+              </div>
+              <div class="form-group">
+                <label for="doc_sellerPhone">เบอร์โทรศัพท์ติดต่อ</label>
+                <input type="text" id="doc_sellerPhone" class="form-control">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="doc_sellerEmail">อีเมลสำหรับติดต่องาน</label>
+              <input type="email" id="doc_sellerEmail" class="form-control">
+            </div>
+
+            <div class="form-group">
+              <label for="doc_sellerAddress">ที่ตั้งบริษัทสำนักงานใหญ่</label>
+              <textarea id="doc_sellerAddress" class="form-control"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="doc_bankDetails">รายละเอียดบัญชีธนาคาร (สำหรับรับเงินโอน)</label>
+              <input type="text" id="doc_bankDetails" class="form-control" placeholder="เช่น ธนาคารกสิกรไทย เลขที่บัญชี...">
+            </div>
+
+            <div class="form-group">
+              <label for="doc_signerName">ชื่อผู้มีอำนาจออกใบกำกับภาษี</label>
+              <input type="text" id="doc_signerName" class="form-control" placeholder="เช่น นายมงคล วงศ์สกุลยานนท์">
+            </div>
+            <div class="form-group" style="margin-top: 15px; display: flex; align-items: center; gap: 8px;">
+              <input type="checkbox" id="doc_showSeal" checked style="width: 18px; height: 18px; cursor: pointer;">
+              <label for="doc_showSeal" style="cursor: pointer; font-weight: 700; margin-bottom: 0;">แสดงตราประทับบริษัท (Show Company Seal) บนเอกสาร</label>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Modal: Add Document Link -->
+  <div id="addDocModal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 class="modal-title">เพิ่มลิงก์เอกสารใหม่</h2>
+        <button id="btnCloseDocModal" class="modal-close-btn">&times;</button>
+      </div>
+      <form id="formAddDoc" onsubmit="event.preventDefault();">
+        <div class="form-group">
+          <label for="modalDocName">ชื่อเอกสาร</label>
+          <input type="text" id="modalDocName" class="form-control" placeholder="เช่น ใบ ภ.พ.20, หนังสือรับรองบริษัท" required>
+        </div>
+        <div class="form-group">
+          <label for="modalDocCategory">หมวดหมู่เอกสาร</label>
+          <select id="modalDocCategory" class="form-control">
+            <option value="เอกสารสำคัญ">เอกสารสำคัญ</option>
+            <option value="เอกสารจัดตั้ง">เอกสารจัดตั้ง</option>
+            <option value="เอกสารภาษี">เอกสารภาษี</option>
+            <option value="ใบเสนอราคา">ใบเสนอราคา</option>
+            <option value="อื่นๆ">อื่นๆ (ระบุเองด้านล่าง)</option>
+          </select>
+        </div>
+        <div class="form-group" id="groupCustomCategory" style="display: none;">
+          <label for="modalDocCustomCategory">ระบุหมวดหมู่ใหม่</label>
+          <input type="text" id="modalDocCustomCategory" class="form-control" placeholder="พิมพ์หมวดหมู่ที่ต้องการ">
+        </div>
+        <div class="form-group">
+          <label for="modalDocUrl">ลิงก์ Google Drive / เว็บไซต์</label>
+          <input type="text" id="modalDocUrl" class="form-control" placeholder="https://drive.google.com/..." required>
+        </div>
+        <div class="form-group">
+          <label for="modalDocDesc">คำอธิบายสั้นๆ (ไม่บังคับ)</label>
+          <input type="text" id="modalDocDesc" class="form-control" placeholder="เช่น สแกนตัวจริงอัปเดต 2569">
+        </div>
+        <div class="form-actions" style="margin-top: 20px; display: flex; gap: 12px; justify-content: flex-end;">
+          <button type="button" id="btnCancelDocModal" class="btn-secondary" style="padding: 10px 16px;">ยกเลิก</button>
+          <button type="submit" id="btnSubmitDocModal" class="btn-primary" style="padding: 10px 16px;">
+            <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+            </svg>
+            บันทึกเอกสาร
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Add Expense Record -->
+  <div id="addExpenseModal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 class="modal-title">บันทึกรายจ่ายใหม่</h2>
+        <button id="btnCloseExpenseModal" class="modal-close-btn">&times;</button>
+      </div>
+      <form id="formAddExpense" onsubmit="event.preventDefault();">
+        <div class="form-row" style="display: flex; gap: 12px; margin-bottom: 12px;">
+          <div class="form-group" style="flex: 1;">
+            <label for="expenseDate">วันที่จ่ายเงิน / วันที่ในเอกสาร</label>
+            <input type="date" id="expenseDate" class="form-control" required>
+          </div>
+          <div class="form-group" style="flex: 1;">
+            <label for="expenseBillNo">เลขที่บิล/ใบเสร็จ (ถ้ามี)</label>
+            <input type="text" id="expenseBillNo" class="form-control mono" placeholder="เช่น INV-001">
+          </div>
+        </div>
+
+        <div class="form-row" style="display: flex; gap: 12px; margin-bottom: 12px; margin-top: 12px;">
+          <div class="form-group" style="flex: 2;">
+            <label for="expensePayee">ผู้รับเงิน (Vendor / Payee)</label>
+            <input type="text" id="expensePayee" class="form-control" placeholder="เช่น บจก. แอดวานซ์ ไวร์เลส, นายสมชาย" required>
+          </div>
+          <div class="form-group" style="flex: 1.5;">
+            <label for="expensePayeeTaxId">เลขประจำตัวผู้เสียภาษีคู่ค้า</label>
+            <input type="text" id="expensePayeeTaxId" class="form-control mono" placeholder="13 หลัก หรือเลขบัตรประชาชน">
+            <span id="expensePayeeTaxIdWarning" style="color: #ef4444; font-size: 11px; display: none;">* ต้องเป็นตัวเลข 13 หลักนะแก</span>
+          </div>
+          <div class="form-group" style="flex: 1;">
+            <label for="expensePayeeBranch">รหัสสาขาคู่ค้า</label>
+            <input type="text" id="expensePayeeBranch" class="form-control mono" placeholder="00000" value="00000">
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label for="expensePayeeAddress">ที่อยู่คู่ค้า</label>
+          <input type="text" id="expensePayeeAddress" class="form-control" placeholder="ที่อยู่สำหรับการจัดทำใบรับรอง 50 ทวิ">
+        </div>
+
+        <div class="form-row" style="display: flex; gap: 12px; margin-bottom: 12px; margin-top: 12px;">
+          <div class="form-group" style="flex: 1.5;">
+            <label for="expenseCategory">หมวดหมู่รายจ่าย</label>
+            <select id="expenseCategory" class="form-control">
+              <option value="101 - ค่าจ้างทีมงานภายนอก/ฟรีแลนซ์ (Freelance Crew Fee)">101 - ค่าจ้างทีมงานภายนอก/ฟรีแลนซ์ (Freelance Crew Fee)</option>
+              <option value="102 - ค่าตัวนักแสดง/พิธีกร/อินฟลูเอนเซอร์ (Talent Fee)">102 - ค่าตัวนักแสดง/พิธีกร/อินฟลูเอนเซอร์ (Talent Fee)</option>
+              <option value="103 - ค่าตัดต่อ/ทำซีจี/โพสต์โปรดักชัน (Post-Production Fee)">103 - ค่าตัดต่อ/ทำซีจี/โพสต์โปรดักชัน (Post-Production Fee)</option>
+              <option value="104 - ค่าเช่าสตูดิโอและอุปกรณ์ถ่ายทำ (Studio Rental)">104 - ค่าเช่าสตูดิโอและอุปกรณ์ถ่ายทำ (Studio Rental)</option>
+              <option value="105 - ค่าเดินทางและพาหนะกองถ่าย (Production Travel & Transport)">105 - ค่าเดินทางและพาหนะกองถ่าย (Production Travel & Transport)</option>
+              <option value="106 - ค่าอาหารและเครื่องดื่มกองถ่าย (Production Catering)">106 - ค่าอาหารและเครื่องดื่มกองถ่าย (Production Catering)</option>
+              <option value="107 - ค่าซื้อทรัพย์สิน/อุปกรณ์ประกอบฉาก (Props & Assets)">107 - ค่าซื้อทรัพย์สิน/อุปกรณ์ประกอบฉาก (Props & Assets)</option>
+              <option value="201 - ค่าโฆษณาออนไลน์ (Social Media Ads)">201 - ค่าโฆษณาออนไลน์ (Social Media Ads)</option>
+              <option value="202 - ค่าสปอนเซอร์และประชาสัมพันธ์ (Sponsorship & PR)">202 - ค่าสปอนเซอร์และประชาสัมพันธ์ (Sponsorship & PR)</option>
+              <option value="301 - เงินเดือนพนักงานประจำ (Salaries & Wages)">301 - เงินเดือนพนักงานประจำ (Salaries & Wages)</option>
+              <option value="302 - ค่าประกันสังคมและสวัสดิการ (Social Security & Benefits)">302 - ค่าประกันสังคมและสวัสดิการ (Social Security & Benefits)</option>
+              <option value="303 - ค่าเช่าสำนักงาน (Office Rent)">303 - ค่าเช่าสำนักงาน (Office Rent)</option>
+              <option value="304 - ค่าน้ำ ค่าไฟ ค่าอินเทอร์เน็ตสำนักงาน (Office Utilities)">304 - ค่าน้ำ ค่าไฟ ค่าอินเทอร์เน็ตสำนักงาน (Office Utilities)</option>
+              <option value="305 - ค่าซอฟต์แวร์และบริการคลาวด์ (Software Subscriptions)">305 - ค่าซอฟต์แวร์และบริการคลาวด์ (Software Subscriptions)</option>
+              <option value="306 - ค่าธรรมเนียมวิชาชีพ (Professional Fees)">306 - ค่าธรรมเนียมวิชาชีพ (Professional Fees)</option>
+              <option value="307 - ค่าธรรมเนียมธนาคาร (Bank Fees)">307 - ค่าธรรมเนียมธนาคาร (Bank Fees)</option>
+              <option value="308 - ค่าใช้จ่ายเบ็ดเตล็ดสำนักงาน (Office Supplies & Miscellaneous)">308 - ค่าใช้จ่ายเบ็ดเตล็ดสำนักงาน (Office Supplies & Miscellaneous)</option>
+              <option value="อื่นๆ">อื่นๆ (ระบุเองด้านล่าง)</option>
+            </select>
+          </div>
+          <div class="form-group" id="groupCustomExpenseCategory" style="display: none; flex: 1.5;">
+            <label for="expenseCustomCategory">ระบุหมวดหมู่ใหม่</label>
+            <input type="text" id="expenseCustomCategory" class="form-control" placeholder="พิมพ์หมวดหมู่ที่ต้องการ">
+          </div>
+          <div class="form-group" style="flex: 1;">
+            <label for="expenseProjectLink">ผูกกับโครงการ (Project Link)</label>
+            <select id="expenseProjectLink" class="form-control">
+              <option value="">-- ไม่ผูกโครงการ (ทั่วไป) --</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label for="expenseDesc">รายละเอียดการจ่ายเงิน (Note)</label>
+          <input type="text" id="expenseDesc" class="form-control" placeholder="เช่น ค่าโฆษณาโปรโมตแคมเปญมิถุนายน" required>
+        </div>
+
+        <!-- Row 1: Price Type, Amount, VAT -->
+        <div class="form-row" style="display: flex; gap: 12px; margin-bottom: 12px;">
+          <div class="form-group" style="flex: 1;">
+            <label for="expensePriceType" style="min-height: 20px; display: block; margin-bottom: 6px;">ประเภทราคาสินค้า</label>
+            <select id="expensePriceType" class="form-control">
+              <option value="exclude">ราคาแยก VAT (Exclude)</option>
+              <option value="include">ราคารวม VAT (Include)</option>
+            </select>
+          </div>
+          <div class="form-group" style="flex: 1;">
+            <label id="labelExpenseAmount" for="expenseBaseAmount" style="min-height: 20px; display: block; margin-bottom: 6px;">จำนวนเงินก่อน VAT (Gross)</label>
+            <input type="number" id="expenseBaseAmount" step="0.01" class="form-control mono" placeholder="0.00" required>
+          </div>
+          <div class="form-group" style="flex: 1;">
+            <label for="expenseVatSelect" style="min-height: 20px; display: block; margin-bottom: 6px;">ภาษีมูลค่าเพิ่ม (VAT ซื้อ)</label>
+            <select id="expenseVatSelect" class="form-control">
+              <option value="0">ไม่มี VAT (0%)</option>
+              <option value="7">มี VAT ซื้อ (7%)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Row 2: WHT and WHT Type -->
+        <div class="form-row" style="display: flex; gap: 12px; margin-bottom: 12px;">
+          <div class="form-group" style="flex: 1;">
+            <label for="expenseWhtSelect" style="min-height: 20px; display: block; margin-bottom: 6px;">ภาษีหัก ณ ที่จ่าย (WHT)</label>
+            <select id="expenseWhtSelect" class="form-control">
+              <option value="0">ไม่มีการหัก (0%)</option>
+              <option value="1">หัก 1% (ค่าขนส่ง)</option>
+              <option value="3">หัก 3% (ค่าบริการ/จ้างทำของ)</option>
+              <option value="5">หัก 5% (ค่าเช่า/โฆษณา)</option>
+            </select>
+          </div>
+          <div class="form-group" style="flex: 1;">
+            <label for="expenseWhtType" style="min-height: 20px; display: block; margin-bottom: 6px;">ประเภทยื่นภาษีหัก ณ ที่จ่าย</label>
+            <select id="expenseWhtType" class="form-control">
+              <option value="none">ไม่มีหัก ณ ที่จ่าย</option>
+              <option value="pnd3">ภ.ง.ด.3 (บุคคลธรรมดา)</option>
+              <option value="pnd53">ภ.ง.ด.53 (นิติบุคคล)</option>
+            </select>
+          </div>
+          <div class="form-group" style="flex: 1;">
+            <label for="expenseTaxFilingStatus" style="min-height: 20px; display: block; margin-bottom: 6px;">สถานะการยื่นภาษี WHT</label>
+            <select id="expenseTaxFilingStatus" class="form-control">
+              <option value="ยังไม่ได้ยื่น">ยังไม่ได้ยื่น</option>
+              <option value="ยื่นแล้ว">ยื่นแล้ว</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Row 3: Payment details -->
+        <div class="form-row" style="display: flex; gap: 12px; margin-bottom: 12px;">
+          <div class="form-group" style="flex: 1;">
+            <label for="expensePaymentMethod" style="min-height: 20px; display: block; margin-bottom: 6px;">ช่องทางการชำระเงิน</label>
+            <select id="expensePaymentMethod" class="form-control">
+              <option value="KBank">กสิกรไทย (KBank)</option>
+              <option value="SCB">ไทยพาณิชย์ (SCB)</option>
+              <option value="Cash">เงินสด (Cash)</option>
+              <option value="CC">บัตรเครดิตบริษัท (CC)</option>
+            </select>
+          </div>
+          <div class="form-group" style="flex: 1;">
+            <label for="expensePaymentStatus" style="min-height: 20px; display: block; margin-bottom: 6px;">สถานะการจ่ายเงิน</label>
+            <select id="expensePaymentStatus" class="form-control">
+              <option value="จ่ายเงินแล้ว">จ่ายเงินแล้ว</option>
+              <option value="อนุมัติแล้ว">อนุมัติแล้ว</option>
+              <option value="รออนุมัติจ่าย">รออนุมัติจ่าย</option>
+              <option value="ยกเลิก">ยกเลิก</option>
+            </select>
+          </div>
+          <div class="form-group" style="flex: 1;">
+            <label for="expenseActualPaidDate" style="min-height: 20px; display: block; margin-bottom: 6px;">วันที่จ่ายเงินจริง</label>
+            <input type="date" id="expenseActualPaidDate" class="form-control">
+          </div>
+        </div>
+
+        <div class="form-group" style="background: var(--input-bg); padding:12px; border:2px solid var(--border-color); margin-top:10px; border-radius:4px; box-shadow: 2px 2px 0 var(--border-color);">
+          <span style="font-size:12px; color: var(--text-secondary); font-weight:700;">ยอดคำนวณเงินจ่ายจริง (Real-time Calculator):</span>
+          <div style="display:flex; justify-content:space-between; margin-top:8px; font-size:13px;" class="mono">
+            <div>ภาษีซื้อ (VAT): <strong id="calcExpenseVat">฿0.00</strong></div>
+            <div>ภาษีหัก ณ ที่จ่าย (WHT): <strong id="calcExpenseWht">฿0.00</strong></div>
+            <div>ยอดเงินโอนจ่ายจริง: <strong id="calcExpenseNet" style="color:var(--accent-color);">฿0.00</strong></div>
+          </div>
+        </div>
+
+        <div class="form-row" style="display: flex; gap: 12px; margin-top: 12px; margin-bottom: 12px;">
+          <div class="form-group" style="flex: 1;">
+            <label for="expenseBillUrl">ลิงก์ Google Drive แนบหลักฐานใบเสร็จ (ถ้ามี)</label>
+            <input type="text" id="expenseBillUrl" class="form-control mono" placeholder="https://drive.google.com/...">
+          </div>
+          <div class="form-group" style="flex: 1;">
+            <label for="expenseRemarks">หมายเหตุเพิ่มเติม</label>
+            <input type="text" id="expenseRemarks" class="form-control" placeholder="ระบุหมายเหตุถ้ามี">
+          </div>
+        </div>
+
+        <div class="form-actions" style="margin-top: 20px; display: flex; gap: 12px; justify-content: flex-end;">
+          <button type="button" id="btnCancelExpenseModal" class="btn-secondary" style="padding: 10px 16px;">ยกเลิก</button>
+          <button type="submit" id="btnSubmitExpenseModal" class="btn-primary" style="padding: 10px 16px;">
+            <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+            </svg>
+            บันทึกรายจ่าย
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Add Petty Cash Record -->
+  <div id="addPettyCashModal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 class="modal-title">จ่ายเงินสดย่อยใหม่ (Petty Cash Voucher)</h2>
+        <button id="btnClosePettyCashModal" class="modal-close-btn">&times;</button>
+      </div>
+      <form id="formAddPettyCash" onsubmit="event.preventDefault();">
+        <div class="form-row" style="display: flex; gap: 12px; margin-bottom: 12px;">
+          <div class="form-group" style="flex: 1;">
+            <label for="pettyCashVoucherNo">เลขที่ใบสำคัญ</label>
+            <input type="text" id="pettyCashVoucherNo" class="form-control mono" readonly>
+          </div>
+          <div class="form-group" style="flex: 1;">
+            <label for="pettyCashDate">วันที่จ่ายเงินสด</label>
+            <input type="date" id="pettyCashDate" class="form-control" required>
+          </div>
+        </div>
+        <div class="form-row" style="display: flex; gap: 12px; margin-bottom: 12px;">
+          <div class="form-group" style="flex: 1;">
+            <label for="pettyCashRequester">ผู้ขอเบิกเงิน</label>
+            <input type="text" id="pettyCashRequester" class="form-control" placeholder="เช่น เจน, วิน, หอม" required>
+          </div>
+          <div class="form-group" style="flex: 1;">
+            <label for="pettyCashCategory">หมวดหมู่บัญชีค่าใช้จ่าย</label>
+            <select id="pettyCashCategory" class="form-control">
+              <option value="308 - ค่าใช้จ่ายเบ็ดเตล็ดสำนักงาน (Office Supplies & Miscellaneous)">308 - ค่าใช้จ่ายเบ็ดเตล็ดสำนักงาน</option>
+              <option value="105 - ค่าเดินทางและพาหนะกองถ่าย (Production Travel & Transport)">105 - ค่าเดินทางและพาหนะกองถ่าย</option>
+              <option value="106 - ค่าอาหารและเครื่องดื่มกองถ่าย (Production Catering)">106 - ค่าอาหารและเครื่องดื่มกองถ่าย</option>
+              <option value="304 - ค่าน้ำ ค่าไฟ ค่าอินเทอร์เน็ตสำนักงาน (Office Utilities)">304 - ค่าน้ำ ค่าไฟ ค่าอินเทอร์เน็ตสำนักงาน</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label for="pettyCashDetail">รายละเอียดการใช้จ่าย</label>
+          <input type="text" id="pettyCashDetail" class="form-control" placeholder="เช่น ซื้อกาแฟต้อนรับทีมงาน, ค่าส่งเอกสารด่วน" required>
+        </div>
+        <div class="form-row" style="display: flex; gap: 12px; margin-bottom: 12px;">
+          <div class="form-group" style="flex: 1;">
+            <label for="pettyCashAmountPaid">ยอดจ่ายจริง (บาท)</label>
+            <input type="number" id="pettyCashAmountPaid" class="form-control mono" step="0.01" min="0.01" placeholder="0.00" required>
+          </div>
+          <div class="form-group" style="flex: 1;">
+            <label for="pettyCashApprover">ผู้อนุมัติจ่าย</label>
+            <input type="text" id="pettyCashApprover" class="form-control" placeholder="เช่น เก่ง, พี่เฟิส" required>
+          </div>
+        </div>
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label for="pettyCashReceiptUrl">ลิงก์อ้างอิงภาพถ่ายใบเสร็จ (ถ้ามี)</label>
+          <input type="text" id="pettyCashReceiptUrl" class="form-control mono" placeholder="https://drive.google.com/...">
+        </div>
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label for="pettyCashRemarks">หมายเหตุ</label>
+          <input type="text" id="pettyCashRemarks" class="form-control" placeholder="พิมพ์ข้อความเพิ่มถ้ามี">
+        </div>
+        <div class="form-actions" style="margin-top: 20px; display: flex; gap: 12px; justify-content: flex-end;">
+          <button type="button" id="btnCancelPettyCashModal" class="btn-secondary" style="padding: 10px 16px;">ยกเลิก</button>
+          <button type="submit" id="btnSubmitPettyCashModal" class="btn-primary" style="padding: 10px 16px;">
+            <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+            </svg>
+            บันทึกเงินสดย่อย
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Add Payroll Record -->
+  <div id="addPayrollModal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 class="modal-title">บันทึกรายการเงินเดือนประจำเดือน (Employee Payroll)</h2>
+        <button id="btnClosePayrollModal" class="modal-close-btn">&times;</button>
+      </div>
+      <form id="formAddPayroll" onsubmit="event.preventDefault();">
+        <div class="form-row" style="display: flex; gap: 12px; margin-bottom: 12px;">
+          <div class="form-group" style="flex: 1;">
+            <label for="payrollIdInput">รหัสรอบจ่าย</label>
+            <input type="text" id="payrollIdInput" class="form-control mono" placeholder="เช่น PAY-2026-06" required>
+          </div>
+          <div class="form-group" style="flex: 1;">
+            <label for="payrollEmployeeSelect">เลือกพนักงาน</label>
+            <select id="payrollEmployeeSelect" class="form-control" onchange="onPayrollEmployeeChange()">
+              <option value="">-- เลือกพนักงาน --</option>
+              <option value="EMP01" data-name="เจน บัญชี" data-taxid="1100200876543" data-salary="25000" data-bank="KBANK 123-4-56789-0">เจน (EMP01)</option>
+              <option value="EMP02" data-name="วิน คริปโต" data-taxid="3100200987654" data-salary="30000" data-bank="SCB 567-8-90123-4">วิน (EMP02)</option>
+              <option value="EMP03" data-name="หอม ดีไซเนอร์" data-taxid="5100200123456" data-salary="28000" data-bank="KBANK 987-6-54321-0">หอม (EMP03)</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row" style="display: flex; gap: 12px; margin-bottom: 12px;">
+          <div class="form-group" style="flex: 2;">
+            <label for="payrollEmployeeName">ชื่อเต็มของพนักงาน</label>
+            <input type="text" id="payrollEmployeeName" class="form-control" readonly>
+          </div>
+          <div class="form-group" style="flex: 1.5;">
+            <label for="payrollEmployeeTaxId">เลขประจำตัวประชาชน</label>
+            <input type="text" id="payrollEmployeeTaxId" class="form-control mono" readonly>
+          </div>
+        </div>
+        <div class="form-row" style="display: flex; gap: 12px; margin-bottom: 12px;">
+          <div class="form-group" style="flex: 1;">
+            <label for="payrollBaseSalary">เงินเดือนพื้นฐาน</label>
+            <input type="number" id="payrollBaseSalary" class="form-control mono" placeholder="0.00" oninput="calculatePayrollTotals()" required>
+          </div>
+          <div class="form-group" style="flex: 1;">
+            <label for="payrollAllowances">ค่าตำแหน่ง/โบนัส/Allowance</label>
+            <input type="number" id="payrollAllowances" class="form-control mono" placeholder="0.00" oninput="calculatePayrollTotals()">
+          </div>
+        </div>
+        <div class="form-row" style="display: flex; gap: 12px; margin-bottom: 12px;">
+          <div class="form-group" style="flex: 1;">
+            <label for="payrollSsfDeduction">หักสมทบประกันสังคม (5% max 750)</label>
+            <input type="number" id="payrollSsfDeduction" class="form-control mono" placeholder="0.00" readonly>
+          </div>
+          <div class="form-group" style="flex: 1;">
+            <label for="payrollWhtDeduction">หักภาษีเงินได้บุคคล ภ.ง.ด.1</label>
+            <input type="number" id="payrollWhtDeduction" class="form-control mono" placeholder="0.00" oninput="calculatePayrollTotals()">
+          </div>
+          <div class="form-group" style="flex: 1;">
+            <label for="payrollOtherDeductions">หักค่าอื่นๆ (ขาดงาน/ประกัน)</label>
+            <input type="number" id="payrollOtherDeductions" class="form-control mono" placeholder="0.00" oninput="calculatePayrollTotals()">
+          </div>
+        </div>
+        <div class="form-group" style="background: var(--input-bg); padding:12px; border:2px solid var(--border-color); margin-top:10px; border-radius:4px; box-shadow: 2px 2px 0 var(--border-color);">
+          <span style="font-size:12px; color: var(--text-secondary); font-weight:700;">ผลการคำนวณยอดสุทธิ (Net Pay Summary):</span>
+          <div style="display:flex; justify-content:space-between; margin-top:8px; font-size:13px;" class="mono">
+            <div>ยอดได้ก่อนหัก: <strong id="calcPayrollTotalEarnings">฿0.00</strong></div>
+            <div>ยอดโอนเงินเดือนสุทธิ: <strong id="calcPayrollNetPay" style="color:var(--accent-color);">฿0.00</strong></div>
+          </div>
+        </div>
+        <div class="form-row" style="display: flex; gap: 12px; margin-top: 12px; margin-bottom: 12px;">
+          <div class="form-group" style="flex: 1.5;">
+            <label for="payrollBankAccount">เลขที่บัญชีและธนาคารของพนักงาน</label>
+            <input type="text" id="payrollBankAccount" class="form-control" readonly>
+          </div>
+          <div class="form-group" style="flex: 1;">
+            <label for="payrollStatus">สถานะรอบจ่าย</label>
+            <select id="payrollStatus" class="form-control">
+              <option value="โอนเงินแล้ว">โอนเงินแล้ว</option>
+              <option value="รอดำเนินการ">รอดำเนินการ</option>
+              <option value="มีปัญหา">มีปัญหา</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label for="payrollPaySlipUrl">ลิงก์ e-Slip ของพนักงาน (Google Drive)</label>
+          <input type="text" id="payrollPaySlipUrl" class="form-control mono" placeholder="https://drive.google.com/...">
+        </div>
+        <div class="form-actions" style="margin-top: 20px; display: flex; gap: 12px; justify-content: flex-end;">
+          <button type="button" id="btnCancelPayrollModal" class="btn-secondary" style="padding: 10px 16px;">ยกเลิก</button>
+          <button type="submit" id="btnSubmitPayrollModal" class="btn-primary" style="padding: 10px 16px;">
+            <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+            </svg>
+            บันทึกเงินเดือน
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Add Bank Reconciliation Record -->
+  <div id="addBankRecModal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 class="modal-title">บันทึกการกระทบยอดธนาคาร (Bank Reconciliation)</h2>
+        <button id="btnCloseBankRecModal" class="modal-close-btn">&times;</button>
+      </div>
+      <form id="formAddBankRec" onsubmit="event.preventDefault();">
+        <div class="form-row" style="display: flex; gap: 12px; margin-bottom: 12px;">
+          <div class="form-group" style="flex: 1;">
+            <label for="bankRecReconciliationId">รหัสรายงาน</label>
+            <input type="text" id="bankRecReconciliationId" class="form-control mono" readonly>
+          </div>
+          <div class="form-group" style="flex: 1;">
+            <label for="bankRecPeriod">งวดประจำเดือน</label>
+            <input type="month" id="bankRecPeriod" class="form-control" onchange="onBankRecPeriodChange()" required>
+          </div>
+        </div>
+        <div class="form-row" style="display: flex; gap: 12px; margin-bottom: 12px;">
+          <div class="form-group" style="flex: 1;">
+            <label for="bankRecBankAccount">บัญชีธนาคารบริษัท</label>
+            <select id="bankRecBankAccount" class="form-control" onchange="onBankRecPeriodChange()">
+              <option value="KBANK-Main">ธนาคารกสิกรไทย บจก. GHN168 (KBANK)</option>
+              <option value="SCB-Reserve">ธนาคารไทยพาณิชย์ บจก. GHN168 (SCB)</option>
+            </select>
+          </div>
+          <div class="form-group" style="flex: 1;">
+            <label for="bankRecReconciledBy">ผู้ทำงบกระทบยอด</label>
+            <input type="text" id="bankRecReconciledBy" class="form-control" placeholder="เช่น พิม, เก่ง" required>
+          </div>
+        </div>
+        <div class="form-row" style="display: flex; gap: 12px; margin-bottom: 12px;">
+          <div class="form-group" style="flex: 1;">
+            <label for="bankRecStatementBalance">ยอดคงเหลือตาม Bank Statement (A)</label>
+            <input type="number" id="bankRecStatementBalance" class="form-control mono" step="0.01" placeholder="0.00" oninput="calculateBankRecTotals()" required>
+          </div>
+          <div class="form-group" style="flex: 1;">
+            <label for="bankRecBookBalance">ยอดคงเหลือในระบบบริษัท (B)</label>
+            <input type="number" id="bankRecBookBalance" class="form-control mono" step="0.01" placeholder="0.00" readonly>
+          </div>
+        </div>
+        <div class="form-row" style="display: flex; gap: 12px; margin-bottom: 12px;">
+          <div class="form-group" style="flex: 1;">
+            <label for="bankRecDepositInTransit">เงินฝากระหว่างทาง (+) (C)</label>
+            <input type="number" id="bankRecDepositInTransit" class="form-control mono" step="0.01" placeholder="0.00" oninput="calculateBankRecTotals()">
+          </div>
+          <div class="form-group" style="flex: 1;">
+            <label for="bankRecOutstandingCheques">เช็คค้างจ่าย (-) (D)</label>
+            <input type="number" id="bankRecOutstandingCheques" class="form-control mono" step="0.01" placeholder="0.00" oninput="calculateBankRecTotals()">
+          </div>
+          <div class="form-group" style="flex: 1;">
+            <label for="bankRecChargesNotRecorded">ค่าธรรมเนียมค้างคีย์ (-) (E)</label>
+            <input type="number" id="bankRecChargesNotRecorded" class="form-control mono" step="0.01" placeholder="0.00" oninput="calculateBankRecTotals()">
+          </div>
+        </div>
+        <div class="form-group" style="background: var(--input-bg); padding:12px; border:2px solid var(--border-color); margin-top:10px; border-radius:4px; box-shadow: 2px 2px 0 var(--border-color);">
+          <span style="font-size:12px; color: var(--text-secondary); font-weight:700;">ตรวจสอบงบกระทบยอดธนาคาร:</span>
+          <div style="display:flex; justify-content:space-between; margin-top:8px; font-size:13px;" class="mono">
+            <div>ยอดปรับปรุงธนาคาร (A+C-D): <strong id="calcBankRecAdjustedStatement">฿0.00</strong></div>
+            <div>ยอดปรับปรุงบริษัท (B-E): <strong id="calcBankRecAdjustedBook">฿0.00</strong></div>
+            <div>ส่วนต่าง (ต้องเป็น 0.00): <strong id="calcBankRecDifference" style="color:var(--accent-color);">฿0.00</strong></div>
+          </div>
+        </div>
+        <div class="form-actions" style="margin-top: 20px; display: flex; gap: 12px; justify-content: flex-end;">
+          <button type="button" id="btnCancelBankRecModal" class="btn-secondary" style="padding: 10px 16px;">ยกเลิก</button>
+          <button type="submit" id="btnSubmitBankRecModal" class="btn-primary" style="padding: 10px 16px;">
+            <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+            </svg>
+            บันทึกงบกระทบยอด
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Printable Payment Voucher (PV) -->
+
+  <div id="printPvPaper" class="wht-card-paper" style="display: none; font-family: 'Prompt', 'IBM Plex Sans Thai', sans-serif; padding: 30px; background: #fff; border: 2px solid #000; max-width: 800px; margin: 0 auto; color: #000;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #000; padding-bottom: 12px;">
+      <div>
+        <img src="logo.png" style="height: 40px; display: block; margin-bottom: 8px;">
+        <strong style="font-size: 13px; display: block; margin-bottom: 2px;">บริษัท จีเอชเอ็น 168 มีเดีย แอนด์ ครีเอชั่น จำกัด</strong>
+        <span style="font-size: 9px; color: #475569; display: block; margin-bottom: 4px;">GHN 168 MEDIA & CREATION COMPANY LIMITED</span>
+        <span style="font-size: 9px; line-height: 1.3; display: block;">
+          เลขประจำตัวผู้เสียภาษี: <span class="mono" style="font-weight:700;">0105566123456</span> (สำนักงานใหญ่)<br>
+          ที่อยู่: 65/1 ถนนต้นขาม 2 ต.ท่าศาลา อ.เมือง จ.เชียงใหม่ 50000
+        </span>
+      </div>
+      <div style="text-align: right;">
+        <h2 style="font-size: 20px; margin: 0; font-weight: 900; letter-spacing: 0.5px;">ใบสำคัญจ่าย</h2>
+        <span style="font-size: 10px; color: #475569; font-weight: 700; display: block; margin-bottom: 8px;">PAYMENT VOUCHER</span>
+        <div style="margin-top: 4px; font-size: 11px; text-align: left; border: 1px solid #000; padding: 8px; background: #f9fafb; min-width: 180px; box-shadow: 2px 2px 0 #000;">
+          <div style="margin-bottom: 4px;"><strong>เลขที่ (PV No):</strong> <span id="pvPrintNo" class="mono" style="font-weight: 700;">-</span></div>
+          <div><strong>วันที่ (Date):</strong> <span id="pvPrintDate" style="font-weight: 700;">-</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top: 16px; font-size: 11px; display: flex; flex-direction: column; gap: 6px;">
+      <div style="display: flex;">
+        <div style="width: 120px; font-weight: 700;">จ่ายให้ (Paid To):</div>
+        <div id="pvPrintPayee" style="flex: 1; border-bottom: 1px dashed #000; font-weight: 700;">-</div>
+      </div>
+      <div style="display: flex;">
+        <div style="width: 120px; font-weight: 700;">เลขผู้เสียภาษี (Tax ID):</div>
+        <div id="pvPrintPayeeTaxId" style="flex: 1; border-bottom: 1px dashed #000;" class="mono">-</div>
+      </div>
+    </div>
+
+    <table style="width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 11px; border: 1px solid #000;">
+      <thead>
+        <tr style="background: #f3f4f6; border-bottom: 1px solid #000; font-weight: 700; text-align: left;">
+          <th style="border-right: 1px solid #000; padding: 8px; text-align: center;">รายการคำชี้แจงรายจ่าย (Description)</th>
+          <th style="padding: 8px; text-align: right; width: 160px; text-align: center;">จำนวนเงิน (Amount)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; padding: 12px; min-height: 100px; height: 100px; vertical-align: top;">
+            <div id="pvPrintDesc" style="font-weight: 700; font-size: 12px; margin-bottom: 6px;">-</div>
+            <div id="pvPrintNote" style="color: #475569; font-size: 10px; line-height: 1.4;">-</div>
+          </td>
+          <td style="border-bottom: 1px solid #000; padding: 12px; text-align: right; vertical-align: top; font-weight: 700; font-size: 12px;" id="pvPrintBaseAmount" class="mono">-</td>
+        </tr>
+        <tr>
+          <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; padding: 6px; text-align: right; font-weight: 700;">ภาษีมูลค่าเพิ่ม (VAT 7%)</td>
+          <td style="border-bottom: 1px solid #000; padding: 6px; text-align: right;" id="pvPrintVat" class="mono">-</td>
+        </tr>
+        <tr>
+          <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; padding: 6px; text-align: right; font-weight: 700;">หัก ณ ที่จ่าย (Withholding Tax)</td>
+          <td style="border-bottom: 1px solid #000; padding: 6px; text-align: right;" id="pvPrintWht" class="mono">-</td>
+        </tr>
+        <tr style="background: #f9fafb; font-weight: 700; font-size: 12px;">
+          <td style="border-right: 1px solid #000; padding: 8px; text-align: right; text-transform: uppercase;">จำนวนเงินจ่ายสุทธิ (Net Paid)</td>
+          <td style="padding: 8px; text-align: right; color: var(--accent-color);" id="pvPrintNet" class="mono">-</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="border: 1px solid #000; padding: 10px; font-weight: 700; background: #f9fafb; font-size: 11px; margin-top: 8px; box-shadow: 2px 2px 0 #000;">
+      ตัวหนังสือยอดเงินจ่ายสุทธิ (Thai Baht Text): <span id="pvPrintNetText" style="margin-left: 10px; font-weight: 700;">-</span>
+    </div>
+
+    <!-- Signatures block -->
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 40px; font-size: 10px; text-align: center;">
+      <div style="border: 1px solid #000; padding: 10px; background: #f9fafb; box-shadow: 2px 2px 0 #000;">
+        <div style="margin-top: 24px; border-bottom: 1px dashed #000; width: 85%; margin-left: auto; margin-right: auto;"></div>
+        <div style="margin-top: 6px; font-weight: 700;">ผู้จัดทำ (Prepared by)</div>
+        <div style="margin-top: 4px; color: #475569; font-size: 9px;">วันที่ ...../...../.....</div>
+      </div>
+      <div style="border: 1px solid #000; padding: 10px; background: #f9fafb; box-shadow: 2px 2px 0 #000;">
+        <div style="margin-top: 24px; border-bottom: 1px dashed #000; width: 85%; margin-left: auto; margin-right: auto;"></div>
+        <div style="margin-top: 6px; font-weight: 700;">ผู้ตรวจทาน (Checked by)</div>
+        <div style="margin-top: 4px; color: #475569; font-size: 9px;">วันที่ ...../...../.....</div>
+      </div>
+      <div style="border: 1px solid #000; padding: 10px; background: #f9fafb; box-shadow: 2px 2px 0 #000;">
+        <div style="margin-top: 24px; border-bottom: 1px dashed #000; width: 85%; margin-left: auto; margin-right: auto;"></div>
+        <div style="margin-top: 6px; font-weight: 700;">ผู้อนุมัติจ่าย (Approved by)</div>
+        <div style="margin-top: 4px; color: #475569; font-size: 9px;">วันที่ ...../...../.....</div>
+      </div>
+      <div style="border: 1px solid #000; padding: 10px; background: #f9fafb; box-shadow: 2px 2px 0 #000;">
+        <div style="margin-top: 24px; border-bottom: 1px dashed #000; width: 85%; margin-left: auto; margin-right: auto;"></div>
+        <div style="margin-top: 6px; font-weight: 700;">ผู้รับเงิน (Received by)</div>
+        <div style="margin-top: 4px; color: #475569; font-size: 9px;">วันที่ ...../...../.....</div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
