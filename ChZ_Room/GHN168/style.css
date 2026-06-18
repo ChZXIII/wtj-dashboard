@@ -1378,6 +1378,28 @@ textarea.form-control {
     flex: none !important;
   }
 
+  /* Mobile form control overflow fix */
+  .form-control {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Prevent table squishing and vertical header text wrapping */
+  .table th,
+  .table td,
+  .doc-table th,
+  .doc-table td,
+  .paper-table th,
+  .paper-table td,
+  .wht-table th,
+  .wht-table td,
+  .editor-items-table th,
+  .editor-items-table td {
+    white-space: nowrap !important;
+  }
+
   /* Mobile Top Header Navigation Bar */
   .sidebar {
     width: 100% !important;
