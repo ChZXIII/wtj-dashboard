@@ -1592,6 +1592,10 @@ function syncDocPreview() {
   const prevAuthorizedSigTitle = document.getElementById('prevAuthorizedSigTitle');
   const prevSignerNameVal = document.getElementById('prevSignerNameVal');
   const prevSignerRoleVal = document.getElementById('prevSignerRoleVal');
+  const sigRow = document.querySelector('.doc-signatures-row');
+  
+  const prevBankPaymentDetailsBlock = document.getElementById('prevBankPaymentDetailsBlock');
+  const prevDepositTermsBlock = document.getElementById('prevDepositTermsBlock');
 
   if (currentDocType === 'quotation') {
     if (prevCustomerSigBox) prevCustomerSigBox.style.display = 'none';
@@ -1600,6 +1604,15 @@ function syncDocPreview() {
     if (prevSignerRoleVal) {
       prevSignerRoleVal.textContent = 'เจ้าของกิจการ Feltz Studio';
       prevSignerRoleVal.style.display = 'block';
+    }
+    if (sigRow) sigRow.style.justifyContent = 'flex-end'; // ลายเซ็นเสนอราคาชิดขวาเสมอเมื่อมีอันเดียว
+    
+    // ซ่อนข้อมูลธนาคารสำหรับใบเสนอราคา และจัดเรียงกล่องมัดจำให้สวยงาม
+    if (prevBankPaymentDetailsBlock) prevBankPaymentDetailsBlock.style.display = 'none';
+    if (prevDepositTermsBlock) {
+      prevDepositTermsBlock.style.borderTop = 'none';
+      prevDepositTermsBlock.style.paddingTop = '0';
+      prevDepositTermsBlock.style.marginTop = '0';
     }
   } else {
     if (prevCustomerSigBox) prevCustomerSigBox.style.display = 'block';
@@ -1613,6 +1626,15 @@ function syncDocPreview() {
       prevSignerNameVal.textContent = docSignerName ? (docSignerName.value || 'มงคล วงศ์สกุลยานนท์') : 'มงคล วงศ์สกุลยานนท์';
     }
     if (prevSignerRoleVal) prevSignerRoleVal.style.display = 'none';
+    if (sigRow) sigRow.style.justifyContent = 'space-between'; // ลายเซ็นแบบ 2 ช่องแยกซ้ายขวาตามปกติ
+    
+    // แสดงข้อมูลธนาคารสำหรับเอกสารแจ้งหนี้/รับเงิน และจัดเรียงกล่องมัดจำตามปกติ
+    if (prevBankPaymentDetailsBlock) prevBankPaymentDetailsBlock.style.display = 'block';
+    if (prevDepositTermsBlock) {
+      prevDepositTermsBlock.style.borderTop = '1px dashed #e2e8f0';
+      prevDepositTermsBlock.style.paddingTop = '8px';
+      prevDepositTermsBlock.style.marginTop = '8px';
+    }
   }
   
   // Update title dynamically if we are currently viewing the document view
