@@ -211,6 +211,62 @@ function saveScriptSettings() {
   alert('บันทึกการเชื่อมต่อเรียบร้อยแล้วแก!');
 }
 
+function initializeGoogleSheet() {
+  const scriptUrl = safeStorage.getItem('ghn168_script_url');
+  const sheetId = safeStorage.getItem('ghn168_sheet_id');
+  
+  if (!scriptUrl || !sheetId) {
+    alert('⚠️ กรุณากรอก URL และ Spreadsheet ID จากนั้นกด "บันทึกการเชื่อมต่อบัญชี" ก่อนนะแก!');
+    return;
+  }
+  
+  // Set loading state on button
+  const btn = document.getElementById('btnInitSheets');
+  const originalHtml = btn.innerHTML;
+  btn.disabled = true;
+  btn.style.opacity = '0.7';
+  btn.innerHTML = `
+    <svg class="btn-icon animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 7.89M9 11l3-3 3 3m-3-3v12" />
+    </svg>
+    กำลังจัดเตรียมโครงสร้างชีต...
+  `;
+  
+  const payload = {
+    spreadsheetId: sheetId,
+    type: 'initialize'
+  };
+  
+  fetch(scriptUrl, {
+    method: 'POST',
+    mode: 'cors',
+    headers: { 'Content-Type': 'text/plain' },
+    body: JSON.stringify(payload)
+  })
+  .then(res => {
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`);
+    }
+    return res.json();
+  })
+  .then(res => {
+    if (res.status === 'success') {
+      alert(`🎉 ${res.message}`);
+    } else {
+      alert(`❌ เกิดข้อผิดพลาดจาก Apps Script: ${res.message}`);
+    }
+  })
+  .catch(err => {
+    console.error(err);
+    alert(`❌ เกิดข้อผิดพลาดเชื่อมต่อสคริปต์: ${err.toString()}\n\n*ข้อแนะนำ: ตรวจสอบว่าแกได้ก๊อปปี้สคริปต์ตัวปรับปรุงล่าสุดไปวางและกด Deploy เป็น Web App แบบ 'ทุกคน (Anyone)' แล้วหรือยังนะแก!`);
+  })
+  .finally(() => {
+    btn.disabled = false;
+    btn.style.opacity = '1';
+    btn.innerHTML = originalHtml;
+  });
+}
+
 function loadData() {
   // FIXED STABILITY: Wrapped parsing in try-catch and defensive filters to prevent app crash on data corruption
   try {

@@ -1475,3 +1475,14 @@ textarea.form-control {
   width: 600px;
   max-width: 95%;
 }
+
+/* Spinner Animation for loading buttons */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin {
+  animation: spin 1.2s linear infinite;
+  transform-origin: center;
+}

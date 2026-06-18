@@ -366,9 +366,47 @@ function doPost(e) {
       })).setMimeType(ContentService.MimeType.JSON);
     }
     
+    // ----------------------------------------------------
+    // CASE 6: เตรียมโครงสร้าง 5 แท็บหลักอัตโนมัติ (Initialize)
+    // ----------------------------------------------------
+    else if (data.type === "initialize") {
+      var sheetsInfo = [
+        { name: "รายรับ", headers: INCOME_HEADERS },
+        { name: "รายจ่าย", headers: EXPENSE_HEADERS },
+        { name: "เงินสดย่อย", headers: PETTY_CASH_HEADERS },
+        { name: "เงินเดือน", headers: PAYROLL_HEADERS },
+        { name: "กระทบยอดธนาคาร", headers: BANK_REC_HEADERS }
+      ];
+      
+      var createdSheets = [];
+      var checkedSheets = [];
+      
+      for (var i = 0; i < sheetsInfo.length; i++) {
+        var info = sheetsInfo[i];
+        var sheetName = info.name;
+        var headers = info.headers;
+        var sheet = activeSpreadsheet.getSheetByName(sheetName);
+        
+        if (!sheet) {
+          sheet = activeSpreadsheet.insertSheet(sheetName);
+          sheet.appendRow(headers);
+          sheet.getRange(1, 1, 1, headers.length).setFontWeight("bold").setBackground("#f3f4f6");
+          sheet.setFrozenRows(1);
+          createdSheets.push(sheetName);
+        } else {
+          migrateSheetIfNeeded(sheet, headers);
+          checkedSheets.push(sheetName);
+        }
+      }
+      
+      return ContentService.createTextOutput(JSON.stringify({
+        "status": "success",
+        "message": "เตรียมโครงสร้างชีตสำเร็จแล้วแก! (สร้างแท็บใหม่: " + createdSheets.join(", ") + " | ตรวจทานแท็บเดิม: " + checkedSheets.join(", ") + ")"
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+    
     // INVALID TYPE
     else {
-
       return ContentService.createTextOutput(JSON.stringify({
         "status": "error",
         "message": "ประเภทธุรกรรม '" + data.type + "' ไม่ถูกต้องนะแก!"
