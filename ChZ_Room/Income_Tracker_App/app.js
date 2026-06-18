@@ -1603,15 +1603,20 @@ function syncDocPreview() {
   const prevBankPaymentDetailsBlock = document.getElementById('prevBankPaymentDetailsBlock');
   const prevDepositTermsBlock = document.getElementById('prevDepositTermsBlock');
 
+  // ซ่อนบล็อกลายเซ็นซ้าย (ผู้รับเอกสาร) และจัดบล็อกลายเซ็นขวาชิดขวาเสมอสำหรับทุกเอกสาร
+  if (prevCustomerSigBox) prevCustomerSigBox.style.display = 'none';
+  if (sigRow) sigRow.style.justifyContent = 'flex-end';
+
   if (currentDocType === 'quotation') {
-    if (prevCustomerSigBox) prevCustomerSigBox.style.display = 'none';
-    if (prevAuthorizedSigTitle) prevAuthorizedSigTitle.textContent = 'เสนอราคาโดย';
+    if (prevAuthorizedSigTitle) {
+      prevAuthorizedSigTitle.textContent = 'เสนอราคาโดย';
+      prevAuthorizedSigTitle.style.display = 'block';
+    }
     if (prevSignerNameVal) prevSignerNameVal.textContent = '(นาย มงคล วงศ์สกุลยานนท์)';
     if (prevSignerRoleVal) {
       prevSignerRoleVal.textContent = 'เจ้าของกิจการ Feltz Studio';
       prevSignerRoleVal.style.display = 'block';
     }
-    if (sigRow) sigRow.style.justifyContent = 'flex-end'; // ลายเซ็นเสนอราคาชิดขวาเสมอเมื่อมีอันเดียว
     
     // ซ่อนข้อมูลธนาคารสำหรับใบเสนอราคา และจัดเรียงกล่องมัดจำให้สวยงาม
     if (prevBankPaymentDetailsBlock) prevBankPaymentDetailsBlock.style.display = 'none';
@@ -1621,11 +1626,15 @@ function syncDocPreview() {
       prevDepositTermsBlock.style.marginTop = '0';
     }
   } else if (currentDocType === 'invoice') {
-    if (prevCustomerSigBox) prevCustomerSigBox.style.display = 'block';
-    if (prevAuthorizedSigTitle) prevAuthorizedSigTitle.textContent = 'ในนาม เจ้าของกิจการ Feltz Studio';
+    if (prevAuthorizedSigTitle) {
+      prevAuthorizedSigTitle.textContent = '';
+      prevAuthorizedSigTitle.style.display = 'none';
+    }
     if (prevSignerNameVal) prevSignerNameVal.textContent = '(นาย มงคล วงศ์สกุลยานนท์)';
-    if (prevSignerRoleVal) prevSignerRoleVal.style.display = 'none';
-    if (sigRow) sigRow.style.justifyContent = 'space-between'; // ลายเซ็นแบบ 2 ช่องแยกซ้ายขวาตามปกติ
+    if (prevSignerRoleVal) {
+      prevSignerRoleVal.textContent = 'เจ้าของกิจการ Feltz Studio';
+      prevSignerRoleVal.style.display = 'block';
+    }
     
     // แสดงข้อมูลธนาคารสำหรับเอกสารแจ้งหนี้/รับเงิน และจัดเรียงกล่องมัดจำตามปกติ
     if (prevBankPaymentDetailsBlock) prevBankPaymentDetailsBlock.style.display = 'block';
@@ -1635,9 +1644,9 @@ function syncDocPreview() {
       prevDepositTermsBlock.style.marginTop = '8px';
     }
   } else {
-    if (prevCustomerSigBox) prevCustomerSigBox.style.display = 'block';
     if (prevAuthorizedSigTitle) {
       prevAuthorizedSigTitle.textContent = 'ผู้รับเงิน';
+      prevAuthorizedSigTitle.style.display = 'block';
     }
     if (prevSignerNameVal) {
       prevSignerNameVal.textContent = '(นาย มงคล วงศ์สกุลยานนท์)';
@@ -1646,7 +1655,6 @@ function syncDocPreview() {
       prevSignerRoleVal.textContent = 'ในนาม เจ้าของกิจการ Feltz Studio';
       prevSignerRoleVal.style.display = 'block';
     }
-    if (sigRow) sigRow.style.justifyContent = 'space-between'; // ลายเซ็นแบบ 2 ช่องแยกซ้ายขวาตามปกติ
     
     // แสดงข้อมูลธนาคารสำหรับเอกสารแจ้งหนี้/รับเงิน และจัดเรียงกล่องมัดจำตามปกติ
     if (prevBankPaymentDetailsBlock) prevBankPaymentDetailsBlock.style.display = 'block';
