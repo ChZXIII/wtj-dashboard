@@ -1632,7 +1632,7 @@ function syncDocPreview() {
     }
     if (prevSignerNameVal) prevSignerNameVal.textContent = '(นาย มงคล วงศ์สกุลยานนท์)';
     if (prevSignerRoleVal) {
-      prevSignerRoleVal.textContent = 'เจ้าของกิจการ Feltz Studio';
+      prevSignerRoleVal.textContent = 'ในนาม เจ้าของกิจการ Feltz Studio';
       prevSignerRoleVal.style.display = 'block';
     }
     
