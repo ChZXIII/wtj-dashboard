@@ -1587,6 +1587,34 @@ function syncDocPreview() {
   renderDocItemsTable();
   calculateDocTotals();
   
+  // ปรับแต่งบล็อกลายเซ็นตามประเภทของเอกสาร (ใบเสนอราคา vs เอกสารอื่น)
+  const prevCustomerSigBox = document.getElementById('prevCustomerSigBox');
+  const prevAuthorizedSigTitle = document.getElementById('prevAuthorizedSigTitle');
+  const prevSignerNameVal = document.getElementById('prevSignerNameVal');
+  const prevSignerRoleVal = document.getElementById('prevSignerRoleVal');
+
+  if (currentDocType === 'quotation') {
+    if (prevCustomerSigBox) prevCustomerSigBox.style.display = 'none';
+    if (prevAuthorizedSigTitle) prevAuthorizedSigTitle.textContent = 'เสนอราคาโดย';
+    if (prevSignerNameVal) prevSignerNameVal.textContent = '(นาย มงคล วงศ์สกุลยานนท์)';
+    if (prevSignerRoleVal) {
+      prevSignerRoleVal.textContent = 'เจ้าของกิจการ Feltz Studio';
+      prevSignerRoleVal.style.display = 'block';
+    }
+  } else {
+    if (prevCustomerSigBox) prevCustomerSigBox.style.display = 'block';
+    if (prevAuthorizedSigTitle) {
+      prevAuthorizedSigTitle.textContent = currentDocType === 'invoice' 
+        ? 'ผู้ออกเอกสาร / Authorized Signature' 
+        : 'ผู้รับเงิน / Authorized Signature';
+    }
+    if (prevSignerNameVal) {
+      const docSignerName = document.getElementById('docSignerName');
+      prevSignerNameVal.textContent = docSignerName ? (docSignerName.value || 'มงคล วงศ์สกุลยานนท์') : 'มงคล วงศ์สกุลยานนท์';
+    }
+    if (prevSignerRoleVal) prevSignerRoleVal.style.display = 'none';
+  }
+  
   // Update title dynamically if we are currently viewing the document view
   const docView = document.getElementById('document-view');
   if (docView && docView.classList.contains('active')) {
