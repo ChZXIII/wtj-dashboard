@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GHN168 | Accounting & Document Hub</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="manifest" href="manifest.json?v=3">
+  <link rel="manifest" href="manifest.json?v=4">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="GHN168">
@@ -19,6 +19,16 @@
       <div class="brand">
         <img src="sidebar_logo_dark.png" alt="GHN168" class="brand-logo-img logo-dark-only">
         <img src="sidebar_logo_light.png" alt="GHN168" class="brand-logo-img logo-light-only">
+        
+        <!-- Mobile Menu Toggle Button -->
+        <button id="mobileMenuBtn" class="mobile-menu-btn" aria-label="เปิดเมนู">
+          <svg class="hamburger-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="display: none;">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
       </div>
       
       <div class="sidebar-section-title">🏢 งานทีมผู้ก่อตั้ง (Founders Workspace)</div>
@@ -121,6 +131,9 @@
         </div>
       </div>
     </aside>
+
+    <!-- Sidebar Backdrop Overlay -->
+    <div id="sidebarOverlay" class="sidebar-overlay"></div>
 
     <!-- Main Workspace -->
     <main class="main-content">
