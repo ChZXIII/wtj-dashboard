@@ -1382,8 +1382,10 @@ input[type="time"] {
   body, html {
     background: #ffffff !important;
     color: #000000 !important;
-    height: 100% !important;
-    overflow: hidden !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
   }
   
   .app-container, .main-content, .view-panel {
@@ -1444,8 +1446,8 @@ input[type="time"] {
   /* Exact A4 printing rules */
   .print-paper {
     width: 210mm !important;
-    height: 276mm !important;
-    min-height: 276mm !important;
+    height: auto !important;
+    min-height: 0 !important;
     margin: 0 !important;
     padding: 10mm 15mm !important;
     box-shadow: none !important;
@@ -1458,6 +1460,7 @@ input[type="time"] {
     color: #000000 !important;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
+    box-sizing: border-box !important;
   }
 
   @page {
