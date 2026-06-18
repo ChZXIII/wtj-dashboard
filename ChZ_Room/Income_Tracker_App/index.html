@@ -650,6 +650,10 @@
                 <label for="docBankDetails">ข้อมูลการชำระเงิน (บัญชีธนาคาร)</label>
                 <input type="text" id="docBankDetails" placeholder="เช่น ธ.กสิกรไทย เลขที่ 123-4-56789-0 ชื่อบัญชี มงคล วงศ์สกุลยานนท์" value="ธ.กสิกรไทย เลขที่ 123-4-56789-0 ชื่อบัญชี มงคล วงศ์สกุลยานนท์">
               </div>
+              <div class="form-group full-width" id="groupDocRemarks" style="display: none;">
+                <label for="docRemarks">หมายเหตุ (Remarks)</label>
+                <textarea id="docRemarks" rows="2" placeholder="เช่น ระยะเวลาดำเนินงาน 7 วันทำการหลังจากชำระมัดจำ" style="font-family: inherit; font-size: 13px; padding: 8px; border: var(--card-border); border-radius: var(--border-radius-input); width:100%; box-sizing: border-box;"></textarea>
+              </div>
               <div class="form-group">
                 <label for="docSignerName">ชื่อผู้ลงนาม (Authorized Signer)</label>
                 <input type="text" id="docSignerName" value="มงคล วงศ์สกุลยานนท์">
@@ -788,6 +792,10 @@
                       • A 50% deposit is required to secure the project schedule and confirm the booking.<br>
                       • The remaining 50% balance shall be settled upon final completion and delivery of work.
                     </span>
+                  </div>
+                  <div id="prevRemarksBlock" style="margin-top: 8px; padding-top: 8px; border-top: 1px dashed #e2e8f0; font-size: 11px; color: #475569; display: none; line-height: 1.6;">
+                    <strong>หมายเหตุ / Remarks:</strong><br>
+                    <span id="prevRemarksVal">-</span>
                   </div>
                 </div>
 

@@ -1201,7 +1201,7 @@ function initDocumentGenerator() {
   const syncInputs = [
     'docSellerName', 'docSellerTaxId', 'docSellerAddress', 'docSellerPhone', 'docSellerEmail',
     'docClientName', 'docClientAddress', 'docClientTaxId', 'docClientPhone',
-    'docNumber', 'docDate', 'docDueDate', 'docPaymentTerm', 'docBankDetails', 'docSignerName', 'docProjectName'
+    'docNumber', 'docDate', 'docDueDate', 'docPaymentTerm', 'docBankDetails', 'docSignerName', 'docProjectName', 'docRemarks'
   ];
   
   syncInputs.forEach(id => {
@@ -1357,6 +1357,12 @@ function setDocType(type) {
   const prevDepositTerms = document.getElementById('prevDepositTermsBlock');
   if (prevDepositTerms) {
     prevDepositTerms.style.display = (type === 'quotation') ? 'block' : 'none';
+  }
+
+  // ซ่อน/แสดง ช่องหมายเหตุในฝั่ง Editor
+  const groupDocRemarks = document.getElementById('groupDocRemarks');
+  if (groupDocRemarks) {
+    groupDocRemarks.style.display = (type === 'quotation') ? 'block' : 'none';
   }
 
   // Update document title and number
@@ -1634,6 +1640,21 @@ function syncDocPreview() {
       prevDepositTermsBlock.style.borderTop = '1px dashed #e2e8f0';
       prevDepositTermsBlock.style.paddingTop = '8px';
       prevDepositTermsBlock.style.marginTop = '8px';
+    }
+  }
+
+  // อัปเดตพรีวิวหมายเหตุ (Remarks) เฉพาะใบเสนอราคา
+  const docRemarksEl = document.getElementById('docRemarks');
+  const prevRemarksBlock = document.getElementById('prevRemarksBlock');
+  const prevRemarksVal = document.getElementById('prevRemarksVal');
+
+  if (prevRemarksBlock && prevRemarksVal && docRemarksEl) {
+    const docRemarks = docRemarksEl.value.trim();
+    if (currentDocType === 'quotation' && docRemarks !== '') {
+      prevRemarksBlock.style.display = 'block';
+      prevRemarksVal.innerHTML = escapeHtml(docRemarks).replace(/\n/g, '<br>');
+    } else {
+      prevRemarksBlock.style.display = 'none';
     }
   }
   
