@@ -1367,6 +1367,17 @@ textarea.form-control {
     box-sizing: border-box;
   }
 
+  /* Stack form rows vertically on mobile screens */
+  .form-row {
+    flex-direction: column !important;
+    gap: 12px !important;
+  }
+
+  .form-row > .form-group {
+    width: 100% !important;
+    flex: none !important;
+  }
+
   /* Mobile Top Header Navigation Bar */
   .sidebar {
     width: 100% !important;
