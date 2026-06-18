@@ -1783,8 +1783,8 @@ function updateDynamicDocTitle() {
   const cleanClient = docClient.replace(/[^a-zA-Z0-9ก-๙\s-_]/g, '').replace(/\s+/g, '_');
   const cleanDocNo = docNo.replace(/[^a-zA-Z0-9-_]/g, '');
   
-  // Construct title: e.g. ใบเสนอราคา_QT2606-001_ลูกค้า
-  let filename = docTypeName;
+  // Construct title: e.g. Feltz_ใบเสนอราคา_QT2606-001_ลูกค้า
+  let filename = 'Feltz_' + docTypeName;
   if (cleanDocNo) filename += `_${cleanDocNo}`;
   if (cleanClient) filename += `_${cleanClient}`;
   
