@@ -271,6 +271,18 @@ body.light-mode .logo-light-only {
   border-radius: 10px; /* Rounded Agent Widget */
   background: var(--bg-primary);
   box-shadow: 3px 3px 0px var(--shadow-color);
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.agent-profile:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0px var(--shadow-color);
+}
+
+.agent-profile:active {
+  transform: translate(1px, 1px);
+  box-shadow: 2px 2px 0px var(--shadow-color);
 }
 
 .agent-avatar {
@@ -1456,6 +1468,11 @@ textarea.form-control {
     margin-top: 24px;
     border-top: 2px dashed rgba(156, 163, 175, 0.2);
     padding-top: 16px;
+    gap: 12px;
+  }
+
+  .sidebar.active .agent-profile {
+    display: flex !important;
   }
 
   .sidebar.active .theme-toggle-btn {

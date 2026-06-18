@@ -845,6 +845,60 @@ function setupEventListeners() {
     btnClearDb.addEventListener('click', clearLocalDatabase);
   }
 
+  // Agent Nong Pim Modal Toggle
+  const agentProfileWidget = document.querySelector('.agent-profile');
+  const agentPimModal = document.getElementById('agentPimModal');
+  const btnCloseAgentPimModal = document.getElementById('btnCloseAgentPimModal');
+  const confirmPimResetInput = document.getElementById('confirmPimResetInput');
+
+  if (agentProfileWidget && agentPimModal) {
+    agentProfileWidget.addEventListener('click', () => {
+      // Clear confirmation text on open
+      if (confirmPimResetInput) {
+        confirmPimResetInput.value = '';
+      }
+      if (btnClearDb) {
+        btnClearDb.disabled = true;
+        btnClearDb.style.cursor = 'not-allowed';
+        btnClearDb.style.opacity = '0.6';
+      }
+      agentPimModal.classList.add('active');
+    });
+  }
+
+  if (btnCloseAgentPimModal && agentPimModal) {
+    btnCloseAgentPimModal.addEventListener('click', () => {
+      agentPimModal.classList.remove('active');
+    });
+  }
+
+  // Close Nong Pim modal when clicking backdrop
+  if (agentPimModal) {
+    agentPimModal.addEventListener('click', (e) => {
+      if (e.target === agentPimModal) {
+        agentPimModal.classList.remove('active');
+      }
+    });
+  }
+
+  // Text validation to enable reset button
+  if (confirmPimResetInput) {
+    confirmPimResetInput.addEventListener('input', (e) => {
+      const value = e.target.value.trim();
+      if (btnClearDb) {
+        if (value === 'RESET') {
+          btnClearDb.disabled = false;
+          btnClearDb.style.cursor = 'pointer';
+          btnClearDb.style.opacity = '1';
+        } else {
+          btnClearDb.disabled = true;
+          btnClearDb.style.cursor = 'not-allowed';
+          btnClearDb.style.opacity = '0.6';
+        }
+      }
+    });
+  }
+
   const addDocModal = document.getElementById('addDocModal');
   const formAddDoc = document.getElementById('formAddDoc');
   const modalDocCategory = document.getElementById('modalDocCategory');
