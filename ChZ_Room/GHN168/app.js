@@ -7,7 +7,7 @@ window.onerror = function(message, source, lineno, colno, error) {
     console.warn(`Ignored generic cross-origin/extension script error: ${message} at line ${lineno}:${colno}`);
     return false;
   }
-  alert(`🔴 JS ERROR:\n${message}\nat line ${lineno}:${colno}`);
+  alert(`JS ERROR:\n${message}\nat line ${lineno}:${colno}`);
   return false;
 };
 
@@ -104,8 +104,9 @@ document.addEventListener('DOMContentLoaded', () => {
     renderDashboard();
     switchView('dashboard');
     setDocType('quotation');
+    fetchDocHubFromSheets(false);
   } catch (err) {
-    alert(`🔴 LOCAL ERROR IN INITIALIZATION:\nName: ${err.name}\nMessage: ${err.message}\nStack: ${err.stack}`);
+    alert(`LOCAL ERROR IN INITIALIZATION:\nName: ${err.name}\nMessage: ${err.message}\nStack: ${err.stack}`);
   }
 });
 
@@ -255,7 +256,7 @@ function initializeGoogleSheet() {
   const sheetId = safeStorage.getItem('ghn168_sheet_id');
   
   if (!scriptUrl || !sheetId) {
-    alert('⚠️ กรุณากรอก URL และ Spreadsheet ID จากนั้นกด "บันทึกการเชื่อมต่อบัญชี" ก่อนนะแก!');
+    alert('กรุณากรอก URL และ Spreadsheet ID จากนั้นกด "บันทึกการเชื่อมต่อบัญชี" ก่อนนะแก!');
     return;
   }
   
@@ -290,14 +291,14 @@ function initializeGoogleSheet() {
   })
   .then(res => {
     if (res.status === 'success') {
-      alert(`🎉 ${res.message}`);
+      alert(`${res.message}`);
     } else {
-      alert(`❌ เกิดข้อผิดพลาดจาก Apps Script: ${res.message}`);
+      alert(`เกิดข้อผิดพลาดจาก Apps Script: ${res.message}`);
     }
   })
   .catch(err => {
     console.error(err);
-    alert(`❌ เกิดข้อผิดพลาดเชื่อมต่อสคริปต์: ${err.toString()}\n\n*ข้อแนะนำ: ตรวจสอบว่าแกได้ก๊อปปี้สคริปต์ตัวปรับปรุงล่าสุดไปวางและกด Deploy เป็น Web App แบบ 'ทุกคน (Anyone)' แล้วหรือยังนะแก!`);
+    alert(`เกิดข้อผิดพลาดเชื่อมต่อสคริปต์: ${err.toString()}\n\n*ข้อแนะนำ: ตรวจสอบว่าแกได้ก๊อปปี้สคริปต์ตัวปรับปรุงล่าสุดไปวางและกด Deploy เป็น Web App แบบ 'ทุกคน (Anyone)' แล้วหรือยังนะแก!`);
   })
   .finally(() => {
     btn.disabled = false;
@@ -549,6 +550,7 @@ function switchView(viewId) {
     renderDashboard();
   } else if (viewId === 'dochub') {
     renderDocHubList();
+    fetchDocHubFromSheets(false);
   } else if (viewId === 'expense') {
     renderExpenseList();
   } else if (viewId === 'pettycash') {
@@ -733,7 +735,7 @@ function setupEventListeners() {
       
       // ตั้งค่ากลับเป็นเริ่มต้น
       autofillSelect.value = '';
-      alert(`🎉 ดึงข้อมูลจากเอกสาร ${sourceDoc.number} มากรอกเรียบร้อยแล้วแก!`);
+      alert(`ดึงข้อมูลจากเอกสาร ${sourceDoc.number} มากรอกเรียบร้อยแล้วแก!`);
     });
   }
 
@@ -954,7 +956,7 @@ function setupEventListeners() {
       const temp = name;
       name = isUrlPattern(url) ? 'เอกสารใหม่' : url;
       url = temp;
-      alert('💡 น้องพิมตรวจพบว่าแกวางลิงก์สลับช่องกับชื่อเอกสาร เลยทำการสลับกลับคืนให้เรียบร้อยแล้วจ้า!');
+      alert('น้องพิมตรวจพบว่าแกวางลิงก์สลับช่องกับชื่อเอกสาร เลยทำการสลับกลับคืนให้เรียบร้อยแล้วจ้า!');
     }
 
     // Auto-prepend protocol if missing
@@ -974,11 +976,20 @@ function setupEventListeners() {
 
     saveData();
     renderDocHubList();
+    syncDocHubToSheets(false);
     addDocModal.classList.remove('active');
   });
 
   // Sync Data Button
   document.getElementById('btnSaveAndSyncDoc').addEventListener('click', processDocumentSync);
+
+  // Sync Document Hub Button
+  const btnSyncDocHub = document.getElementById('btnSyncDocHub');
+  if (btnSyncDocHub) {
+    btnSyncDocHub.addEventListener('click', () => {
+      fetchDocHubFromSheets(true);
+    });
+  }
 
   // --- Expense Tracker Event Listeners ---
   const addExpenseModal = document.getElementById('addExpenseModal');
@@ -1205,7 +1216,12 @@ function setDocType(type) {
     if (formInternalDetails) formInternalDetails.style.display = 'none';
     
     // Expenses Sync Button text
-    syncBtn.innerHTML = '📝 พิมพ์ 50 ทวิ & บันทึกรายจ่ายลงชีต';
+    syncBtn.innerHTML = `
+      <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+      </svg>
+      พิมพ์ 50 ทวิ & บันทึกรายจ่ายลงชีต
+    `;
     syncBtn.style.display = 'block';
     
     // Set auto doc number
@@ -1230,16 +1246,31 @@ function setDocType(type) {
     if (type === 'receipt') {
       groupDueDate.style.display = 'none';
       groupPaymentTerm.style.display = 'none';
-      syncBtn.innerHTML = '💰 พิมพ์ใบเสร็จ & บันทึกรายรับลงชีต';
+      syncBtn.innerHTML = `
+        <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        พิมพ์ใบเสร็จ & บันทึกรายรับลงชีต
+      `;
       syncBtn.style.display = 'block';
     } else {
       groupDueDate.style.display = 'block';
       groupPaymentTerm.style.display = 'block';
       syncBtn.style.display = 'block'; // แสดงปุ่มเซฟเสมอสำหรับ QT และ IV
       if (type === 'quotation') {
-        syncBtn.innerHTML = '💾 บันทึกประวัติใบเสนอราคาลงเครื่อง';
+        syncBtn.innerHTML = `
+          <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+          </svg>
+          บันทึกประวัติใบเสนอราคาลงเครื่อง
+        `;
       } else if (type === 'invoice') {
-        syncBtn.innerHTML = '💾 บันทึกประวัติใบวางบิลลงเครื่อง';
+        syncBtn.innerHTML = `
+          <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+          </svg>
+          บันทึกประวัติใบวางบิลลงเครื่อง
+        `;
       }
       updateDueDateFromPaymentTerm();
     }
@@ -1776,7 +1807,7 @@ function processDocumentSync() {
     const dueDate = document.getElementById('docDueDate').value;
 
     if (!docNo || !dateVal || !clientName || !detail || subtotal <= 0) {
-      alert('⚠️ กรุณากรอกข้อมูลเอกสารและระบุรายการสินค้าให้ครบถ้วนก่อนบันทึกนะแก!');
+      alert('กรุณากรอกข้อมูลเอกสารและระบุรายการสินค้าให้ครบถ้วนก่อนบันทึกนะแก!');
       return;
     }
 
@@ -1817,7 +1848,7 @@ function processDocumentSync() {
     dbDocs.push(docRecord);
     saveData();
     renderDashboard();
-    alert(`💾 บันทึกประวัติ${currentDocType === 'quotation' ? 'ใบเสนอราคา' : 'ใบวางบิล'} เลขที่ ${docNo} ลงระบบสำเร็จแล้วแก!`);
+    alert(`บันทึกประวัติ${currentDocType === 'quotation' ? 'ใบเสนอราคา' : 'ใบวางบิล'} เลขที่ ${docNo} ลงระบบสำเร็จแล้วแก!`);
     
     // โหลดตัวเลือกใหม่ทันที
     setDocType(currentDocType);
@@ -1828,7 +1859,7 @@ function processDocumentSync() {
   const sheetId = safeStorage.getItem('ghn168_sheet_id');
 
   if (!scriptUrl || !sheetId) {
-    alert('⚠️ กรุณาไปตั้งค่า URL ของ Google Apps Script และ Spreadsheet ID ที่แท็บการตั้งค่าก่อนนะแก!');
+    alert('กรุณาไปตั้งค่า URL ของ Google Apps Script และ Spreadsheet ID ที่แท็บการตั้งค่าก่อนนะแก!');
     switchView('settings');
     return;
   }
@@ -1838,7 +1869,7 @@ function processDocumentSync() {
   if (hasHitl) {
     const chk = document.getElementById('hitlApprovedCheckbox');
     if (!chk || !chk.checked) {
-      alert('⚠️ รายการนี้มียอดเงินเกิน 10,000 บาท พิมขอแนะนำให้กดยืนยันอนุมัติบัญชีในช่องสี่เหลี่ยมสีแดงก่อนกดยืนยันเซฟลงชีตค่ะ!');
+      alert('รายการนี้มียอดเงินเกิน 10,000 บาท พิมขอแนะนำให้กดยืนยันอนุมัติบัญชีในช่องสี่เหลี่ยมสีแดงก่อนกดยืนยันเซฟลงชีตค่ะ!');
       return;
     }
   }
@@ -1875,7 +1906,7 @@ function processDocumentSync() {
     const remarks = document.getElementById('whtRemarks').value;
 
     if (!docNo || !dateVal || !payeeName || !detail || gross <= 0) {
-      alert('⚠️ กรุณากรอกข้อมูลรายจ่ายหัก ณ ที่จ่ายให้ครบถ้วนก่อนบันทึกนะแก!');
+      alert('กรุณากรอกข้อมูลรายจ่ายหัก ณ ที่จ่ายให้ครบถ้วนก่อนบันทึกนะแก!');
       return;
     }
 
@@ -1985,7 +2016,7 @@ function processDocumentSync() {
     const remarks = document.getElementById('docRemarks').value;
 
     if (!docNo || !dateVal || !clientName || !detail || subtotal <= 0) {
-      alert('⚠️ กรุณากรอกข้อมูลรายรับให้ครบถ้วนก่อนบันทึกนะแก!');
+      alert('กรุณากรอกข้อมูลรายรับให้ครบถ้วนก่อนบันทึกนะแก!');
       return;
     }
 
@@ -2097,7 +2128,7 @@ function processDocumentSync() {
   // Send to Sheets via POST
   const syncBtn = document.getElementById('btnSaveAndSyncDoc');
   const origHtml = syncBtn.innerHTML;
-  syncBtn.textContent = '⏳ กำลังซิงค์ข้อมูลลงชีต...';
+  syncBtn.textContent = 'กำลังซิงค์ข้อมูลลงชีต...';
   syncBtn.disabled = true;
 
   fetch(scriptUrl, {
@@ -2116,7 +2147,7 @@ function processDocumentSync() {
   })
   .then(res => {
     if (res.status === 'success') {
-      alert(`🎉 บันทึกและซิงค์ข้อมูลลง Sheet เรียบร้อยแล้วแก!\nข้อความระบบ: ${res.message}`);
+      alert(`บันทึกและซิงค์ข้อมูลลง Sheet เรียบร้อยแล้วแก!\nข้อความระบบ: ${res.message}`);
       
       docRecord.status = 'synced';
       dbDocs.unshift(docRecord);
@@ -2133,12 +2164,12 @@ function processDocumentSync() {
       saveData();
       setDocType(currentDocType);
     } else {
-      alert(`❌ ซิงค์ข้อมูลล้มเหลว: ${res.message}`);
+      alert(`ซิงค์ข้อมูลล้มเหลว: ${res.message}`);
     }
   })
   .catch(err => {
     console.error(err);
-    alert(`❌ เกิดข้อผิดพลาดเชื่อมต่อระบบ Apps Script: ${err.toString()}\n\nแต่บันทึกข้อมูลไว้ในเครื่องแบบ Offline (Pending) เรียบร้อยแล้วแก!`);
+    alert(`เกิดข้อผิดพลาดเชื่อมต่อระบบ Apps Script: ${err.toString()}\n\nแต่บันทึกข้อมูลไว้ในเครื่องแบบ Offline (Pending) เรียบร้อยแล้วแก!`);
     
     // Save as pending locally
     docRecord.status = 'pending';
@@ -2173,7 +2204,7 @@ function syncPendingDocs() {
   const sheetId = safeStorage.getItem('ghn168_sheet_id');
 
   if (!scriptUrl || !sheetId) {
-    alert('⚠️ ไม่พบการตั้งค่า Google Sheets API สำหรับการซิงค์แก!');
+    alert('ไม่พบการตั้งค่า Google Sheets API สำหรับการซิงค์แก!');
     return;
   }
 
@@ -2186,7 +2217,7 @@ function syncPendingDocs() {
   if (syncBtn) {
     origHtml = syncBtn.innerHTML;
     syncBtn.disabled = true;
-    syncBtn.textContent = '⏳ กำลังซิงค์คิว...';
+    syncBtn.textContent = 'กำลังซิงค์คิว...';
   }
 
   let successCount = 0;
@@ -2194,7 +2225,7 @@ function syncPendingDocs() {
 
   function syncNext(index) {
     if (index >= pendingDocs.length) {
-      alert(`🎉 ซิงค์ประวัติค้างส่งเสร็จสิ้น!\nสำเร็จ: ${successCount} รายการ\nล้มเหลว: ${failCount} รายการ`);
+      alert(`ซิงค์ประวัติค้างส่งเสร็จสิ้น!\nสำเร็จ: ${successCount} รายการ\nล้มเหลว: ${failCount} รายการ`);
       saveData();
       renderDashboard();
       if (syncBtn) {
@@ -2383,19 +2414,19 @@ function importBackup(e) {
         safeStorage.setItem('ghn168_company_drive_url', data.companyDriveUrl);
       }
 
-      alert('🎉 นำเข้าข้อมูลสำรองสำเร็จแล้วแก!');
+      alert('นำเข้าข้อมูลสำรองสำเร็จแล้วแก!');
       loadConfiguration();
       loadData();
       renderDashboard();
     } catch (err) {
-      alert('❌ ไฟล์สำรองข้อมูลไม่ถูกต้องหรือชำรุดจ้า: ' + err.toString());
+      alert('ไฟล์สำรองข้อมูลไม่ถูกต้องหรือชำรุดจ้า: ' + err.toString());
     }
   };
   reader.readAsText(file);
 }
 
 function clearLocalDatabase() {
-  if (confirm("⚠️ แกแน่ใจใช่มั้ยว่าจะล้างข้อมูลทดสอบทั้งหมดในเครื่องนี้?\n\n(ข้อมูลใบเสนอราคา, รายจ่าย, เงินสดย่อย, เงินเดือน, และกระทบยอดธนาคารที่แกกับมดเคยกรอกทดสอบไว้จะถูกลบทั้งหมดเพื่อเริ่มต้นระบบใหม่ ส่วนข้อมูลตั้งค่าบริษัทและชีตเชื่อมต่อจะยังคงอยู่ และระบบจะไม่สร้างข้อมูลตัวอย่างกลับมาปะปนอีกแล้วแก)")) {
+  if (confirm("แกแน่ใจใช่มั้ยว่าจะล้างข้อมูลทดสอบทั้งหมดในเครื่องนี้?\n\n(ข้อมูลใบเสนอราคา, รายจ่าย, เงินสดย่อย, เงินเดือน, และกระทบยอดธนาคารที่แกกับมดเคยกรอกทดสอบไว้จะถูกลบทั้งหมดเพื่อเริ่มต้นระบบใหม่ ส่วนข้อมูลตั้งค่าบริษัทและชีตเชื่อมต่อจะยังคงอยู่ และระบบจะไม่สร้างข้อมูลตัวอย่างกลับมาปะปนอีกแล้วแก)")) {
     safeStorage.setItem('ghn168_disable_mock', 'true');
     
     dbDocs = [];
@@ -2407,7 +2438,7 @@ function clearLocalDatabase() {
 
     saveData();
     
-    alert("🎉 ล้างข้อมูลทดสอบเรียบร้อยแล้วแก! พร้อมสำหรับการเก็บบันทึกข้อมูลของจริงแล้วนะ");
+    alert("ล้างข้อมูลทดสอบเรียบร้อยแล้วแก! พร้อมสำหรับการเก็บบันทึกข้อมูลของจริงแล้วนะ");
     
     // โหลดข้อมูลและเรนเดอร์ใหม่ทั้งหมด
     loadData();
@@ -2593,7 +2624,7 @@ function renderDashboard() {
           <td><span class="badge" style="background-color: ${d.type === 'wht' ? '#fee2e2' : (d.type === 'expense' ? '#ffedd5' : '#dcfce7')}; color: ${d.type === 'wht' ? '#991b1b' : (d.type === 'expense' ? '#c2410c' : '#166534')}; border: 1px solid var(--border-color);">${d.type.toUpperCase()}</span></td>
           <td>
             <div>${escapeHtml(d.name)}</div>
-            ${d.paymentStatus ? `<div style="font-size: 10px; color: var(--text-secondary); margin-top: 2px;">💰 สถานะ: ${d.paymentStatus}</div>` : ''}
+            ${d.paymentStatus ? `<div style="font-size: 10px; color: var(--text-secondary); margin-top: 2px;">สถานะ: ${d.paymentStatus}</div>` : ''}
           </td>
           <td style="text-align:right; font-weight:700;">฿${d.amount.toLocaleString('th-TH', { minimumFractionDigits: 2 })}</td>
           <td style="text-align:center;">
@@ -2650,6 +2681,120 @@ function renderDashboard() {
   renderTaxAndProjectSummary();
 }
 
+// --- Document Hub Synchronization ---
+function fetchDocHubFromSheets(showToast = false) {
+  const scriptUrl = safeStorage.getItem('ghn168_script_url');
+  const sheetId = safeStorage.getItem('ghn168_sheet_id');
+  if (!scriptUrl || !sheetId) {
+    if (showToast) alert('กรุณาตั้งค่าเชื่อมต่อ Google Sheets ก่อนนะแก!');
+    return Promise.resolve();
+  }
+
+  const btn = document.getElementById('btnSyncDocHub');
+  let originalHtml = '';
+  if (btn && showToast) {
+    originalHtml = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = `
+      <svg class="btn-icon animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width: 16px; height: 16px; stroke-width: 2.5; display: inline-block; vertical-align: middle; margin-right: 6px;">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 7.89M9 11l3-3 3 3m-3-3v12" />
+      </svg>
+      กำลังซิงค์...
+    `;
+  }
+
+  const payload = {
+    spreadsheetId: sheetId,
+    type: 'read',
+    sheetName: 'คลังเอกสาร'
+  };
+
+  return fetch(scriptUrl, {
+    method: 'POST',
+    mode: 'cors',
+    headers: { 'Content-Type': 'text/plain' },
+    body: JSON.stringify(payload)
+  })
+  .then(res => {
+    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+    return res.json();
+  })
+  .then(res => {
+    if (res.status === 'success') {
+      if (res.values && Array.isArray(res.values)) {
+        docHubLinks = res.values.map(row => ({
+          name: row[0] || '',
+          category: row[1] || '',
+          url: row[2] || '',
+          date: row[3] || '',
+          desc: row[4] || ''
+        }));
+        safeStorage.setItem('ghn168_doc_hub', JSON.stringify(docHubLinks));
+        renderDocHubList();
+        renderDashboardDocHubShortcuts();
+        if (showToast) alert('ซิงค์ดึงข้อมูลคลังเอกสารจาก Google Sheets สำเร็จแล้วแก!');
+      }
+    } else {
+      if (showToast) alert(`เกิดข้อผิดพลาด: ${res.message}`);
+    }
+  })
+  .catch(err => {
+    console.error('DocHub fetch error:', err);
+    if (showToast) alert(`ไม่สามารถดึงข้อมูลคลังเอกสารได้: ${err.toString()}`);
+  })
+  .finally(() => {
+    if (btn && showToast) {
+      btn.disabled = false;
+      btn.innerHTML = originalHtml;
+    }
+  });
+}
+
+function syncDocHubToSheets(showToast = false) {
+  const scriptUrl = safeStorage.getItem('ghn168_script_url');
+  const sheetId = safeStorage.getItem('ghn168_sheet_id');
+  if (!scriptUrl || !sheetId) {
+    if (showToast) alert('กรุณาตั้งค่าเชื่อมต่อ Google Sheets ก่อนนะแก!');
+    return Promise.resolve();
+  }
+
+  const payload = {
+    spreadsheetId: sheetId,
+    type: 'overwrite',
+    sheetName: 'คลังเอกสาร',
+    headers: ['ชื่อเอกสาร (Document Name)', 'หมวดหมู่ (Category)', 'ลิงก์เอกสาร Google Drive (URL)', 'วันที่อัปเดต (Date)', 'รายละเอียด (Description)'],
+    rows: docHubLinks.map(doc => [
+      doc.name || '',
+      doc.category || '',
+      doc.url || '',
+      doc.date || '',
+      doc.desc || ''
+    ])
+  };
+
+  return fetch(scriptUrl, {
+    method: 'POST',
+    mode: 'cors',
+    headers: { 'Content-Type': 'text/plain' },
+    body: JSON.stringify(payload)
+  })
+  .then(res => {
+    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+    return res.json();
+  })
+  .then(res => {
+    if (res.status === 'success') {
+      if (showToast) alert('ซิงค์ส่งข้อมูลคลังเอกสารไป Google Sheets สำเร็จแล้วแก!');
+    } else {
+      if (showToast) alert(`ซิงค์อัปโหลดล้มเหลว: ${res.message}`);
+    }
+  })
+  .catch(err => {
+    console.error('DocHub push error:', err);
+    if (showToast) alert(`เกิดข้อผิดพลาดขณะส่งข้อมูลไป Google Sheets: ${err.toString()}`);
+  });
+}
+
 // --- Document Hub Rendering ---
 function renderDocHubList() {
   const container = document.getElementById('docHubListContainer');
@@ -2667,12 +2812,27 @@ function renderDocHubList() {
         <span class="doc-hub-name">${escapeHtml(doc.name)}</span>
         <div class="doc-hub-info">
           <span class="doc-hub-tag">${escapeHtml(doc.category)}</span>
-          <span>📅 วันที่อัปเดต: ${doc.date}</span>
-          <span>📝 ${escapeHtml(doc.desc)}</span>
+          <span>
+            <svg class="btn-icon" style="width:14px; height:14px; display:inline-block; vertical-align:middle; margin-right:4px; stroke-width:2;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            วันที่อัปเดต: ${doc.date}
+          </span>
+          <span>
+            <svg class="btn-icon" style="width:14px; height:14px; display:inline-block; vertical-align:middle; margin-right:4px; stroke-width:2;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            ${escapeHtml(doc.desc)}
+          </span>
         </div>
       </div>
-      <div style="display:flex; gap: 8px;">
-        <a href="${doc.url}" target="_blank" class="btn-primary" style="padding: 6px 12px; font-size:12px; box-shadow: 2px 2px 0 var(--border-color)">📂 เปิด Drive</a>
+      <div style="display:flex; gap: 8px; align-items: center;">
+        <a href="${doc.url}" target="_blank" class="btn-primary" style="padding: 6px 12px; font-size:12px; box-shadow: 2px 2px 0 var(--border-color); display: inline-flex; align-items: center; gap: 4px;">
+          <svg class="btn-icon" style="width:14px; height:14px; stroke-width:2.5;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+          </svg>
+          เปิด Drive
+        </a>
         <button class="btn-secondary" onclick="editDocHubItem(${idx})" style="padding: 6px 12px; font-size:12px; box-shadow: 2px 2px 0 var(--border-color); color: var(--text-primary); font-weight:700;">แก้ไข</button>
         <button class="btn-danger" onclick="deleteDocHubItem(${idx})" style="padding: 6px 12px; font-size:12px; box-shadow: 2px 2px 0 var(--border-color)">ลบ</button>
       </div>
@@ -2687,6 +2847,7 @@ window.deleteDocHubItem = function(index) {
     docHubLinks.splice(index, 1);
     saveData();
     renderDocHubList();
+    syncDocHubToSheets(false);
   }
 };
 
@@ -2740,16 +2901,23 @@ function renderDashboardDocHubShortcuts() {
   const shortcuts = docHubLinks.slice(0, 3);
   shortcuts.forEach(doc => {
     html += `
-      <a href="${doc.url}" target="_blank" class="btn-secondary" style="justify-content:flex-start; text-decoration:none; font-weight:700;">
-        📂 ${escapeHtml(doc.name)} (${escapeHtml(doc.category)})
+      <a href="${doc.url}" target="_blank" class="btn-secondary" style="justify-content:flex-start; text-decoration:none; font-weight:700; gap: 8px; display: inline-flex; align-items: center;">
+        <svg class="btn-icon" style="width:16px; height:16px; stroke-width:2.5; flex-shrink: 0;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+        </svg>
+        <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(doc.name)}</span>
+        <span style="font-weight: normal; font-size: 11px; opacity: 0.7; margin-left: auto; flex-shrink: 0;">${escapeHtml(doc.category)}</span>
       </a>
     `;
   });
 
   // Default google drive link at the end
   html += `
-    <a href="${escapeHtml(companyDriveUrl)}" target="_blank" class="btn-secondary" style="justify-content:flex-start; text-decoration:none; font-weight:700; border-style: dashed;">
-      🌐 เข้าสู่ Google Drive หลักของบริษัท
+    <a href="${escapeHtml(companyDriveUrl)}" target="_blank" class="btn-secondary" style="justify-content:flex-start; text-decoration:none; font-weight:700; border-style: dashed; gap: 8px; display: inline-flex; align-items: center;">
+      <svg class="btn-icon" style="width:16px; height:16px; stroke-width:2.5; flex-shrink: 0;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+      </svg>
+      เข้าสู่ Google Drive หลักของบริษัท
     </a>
   `;
   container.innerHTML = html;
@@ -2937,7 +3105,7 @@ function saveExpense() {
   try {
     const dateVal = document.getElementById('expenseDate').value;
     if (!dateVal) {
-      alert('⚠️ กรุณาระบุวันที่จ่ายเงินก่อนนะแก!');
+      alert('กรุณาระบุวันที่จ่ายเงินก่อนนะแก!');
       return;
     }
     // Parse date from YYYY-MM-DD to DD/MM/YYYY
@@ -3031,7 +3199,7 @@ function saveExpense() {
 
     // Check if HITL approval is required (Amount > 10,000 THB)
     if (netAmount > 10000 && paymentStatus === 'รออนุมัติจ่าย') {
-      alert(`⚠️ รายการรายจ่ายนี้มียอดเงินโอนจ่ายจริง ฿${netAmount.toLocaleString('th-TH', { minimumFractionDigits: 2 })} เกิน 10,000 บาท\n\nระบบบันทึกสะสมรอการอนุมัติ (Pending Approval) ในเครื่องไว้เรียบร้อยแล้วแก รอให้ผู้มีอำนาจกดอนุมัติจ่าย (Approve) ก่อนจึงจะซิงค์ลงชีตจริงจ้า`);
+      alert(`รายการรายจ่ายนี้มียอดเงินโอนจ่ายจริง ฿${netAmount.toLocaleString('th-TH', { minimumFractionDigits: 2 })} เกิน 10,000 บาท\n\nระบบบันทึกสะสมรอการอนุมัติ (Pending Approval) ในเครื่องไว้เรียบร้อยแล้วแก รอให้ผู้มีอำนาจกดอนุมัติจ่าย (Approve) ก่อนจึงจะซิงค์ลงชีตจริงจ้า`);
       
       docRecord.status = 'pending_approval';
       docRecord.paymentStatus = 'รออนุมัติจ่าย';
@@ -3090,7 +3258,7 @@ function saveExpense() {
     if (scriptUrl && sheetId) {
       const submitBtn = document.getElementById('btnSubmitExpenseModal');
       const origHtml = submitBtn.innerHTML;
-      submitBtn.textContent = '⏳ กำลังซิงค์...';
+      submitBtn.textContent = 'กำลังซิงค์...';
       submitBtn.disabled = true;
 
       fetch(scriptUrl, {
@@ -3105,7 +3273,7 @@ function saveExpense() {
       })
       .then(res => {
         if (res.status === 'success') {
-          alert(`🎉 บันทึกและซิงค์รายจ่ายลง Sheet สำเร็จแล้วแก!\nข้อความ: ${res.message}`);
+          alert(`บันทึกและซิงค์รายจ่ายลง Sheet สำเร็จแล้วแก!\nข้อความ: ${res.message}`);
           
           docRecord.status = 'synced';
 
@@ -3120,14 +3288,14 @@ function saveExpense() {
           renderExpenseList();
           document.getElementById('addExpenseModal').classList.remove('active');
         } else {
-          alert(`❌ ซิงค์ล้มเหลว: ${res.message}`);
+          alert(`ซิงค์ล้มเหลว: ${res.message}`);
           submitBtn.innerHTML = origHtml;
           submitBtn.disabled = false;
         }
       })
       .catch(err => {
         console.error(err);
-        alert(`❌ เกิดข้อผิดพลาดเชื่อมต่อสคริปต์: ${err.toString()}\n\nแต่บันทึกข้อมูลแบบออฟไลน์ (Pending) ไว้ในเครื่องเรียบร้อยแล้วแก!`);
+        alert(`เกิดข้อผิดพลาดเชื่อมต่อสคริปต์: ${err.toString()}\n\nแต่บันทึกข้อมูลแบบออฟไลน์ (Pending) ไว้ในเครื่องเรียบร้อยแล้วแก!`);
         
         docRecord.status = 'pending';
 
@@ -3144,7 +3312,7 @@ function saveExpense() {
       });
     } else {
       // Offline Save directly
-      alert('💡 ไม่พบการเชื่อมต่อชีต บันทึกประวัติออฟไลน์ลงเครื่องไว้ก่อนนะแก');
+      alert('ไม่พบการเชื่อมต่อชีต บันทึกประวัติออฟไลน์ลงเครื่องไว้ก่อนนะแก');
       docRecord.status = 'pending';
 
       if (isNew) {
@@ -3160,7 +3328,7 @@ function saveExpense() {
     }
   } catch (err) {
     console.error(err);
-    alert('❌ บันทึกรายจ่ายล้มเหลวเนื่องจากข้อผิดพลาด: ' + err.toString());
+    alert('บันทึกรายจ่ายล้มเหลวเนื่องจากข้อผิดพลาด: ' + err.toString());
   }
 }
 
@@ -3576,10 +3744,10 @@ function approveExpense(index) {
     })
     .then(res => {
       if (res.status === 'success') {
-        alert('🎉 อนุมัติจ่ายและซิงค์ข้อมูลลง Google Sheets เรียบร้อยแล้วแก!');
+        alert('อนุมัติจ่ายและซิงค์ข้อมูลลง Google Sheets เรียบร้อยแล้วแก!');
         doc.status = 'synced';
       } else {
-        alert(`❌ ซิงค์ข้อมูลล้มเหลว: ${res.message}\nรายการบันทึกสถานะเป็นค้างส่ง (Pending) จ้า`);
+        alert(`ซิงค์ข้อมูลล้มเหลว: ${res.message}\nรายการบันทึกสถานะเป็นค้างส่ง (Pending) จ้า`);
         doc.status = 'pending';
       }
       saveData();
@@ -3588,14 +3756,14 @@ function approveExpense(index) {
     })
     .catch(err => {
       console.error(err);
-      alert(`❌ อนุมัติแล้วแต่เชื่อมต่อสคริปต์ล้มเหลว: ${err.toString()}\nเปลี่ยนสถานะเป็นค้างส่ง (Pending) ไว้ในเครื่องเพื่อซิงค์ภายหลังนะแก`);
+      alert(`อนุมัติแล้วแต่เชื่อมต่อสคริปต์ล้มเหลว: ${err.toString()}\nเปลี่ยนสถานะเป็นค้างส่ง (Pending) ไว้ในเครื่องเพื่อซิงค์ภายหลังนะแก`);
       doc.status = 'pending';
       saveData();
       renderExpenseList();
       renderDashboard();
     });
   } else {
-    alert('💡 ไม่พบค่าสคริปต์เชื่อมต่อ เปลี่ยนสถานะเป็นค้างส่ง (Pending) ไว้ในเครื่องแล้วแก');
+    alert('ไม่พบค่าสคริปต์เชื่อมต่อ เปลี่ยนสถานะเป็นค้างส่ง (Pending) ไว้ในเครื่องแล้วแก');
     doc.status = 'pending';
     saveData();
     renderExpenseList();
@@ -3672,7 +3840,7 @@ function savePettyCash() {
     const voucherNo = document.getElementById('pettyCashVoucherNo').value;
     const dateVal = document.getElementById('pettyCashDate').value;
     if (!dateVal) {
-      alert('⚠️ กรุณาระบุวันที่ก่อนนะแก!');
+      alert('กรุณาระบุวันที่ก่อนนะแก!');
       return;
     }
     const dateParts = dateVal.split('-');
@@ -3686,7 +3854,7 @@ function savePettyCash() {
     const remarks = document.getElementById('pettyCashRemarks').value.trim();
 
     if (amountPaid <= 0) {
-      alert('⚠️ ยอดจ่ายต้องมากกว่า 0 บาทนะแก!');
+      alert('ยอดจ่ายต้องมากกว่า 0 บาทนะแก!');
       return;
     }
 
@@ -3715,7 +3883,7 @@ function savePettyCash() {
     }
   } catch (err) {
     console.error(err);
-    alert('❌ บันทึกเงินสดย่อยล้มเหลว: ' + err.toString());
+    alert('บันทึกเงินสดย่อยล้มเหลว: ' + err.toString());
   }
 }
 
@@ -3725,7 +3893,7 @@ function syncPettyCash(index) {
   const scriptUrl = safeStorage.getItem('ghn168_script_url');
   const sheetId = safeStorage.getItem('ghn168_sheet_id');
   if (!scriptUrl || !sheetId) {
-    alert('⚠️ กรุณาตั้งค่าเชื่อมต่อ Google Sheets ก่อนนะแก!');
+    alert('กรุณาตั้งค่าเชื่อมต่อ Google Sheets ก่อนนะแก!');
     return;
   }
   const payload = {
@@ -3751,17 +3919,17 @@ function syncPettyCash(index) {
   .then(res => res.json())
   .then(res => {
     if (res.status === 'success') {
-      alert('🎉 ซิงค์ข้อมูลเงินสดย่อยสำเร็จแล้วแก!');
+      alert('ซิงค์ข้อมูลเงินสดย่อยสำเร็จแล้วแก!');
       doc.status = 'synced';
       saveData();
       renderPettyCash();
     } else {
-      alert(`❌ ซิงค์ล้มเหลว: ${res.message}`);
+      alert(`ซิงค์ล้มเหลว: ${res.message}`);
     }
   })
   .catch(err => {
     console.error(err);
-    alert(`❌ เกิดข้อผิดพลาดเชื่อมต่อสคริปต์: ${err.toString()}`);
+    alert(`เกิดข้อผิดพลาดเชื่อมต่อสคริปต์: ${err.toString()}`);
   });
 }
 
@@ -3877,7 +4045,7 @@ function savePayroll() {
     const paySlipUrl = document.getElementById('payrollPaySlipUrl').value.trim();
 
     if (!employeeId) {
-      alert('⚠️ กรุณาเลือกพนักงานก่อนนะแก!');
+      alert('กรุณาเลือกพนักงานก่อนนะแก!');
       return;
     }
     const totalEarnings = Math.round((baseSalary + allowances) * 100) / 100;
@@ -3907,7 +4075,7 @@ function savePayroll() {
     }
   } catch (err) {
     console.error(err);
-    alert('❌ บันทึกเงินเดือนล้มเหลว: ' + err.toString());
+    alert('บันทึกเงินเดือนล้มเหลว: ' + err.toString());
   }
 }
 
@@ -3917,7 +4085,7 @@ function syncPayroll(index) {
   const scriptUrl = safeStorage.getItem('ghn168_script_url');
   const sheetId = safeStorage.getItem('ghn168_sheet_id');
   if (!scriptUrl || !sheetId) {
-    alert('⚠️ กรุณาตั้งค่าเชื่อมต่อ Google Sheets ก่อนนะแก!');
+    alert('กรุณาตั้งค่าเชื่อมต่อ Google Sheets ก่อนนะแก!');
     return;
   }
   const payload = {
@@ -3947,17 +4115,17 @@ function syncPayroll(index) {
   .then(res => res.json())
   .then(res => {
     if (res.status === 'success') {
-      alert('🎉 ซิงค์ข้อมูลเงินเดือนสำเร็จแล้วแก!');
+      alert('ซิงค์ข้อมูลเงินเดือนสำเร็จแล้วแก!');
       doc.syncStatus = 'synced';
       saveData();
       renderPayroll();
     } else {
-      alert(`❌ ซิงค์ล้มเหลว: ${res.message}`);
+      alert(`ซิงค์ล้มเหลว: ${res.message}`);
     }
   })
   .catch(err => {
     console.error(err);
-    alert(`❌ เกิดข้อผิดพลาดเชื่อมต่อสคริปต์: ${err.toString()}`);
+    alert(`เกิดข้อผิดพลาดเชื่อมต่อสคริปต์: ${err.toString()}`);
   });
 }
 
@@ -4117,7 +4285,7 @@ function saveBankRec() {
     const reconciledBy = document.getElementById('bankRecReconciledBy').value.trim();
 
     if (!period) {
-      alert('⚠️ กรุณาระบุงวดประจำเดือนก่อนนะแก!');
+      alert('กรุณาระบุงวดประจำเดือนก่อนนะแก!');
       return;
     }
     const adjustedStatementBalance = Math.round((statementBalance + depositInTransit - outstandingCheques) * 100) / 100;
@@ -4148,7 +4316,7 @@ function saveBankRec() {
     }
   } catch (err) {
     console.error(err);
-    alert('❌ บันทึกงบกระทบยอดล้มเหลว: ' + err.toString());
+    alert('บันทึกงบกระทบยอดล้มเหลว: ' + err.toString());
   }
 }
 
@@ -4158,7 +4326,7 @@ function syncBankRec(index) {
   const scriptUrl = safeStorage.getItem('ghn168_script_url');
   const sheetId = safeStorage.getItem('ghn168_sheet_id');
   if (!scriptUrl || !sheetId) {
-    alert('⚠️ กรุณาตั้งค่าเชื่อมต่อ Google Sheets ก่อนนะแก!');
+    alert('กรุณาตั้งค่าเชื่อมต่อ Google Sheets ก่อนนะแก!');
     return;
   }
   const payload = {
@@ -4186,17 +4354,17 @@ function syncBankRec(index) {
   .then(res => res.json())
   .then(res => {
     if (res.status === 'success') {
-      alert('🎉 ซิงค์ข้อมูลกระทบยอดธนาคารสำเร็จแล้วแก!');
+      alert('ซิงค์ข้อมูลกระทบยอดธนาคารสำเร็จแล้วแก!');
       doc.syncStatus = 'synced';
       saveData();
       renderBankRec();
     } else {
-      alert(`❌ ซิงค์ล้มเหลว: ${res.message}`);
+      alert(`ซิงค์ล้มเหลว: ${res.message}`);
     }
   })
   .catch(err => {
     console.error(err);
-    alert(`❌ เกิดข้อผิดพลาดเชื่อมต่อสคริปต์: ${err.toString()}`);
+    alert(`เกิดข้อผิดพลาดเชื่อมต่อสคริปต์: ${err.toString()}`);
   });
 }
 
@@ -4310,7 +4478,7 @@ function downloadRDPrepText() {
   const periodVal = document.getElementById('taxExportPeriod').value;
   const formType = document.getElementById('taxExportFormType').value;
   if (!periodVal) {
-    alert('⚠️ กรุณาเลือกงวดประจำเดือนก่อนนะแก!');
+    alert('กรุณาเลือกงวดประจำเดือนก่อนนะแก!');
     return;
   }
   const [targetYear, targetMonth] = periodVal.split('-').map(Number);
@@ -4324,7 +4492,7 @@ function downloadRDPrepText() {
   });
 
   if (filtered.length === 0) {
-    alert('💡 ไม่มีรายการภาษีสำหรับดาวน์โหลดในช่วงเวลาและแบบยื่นที่เลือกนะแก!');
+    alert('ไม่มีรายการภาษีสำหรับดาวน์โหลดในช่วงเวลาและแบบยื่นที่เลือกนะแก!');
     return;
   }
 
@@ -4349,7 +4517,7 @@ function downloadRDPrepText() {
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
-  alert(`🎉 ดาวน์โหลดไฟล์นำส่งสำเร็จแล้วแก!\nชื่อไฟล์: ${filename}`);
+  alert(`ดาวน์โหลดไฟล์นำส่งสำเร็จแล้วแก!\nชื่อไฟล์: ${filename}`);
 }
 
 // --- Auto-scale A4 previews to fit their container width ---
@@ -4375,13 +4543,13 @@ function setupPreviewAutoScaling() {
           previewPanel.style.setProperty('--preview-scale-factor', scale);
         }
       } catch (err) {
-        alert(`🔴 ERROR IN RESIZE OBSERVER:\n${err.message}\n${err.stack}`);
+        alert(`ERROR IN RESIZE OBSERVER:\n${err.message}\n${err.stack}`);
       }
     });
 
     resizeObserver.observe(previewPanel);
   } catch (err) {
-    alert(`🔴 ERROR IN setupPreviewAutoScaling:\n${err.message}\n${err.stack}`);
+    alert(`ERROR IN setupPreviewAutoScaling:\n${err.message}\n${err.stack}`);
   }
 }
 

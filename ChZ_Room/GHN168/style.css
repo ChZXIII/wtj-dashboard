@@ -1386,14 +1386,22 @@ textarea.form-control {
     box-sizing: border-box !important;
   }
 
-  /* iOS Safari date input styling and overflow reset */
-  input[type="date"].form-control {
+  /* iOS Safari picker inputs styling and overflow reset */
+  input[type="date"].form-control,
+  input[type="month"].form-control,
+  input[type="week"].form-control,
+  input[type="time"].form-control,
+  input[type="datetime-local"].form-control {
     -webkit-appearance: none !important;
     appearance: none !important;
     min-height: 46px !important;
   }
 
-  input[type="date"]::-webkit-date-and-time-value {
+  input[type="date"]::-webkit-date-and-time-value,
+  input[type="month"]::-webkit-date-and-time-value,
+  input[type="week"]::-webkit-date-and-time-value,
+  input[type="time"]::-webkit-date-and-time-value,
+  input[type="datetime-local"]::-webkit-date-and-time-value {
     margin: 0 !important;
     padding: 0 !important;
     text-align: left !important;
