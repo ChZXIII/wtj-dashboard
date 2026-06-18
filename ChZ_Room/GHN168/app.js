@@ -54,6 +54,45 @@ const defaultSellerConfig = {
   signerName: 'มงคล วงศ์สกุลยานนท์'
 };
 
+const PREDEFINED_PAYEES = {
+  'เก่ง': {
+    name: 'นาย มงคล วงศ์สกุลยานนท์',
+    taxId: '3509900218949',
+    branch: '00000',
+    address: '65/1 ถ.ต้นขาม2 ต.ท่าศาลา อ.เมืองเชียงใหม่ จ.เชียงใหม่ 50000',
+    category: '101 - ค่าจ้างทีมงานภายนอก/ฟรีแลนซ์ (Freelance Crew Fee)',
+    description: 'ค่าจ้างทำงาน',
+    rate: '3'
+  },
+  'พี่นิค': {
+    name: 'นาย อนุชิต  อภิชัย',
+    taxId: '3630200045082',
+    branch: '00000',
+    address: '61/2 ถ.เทพารักษ์ ต.ช้างเผือก อ.เมืองเชียงใหม่ จ.เชียงใหม่ 50300',
+    category: '101 - ค่าจ้างทีมงานภายนอก/ฟรีแลนซ์ (Freelance Crew Fee)',
+    description: 'ค่าจ้างทำงาน',
+    rate: '3'
+  },
+  'หอม': {
+    name: 'นาย ณัฐวัฒน์  ปวงจันทร์หอม',
+    taxId: '1509900596688',
+    branch: '00000',
+    address: '437/2 ถ.ลำพูน ต.วัดเกต อ.เมืองเชียงใหม่ จ.เชียงใหม่ 50000',
+    category: '101 - ค่าจ้างทีมงานภายนอก/ฟรีแลนซ์ (Freelance Crew Fee)',
+    description: 'ค่าจ้างทำงาน',
+    rate: '3'
+  },
+  'มด': {
+    name: 'นาง ณัฐนรี วงศ์สกุลยานนท์',
+    taxId: '1509900148537',
+    branch: '00000',
+    address: '65/1 ถ.ต้นขาม2 ต.ท่าศาลา อ.เมืองเชียงใหม่ จ.เชียงใหม่ 50000',
+    category: '101 - ค่าจ้างทีมงานภายนอก/ฟรีแลนซ์ (Freelance Crew Fee)',
+    description: 'ค่าจ้างทำงาน',
+    rate: '3'
+  }
+};
+
 // --- Initialization ---
 document.addEventListener('DOMContentLoaded', () => {
   try {
@@ -268,6 +307,8 @@ function initializeGoogleSheet() {
 }
 
 function loadData() {
+  const disableMock = safeStorage.getItem('ghn168_disable_mock') === 'true';
+
   // FIXED STABILITY: Wrapped parsing in try-catch and defensive filters to prevent app crash on data corruption
   try {
     dbDocs = JSON.parse(safeStorage.getItem('ghn168_db_docs')) || [];
@@ -279,7 +320,7 @@ function loadData() {
   }
 
   // Pre-populate dbDocs with sample corporate accounting/project transactions if empty
-  if (dbDocs.length === 0) {
+  if (dbDocs.length === 0 && !disableMock) {
     dbDocs = [
       {
         number: "RE-20260615-001",
@@ -349,7 +390,7 @@ function loadData() {
   }
   
   // Fill sample hub data if empty
-  if (docHubLinks.length === 0) {
+  if (docHubLinks.length === 0 && !disableMock) {
     docHubLinks = [
       { name: 'หนังสือรับรองบริษัท GHN168', category: 'เอกสารจัดตั้ง', url: 'https://drive.google.com/open?id=SampleCompanyCertificate', date: '17/06/2026', desc: 'หนังสือรับรองอัปเดตล่าสุด' },
       { name: 'ภ.พ.20 บริษัท', category: 'เอกสารภาษี', url: 'https://drive.google.com/open?id=SamplePP20', date: '17/06/2026', desc: 'ใบทะเบียนภาษีมูลค่าเพิ่มสำหรับแนบวางบิล' }
@@ -367,7 +408,7 @@ function loadData() {
     pettyCashDb = [];
   }
 
-  if (pettyCashDb.length === 0) {
+  if (pettyCashDb.length === 0 && !disableMock) {
     pettyCashDb = [
       {
         voucherNo: "PCV-260618-001",
@@ -396,7 +437,7 @@ function loadData() {
     payrollDb = [];
   }
 
-  if (payrollDb.length === 0) {
+  if (payrollDb.length === 0 && !disableMock) {
     payrollDb = [
       {
         payrollId: "PAY-2026-06",
@@ -429,7 +470,7 @@ function loadData() {
     bankRecDb = [];
   }
 
-  if (bankRecDb.length === 0) {
+  if (bankRecDb.length === 0 && !disableMock) {
     bankRecDb = [
       {
         reconciliationId: "REC-2026-06",
@@ -461,6 +502,32 @@ function saveData() {
 }
 
 // --- Navigation & Routing ---
+function updatePageTitle() {
+  if (currentView !== 'docgen') {
+    document.title = 'GHN168 | Accounting & Document Hub';
+    return;
+  }
+  
+  let customTitle = 'เอกสาร';
+  if (currentDocType === 'wht') {
+    const whtNo = document.getElementById('whtDocNumber') ? document.getElementById('whtDocNumber').value.trim() : '';
+    customTitle = 'ใบหัก_ณ_ที่จ่าย_50_ทวิ';
+    if (whtNo) customTitle += `_${whtNo}`;
+  } else {
+    const docNo = document.getElementById('docNumber') ? document.getElementById('docNumber').value.trim() : '';
+    if (currentDocType === 'quotation') {
+      customTitle = 'ใบเสนอราคา_สัญญาจ้าง';
+    } else if (currentDocType === 'invoice') {
+      customTitle = 'ใบวางบิล';
+    } else if (currentDocType === 'receipt') {
+      customTitle = 'ใบเสร็จรับเงิน';
+    }
+    if (docNo) customTitle += `_${docNo}`;
+  }
+  
+  document.title = customTitle.replace(/[\/\\?%*:|"<>\s]+/g, '_');
+}
+
 function switchView(viewId) {
   currentView = viewId;
   document.querySelectorAll('.view-section').forEach(section => {
@@ -493,10 +560,19 @@ function switchView(viewId) {
   } else if (viewId === 'taxexport') {
     previewTaxFiling();
   }
+  
+  updatePageTitle();
 }
 
 // --- Event Listeners Setup ---
 function setupEventListeners() {
+  // Auto-blur date inputs on change to close calendar picker on select
+  document.querySelectorAll('input[type="date"]').forEach(el => {
+    el.addEventListener('change', () => {
+      el.blur();
+    });
+  });
+
   // Sidebar navigation
   document.querySelectorAll('.nav-item').forEach(item => {
     const btn = item.querySelector('button');
@@ -513,12 +589,38 @@ function setupEventListeners() {
   document.getElementById('btnDocTypeReceipt').addEventListener('click', () => setDocType('receipt'));
   document.getElementById('btnDocTypeWht').addEventListener('click', () => setDocType('wht'));
 
-  // Editor detail inputs
+  // Quick-select client listeners
+  const btnQuickClientMCool = document.getElementById('btnQuickClientMCool');
+  if (btnQuickClientMCool) {
+    btnQuickClientMCool.addEventListener('click', () => {
+      document.getElementById('docClientName').value = 'บริษัท เอ็ม-คูล เฮ้าส์ ออแกไนซ์ จำกัด';
+      document.getElementById('docClientTaxId').value = '0505568016475';
+      document.getElementById('docClientBranch').value = 'สำนักงานใหญ่';
+      const phoneInput = document.getElementById('docClientPhone');
+      if (phoneInput) phoneInput.value = '092-419-3953';
+      document.getElementById('docClientAddress').value = '21/6 หมู่ 2 ต.ริมใต้ อ.แม่ริม จ.เชียงใหม่ 50180\nE-mail : m-cool-house@hotmail.com, m.cool.house@gmail.com';
+      syncDocPreview();
+    });
+  }
+
+  const btnQuickClientIdex = document.getElementById('btnQuickClientIdex');
+  if (btnQuickClientIdex) {
+    btnQuickClientIdex.addEventListener('click', () => {
+      document.getElementById('docClientName').value = 'บริษัท ไอเด็กซ์ ไมซ์ จำกัด';
+      document.getElementById('docClientTaxId').value = '0505555007201';
+      document.getElementById('docClientBranch').value = '00000';
+      const phoneInput = document.getElementById('docClientPhone');
+      if (phoneInput) phoneInput.value = '';
+      document.getElementById('docClientAddress').value = '500/60 หมู่ที่ 2 ตำบลแม่เหียะ อำเภอเมืองเชียงใหม่ จังหวัดเชียงใหม่';
+      syncDocPreview();
+    });
+  }
+
   const inputsToSync = [
-    'docClientName', 'docClientTaxId', 'docClientAddress', 'docClientPhone',
+    'docClientName', 'docClientTaxId', 'docClientAddress', 'docClientPhone', 'docClientBranch',
     'docNumber', 'docPaymentTerm', 'docProjectName', 'doc_sellerName', 
     'doc_sellerTaxId', 'doc_sellerAddress', 'doc_sellerPhone', 'doc_sellerEmail',
-    'doc_bankDetails', 'doc_signerName'
+    'doc_bankDetails', 'doc_signerName', 'docRemarks'
   ];
   inputsToSync.forEach(id => {
     const el = document.getElementById(id);
@@ -533,8 +635,68 @@ function setupEventListeners() {
     }
   });
 
-  document.getElementById('docDate').addEventListener('change', syncDocPreview);
+  document.getElementById('docDate').addEventListener('change', () => {
+    updateDueDateFromPaymentTerm();
+    syncDocPreview();
+  });
+  
+  const paymentTermEl = document.getElementById('docPaymentTerm');
+  if (paymentTermEl) {
+    paymentTermEl.addEventListener('change', () => {
+      updateDueDateFromPaymentTerm();
+      syncDocPreview();
+    });
+  }
+
   document.getElementById('docDueDate').addEventListener('change', syncDocPreview);
+
+  // Auto-fill documents select listener
+  const autofillSelect = document.getElementById('autofillDocSelect');
+  if (autofillSelect) {
+    autofillSelect.addEventListener('change', (e) => {
+      const docNo = e.target.value;
+      if (!docNo) return;
+      
+      const sourceDoc = dbDocs.find(d => d.number === docNo);
+      if (!sourceDoc) return;
+      
+      // ดึงข้อมูลกรอกลงฟอร์ม
+      document.getElementById('docClientName').value = sourceDoc.name || '';
+      document.getElementById('docClientTaxId').value = sourceDoc.clientTaxId || sourceDoc.taxId || '';
+      document.getElementById('docClientAddress').value = sourceDoc.clientAddress || sourceDoc.address || '';
+      const phoneInput = document.getElementById('docClientPhone');
+      if (phoneInput) {
+        phoneInput.value = sourceDoc.clientPhone || sourceDoc.phone || '';
+      }
+      document.getElementById('docProjectName').value = sourceDoc.detail || sourceDoc.projectName || '';
+      
+      if (currentDocType === 'receipt') {
+        document.getElementById('docInvoiceNo').value = sourceDoc.number || '';
+      }
+      
+      // ดึงรายการสินค้า
+      if (sourceDoc.items && Array.isArray(sourceDoc.items)) {
+        docItems = sourceDoc.items.map(item => ({
+          desc: item.desc || '',
+          qty: item.qty || 1,
+          unit: item.unit || 'งาน',
+          price: item.price || 0,
+          worker: item.worker || 'เก่ง'
+        }));
+      } else {
+        docItems = [{ desc: sourceDoc.detail || '', qty: 1, unit: 'งาน', price: sourceDoc.amount || 0, worker: 'เก่ง' }];
+      }
+      
+      // อัปเดตตารางและคำนวณยอดเงินใหม่
+      renderDocItemsTable();
+      calculateDocTotals();
+      syncDocPreview();
+      
+      // ตั้งค่ากลับเป็นเริ่มต้น
+      autofillSelect.value = '';
+      alert(`🎉 ดึงข้อมูลจากเอกสาร ${sourceDoc.number} มากรอกเรียบร้อยแล้วแก!`);
+    });
+  }
 
   // Add Item row button
   document.getElementById('btnAddDocItem').addEventListener('click', addDocItem);
@@ -551,6 +713,8 @@ function setupEventListeners() {
     window.print();
   });
 
+  // (Removed event-based document title switching to favor real-time document title synchronization)
+
   // Save Config Button
   document.getElementById('btnSaveConfig').addEventListener('click', saveScriptSettings);
 
@@ -563,11 +727,53 @@ function setupEventListeners() {
     const el = document.getElementById(id);
     if (el) {
       el.addEventListener('input', () => {
+        // Reset payee dropdown to manual if user modifies details manually
+        if (['whtPayeeName', 'whtPayeeTaxId', 'whtPayeeAddress'].includes(id)) {
+          const select = document.getElementById('whtPayeeSelect');
+          if (select) select.value = '';
+        }
         calculateWhtTotals();
         syncWhtPreview();
       });
     }
   });
+
+  // WHT Predefined Payee Selection Event Listener
+  const whtPayeeSelect = document.getElementById('whtPayeeSelect');
+  if (whtPayeeSelect) {
+    whtPayeeSelect.addEventListener('change', (e) => {
+      const selected = e.target.value;
+      if (selected && PREDEFINED_PAYEES[selected]) {
+        const payee = PREDEFINED_PAYEES[selected];
+        document.getElementById('whtPayeeName').value = payee.name;
+        document.getElementById('whtPayeeTaxId').value = payee.taxId;
+        document.getElementById('whtPayeeBranch').value = payee.branch;
+        document.getElementById('whtPayeeAddress').value = payee.address;
+        
+        const catEl = document.getElementById('whtCategory');
+        if (catEl) {
+          catEl.value = payee.category;
+        }
+        
+        document.getElementById('whtDescription').value = payee.description;
+        
+        const rateEl = document.getElementById('whtRateSelect');
+        if (rateEl) {
+          rateEl.value = payee.rate;
+        }
+        
+        // Hide warning if the taxId is correct length (13 digits)
+        const warningEl = document.getElementById('payeeTaxIdWarning');
+        if (warningEl) {
+          warningEl.style.display = payee.taxId.length === 13 ? 'none' : 'block';
+        }
+        
+        // Recalculate and update preview
+        calculateWhtTotals();
+        syncWhtPreview();
+      }
+    });
+  }
 
   document.getElementById('whtDate').addEventListener('change', () => {
     syncWhtPreview();
@@ -594,6 +800,11 @@ function setupEventListeners() {
     document.getElementById('importBackupFile').click();
   });
   document.getElementById('importBackupFile').addEventListener('change', importBackup);
+
+  const btnClearDb = document.getElementById('btnClearDatabase');
+  if (btnClearDb) {
+    btnClearDb.addEventListener('click', clearLocalDatabase);
+  }
 
   const addDocModal = document.getElementById('addDocModal');
   const formAddDoc = document.getElementById('formAddDoc');
@@ -876,6 +1087,17 @@ function setDocType(type) {
   const previewWht = document.getElementById('previewWhtDoc');
   const formInternalDetails = document.getElementById('formGroupInternalDetails');
 
+  // Toggle class for standard layout overrides (hiding Qty/Unit/Price columns)
+  const formStandardDetails = document.getElementById('formGroupStandardDetails');
+  const previewStandardDoc = document.getElementById('previewStandardDoc');
+  if (type === 'quotation' || type === 'invoice' || type === 'receipt') {
+    if (formStandardDetails) formStandardDetails.classList.add('doc-type-quotation');
+    if (previewStandardDoc) previewStandardDoc.classList.add('doc-type-quotation');
+  } else {
+    if (formStandardDetails) formStandardDetails.classList.remove('doc-type-quotation');
+    if (previewStandardDoc) previewStandardDoc.classList.remove('doc-type-quotation');
+  }
+
   // Field group toggles
   const groupDueDate = document.getElementById('groupDocDueDate');
   const groupPaymentTerm = document.getElementById('groupDocPaymentTerm');
@@ -896,6 +1118,12 @@ function setDocType(type) {
     // Set auto doc number
     document.getElementById('whtDocNumber').value = autoGenerateDocNumber('wht');
     
+    // Reset predefined payee select
+    const whtPayeeSelect = document.getElementById('whtPayeeSelect');
+    if (whtPayeeSelect) {
+      whtPayeeSelect.value = '';
+    }
+    
     calculateWhtTotals();
     syncWhtPreview();
   } else {
@@ -914,7 +1142,55 @@ function setDocType(type) {
     } else {
       groupDueDate.style.display = 'block';
       groupPaymentTerm.style.display = 'block';
-      syncBtn.style.display = 'none'; // No sheet sync for QT / IV
+      syncBtn.style.display = 'block'; // แสดงปุ่มเซฟเสมอสำหรับ QT และ IV
+      if (type === 'quotation') {
+        syncBtn.innerHTML = '💾 บันทึกประวัติใบเสนอราคาลงเครื่อง';
+      } else if (type === 'invoice') {
+        syncBtn.innerHTML = '💾 บันทึกประวัติใบวางบิลลงเครื่อง';
+      }
+      updateDueDateFromPaymentTerm();
+    }
+
+    // โหลดตัวเลือก Dropdown Auto-fill
+    const autofillGroup = document.getElementById('groupAutofillDoc');
+    const autofillSelect = document.getElementById('autofillDocSelect');
+    const autofillLabel = document.getElementById('lblAutofill');
+
+    if (autofillGroup && autofillSelect) {
+      autofillSelect.innerHTML = '<option value="">-- เลือกเอกสารอ้างอิง --</option>';
+      
+      if (type === 'receipt') {
+        const invoices = dbDocs.filter(d => d.type === 'invoice');
+        if (invoices.length > 0) {
+          autofillLabel.textContent = 'ดึงข้อมูลใบวางบิล:';
+          invoices.forEach(inv => {
+            const opt = document.createElement('option');
+            opt.value = inv.number;
+            const statusSuffix = inv.paymentStatus ? ` [${inv.paymentStatus}]` : '';
+            opt.textContent = `${inv.number} - ${inv.name}${statusSuffix}`;
+            autofillSelect.appendChild(opt);
+          });
+          autofillGroup.style.display = 'flex';
+        } else {
+          autofillGroup.style.display = 'none';
+        }
+      } else if (type === 'invoice') {
+        const quotations = dbDocs.filter(d => d.type === 'quotation');
+        if (quotations.length > 0) {
+          autofillLabel.textContent = 'ดึงข้อมูลใบเสนอราคา:';
+          quotations.forEach(qt => {
+            const opt = document.createElement('option');
+            opt.value = qt.number;
+            opt.textContent = `${qt.number} - ${qt.name}`;
+            autofillSelect.appendChild(opt);
+          });
+          autofillGroup.style.display = 'flex';
+        } else {
+          autofillGroup.style.display = 'none';
+        }
+      } else {
+        autofillGroup.style.display = 'none';
+      }
     }
 
     // Set auto doc number
@@ -942,12 +1218,12 @@ function autoGenerateDocNumber(type) {
   return `${matchPattern}-${num}`;
 }
 
-// --- Items List Rendering ---
 function renderPrevItemsTable() {
   const prevBody = document.getElementById('prevItemsBody');
   if (prevBody) {
     if (docItems.length === 0) {
-      prevBody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 15px; font-style:italic;">ไม่มีรายการ</td></tr>`;
+      const colspan = currentDocType === 'quotation' ? 3 : 6;
+      prevBody.innerHTML = `<tr><td colspan="${colspan}" style="text-align:center; padding: 15px; font-style:italic;">ไม่มีรายการ</td></tr>`;
     } else {
       prevBody.innerHTML = docItems.map((item, idx) => {
         const total = (item.qty || 0) * (item.price || 0);
@@ -955,9 +1231,9 @@ function renderPrevItemsTable() {
           <tr>
             <td style="text-align:center;">${idx + 1}</td>
             <td style="text-align:left; white-space: pre-wrap;">${escapeHtml(item.desc || '-')}</td>
-            <td style="text-align:center;">${item.qty}</td>
-            <td style="text-align:center;">${escapeHtml(item.unit || 'งาน')}</td>
-            <td style="text-align:right;">${item.price.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+            <td style="text-align:center;" class="col-qty">${item.qty}</td>
+            <td style="text-align:center;" class="col-unit">${escapeHtml(item.unit || 'งาน')}</td>
+            <td style="text-align:right;" class="col-price">${item.price.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
             <td style="text-align:right;">${total.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
           </tr>
         `;
@@ -975,10 +1251,10 @@ function renderDocItemsTable() {
       <td>
         <input type="text" value="${escapeHtml(item.desc)}" oninput="updateDocItem(${idx}, 'desc', this.value)" class="form-control" style="border:none; padding:4px;" placeholder="เช่น ถ่ายวีดีโอโฆษณา" required>
       </td>
-      <td style="width: 80px;">
+      <td style="width: 80px;" class="col-qty">
         <input type="number" value="${item.qty}" min="1" step="any" oninput="updateDocItem(${idx}, 'qty', this.value)" class="form-control" style="border:none; padding:4px; text-align:center;" required>
       </td>
-      <td style="width: 80px;">
+      <td style="width: 80px;" class="col-unit">
         <input type="text" value="${escapeHtml(item.unit)}" oninput="updateDocItem(${idx}, 'unit', this.value)" class="form-control" style="border:none; padding:4px; text-align:center;" placeholder="เช่น งาน" required>
       </td>
       <td style="width: 140px;">
@@ -1065,15 +1341,6 @@ function calculateDocTotals() {
     }
   }
 
-  // Adjust rowspan of the Baht text cell dynamically based on visible rows
-  let activeRows = 2; // Subtotal and Grand Total are always visible
-  if (vatChecked) activeRows++;
-  if (whtRate > 0) activeRows++;
-  const bahtTextCell = document.getElementById('prevBahtTextCell');
-  if (bahtTextCell) {
-    bahtTextCell.setAttribute('rowspan', activeRows);
-  }
-
   document.getElementById('prevGrandTotalVal').textContent = `฿${grandTotal.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   document.getElementById('prevBahtTextVal').textContent = thaiBahtText(grandTotal);
 
@@ -1142,10 +1409,51 @@ function hideHitlWarning() {
   if (warningPanel) warningPanel.style.display = 'none';
 }
 
+function updateDueDateFromPaymentTerm() {
+  const docDateEl = document.getElementById('docDate');
+  const termEl = document.getElementById('docPaymentTerm');
+  const dueDateEl = document.getElementById('docDueDate');
+
+  if (!docDateEl || !termEl || !dueDateEl) return;
+
+  const docDateVal = docDateEl.value; // Format: YYYY-MM-DD
+  if (!docDateVal) return;
+
+  const dateObj = new Date(docDateVal);
+  if (isNaN(dateObj.getTime())) return;
+
+  const termVal = termEl.value; // e.g., "30 วัน", "ชำระทันที", "7 วัน"
+  let daysToAdd = 0;
+
+  if (termVal.includes('30 วัน')) {
+    daysToAdd = 30;
+  } else if (termVal.includes('15 วัน')) {
+    daysToAdd = 15;
+  } else if (termVal.includes('7 วัน')) {
+    daysToAdd = 7;
+  } else if (termVal.includes('3 วัน')) {
+    daysToAdd = 3;
+  } else if (termVal.includes('ชำระทันที')) {
+    daysToAdd = 0;
+  } else {
+    const numMatch = termVal.match(/\d+/);
+    if (numMatch) {
+      daysToAdd = parseInt(numMatch[0]);
+    }
+  }
+
+  dateObj.setDate(dateObj.getDate() + daysToAdd);
+
+  const yyyy = dateObj.getFullYear();
+  const mm = String(dateObj.getMonth() + 1).padStart(2, '0');
+  const dd = String(dateObj.getDate()).padStart(2, '0');
+  dueDateEl.value = `${yyyy}-${mm}-${dd}`;
+}
+
 // --- Sync Previews ---
 function syncDocPreview() {
-  const docTitle = currentDocType === 'quotation' ? 'ใบเสนอราคา' : (currentDocType === 'invoice' ? 'ใบวางบิล / ใบแจ้งหนี้' : 'ใบเสร็จรับเงิน / ใบกำกับภาษี');
-  const docTitleEn = currentDocType === 'quotation' ? 'QUOTATION' : (currentDocType === 'invoice' ? 'INVOICE' : 'RECEIPT / TAX INVOICE');
+  const docTitle = currentDocType === 'quotation' ? 'ใบเสนอราคา / สัญญาจ้าง' : (currentDocType === 'invoice' ? 'ใบวางบิล / ใบแจ้งหนี้' : 'ใบเสร็จรับเงิน / ใบกำกับภาษี');
+  const docTitleEn = currentDocType === 'quotation' ? 'QUOTATION / CONTRACT' : (currentDocType === 'invoice' ? 'INVOICE' : 'RECEIPT / TAX INVOICE');
 
   document.getElementById('prevDocTitleText').textContent = docTitle;
   document.getElementById('prevDocTitleEnText').textContent = docTitleEn;
@@ -1164,7 +1472,6 @@ function syncDocPreview() {
     { from: 'doc_sellerPhone', to: 'prevSellerPhone' },
     { from: 'doc_sellerEmail', to: 'prevSellerEmail' },
     { from: 'doc_bankDetails', to: 'prevBankDetailsVal' },
-    { from: 'doc_signerName', to: 'prevSignerNameVal' },
 
     { from: 'docClientName', to: 'prevClientName' },
     { from: 'docClientTaxId', to: 'prevClientTaxId' },
@@ -1196,9 +1503,80 @@ function syncDocPreview() {
   if (prevClientTaxIdRow) {
     if (taxIdVal) {
       prevClientTaxIdRow.style.display = 'block';
-      document.getElementById('prevClientTaxId').textContent = taxIdVal;
+      const branchInput = document.getElementById('docClientBranch');
+      const branchVal = (branchInput ? branchInput.value.trim() : '') || '00000';
+      const branchText = (branchVal === '00000' || branchVal === 'สำนักงานใหญ่') ? ' (สำนักงานใหญ่)' : ` (สาขาที่ ${branchVal})`;
+      document.getElementById('prevClientTaxId').textContent = taxIdVal + branchText;
     } else {
       prevClientTaxIdRow.style.display = 'none';
+    }
+  }
+
+  // Signer name and label custom formatting
+  const signerNameInput = document.getElementById('doc_signerName');
+  const prevSignerNameVal = document.getElementById('prevSignerNameVal');
+  const prevSignerLabel = document.getElementById('prevSignerLabel');
+  if (prevSignerNameVal && prevSignerLabel) {
+    const signerName = signerNameInput ? signerNameInput.value.trim() : '';
+    // Signer name is wrapped in parentheses for all standard docs (quotation, invoice, receipt)
+    prevSignerNameVal.textContent = signerName ? `( ${signerName} )` : '(           ชื่อ สกุล            )';
+    
+    if (currentDocType === 'receipt') {
+      prevSignerLabel.innerHTML = 'ผู้รับเงิน/บัญชี<br>ในนาม บริษัท จีเอชเอ็น 168 มีเดีย แอนด์ ครีเอชั่น จำกัด';
+    } else {
+      prevSignerLabel.innerHTML = 'ในนาม บริษัท จีเอชเอ็น 168 มีเดีย แอนด์ ครีเอชั่น จำกัด';
+    }
+  }
+
+  // Toggle left signature box (use visibility to preserve right signature alignment)
+  const prevLeftSignBox = document.getElementById('prevLeftSignBox');
+  if (prevLeftSignBox) {
+    prevLeftSignBox.style.visibility = 'visible';
+    prevLeftSignBox.style.display = '';
+  }
+
+  // Toggle bank details and cheque rule
+  const prevBankDetailsRow = document.getElementById('prevBankDetailsRow');
+  const prevChequeRule = document.getElementById('prevChequeRule');
+  if (prevBankDetailsRow) {
+    // Only Invoice has bank details row. Quotation and Receipt hide it.
+    prevBankDetailsRow.style.display = currentDocType === 'invoice' ? '' : 'none';
+  }
+  if (prevChequeRule) {
+    if (currentDocType === 'receipt') {
+      prevChequeRule.style.display = '';
+      prevChequeRule.textContent = 'หมายเหตุ : ใบเสร็จรับเงินจะสมบูรณ์ก็ต่อเมื่อ ผู้รับเงินลงลายมือชื่อและเรียกเก็บเงินตามจำนวนเรียบร้อยแล้ว';
+    } else {
+      prevChequeRule.style.display = 'none';
+    }
+  }
+
+  // Dynamic colspan/colspans for table footer elements to prevent column alignment bugs
+  const isStandardHidden = currentDocType === 'quotation' || currentDocType === 'invoice' || currentDocType === 'receipt';
+  const labelColspan = isStandardHidden ? 2 : 5;
+  const totalColspan = isStandardHidden ? 3 : 6;
+
+  ['prevSubtotalLabelCell', 'prevVatLabelCell', 'prevWhtLabelCell', 'prevNetTotalLabelCell'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.colSpan = labelColspan;
+  });
+
+  const bahtTextCell = document.getElementById('prevBahtTextCell');
+  if (bahtTextCell) {
+    bahtTextCell.colSpan = totalColspan;
+  }
+
+  // Sync docRemarks to prevRemarksVal and toggle visibility
+  const remarksVal = document.getElementById('docRemarks') ? document.getElementById('docRemarks').value.trim() : '';
+  const prevRemarksContainer = document.getElementById('prevRemarksContainer');
+  const prevRemarksVal = document.getElementById('prevRemarksVal');
+  if (prevRemarksContainer && prevRemarksVal) {
+    if (remarksVal) {
+      prevRemarksContainer.style.display = 'block';
+      prevRemarksVal.textContent = remarksVal;
+    } else {
+      prevRemarksContainer.style.display = 'none';
+      prevRemarksVal.textContent = '-';
     }
   }
 
@@ -1210,6 +1588,8 @@ function syncDocPreview() {
   document.querySelectorAll('.company-seal-img').forEach(img => {
     img.style.display = showSeal ? 'block' : 'none';
   });
+
+  updatePageTitle();
 }
 
 function syncWhtPreview() {
@@ -1250,6 +1630,8 @@ function syncWhtPreview() {
   document.querySelectorAll('.company-seal-img').forEach(img => {
     img.style.display = showSeal ? 'block' : 'none';
   });
+
+  updatePageTitle();
 }
 
 function formatDate(dateStr) {
@@ -1275,6 +1657,80 @@ function validateTaxId(id, warningElId) {
 
 // --- Sync to Sheets & Database Save Process ---
 function processDocumentSync() {
+  // สำหรับ QT หรือ IV ให้เซฟประวัติลง Local Storage เท่านั้น (ไม่ซิงค์ลงชีตออนไลน์)
+  if (currentDocType === 'quotation' || currentDocType === 'invoice') {
+    const docNo = document.getElementById('docNumber').value;
+    const dateVal = document.getElementById('docDate').value;
+    const clientName = document.getElementById('docClientName').value;
+    const clientTaxId = document.getElementById('docClientTaxId').value;
+    const clientBranch = document.getElementById('docClientBranch').value || '00000';
+    const clientAddress = document.getElementById('docClientAddress').value || '-';
+    const phoneInput = document.getElementById('docClientPhone');
+    const clientPhone = phoneInput ? phoneInput.value : '-';
+    const detail = document.getElementById('docProjectName').value;
+    
+    let subtotal = 0;
+    docItems.forEach(item => {
+      subtotal += (item.qty || 0) * (item.price || 0);
+    });
+    
+    const vatChecked = document.getElementById('docVatCheckbox').checked;
+    const whtRate = parseInt(document.getElementById('docWhtSelect').value) || 0;
+    const vat = Math.round((vatChecked ? subtotal * 0.07 : 0) * 100) / 100;
+    const wht = Math.round((subtotal * (whtRate / 100)) * 100) / 100;
+    const net = Math.round((subtotal + vat - wht) * 100) / 100;
+    const paymentTerm = document.getElementById('docPaymentTerm').value;
+    const dueDate = document.getElementById('docDueDate').value;
+
+    if (!docNo || !dateVal || !clientName || !detail || subtotal <= 0) {
+      alert('⚠️ กรุณากรอกข้อมูลเอกสารและระบุรายการสินค้าให้ครบถ้วนก่อนบันทึกนะแก!');
+      return;
+    }
+
+    const dateStr = formatDate(dateVal);
+    const dueDateStr = formatDate(dueDate);
+
+    // ป้องกันเลขซ้ำ
+    dbDocs = dbDocs.filter(d => d.number !== docNo);
+
+    const docRecord = {
+      number: docNo,
+      type: currentDocType,
+      date: dateStr,
+      name: clientName,
+      detail: detail,
+      amount: subtotal,
+      status: 'synced', // ตั้งค่า synced ทันทีเพราะพร้อมนำประวัติไปใช้ในระบบต่อ
+      timestamp: new Date().toLocaleString(),
+      clientBranch: clientBranch,
+      clientAddress: clientAddress,
+      clientTaxId: clientTaxId,
+      clientPhone: clientPhone,
+      vat: vat,
+      wht: wht,
+      net: net,
+      whtRate: whtRate,
+      paymentTerm: paymentTerm,
+      dueDate: dueDateStr,
+      items: docItems.map(item => ({
+        desc: item.desc || "-",
+        qty: item.qty || 1,
+        unit: item.unit || "งาน",
+        price: item.price || 0,
+        worker: item.worker || "เก่ง"
+      }))
+    };
+
+    dbDocs.push(docRecord);
+    saveData();
+    renderDashboard();
+    alert(`💾 บันทึกประวัติ${currentDocType === 'quotation' ? 'ใบเสนอราคา' : 'ใบวางบิล'} เลขที่ ${docNo} ลงระบบสำเร็จแล้วแก!`);
+    
+    // โหลดตัวเลือกใหม่ทันที
+    setDocType(currentDocType);
+    return;
+  }
+
   const scriptUrl = safeStorage.getItem('ghn168_script_url');
   const sheetId = safeStorage.getItem('ghn168_sheet_id');
 
@@ -1294,10 +1750,15 @@ function processDocumentSync() {
     }
   }
 
-  // Gather doc meta
+  // Gather doc meta and construct HTTP payload
   let payload = {
-    spreadsheetId: sheetId
+    spreadsheetId: sheetId,
+    type: 'sync'
   };
+
+  const recordDate = formatDate(new Date().toISOString().split('T')[0]);
+
+  let docRecord = null;
 
   if (currentDocType === 'wht') {
     const docNo = document.getElementById('whtDocNumber').value;
@@ -1311,8 +1772,8 @@ function processDocumentSync() {
     const detail = document.getElementById('whtDescription').value;
     const gross = parseFloat(document.getElementById('whtGrossAmount').value) || 0;
     const rate = parseInt(document.getElementById('whtRateSelect').value) || 0;
-    const tax = gross * (rate / 100);
-    const net = gross - tax;
+    const tax = Math.round((gross * (rate / 100)) * 100) / 100;
+    const net = Math.round((gross - tax) * 100) / 100;
     
     const paymentMethod = document.getElementById('whtPaymentMethod').value;
     const paymentStatus = document.getElementById('whtPaymentStatus').value;
@@ -1325,29 +1786,8 @@ function processDocumentSync() {
       return;
     }
 
-    payload.type = 'expense';
-    payload.recordDate = formatDate(new Date().toISOString().split('T')[0]);
-    payload.date = formatDate(dateVal);
-    payload.docNo = docNo;
-    payload.payeeName = payeeName;
-    payload.payeeTaxId = payeeTaxId;
-    payload.payeeAddress = payeeAddress;
-    payload.payeeBranch = payeeBranch;
-    payload.category = category;
-    payload.detail = detail;
-    payload.gross = gross;
-    payload.vat = 0;
-    payload.totalAmount = gross;
-    payload.whtRate = rate;
-    payload.tax = tax;
-    payload.net = net;
-    payload.paymentMethod = paymentMethod;
-    payload.paymentStatus = paymentStatus;
-    payload.actualPaidDate = formatDate(actualPaidDate);
-    payload.whtCertificateNo = docNo;
-    payload.taxFilingStatus = taxFilingStatus;
-    payload.projectLink = projectLink;
-    payload.remarks = remarks;
+    const dateStr = formatDate(dateVal);
+    const actualPaidDateStr = formatDate(actualPaidDate);
 
     // Detect form type based on payee tax id
     let formType = 'none';
@@ -1359,7 +1799,66 @@ function processDocumentSync() {
         formType = 'pnd3';
       }
     }
-    payload.whtType = formType;
+
+    payload.sheetName = 'รายจ่าย';
+    payload.values = [
+      recordDate,
+      dateStr,
+      docNo,
+      payeeName,
+      payeeTaxId || "-",
+      payeeAddress || "-",
+      payeeBranch || "00000",
+      category || "-",
+      detail,
+      Math.round(gross * 100) / 100,
+      0, // VAT for WHT
+      Math.round(gross * 100) / 100,
+      rate,
+      Math.round(tax * 100) / 100,
+      formType,
+      Math.round(net * 100) / 100,
+      paymentMethod || "KBank",
+      paymentStatus || "จ่ายเงินแล้ว",
+      actualPaidDateStr || dateStr,
+      docNo,
+      '-',
+      taxFilingStatus || "ยังไม่ได้ยื่น",
+      projectLink || "",
+      remarks || ""
+    ];
+
+    docRecord = {
+      number: docNo,
+      type: 'wht',
+      date: dateStr,
+      name: payeeName,
+      detail: detail,
+      amount: gross,
+      status: 'pending', // Will update to synced on success
+      timestamp: new Date().toLocaleString(),
+      payeeTaxId: payeeTaxId,
+      payeeBranch: payeeBranch,
+      payeeAddress: payeeAddress,
+      category: category,
+      vat: 0,
+      wht: tax,
+      net: net,
+      whtRate: rate,
+      receivingBank: '-',
+      paymentStatus: paymentStatus,
+      actualPaymentDate: '-',
+      profitShare: '-',
+      recordedBy: '-',
+      remarks: remarks,
+      paymentMethod: paymentMethod,
+      actualPaidDate: actualPaidDateStr,
+      whtCertificateNo: docNo,
+      taxFilingStatus: taxFilingStatus,
+      projectLink: projectLink,
+      items: null
+    };
+
   } else {
     // Receipt (Income)
     const docNo = document.getElementById('docNumber').value;
@@ -1378,13 +1877,13 @@ function processDocumentSync() {
 
     const vatChecked = document.getElementById('docVatCheckbox').checked;
     const whtRate = parseInt(document.getElementById('docWhtSelect').value) || 0;
-    const vat = vatChecked ? subtotal * 0.07 : 0;
-    const wht = subtotal * (whtRate / 100);
-    const net = subtotal + vat - wht;
+    const vat = Math.round((vatChecked ? subtotal * 0.07 : 0) * 100) / 100;
+    const wht = Math.round((subtotal * (whtRate / 100)) * 100) / 100;
+    const net = Math.round((subtotal + vat - wht) * 100) / 100;
     const owner = document.getElementById('docOwner').value;
     const retentionRate = parseFloat(document.getElementById('docRetentionRate').value) || 0;
-    const retentionAmount = subtotal * (retentionRate / 100);
-    const payoutAmount = subtotal - retentionAmount;
+    const retentionAmount = Math.round((subtotal * (retentionRate / 100)) * 100) / 100;
+    const payoutAmount = Math.round((subtotal - retentionAmount) * 100) / 100;
 
     const receivingBank = document.getElementById('docReceivingBank').value;
     const paymentStatus = document.getElementById('docPaymentStatus').value;
@@ -1392,43 +1891,28 @@ function processDocumentSync() {
     const recordedBy = document.getElementById('docRecordedBy').value;
     const remarks = document.getElementById('docRemarks').value;
 
-    payload.type = 'income';
-    payload.recordDate = formatDate(new Date().toISOString().split('T')[0]);
-    payload.date = formatDate(dateVal);
-    payload.docNo = docNo;
-    payload.invoiceNo = invoiceNo;
-    payload.clientName = clientName;
-    payload.clientTaxId = clientTaxId;
-    payload.clientBranch = clientBranch;
-    payload.clientAddress = clientAddress;
-    payload.detail = detail;
-    payload.subtotal = subtotal;
-    payload.vat = vat;
-    payload.gross = subtotal + vat;
-    payload.whtRate = whtRate;
-    payload.wht = wht;
-    payload.net = net;
-    payload.receivingBank = receivingBank;
-    payload.paymentStatus = paymentStatus;
-    payload.actualPaymentDate = formatDate(actualPaymentDate);
-    payload.profitShare = `คนดีล: ${owner} (${100 - retentionRate}%)`;
-    payload.recordedBy = recordedBy;
-    payload.remarks = remarks;
+    if (!docNo || !dateVal || !clientName || !detail || subtotal <= 0) {
+      alert('⚠️ กรุณากรอกข้อมูลรายรับให้ครบถ้วนก่อนบันทึกนะแก!');
+      return;
+    }
 
-    // Itemized breakdown for Google Sheets split rows
-    payload.items = docItems.map(item => {
-      const itemSubtotal = (item.qty || 0) * (item.price || 0);
-      const itemVat = vatChecked ? itemSubtotal * 0.07 : 0;
-      const itemWht = itemSubtotal * (whtRate / 100);
-      const itemNet = itemSubtotal + itemVat - itemWht;
-      const itemRetained = itemSubtotal * (retentionRate / 100);
-      const itemPayout = itemSubtotal - itemRetained;
+    const dateStr = formatDate(dateVal);
+    const actualPaymentDateStr = formatDate(actualPaymentDate);
+    const profitShare = `คนดีล: ${owner} (${100 - retentionRate}%)`;
+
+    payload.sheetName = 'รายรับ';
+
+    const localItems = docItems.map(item => {
+      const itemSubtotal = Math.round(((item.qty || 0) * (item.price || 0)) * 100) / 100;
+      const itemVat = Math.round((vatChecked ? itemSubtotal * 0.07 : 0) * 100) / 100;
+      const itemWht = Math.round((itemSubtotal * (whtRate / 100)) * 100) / 100;
+      const itemNet = Math.round((itemSubtotal + itemVat - itemWht) * 100) / 100;
 
       return {
         desc: item.desc || "-",
         subtotal: itemSubtotal,
         vat: itemVat,
-        gross: itemSubtotal + itemVat,
+        gross: Math.round((itemSubtotal + itemVat) * 100) / 100,
         whtRate: whtRate,
         wht: itemWht,
         net: itemNet,
@@ -1436,6 +1920,85 @@ function processDocumentSync() {
         profitShare: `คนทำงาน: ${item.worker || owner} (${100 - retentionRate}%)`
       };
     });
+
+    if (localItems.length > 0) {
+      payload.rows = localItems.map(item => {
+        return [
+          recordDate,
+          dateStr,
+          docNo,
+          invoiceNo || "-",
+          clientName,
+          clientTaxId || "-",
+          clientAddress || "-",
+          clientBranch || "00000",
+          item.desc || detail || "-",
+          item.subtotal,
+          item.vat,
+          item.gross,
+          whtRate,
+          item.wht,
+          item.net,
+          receivingBank || "KBank",
+          paymentStatus || "ชำระเงินแล้ว",
+          actualPaymentDateStr || dateStr,
+          item.profitShare,
+          '-',
+          recordedBy || "-",
+          remarks || "-"
+        ];
+      });
+    } else {
+      payload.values = [
+        recordDate,
+        dateStr,
+        docNo,
+        invoiceNo || "-",
+        clientName,
+        clientTaxId || "-",
+        clientAddress || "-",
+        clientBranch || "00000",
+        detail || "-",
+        Math.round(subtotal * 100) / 100,
+        Math.round(vat * 100) / 100,
+        Math.round((subtotal + vat) * 100) / 100,
+        whtRate,
+        Math.round(wht * 100) / 100,
+        Math.round(net * 100) / 100,
+        receivingBank || "KBank",
+        paymentStatus || "ชำระเงินแล้ว",
+        actualPaymentDateStr || dateStr,
+        profitShare,
+        '-',
+        recordedBy || "-",
+        remarks || "-"
+      ];
+    }
+
+    docRecord = {
+      number: docNo,
+      type: 'receipt',
+      date: dateStr,
+      name: clientName,
+      detail: detail,
+      amount: subtotal,
+      status: 'pending', // Will update to synced on success
+      timestamp: new Date().toLocaleString(),
+      invoiceNo: invoiceNo,
+      clientBranch: clientBranch,
+      clientAddress: clientAddress,
+      vat: vat,
+      wht: wht,
+      net: net,
+      whtRate: whtRate,
+      receivingBank: receivingBank,
+      paymentStatus: paymentStatus,
+      actualPaymentDate: actualPaymentDateStr,
+      profitShare: profitShare,
+      recordedBy: recordedBy,
+      remarks: remarks,
+      items: localItems.length > 0 ? localItems : null
+    };
   }
 
   // Send to Sheets via POST
@@ -1462,43 +2025,17 @@ function processDocumentSync() {
     if (res.status === 'success') {
       alert(`🎉 บันทึกและซิงค์ข้อมูลลง Sheet เรียบร้อยแล้วแก!\nข้อความระบบ: ${res.message}`);
       
-      // Save doc details to local history db
-      const docRecord = {
-        number: payload.docNo,
-        type: currentDocType,
-        date: payload.date,
-        name: currentDocType === 'wht' ? payload.payeeName : payload.clientName,
-        detail: payload.detail,
-        amount: currentDocType === 'wht' ? payload.gross : payload.subtotal,
-        status: 'synced',
-        timestamp: new Date().toLocaleString(),
-        invoiceNo: payload.invoiceNo || '-',
-        clientBranch: payload.clientBranch || '-',
-        clientAddress: payload.clientAddress || '-',
-        payeeTaxId: payload.payeeTaxId || '-',
-        payeeBranch: payload.payeeBranch || '-',
-        payeeAddress: payload.payeeAddress || '-',
-        category: payload.category || '-',
-        vat: payload.vat || 0,
-        wht: currentDocType === 'wht' ? payload.tax : payload.wht,
-        net: payload.net,
-        whtRate: payload.whtRate || 0,
-        receivingBank: payload.receivingBank || '-',
-        paymentStatus: payload.paymentStatus || '-',
-        actualPaymentDate: payload.actualPaymentDate || '-',
-        profitShare: payload.profitShare || '-',
-        recordedBy: payload.recordedBy || '-',
-        remarks: payload.remarks || '-',
-        paymentMethod: payload.paymentMethod || '-',
-        actualPaidDate: payload.actualPaidDate || '-',
-        whtCertificateNo: payload.whtCertificateNo || '-',
-        taxFilingStatus: payload.taxFilingStatus || '-',
-        projectLink: payload.projectLink || '-',
-        items: payload.items || null
-      };
-
+      docRecord.status = 'synced';
       dbDocs.unshift(docRecord);
-      syncHistory.unshift({ docNo: payload.docNo, status: 'Success', time: new Date().toLocaleString() });
+      syncHistory.unshift({ docNo: docRecord.number, status: 'Success', time: new Date().toLocaleString() });
+
+      // Update referenced invoice status
+      if (currentDocType === 'receipt' && docRecord.invoiceNo && docRecord.invoiceNo !== '-') {
+        const matchingInv = dbDocs.find(d => d.number === docRecord.invoiceNo && d.type === 'invoice');
+        if (matchingInv) {
+          matchingInv.paymentStatus = 'ชำระเงินแล้ว';
+        }
+      }
 
       saveData();
       setDocType(currentDocType);
@@ -1511,41 +2048,17 @@ function processDocumentSync() {
     alert(`❌ เกิดข้อผิดพลาดเชื่อมต่อระบบ Apps Script: ${err.toString()}\n\nแต่บันทึกข้อมูลไว้ในเครื่องแบบ Offline (Pending) เรียบร้อยแล้วแก!`);
     
     // Save as pending locally
-    const docRecord = {
-      number: payload.docNo,
-      type: currentDocType,
-      date: payload.date,
-      name: currentDocType === 'wht' ? payload.payeeName : payload.clientName,
-      detail: payload.detail,
-      amount: currentDocType === 'wht' ? payload.gross : payload.subtotal,
-      status: 'pending',
-      timestamp: new Date().toLocaleString(),
-      invoiceNo: payload.invoiceNo || '-',
-      clientBranch: payload.clientBranch || '-',
-      clientAddress: payload.clientAddress || '-',
-      payeeTaxId: payload.payeeTaxId || '-',
-      payeeBranch: payload.payeeBranch || '-',
-      payeeAddress: payload.payeeAddress || '-',
-      category: payload.category || '-',
-      vat: payload.vat || 0,
-      wht: currentDocType === 'wht' ? payload.tax : payload.wht,
-      net: payload.net,
-      whtRate: payload.whtRate || 0,
-      receivingBank: payload.receivingBank || '-',
-      paymentStatus: payload.paymentStatus || '-',
-      actualPaymentDate: payload.actualPaymentDate || '-',
-      profitShare: payload.profitShare || '-',
-      recordedBy: payload.recordedBy || '-',
-      remarks: payload.remarks || '-',
-      paymentMethod: payload.paymentMethod || '-',
-      actualPaidDate: payload.actualPaidDate || '-',
-      whtCertificateNo: payload.whtCertificateNo || '-',
-      taxFilingStatus: payload.taxFilingStatus || '-',
-      projectLink: payload.projectLink || '-',
-      items: payload.items || null
-    };
-
+    docRecord.status = 'pending';
     dbDocs.unshift(docRecord);
+
+    // Update referenced invoice status
+    if (currentDocType === 'receipt' && docRecord.invoiceNo && docRecord.invoiceNo !== '-') {
+      const matchingInv = dbDocs.find(d => d.number === docRecord.invoiceNo && d.type === 'invoice');
+      if (matchingInv) {
+        matchingInv.paymentStatus = 'ชำระเงินแล้ว';
+      }
+    }
+
     saveData();
     setDocType(currentDocType);
   })
@@ -1601,36 +2114,93 @@ function syncPendingDocs() {
     const doc = pendingDocs[index];
     let payload = {
       spreadsheetId: sheetId,
-      docNo: doc.number,
-      date: doc.date,
-      detail: doc.detail,
+      type: 'sync'
     };
 
     if (doc.type === 'wht' || doc.type === 'expense') {
-      payload.type = 'expense';
-      payload.payeeName = doc.name;
-      payload.gross = doc.baseAmount || doc.amount;
-      payload.tax = doc.whtAmount || 0;
-      payload.net = doc.amount;
-      if (doc.payeeTaxId) payload.payeeTaxId = doc.payeeTaxId;
-      if (doc.driveLink) payload.driveLink = doc.driveLink;
-      if (doc.whtType) payload.whtType = doc.whtType;
-      if (doc.projectLink) payload.projectLink = doc.projectLink;
+      payload.sheetName = 'รายจ่าย';
+      
+      const recordDate = doc.recordDate || formatDate(new Date().toISOString().split('T')[0]);
+      const taxInvoiceDate = doc.date;
+      const docNo = doc.number;
+      const payeeName = doc.name;
+      const payeeTaxId = doc.payeeTaxId || '-';
+      const payeeBranch = doc.payeeBranch || '00000';
+      const payeeAddress = doc.payeeAddress || '-';
+      const category = doc.category || '-';
+      const detail = doc.desc ? `${doc.category}: ${doc.desc}` : doc.category;
+      
+      const gross = Math.round((doc.baseAmount || doc.amount) * 100) / 100;
+      const vat = Math.round((doc.vatAmount || 0) * 100) / 100;
+      const totalAmount = Math.round((gross + vat) * 100) / 100;
+      const whtRate = doc.whtRate !== undefined ? doc.whtRate : (doc.whtAmount > 0 ? Math.round((doc.whtAmount / gross) * 100) : 0);
+      const tax = Math.round((doc.whtAmount || 0) * 100) / 100;
+      const whtType = doc.whtType || 'none';
+      const net = Math.round(doc.amount * 100) / 100;
+      const paymentMethod = doc.paymentMethod || 'KBank';
+      const paymentStatus = doc.paymentStatus || 'จ่ายเงินแล้ว';
+      const actualPaidDate = doc.actualPaidDate || doc.date;
+      const whtCertificateNo = doc.whtCertificateNo || ((whtRate > 0) ? doc.number : '-');
+      const driveLink = doc.driveLink || '-';
+      const taxFilingStatus = doc.taxFilingStatus || 'ยังไม่ได้ยื่น';
+      const projectLink = doc.projectLink || '';
+      const remarks = doc.remarks || '';
+
+      payload.values = [
+        recordDate, taxInvoiceDate, docNo, payeeName, payeeTaxId, payeeAddress, payeeBranch,
+        category, detail, gross, vat, totalAmount, whtRate, tax, whtType, net,
+        paymentMethod, paymentStatus, actualPaidDate, whtCertificateNo, driveLink,
+        taxFilingStatus, projectLink, remarks
+      ];
     } else {
-      payload.type = 'income';
-      payload.clientName = doc.name;
-      payload.subtotal = doc.amount;
-      payload.vat = doc.amount * 0.07;
-      payload.wht = 0;
-      payload.net = doc.amount + payload.vat;
-      if (doc.owner) {
-        payload.owner = doc.owner;
-        payload.retentionRate = doc.retentionRate;
-        payload.retentionAmount = doc.retentionAmount;
-        payload.payoutAmount = doc.payoutAmount;
-      }
-      if (doc.items) {
-        payload.items = doc.items; // Restore items for sync
+      payload.sheetName = 'รายรับ';
+      
+      const recordDate = doc.recordDate || formatDate(new Date().toISOString().split('T')[0]);
+      const taxInvoiceDate = doc.date;
+      const docNo = doc.number;
+      const invoiceNo = doc.invoiceNo || '-';
+      const clientName = doc.name;
+      const clientTaxId = doc.clientTaxId || '-';
+      const clientBranch = doc.clientBranch || '00000';
+      const clientAddress = doc.clientAddress || '-';
+      const detail = doc.detail || '-';
+      const whtRate = doc.whtRate || 0;
+      
+      const receivingBank = doc.receivingBank || 'KBank';
+      const paymentStatus = doc.paymentStatus || 'ชำระเงินแล้ว';
+      const actualPaymentDate = doc.actualPaymentDate || doc.date;
+      const recordedBy = doc.recordedBy || '-';
+      const remarks = doc.remarks || '-';
+      
+      if (doc.items && doc.items.length > 0) {
+        payload.rows = doc.items.map(item => {
+          const itemSubtotal = Math.round(item.subtotal * 100) / 100;
+          const itemVat = Math.round(item.vat * 100) / 100;
+          const itemGross = Math.round(item.gross * 100) / 100;
+          const itemWht = Math.round(item.wht * 100) / 100;
+          const itemNet = Math.round(item.net * 100) / 100;
+          
+          return [
+            recordDate, taxInvoiceDate, docNo, invoiceNo, clientName, clientTaxId, clientAddress, clientBranch,
+            item.desc || detail || '-', itemSubtotal, itemVat, itemGross, whtRate, itemWht, itemNet,
+            receivingBank, paymentStatus, actualPaymentDate, item.profitShare || doc.profitShare || '-',
+            doc.driveLink || '-', recordedBy, remarks
+          ];
+        });
+      } else {
+        const subtotal = Math.round(doc.amount * 100) / 100;
+        const vat = Math.round(subtotal * 0.07 * 100) / 100;
+        const gross = Math.round((subtotal + vat) * 100) / 100;
+        const wht = Math.round((subtotal * (whtRate / 100)) * 100) / 100;
+        const net = Math.round((subtotal + vat - wht) * 100) / 100;
+        const profitShare = doc.profitShare || `คนดีล: ${doc.owner || '-'} (${100 - (doc.retentionRate || 0)}%)`;
+        
+        payload.values = [
+          recordDate, taxInvoiceDate, docNo, invoiceNo, clientName, clientTaxId, clientAddress, clientBranch,
+          detail, subtotal, vat, gross, whtRate, wht, net,
+          receivingBank, paymentStatus, actualPaymentDate, profitShare,
+          doc.driveLink || '-', recordedBy, remarks
+        ];
       }
     }
 
@@ -1729,6 +2299,38 @@ function importBackup(e) {
     }
   };
   reader.readAsText(file);
+}
+
+function clearLocalDatabase() {
+  if (confirm("⚠️ แกแน่ใจใช่มั้ยว่าจะล้างข้อมูลทดสอบทั้งหมดในเครื่องนี้?\n\n(ข้อมูลใบเสนอราคา, รายจ่าย, เงินสดย่อย, เงินเดือน, และกระทบยอดธนาคารที่แกกับมดเคยกรอกทดสอบไว้จะถูกลบทั้งหมดเพื่อเริ่มต้นระบบใหม่ ส่วนข้อมูลตั้งค่าบริษัทและชีตเชื่อมต่อจะยังคงอยู่ และระบบจะไม่สร้างข้อมูลตัวอย่างกลับมาปะปนอีกแล้วแก)")) {
+    safeStorage.setItem('ghn168_disable_mock', 'true');
+    
+    dbDocs = [];
+    docHubLinks = [];
+    syncHistory = [];
+    pettyCashDb = [];
+    payrollDb = [];
+    bankRecDb = [];
+
+    saveData();
+    
+    alert("🎉 ล้างข้อมูลทดสอบเรียบร้อยแล้วแก! พร้อมสำหรับการเก็บบันทึกข้อมูลของจริงแล้วนะ");
+    
+    // โหลดข้อมูลและเรนเดอร์ใหม่ทั้งหมด
+    loadData();
+    renderDashboard();
+    
+    // สั่ง rerender หน้าจออื่นๆ เพื่อความปลอดภัย
+    if (typeof renderDocTable === 'function') renderDocTable();
+    if (typeof renderDocHubList === 'function') renderDocHubList();
+    if (typeof renderExpenseList === 'function') renderExpenseList();
+    if (typeof renderPettyCash === 'function') renderPettyCash();
+    if (typeof renderPayroll === 'function') renderPayroll();
+    if (typeof renderBankRec === 'function') renderBankRec();
+    
+    // รีเฟรชหน้าเพื่อล้าง State ทุกอย่างใน DOM ให้คลีนที่สุด
+    window.location.reload();
+  }
 }
 
 // --- Dashboard Rendering ---
@@ -1896,13 +2498,54 @@ function renderDashboard() {
           <td>${d.date}</td>
           <td class="mono" style="font-weight: 700;">${d.number}</td>
           <td><span class="badge" style="background-color: ${d.type === 'wht' ? '#fee2e2' : (d.type === 'expense' ? '#ffedd5' : '#dcfce7')}; color: ${d.type === 'wht' ? '#991b1b' : (d.type === 'expense' ? '#c2410c' : '#166534')}; border: 1px solid var(--border-color);">${d.type.toUpperCase()}</span></td>
-          <td>${escapeHtml(d.name)}</td>
+          <td>
+            <div>${escapeHtml(d.name)}</div>
+            ${d.paymentStatus ? `<div style="font-size: 10px; color: var(--text-secondary); margin-top: 2px;">💰 สถานะ: ${d.paymentStatus}</div>` : ''}
+          </td>
           <td style="text-align:right; font-weight:700;">฿${d.amount.toLocaleString('th-TH', { minimumFractionDigits: 2 })}</td>
           <td style="text-align:center;">
             <span class="badge ${d.status}">${d.status === 'synced' ? 'ซิงค์แล้ว' : (d.status === 'pending_approval' ? 'รออนุมัติ' : 'ค้างส่ง')}</span>
           </td>
         </tr>
       `).join('');
+    }
+  }
+
+  // Render Expense Category Breakdown
+  const expenseContainer = document.getElementById('dashExpenseCategoryContainer');
+  if (expenseContainer) {
+    const categories = {};
+    let totalExpenseForBreakdown = 0;
+    
+    dbDocs.forEach(d => {
+      if (d.type === 'expense' || d.type === 'wht') {
+        const cat = d.category || 'อื่นๆ';
+        categories[cat] = (categories[cat] || 0) + (d.amount || 0);
+        totalExpenseForBreakdown += (d.amount || 0);
+      }
+    });
+
+    const sortedCats = Object.entries(categories).sort((a, b) => b[1] - a[1]);
+
+    if (sortedCats.length === 0) {
+      expenseContainer.innerHTML = `<div style="text-align: center; color: var(--text-secondary); padding: 16px; font-style: italic; border: 2px dashed var(--border-color); border-radius: 8px; background: var(--input-bg);">ยังไม่มีข้อมูลรายจ่ายสะสมแก</div>`;
+    } else {
+      const palette = ['#ff4500', '#2563eb', '#16a34a', '#8b5cf6', '#ec4899', '#f59e0b', '#10b981', '#6366f1', '#14b8a6', '#f43f5e'];
+      expenseContainer.innerHTML = sortedCats.map(([cat, amount], idx) => {
+        const pct = totalExpenseForBreakdown > 0 ? (amount / totalExpenseForBreakdown) * 100 : 0;
+        const color = palette[idx % palette.length];
+        return `
+          <div style="margin-bottom: 8px;">
+            <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 700; margin-bottom: 4px; flex-wrap: wrap; gap: 8px;">
+              <span style="color: var(--text-primary);">${escapeHtml(cat)}</span>
+              <span class="mono" style="color: var(--text-primary);">฿${amount.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} (${pct.toFixed(1)}%)</span>
+            </div>
+            <div style="height: 12px; background: var(--input-bg); border: 2px solid var(--border-color); border-radius: 6px; overflow: hidden; position: relative;">
+              <div style="height: 100%; width: ${pct}%; background: ${color}; border-radius: 4px; transition: width 0.3s ease;"></div>
+            </div>
+          </div>
+        `;
+      }).join('');
     }
   }
 
@@ -2187,8 +2830,10 @@ function calculateExpenseForm() {
     vat = base * (vatRate / 100);
   }
 
-  const wht = base * (whtRate / 100);
-  const net = base + vat - wht;
+  base = Math.round(base * 100) / 100;
+  vat = Math.round(vat * 100) / 100;
+  const wht = Math.round((base * (whtRate / 100)) * 100) / 100;
+  const net = Math.round((base + vat - wht) * 100) / 100;
 
   document.getElementById('calcExpenseVat').textContent = `฿${vat.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   document.getElementById('calcExpenseWht').textContent = `฿${wht.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
@@ -2247,8 +2892,10 @@ function saveExpense() {
       vatAmount = baseAmount * (vatRate / 100);
     }
 
-    const whtAmount = baseAmount * (whtRate / 100);
-    const netAmount = baseAmount + vatAmount - whtAmount;
+    baseAmount = Math.round(baseAmount * 100) / 100;
+    vatAmount = Math.round(vatAmount * 100) / 100;
+    const whtAmount = Math.round((baseAmount * (whtRate / 100)) * 100) / 100;
+    const netAmount = Math.round((baseAmount + vatAmount - whtAmount) * 100) / 100;
 
     // Generate PV number if empty
     if (!billNo) {
@@ -2259,37 +2906,42 @@ function saveExpense() {
 
     const isNew = editingDocIndex === null;
 
+    const docRecord = {
+      number: billNo,
+      type: 'expense',
+      date: dateStr,
+      name: payee,
+      category: category,
+      desc: desc,
+      baseAmount: baseAmount,
+      vatAmount: vatAmount,
+      whtAmount: whtAmount,
+      amount: netAmount,
+      driveLink: billUrl,
+      whtType: whtType,
+      projectLink: projectLink,
+      priceType: priceType,
+      status: 'pending',
+      timestamp: new Date().toLocaleString(),
+      payeeTaxId: payeeTaxId,
+      payeeBranch: payeeBranch,
+      payeeAddress: payeeAddress,
+      taxFilingStatus: taxFilingStatus,
+      paymentMethod: paymentMethod,
+      paymentStatus: paymentStatus,
+      actualPaidDate: actualPaidDate,
+      whtCertificateNo: (whtRate > 0) ? billNo : '-',
+      remarks: remarks,
+      vatRate: vatRate,
+      whtRate: whtRate
+    };
+
     // Check if HITL approval is required (Amount > 10,000 THB)
     if (netAmount > 10000 && paymentStatus === 'รออนุมัติจ่าย') {
       alert(`⚠️ รายการรายจ่ายนี้มียอดเงินโอนจ่ายจริง ฿${netAmount.toLocaleString('th-TH', { minimumFractionDigits: 2 })} เกิน 10,000 บาท\n\nระบบบันทึกสะสมรอการอนุมัติ (Pending Approval) ในเครื่องไว้เรียบร้อยแล้วแก รอให้ผู้มีอำนาจกดอนุมัติจ่าย (Approve) ก่อนจึงจะซิงค์ลงชีตจริงจ้า`);
       
-      const docRecord = {
-        number: billNo,
-        type: 'expense',
-        date: dateStr,
-        name: payee,
-        category: category,
-        desc: desc,
-        baseAmount: baseAmount,
-        vatAmount: vatAmount,
-        whtAmount: whtAmount,
-        amount: netAmount,
-        driveLink: billUrl,
-        whtType: whtType,
-        projectLink: projectLink,
-        priceType: priceType,
-        status: 'pending_approval',
-        timestamp: new Date().toLocaleString(),
-        payeeTaxId: payeeTaxId,
-        payeeBranch: payeeBranch,
-        payeeAddress: payeeAddress,
-        taxFilingStatus: taxFilingStatus,
-        paymentMethod: paymentMethod,
-        paymentStatus: 'รออนุมัติจ่าย',
-        actualPaidDate: actualPaidDate,
-        whtCertificateNo: (whtRate > 0) ? billNo : '-',
-        remarks: remarks
-      };
+      docRecord.status = 'pending_approval';
+      docRecord.paymentStatus = 'รออนุมัติจ่าย';
 
       if (isNew) {
         dbDocs.unshift(docRecord);
@@ -2311,31 +2963,34 @@ function saveExpense() {
 
     const payload = {
       spreadsheetId: sheetId,
-      type: 'expense',
-      recordDate: formatDate(new Date().toISOString().split('T')[0]),
-      date: dateStr,
-      docNo: billNo,
-      payeeName: payee,
-      payeeTaxId: payeeTaxId || '-',
-      payeeBranch: payeeBranch || '00000',
-      payeeAddress: payeeAddress || '-',
-      category: category,
-      detail: desc,
-      gross: baseAmount,
-      vat: vatAmount,
-      totalAmount: baseAmount + vatAmount,
-      whtRate: whtRate,
-      tax: whtAmount,
-      whtType: whtType,
-      net: netAmount,
-      paymentMethod: paymentMethod,
-      paymentStatus: paymentStatus,
-      actualPaidDate: actualPaidDate,
-      whtCertificateNo: (whtRate > 0) ? billNo : '-',
-      driveLink: billUrl || '-',
-      taxFilingStatus: taxFilingStatus,
-      projectLink: projectLink,
-      remarks: remarks
+      type: 'sync',
+      sheetName: 'รายจ่าย',
+      values: [
+        formatDate(new Date().toISOString().split('T')[0]), // A: วันที่บันทึก
+        dateStr,                            // B: วันที่ตามใบเสร็จ
+        billNo,                             // C: เลขที่บิล/ใบเสร็จ
+        payee,                              // D: ชื่อผู้ให้บริการ
+        payeeTaxId || '-',                  // E: เลขประจำตัวผู้เสียภาษี
+        payeeAddress || '-',                // F: ที่อยู่
+        payeeBranch || '00000',             // G: รหัสสาขา
+        category,                           // H: หมวดหมู่ค่าใช้จ่าย
+        desc,                               // I: รายละเอียด
+        Math.round(baseAmount * 100) / 100, // J: ยอดก่อน VAT
+        Math.round(vatAmount * 100) / 100,  // K: VAT 7%
+        Math.round((baseAmount + vatAmount) * 100) / 100, // L: ยอดรวม VAT
+        whtRate,                            // M: อัตรา WHT %
+        Math.round(whtAmount * 100) / 100,  // N: ยอดหัก WHT
+        whtType || 'none',                  // O: ประเภทยื่น WHT
+        Math.round(netAmount * 100) / 100,  // P: ยอดจ่ายเงินสุทธิ
+        paymentMethod || 'KBank',           // Q: ช่องทางจ่ายเงิน
+        paymentStatus || 'จ่ายเงินแล้ว',    // R: สถานะจ่ายเงิน
+        actualPaidDate,                     // S: วันที่จ่ายเงินจริง
+        (whtRate > 0) ? billNo : '-',       // T: เลขใบ 50 ทวิ
+        billUrl || '-',                     // U: ลิงก์ Drive
+        taxFilingStatus,                    // V: สถานะยื่นภาษี
+        projectLink || '',                  // W: โครงการที่ผูก
+        remarks || ''                       // X: หมายเหตุ
+      ]
     };
 
     // Send request
@@ -2359,33 +3014,7 @@ function saveExpense() {
         if (res.status === 'success') {
           alert(`🎉 บันทึกและซิงค์รายจ่ายลง Sheet สำเร็จแล้วแก!\nข้อความ: ${res.message}`);
           
-          const docRecord = {
-            number: billNo,
-            type: 'expense',
-            date: dateStr,
-            name: payee,
-            category: category,
-            desc: desc,
-            baseAmount: baseAmount,
-            vatAmount: vatAmount,
-            whtAmount: whtAmount,
-            amount: netAmount,
-            driveLink: billUrl,
-            whtType: whtType,
-            projectLink: projectLink,
-            priceType: priceType,
-            status: 'synced',
-            timestamp: new Date().toLocaleString(),
-            payeeTaxId: payeeTaxId,
-            payeeBranch: payeeBranch,
-            payeeAddress: payeeAddress,
-            taxFilingStatus: taxFilingStatus,
-            paymentMethod: paymentMethod,
-            paymentStatus: paymentStatus,
-            actualPaidDate: actualPaidDate,
-            whtCertificateNo: (whtRate > 0) ? billNo : '-',
-            remarks: remarks
-          };
+          docRecord.status = 'synced';
 
           if (isNew) {
             dbDocs.unshift(docRecord);
@@ -2407,33 +3036,7 @@ function saveExpense() {
         console.error(err);
         alert(`❌ เกิดข้อผิดพลาดเชื่อมต่อสคริปต์: ${err.toString()}\n\nแต่บันทึกข้อมูลแบบออฟไลน์ (Pending) ไว้ในเครื่องเรียบร้อยแล้วแก!`);
         
-        const docRecord = {
-          number: billNo,
-          type: 'expense',
-          date: dateStr,
-          name: payee,
-          category: category,
-          desc: desc,
-          baseAmount: baseAmount,
-          vatAmount: vatAmount,
-          whtAmount: whtAmount,
-          amount: netAmount,
-          driveLink: billUrl,
-          whtType: whtType,
-          projectLink: projectLink,
-          priceType: priceType,
-          status: 'pending',
-          timestamp: new Date().toLocaleString(),
-          payeeTaxId: payeeTaxId,
-          payeeBranch: payeeBranch,
-          payeeAddress: payeeAddress,
-          taxFilingStatus: taxFilingStatus,
-          paymentMethod: paymentMethod,
-          paymentStatus: paymentStatus,
-          actualPaidDate: actualPaidDate,
-          whtCertificateNo: (whtRate > 0) ? billNo : '-',
-          remarks: remarks
-        };
+        docRecord.status = 'pending';
 
         if (isNew) {
           dbDocs.unshift(docRecord);
@@ -2449,33 +3052,7 @@ function saveExpense() {
     } else {
       // Offline Save directly
       alert('💡 ไม่พบการเชื่อมต่อชีต บันทึกประวัติออฟไลน์ลงเครื่องไว้ก่อนนะแก');
-      const docRecord = {
-        number: billNo,
-        type: 'expense',
-        date: dateStr,
-        name: payee,
-        category: category,
-        desc: desc,
-        baseAmount: baseAmount,
-        vatAmount: vatAmount,
-        whtAmount: whtAmount,
-        amount: netAmount,
-        driveLink: billUrl,
-        whtType: whtType,
-        projectLink: projectLink,
-        priceType: priceType,
-        status: 'pending',
-        timestamp: new Date().toLocaleString(),
-        payeeTaxId: payeeTaxId,
-        payeeBranch: payeeBranch,
-        payeeAddress: payeeAddress,
-        taxFilingStatus: taxFilingStatus,
-        paymentMethod: paymentMethod,
-        paymentStatus: paymentStatus,
-        actualPaidDate: actualPaidDate,
-        whtCertificateNo: (whtRate > 0) ? billNo : '-',
-        remarks: remarks
-      };
+      docRecord.status = 'pending';
 
       if (isNew) {
         dbDocs.unshift(docRecord);
@@ -2859,21 +3436,39 @@ function approveExpense(index) {
     doc.status = 'pending';
     renderExpenseList();
 
+    const whtRate = doc.whtRate !== undefined ? doc.whtRate : (doc.whtAmount > 0 ? Math.round((doc.whtAmount / doc.baseAmount) * 100) : 0);
+    const vatRate = doc.vatRate !== undefined ? doc.vatRate : (doc.vatAmount > 0 ? 7 : 0);
+
     const payload = {
       spreadsheetId: sheetId,
-      type: 'expense',
-      date: doc.date,
-      docNo: doc.number,
-      payeeName: doc.name,
-      payeeTaxId: doc.payeeTaxId || '-',
-      detail: doc.desc ? `${doc.category}: ${doc.desc}` : doc.category,
-      gross: doc.baseAmount || doc.amount,
-      vat: doc.vatAmount || 0,
-      tax: doc.whtAmount || 0,
-      net: doc.amount,
-      driveLink: doc.driveLink || '-',
-      whtType: doc.whtType || 'none',
-      projectLink: doc.projectLink || ''
+      type: 'sync',
+      sheetName: 'รายจ่าย',
+      values: [
+        doc.recordDate || formatDate(new Date().toISOString().split('T')[0]), // A: วันที่บันทึก
+        doc.date, // B: วันที่ตามใบเสร็จ
+        doc.number, // C: เลขที่บิล/ใบเสร็จ
+        doc.name, // D: ชื่อผู้ให้บริการ
+        doc.payeeTaxId || '-', // E: เลขประจำตัวผู้เสียภาษี
+        doc.payeeAddress || '-', // F: ที่อยู่
+        doc.payeeBranch || '00000', // G: รหัสสาขา
+        doc.category || '-', // H: หมวดหมู่ค่าใช้จ่าย
+        doc.desc ? `${doc.category}: ${doc.desc}` : doc.category, // I: รายละเอียด
+        Math.round((doc.baseAmount || doc.amount) * 100) / 100, // J: ยอดก่อน VAT
+        Math.round((doc.vatAmount || 0) * 100) / 100, // K: VAT 7%
+        Math.round(((doc.baseAmount || doc.amount) + (doc.vatAmount || 0)) * 100) / 100, // L: ยอดรวม VAT
+        whtRate, // M: อัตรา WHT %
+        Math.round((doc.whtAmount || 0) * 100) / 100, // N: ยอดหัก WHT
+        doc.whtType || 'none', // O: ประเภทยื่น WHT
+        Math.round(doc.amount * 100) / 100, // P: ยอดจ่ายเงินสุทธิ
+        doc.paymentMethod || 'KBank', // Q: ช่องทางจ่ายเงิน
+        'จ่ายเงินแล้ว', // R: สถานะจ่ายเงิน
+        doc.actualPaidDate || doc.date, // S: วันที่จ่ายเงินจริง
+        doc.whtCertificateNo || ((whtRate > 0) ? doc.number : '-'), // T: เลขใบ 50 ทวิ
+        doc.driveLink || '-', // U: ลิงก์ Drive
+        doc.taxFilingStatus || 'ยังไม่ได้ยื่น', // V: สถานะยื่นภาษี
+        doc.projectLink || '', // W: โครงการที่ผูก
+        doc.remarks || '' // X: หมายเหตุ
+      ]
     };
 
     fetch(scriptUrl, {
@@ -3041,9 +3636,21 @@ function syncPettyCash(index) {
     return;
   }
   const payload = {
-    spreadsheetId: sheetId, type: 'petty_cash', voucherNo: doc.voucherNo, date: doc.date,
-    requester: doc.requester, category: doc.category, detail: doc.detail, amountPaid: doc.amountPaid,
-    balance: doc.balance, approver: doc.approver, receiptUrl: doc.receiptUrl, remarks: doc.remarks
+    spreadsheetId: sheetId,
+    type: 'sync',
+    sheetName: 'เงินสดย่อย',
+    values: [
+      doc.voucherNo,
+      doc.date,
+      doc.requester,
+      doc.category || "-",
+      doc.detail,
+      Math.round(parseFloat(doc.amountPaid || 0) * 100) / 100,
+      Math.round(parseFloat(doc.balance || 0) * 100) / 100,
+      doc.approver || "-",
+      doc.receiptUrl || "-",
+      doc.remarks || ""
+    ]
   };
   fetch(scriptUrl, {
     method: 'POST', mode: 'cors', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(payload)
@@ -3221,11 +3828,25 @@ function syncPayroll(index) {
     return;
   }
   const payload = {
-    spreadsheetId: sheetId, type: 'payroll', payrollId: doc.payrollId, employeeId: doc.employeeId,
-    employeeName: doc.employeeName, employeeTaxId: doc.employeeTaxId, baseSalary: doc.baseSalary,
-    allowances: doc.allowances, totalEarnings: doc.totalEarnings, ssfDeduction: doc.ssfDeduction,
-    whtDeduction: doc.whtDeduction, otherDeductions: doc.otherDeductions, netPay: doc.netPay,
-    bankAccount: doc.bankAccount, status: doc.status, paySlipUrl: doc.paySlipUrl
+    spreadsheetId: sheetId,
+    type: 'sync',
+    sheetName: 'เงินเดือน',
+    values: [
+      doc.payrollId,
+      doc.employeeId,
+      doc.employeeName,
+      doc.employeeTaxId || "-",
+      Math.round(parseFloat(doc.baseSalary || 0) * 100) / 100,
+      Math.round(parseFloat(doc.allowances || 0) * 100) / 100,
+      Math.round(parseFloat(doc.totalEarnings || 0) * 100) / 100,
+      Math.round(parseFloat(doc.ssfDeduction || 0) * 100) / 100,
+      Math.round(parseFloat(doc.whtDeduction || 0) * 100) / 100,
+      Math.round(parseFloat(doc.otherDeductions || 0) * 100) / 100,
+      Math.round(parseFloat(doc.netPay || 0) * 100) / 100,
+      doc.bankAccount || "-",
+      doc.status || "รอดำเนินการ",
+      doc.paySlipUrl || "-"
+    ]
   };
   fetch(scriptUrl, {
     method: 'POST', mode: 'cors', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(payload)
@@ -3448,11 +4069,23 @@ function syncBankRec(index) {
     return;
   }
   const payload = {
-    spreadsheetId: sheetId, type: 'bank_rec', reconciliationId: doc.reconciliationId, period: doc.period,
-    bankAccount: doc.bankAccount, statementBalance: doc.statementBalance, bookBalance: doc.bookBalance,
-    depositInTransit: doc.depositInTransit, outstandingCheques: doc.outstandingCheques,
-    bankChargesNotRecorded: doc.bankChargesNotRecorded, adjustedStatementBalance: doc.adjustedStatementBalance,
-    adjustedBookBalance: doc.adjustedBookBalance, difference: doc.difference, reconciledBy: doc.reconciledBy
+    spreadsheetId: sheetId,
+    type: 'sync',
+    sheetName: 'กระทบยอดธนาคาร',
+    values: [
+      doc.reconciliationId,
+      doc.period,
+      doc.bankAccount,
+      Math.round(parseFloat(doc.statementBalance || 0) * 100) / 100,
+      Math.round(parseFloat(doc.bookBalance || 0) * 100) / 100,
+      Math.round(parseFloat(doc.depositInTransit || 0) * 100) / 100,
+      Math.round(parseFloat(doc.outstandingCheques || 0) * 100) / 100,
+      Math.round(parseFloat(doc.bankChargesNotRecorded || 0) * 100) / 100,
+      Math.round(parseFloat(doc.adjustedStatementBalance || 0) * 100) / 100,
+      Math.round(parseFloat(doc.adjustedBookBalance || 0) * 100) / 100,
+      Math.round(parseFloat(doc.difference || 0) * 100) / 100,
+      doc.reconciledBy || "-"
+    ]
   };
   fetch(scriptUrl, {
     method: 'POST', mode: 'cors', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(payload)
@@ -3558,7 +4191,7 @@ function previewTaxFiling() {
   document.getElementById('taxExportTableTitle').textContent = `รายการภาษีหัก ณ ที่จ่ายประจำรอบ ${THAI_MONTHS[parseInt(m) - 1]} ${parseInt(y) + 543} [แบบ ${formTitle}]`;
 
   if (filtered.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="9" style="text-align: center; color: var(--text-secondary); padding: 20px;">ไม่มีข้อมูลภาษีหัก ณ ที่จ่าย (WHT) สำหรับช่วงเวลาและแบบยื่นที่ระบุจ้าแก</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="9" style="text-align: center; color: var(--text-secondary); padding: 20px;">ไม่มีข้อมูลภาษีหัก ณ ที่จ่าย (WHT (50.ทวิ)) สำหรับช่วงเวลาและแบบยื่นที่ระบุจ้าแก</td></tr>`;
     return;
   }
 

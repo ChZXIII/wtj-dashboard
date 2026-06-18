@@ -195,6 +195,23 @@ body.light-mode .logo-light-only {
   background-color: var(--accent-hover);
 }
 
+.sidebar-section-title {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--text-secondary);
+  font-weight: 800;
+  padding: 12px 16px 4px 16px;
+  border-top: 1.5px dashed rgba(156, 163, 175, 0.2);
+  margin-top: 16px;
+  font-family: 'Prompt', sans-serif;
+}
+.sidebar-section-title:first-of-type {
+  border-top: none;
+  margin-top: 0;
+  padding-top: 4px;
+}
+
 .sidebar-footer {
   margin-top: auto;
   display: flex;
@@ -889,6 +906,7 @@ textarea.form-control {
   gap: 80px;
   margin-top: 50px;
   text-align: center;
+  position: relative;
 }
 
 .signature-box {
@@ -911,7 +929,7 @@ textarea.form-control {
 
 .company-seal-img {
   position: absolute;
-  width: 130px;
+  width: 260px;
   height: auto;
   top: 50%;
   left: 50%;
@@ -1485,4 +1503,14 @@ textarea.form-control {
 .animate-spin {
   animation: spin 1.2s linear infinite;
   transform-origin: center;
+}
+
+/* --- Quotation (ใบเสนอราคา / สัญญาจ้าง) Layout overrides --- */
+.doc-type-quotation .col-qty,
+.doc-type-quotation .col-unit {
+  display: none !important;
+}
+
+.doc-type-quotation .paper-table .col-price {
+  display: none !important;
 }

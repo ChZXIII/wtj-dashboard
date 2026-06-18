@@ -1,7 +1,8 @@
 /**
- * GHN168 Google Sheets Accounting Sync Apps Script (Comprehensive v2.0)
- * วัตถุประสงค์: บันทึกข้อมูลรายรับ (ใบเสร็จ) และรายจ่าย (50 ทวิ/ค่าใช้จ่ายทั่วไป) ลงชีตของบริษัทแบบละเอียดสมบูรณ์
- * ติดตั้ง: ไปที่ Extensions > Apps Script ใน Google Sheet ของบริษัทแก วางโค้ดนี้ทั้งหมดแทนที่ของเดิมแล้วกด Deploy เป็น Web App
+ * GHN168 Google Sheets Accounting Sync Apps Script (Generic v3.0)
+ * วัตถุประสงค์: สคริปต์กลางสำหรับซิงค์ข้อมูลบัญชีลง Google Sheets แบบ Generic
+ * สคริปต์นี้จะเป็น Dumb Receiver ที่คอยรับอาร์เรย์ค่าข้อมูลแถวจากฝั่ง Client และทำการบันทึก
+ * ทำให้แกสามารถแก้ไขหัวตาราง โครงสร้าง ทศนิยม หรือการจัดประเภทบน Client ได้เลยโดยไม่ต้อง deploy สคริปต์ใหม่ทุกครั้ง!
  */
 
 var INCOME_HEADERS = [
@@ -101,7 +102,6 @@ var BANK_REC_HEADERS = [
   "ผู้กระทบยอด (Reconciled By)"
 ];
 
-
 function doPost(e) {
   var lock = LockService.getScriptLock();
   lock.tryLock(10000); // ล็อกสคริปต์ 10 วินาทีป้องกันสัญญานยิงชนกัน
@@ -120,254 +120,57 @@ function doPost(e) {
     var activeSpreadsheet = SpreadsheetApp.openById(spreadsheetId);
     
     // ----------------------------------------------------
-    // CASE 1: บันทึกข้อมูล รายรับ (จากใบเสร็จรับเงิน)
+    // CASE 1: ซิงค์แถวข้อมูลลงแท็บใดๆ แบบ Generic
     // ----------------------------------------------------
-    if (data.type === "income") {
-      var sheetName = "รายรับ";
-      var sheet = activeSpreadsheet.getSheetByName(sheetName);
-      
-      if (!sheet) {
-        sheet = activeSpreadsheet.insertSheet(sheetName);
-        sheet.appendRow(INCOME_HEADERS);
-        sheet.getRange(1, 1, 1, INCOME_HEADERS.length).setFontWeight("bold").setBackground("#f3f4f6");
-        sheet.setFrozenRows(1);
-      } else {
-        migrateSheetIfNeeded(sheet, INCOME_HEADERS);
+    if (data.type === "sync") {
+      var sheetName = data.sheetName;
+      if (!sheetName) {
+        return ContentService.createTextOutput(JSON.stringify({
+          "status": "error",
+          "message": "ไม่ระบุชื่อแท็บชีต (sheetName) นะแก!"
+        })).setMimeType(ContentService.MimeType.JSON);
       }
       
-      if (data.items && Array.isArray(data.items) && data.items.length > 0) {
-        // วนลูปบันทึกแยกรายรายการสินค้า/บริการ (Itemized split rows)
-        for (var i = 0; i < data.items.length; i++) {
-          var item = data.items[i];
-          var rowData = [
-            data.recordDate || data.date,          // วันที่บันทึก
-            data.date,                              // วันที่ตามใบเสร็จ
-            data.docNo,                             // เลขที่ใบเสร็จ
-            data.invoiceNo || "-",                  // เลขที่ใบวางบิล
-            data.clientName,                        // ชื่อลูกค้า
-            data.clientTaxId || "-",                // เลขผู้เสียภาษีลูกค้า
-            data.clientAddress || "-",              // ที่อยู่ลูกค้า
-            data.clientBranch || "00000",           // รหัสสาขา
-            item.desc || data.detail || "-",        // รายละเอียดงานย่อย
-            item.subtotal,                          // ยอดก่อน VAT
-            item.vat,                               // VAT 7%
-            item.gross || (item.subtotal + item.vat), // ยอดรวม VAT
-            item.whtRate !== undefined ? item.whtRate : (data.whtRate || 0), // อัตรา WHT %
-            item.wht,                               // ยอด WHT
-            item.net,                               // ยอดเงินที่ได้รับจริง
-            data.receivingBank || "KBank",          // บัญชีที่รับเงิน
-            data.paymentStatus || "ชำระเงินแล้ว",   // สถานะการชำระเงิน
-            data.actualPaymentDate || data.date,    // วันที่ได้รับเงินจริง
-            item.profitShare || data.profitShare || "-", // สัดส่วนผู้รับผลประโยชน์
-            data.driveLink || "-",                  // ลิงก์ Drive
-            data.recordedBy || "-",                 // ผู้บันทึก
-            data.remarks || "-"                     // หมายเหตุ
-          ];
-          sheet.appendRow(rowData);
-        }
-        
+      var sheet = activeSpreadsheet.getSheetByName(sheetName);
+      if (!sheet) {
         return ContentService.createTextOutput(JSON.stringify({
-          "status": "success",
-          "message": "บันทึกข้อมูลรายรับแยกเป็น " + data.items.length + " รายการลงแท็บ 'รายรับ' สำเร็จแล้วจ้า!"
+          "status": "error",
+          "message": "ไม่พบแท็บชีตชื่อ '" + sheetName + "' บน Google Sheets นะแก!"
         })).setMimeType(ContentService.MimeType.JSON);
-      } else {
-        var rowData = [
-          data.recordDate || data.date,
-          data.date,
-          data.docNo,
-          data.invoiceNo || "-",
-          data.clientName,
-          data.clientTaxId || "-",
-          data.clientAddress || "-",
-          data.clientBranch || "00000",
-          data.detail || "-",
-          data.subtotal,
-          data.vat,
-          data.gross || (data.subtotal + data.vat),
-          data.whtRate || 0,
-          data.wht,
-          data.net,
-          data.receivingBank || "KBank",
-          data.paymentStatus || "ชำระเงินแล้ว",
-          data.actualPaymentDate || data.date,
-          data.profitShare || "-",
-          data.driveLink || "-",
-          data.recordedBy || "-",
-          data.remarks || "-"
-        ];
-        sheet.appendRow(rowData);
+      }
+      
+      // บันทึกหลายแถวพร้อมกัน (กรณี Split Items ในรายรับ)
+      if (data.rows && Array.isArray(data.rows) && data.rows.length > 0) {
+        var numRows = data.rows.length;
+        var numCols = data.rows[0].length;
+        sheet.getRange(sheet.getLastRow() + 1, 1, numRows, numCols).setValues(data.rows);
+        beautifySheet(sheet, sheetName);
         
         return ContentService.createTextOutput(JSON.stringify({
           "status": "success",
-          "message": "บันทึกข้อมูลรายรับลงแท็บ 'รายรับ' (แถวเดียว) สำเร็จแล้วจ้า!"
+          "message": "ซิงค์ข้อมูล " + numRows + " แถว ลงแท็บ '" + sheetName + "' เรียบร้อยแล้วแก!"
+        })).setMimeType(ContentService.MimeType.JSON);
+      } 
+      // บันทึกแถวเดี่ยว
+      else if (data.values && Array.isArray(data.values) && data.values.length > 0) {
+        sheet.appendRow(data.values);
+        beautifySheet(sheet, sheetName);
+        
+        return ContentService.createTextOutput(JSON.stringify({
+          "status": "success",
+          "message": "ซิงค์ข้อมูลลงแท็บ '" + sheetName + "' เรียบร้อยแล้วแก!"
+        })).setMimeType(ContentService.MimeType.JSON);
+      } 
+      else {
+        return ContentService.createTextOutput(JSON.stringify({
+          "status": "error",
+          "message": "ไม่พบข้อมูลแถว (rows/values) ในพารามิเตอร์นะแก!"
         })).setMimeType(ContentService.MimeType.JSON);
       }
     }
     
     // ----------------------------------------------------
-    // CASE 2: บันทึกข้อมูล รายจ่าย
-    // ----------------------------------------------------
-    else if (data.type === "expense") {
-      var sheetName = "รายจ่าย";
-      var sheet = activeSpreadsheet.getSheetByName(sheetName);
-      
-      if (!sheet) {
-        sheet = activeSpreadsheet.insertSheet(sheetName);
-        sheet.appendRow(EXPENSE_HEADERS);
-        sheet.getRange(1, 1, 1, EXPENSE_HEADERS.length).setFontWeight("bold").setBackground("#fee2e2");
-        sheet.setFrozenRows(1);
-      } else {
-        migrateSheetIfNeeded(sheet, EXPENSE_HEADERS);
-      }
-      
-      var rowData = [
-        data.recordDate || data.date,        // A: วันที่บันทึก
-        data.date,                            // B: วันที่ตามใบเสร็จ
-        data.docNo,                           // C: เลขที่บิล/ใบเสร็จ
-        data.payeeName,                       // D: ชื่อผู้ให้บริการ
-        data.payeeTaxId || "-",               // E: เลขประจำตัวผู้เสียภาษี
-        data.payeeAddress || "-",             // F: ที่อยู่
-        data.payeeBranch || "00000",          // G: รหัสสาขา
-        data.category || "-",                 // H: หมวดหมู่ค่าใช้จ่าย
-        data.detail,                          // I: รายละเอียด
-        data.gross,                           // J: ยอดก่อน VAT
-        data.vat !== undefined ? data.vat : 0, // K: VAT 7%
-        data.totalAmount !== undefined ? data.totalAmount : (data.gross + (data.vat || 0)), // L: ยอดรวม VAT
-        data.whtRate || 0,                    // M: อัตรา WHT %
-        data.tax || 0,                        // N: ยอดหัก WHT
-        data.whtType || "none",               // O: ประเภทยื่น WHT
-        data.net,                             // P: ยอดจ่ายเงินสุทธิ
-        data.paymentMethod || "KBank",        // Q: ช่องทางจ่ายเงิน
-        data.paymentStatus || "จ่ายเงินแล้ว", // R: สถานะจ่ายเงิน
-        data.actualPaidDate || data.date,     // S: วันที่จ่ายเงินจริง
-        data.whtCertificateNo || "-",         // T: เลขใบ 50 ทวิ
-        data.driveLink || "-",                // U: ลิงก์ Drive
-        data.taxFilingStatus || "ยังไม่ได้ยื่น", // V: สถานะยื่นภาษี
-        data.projectLink || "",               // W: โครงการที่ผูก
-        data.remarks || ""                    // X: หมายเหตุ
-      ];
-      
-      sheet.appendRow(rowData);
-      
-      return ContentService.createTextOutput(JSON.stringify({
-        "status": "success",
-        "message": "บันทึกข้อมูลรายจ่ายลงแท็บ 'รายจ่าย' แถวที่ " + sheet.getLastRow() + " สำเร็จแล้วจ้า!"
-      })).setMimeType(ContentService.MimeType.JSON);
-    }
-    
-    // ----------------------------------------------------
-    // CASE 3: บันทึกข้อมูล เงินสดย่อย (Petty Cash)
-    // ----------------------------------------------------
-    else if (data.type === "petty_cash") {
-      var sheetName = "เงินสดย่อย";
-      var sheet = activeSpreadsheet.getSheetByName(sheetName);
-      
-      if (!sheet) {
-        sheet = activeSpreadsheet.insertSheet(sheetName);
-        sheet.appendRow(PETTY_CASH_HEADERS);
-        sheet.getRange(1, 1, 1, PETTY_CASH_HEADERS.length).setFontWeight("bold").setBackground("#fef08a");
-        sheet.setFrozenRows(1);
-      }
-      
-      var rowData = [
-        data.voucherNo,                      // A: เลขที่ใบสำคัญ
-        data.date,                            // B: วันที่เบิกเงิน
-        data.requester,                       // C: ชื่อผู้ขอเบิก
-        data.category || "-",                 // D: หมวดหมู่ค่าใช้จ่าย
-        data.detail,                          // E: รายละเอียด
-        data.amountPaid,                      // F: ยอดจ่ายจริง
-        data.balance,                         // G: ยอดคงเหลือ
-        data.approver || "-",                 // H: ผู้อนุมัติ
-        data.receiptUrl || "-",               // I: ลิงก์ใบเสร็จ
-        data.remarks || ""                    // J: หมายเหตุ
-      ];
-      
-      sheet.appendRow(rowData);
-      
-      return ContentService.createTextOutput(JSON.stringify({
-        "status": "success",
-        "message": "บันทึกข้อมูลเงินสดย่อยลงแท็บ 'เงินสดย่อย' แถวที่ " + sheet.getLastRow() + " สำเร็จแล้วจ้า!"
-      })).setMimeType(ContentService.MimeType.JSON);
-    }
-    
-    // ----------------------------------------------------
-    // CASE 4: บันทึกข้อมูล เงินเดือน (Payroll)
-    // ----------------------------------------------------
-    else if (data.type === "payroll") {
-      var sheetName = "เงินเดือน";
-      var sheet = activeSpreadsheet.getSheetByName(sheetName);
-      
-      if (!sheet) {
-        sheet = activeSpreadsheet.insertSheet(sheetName);
-        sheet.appendRow(PAYROLL_HEADERS);
-        sheet.getRange(1, 1, 1, PAYROLL_HEADERS.length).setFontWeight("bold").setBackground("#e0f2fe");
-        sheet.setFrozenRows(1);
-      }
-      
-      var rowData = [
-        data.payrollId,                      // A: รหัสรอบจ่าย
-        data.employeeId,                      // B: รหัสพนักงาน
-        data.employeeName,                    // C: ชื่อพนักงาน
-        data.employeeTaxId || "-",            // D: เลขบัตรประชาชน
-        data.baseSalary,                      // E: เงินเดือน
-        data.allowances || 0,                 // F: ค่าตำแหน่ง/โบนัส
-        data.totalEarnings,                   // G: ยอดรวมรายได้
-        data.ssfDeduction,                    // H: หักประกันสังคม
-        data.whtDeduction,                    // I: หักภาษี ณ ที่จ่าย (ภ.ง.ด.1)
-        data.otherDeductions || 0,            // J: เงินหักอื่นๆ
-        data.netPay,                          // K: ยอดโอนจริง
-        data.bankAccount || "-",              // L: เลขบัญชี
-        data.status || "รอดำเนินการ",          // M: สถานะ
-        data.paySlipUrl || "-"                // N: ลิงก์สลิป
-      ];
-      
-      sheet.appendRow(rowData);
-      
-      return ContentService.createTextOutput(JSON.stringify({
-        "status": "success",
-        "message": "บันทึกข้อมูลเงินเดือนลงแท็บ 'เงินเดือน' แถวที่ " + sheet.getLastRow() + " สำเร็จแล้วจ้า!"
-      })).setMimeType(ContentService.MimeType.JSON);
-    }
-    
-    // ----------------------------------------------------
-    // CASE 5: บันทึกข้อมูล กระทบยอดธนาคาร (Bank Rec)
-    // ----------------------------------------------------
-    else if (data.type === "bank_rec") {
-      var sheetName = "กระทบยอดธนาคาร";
-      var sheet = activeSpreadsheet.getSheetByName(sheetName);
-      
-      if (!sheet) {
-        sheet = activeSpreadsheet.insertSheet(sheetName);
-        sheet.appendRow(BANK_REC_HEADERS);
-        sheet.getRange(1, 1, 1, BANK_REC_HEADERS.length).setFontWeight("bold").setBackground("#f3f4f6");
-        sheet.setFrozenRows(1);
-      }
-      
-      var rowData = [
-        data.reconciliationId,                // A: รหัสรายงาน
-        data.period,                          // B: รอบประจำเดือน
-        data.bankAccount,                     // C: รหัสบัญชีธนาคาร
-        data.statementBalance,                // D: ยอด Statement ธนาคาร
-        data.bookBalance,                     // E: ยอดในระบบ
-        data.depositInTransit || 0,           // F: เงินฝากระหว่างทาง
-        data.outstandingCheques || 0,         // G: เช็คค้างจ่าย
-        data.bankChargesNotRecorded || 0,     // H: ค่าธรรมเนียมค้างบันทึก
-        data.adjustedStatementBalance,        // I: ยอดปรับปรุง Statement
-        data.adjustedBookBalance,             // J: ยอดปรับปรุงระบบ
-        data.difference,                      // K: ส่วนต่าง
-        data.reconciledBy || "-"              // L: ผู้กระทบยอด
-      ];
-      
-      sheet.appendRow(rowData);
-      
-      return ContentService.createTextOutput(JSON.stringify({
-        "status": "success",
-        "message": "บันทึกข้อมูลกระทบยอดธนาคารลงแท็บ 'กระทบยอดธนาคาร' แถวที่ " + sheet.getLastRow() + " สำเร็จแล้วจ้า!"
-      })).setMimeType(ContentService.MimeType.JSON);
-    }
-    
-    // ----------------------------------------------------
-    // CASE 6: เตรียมโครงสร้าง 5 แท็บหลักอัตโนมัติ (Initialize)
+    // CASE 2: เตรียมโครงสร้าง 5 แท็บหลักอัตโนมัติ (Initialize)
     // ----------------------------------------------------
     else if (data.type === "initialize") {
       var sheetsInfo = [
@@ -390,18 +193,38 @@ function doPost(e) {
         if (!sheet) {
           sheet = activeSpreadsheet.insertSheet(sheetName);
           sheet.appendRow(headers);
-          sheet.getRange(1, 1, 1, headers.length).setFontWeight("bold").setBackground("#f3f4f6");
-          sheet.setFrozenRows(1);
+          beautifySheet(sheet, sheetName);
           createdSheets.push(sheetName);
         } else {
           migrateSheetIfNeeded(sheet, headers);
+          beautifySheet(sheet, sheetName);
           checkedSheets.push(sheetName);
+        }
+      }
+      
+      // ล้างข้อมูลแถวเก่าที่มีปัญหาทศนิยมยาว/ไม่มี VAT ในแท็บ "รายจ่าย"
+      var expenseSheet = activeSpreadsheet.getSheetByName("รายจ่าย");
+      var deletedBuggyRows = 0;
+      if (expenseSheet) {
+        var lastRow = expenseSheet.getLastRow();
+        if (lastRow > 1) {
+          var values = expenseSheet.getRange(1, 1, lastRow, expenseSheet.getLastColumn()).getValues();
+          for (var r = lastRow - 1; r >= 1; r--) {
+            var row = values[r];
+            if (row.length > 8) {
+              var desc = row[8] || "";
+              if (desc.indexOf("ซื้อกล้อง") !== -1 || desc.indexOf("ค่าอาหารกองถ่ายวันนี้") !== -1) {
+                expenseSheet.deleteRow(r + 1);
+                deletedBuggyRows++;
+              }
+            }
+          }
         }
       }
       
       return ContentService.createTextOutput(JSON.stringify({
         "status": "success",
-        "message": "เตรียมโครงสร้างชีตสำเร็จแล้วแก! (สร้างแท็บใหม่: " + createdSheets.join(", ") + " | ตรวจทานแท็บเดิม: " + checkedSheets.join(", ") + ")"
+        "message": "เตรียมโครงสร้างชีตสำเร็จแล้วแก! (สร้างแท็บใหม่: " + createdSheets.join(", ") + " | ตรวจทานแท็บเดิม: " + checkedSheets.join(", ") + " | ล้างแถวมีปัญหาออก: " + deletedBuggyRows + " แถว)"
       })).setMimeType(ContentService.MimeType.JSON);
     }
     
@@ -472,7 +295,7 @@ function migrateSheetIfNeeded(sheet, targetHeaders) {
           newRow[9] = oldRow[5]; // Pre-VAT
           newRow[10] = oldRow[6]; // VAT
           newRow[11] = (parseFloat(oldRow[5]) || 0) + (parseFloat(oldRow[6]) || 0); // Gross
-          newRow[12] = 0;        // WHT Rate (calculated below)
+          newRow[12] = 0;        // WHT Rate
           newRow[13] = oldRow[7]; // WHT Amount
           var preVat = parseFloat(oldRow[5]) || 0;
           var whtAmt = parseFloat(oldRow[7]) || 0;
@@ -483,7 +306,7 @@ function migrateSheetIfNeeded(sheet, targetHeaders) {
           newRow[15] = "KBank";  // Receiving Bank
           newRow[16] = "ชำระเงินแล้ว"; // Payment Status
           newRow[17] = oldRow[0]; // Actual Payment Date
-          newRow[18] = "คนดีล: " + oldRow[9] + " (" + oldRow[10] + "%)"; // Profit Share Distribution
+          newRow[18] = "คนดีล: " + oldRow[9] + " (" + oldRow[10] + "%)";
           newRow[19] = oldRow[13]; // Google Drive PDF Link
           newRow[20] = "System (Migrated)"; // Recorded By
           newRow[21] = "ยอดเข้า บ.: " + oldRow[11] + ", จ่ายคนดีล: " + oldRow[12]; // Remarks
@@ -503,10 +326,10 @@ function migrateSheetIfNeeded(sheet, targetHeaders) {
           newRow[6] = "00000";   // Branch
           newRow[7] = "ค่าบริการจ้างทำของ"; // Category
           newRow[8] = oldRow[4]; // Description
-          newRow[9] = oldRow[5]; // Pre-VAT (Gross in old layout)
+          newRow[9] = oldRow[5]; // Pre-VAT
           newRow[10] = 0;        // VAT
           newRow[11] = oldRow[5]; // Gross Amount
-          newRow[12] = 0;        // WHT % (calculated below)
+          newRow[12] = 0;        // WHT %
           newRow[13] = oldRow[6]; // WHT Amount
           var grossVal = parseFloat(oldRow[5]) || 0;
           var whtVal = parseFloat(oldRow[6]) || 0;
@@ -522,7 +345,7 @@ function migrateSheetIfNeeded(sheet, targetHeaders) {
           newRow[20] = oldRow[8]; // Google Drive PDF Link
           newRow[21] = "ยื่นแล้ว"; // Tax Filing Status
           newRow[22] = "";       // Project Link
-          newRow[23] = "Migrated from 9-column layout"; // Remarks
+          newRow[23] = "Migrated from 9-column layout";
         } else if (lastCol === 12) {
           newRow[0] = oldRow[0]; // Record Date
           newRow[1] = oldRow[0]; // Tax Invoice Date
@@ -533,10 +356,10 @@ function migrateSheetIfNeeded(sheet, targetHeaders) {
           newRow[6] = "00000";   // Branch
           newRow[7] = "ค่าบริการจ้างทำของ"; // Category
           newRow[8] = oldRow[4]; // Description
-          newRow[9] = oldRow[5]; // Pre-VAT (Gross in 12-column layout)
+          newRow[9] = oldRow[5]; // Pre-VAT
           newRow[10] = oldRow[6]; // VAT
           newRow[11] = (parseFloat(oldRow[5]) || 0) + (parseFloat(oldRow[6]) || 0); // Gross Amount
-          newRow[12] = 0;        // WHT % (calculated below)
+          newRow[12] = 0;        // WHT %
           newRow[13] = oldRow[7]; // WHT Amount
           var grossVal = parseFloat(oldRow[5]) || 0;
           var whtVal = parseFloat(oldRow[7]) || 0;
@@ -552,7 +375,7 @@ function migrateSheetIfNeeded(sheet, targetHeaders) {
           newRow[20] = oldRow[9]; // Google Drive PDF Link
           newRow[21] = "ยื่นแล้ว"; // Tax Filing Status
           newRow[22] = oldRow[11]; // Project Link
-          newRow[23] = "Migrated from 12-column layout"; // Remarks
+          newRow[23] = "Migrated from 12-column layout";
         } else {
           for (var c = 0; c < Math.min(lastCol, targetHeaders.length); c++) {
             newRow[c] = oldRow[c];
@@ -568,8 +391,93 @@ function migrateSheetIfNeeded(sheet, targetHeaders) {
       sheet.getRange(2, 1, newValues.length, targetHeaders.length).setValues(newValues);
     }
     
-    var headerColor = targetHeaders.length === 22 ? "#f3f4f6" : "#fee2e2";
-    sheet.getRange(1, 1, 1, targetHeaders.length).setFontWeight("bold").setBackground(headerColor);
-    sheet.setFrozenRows(1);
+    beautifySheet(sheet, sheet.getName());
+  }
+}
+
+/**
+ * ฟังก์ชันช่วยจัดแต่งความสวยงามของแท็บชีตให้พรีเมียม สแกนสายตาง่าย และดูเป็นมืออาชีพ
+ */
+function beautifySheet(sheet, sheetName) {
+  var lastCol = sheet.getLastColumn();
+  if (lastCol === 0) return;
+
+  var headers = sheet.getRange(1, 1, 1, lastCol);
+  
+  // 1. ตั้งค่าสีหัวตารางและข้อความแยกตามประเภทแท็บเพื่อความสแกนง่าย
+  var headerBg = "#374151"; // ค่าเริ่มต้นสี Charcoal เข้ม
+  var headerText = "#ffffff";
+  
+  if (sheetName === "รายรับ") {
+    headerBg = "#ffedd5"; // สีส้มครีมสว่าง
+    headerText = "#9a3412"; // ตัวหนังสือส้มแดงเข้ม
+  } else if (sheetName === "รายจ่าย") {
+    headerBg = "#fee2e2"; // สีแดงอ่อน
+    headerText = "#991b1b"; // ตัวหนังสือแดงเข้ม
+  } else if (sheetName === "เงินสดย่อย") {
+    headerBg = "#dcfce7"; // สีเขียวอ่อน
+    headerText = "#166534"; // ตัวหนังสือเขียวเข้ม
+  } else if (sheetName === "เงินเดือน") {
+    headerBg = "#f3e8ff"; // สีม่วงอ่อน
+    headerText = "#581c87"; // ตัวหนังสือม่วงเข้ม
+  } else if (sheetName === "กระทบยอดธนาคาร") {
+    headerBg = "#e0f2fe"; // สีฟ้าอ่อน
+    headerText = "#0369a1"; // ตัวหนังสือฟ้าเข้ม
+  }
+  
+  // จัดสไตล์หัวตาราง
+  headers.setFontWeight("bold")
+         .setBackground(headerBg)
+         .setFontColor(headerText)
+         .setHorizontalAlignment("center")
+         .setVerticalAlignment("middle")
+         .setFontSize(10)
+         .setFontFamily("Prompt");
+  
+  // ตั้งความสูงของแถวแรกให้ดูโปร่งพรีเมียม (30px)
+  sheet.setRowHeight(1, 30);
+  
+  // ตรึงแถวแรก
+  sheet.setFrozenRows(1);
+  
+  // 2. จัดแต่งสไตล์ข้อมูลในตาราง (ถ้ามีข้อมูล)
+  var lastRow = sheet.getLastRow();
+  if (lastRow > 1) {
+    var dataRange = sheet.getRange(2, 1, lastRow - 1, lastCol);
+    
+    // ตั้งฟอนต์เนื้อหา
+    dataRange.setFontFamily("Inter")
+             .setFontSize(10)
+             .setVerticalAlignment("middle");
+             
+    // ปรับความสูงแถวข้อมูลทั่วไปให้มีพื้นที่หายใจ (24px)
+    sheet.setRowHeights(2, lastRow - 1, 24);
+    
+    // เคลียร์และใส่สีสลับแถวเพื่อให้มองง่ายขึ้น (Alternating Rows)
+    for (var r = 2; r <= lastRow; r++) {
+      var rowRange = sheet.getRange(r, 1, 1, lastCol);
+      if (r % 2 === 0) {
+        rowRange.setBackground("#fafafa");
+      } else {
+        rowRange.setBackground("#ffffff");
+      }
+    }
+
+    // 3. จัดการเส้นตารางให้ดูเบาบางลง
+    dataRange.setBorder(true, true, true, true, true, true, "#e5e7eb", SpreadsheetApp.BorderStyle.SOLID);
+  }
+  
+  // ขีดเส้นใต้หัวตารางหนาๆ สีเทาเข้ม
+  headers.setBorder(null, null, true, null, null, null, "#9ca3af", SpreadsheetApp.BorderStyle.SOLID_MEDIUM);
+
+  // 4. สั่งขยายขนาดความกว้างคอลัมน์อัตโนมัติให้พอดีกับข้อมูล
+  sheet.autoResizeColumns(1, lastCol);
+  
+  // ตั้งค่ากว้างขั้นต่ำเผื่อบางคอลัมน์สั้นเกินไป
+  for (var c = 1; c <= lastCol; c++) {
+    var w = sheet.getColumnWidth(c);
+    if (w < 85) {
+      sheet.setColumnWidth(c, 85);
+    }
   }
 }
