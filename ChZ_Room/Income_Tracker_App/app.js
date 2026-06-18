@@ -1184,8 +1184,8 @@ function initDocumentGenerator() {
   
   // Set default items
   docItems = [
-    { desc: 'บริการถ่ายภาพโฆษณา Feltz Studio (ครึ่งวัน)', qty: 1, unit: 'ครั้ง', price: 15000 },
-    { desc: 'บริการตกแต่งภาพและรีทัชระดับพรีเมียม', qty: 5, unit: 'ภาพ', price: 800 }
+    { desc: 'บริการถ่ายภาพโฆษณา Feltz Studio (ครึ่งวัน)', price: 15000 },
+    { desc: 'บริการตกแต่งภาพและรีทัชระดับพรีเมียม (5 ภาพ)', price: 4000 }
   ];
 
   // Set default doc number
@@ -1394,12 +1394,6 @@ function renderDocItemsTable() {
         <input type="text" value="${escapeHtml(item.desc)}" oninput="updateDocItem(${idx}, 'desc', this.value)" style="width:100%; border:none; padding:4px; font-size:12px;" placeholder="รายละเอียดบริการ/สินค้า" required>
       </td>
       <td>
-        <input type="number" value="${item.qty}" min="1" step="any" oninput="updateDocItem(${idx}, 'qty', this.value)" style="width:100%; border:none; padding:4px; font-size:12px; text-align:center;" required>
-      </td>
-      <td>
-        <input type="text" value="${escapeHtml(item.unit)}" oninput="updateDocItem(${idx}, 'unit', this.value)" style="width:100%; border:none; padding:4px; font-size:12px; text-align:center;" placeholder="เช่น งาน" required>
-      </td>
-      <td>
         <input type="number" value="${item.price}" min="0" step="0.01" oninput="updateDocItem(${idx}, 'price', this.value)" style="width:100%; border:none; padding:4px; font-size:12px; text-align:right;" required>
       </td>
       <td style="text-align:center;">
@@ -1412,21 +1406,18 @@ function renderDocItemsTable() {
   if (docItems.length === 0) {
     prevBody.innerHTML = `
       <tr>
-        <td colspan="6" style="text-align:center; color:#64748b; font-style:italic; padding: 15px;">ไม่มีรายการสินค้าหรือบริการ</td>
+        <td colspan="3" style="text-align:center; color:#64748b; font-style:italic; padding: 15px;">ไม่มีรายการสินค้าหรือบริการ</td>
       </tr>
     `;
     return;
   }
 
   prevBody.innerHTML = docItems.map((item, idx) => {
-    const total = (item.qty || 0) * (item.price || 0);
+    const total = item.price || 0;
     return `
       <tr>
         <td style="text-align:center;">${idx + 1}</td>
         <td style="text-align:left; white-space: pre-wrap;">${escapeHtml(item.desc)}</td>
-        <td style="text-align:center;">${item.qty}</td>
-        <td style="text-align:center;">${escapeHtml(item.unit)}</td>
-        <td style="text-align:right;">${item.price.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
         <td style="text-align:right;">${total.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
       </tr>
     `;
@@ -1434,7 +1425,7 @@ function renderDocItemsTable() {
 }
 
 function addDocItem() {
-  docItems.push({ desc: '', qty: 1, unit: 'งาน', price: 0 });
+  docItems.push({ desc: '', price: 0 });
   renderDocItemsTable();
   syncDocPreview();
 }
@@ -1446,9 +1437,7 @@ function deleteDocItem(index) {
 }
 
 function updateDocItem(index, key, val) {
-  if (key === 'qty') {
-    docItems[index].qty = parseFloat(val) || 0;
-  } else if (key === 'price') {
+  if (key === 'price') {
     docItems[index].price = parseFloat(val) || 0;
   } else {
     docItems[index][key] = val;
@@ -1459,7 +1448,7 @@ function updateDocItem(index, key, val) {
 function calculateDocTotals() {
   let subtotal = 0;
   docItems.forEach(item => {
-    subtotal += (item.qty || 0) * (item.price || 0);
+    subtotal += item.price || 0;
   });
 
   const vatCheck = document.getElementById('docVatCheckbox');
@@ -1521,19 +1510,16 @@ function calculateDocTotals() {
     if (docItems.length === 0) {
       prevBody.innerHTML = `
         <tr>
-          <td colspan="6" style="text-align:center; color:#64748b; font-style:italic; padding: 15px;">ไม่มีรายการสินค้าหรือบริการ</td>
+          <td colspan="3" style="text-align:center; color:#64748b; font-style:italic; padding: 15px;">ไม่มีรายการสินค้าหรือบริการ</td>
         </tr>
       `;
     } else {
       prevBody.innerHTML = docItems.map((item, idx) => {
-        const total = (item.qty || 0) * (item.price || 0);
+        const total = item.price || 0;
         return `
           <tr>
             <td style="text-align:center;">${idx + 1}</td>
             <td style="text-align:left; white-space: pre-wrap;">${escapeHtml(item.desc)}</td>
-            <td style="text-align:center;">${item.qty}</td>
-            <td style="text-align:center;">${escapeHtml(item.unit)}</td>
-            <td style="text-align:right;">${item.price.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
             <td style="text-align:right;">${total.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
           </tr>
         `;
