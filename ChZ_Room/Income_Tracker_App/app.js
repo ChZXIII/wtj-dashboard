@@ -1362,7 +1362,7 @@ function setDocType(type) {
   // ซ่อน/แสดง ช่องหมายเหตุในฝั่ง Editor
   const groupDocRemarks = document.getElementById('groupDocRemarks');
   if (groupDocRemarks) {
-    groupDocRemarks.style.display = (type === 'quotation') ? 'block' : 'none';
+    groupDocRemarks.style.display = 'block';
   }
 
   // Update document title and number
@@ -1665,14 +1665,14 @@ function syncDocPreview() {
     }
   }
 
-  // อัปเดตพรีวิวหมายเหตุ (Remarks) เฉพาะใบเสนอราคา
+  // อัปเดตพรีวิวหมายเหตุ (Remarks)
   const docRemarksEl = document.getElementById('docRemarks');
   const prevRemarksBlock = document.getElementById('prevRemarksBlock');
   const prevRemarksVal = document.getElementById('prevRemarksVal');
 
   if (prevRemarksBlock && prevRemarksVal && docRemarksEl) {
     const docRemarks = docRemarksEl.value.trim();
-    if (currentDocType === 'quotation' && docRemarks !== '') {
+    if (docRemarks !== '') {
       prevRemarksBlock.style.display = 'block';
       prevRemarksVal.innerHTML = escapeHtml(docRemarks).replace(/\n/g, '<br>');
     } else {
