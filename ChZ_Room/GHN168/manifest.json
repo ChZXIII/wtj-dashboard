@@ -9,7 +9,7 @@
   "orientation": "any",
   "icons": [
     {
-      "src": "pwa_icon.png?v=2",
+      "src": "ghn_app_icon.png",
       "sizes": "512x512",
       "type": "image/png"
     }
