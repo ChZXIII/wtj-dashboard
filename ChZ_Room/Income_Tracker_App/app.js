@@ -1768,17 +1768,13 @@ function thaiBahtText(amount) {
 }
 
 function updateDynamicDocTitle() {
-  const docTypeSelect = document.querySelector('input[name="docType"]:checked');
   const docNumberInput = document.getElementById('docNumber');
   const docClientInput = document.getElementById('docClientName');
   
   let docTypeName = 'เอกสารการเงิน';
-  if (docTypeSelect) {
-    const val = docTypeSelect.value;
-    if (val === 'quotation') docTypeName = 'ใบเสนอราคา';
-    else if (val === 'invoice') docTypeName = 'ใบวางบิล';
-    else if (val === 'receipt') docTypeName = 'ใบเสร็จรับเงิน';
-  }
+  if (currentDocType === 'quotation') docTypeName = 'ใบเสนอราคา';
+  else if (currentDocType === 'invoice') docTypeName = 'ใบวางบิล';
+  else if (currentDocType === 'receipt') docTypeName = 'ใบเสร็จรับเงิน';
   
   const docNo = docNumberInput ? docNumberInput.value.trim() : '';
   const docClient = docClientInput ? docClientInput.value.trim() : '';

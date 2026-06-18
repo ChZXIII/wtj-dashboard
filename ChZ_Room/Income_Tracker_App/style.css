@@ -1382,6 +1382,8 @@ input[type="time"] {
   body, html {
     background: #ffffff !important;
     color: #000000 !important;
+    height: 100% !important;
+    overflow: hidden !important;
   }
   
   .app-container, .main-content, .view-panel {
@@ -1449,7 +1451,7 @@ input[type="time"] {
     box-shadow: none !important;
     border: none !important;
     page-break-inside: avoid !important;
-    page-break-after: always !important;
+    page-break-after: avoid !important;
     display: flex !important;
     flex-direction: column !important;
     background: #ffffff !important;
