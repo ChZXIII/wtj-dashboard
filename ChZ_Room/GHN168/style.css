@@ -750,6 +750,7 @@ textarea.form-control {
   justify-content: space-between;
   border-bottom: 2px solid #000000;
   padding-bottom: 15px;
+  margin-bottom: 20px;
 }
 
 .doc-logo-section {
@@ -808,6 +809,7 @@ textarea.form-control {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 40px;
+  margin-bottom: 20px;
 }
 
 .address-box {
@@ -846,6 +848,7 @@ textarea.form-control {
   width: 100%;
   border-collapse: collapse;
   margin-top: 15px;
+  margin-bottom: 20px;
 }
 
 .paper-table th {
@@ -912,6 +915,7 @@ textarea.form-control {
   font-size: 14px;
 }
 
+/* --- Signatures Section --- */
 .doc-signatures-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -922,21 +926,28 @@ textarea.form-control {
 }
 
 .signature-box {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
+  display: block;
+  text-align: center;
   position: relative;
 }
 
 .signature-line {
   width: 80%;
+  margin: 50px auto 10px auto;
   border-bottom: 1px solid #000000;
 }
 
 .signature-label {
+  display: block;
   font-size: 12px;
   color: #4b5563;
+  margin-top: 5px;
+}
+
+.signature-box strong {
+  display: block;
+  font-size: 12px;
+  margin-top: 8px;
 }
 
 .company-seal-img {

@@ -1,9 +1,9 @@
-const CACHE_NAME = 'ghn168-app-v29';
+const CACHE_NAME = 'ghn168-app-v30';
 const ASSETS = [
   'index.html',
-  'style.css?v=29',
+  'style.css?v=30',
   'app.js',
-  'manifest.json?v=29',
+  'manifest.json?v=30',
   'assets/ghn_app_icon.png',
   'assets/logo.png',
   'assets/sidebar_logo_dark.png',

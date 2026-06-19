@@ -4019,9 +4019,13 @@ function exportPdfClientSide() {
   
   const originalZoom = element.style.zoom;
   const originalBoxShadow = element.style.boxShadow;
+  const originalHeight = element.style.height;
+  const originalOverflow = element.style.overflow;
   
   element.style.zoom = '1';
   element.style.boxShadow = 'none';
+  element.style.height = '296mm';
+  element.style.overflow = 'hidden';
   
   const opt = {
     margin: 0,
@@ -4046,6 +4050,8 @@ function exportPdfClientSide() {
     btn.innerHTML = originalBtnText;
     element.style.zoom = originalZoom;
     element.style.boxShadow = originalBoxShadow;
+    element.style.height = originalHeight;
+    element.style.overflow = originalOverflow;
   }).catch(err => {
     console.error('PDF export failed:', err);
     alert('เกิดข้อผิดพลาดในการสร้างไฟล์ PDF');
@@ -4053,6 +4059,8 @@ function exportPdfClientSide() {
     btn.innerHTML = originalBtnText;
     element.style.zoom = originalZoom;
     element.style.boxShadow = originalBoxShadow;
+    element.style.height = originalHeight;
+    element.style.overflow = originalOverflow;
   });
 }
 
