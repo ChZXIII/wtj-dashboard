@@ -818,7 +818,13 @@ function setupEventListeners() {
 
   // Export PDF Button
   document.getElementById('btnExportDocPdf').addEventListener('click', () => {
-    window.print();
+    const isMobileOrTablet = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+                            (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    if (isMobileOrTablet) {
+      exportPdfClientSide();
+    } else {
+      window.print();
+    }
   });
 
   // Create New Doc Button
@@ -4005,6 +4011,51 @@ function printPaymentVoucher(index) {
   }, 1000);
 }
 
+function exportPdfClientSide() {
+  const isWht = currentView === 'docgen' && currentDocType === 'wht';
+  const element = isWht ? document.getElementById('previewWhtDoc') : document.getElementById('previewStandardDoc');
+  
+  if (!element) return;
+  
+  const originalZoom = element.style.zoom;
+  const originalBoxShadow = element.style.boxShadow;
+  
+  element.style.zoom = '1';
+  element.style.boxShadow = 'none';
+  
+  const opt = {
+    margin: 0,
+    filename: document.title + '.pdf',
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { 
+      scale: 3, 
+      useCORS: true, 
+      logging: false,
+      letterRendering: true
+    },
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+  };
+  
+  const btn = document.getElementById('btnExportDocPdf');
+  const originalBtnText = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = 'กำลังสร้างไฟล์ PDF...';
+  
+  html2pdf().set(opt).from(element).save().then(() => {
+    btn.disabled = false;
+    btn.innerHTML = originalBtnText;
+    element.style.zoom = originalZoom;
+    element.style.boxShadow = originalBoxShadow;
+  }).catch(err => {
+    console.error('PDF export failed:', err);
+    alert('เกิดข้อผิดพลาดในการสร้างไฟล์ PDF');
+    btn.disabled = false;
+    btn.innerHTML = originalBtnText;
+    element.style.zoom = originalZoom;
+    element.style.boxShadow = originalBoxShadow;
+  });
+}
+
 // Expose handlers to global window scope
 window.setDocType = setDocType;
 window.addDocItem = addDocItem;
@@ -4015,6 +4066,7 @@ window.exportBackup = exportBackup;
 window.toggleTheme = toggleTheme;
 window.switchView = switchView;
 window.printPaymentVoucher = printPaymentVoucher;
+window.exportPdfClientSide = exportPdfClientSide;
 window.editExpense = editExpense;
 window.deleteExpense = deleteExpense;
 

@@ -1,14 +1,15 @@
-const CACHE_NAME = 'ghn168-app-v28';
+const CACHE_NAME = 'ghn168-app-v29';
 const ASSETS = [
   'index.html',
-  'style.css?v=28',
+  'style.css?v=29',
   'app.js',
-  'manifest.json?v=28',
+  'manifest.json?v=29',
   'assets/ghn_app_icon.png',
   'assets/logo.png',
   'assets/sidebar_logo_dark.png',
   'assets/sidebar_logo_light.png',
-  'assets/GHN_company_seal.png'
+  'assets/GHN_company_seal.png',
+  'assets/html2pdf.bundle.min.js'
 ];
 
 self.addEventListener('install', (e) => {

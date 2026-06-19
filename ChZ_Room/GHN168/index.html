@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GHN168 | Accounting & Document Hub</title>
-  <link rel="stylesheet" href="style.css?v=28">
-  <link rel="manifest" href="manifest.json?v=28">
+  <link rel="stylesheet" href="style.css?v=29">
+  <link rel="manifest" href="manifest.json?v=29">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="GHN168">
@@ -1018,14 +1018,14 @@
 
               <!-- Signatures -->
               <div class="doc-signatures-grid">
-                <img src="assets/GHN_company_seal.png" class="company-seal-img" alt="ตราประทับบริษัท">
                 <div class="signature-box" id="prevLeftSignBox">
                 </div>
                 <div class="signature-box" style="position: relative;">
+                  <img src="assets/GHN_company_seal.png" class="company-seal-img" alt="ตราประทับบริษัท">
                   <img id="prevSignatureImg" src="" style="display: none; position: absolute; max-height: 75px; width: auto; bottom: 78px; left: 50%; transform: translateX(-50%); pointer-events: none; mix-blend-mode: multiply; z-index: 5;" alt="ลายเซ็น">
-                  <div class="signature-line" style="margin-top: 40px;"></div>
+                  <div class="signature-line" style="margin-top: 45px;"></div>
                   <strong style="font-size:12px;" id="prevSignerNameVal">-</strong>
-                  <span class="signature-label" style="margin-top: -30px;" id="prevSignerLabel">ผู้ออกเอกสาร / ผู้มีอำนาจลงนาม</span>
+                  <span class="signature-label" id="prevSignerLabel">ผู้ออกเอกสาร / ผู้มีอำนาจลงนาม</span>
                 </div>
               </div>
 
@@ -1099,11 +1099,11 @@
               </p>
 
               <div class="doc-signatures-grid" style="margin-top: 25px;">
-                <img src="assets/GHN_company_seal.png" class="company-seal-img" alt="ตราประทับบริษัท">
-                <div class="signature-box" style="grid-column: 2;">
-                  <div class="signature-line" style="margin-top: 30px;"></div>
+                <div class="signature-box" style="grid-column: 2; position: relative;">
+                  <img src="assets/GHN_company_seal.png" class="company-seal-img" alt="ตราประทับบริษัท">
+                  <div class="signature-line" style="margin-top: 45px;"></div>
                   <strong style="font-size:11px;" id="prevWhtSigner">-</strong>
-                  <span class="signature-label" style="margin-top: -30px;">ผู้มีอำนาจนำส่งภาษี</span>
+                  <span class="signature-label">ผู้มีอำนาจนำส่งภาษี</span>
                 </div>
               </div>
             </div>
@@ -2148,6 +2148,7 @@
     </div>
   </div>
 
+  <script src="assets/html2pdf.bundle.min.js"></script>
   <script src="app.js"></script>
   <script>
     if ('serviceWorker' in navigator) {
