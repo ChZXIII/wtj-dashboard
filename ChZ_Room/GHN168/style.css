@@ -1210,12 +1210,28 @@ textarea.form-control {
 }
 
 /* --- Print overrides --- */
+@page {
+  margin: 0;
+}
+
 @media print {
+  html {
+    height: auto !important;
+    overflow: visible !important;
+  }
+
   body {
     background: #ffffff !important;
     color: #000000 !important;
     display: block !important;
     height: auto !important;
+    overflow: visible !important;
+  }
+
+  .app-container {
+    display: block !important;
+    height: auto !important;
+    width: 100% !important;
     overflow: visible !important;
   }
   
@@ -1237,10 +1253,6 @@ textarea.form-control {
   .doc-gen-container {
     display: block !important;
     height: auto !important;
-  }
-
-  @page {
-    margin: 0;
   }
 
   .doc-preview-panel {
