@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GHN168 | Accounting & Document Hub</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="manifest" href="manifest.json?v=22">
+  <link rel="manifest" href="manifest.json?v=23">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="GHN168">
@@ -197,7 +197,7 @@
               </div>
             </div>
             <p style="font-size:12px; color: var(--text-secondary); margin-top: 12px; line-height: 1.4;">
-              * รายการค้างซิงค์จะเกิดเมื่อไม่มีอินเทอร์เน็ตหรือ Apps Script ล่มชั่วคราว ระบบจะเซฟเก็บประวัติแบบออฟไลน์ไว้ในเครื่อง และซิงค์ต่อทันทีเมื่อกดบันทึกในครั้งถัดไปแก
+              * รายการค้างซิงค์จะเกิดเมื่อไม่มีอินเทอร์เน็ตหรือ Apps Script ล่มชั่วคราว ระบบจะเซฟเก็บประวัติแบบออฟไลน์ไว้ในเครื่อง และซิงค์ต่อทันทีเมื่อกดบันทึกในครั้งถัดไป
             </p>
           </div>
 
@@ -223,7 +223,7 @@
         <div class="card" style="margin-top: 24px;">
           <div class="card-title">สรุปผลงานและการหักเงินสะสมรายบุคคล (Sales Share & Reserve Fund)</div>
           <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 16px;">
-            คำนวณจากใบเสร็จรับเงินที่ซิงค์สำเร็จแล้ว เพื่อใช้คำนวณสัดส่วนปันผลและยอดเงินสะสมส่วนตัวที่จะคืนเมื่อปิดงบปีแก
+            คำนวณจากใบเสร็จรับเงินที่ซิงค์สำเร็จแล้ว เพื่อใช้คำนวณสัดส่วนปันผลและยอดเงินสะสมส่วนตัวที่จะคืนเมื่อปิดงบปี
           </p>
           
           <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: stretch; margin-top: 16px;">
@@ -327,7 +327,7 @@
         <div class="card" style="margin-top: 24px;">
           <div class="card-title">สรุปยอดจ่ายสะสมตามหมวดหมู่ (Expense Category Breakdown)</div>
           <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 16px;">
-            วิเคราะห์สัดส่วนรายจ่ายตามประเภทการจัดซื้อ เพื่อดูว่าบริษัทเอาเงินไปซื้ออะไรบ้างสะสมแก
+            วิเคราะห์สัดส่วนรายจ่ายตามประเภทการจัดซื้อ เพื่อดูว่าบริษัทเอาเงินไปซื้ออะไรบ้างสะสม
           </p>
           <div id="dashExpenseCategoryContainer" style="display: flex; flex-direction: column; gap: 12px;">
             <!-- Rendered dynamically -->
@@ -564,7 +564,7 @@
                   <label for="docClientTaxId">เลขประจำตัวผู้เสียภาษี</label>
                   <input type="text" id="docClientTaxId" class="form-control mono" placeholder="1234567890123">
                   <!-- Tax ID Warning (ADVISORY) -->
-                  <span id="clientTaxIdWarning" style="color: #ef4444; font-size: 11px; display: none;">* เลขผู้เสียภาษีต้องเป็นตัวเลข 13 หลักนะแก</span>
+                  <span id="clientTaxIdWarning" style="color: #ef4444; font-size: 11px; display: none;">* เลขผู้เสียภาษีต้องเป็นตัวเลข 13 หลัก</span>
                 </div>
                 <div class="form-group" style="flex: 1;">
                   <label for="docClientBranch">รหัสสาขา</label>
@@ -583,7 +583,7 @@
 
               <div class="form-group" style="margin-top: 12px;">
                 <label for="docRemarks">หมายเหตุเพิ่มเติม (สัญญาจ้าง / มัดจำ / ข้อตกลง)</label>
-                <textarea id="docRemarks" class="form-control" rows="3" placeholder="ระบุข้อตกลง สัญญาจ้าง การมัดจำ หรือหมายเหตุเพิ่มเติมแก"></textarea>
+                <textarea id="docRemarks" class="form-control" rows="3" placeholder="ระบุข้อตกลง สัญญาจ้าง การมัดจำ หรือหมายเหตุเพิ่มเติม"></textarea>
               </div>
 
               <!-- Signer & Company Seal Section moved from settings -->
@@ -721,7 +721,7 @@
                   <label for="whtPayeeTaxId">เลขผู้เสียภาษี / เลขบัตรประชาชน</label>
                   <input type="text" id="whtPayeeTaxId" class="form-control mono" placeholder="1234567890123">
                   <!-- Tax ID Warning (ADVISORY) -->
-                  <span id="payeeTaxIdWarning" style="color: #ef4444; font-size: 11px; display: none;">* เลขผู้เสียภาษีต้องเป็นตัวเลข 13 หลักนะแก</span>
+                  <span id="payeeTaxIdWarning" style="color: #ef4444; font-size: 11px; display: none;">* เลขผู้เสียภาษีต้องเป็นตัวเลข 13 หลัก</span>
                 </div>
                 <div class="form-group" style="flex: 1;">
                   <label for="whtPayeeBranch">รหัสสาขา</label>
@@ -1146,7 +1146,7 @@
             คำแนะนำจากน้องพิม
           </div>
           <p style="font-size: 14px; line-height: 1.6;">
-            แกสามารถสร้างโฟลเดอร์ใน Google Drive ของ Gmail บริษัท จากนั้นอัปโหลดไฟล์สแกน PDF ต่างๆ ขึ้นไป แล้วตั้งค่าแชร์ไฟล์เป็น <strong>"ทุกคนที่มีลิงก์มีสิทธิ์อ่าน" (Anyone with the link can view)</strong> จากนั้นนำคัดลอกแชร์ลิงก์ดังกล่าวมากดปุ่ม "+ เพิ่มลิงก์เอกสารใหม่" ด้านบน เพื่อเก็บประวัติไว้ในคลังนี้ เพื่อเรียกใช้งานเอกสารทางภาษีได้อย่างรวดเร็วและปลอดภัยจากทุกอุปกรณ์นะแก!
+            สามารถสร้างโฟลเดอร์ใน Google Drive ของ Gmail บริษัท จากนั้นอัปโหลดไฟล์สแกน PDF ต่างๆ ขึ้นไป แล้วตั้งค่าแชร์ไฟล์เป็น <strong>"ทุกคนที่มีลิงก์มีสิทธิ์อ่าน" (Anyone with the link can view)</strong> จากนั้นคัดลอกแชร์ลิงก์ดังกล่าวมากดปุ่ม "+ เพิ่มลิงก์เอกสารใหม่" ด้านบน เพื่อเก็บประวัติไว้ในคลังนี้ สำหรับเรียกใช้งานเอกสารทางภาษีได้อย่างรวดเร็วและปลอดภัยจากทุกอุปกรณ์
           </p>
         </div>
       </section>
@@ -1385,7 +1385,7 @@
               </thead>
               <tbody id="taxExportListBody">
                 <tr>
-                  <td colspan="9" style="text-align: center; color: var(--text-secondary); padding: 20px;">กรุณากดปุ่มแสดงตัวอย่างรายงานด้านบนจ้าแก!</td>
+                  <td colspan="9" style="text-align: center; color: var(--text-secondary); padding: 20px;">กรุณากดปุ่มแสดงตัวอย่างรายงานด้านบน</td>
                 </tr>
               </tbody>
             </table>
@@ -1413,7 +1413,7 @@
                 <label for="settingScriptUrl">Google Apps Script Web App URL</label>
                 <input type="text" id="settingScriptUrl" class="form-control mono" placeholder="https://script.google.com/macros/s/.../exec">
                 <p style="font-size: 11px; color: var(--text-secondary); line-height: 1.4; margin-top:4px;">
-                  * ลิงก์ปลายทาง Apps Script ที่แกดีพลอยไว้เพื่อยิงประวัติเข้าชีต (ลงท้ายด้วย /exec)
+                  * ลิงก์ปลายทาง Apps Script ที่ติดตั้ง (Deploy) ไว้เพื่อยิงประวัติเข้าชีต (ลงท้ายด้วย /exec)
                 </p>
               </div>
 
@@ -1421,7 +1421,7 @@
                 <label for="settingSheetId">Google Spreadsheet ID</label>
                 <input type="text" id="settingSheetId" class="form-control mono" placeholder="เช่น 1aBcDeFgHiJkLmNoPqRsTuVwXyZ...">
                 <p style="font-size: 11px; color: var(--text-secondary); line-height: 1.4; margin-top:4px;">
-                  * คัดลอกจาก URL ของชีตปฏิทินบัญชีบริษัทแกตรงช่องหลัง /d/ ในบราวเซอร์
+                  * คัดลอกจาก URL ของชีตปฏิทินบัญชีบริษัทตรงช่องหลัง /d/ ในบราวเซอร์
                 </p>
               </div>
 
@@ -1429,7 +1429,7 @@
                 <label for="settingCompanyDriveUrl">ลิงก์ Google Drive หลักของบริษัท</label>
                 <input type="text" id="settingCompanyDriveUrl" class="form-control mono" placeholder="https://drive.google.com/drive/folders/...">
                 <p style="font-size: 11px; color: var(--text-secondary); line-height: 1.4; margin-top:4px;">
-                  * ลิงก์โฟลเดอร์ Google Drive หลักของบริษัท สำหรับกดเข้าด่วนที่หน้าแรกแก
+                  * ลิงก์โฟลเดอร์ Google Drive หลักของบริษัท สำหรับกดเข้าด่วนที่หน้าแรก
                 </p>
               </div>
 
@@ -1454,7 +1454,7 @@
             <div class="card">
               <div class="card-title">จัดการข้อมูลสำรอง (Backup & Restore)</div>
               <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.4;">
-                ดาวน์โหลดประวัติธุรกรรม เอกสาร Google Drive และการตั้งค่าทั้งหมดมาสำรองเก็บไว้ในเครื่องแก หรือกู้คืนข้อมูลเพื่อสลับไปใช้บนเครื่องอื่น
+                ดาวน์โหลดประวัติธุรกรรม เอกสาร Google Drive และการตั้งค่าทั้งหมดมาสำรองเก็บไว้ในอุปกรณ์นี้ หรือกู้คืนข้อมูลเพื่อสลับไปใช้บนเครื่องอื่น
               </p>
               <div style="display: flex; gap: 12px;">
                 <button id="btnExportBackup" class="btn-secondary" style="flex: 1; justify-content: center;">
@@ -1494,7 +1494,7 @@
                 <label for="doc_sellerTaxId">เลขผู้เสียภาษี 13 หลัก</label>
                 <input type="text" id="doc_sellerTaxId" class="form-control mono">
                 <!-- Tax ID Warning (ADVISORY) -->
-                <span id="sellerTaxIdWarning" style="color: #ef4444; font-size: 11px; display: none;">* เลขผู้เสียภาษีต้องเป็นตัวเลข 13 หลักนะแก</span>
+                <span id="sellerTaxIdWarning" style="color: #ef4444; font-size: 11px; display: none;">* เลขผู้เสียภาษีต้องเป็นตัวเลข 13 หลัก</span>
               </div>
               <div class="form-group">
                 <label for="doc_sellerPhone">เบอร์โทรศัพท์ติดต่อ</label>
@@ -1557,7 +1557,7 @@
             Danger Zone (พื้นที่อันตราย)
           </h4>
           <p style="margin: 0 0 12px 0; font-size: 11px; color: var(--text-secondary); line-height: 1.4;">
-            ใช้ล้างข้อมูลประวัติทดสอบในเครื่องนี้ทั้งหมดเพื่อเริ่มระบบงานจริง ข้อมูลชีตและการตั้งค่าบริษัทจะยังคงอยู่แก
+            ใช้ล้างข้อมูลประวัติทดสอบในเครื่องนี้ทั้งหมดเพื่อเริ่มระบบงานจริง ข้อมูลชีตและการตั้งค่าบริษัทจะยังคงอยู่
           </p>
           <div style="margin-bottom: 12px;">
             <label for="confirmPimResetInput" style="font-size: 11px; font-weight: 700; display: block; margin-bottom: 4px; color: var(--text-primary);">
@@ -1647,7 +1647,7 @@
           <div class="form-group" style="flex: 1.5;">
             <label for="expensePayeeTaxId">เลขประจำตัวผู้เสียภาษีคู่ค้า</label>
             <input type="text" id="expensePayeeTaxId" class="form-control mono" placeholder="13 หลัก หรือเลขบัตรประชาชน">
-            <span id="expensePayeeTaxIdWarning" style="color: #ef4444; font-size: 11px; display: none;">* ต้องเป็นตัวเลข 13 หลักนะแก</span>
+            <span id="expensePayeeTaxIdWarning" style="color: #ef4444; font-size: 11px; display: none;">* ต้องเป็นตัวเลข 13 หลัก</span>
           </div>
           <div class="form-group" style="flex: 1;">
             <label for="expensePayeeBranch">รหัสสาขาคู่ค้า</label>
