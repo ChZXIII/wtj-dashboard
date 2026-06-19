@@ -196,14 +196,14 @@ body.light-mode .logo-light-only {
 }
 
 .sidebar-section-title {
-  font-size: 10px;
+  font-size: 13px;
   text-transform: uppercase;
   letter-spacing: 1.2px;
-  color: var(--text-secondary);
+  color: var(--text-primary);
   font-weight: 800;
-  padding: 12px 16px 4px 16px;
-  border-top: 1.5px dashed rgba(156, 163, 175, 0.2);
-  margin-top: 16px;
+  padding: 16px 16px 6px 16px;
+  border-top: 2px dashed rgba(156, 163, 175, 0.4);
+  margin-top: 20px;
   font-family: 'Prompt', sans-serif;
 }
 .sidebar-section-title:first-of-type {
