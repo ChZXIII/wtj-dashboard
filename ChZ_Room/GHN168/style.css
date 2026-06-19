@@ -743,6 +743,7 @@ textarea.form-control {
   line-height: 1.4;
   margin: 0 auto;
   zoom: var(--preview-scale-factor, 1);
+  flex-shrink: 0;
 }
 
 .doc-header-grid {
@@ -984,6 +985,7 @@ textarea.form-control {
   gap: 15px;
   font-size: 11px;
   zoom: var(--preview-scale-factor, 1);
+  flex-shrink: 0;
 }
 
 .wht-header-box {
