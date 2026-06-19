@@ -1891,7 +1891,7 @@ function syncDocPreview() {
   if (prevSignatureImg) {
     if (showSignature) {
       prevSignatureImg.style.display = 'block';
-      prevSignatureImg.src = `sig_${signatureSelectVal}.png`;
+      prevSignatureImg.src = `signatures/sig_${signatureSelectVal}.png`;
     } else {
       prevSignatureImg.style.display = 'none';
     }
