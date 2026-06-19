@@ -1089,6 +1089,7 @@ function setupEventListeners() {
         บันทึกรายจ่าย
       `;
       formAddExpense.reset();
+      setExpenseMode('simple');
       document.getElementById('expenseDate').value = new Date().toISOString().slice(0, 10);
       groupCustomExpenseCategory.style.display = 'none';
       calculateExpenseForm();
@@ -1113,6 +1114,31 @@ function setupEventListeners() {
         document.getElementById('expenseCustomCategory').required = false;
       }
     });
+
+    // Switch mode events
+    document.getElementById('btnExpenseModeSimple').addEventListener('click', () => setExpenseMode('simple'));
+    document.getElementById('btnExpenseModeDetailed').addEventListener('click', () => setExpenseMode('detailed'));
+
+    // Sync simple VAT dropdown to detailed elements
+    const simpleVatSelect = document.getElementById('expenseVatSystemSimple');
+    if (simpleVatSelect) {
+      simpleVatSelect.addEventListener('change', (e) => {
+        const val = e.target.value;
+        const priceTypeEl = document.getElementById('expensePriceType');
+        const vatSelectEl = document.getElementById('expenseVatSelect');
+        if (val === '0') {
+          if (priceTypeEl) priceTypeEl.value = 'exclude';
+          if (vatSelectEl) vatSelectEl.value = '0';
+        } else if (val === '7_exclude') {
+          if (priceTypeEl) priceTypeEl.value = 'exclude';
+          if (vatSelectEl) vatSelectEl.value = '7';
+        } else if (val === '7_include') {
+          if (priceTypeEl) priceTypeEl.value = 'include';
+          if (vatSelectEl) vatSelectEl.value = '7';
+        }
+        calculateExpenseForm();
+      });
+    }
 
     // Live calculator events
     document.getElementById('expensePriceType').addEventListener('change', calculateExpenseForm);
@@ -3615,6 +3641,71 @@ function renderExpenseList() {
   }).join('');
 }
 
+function setExpenseMode(mode) {
+  const form = document.getElementById('formAddExpense');
+  if (!form) return;
+  form.dataset.mode = mode;
+
+  const btnSimple = document.getElementById('btnExpenseModeSimple');
+  const btnDetailed = document.getElementById('btnExpenseModeDetailed');
+
+  if (mode === 'simple') {
+    if (btnSimple) {
+      btnSimple.classList.add('active');
+      btnSimple.style.background = 'var(--accent-color)';
+      btnSimple.style.color = 'white';
+    }
+    if (btnDetailed) {
+      btnDetailed.classList.remove('active');
+      btnDetailed.style.background = 'var(--card-bg)';
+      btnDetailed.style.color = 'var(--text-color)';
+    }
+
+    document.querySelectorAll('.expense-detailed-field').forEach(el => {
+      el.style.display = 'none';
+    });
+    document.querySelectorAll('.expense-simple-field').forEach(el => {
+      el.style.display = el.tagName === 'DIV' || el.classList.contains('form-group') ? 'block' : 'inline-block';
+    });
+
+    const payeeEl = document.getElementById('expensePayee');
+    const descEl = document.getElementById('expenseDesc');
+    if (payeeEl) payeeEl.required = false;
+    if (descEl) descEl.required = false;
+  } else {
+    if (btnSimple) {
+      btnSimple.classList.remove('active');
+      btnSimple.style.background = 'var(--card-bg)';
+      btnSimple.style.color = 'var(--text-color)';
+    }
+    if (btnDetailed) {
+      btnDetailed.classList.add('active');
+      btnDetailed.style.background = 'var(--accent-color)';
+      btnDetailed.style.color = 'white';
+    }
+
+    document.querySelectorAll('.expense-detailed-field').forEach(el => {
+      if (el.classList.contains('form-row')) {
+        el.style.display = 'flex';
+      } else if (el.classList.contains('form-group')) {
+        el.style.display = 'block';
+      } else {
+        el.style.display = 'block';
+      }
+    });
+    document.querySelectorAll('.expense-simple-field').forEach(el => {
+      el.style.display = 'none';
+    });
+
+    const payeeEl = document.getElementById('expensePayee');
+    const descEl = document.getElementById('expenseDesc');
+    if (payeeEl) payeeEl.required = true;
+    if (descEl) descEl.required = true;
+  }
+
+  calculateExpenseForm();
+}
+
 function calculateExpenseForm() {
   const baseEl = document.getElementById('expenseBaseAmount');
   if (!baseEl) return;
@@ -3623,13 +3714,21 @@ function calculateExpenseForm() {
   const vatRate = parseFloat(document.getElementById('expenseVatSelect').value) || 0;
   const whtRate = parseFloat(document.getElementById('expenseWhtSelect').value) || 0;
 
-  // Change Label according to priceType
+  // Check current mode
+  const form = document.getElementById('formAddExpense');
+  const mode = form ? (form.dataset.mode || 'simple') : 'simple';
+
+  // Change Label according to mode and priceType
   const labelAmount = document.getElementById('labelExpenseAmount');
   if (labelAmount) {
-    if (priceType === 'include') {
-      labelAmount.textContent = 'จำนวนเงินรวม VAT (Net/Gross)';
+    if (mode === 'simple') {
+      labelAmount.textContent = 'จำนวนเงิน / ยอดจ่าย';
     } else {
-      labelAmount.textContent = 'จำนวนเงินก่อน VAT (Gross)';
+      if (priceType === 'include') {
+        labelAmount.textContent = 'จำนวนเงินรวม VAT (Net/Gross)';
+      } else {
+        labelAmount.textContent = 'จำนวนเงินก่อน VAT (Gross)';
+      }
     }
   }
 
@@ -3670,29 +3769,52 @@ function saveExpense() {
     const dateParts = dateVal.split('-');
     const dateStr = dateParts.length === 3 ? `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}` : '';
 
+    const form = document.getElementById('formAddExpense');
+    const expenseMode = form ? (form.dataset.mode || 'simple') : 'simple';
+
     let billNo = document.getElementById('expenseBillNo').value.trim();
-    const payee = document.getElementById('expensePayee').value.trim();
-    const payeeTaxId = document.getElementById('expensePayeeTaxId').value.trim();
-    const payeeBranch = document.getElementById('expensePayeeBranch').value.trim() || '00000';
-    const payeeAddress = document.getElementById('expensePayeeAddress').value.trim() || '-';
+    let payee = document.getElementById('expensePayee').value.trim();
+    let payeeTaxId = document.getElementById('expensePayeeTaxId').value.trim();
+    let payeeBranch = document.getElementById('expensePayeeBranch').value.trim();
+    let payeeAddress = document.getElementById('expensePayeeAddress').value.trim();
     let category = document.getElementById('expenseCategory').value;
     if (category === 'อื่นๆ') {
       category = document.getElementById('expenseCustomCategory').value.trim() || 'อื่นๆ';
     }
-    const desc = document.getElementById('expenseDesc').value.trim();
+    let desc = document.getElementById('expenseDesc').value.trim();
     const inputVal = parseFloat(document.getElementById('expenseBaseAmount').value) || 0;
     const priceType = document.getElementById('expensePriceType').value;
     const vatRate = parseFloat(document.getElementById('expenseVatSelect').value) || 0;
     const whtRate = parseFloat(document.getElementById('expenseWhtSelect').value) || 0;
-    const whtType = document.getElementById('expenseWhtType').value;
-    const taxFilingStatus = document.getElementById('expenseTaxFilingStatus').value;
+    let whtType = document.getElementById('expenseWhtType').value;
+    let taxFilingStatus = document.getElementById('expenseTaxFilingStatus').value;
     const paymentMethod = document.getElementById('expensePaymentMethod').value;
-    const paymentStatus = document.getElementById('expensePaymentStatus').value;
+    let paymentStatus = document.getElementById('expensePaymentStatus').value;
     const actualPaidDateVal = document.getElementById('expenseActualPaidDate').value;
-    const actualPaidDate = actualPaidDateVal ? formatDate(actualPaidDateVal) : dateStr;
-    const billUrl = document.getElementById('expenseBillUrl').value.trim();
-    const remarks = document.getElementById('expenseRemarks').value.trim();
-    const projectLink = document.getElementById('expenseProjectLink').value;
+    let actualPaidDate = actualPaidDateVal ? formatDate(actualPaidDateVal) : dateStr;
+    let billUrl = document.getElementById('expenseBillUrl').value.trim();
+    let remarks = document.getElementById('expenseRemarks').value.trim();
+    let projectLink = document.getElementById('expenseProjectLink').value;
+
+    if (expenseMode === 'simple') {
+      payee = "ทั่วไป";
+      payeeTaxId = "";
+      payeeBranch = "00000";
+      payeeAddress = "-";
+      taxFilingStatus = "ยังไม่ได้ยื่น";
+      paymentStatus = "จ่ายเงินแล้ว";
+      actualPaidDate = dateStr;
+      billUrl = "";
+      remarks = "";
+      projectLink = "";
+      whtType = (whtRate > 0) ? "pnd3" : "none";
+      if (!desc) {
+        desc = category;
+      }
+    } else {
+      payeeBranch = payeeBranch || '00000';
+      payeeAddress = payeeAddress || '-';
+    }
 
     // Calculations based on Price Type (VAT Inclusive vs Exclusive)
     let baseAmount = 0;
@@ -3752,7 +3874,8 @@ function saveExpense() {
       whtCertificateNo: (whtRate > 0) ? billNo : '-',
       remarks: remarks,
       vatRate: vatRate,
-      whtRate: whtRate
+      whtRate: whtRate,
+      expenseMode: expenseMode
     };
 
     // Check if HITL approval is required (Amount > 10,000 THB)
@@ -3918,6 +4041,13 @@ function editExpense(index) {
     document.getElementById('expenseDate').value = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
   }
 
+  // Load mode & set layout
+  let mode = doc.expenseMode;
+  if (!mode) {
+    mode = (doc.name === 'ทั่วไป' || !doc.name) ? 'simple' : 'detailed';
+  }
+  setExpenseMode(mode);
+
   document.getElementById('expenseBillNo').value = doc.number.startsWith('PV-') && doc.number.split('-').length === 3 ? '' : doc.number;
   document.getElementById('expensePayee').value = doc.name;
   document.getElementById('expensePayeeTaxId').value = doc.payeeTaxId || '';
@@ -3955,6 +4085,20 @@ function editExpense(index) {
   // Deduce VAT and WHT rates
   const vatRate = doc.vatAmount > 0 ? 7 : 0;
   const whtRate = doc.whtAmount > 0 ? Math.round((doc.whtAmount / doc.baseAmount) * 100) : 0;
+
+  // Sync simple VAT dropdown
+  let vatSystemSimpleVal = '0';
+  if (vatRate === 7) {
+    if (priceType === 'exclude') {
+      vatSystemSimpleVal = '7_exclude';
+    } else if (priceType === 'include') {
+      vatSystemSimpleVal = '7_include';
+    }
+  }
+  const vatSimpleEl = document.getElementById('expenseVatSystemSimple');
+  if (vatSimpleEl) {
+    vatSimpleEl.value = vatSystemSimpleVal;
+  }
 
   document.getElementById('expenseVatSelect').value = vatRate.toString();
   document.getElementById('expenseWhtSelect').value = whtRate.toString();
@@ -4097,6 +4241,7 @@ window.printPaymentVoucher = printPaymentVoucher;
 window.exportPdfClientSide = exportPdfClientSide;
 window.editExpense = editExpense;
 window.deleteExpense = deleteExpense;
+window.setExpenseMode = setExpenseMode;
 
 function getDonutSlicePath(x, y, r, R, startAngle, endAngle) {
   const d2r = Math.PI / 180;

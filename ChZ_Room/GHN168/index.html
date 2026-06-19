@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GHN168 | Accounting & Document Hub</title>
-  <link rel="stylesheet" href="style.css?v=38">
-  <link rel="manifest" href="manifest.json?v=38">
+  <link rel="stylesheet" href="style.css?v=39">
+  <link rel="manifest" href="manifest.json?v=39">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="GHN168">
@@ -1194,6 +1194,7 @@
                 <!-- Rendered dynamically -->
               </tbody>
             </table>
+          </div>
         </div>
       </section>
 
@@ -1662,35 +1663,44 @@
         <h2 class="modal-title">บันทึกรายจ่ายใหม่</h2>
         <button id="btnCloseExpenseModal" class="modal-close-btn">&times;</button>
       </div>
-      <form id="formAddExpense" onsubmit="event.preventDefault();">
+      <form id="formAddExpense" onsubmit="event.preventDefault();" data-mode="simple">
+        <!-- Expense Mode Switcher -->
+        <div class="expense-mode-switcher" style="display: flex; margin-bottom: 16px; border: 2px solid var(--border-color); border-radius: 8px; overflow: hidden; box-shadow: 2px 2px 0 var(--border-color);">
+          <button type="button" id="btnExpenseModeSimple" class="mode-tab-btn active" style="flex: 1; padding: 10px; border: none; background: var(--accent-color); color: white; font-weight: 700; cursor: pointer; transition: all 0.2s;">บันทึกแบบง่าย</button>
+          <button type="button" id="btnExpenseModeDetailed" class="mode-tab-btn" style="flex: 1; padding: 10px; border-left: 2px solid var(--border-color); border-right: none; border-top: none; border-bottom: none; background: var(--card-bg); color: var(--text-color); font-weight: 700; cursor: pointer; transition: all 0.2s;">บันทึกแบบละเอียด</button>
+        </div>
+
         <div class="form-row" style="display: flex; gap: 12px; margin-bottom: 12px;">
           <div class="form-group" style="flex: 1;">
             <label for="expenseDate">วันที่จ่ายเงิน / วันที่ในเอกสาร</label>
             <input type="date" id="expenseDate" class="form-control" required>
           </div>
-          <div class="form-group" style="flex: 1;">
+        </div>
+
+        <div class="form-row expense-detailed-field" style="display: flex; gap: 12px; margin-bottom: 12px;">
+          <div class="form-group expense-detailed-field" style="flex: 1;">
             <label for="expenseBillNo">เลขที่บิล/ใบเสร็จ (ถ้ามี)</label>
             <input type="text" id="expenseBillNo" class="form-control mono" placeholder="เช่น INV-001">
           </div>
         </div>
 
-        <div class="form-row" style="display: flex; gap: 12px; margin-bottom: 12px; margin-top: 12px;">
-          <div class="form-group" style="flex: 2;">
+        <div class="form-row expense-detailed-field" style="display: flex; gap: 12px; margin-bottom: 12px; margin-top: 12px;">
+          <div class="form-group expense-detailed-field" style="flex: 2;">
             <label for="expensePayee">ผู้รับเงิน (Vendor / Payee)</label>
             <input type="text" id="expensePayee" class="form-control" placeholder="เช่น บจก. แอดวานซ์ ไวร์เลส, นายสมชาย" required>
           </div>
-          <div class="form-group" style="flex: 1.5;">
+          <div class="form-group expense-detailed-field" style="flex: 1.5;">
             <label for="expensePayeeTaxId">เลขประจำตัวผู้เสียภาษีคู่ค้า</label>
             <input type="text" id="expensePayeeTaxId" class="form-control mono" placeholder="13 หลัก หรือเลขบัตรประชาชน">
             <span id="expensePayeeTaxIdWarning" style="color: #ef4444; font-size: 11px; display: none;">* ต้องเป็นตัวเลข 13 หลัก</span>
           </div>
-          <div class="form-group" style="flex: 1;">
+          <div class="form-group expense-detailed-field" style="flex: 1;">
             <label for="expensePayeeBranch">รหัสสาขาคู่ค้า</label>
             <input type="text" id="expensePayeeBranch" class="form-control mono" placeholder="00000" value="00000">
           </div>
         </div>
 
-        <div class="form-group" style="margin-bottom: 12px;">
+        <div class="form-group expense-detailed-field" style="margin-bottom: 12px;">
           <label for="expensePayeeAddress">ที่อยู่คู่ค้า</label>
           <input type="text" id="expensePayeeAddress" class="form-control" placeholder="ที่อยู่สำหรับการจัดทำใบรับรอง 50 ทวิ">
         </div>
@@ -1723,7 +1733,7 @@
             <label for="expenseCustomCategory">ระบุหมวดหมู่ใหม่</label>
             <input type="text" id="expenseCustomCategory" class="form-control" placeholder="พิมพ์หมวดหมู่ที่ต้องการ">
           </div>
-          <div class="form-group" style="flex: 1;">
+          <div class="form-group expense-detailed-field" style="flex: 1;">
             <label for="expenseProjectLink">ผูกกับโครงการ (Project Link)</label>
             <select id="expenseProjectLink" class="form-control">
               <option value="">-- ไม่ผูกโครงการ (ทั่วไป) --</option>
@@ -1738,7 +1748,15 @@
 
         <!-- Row 1: Price Type, Amount, VAT -->
         <div class="form-row" style="display: flex; gap: 12px; margin-bottom: 12px;">
-          <div class="form-group" style="flex: 1;">
+          <div class="form-group expense-simple-field" style="flex: 1; display: none;">
+            <label for="expenseVatSystemSimple" style="min-height: 38px; display: block; margin-bottom: 6px;">ระบบ VAT (แบบง่าย)</label>
+            <select id="expenseVatSystemSimple" class="form-control">
+              <option value="0">ไม่มี VAT</option>
+              <option value="7_exclude">แยก VAT 7% (ราคาไม่รวม VAT)</option>
+              <option value="7_include">รวม VAT 7% (ราคารวม VAT แล้ว)</option>
+            </select>
+          </div>
+          <div class="form-group expense-detailed-field" style="flex: 1;">
             <label for="expensePriceType" style="min-height: 38px; display: block; margin-bottom: 6px;">ประเภทราคาสินค้า</label>
             <select id="expensePriceType" class="form-control">
               <option value="exclude">ราคาแยก VAT (Exclude)</option>
@@ -1749,7 +1767,7 @@
             <label id="labelExpenseAmount" for="expenseBaseAmount" style="min-height: 38px; display: block; margin-bottom: 6px;">จำนวนเงินก่อน VAT (Gross)</label>
             <input type="number" id="expenseBaseAmount" step="0.01" class="form-control mono" placeholder="0.00" required>
           </div>
-          <div class="form-group" style="flex: 1;">
+          <div class="form-group expense-detailed-field" style="flex: 1;">
             <label for="expenseVatSelect" style="min-height: 38px; display: block; margin-bottom: 6px;">ภาษีมูลค่าเพิ่ม (VAT ซื้อ)</label>
             <select id="expenseVatSelect" class="form-control">
               <option value="0">ไม่มี VAT (0%)</option>
@@ -1769,7 +1787,7 @@
               <option value="5">หัก 5% (ค่าเช่า/โฆษณา)</option>
             </select>
           </div>
-          <div class="form-group" style="flex: 1;">
+          <div class="form-group expense-detailed-field" style="flex: 1;">
             <label for="expenseWhtType" style="min-height: 38px; display: block; margin-bottom: 6px;">ประเภทยื่นภาษีหัก ณ ที่จ่าย</label>
             <select id="expenseWhtType" class="form-control">
               <option value="none">ไม่มีหัก ณ ที่จ่าย</option>
@@ -1777,7 +1795,7 @@
               <option value="pnd53">ภ.ง.ด.53 (นิติบุคคล)</option>
             </select>
           </div>
-          <div class="form-group" style="flex: 1;">
+          <div class="form-group expense-detailed-field" style="flex: 1;">
             <label for="expenseTaxFilingStatus" style="min-height: 38px; display: block; margin-bottom: 6px;">สถานะการยื่นภาษี WHT (50.ทวิ)</label>
             <select id="expenseTaxFilingStatus" class="form-control">
               <option value="ยังไม่ได้ยื่น">ยังไม่ได้ยื่น</option>
@@ -1797,7 +1815,7 @@
               <option value="CC">บัตรเครดิตบริษัท (CC)</option>
             </select>
           </div>
-          <div class="form-group" style="flex: 1;">
+          <div class="form-group expense-detailed-field" style="flex: 1;">
             <label for="expensePaymentStatus" style="min-height: 38px; display: block; margin-bottom: 6px;">สถานะการจ่ายเงิน</label>
             <select id="expensePaymentStatus" class="form-control">
               <option value="จ่ายเงินแล้ว">จ่ายเงินแล้ว</option>
@@ -1806,7 +1824,7 @@
               <option value="ยกเลิก">ยกเลิก</option>
             </select>
           </div>
-          <div class="form-group" style="flex: 1;">
+          <div class="form-group expense-detailed-field" style="flex: 1;">
             <label for="expenseActualPaidDate" style="min-height: 38px; display: block; margin-bottom: 6px;">วันที่จ่ายเงินจริง</label>
             <input type="date" id="expenseActualPaidDate" class="form-control">
           </div>
@@ -1821,12 +1839,12 @@
           </div>
         </div>
 
-        <div class="form-row" style="display: flex; gap: 12px; margin-top: 12px; margin-bottom: 12px;">
-          <div class="form-group" style="flex: 1;">
+        <div class="form-row expense-detailed-field" style="display: flex; gap: 12px; margin-top: 12px; margin-bottom: 12px;">
+          <div class="form-group expense-detailed-field" style="flex: 1;">
             <label for="expenseBillUrl" style="min-height: 38px; display: block; margin-bottom: 6px;">ลิงก์ Google Drive แนบหลักฐานใบเสร็จ (ถ้ามี)</label>
             <input type="text" id="expenseBillUrl" class="form-control mono" placeholder="https://drive.google.com/...">
           </div>
-          <div class="form-group" style="flex: 1;">
+          <div class="form-group expense-detailed-field" style="flex: 1;">
             <label for="expenseRemarks" style="min-height: 38px; display: block; margin-bottom: 6px;">หมายเหตุเพิ่มเติม</label>
             <input type="text" id="expenseRemarks" class="form-control" placeholder="ระบุหมายเหตุถ้ามี">
           </div>
@@ -2178,7 +2196,7 @@
   </div>
 
   <script src="assets/html2pdf.bundle.min.js"></script>
-  <script src="app.js"></script>
+  <script src="app.js?v=39"></script>
   <script>
     if ('serviceWorker' in navigator) {
       let refreshing = false;
