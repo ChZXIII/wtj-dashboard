@@ -35,7 +35,8 @@ if not os.path.exists(PYTHON3_PATH):
 # Map ประเภทคอนเทนต์ -> โฟลเดอร์คิวใน Apple Notes
 QUEUE_MAP = {
     "reels": "Reels_Under1Min",
-    "fb_video": "FB_Videos_3-5Min",
+    "fb_video_full_podcast": "YT_Videos_Full",
+    "fb_video_full_story": "YT_Videos_Full",
     "text_post": "Text_Posts",
     "rerun_tue": "Text_Posts",
     "rerun_fri": "Text_Posts",

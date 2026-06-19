@@ -202,6 +202,162 @@ def generate_social_posts(file_ref, filename, queue_name):
     return response.text
 
 
+def format_youtube_description(raw_text, project_type, queue_name):
+    if queue_name not in ["YT_Videos_Full", "FB_Videos_Full"]:
+        return raw_text
+
+    boundary_pattern = r'(?:[\*\#\s]*(?:Description Draft|Description|คำอธิบายคลิปสั้น|ติดต่องานและลงโฆษณา|Timestamps|Chapters/Timestamps|Timeline|Timeline ช่วงเวลาสำคัญ|สารบัญเวลา|Timestamp|ติดตามช่องทางอื่นๆ|Tag ใน description|แท็ก|Tag|🔵 FACEBOOK POSTS DRAFT|\# FACEBOOK POSTS DRAFT|FACEBOOK POSTS DRAFT)[\*\#\s:]*|$)'
+
+    # 1. Extract and clean Title Options
+    title_options = ""
+    title_match = re.search(r'(?:[\*\#\s]*Title Options[\*\#\s:]*)[\s\S]*?(?=' + boundary_pattern + ')', raw_text, re.IGNORECASE)
+    if title_match:
+        title_options = title_match.group(0).strip()
+        text_for_desc = raw_text.replace(title_match.group(0), "")
+    else:
+        text_for_desc = raw_text
+        
+    if title_options:
+        title_options_lines = []
+        for line in title_options.splitlines():
+            line_lower = line.lower()
+            if any(kw in line_lower for kw in ["ติดต่องานและลงโฆษณา", "line :", "email :"]) or "@ghn168" in line_lower or "charismazz" in line_lower or "ghn168media" in line_lower or "silver_nsx" in line_lower:
+                continue
+            title_options_lines.append(line)
+        title_options = "\n".join(title_options_lines).strip()
+
+    # 2. Extract and clean Description Draft
+    desc_text = ""
+    desc_match = re.search(r'(?:[\*\#\s]*(?:Description Draft|Description|คำอธิบายคลิปสั้น)[\*\#\s:]*)[\s\S]*?(?=' + boundary_pattern + ')', text_for_desc, re.IGNORECASE)
+    if desc_match:
+        desc_text = desc_match.group(0).strip()
+        desc_text = re.sub(r'^(?:[\*\#\s]*(?:Description Draft|Description|คำอธิบายคลิปสั้น)[\*\#\s:]*)\s*', '', desc_text, flags=re.IGNORECASE).strip()
+    else:
+        # Fallback if no description draft header
+        parts = re.split(r'(?:Timestamps|Chapters/Timestamps|Timeline|Timeline ช่วงเวลาสำคัญ|สารบัญเวลา|Timestamp|ติดตามช่องทางอื่นๆ|Tag ใน description|แท็ก|Tag)', text_for_desc, maxsplit=1, flags=re.IGNORECASE)
+        if parts:
+            desc_text = parts[0].strip()
+
+    # Clean up contact details and duplicate templates from desc_text
+    desc_text_lines = []
+    for line in desc_text.splitlines():
+        line_lower = line.strip().lower()
+        if any(keyword in line_lower for keyword in ["ติดต่องานและลงโฆษณา", "line :", "email :"]) or "@ghn168" in line_lower or "charismazz" in line_lower or "ghn168media" in line_lower or "silver_nsx" in line_lower:
+            continue
+        if any(keyword in line_lower.replace(" ", "") for keyword in ["ขอขอบคุณแขกรับเชิญ", "ช่องทางการติดตาม", "ช่องทางติดต่อ"]):
+            continue
+        desc_text_lines.append(line)
+    desc_text = "\n".join(desc_text_lines).strip()
+    desc_text = re.sub(r'\s*[\*\#\-\•\s🎬🎥📝📲⏳✨]*$', '', desc_text).strip()
+
+    # 3. Extract and clean Timestamps
+    timestamps_text = ""
+    ts_match = re.search(r'(?:[\*\#\s]*(?:Timestamps|Chapters/Timestamps|Timeline|Timeline ช่วงเวลาสำคัญ|สารบัญเวลา|Timestamp)[\*\#\s:]*)[\s\S]*?(?=(?:[\*\#\s]*(?:Tags|Tag ใน description|แท็ก|Tag|ติดตามช่องทางอื่นๆ|🔵 FACEBOOK POSTS DRAFT|\# FACEBOOK POSTS DRAFT|FACEBOOK POSTS DRAFT)[\*\#\s:]*|$))', raw_text, re.IGNORECASE)
+    if ts_match:
+        timestamps_text = ts_match.group(0).strip()
+        timestamps_text = re.sub(r'^(?:[\*\#\s]*(?:Timestamps|Chapters/Timestamps|Timeline|Timeline ช่วงเวลาสำคัญ|สารบัญเวลา|Timestamp)[\*\#\s:]*)\s*', '', timestamps_text, flags=re.IGNORECASE).strip()
+        
+    ts_lines = []
+    text_to_scan = timestamps_text if timestamps_text else text_for_desc
+    for line in text_to_scan.splitlines():
+        line = line.strip()
+        if re.search(r'\b\d{1,2}:\d{2}\b', line):
+            clean_line = re.sub(r'^[\*\-\•\s]*', '', line).strip()
+            if clean_line:
+                ts_lines.append(clean_line)
+    if ts_lines:
+        timestamps_text = "\n".join(ts_lines)
+
+    # 4. Extract and clean Tags
+    tags_text = ""
+    tags_match = re.search(r'(?:Tags|Tag ใน description|แท็ก|Tag)[\s*:\s*]([\s\S]*?)$', raw_text, re.IGNORECASE)
+    if tags_match:
+        tags_text = tags_match.group(1).strip()
+        tags_text = re.sub(r'^[\*\-\•\s]*', '', tags_text).strip()
+    else:
+        hashtags = re.findall(r'#([^\s#]+)', raw_text)
+        unique_hashtags = []
+        for ht in hashtags:
+            if ht.lower() not in ["whatthejob", "wtj", "wtjstory", "wthtalk", "wtjpodcast", "aisidekick", "nongkick"]:
+                unique_hashtags.append(ht)
+        if unique_hashtags:
+            tags_text = ", ".join(list(set(unique_hashtags)))
+
+    if project_type == "sidekick":
+        contact_header = """ติดต่องานและลงโฆษณา
+Line : charismazz
+Email : silver_nsx@hotmail.com"""
+    else:
+        contact_header = """ติดต่องานและลงโฆษณา
+Line : @ghn168
+Email : ghn168media@gmail.com"""
+
+    desc_section = f"**Description Draft:**\n{desc_text}"
+
+    guest_section = ""
+    guest_lines = []
+    for line in raw_text.splitlines():
+        if any(keyword in line.replace(" ", "") for keyword in ["ขอขอบคุณแขกรับเชิญ", "ช่องทางการติดตาม", "ช่องทางติดต่อ"]):
+            if any(ph in line for ph in ["[ใส่ชื่อแขกรับเชิญ]", "[ใส่ช่องทางติดต่อแขกรับเชิญ]", "[ใส่ช่องทางติดต่อ]", "[ใส่ชื่อ]"]):
+                continue
+            clean_l = line.strip().strip('*').strip()
+            if clean_l:
+                guest_lines.append(clean_l)
+    if guest_lines:
+        guest_section = "\n\n" + "\n".join(guest_lines)
+    elif project_type == "podcast":
+        guest_section = "\n\nขอขอบคุณแขกรับเชิญ: [ใส่ชื่อแขกรับเชิญ]\nช่องทางการติดตาม: [ใส่ช่องทางติดต่อแขกรับเชิญ]"
+
+    ts_section = f"Timestamp\n{timestamps_text}"
+
+    if project_type == "sidekick":
+        outro_section = """ติดตามช่องทางอื่นๆ ของพวกเรา AI Sidekick
+YouTube : https://www.youtube.com/@AISidekick"""
+    else:
+        outro_section = """ติดตามช่องทางอื่นๆ ของพวกเรา What the job
+YouTube : https://www.youtube.com/@whatthejob
+Facebook : https://www.facebook.com/wtjstory
+TikTok : https://www.tiktok.com/@wtj_talk"""
+
+    default_tags = []
+    if project_type == "sidekick":
+        default_tags = ["AISidekick", "NongKick", "AIสำหรับทุกคน", "ชีวิตทำงาน", "รีวิวชีวิตทำงาน", "วัยทำงาน"]
+    else:
+        default_tags = ["What the job", "WTJ", "WhatTheJob", "WTJStory", "WTHTalk", "WTJPodcast"]
+        
+    if tags_text:
+        parsed_tags = [t.strip() for t in tags_text.replace("#", "").split(",") if t.strip()]
+        all_tags = default_tags + [t for t in parsed_tags if t not in default_tags]
+    else:
+        all_tags = default_tags
+
+    desc_hashtags = []
+    for t in all_tags:
+        clean_t = re.sub(r'\s+', '', t)
+        if clean_t:
+            desc_hashtags.append(f"#{clean_t}")
+    formatted_hashtags_str = " ".join(desc_hashtags)
+
+    description_part = f"""{contact_header}
+
+{desc_section}{guest_section}
+
+{ts_section}
+
+{outro_section}
+
+{formatted_hashtags_str}"""
+
+    final_output = ""
+    if title_options:
+        title_options_cleaned = re.sub(r'\s*\*\*Description Draft:\*\*\s*$', '', title_options, flags=re.IGNORECASE).strip()
+        title_options_cleaned = re.sub(r'^[\s\*\#\-\•]*Title Options', '**Title Options', title_options_cleaned, flags=re.IGNORECASE)
+        final_output += f"{title_options_cleaned}\n\n"
+    final_output += description_part
+
+    return final_output
+
+
 def process_single_file(file_path, queue_name):
     filename = os.path.basename(file_path)
     print(f"\n🎬 เริ่มการประมวลผลไฟล์: '{filename}' สำหรับคิว '{queue_name}'")
@@ -327,17 +483,9 @@ def process_single_file(file_path, queue_name):
                             has_split = True
                             break
                 
-                # หากเป็น Sidekick และเป็นวิดีโอเต็ม ให้ต่อท้ายด้วยเทมเพลตคำอธิบายช่อง
-                if PROJECT_TYPE == "sidekick" and queue_name in ["YT_Videos_Full", "FB_Videos_Full"]:
-                    template = """📲 ติดตามช่องทางอื่นๆ ของพวกเรา AI Sidekick
-• Facebook Page: https://www.facebook.com/AISidekick
-• ติดต่อโฆษณา/สปอนเซอร์: ghn168media@gmail.com
------------------------------------------------------
-
-ถ้าอยากให้พวกเรานำเสนอหัวข้อ AI อะไร หรือมีข้อสงสัยตรงไหน คอมเมนต์บอกพวกเราไว้ใต้คลิปได้เลยนะแก!
-
-#AISidekick #NongKick #AIสำหรับทุกคน #ชีวิตทำงาน #รีวิวชีวิตทำงาน #วัยทำงาน"""
-                    page_content_to_write = page_content_to_write + "\n\n" + template
+                # จัดรูปแบบและเพิ่มเทมเพลตตามแพทเทิร์นมาตรฐานของแต่ละโปรเจกต์
+                if queue_name in ["YT_Videos_Full", "FB_Videos_Full"]:
+                    page_content_to_write = format_youtube_description(page_content_to_write, PROJECT_TYPE, queue_name)
                 
                 # บันทึกเนื้อหาลงการ์ดหลัก
                 headline = f"[{queue_name} Video Draft] {filename}\n\n"
@@ -346,7 +494,7 @@ def process_single_file(file_path, queue_name):
                 
                 # 2. ถ้าเป็นวิดีโอตัวเต็ม และมีโพสต์ Facebook แยกออกมา ให้สร้างการ์ดสปอยเลอร์ (ยกเว้นโปรเจกต์ sidekick)
                 if queue_name in ["YT_Videos_Full", "FB_Videos_Full"] and has_split and PROJECT_TYPE != "sidekick":
-                    print("🚀 กำลังสร้างการ์ดสปอยล์ (Spoiler) ใน Notion...")
+                    print("🚀 กำลังสร้างการ์ดสปอยล์ (Spoiler) และ Facebook Full Video ใน Notion...")
                     try:
                         if not fb_posts_content:
                             fb_posts_content = clean_draft_text
@@ -367,31 +515,50 @@ def process_single_file(file_path, queue_name):
                             spoiler_status = "4_Review"
                             spoiler_tags = ["FB_Text_Quote"]
                         
-                        # เปลี่ยน CTA ท้ายโพสต์
+                        # 2.1 สร้าง Facebook Full Video card (เก็บข้อความดราฟต์ของเฟสบุ๊คแบบแยกต่างหาก โดยใช้ fb_posts_content ที่ไม่ได้ดัดแปลง CTA)
+                        fb_full_title = f"[FB_Videos_Full Video Draft] {filename}"
+                        fb_full_tags = ["FB_Video"]
+                        print("🚀 กำลังสร้างการ์ด Facebook Full Video ใน Notion...")
+                        fb_full_page = notion.create_page(fb_full_title, status_name=spoiler_status, platform_tags=fb_full_tags)
+                        if fb_full_page and "id" in fb_full_page:
+                            fb_full_page_id = fb_full_page["id"]
+                            headline_fb_full = f"[FB_Videos_Full Video Draft] {filename}\n\n"
+                            notion.write_page_content_text(fb_full_page_id, headline_fb_full + fb_posts_content)
+                            
+                            # บันทึกไฟล์ร่างสำรองของ Facebook Full Video
+                            backup_filename_fb_full = f"fb_full_from_video_{file_slug}.md"
+                            backup_path_fb_full = os.path.join(DRAFTS_DIR, backup_filename_fb_full)
+                            with open(backup_path_fb_full, "w", encoding="utf-8") as f:
+                                f.write(fb_posts_content)
+                            print(f"✅ สร้างการ์ด Facebook Full Video สำเร็จแล้วแก! (Page ID: {fb_full_page_id})")
+                        else:
+                            print("❌ ล้มเหลว: ไม่สามารถสร้างการ์ด Facebook Full Video ใน Notion ได้")
+
+                        # 2.2 เปลี่ยน CTA ท้ายโพสต์สำหรับสปอยเลอร์
                         fb_posts_content_modified = []
                         for line in fb_posts_content.splitlines():
                             if re.search(r"ดูคลิปเต็ม|ปักหมุดเลยแก|คลิปเต็มได้ที่|คอมเมนต์ปักหมุด", line):
                                 line = replacement_cta
                             fb_posts_content_modified.append(line)
-                        fb_posts_content = "\n".join(fb_posts_content_modified)
+                        fb_posts_content_spoil = "\n".join(fb_posts_content_modified)
                         
                         # สร้างการ์ดสปอยเลอร์
                         spoiler_page = notion.create_page(spoiler_title, status_name=spoiler_status, platform_tags=spoiler_tags)
                         if spoiler_page and "id" in spoiler_page:
                             spoiler_page_id = spoiler_page["id"]
                             headline_spoiler = f"[{queue_name} Video Draft] {filename}\n\n"
-                            notion.write_page_content_text(spoiler_page_id, headline_spoiler + fb_posts_content)
+                            notion.write_page_content_text(spoiler_page_id, headline_spoiler + fb_posts_content_spoil)
                             
                             # บันทึกไฟล์ร่างสำรองของสปอยเลอร์
                             backup_filename_spoiler = f"spoiler_from_video_{file_slug}.md"
                             backup_path_spoiler = os.path.join(DRAFTS_DIR, backup_filename_spoiler)
                             with open(backup_path_spoiler, "w", encoding="utf-8") as f:
-                                f.write(fb_posts_content)
+                                f.write(fb_posts_content_spoil)
                             print(f"✅ สร้างการ์ดสปอยล์สำเร็จแล้วแก! (Page ID: {spoiler_page_id})")
                         else:
                             print("❌ ล้มเหลว: ไม่สามารถสร้างการ์ดสปอยล์ใน Notion ได้")
                     except Exception as ex:
-                        print(f"⚠️ เกิดข้อผิดพลาดในการสร้างการ์ดสปอยล์: {ex}")
+                        print(f"⚠️ เกิดข้อผิดพลาดในการสร้างการ์ดดราฟต์เสริม: {ex}")
             else:
                 print("❌ ล้มเหลว: ไม่สามารถสร้างหน้าใหม่ in Notion ได้")
         except Exception as ne:
@@ -444,19 +611,15 @@ def main():
         DRAFTS_DIR = os.path.join(PROJECT_ROOT, 'Team_Content_Studio', 'Team_Agent_Content', 'WTJ_Project', 'WTJ_Story', 'workspace', '2_drafts')
         
     reels_dir = os.path.join(RAW_VIDEOS_DIR, 'raw_vdo_short')
-    fb_videos_dir = os.path.join(RAW_VIDEOS_DIR, 'raw_vdo_3-5min')
     fb_full_dir = os.path.join(RAW_VIDEOS_DIR, 'raw_vdo_full')
     
     os.makedirs(reels_dir, exist_ok = True)
-    os.makedirs(fb_videos_dir, exist_ok = True)
     os.makedirs(fb_full_dir, exist_ok = True)
     os.makedirs(os.path.join(reels_dir, 'processed'), exist_ok = True)
-    os.makedirs(os.path.join(fb_videos_dir, 'processed'), exist_ok = True)
     os.makedirs(os.path.join(fb_full_dir, 'processed'), exist_ok = True)
     
     targets = [
         (reels_dir, 'Reels_Under1Min'),
-        (fb_videos_dir, 'FB_Videos_3-5Min'),
         (fb_full_dir, 'YT_Videos_Full')]
         
     total_files = 0
@@ -475,7 +638,7 @@ def main():
                 processed_count += 1
                 
     if total_files == 0:
-        print(f'📭 ไม่พบไฟล์วิดีโอหรือไฟล์เสียงใหม่ใน raw_vdo_short/, raw_vdo_3-5min/ หรือ raw_vdo_full/ ของโปรเจกต์ {PROJECT_TYPE} เลยแก')
+        print(f'📭 ไม่พบไฟล์วิดีโอหรือไฟล์เสียงใหม่ใน raw_vdo_short/ หรือ raw_vdo_full/ ของโปรเจกต์ {PROJECT_TYPE} เลยแก')
         return None
     print(f"\n🎉 ดำเนินการเสร็จสิ้น! ประมวลผลสำเร็จ {processed_count}/{total_files} ไฟล์จ้า!")
 

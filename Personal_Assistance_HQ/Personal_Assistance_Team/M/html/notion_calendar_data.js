@@ -1,5 +1,10 @@
 // Generated automatically by WTJ Sync Agent
 const NOTION_CALENDAR_DATA = {
+    "2026-06-25-09:00": {
+        "title": "[Spoiler_THU] MC.mov",
+        "status": "ready",
+        "notion_status": "6_Published"
+    },
     "2026-06-14-09:00": {
         "title": "[Spoiler_SUN] Ep.01 Game Balancer.mov",
         "status": "ready",

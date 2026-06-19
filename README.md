@@ -43,6 +43,10 @@
 - **หน้าที่:** ตรวจสอบและดูแลเอกสารธุรกรรม (ใบเสนอราคา, ใบวางบิล, ใบเสร็จ, 50 ทวิ) และการซิงค์บัญชีภาษีของบริษัท GHN168 ลง Google Sheets & Drive
 - **คู่มือ:** [pim_manual.md](Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/Pim/pim_manual.md)
 
+### 📊 จ๋า (Ja) - ผู้ช่วยดูแลการวิเคราะห์ข้อมูลการเทรด (Trading & Technical Analyst)
+- **หน้าที่:** วิเคราะห์กราฟราคาทางเทคนิคด้วย TradingView เขียนกลยุทธ์ Pine Script และทำการทดสอบระบบย้อนหลัง (Backtesting)
+- **คู่มือ:** [ja_manual.md](Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/Ja/ja_manual.md)
+
 ### 🧑‍🎨 เอ็ม (M) - ผู้ประสานงานข้อมูลหน้าเว็บ (Creative Data Coordinator)
 - **หน้าที่:** รวบรวมข้อมูลดิบและสถิติจาก วิน, เจน และทีม Content เพื่อนำส่งต่อให้น้องดี (D) ออกแบบ
 - **คู่มือ:** [m_manual.md](Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/M/m_manual.md)

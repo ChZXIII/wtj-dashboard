@@ -71,14 +71,13 @@ def generate_social_posts(transcript_title, transcript_content):
 หน้าที่ของคุณคือ: นำข้อความถอดเทปสัมภาษณ์ตอนย่อย (Sub-clip Transcript) หัวข้อ: "{transcript_title}" มาเขียนโพสต์ที่จึ้งและแตกต่างกัน เพื่อให้พี่เก่งได้เลือกอันที่ชอบที่สุด
 
 ขั้นตอนการทำงานของคุณ:
-1. วิเคราะห์ทรานสคริปต์นี้ว่าเหมาะจะจัดเข้าคิวใดจาก 3 คิวนี้มากที่สุด:
-   - `FB_Videos_3-5Min` (หากเป็นคลิปยาวปานกลาง เล่าเรื่อง มีสาระรายละเอียด)
+1. วิเคราะห์ทรานสคริปต์นี้ว่าเหมาะจะจัดเข้าคิวใดจาก 2 คิวนี้มากที่สุด:
    - `Reels_Under1Min` (หากเป็นคลิปสั้นแนว Reels/Shorts ตื่นเต้น หักมุม กระชับ มี Hook เด่นๆ)
    - `Text_Posts` (หากเป็นข้อความโควทคำคม หรือประเด็นชวนคุยที่เหมาะสำหรับโพสต์ข้อความถามแฟนเพจ)
 2. เขียนระบุคิวที่เลือกไว้ที่บรรทัดแรกสุดของคำตอบในรูปแบบ: `[QUEUE: ชื่อคิว]` (เช่น `[QUEUE: Reels_Under1Min]`)
 3. ร่างโพสต์ตามเงื่อนไขของคิวที่เลือกดังนี้:
 
-A. หากเลือกคิว `FB_Videos_3-5Min` หรือ `Reels_Under1Min`:
+A. หากเลือกคิว `Reels_Under1Min`:
    ร่างโพสต์มาทั้งหมด 3 ทางเลือก (3 Options) ตามกฎเหล็กเรื่องน้ำเสียงและรูปแบบ (Tone & Guidelines) ดังนี้:
    - แต่ละทางเลือกต้องมีความยาวรวมไม่เกิน 4 บรรทัด และห้ามมีประโยคเกริ่นนำ ห้ามทักทาย ห้ามพรรณนา ห้ามอธิบาย หรือแซวใดๆ ทั้งสิ้น!
    - โครงสร้างบังคับ (Strict 4-Line Structure):
@@ -162,7 +161,7 @@ def run_draft_pipeline():
             continue
             
         # 4. วิเคราะห์และคัดแยกคิวจากบอท
-        queue_name = "FB_Videos_3-5Min" # Default fallback
+        queue_name = "Reels_Under1Min" # Default fallback
         queue_match = re.search(r'\[QUEUE:\s*([\w\-]+)\]', generated_text)
         clean_draft_text = generated_text
         
@@ -175,14 +174,12 @@ def run_draft_pipeline():
         
         # Mapping queue name to Notion Select Tag Platform
         platform_tags = []
-        if queue_name == "FB_Videos_3-5Min":
-            platform_tags = ["FB_Video"]
-        elif queue_name == "Reels_Under1Min":
+        if queue_name == "Reels_Under1Min":
             platform_tags = ["Reels"]
         elif queue_name == "Text_Posts":
             platform_tags = ["FB_Text_Quote"]
         else:
-            platform_tags = ["FB_Video"]
+            platform_tags = ["Reels"]
             
         # 5. จัดการเขียนและสร้างเพจใน Notion
         if queue_name == "Text_Posts":
@@ -253,7 +250,7 @@ def run_draft_pipeline():
             print(f"💾 บันทึกไฟล์ร่างสำรอง THU และ SUN ลง {drafts_dir} เรียบร้อยแก!")
             
         else:
-            # Normal flows for FB_Videos_3-5Min and Reels_Under1Min
+            # Normal flows for Reels_Under1Min
             print(f"🚀 กำลังเขียนดราฟต์ 3 Options แปะต่อท้ายลงในหน้าเพจ Notion...")
             append_content = f"\n\n---\n\n## 📝 Draft Options (โดย ทีม Content Agent)\n\n" + clean_draft_text
             notion.write_page_content_text(page_id, append_content)

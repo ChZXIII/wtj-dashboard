@@ -465,7 +465,6 @@ def publish_from_notes(page_id, access_token, queue_name=None, dry_run=False):
     
     # กำหนด Platform tags ตามคิวงานที่ระบุ
     platform_map = {
-        "FB_Videos_3-5Min": "FB_Video",
         "Reels_Under1Min": "Reels",
         "Text_Posts": "FB_Text_Quote"
     }
@@ -576,7 +575,7 @@ def main():
     parser.add_argument("-m", "--message", help="ข้อความสั้นที่ต้องการโพสต์สดๆ")
     parser.add_argument("-f", "--file", help="พาธไฟล์ Markdown (.md) ที่ต้องการดึงเนื้อหามาโพสต์")
     parser.add_argument("--from-notes", action="store_true", help="ดึงโพสต์อนุมัติจาก Notion มาโพสต์อัตโนมัติ")
-    parser.add_argument("-q", "--queue", help="ชื่อโฟลเดอร์คิวงานที่ต้องการเจาะจง (เช่น FB_Videos_3-5Min, Reels_Under1Min, Text_Posts)")
+    parser.add_argument("-q", "--queue", help="ชื่อโฟลเดอร์คิวงานที่ต้องการเจาะจง (เช่น Reels_Under1Min, Text_Posts)")
     parser.add_argument("-d", "--dry-run", action="store_true", help="รันโหมดทดสอบความถูกต้องโดยไม่โพสต์จริง")
     
     args = parser.parse_args()

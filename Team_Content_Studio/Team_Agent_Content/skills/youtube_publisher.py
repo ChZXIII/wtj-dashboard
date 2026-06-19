@@ -47,9 +47,10 @@ def load_env():
 
 load_env()
 
-def get_youtube_client():
+def get_youtube_client(token_filename=None):
     """Authenticate and return the YouTube API client."""
-    token_path = os.path.join(PROJECT_ROOT, TOKEN_FILENAME)
+    active_token_filename = token_filename or TOKEN_FILENAME
+    token_path = os.path.join(PROJECT_ROOT, active_token_filename)
     client_secret_path = os.path.join(PROJECT_ROOT, CLIENT_SECRET_FILENAME)
     
     creds = None
@@ -59,7 +60,7 @@ def get_youtube_client():
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
             try:
-                print("🔄 กำลังรีเฟรช Google OAuth Token สำหรับ YouTube...")
+                print(f"🔄 กำลังรีเฟรช Google OAuth Token สำหรับ {active_token_filename}...")
                 creds.refresh(Request())
             except Exception as e:
                 print(f"⚠️ รีเฟรช Token ล้มเหลว: {e} กำลังเริ่มล็อกอินใหม่...")
@@ -69,14 +70,15 @@ def get_youtube_client():
             if not os.path.exists(client_secret_path):
                 print(f"❌ Error: ไม่พบไฟล์ {CLIENT_SECRET_FILENAME} ในโปรเจกต์รูท")
                 sys.exit(1)
-            print("🔑 กำลังเปิดหน้าต่างเบราว์เซอร์เพื่อขอสิทธิ์เข้าถึง YouTube (OAuth)...")
+            print(f"🔑 กำลังเปิดหน้าต่างเบราว์เซอร์เพื่อขอสิทธิ์เข้าถึง YouTube (OAuth) สำหรับ {active_token_filename}...")
             flow = InstalledAppFlow.from_client_secrets_file(client_secret_path, SCOPES)
             creds = flow.run_local_server(port=0, prompt='select_account')
             
             # บันทึก token เก็บไว้
+            os.makedirs(os.path.dirname(token_path), exist_ok=True)
             with open(token_path, 'w', encoding='utf-8') as token_file:
                 token_file.write(creds.to_json())
-            print(f"💾 บันทึก Token เรียบร้อยที่: {TOKEN_FILENAME}")
+            print(f"💾 บันทึก Token เรียบร้อยที่: {active_token_filename}")
             
     # สร้าง Client
     return build('youtube', 'v3', credentials=creds)

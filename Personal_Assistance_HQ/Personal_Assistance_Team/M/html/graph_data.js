@@ -61,6 +61,12 @@ const graphData = {
       "val": 15
     },
     {
+      "id": "Copier_Rental_App",
+      "label": "Copier_Rental_App",
+      "type": "directory",
+      "val": 15
+    },
+    {
       "id": "Coder_Studio",
       "label": "Coder_Studio",
       "type": "directory",
@@ -97,15 +103,45 @@ const graphData = {
       "val": 10
     },
     {
+      "id": "PRODUCT.md",
+      "label": "PRODUCT.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
       "id": "\u0e40\u0e1b\u0e34\u0e14_Daemon_Sync.command",
       "label": "\u0e40\u0e1b\u0e34\u0e14_Daemon_Sync.command",
       "type": "other",
       "val": 10
     },
     {
-      "id": "output.log",
-      "label": "output.log",
-      "type": "other",
+      "id": "index.html",
+      "label": "index.html",
+      "type": "html",
+      "val": 10
+    },
+    {
+      "id": "notion_calendar_data.js",
+      "label": "notion_calendar_data.js",
+      "type": "javascript",
+      "val": 10
+    },
+    {
+      "id": "terms.html",
+      "label": "terms.html",
+      "type": "html",
+      "val": 10
+    },
+    {
+      "id": "wtj_calendar_dashboard.html",
+      "label": "wtj_calendar_dashboard.html",
+      "type": "html",
+      "val": 10
+    },
+    {
+      "id": "dashboard.html",
+      "label": "dashboard.html",
+      "type": "html",
       "val": 10
     },
     {
@@ -121,9 +157,9 @@ const graphData = {
       "val": 10
     },
     {
-      "id": "response.mp3",
-      "label": "response.mp3",
-      "type": "other",
+      "id": "callback.html",
+      "label": "callback.html",
+      "type": "html",
       "val": 10
     },
     {
@@ -139,8 +175,20 @@ const graphData = {
       "val": 10
     },
     {
+      "id": "style.css",
+      "label": "style.css",
+      "type": "other",
+      "val": 10
+    },
+    {
       "id": "GEMINI.md",
       "label": "GEMINI.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "DESIGN.md",
+      "label": "DESIGN.md",
       "type": "markdown",
       "val": 10
     },
@@ -151,8 +199,8 @@ const graphData = {
       "val": 10
     },
     {
-      "id": "ChZ_Agent_Corp_Workflow_System.html.bak",
-      "label": "ChZ_Agent_Corp_Workflow_System.html.bak",
+      "id": "tiktok2KL4Ktw7PJLhCI63jKnczSskOmIYeSwm.txt",
+      "label": "tiktok2KL4Ktw7PJLhCI63jKnczSskOmIYeSwm.txt",
       "type": "other",
       "val": 10
     },
@@ -169,8 +217,20 @@ const graphData = {
       "val": 10
     },
     {
+      "id": "app.js",
+      "label": "app.js",
+      "type": "javascript",
+      "val": 10
+    },
+    {
       "id": "ChZ_Agent_Corp_Workflow_System.html",
       "label": "ChZ_Agent_Corp_Workflow_System.html",
+      "type": "html",
+      "val": 10
+    },
+    {
+      "id": "privacy.html",
+      "label": "privacy.html",
       "type": "html",
       "val": 10
     },
@@ -235,6 +295,12 @@ const graphData = {
       "val": 10
     },
     {
+      "id": "Personal_Assistance_HQ/First_Office/temp_speech.wav",
+      "label": "temp_speech.wav",
+      "type": "other",
+      "val": 10
+    },
+    {
       "id": "Personal_Assistance_HQ/First_Office/search.py",
       "label": "search.py",
       "type": "python",
@@ -265,8 +331,20 @@ const graphData = {
       "val": 15
     },
     {
+      "id": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/Ja",
+      "label": "Ja",
+      "type": "directory",
+      "val": 15
+    },
+    {
       "id": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/Pie",
       "label": "Pie",
+      "type": "directory",
+      "val": 15
+    },
+    {
+      "id": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/Pim",
+      "label": "Pim",
       "type": "directory",
       "val": 15
     },
@@ -315,6 +393,18 @@ const graphData = {
     {
       "id": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/Win/skills/crypto-portfolio-sync/SKILL.md",
       "label": "SKILL.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/Ja/ja_manual.md",
+      "label": "ja_manual.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/Pim/pim_manual.md",
+      "label": "pim_manual.md",
       "type": "markdown",
       "val": 10
     },
@@ -1201,12 +1291,6 @@ const graphData = {
       "val": 15
     },
     {
-      "id": "Personal_Assistance_HQ/Personal_Assistance_Team/M/html/assets/mockups",
-      "label": "mockups",
-      "type": "directory",
-      "val": 15
-    },
-    {
       "id": "Personal_Assistance_HQ/Personal_Assistance_Team/M/html/assets/audio",
       "label": "audio",
       "type": "directory",
@@ -1345,8 +1429,20 @@ const graphData = {
       "val": 10
     },
     {
+      "id": "Personal_Assistance_HQ/Personal_Assistance_Team/M/html/assets/team_portraits/Pim.png",
+      "label": "Pim.png",
+      "type": "other",
+      "val": 10
+    },
+    {
       "id": "Personal_Assistance_HQ/Personal_Assistance_Team/M/html/assets/team_portraits/Jane.png",
       "label": "Jane.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Personal_Assistance_HQ/Personal_Assistance_Team/M/html/assets/team_portraits/Ja.png",
+      "label": "Ja.png",
       "type": "other",
       "val": 10
     },
@@ -1653,6 +1749,12 @@ const graphData = {
     {
       "id": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Cream/cream_manual.md",
       "label": "cream_manual.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Cream/research_trading_skills.md",
+      "label": "research_trading_skills.md",
       "type": "markdown",
       "val": 10
     },
@@ -4147,6 +4249,12 @@ const graphData = {
       "val": 15
     },
     {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Project/WTJ_Story/workspace/1_raw_materials/raw_vdo_full/MC.mov",
+      "label": "MC.mov",
+      "type": "other",
+      "val": 10
+    },
+    {
       "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Project/WTJ_Story/workspace/1_raw_materials/raw_vdo_full/processed/EP.02 Stage Engineer.mov",
       "label": "EP.02 Stage Engineer.mov",
       "type": "other",
@@ -4891,6 +4999,18 @@ const graphData = {
       "val": 10
     },
     {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Project/WTJ_Podcast/workspace/1_raw_materials/raw_vdo_full/processed/MC.mov",
+      "label": "MC.mov",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Project/WTJ_Podcast/workspace/1_raw_materials/raw_vdo_full/processed/MC.mp3",
+      "label": "MC.mp3",
+      "type": "other",
+      "val": 10
+    },
+    {
       "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Project/WTJ_Podcast/workspace/1_raw_materials/raw_vdo_full/processed/Ep.01 VIRADA .mov",
       "label": "Ep.01 VIRADA .mov",
       "type": "other",
@@ -5005,6 +5125,12 @@ const graphData = {
       "val": 10
     },
     {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Project/WTJ_Podcast/workspace/2_drafts/spoiler_from_video_mcmp3.md",
+      "label": "spoiler_from_video_mcmp3.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
       "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Project/WTJ_Podcast/workspace/2_drafts/reels_under1min_from_video_01___\u0e01\u0e2d\u0e1f_\u0e2d\u0e19\u0e1e\u0e25___3-5_minmp4.md",
       "label": "reels_under1min_from_video_01___\u0e01\u0e2d\u0e1f_\u0e2d\u0e19\u0e1e\u0e25___3-5_minmp4.md",
       "type": "markdown",
@@ -5079,6 +5205,12 @@ const graphData = {
     {
       "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Project/WTJ_Podcast/workspace/2_drafts/reels_under1min_from_video_07short_mc_givemp4.md",
       "label": "reels_under1min_from_video_07short_mc_givemp4.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "Team_Content_Studio/Team_Agent_Content/WTJ_Project/WTJ_Podcast/workspace/2_drafts/yt_videos_full_from_video_mcmp3.md",
+      "label": "yt_videos_full_from_video_mcmp3.md",
       "type": "markdown",
       "val": 10
     },
@@ -8083,6 +8215,12 @@ const graphData = {
       "val": 10
     },
     {
+      "id": "scratch/inspect_notion.py",
+      "label": "inspect_notion.py",
+      "type": "python",
+      "val": 10
+    },
+    {
       "id": "scratch/search_classes.py",
       "label": "search_classes.py",
       "type": "python",
@@ -8295,6 +8433,12 @@ const graphData = {
     {
       "id": "scratch/find_images_f034a060.py",
       "label": "find_images_f034a060.py",
+      "type": "python",
+      "val": 10
+    },
+    {
+      "id": "scratch/fix_notion_card.py",
+      "label": "fix_notion_card.py",
       "type": "python",
       "val": 10
     },
@@ -24055,6 +24199,30 @@ const graphData = {
       "val": 10
     },
     {
+      "id": "Copier_Rental_App/index.html",
+      "label": "index.html",
+      "type": "html",
+      "val": 10
+    },
+    {
+      "id": "Copier_Rental_App/data.js",
+      "label": "data.js",
+      "type": "javascript",
+      "val": 10
+    },
+    {
+      "id": "Copier_Rental_App/style.css",
+      "label": "style.css",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "Copier_Rental_App/app.js",
+      "label": "app.js",
+      "type": "javascript",
+      "val": 10
+    },
+    {
       "id": "Coder_Studio/Aom",
       "label": "Aom",
       "type": "directory",
@@ -24841,8 +25009,20 @@ const graphData = {
       "val": 10
     },
     {
+      "id": "ChZ_Room/Income_Tracker_App",
+      "label": "Income_Tracker_App",
+      "type": "directory",
+      "val": 15
+    },
+    {
       "id": "ChZ_Room/Footage",
       "label": "Footage",
+      "type": "directory",
+      "val": 15
+    },
+    {
+      "id": "ChZ_Room/GHN168",
+      "label": "GHN168",
       "type": "directory",
       "val": 15
     },
@@ -24961,6 +25141,60 @@ const graphData = {
       "val": 10
     },
     {
+      "id": "ChZ_Room/Income_Tracker_App/index.html",
+      "label": "index.html",
+      "type": "html",
+      "val": 10
+    },
+    {
+      "id": "ChZ_Room/Income_Tracker_App/create_general_income_sheet.py",
+      "label": "create_general_income_sheet.py",
+      "type": "python",
+      "val": 10
+    },
+    {
+      "id": "ChZ_Room/Income_Tracker_App/icon-192.png",
+      "label": "icon-192.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "ChZ_Room/Income_Tracker_App/README.md",
+      "label": "README.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "ChZ_Room/Income_Tracker_App/style.css",
+      "label": "style.css",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "ChZ_Room/Income_Tracker_App/manifest.json",
+      "label": "manifest.json",
+      "type": "json",
+      "val": 10
+    },
+    {
+      "id": "ChZ_Room/Income_Tracker_App/app.js",
+      "label": "app.js",
+      "type": "javascript",
+      "val": 10
+    },
+    {
+      "id": "ChZ_Room/Income_Tracker_App/sw.js",
+      "label": "sw.js",
+      "type": "javascript",
+      "val": 10
+    },
+    {
+      "id": "ChZ_Room/Income_Tracker_App/icon-512.png",
+      "label": "icon-512.png",
+      "type": "other",
+      "val": 10
+    },
+    {
       "id": "ChZ_Room/Footage/meeting_transcript_2026-06-11_14-09-35.txt",
       "label": "meeting_transcript_2026-06-11_14-09-35.txt",
       "type": "other",
@@ -25054,6 +25288,60 @@ const graphData = {
       "id": "ChZ_Room/Footage/meeting_transcript_2026-06-11_combined.txt",
       "label": "meeting_transcript_2026-06-11_combined.txt",
       "type": "other",
+      "val": 10
+    },
+    {
+      "id": "ChZ_Room/GHN168/index.html",
+      "label": "index.html",
+      "type": "html",
+      "val": 10
+    },
+    {
+      "id": "ChZ_Room/GHN168/GHN_company_seal.png",
+      "label": "GHN_company_seal.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "ChZ_Room/GHN168/sidebar_logo_dark.png",
+      "label": "sidebar_logo_dark.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "ChZ_Room/GHN168/README.md",
+      "label": "README.md",
+      "type": "markdown",
+      "val": 10
+    },
+    {
+      "id": "ChZ_Room/GHN168/sidebar_logo_light.png",
+      "label": "sidebar_logo_light.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "ChZ_Room/GHN168/logo.png",
+      "label": "logo.png",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "ChZ_Room/GHN168/style.css",
+      "label": "style.css",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "ChZ_Room/GHN168/google_sheets_sync_script.gs",
+      "label": "google_sheets_sync_script.gs",
+      "type": "other",
+      "val": 10
+    },
+    {
+      "id": "ChZ_Room/GHN168/app.js",
+      "label": "app.js",
+      "type": "javascript",
       "val": 10
     },
     {
@@ -45529,6 +45817,18 @@ const graphData = {
       "val": 10
     },
     {
+      "id": "credentials/token_youtube_wtj.json",
+      "label": "token_youtube_wtj.json",
+      "type": "json",
+      "val": 10
+    },
+    {
+      "id": "credentials/token_youtube_sidekick.json",
+      "label": "token_youtube_sidekick.json",
+      "type": "json",
+      "val": 10
+    },
+    {
       "id": "credentials/token_tiktok.json.bak",
       "label": "token_tiktok.json.bak",
       "type": "other",
@@ -45607,6 +45907,11 @@ const graphData = {
     },
     {
       "source": "root",
+      "target": "Copier_Rental_App",
+      "type": "contains"
+    },
+    {
+      "source": "root",
       "target": "Coder_Studio",
       "type": "contains"
     },
@@ -45637,12 +45942,37 @@ const graphData = {
     },
     {
       "source": "root",
+      "target": "PRODUCT.md",
+      "type": "contains"
+    },
+    {
+      "source": "root",
       "target": "\u0e40\u0e1b\u0e34\u0e14_Daemon_Sync.command",
       "type": "contains"
     },
     {
       "source": "root",
-      "target": "output.log",
+      "target": "index.html",
+      "type": "contains"
+    },
+    {
+      "source": "root",
+      "target": "notion_calendar_data.js",
+      "type": "contains"
+    },
+    {
+      "source": "root",
+      "target": "terms.html",
+      "type": "contains"
+    },
+    {
+      "source": "root",
+      "target": "wtj_calendar_dashboard.html",
+      "type": "contains"
+    },
+    {
+      "source": "root",
+      "target": "dashboard.html",
       "type": "contains"
     },
     {
@@ -45682,7 +46012,7 @@ const graphData = {
     },
     {
       "source": "root",
-      "target": "response.mp3",
+      "target": "callback.html",
       "type": "contains"
     },
     {
@@ -45697,7 +46027,17 @@ const graphData = {
     },
     {
       "source": "root",
+      "target": "style.css",
+      "type": "contains"
+    },
+    {
+      "source": "root",
       "target": "GEMINI.md",
+      "type": "contains"
+    },
+    {
+      "source": "root",
+      "target": "DESIGN.md",
       "type": "contains"
     },
     {
@@ -45707,7 +46047,7 @@ const graphData = {
     },
     {
       "source": "root",
-      "target": "ChZ_Agent_Corp_Workflow_System.html.bak",
+      "target": "tiktok2KL4Ktw7PJLhCI63jKnczSskOmIYeSwm.txt",
       "type": "contains"
     },
     {
@@ -45722,7 +46062,17 @@ const graphData = {
     },
     {
       "source": "root",
+      "target": "app.js",
+      "type": "contains"
+    },
+    {
+      "source": "root",
       "target": "ChZ_Agent_Corp_Workflow_System.html",
+      "type": "contains"
+    },
+    {
+      "source": "root",
+      "target": "privacy.html",
       "type": "contains"
     },
     {
@@ -45787,6 +46137,11 @@ const graphData = {
     },
     {
       "source": "Personal_Assistance_HQ/First_Office",
+      "target": "Personal_Assistance_HQ/First_Office/temp_speech.wav",
+      "type": "contains"
+    },
+    {
+      "source": "Personal_Assistance_HQ/First_Office",
       "target": "Personal_Assistance_HQ/First_Office/search.py",
       "type": "contains"
     },
@@ -45812,7 +46167,17 @@ const graphData = {
     },
     {
       "source": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks",
+      "target": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/Ja",
+      "type": "contains"
+    },
+    {
+      "source": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks",
       "target": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/Pie",
+      "type": "contains"
+    },
+    {
+      "source": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks",
+      "target": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/Pim",
       "type": "contains"
     },
     {
@@ -45853,6 +46218,16 @@ const graphData = {
     {
       "source": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/Win/skills/crypto-portfolio-sync",
       "target": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/Win/skills/crypto-portfolio-sync/SKILL.md",
+      "type": "contains"
+    },
+    {
+      "source": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/Ja",
+      "target": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/Ja/ja_manual.md",
+      "type": "contains"
+    },
+    {
+      "source": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/Pim",
+      "target": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/Pim/pim_manual.md",
       "type": "contains"
     },
     {
@@ -46647,11 +47022,6 @@ const graphData = {
     },
     {
       "source": "Personal_Assistance_HQ/Personal_Assistance_Team/M/html/assets",
-      "target": "Personal_Assistance_HQ/Personal_Assistance_Team/M/html/assets/mockups",
-      "type": "contains"
-    },
-    {
-      "source": "Personal_Assistance_HQ/Personal_Assistance_Team/M/html/assets",
       "target": "Personal_Assistance_HQ/Personal_Assistance_Team/M/html/assets/audio",
       "type": "contains"
     },
@@ -46767,7 +47137,17 @@ const graphData = {
     },
     {
       "source": "Personal_Assistance_HQ/Personal_Assistance_Team/M/html/assets/team_portraits",
+      "target": "Personal_Assistance_HQ/Personal_Assistance_Team/M/html/assets/team_portraits/Pim.png",
+      "type": "contains"
+    },
+    {
+      "source": "Personal_Assistance_HQ/Personal_Assistance_Team/M/html/assets/team_portraits",
       "target": "Personal_Assistance_HQ/Personal_Assistance_Team/M/html/assets/team_portraits/Jane.png",
+      "type": "contains"
+    },
+    {
+      "source": "Personal_Assistance_HQ/Personal_Assistance_Team/M/html/assets/team_portraits",
+      "target": "Personal_Assistance_HQ/Personal_Assistance_Team/M/html/assets/team_portraits/Ja.png",
       "type": "contains"
     },
     {
@@ -47073,6 +47453,11 @@ const graphData = {
     {
       "source": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Cream",
       "target": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Cream/cream_manual.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Cream",
+      "target": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Cream/research_trading_skills.md",
       "type": "contains"
     },
     {
@@ -49176,6 +49561,11 @@ const graphData = {
       "type": "contains"
     },
     {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Project/WTJ_Story/workspace/1_raw_materials/raw_vdo_full",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Project/WTJ_Story/workspace/1_raw_materials/raw_vdo_full/MC.mov",
+      "type": "contains"
+    },
+    {
       "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Project/WTJ_Story/workspace/1_raw_materials/raw_vdo_full/processed",
       "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Project/WTJ_Story/workspace/1_raw_materials/raw_vdo_full/processed/EP.02 Stage Engineer.mov",
       "type": "contains"
@@ -49797,6 +50187,16 @@ const graphData = {
     },
     {
       "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Project/WTJ_Podcast/workspace/1_raw_materials/raw_vdo_full/processed",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Project/WTJ_Podcast/workspace/1_raw_materials/raw_vdo_full/processed/MC.mov",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Project/WTJ_Podcast/workspace/1_raw_materials/raw_vdo_full/processed",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Project/WTJ_Podcast/workspace/1_raw_materials/raw_vdo_full/processed/MC.mp3",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Project/WTJ_Podcast/workspace/1_raw_materials/raw_vdo_full/processed",
       "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Project/WTJ_Podcast/workspace/1_raw_materials/raw_vdo_full/processed/Ep.01 VIRADA .mov",
       "type": "contains"
     },
@@ -49892,6 +50292,11 @@ const graphData = {
     },
     {
       "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Project/WTJ_Podcast/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Project/WTJ_Podcast/workspace/2_drafts/spoiler_from_video_mcmp3.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Project/WTJ_Podcast/workspace/2_drafts",
       "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Project/WTJ_Podcast/workspace/2_drafts/reels_under1min_from_video_01___\u0e01\u0e2d\u0e1f_\u0e2d\u0e19\u0e1e\u0e25___3-5_minmp4.md",
       "type": "contains"
     },
@@ -49953,6 +50358,11 @@ const graphData = {
     {
       "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Project/WTJ_Podcast/workspace/2_drafts",
       "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Project/WTJ_Podcast/workspace/2_drafts/reels_under1min_from_video_07short_mc_givemp4.md",
+      "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/WTJ_Project/WTJ_Podcast/workspace/2_drafts",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Project/WTJ_Podcast/workspace/2_drafts/yt_videos_full_from_video_mcmp3.md",
       "type": "contains"
     },
     {
@@ -50584,6 +50994,16 @@ const graphData = {
       "source": "Team_Content_Studio/Team_Agent_Content/skills",
       "target": "Team_Content_Studio/Team_Agent_Content/skills/wtj_auto_poster.py",
       "type": "contains"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/skills/wtj_auto_poster.py",
+      "target": "Team_Content_Studio/Team_Agent_Content/skills/youtube_publisher.py",
+      "type": "references"
+    },
+    {
+      "source": "Team_Content_Studio/Team_Agent_Content/skills/wtj_auto_poster.py",
+      "target": "Team_Content_Studio/Team_Agent_Content/skills/discord_helper.py",
+      "type": "references"
     },
     {
       "source": "Team_Content_Studio/Team_Agent_Content/skills",
@@ -52832,6 +53252,16 @@ const graphData = {
     },
     {
       "source": "scratch",
+      "target": "scratch/inspect_notion.py",
+      "type": "contains"
+    },
+    {
+      "source": "scratch/inspect_notion.py",
+      "target": "Team_Content_Studio/Team_Agent_Content/skills/notion_helper.py",
+      "type": "references"
+    },
+    {
+      "source": "scratch",
       "target": "scratch/search_classes.py",
       "type": "contains"
     },
@@ -53009,6 +53439,16 @@ const graphData = {
       "source": "scratch",
       "target": "scratch/find_images_f034a060.py",
       "type": "contains"
+    },
+    {
+      "source": "scratch",
+      "target": "scratch/fix_notion_card.py",
+      "type": "contains"
+    },
+    {
+      "source": "scratch/fix_notion_card.py",
+      "target": "Team_Content_Studio/Team_Agent_Content/skills/notion_helper.py",
+      "type": "references"
     },
     {
       "source": "scratch",
@@ -66151,6 +66591,26 @@ const graphData = {
       "type": "contains"
     },
     {
+      "source": "Copier_Rental_App",
+      "target": "Copier_Rental_App/index.html",
+      "type": "contains"
+    },
+    {
+      "source": "Copier_Rental_App",
+      "target": "Copier_Rental_App/data.js",
+      "type": "contains"
+    },
+    {
+      "source": "Copier_Rental_App",
+      "target": "Copier_Rental_App/style.css",
+      "type": "contains"
+    },
+    {
+      "source": "Copier_Rental_App",
+      "target": "Copier_Rental_App/app.js",
+      "type": "contains"
+    },
+    {
       "source": "Coder_Studio",
       "target": "Coder_Studio/Aom",
       "type": "contains"
@@ -67417,7 +67877,17 @@ const graphData = {
     },
     {
       "source": "Coder_Studio/Q/skills/social-auto-post/SKILL.md",
+      "target": "index.html",
+      "type": "references"
+    },
+    {
+      "source": "Coder_Studio/Q/skills/social-auto-post/SKILL.md",
       "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Project/WTJ_Story/dashboard/index.html",
+      "type": "references"
+    },
+    {
+      "source": "Coder_Studio/Q/skills/social-auto-post/SKILL.md",
+      "target": "Copier_Rental_App/index.html",
       "type": "references"
     },
     {
@@ -67547,6 +68017,16 @@ const graphData = {
     },
     {
       "source": "knowledge_base/system_manuals/06_team_role_manuals.md",
+      "target": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/Pim/pim_manual.md",
+      "type": "references"
+    },
+    {
+      "source": "knowledge_base/system_manuals/06_team_role_manuals.md",
+      "target": "Personal_Assistance_HQ/Personal_Assistance_Team/Team_Desks/Ja/ja_manual.md",
+      "type": "references"
+    },
+    {
+      "source": "knowledge_base/system_manuals/06_team_role_manuals.md",
       "target": "Team_Content_Studio/Team_Agent_Content/Team_Lounge/Chris/chris_manual.md",
       "type": "references"
     },
@@ -67614,11 +68094,6 @@ const graphData = {
       "source": "knowledge_base/system_manuals",
       "target": "knowledge_base/system_manuals/05_mac_cron_launchagents.md",
       "type": "contains"
-    },
-    {
-      "source": "knowledge_base/system_manuals/05_mac_cron_launchagents.md",
-      "target": "output.log",
-      "type": "references"
     },
     {
       "source": "knowledge_base/system_manuals/05_mac_cron_launchagents.md",
@@ -68142,7 +68617,17 @@ const graphData = {
     },
     {
       "source": "ChZ_Room",
+      "target": "ChZ_Room/Income_Tracker_App",
+      "type": "contains"
+    },
+    {
+      "source": "ChZ_Room",
       "target": "ChZ_Room/Footage",
+      "type": "contains"
+    },
+    {
+      "source": "ChZ_Room",
+      "target": "ChZ_Room/GHN168",
       "type": "contains"
     },
     {
@@ -68281,6 +68766,21 @@ const graphData = {
       "type": "references"
     },
     {
+      "source": "ChZ_Room/README.md",
+      "target": "index.html",
+      "type": "references"
+    },
+    {
+      "source": "ChZ_Room/README.md",
+      "target": "Team_Content_Studio/Team_Agent_Content/WTJ_Project/WTJ_Story/dashboard/index.html",
+      "type": "references"
+    },
+    {
+      "source": "ChZ_Room/README.md",
+      "target": "Copier_Rental_App/index.html",
+      "type": "references"
+    },
+    {
       "source": "ChZ_Room",
       "target": "ChZ_Room/phu_resume.html",
       "type": "contains"
@@ -68318,6 +68818,51 @@ const graphData = {
     {
       "source": "ChZ_Room",
       "target": "ChZ_Room/keng_resume_neumorphic_dark.html",
+      "type": "contains"
+    },
+    {
+      "source": "ChZ_Room/Income_Tracker_App",
+      "target": "ChZ_Room/Income_Tracker_App/index.html",
+      "type": "contains"
+    },
+    {
+      "source": "ChZ_Room/Income_Tracker_App",
+      "target": "ChZ_Room/Income_Tracker_App/create_general_income_sheet.py",
+      "type": "contains"
+    },
+    {
+      "source": "ChZ_Room/Income_Tracker_App",
+      "target": "ChZ_Room/Income_Tracker_App/icon-192.png",
+      "type": "contains"
+    },
+    {
+      "source": "ChZ_Room/Income_Tracker_App",
+      "target": "ChZ_Room/Income_Tracker_App/README.md",
+      "type": "contains"
+    },
+    {
+      "source": "ChZ_Room/Income_Tracker_App",
+      "target": "ChZ_Room/Income_Tracker_App/style.css",
+      "type": "contains"
+    },
+    {
+      "source": "ChZ_Room/Income_Tracker_App",
+      "target": "ChZ_Room/Income_Tracker_App/manifest.json",
+      "type": "contains"
+    },
+    {
+      "source": "ChZ_Room/Income_Tracker_App",
+      "target": "ChZ_Room/Income_Tracker_App/app.js",
+      "type": "contains"
+    },
+    {
+      "source": "ChZ_Room/Income_Tracker_App",
+      "target": "ChZ_Room/Income_Tracker_App/sw.js",
+      "type": "contains"
+    },
+    {
+      "source": "ChZ_Room/Income_Tracker_App",
+      "target": "ChZ_Room/Income_Tracker_App/icon-512.png",
       "type": "contains"
     },
     {
@@ -68398,6 +68943,51 @@ const graphData = {
     {
       "source": "ChZ_Room/Footage",
       "target": "ChZ_Room/Footage/meeting_transcript_2026-06-11_combined.txt",
+      "type": "contains"
+    },
+    {
+      "source": "ChZ_Room/GHN168",
+      "target": "ChZ_Room/GHN168/index.html",
+      "type": "contains"
+    },
+    {
+      "source": "ChZ_Room/GHN168",
+      "target": "ChZ_Room/GHN168/GHN_company_seal.png",
+      "type": "contains"
+    },
+    {
+      "source": "ChZ_Room/GHN168",
+      "target": "ChZ_Room/GHN168/sidebar_logo_dark.png",
+      "type": "contains"
+    },
+    {
+      "source": "ChZ_Room/GHN168",
+      "target": "ChZ_Room/GHN168/README.md",
+      "type": "contains"
+    },
+    {
+      "source": "ChZ_Room/GHN168",
+      "target": "ChZ_Room/GHN168/sidebar_logo_light.png",
+      "type": "contains"
+    },
+    {
+      "source": "ChZ_Room/GHN168",
+      "target": "ChZ_Room/GHN168/logo.png",
+      "type": "contains"
+    },
+    {
+      "source": "ChZ_Room/GHN168",
+      "target": "ChZ_Room/GHN168/style.css",
+      "type": "contains"
+    },
+    {
+      "source": "ChZ_Room/GHN168",
+      "target": "ChZ_Room/GHN168/google_sheets_sync_script.gs",
+      "type": "contains"
+    },
+    {
+      "source": "ChZ_Room/GHN168",
+      "target": "ChZ_Room/GHN168/app.js",
       "type": "contains"
     },
     {
@@ -71173,6 +71763,16 @@ const graphData = {
     {
       "source": "Agent_Lab/sandbox/hyperframes/examples/aws-lambda/README.md",
       "target": "ChZ_Room/README.md",
+      "type": "references"
+    },
+    {
+      "source": "Agent_Lab/sandbox/hyperframes/examples/aws-lambda/README.md",
+      "target": "ChZ_Room/Income_Tracker_App/README.md",
+      "type": "references"
+    },
+    {
+      "source": "Agent_Lab/sandbox/hyperframes/examples/aws-lambda/README.md",
+      "target": "ChZ_Room/GHN168/README.md",
       "type": "references"
     },
     {
@@ -77798,6 +78398,16 @@ const graphData = {
     {
       "source": "Agent_Lab/sandbox/hyperframes/packages/core/docs/core.md",
       "target": "ChZ_Room/README.md",
+      "type": "references"
+    },
+    {
+      "source": "Agent_Lab/sandbox/hyperframes/packages/core/docs/core.md",
+      "target": "ChZ_Room/Income_Tracker_App/README.md",
+      "type": "references"
+    },
+    {
+      "source": "Agent_Lab/sandbox/hyperframes/packages/core/docs/core.md",
+      "target": "ChZ_Room/GHN168/README.md",
       "type": "references"
     },
     {
@@ -86043,6 +86653,16 @@ const graphData = {
     {
       "source": "Agent_Lab/sandbox/flowise",
       "target": "Agent_Lab/sandbox/flowise/server.log",
+      "type": "contains"
+    },
+    {
+      "source": "credentials",
+      "target": "credentials/token_youtube_wtj.json",
+      "type": "contains"
+    },
+    {
+      "source": "credentials",
+      "target": "credentials/token_youtube_sidekick.json",
       "type": "contains"
     },
     {

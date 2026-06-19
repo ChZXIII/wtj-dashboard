@@ -2986,6 +2986,8 @@ function fetchDocHubFromSheets(showToast = false) {
       btn.innerHTML = originalHtml;
     }
   });
+}
+
 function fetchDocumentsFromSheets(showToast = false) {
   const scriptUrl = safeStorage.getItem('ghn168_script_url');
   const sheetId = safeStorage.getItem('ghn168_sheet_id');

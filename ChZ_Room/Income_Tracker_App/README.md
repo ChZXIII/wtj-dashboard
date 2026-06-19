@@ -205,6 +205,7 @@ function doPost(e) {
       ];
       
       sheet.getRange("B" + targetRow + ":N" + targetRow).setValues([rowValues]);
+      autoResizeSheetColumns(sheet); // ปรับความกว้างคอลัมน์ออโต้
       
       return ContentService.createTextOutput(JSON.stringify({
         "status": "success",
@@ -272,6 +273,7 @@ function doPost(e) {
         } else {
           sheet.getRange("F" + targetRow).setValue("");
         }
+        autoResizeSheetColumns(sheet); // ปรับความกว้างคอลัมน์ออโต้
         
         return ContentService.createTextOutput(JSON.stringify({
           "status": "success",
@@ -288,6 +290,7 @@ function doPost(e) {
         } else {
           sheet.getRange("E" + targetRow).setValue(parseFloat(amountVal || 0));
         }
+        autoResizeSheetColumns(sheet); // ปรับความกว้างคอลัมน์ออโต้
         
         return ContentService.createTextOutput(JSON.stringify({
           "status": "success",
@@ -391,7 +394,74 @@ function autoRecordMonthlyFixedCosts() {
   // เขียนข้อมูลลงคอลัมน์ D (รายละเอียดรายจ่าย) และ E (รายจ่าย)
   sheet.getRange("D" + targetRow).setValue(descText);
   sheet.getRange("E" + targetRow).setFormula(amountFormula);
+  autoResizeSheetColumns(sheet); // ปรับความกว้างคอลัมน์ออโต้
   Logger.log("บันทึก Fix Cost อัตโนมัติในแท็บ " + tabName + " แถวที่ " + targetRow + " สำเร็จแล้วแก!");
+}
+
+// ฟังก์ชันปรับขนาดความกว้างคอลัมน์อัจฉริยะโดยลอกเลียนแบบขนาดจากแท็บต้นแบบโดยตรง
+function autoResizeSheetColumns(sheet) {
+  if (!sheet) return;
+  var spreadsheet = sheet.getParent();
+  var lastCol = sheet.getLastColumn();
+  if (lastCol <= 0) return;
+  
+  // ค้นหาแท็บต้นแบบเพื่อใช้อ้างอิงความกว้าง (หา "ต้นแบบ" -> "Template" -> "ม.ค." -> หรือชีตแรกสุดของแผ่นงาน)
+  var templateSheet = spreadsheet.getSheetByName("ต้นแบบ") || 
+                      spreadsheet.getSheetByName("Template") || 
+                      spreadsheet.getSheetByName("ม.ค.") ||
+                      spreadsheet.getSheets()[0];
+  
+  // ถ้ามีแท็บต้นแบบ และแท็บต้นแบบไม่ใช่แท็บปัจจุบันที่เรากำลังปรับขนาดอยู่
+  if (templateSheet && templateSheet.getName() !== sheet.getName()) {
+    // ก็อปปี้ความกว้างคอลัมน์จากแท็บต้นแบบมาใส่แท็บปัจจุบันตรงๆ เลยเพื่อความแม่นยำ
+    var templateLastCol = templateSheet.getLastColumn();
+    for (var c = 1; c <= Math.min(lastCol, templateLastCol); c++) {
+      var templateW = templateSheet.getColumnWidth(c);
+      if (templateW > 50) {
+        sheet.setColumnWidth(c, templateW);
+      }
+    }
+  } else {
+    // ถ้าเป็นแท็บต้นแบบเอง ให้ปรับขนาดคอลัมน์ตามข้อมูลจริง และตั้งความกว้างขั้นต่ำ 85px
+    sheet.autoResizeColumns(1, lastCol);
+    SpreadsheetApp.flush(); // บังคับให้ Google Sheets เคลียร์คิวและอัปเดตขนาดความกว้างลงระบบจริง
+    for (var c = 1; c <= lastCol; c++) {
+      var w = sheet.getColumnWidth(c);
+      if (w < 85) {
+        sheet.setColumnWidth(c, 85);
+      }
+    }
+  }
+}
+
+// ฟังก์ชันสำหรับรันใน Apps Script เพื่อจัดหน้าและคัดลอกขนาดคอลัมน์จากต้นแบบไปยังทุกแท็บทันที!
+function beautifyAllSheetsNow() {
+  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  
+  // บังคับให้ระบบอัปเดตสเตทความกว้างล่าสุดของแท็บต้นแบบก่อน (ม.ค.)
+  var templateSheet = spreadsheet.getSheetByName("ต้นแบบ") || 
+                      spreadsheet.getSheetByName("Template") || 
+                      spreadsheet.getSheetByName("ม.ค.") ||
+                      spreadsheet.getSheets()[0];
+  if (templateSheet) {
+    var templateLastCol = templateSheet.getLastColumn();
+    if (templateLastCol > 0) {
+      templateSheet.autoResizeColumns(1, templateLastCol);
+      SpreadsheetApp.flush(); // บังคับอัปเดต
+    }
+  }
+  
+  var sheets = spreadsheet.getSheets();
+  var count = 0;
+  for (var i = 0; i < sheets.length; i++) {
+    var sheet = sheets[i];
+    // ข้ามหน้าการตั้งค่าที่ไม่ใช่ปฏิทินบัญชีรายเดือน
+    if (sheet.getName() !== "ตั้งค่า Fix Cost") {
+      autoResizeSheetColumns(sheet);
+      count++;
+    }
+  }
+  Logger.log("ปรับขนาดทุกชีตจำนวน " + count + " แท็บ โดยอิงตามต้นแบบเรียบร้อยแล้วแก!");
 }
 ```
 
