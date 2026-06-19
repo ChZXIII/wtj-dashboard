@@ -712,8 +712,22 @@ function setupEventListeners() {
       }
       document.getElementById('docProjectName').value = sourceDoc.detail || sourceDoc.projectName || '';
       
-      if (currentDocType === 'receipt') {
-        document.getElementById('docInvoiceNo').value = sourceDoc.number || '';
+      // ตรวจสอบว่าเป็นเอกสารประเภทเดียวกัน (โหมดแก้ไข) หรือต่างประเภท (โหมดดึงข้อมูลอ้างอิง)
+      const isSameType = sourceDoc.type === currentDocType;
+      
+      if (isSameType) {
+        // ถ้าเป็นประเภทเดียวกัน ให้ดึงเลขที่เอกสารมาด้วยเพื่อเซฟทับตัวเดิม
+        document.getElementById('docNumber').value = sourceDoc.number;
+        if (currentDocType === 'receipt') {
+          const invNoEl = document.getElementById('docInvoiceNo');
+          if (invNoEl) invNoEl.value = sourceDoc.invoiceNo || '';
+        }
+      } else {
+        // ถ้าต่างประเภทกัน (เช่น ดึง QT มาออก IV) ไม่ต้องเปลี่ยนเลขที่เอกสารของใบใหม่
+        if (currentDocType === 'receipt') {
+          const invNoEl = document.getElementById('docInvoiceNo');
+          if (invNoEl) invNoEl.value = sourceDoc.number || '';
+        }
       }
       
       // ดึงรายการสินค้า
@@ -736,7 +750,12 @@ function setupEventListeners() {
       
       // ตั้งค่ากลับเป็นเริ่มต้น
       autofillSelect.value = '';
-      alert(`ดึงข้อมูลจากเอกสาร ${sourceDoc.number} มากรอกเรียบร้อยแล้วแก!`);
+      
+      if (isSameType) {
+        alert(`โหลดข้อมูลเอกสาร ${sourceDoc.number} เพื่อแก้ไขเรียบร้อยแล้วแก! (เมื่อกดบันทึกจะเซฟเขียนทับใบเดิมในชีต)`);
+      } else {
+        alert(`ดึงข้อมูลอ้างอิงจากเอกสาร ${sourceDoc.number} มากรอกเรียบร้อยแล้วแก!`);
+      }
     });
   }
 
@@ -1236,6 +1255,10 @@ function setDocType(type, keepCurrentNumber = false) {
   // Field group toggles
   const groupDueDate = document.getElementById('groupDocDueDate');
   const groupPaymentTerm = document.getElementById('groupDocPaymentTerm');
+  const groupInvoiceNo = document.getElementById('groupDocInvoiceNo');
+  if (groupInvoiceNo) {
+    groupInvoiceNo.style.display = type === 'receipt' ? 'block' : 'none';
+  }
   
   const syncBtn = document.getElementById('btnSaveAndSyncDoc');
 
@@ -1273,7 +1296,7 @@ function setDocType(type, keepCurrentNumber = false) {
     formWht.style.display = 'none';
     previewStandard.style.display = 'block';
     previewWht.style.display = 'none';
-    if (formInternalDetails) formInternalDetails.style.display = 'block';
+    if (formInternalDetails) formInternalDetails.style.display = (type === 'quotation') ? 'none' : 'block';
 
     // Show/hide due date terms (hide for receipt and quotation)
     if (type === 'receipt' || type === 'quotation') {
@@ -1319,24 +1342,78 @@ function setDocType(type, keepCurrentNumber = false) {
       autofillSelect.innerHTML = '<option value="">-- เลือกเอกสารอ้างอิง --</option>';
       
       if (type === 'receipt') {
+        autofillLabel.textContent = 'ดึงข้อมูลอ้างอิง:';
+        
+        // Group 1: แก้ไขใบเสร็จเดิม
+        const receipts = dbDocs.filter(d => d.type === 'receipt');
+        if (receipts.length > 0) {
+          const g1 = document.createElement('optgroup');
+          g1.label = 'แก้ไขใบเสร็จเดิม';
+          receipts.forEach(r => {
+            const opt = document.createElement('option');
+            opt.value = r.number;
+            opt.textContent = `${r.number} - ${r.name}`;
+            g1.appendChild(opt);
+          });
+          autofillSelect.appendChild(g1);
+        }
+        
+        // Group 2: ดึงข้อมูลจากใบวางบิล
         const invoices = dbDocs.filter(d => d.type === 'invoice');
         if (invoices.length > 0) {
-          autofillLabel.textContent = 'ดึงข้อมูลใบวางบิล:';
+          const g2 = document.createElement('optgroup');
+          g2.label = 'ดึงข้อมูลจากใบวางบิล';
           invoices.forEach(inv => {
             const opt = document.createElement('option');
             opt.value = inv.number;
             const statusSuffix = inv.paymentStatus ? ` [${inv.paymentStatus}]` : '';
             opt.textContent = `${inv.number} - ${inv.name}${statusSuffix}`;
-            autofillSelect.appendChild(opt);
+            g2.appendChild(opt);
           });
-          autofillGroup.style.display = 'flex';
-        } else {
-          autofillGroup.style.display = 'none';
+          autofillSelect.appendChild(g2);
         }
+        
+        autofillGroup.style.display = (receipts.length > 0 || invoices.length > 0) ? 'flex' : 'none';
+        
       } else if (type === 'invoice') {
+        autofillLabel.textContent = 'ดึงข้อมูลอ้างอิง:';
+        
+        // Group 1: แก้ไขใบวางบิลเดิม
+        const invoices = dbDocs.filter(d => d.type === 'invoice');
+        if (invoices.length > 0) {
+          const g1 = document.createElement('optgroup');
+          g1.label = 'แก้ไขใบวางบิลเดิม';
+          invoices.forEach(inv => {
+            const opt = document.createElement('option');
+            opt.value = inv.number;
+            opt.textContent = `${inv.number} - ${inv.name}`;
+            g1.appendChild(opt);
+          });
+          autofillSelect.appendChild(g1);
+        }
+        
+        // Group 2: ดึงข้อมูลจากใบเสนอราคา
         const quotations = dbDocs.filter(d => d.type === 'quotation');
         if (quotations.length > 0) {
-          autofillLabel.textContent = 'ดึงข้อมูลใบเสนอราคา:';
+          const g2 = document.createElement('optgroup');
+          g2.label = 'ดึงข้อมูลจากใบเสนอราคา';
+          quotations.forEach(qt => {
+            const opt = document.createElement('option');
+            opt.value = qt.number;
+            opt.textContent = `${qt.number} - ${qt.name}`;
+            g2.appendChild(opt);
+          });
+          autofillSelect.appendChild(g2);
+        }
+        
+        autofillGroup.style.display = (invoices.length > 0 || quotations.length > 0) ? 'flex' : 'none';
+        
+      } else if (type === 'quotation') {
+        autofillLabel.textContent = 'แก้ไขใบเสนอราคาเดิม:';
+        
+        // Group 1: แก้ไขใบเสนอราคาเดิม
+        const quotations = dbDocs.filter(d => d.type === 'quotation');
+        if (quotations.length > 0) {
           quotations.forEach(qt => {
             const opt = document.createElement('option');
             opt.value = qt.number;
@@ -1945,7 +2022,8 @@ function processDocumentSync() {
     const showSeal = document.getElementById('doc_showSeal') ? document.getElementById('doc_showSeal').checked : false;
     const showSignature = document.getElementById('doc_showSignature') ? document.getElementById('doc_showSignature').checked : false;
 
-    if (!docNo || !dateVal || !clientName || !detail || subtotal <= 0) {
+    const isDetailRequired = currentDocType !== 'quotation';
+    if (!docNo || !dateVal || !clientName || (isDetailRequired && !detail) || subtotal <= 0) {
       alert('กรุณากรอกข้อมูลเอกสารและระบุรายการสินค้าให้ครบถ้วนก่อนบันทึกนะแก!');
       return;
     }
