@@ -1215,24 +1215,22 @@ textarea.form-control {
 }
 
 @media print {
-  html {
-    height: auto !important;
-    overflow: visible !important;
+  html, body {
+    height: 100% !important;
+    overflow: hidden !important;
+    background: #ffffff !important;
+    color: #000000 !important;
   }
 
   body {
-    background: #ffffff !important;
-    color: #000000 !important;
     display: block !important;
-    height: auto !important;
-    overflow: visible !important;
   }
 
   .app-container {
     display: block !important;
-    height: auto !important;
+    height: 100% !important;
     width: 100% !important;
-    overflow: visible !important;
+    overflow: hidden !important;
   }
   
   .sidebar, .main-content > *:not(.view-section.active), .doc-editor-panel, .view-header, .btn-primary, .btn-secondary, .hitl-warning-card {
@@ -1242,8 +1240,8 @@ textarea.form-control {
   .main-content {
     padding: 0 !important;
     background: none !important;
-    overflow: visible !important;
-    height: auto !important;
+    overflow: hidden !important;
+    height: 100% !important;
   }
 
   .view-section.active {
@@ -1252,7 +1250,7 @@ textarea.form-control {
 
   .doc-gen-container {
     display: block !important;
-    height: auto !important;
+    height: 100% !important;
   }
 
   .doc-preview-panel {
@@ -1260,8 +1258,9 @@ textarea.form-control {
     border: none !important;
     box-shadow: none !important;
     padding: 0 !important;
-    overflow: visible !important;
+    overflow: hidden !important;
     display: block !important;
+    height: 100% !important;
   }
 
   .doc-paper, .wht-card-paper {
@@ -1269,10 +1268,32 @@ textarea.form-control {
     padding: 0 !important;
     margin: 0 !important;
     width: 100% !important;
-    min-height: auto !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    overflow: hidden !important;
     zoom: 1 !important;
-    page-break-inside: avoid;
-    page-break-after: avoid;
+    page-break-inside: avoid !important;
+    page-break-after: avoid !important;
+  }
+
+  .doc-paper {
+    gap: 12px !important;
+  }
+
+  .wht-card-paper {
+    gap: 8px !important;
+  }
+
+  .doc-signatures-grid {
+    margin-top: 20px !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  .signature-box {
+    gap: 15px !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
   }
 
   /* Specific overrides for printing Payment Voucher */
@@ -1280,8 +1301,8 @@ textarea.form-control {
     background: #ffffff !important;
     color: #000000 !important;
     display: block !important;
-    height: auto !important;
-    overflow: visible !important;
+    height: 100% !important;
+    overflow: hidden !important;
   }
   body.printing-pv .sidebar,
   body.printing-pv .main-content,
@@ -1296,7 +1317,9 @@ textarea.form-control {
     padding: 0 !important;
     margin: 0 !important;
     width: 100% !important;
-    min-height: auto !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    overflow: hidden !important;
   }
 }
 
