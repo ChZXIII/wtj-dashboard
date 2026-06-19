@@ -3665,7 +3665,11 @@ function setExpenseMode(mode) {
       el.style.display = 'none';
     });
     document.querySelectorAll('.expense-simple-field').forEach(el => {
-      el.style.display = el.tagName === 'DIV' || el.classList.contains('form-group') ? 'block' : 'inline-block';
+      if (el.classList.contains('form-group') || el.classList.contains('form-row')) {
+        el.style.display = 'flex';
+      } else {
+        el.style.display = el.tagName === 'DIV' ? 'block' : 'inline-block';
+      }
     });
 
     const payeeEl = document.getElementById('expensePayee');
@@ -3685,10 +3689,8 @@ function setExpenseMode(mode) {
     }
 
     document.querySelectorAll('.expense-detailed-field').forEach(el => {
-      if (el.classList.contains('form-row')) {
+      if (el.classList.contains('form-row') || el.classList.contains('form-group')) {
         el.style.display = 'flex';
-      } else if (el.classList.contains('form-group')) {
-        el.style.display = 'block';
       } else {
         el.style.display = 'block';
       }
