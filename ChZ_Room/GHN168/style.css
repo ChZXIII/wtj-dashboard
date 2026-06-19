@@ -1266,19 +1266,13 @@ textarea.form-control {
 
   .doc-paper, .wht-card-paper {
     box-shadow: none !important;
+    padding: 0 !important;
     margin: 0 !important;
     width: 100% !important;
     min-height: auto !important;
     zoom: 1 !important;
     page-break-inside: avoid;
-  }
-
-  .doc-paper {
-    padding: 20mm !important;
-  }
-
-  .wht-card-paper {
-    padding: 15mm !important;
+    page-break-after: avoid;
   }
 
   /* Specific overrides for printing Payment Voucher */
@@ -1299,7 +1293,7 @@ textarea.form-control {
   body.printing-pv #printPvPaper {
     display: block !important;
     box-shadow: none !important;
-    padding: 15mm !important;
+    padding: 0 !important;
     margin: 0 !important;
     width: 100% !important;
     min-height: auto !important;
