@@ -110,6 +110,56 @@ var DOCHUB_HEADERS = [
   "รายละเอียด (Description)"
 ];
 
+var QUOTATION_HEADERS = [
+  "วันที่บันทึก (Record Date)",
+  "วันที่เอกสาร (Date)",
+  "เลขที่เอกสาร (Document No)",
+  "ชื่อลูกค้า (Client Name)",
+  "เลขประจำตัวผู้เสียภาษี (Client Tax ID)",
+  "ที่อยู่ลูกค้า (Client Address)",
+  "รหัสสาขา (Client Branch)",
+  "เบอร์โทรติดต่อ (Client Phone)",
+  "รายละเอียดโครงการ (Project Name)",
+  "ยอดก่อนภาษีมูลค่าเพิ่ม (Pre-VAT Amount)",
+  "ภาษีมูลค่าเพิ่ม 7% (VAT Amount)",
+  "ยอดภาษีหัก ณ ที่จ่าย (WHT Amount)",
+  "ยอดรวมสุทธิ (Net Amount)",
+  "ภาษีถูกหัก ณ ที่จ่าย % (WHT Rate %)",
+  "ชื่อผู้ลงนาม (Signer Name)",
+  "ผู้ลงนาม (Signatory Select)",
+  "แสดงตราประทับ (Show Company Seal)",
+  "แสดงลายเซ็น (Show Document Signature)",
+  "ข้อมูลรายการสินค้าและราคา JSON (Items JSON)",
+  "วันเวลาที่อัปเดตล่าสุด (Last Updated)",
+  "หมายเหตุ (Remarks)"
+];
+
+var INVOICE_HEADERS = [
+  "วันที่บันทึก (Record Date)",
+  "วันที่เอกสาร (Date)",
+  "เลขที่เอกสาร (Document No)",
+  "ชื่อลูกค้า (Client Name)",
+  "เลขประจำตัวผู้เสียภาษี (Client Tax ID)",
+  "ที่อยู่ลูกค้า (Client Address)",
+  "รหัสสาขา (Client Branch)",
+  "เบอร์โทรติดต่อ (Client Phone)",
+  "รายละเอียดโครงการ (Project Name)",
+  "ยอดก่อนภาษีมูลค่าเพิ่ม (Pre-VAT Amount)",
+  "ภาษีมูลค่าเพิ่ม 7% (VAT Amount)",
+  "ยอดภาษีหัก ณ ที่จ่าย (WHT Amount)",
+  "ยอดรวมสุทธิ (Net Amount)",
+  "ภาษีถูกหัก ณ ที่จ่าย % (WHT Rate %)",
+  "ชื่อผู้ลงนาม (Signer Name)",
+  "ผู้ลงนาม (Signatory Select)",
+  "แสดงตราประทับ (Show Company Seal)",
+  "แสดงลายเซ็น (Show Document Signature)",
+  "ข้อมูลรายการสินค้าและราคา JSON (Items JSON)",
+  "วันเวลาที่อัปเดตล่าสุด (Last Updated)",
+  "เงื่อนไขการชำระเงิน (Payment Terms)",
+  "วันครบกำหนด (Due Date)",
+  "หมายเหตุ (Remarks)"
+];
+
 function doPost(e) {
   var lock = LockService.getScriptLock();
   lock.tryLock(10000); // ล็อกสคริปต์ 10 วินาทีป้องกันสัญญานยิงชนกัน
@@ -161,12 +211,34 @@ function doPost(e) {
       } 
       // บันทึกแถวเดี่ยว
       else if (data.values && Array.isArray(data.values) && data.values.length > 0) {
-        sheet.appendRow(data.values);
+        var docNo = data.values[2]; // index 2 is column 3 (Document No)
+        var updated = false;
+        
+        if ((sheetName === "ใบเสนอราคา" || sheetName === "ใบวางบิล") && docNo) {
+          var lastRow = sheet.getLastRow();
+          if (lastRow > 1) {
+            var docNumbers = sheet.getRange(2, 3, lastRow - 1, 1).getValues();
+            for (var r = 0; r < docNumbers.length; r++) {
+              if (docNumbers[r][0] === docNo) {
+                // Found duplicate document number, update this row
+                var rowToUpdate = r + 2; // 2-indexed row number in sheet
+                sheet.getRange(rowToUpdate, 1, 1, data.values.length).setValues([data.values]);
+                updated = true;
+                break;
+              }
+            }
+          }
+        }
+        
+        if (!updated) {
+          sheet.appendRow(data.values);
+        }
+        
         beautifySheet(sheet, sheetName);
         
         return ContentService.createTextOutput(JSON.stringify({
           "status": "success",
-          "message": "ซิงค์ข้อมูลลงแท็บ '" + sheetName + "' เรียบร้อยแล้วแก!"
+          "message": updated ? "อัปเดตข้อมูลเอกสารเลขที่ '" + docNo + "' ในแท็บ '" + sheetName + "' เรียบร้อยแล้วแก!" : "ซิงค์บันทึกข้อมูลลงแท็บ '" + sheetName + "' เรียบร้อยแล้วแก!"
         })).setMimeType(ContentService.MimeType.JSON);
       } 
       else {
@@ -187,7 +259,9 @@ function doPost(e) {
         { name: "เงินสดย่อย", headers: PETTY_CASH_HEADERS },
         { name: "เงินเดือน", headers: PAYROLL_HEADERS },
         { name: "กระทบยอดธนาคาร", headers: BANK_REC_HEADERS },
-        { name: "คลังเอกสาร", headers: DOCHUB_HEADERS }
+        { name: "คลังเอกสาร", headers: DOCHUB_HEADERS },
+        { name: "ใบเสนอราคา", headers: QUOTATION_HEADERS },
+        { name: "ใบวางบิล", headers: INVOICE_HEADERS }
       ];
       
       var createdSheets = [];
