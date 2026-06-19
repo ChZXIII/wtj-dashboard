@@ -4020,11 +4020,15 @@ function exportPdfClientSide() {
   const originalZoom = element.style.zoom;
   const originalBoxShadow = element.style.boxShadow;
   const originalHeight = element.style.height;
+  const originalMinHeight = element.style.minHeight;
+  const originalMaxHeight = element.style.maxHeight;
   const originalOverflow = element.style.overflow;
   
   element.style.zoom = '1';
   element.style.boxShadow = 'none';
-  element.style.height = '296mm';
+  element.style.minHeight = '295mm';
+  element.style.maxHeight = '295mm';
+  element.style.height = '295mm';
   element.style.overflow = 'hidden';
   
   const opt = {
@@ -4051,6 +4055,8 @@ function exportPdfClientSide() {
     element.style.zoom = originalZoom;
     element.style.boxShadow = originalBoxShadow;
     element.style.height = originalHeight;
+    element.style.minHeight = originalMinHeight;
+    element.style.maxHeight = originalMaxHeight;
     element.style.overflow = originalOverflow;
   }).catch(err => {
     console.error('PDF export failed:', err);
@@ -4060,6 +4066,8 @@ function exportPdfClientSide() {
     element.style.zoom = originalZoom;
     element.style.boxShadow = originalBoxShadow;
     element.style.height = originalHeight;
+    element.style.minHeight = originalMinHeight;
+    element.style.maxHeight = originalMaxHeight;
     element.style.overflow = originalOverflow;
   });
 }
