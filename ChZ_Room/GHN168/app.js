@@ -1269,12 +1269,19 @@ function setDocType(type, keepCurrentNumber = false) {
   // Toggle class for standard layout overrides (hiding Qty/Unit/Price columns)
   const formStandardDetails = document.getElementById('formGroupStandardDetails');
   const previewStandardDoc = document.getElementById('previewStandardDoc');
+  const editorPriceHeader = document.querySelector('.editor-items-table th.col-price');
   if (type === 'quotation' || type === 'invoice' || type === 'receipt') {
     if (formStandardDetails) formStandardDetails.classList.add('doc-type-quotation');
     if (previewStandardDoc) previewStandardDoc.classList.add('doc-type-quotation');
+    if (editorPriceHeader) {
+      editorPriceHeader.innerHTML = 'จำนวนเงิน (บาท)<br>Amount (THB)';
+    }
   } else {
     if (formStandardDetails) formStandardDetails.classList.remove('doc-type-quotation');
     if (previewStandardDoc) previewStandardDoc.classList.remove('doc-type-quotation');
+    if (editorPriceHeader) {
+      editorPriceHeader.textContent = 'ราคาต่อหน่วย';
+    }
   }
 
   // Field group toggles
@@ -1781,6 +1788,15 @@ function syncDocPreview() {
   const dueDateRow = document.getElementById('prevDocDueDateRow');
   if (dueDateRow) {
     dueDateRow.style.display = currentDocType === 'invoice' ? '' : 'none';
+  }
+
+  // Hide Payment Terms block on Receipt and Quotation (Only show on Invoice)
+  const prevPaymentTermTitle = document.getElementById('prevPaymentTermTitle');
+  const prevPaymentTermVal = document.getElementById('prevPaymentTermVal');
+  if (prevPaymentTermTitle && prevPaymentTermVal) {
+    const showPaymentTerm = currentDocType === 'invoice';
+    prevPaymentTermTitle.style.display = showPaymentTerm ? '' : 'none';
+    prevPaymentTermVal.style.display = showPaymentTerm ? '' : 'none';
   }
 
   // Simple mappings
