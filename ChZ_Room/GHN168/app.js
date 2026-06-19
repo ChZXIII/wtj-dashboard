@@ -514,7 +514,7 @@ function updatePageTitle() {
   if (currentDocType === 'wht') {
     const whtNo = document.getElementById('whtDocNumber') ? document.getElementById('whtDocNumber').value.trim() : '';
     customTitle = 'ใบหัก_ณ_ที่จ่าย_50_ทวิ';
-    if (whtNo) customTitle += `_${whtNo}`;
+    if (whtNo) customTitle += `_${cleanDocNo(whtNo)}`;
   } else {
     const docNo = document.getElementById('docNumber') ? document.getElementById('docNumber').value.trim() : '';
     if (currentDocType === 'quotation') {
@@ -524,7 +524,7 @@ function updatePageTitle() {
     } else if (currentDocType === 'receipt') {
       customTitle = 'ใบเสร็จรับเงิน';
     }
-    if (docNo) customTitle += `_${docNo}`;
+    if (docNo) customTitle += `_${cleanDocNo(docNo)}`;
   }
   
   document.title = customTitle.replace(/[\/\\?%*:|"<>\s]+/g, '_');
@@ -1774,7 +1774,11 @@ function syncDocPreview() {
     const input = document.getElementById(f.from);
     const prev = document.getElementById(f.to);
     if (input && prev) {
-      prev.textContent = input.value || '-';
+      let val = input.value || '-';
+      if (f.from === 'docNumber') {
+        val = cleanDocNo(val);
+      }
+      prev.textContent = val;
     }
   });
 
@@ -1901,7 +1905,8 @@ function syncDocPreview() {
 }
 
 function syncWhtPreview() {
-  const docNo = document.getElementById('whtDocNumber').value || '-';
+  let docNo = document.getElementById('whtDocNumber').value || '-';
+  docNo = cleanDocNo(docNo);
   const dateStr = formatDate(document.getElementById('whtDate').value);
 
   document.getElementById('prevWhtDocNo').textContent = docNo;
@@ -1949,6 +1954,20 @@ function formatDate(dateStr) {
     return `${parts[2]}/${parts[1]}/${parts[0]}`;
   }
   return dateStr;
+}
+
+function cleanDocNo(val) {
+  if (!val || val === '-') return val;
+  const parts = val.split('-');
+  if (parts.length > 1) {
+    for (let i = 1; i < parts.length; i++) {
+      const part = parts[i].toUpperCase();
+      if (part.startsWith('QT') || part.startsWith('IV') || part.startsWith('RE') || part.startsWith('WHT') || part.startsWith('PV')) {
+        return parts.slice(i).join('-');
+      }
+    }
+  }
+  return val;
 }
 
 // --- Tax ID Validation Helper (ADVISORY) ---
@@ -3886,7 +3905,7 @@ function editExpense(index) {
 function printPaymentVoucher(index) {
   const doc = dbDocs[index];
   
-  document.getElementById('pvPrintNo').textContent = doc.number;
+  document.getElementById('pvPrintNo').textContent = cleanDocNo(doc.number);
   document.getElementById('pvPrintDate').textContent = doc.date;
   document.getElementById('pvPrintPayee').textContent = doc.name;
   document.getElementById('pvPrintPayeeTaxId').textContent = doc.payeeTaxId || '-';
