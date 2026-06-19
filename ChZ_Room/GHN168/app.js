@@ -5142,8 +5142,11 @@ function setupPreviewAutoScaling() {
           // Spacing inside the panel: A4 width is 794px. We add 40px breathing room.
           const targetWidth = 794 + 40;
           
+          const isMobileOrTablet = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+                                  (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+          
           let scale = 1;
-          if (panelWidth < targetWidth) {
+          if (!isMobileOrTablet && panelWidth < targetWidth) {
             scale = panelWidth / targetWidth;
             // Cap the minimum scale to 0.4 on extremely small screens to keep it readable
             if (scale < 0.4) scale = 0.4;
