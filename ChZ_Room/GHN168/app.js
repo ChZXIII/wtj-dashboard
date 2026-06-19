@@ -5102,6 +5102,32 @@ function setupPreviewAutoScaling() {
   }
 }
 
+async function forceClearCacheAndReload() {
+  if (!confirm('ต้องการล้างแคชแอปพลิเคชันเพื่ออัปเดตระบบใช่หรือไม่? (ข้อมูลที่บันทึกไว้ในเครื่องจะไม่สูญหาย)')) {
+    return;
+  }
+  try {
+    if ('serviceWorker' in navigator) {
+      const registrations = await navigator.serviceWorker.getRegistrations();
+      for (let registration of registrations) {
+        await registration.unregister();
+      }
+    }
+    if ('caches' in window) {
+      const cacheNames = await caches.keys();
+      for (let cacheName of cacheNames) {
+        await caches.delete(cacheName);
+      }
+    }
+    alert('ล้างแคชสำเร็จ ระบบจะทำการรีโหลดหน้าจอเพื่ออัปเดตเวอร์ชันใหม่');
+    window.location.reload(true);
+  } catch (err) {
+    console.error(err);
+    alert('เกิดข้อผิดพลาดในการล้างแคช: ' + err.message);
+  }
+}
+window.forceClearCacheAndReload = forceClearCacheAndReload;
+
 // Expose corporate handlers to global window scope
 window.autoGeneratePettyCashVoucherNo = autoGeneratePettyCashVoucherNo;
 window.renderPettyCash = renderPettyCash;
