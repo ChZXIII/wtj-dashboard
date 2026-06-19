@@ -1279,12 +1279,14 @@ function setDocType(type, keepCurrentNumber = false) {
   if (type === 'quotation' || type === 'invoice' || type === 'receipt') {
     if (formStandardDetails) formStandardDetails.classList.add('doc-type-quotation');
     if (previewStandardDoc) previewStandardDoc.classList.add('doc-type-quotation');
+    if (formDocs) formDocs.classList.add('doc-type-quotation');
     if (editorPriceHeader) {
       editorPriceHeader.innerHTML = 'จำนวนเงิน (บาท)<br>Amount (THB)';
     }
   } else {
     if (formStandardDetails) formStandardDetails.classList.remove('doc-type-quotation');
     if (previewStandardDoc) previewStandardDoc.classList.remove('doc-type-quotation');
+    if (formDocs) formDocs.classList.remove('doc-type-quotation');
     if (editorPriceHeader) {
       editorPriceHeader.textContent = 'ราคาต่อหน่วย';
     }
@@ -1541,7 +1543,8 @@ function renderPrevItemsTable() {
   const prevBody = document.getElementById('prevItemsBody');
   if (prevBody) {
     if (docItems.length === 0) {
-      const colspan = currentDocType === 'quotation' ? 3 : 6;
+      const isStandardHidden = currentDocType === 'quotation' || currentDocType === 'invoice' || currentDocType === 'receipt';
+      const colspan = isStandardHidden ? 3 : 6;
       prevBody.innerHTML = `<tr><td colspan="${colspan}" style="text-align:center; padding: 15px; font-style:italic;">ไม่มีรายการ</td></tr>`;
     } else {
       prevBody.innerHTML = docItems.map((item, idx) => {

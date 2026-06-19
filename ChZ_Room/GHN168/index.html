@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GHN168 | Accounting & Document Hub</title>
-  <link rel="stylesheet" href="style.css?v=37">
-  <link rel="manifest" href="manifest.json?v=37">
+  <link rel="stylesheet" href="style.css?v=38">
+  <link rel="manifest" href="manifest.json?v=38">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="GHN168">
@@ -132,7 +132,20 @@
         
         <!-- Accounting Agent Profile Widget -->
         <div class="agent-profile">
-          <div class="agent-avatar">พ</div>
+          <div class="agent-avatar">
+            <svg style="width: 20px; height: 20px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="16" height="20" x="4" y="2" rx="2" ry="2"/>
+              <line x1="8" x2="16" y1="6" y2="6"/>
+              <line x1="16" x2="16" y1="14" y2="18"/>
+              <path d="M16 10h.01"/>
+              <path d="M12 10h.01"/>
+              <path d="M8 10h.01"/>
+              <path d="M12 14h.01"/>
+              <path d="M8 14h.01"/>
+              <path d="M12 18h.01"/>
+              <path d="M8 18h.01"/>
+            </svg>
+          </div>
           <div class="agent-info">
             <span class="agent-name">น้องพิม (Pim)</span>
             <span class="agent-role">Corporate Accountant</span>
@@ -1469,12 +1482,6 @@
                   นำเข้าข้อมูลสำรอง (Import)
                 </button>
               </div>
-              <button class="btn-secondary" style="margin-top: 12px; width: 100%; justify-content: center; background: #e52521; color: #fff; border-color: #e52521; font-weight: bold;" onclick="forceClearCacheAndReload()">
-                <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 7.89H18v3" />
-                </svg>
-                ล้างแคชบราวเซอร์เพื่ออัปเดตระบบ (Clear Cache & Update)
-              </button>
               <input type="file" id="importBackupFile" style="display: none;" accept=".json">
             </div>
 
@@ -1539,7 +1546,20 @@
       </div>
       <div style="display: flex; flex-direction: column; gap: 16px; margin-top: 12px;">
         <div style="display: flex; align-items: center; gap: 16px; background: rgba(255, 69, 0, 0.05); padding: 16px; border: 2px solid var(--border-color); border-radius: 10px;">
-          <div class="agent-avatar" style="width: 50px; height: 50px; font-size: 24px; background-color: var(--accent-color); color: #ffffff; display: flex; align-items: center; justify-content: center; font-weight: 800; border: 2px solid var(--border-color); border-radius: 50%;">พ</div>
+          <div class="agent-avatar" style="width: 50px; height: 50px; font-size: 24px; background-color: var(--accent-color); color: #ffffff; display: flex; align-items: center; justify-content: center; font-weight: 800; border: 2px solid var(--border-color); border-radius: 50%;">
+            <svg style="width: 28px; height: 28px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="16" height="20" x="4" y="2" rx="2" ry="2"/>
+              <line x1="8" x2="16" y1="6" y2="6"/>
+              <line x1="16" x2="16" y1="14" y2="18"/>
+              <path d="M16 10h.01"/>
+              <path d="M12 10h.01"/>
+              <path d="M8 10h.01"/>
+              <path d="M12 14h.01"/>
+              <path d="M8 14h.01"/>
+              <path d="M12 18h.01"/>
+              <path d="M8 18h.01"/>
+            </svg>
+          </div>
           <div>
             <h3 style="margin: 0; font-size: 16px; font-family: 'Prompt', sans-serif;">น้องพิม (Pim)</h3>
             <p style="margin: 4px 0 0 0; font-size: 12px; color: var(--text-secondary);">Corporate Accountant ประจําบริษัท</p>
@@ -1551,6 +1571,16 @@
           <p style="margin: 0; font-size: 12px; color: var(--text-secondary); line-height: 1.5;">
             รับผิดชอบตรวจสอบข้อมูลการเงิน ออกเอกสารใบเสนอราคา ใบวางบิล ใบเสร็จรับเงิน และจัดเตรียมข้อมูลภาษี (50 ทวิ) พร้อมระบบช่วยซิงค์ข้อมูลภาษีลง Google Sheets & Google Drive
           </p>
+        </div>
+
+        <div>
+          <h4 style="margin: 0 0 8px 0; font-size: 13px; font-family: 'Prompt', sans-serif; color: var(--text-primary);">ระบบแอปพลิเคชัน:</h4>
+          <button class="btn-secondary" style="width: 100%; justify-content: center; background: #e52521; color: #fff; border-color: #e52521; font-weight: bold;" onclick="forceClearCacheAndReload()">
+            <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 7.89H18v3" />
+            </svg>
+            ล้างแคชบราวเซอร์เพื่ออัปเดตระบบ (Clear Cache & Update)
+          </button>
         </div>
 
         <!-- Danger Zone Box inside Nong Pim modal -->
