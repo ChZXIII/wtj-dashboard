@@ -3509,9 +3509,9 @@ function thaiBahtText(amount) {
     const pos = len - i - 1;
     if (digit !== 0) {
       if (pos % 6 === 1 && digit === 1) {
-        bahtStr += 'สิบ';
+        bahtStr += '';
       } else if (pos % 6 === 1 && digit === 2) {
-        bahtStr += 'ยี่สิบ';
+        bahtStr += 'ยี่';
       } else if (pos % 6 === 0 && digit === 1 && i > 0) {
         bahtStr += 'เอ็ด';
       } else {
@@ -4026,9 +4026,18 @@ function exportPdfClientSide() {
   
   element.style.zoom = '1';
   element.style.boxShadow = 'none';
-  element.style.minHeight = '295mm';
-  element.style.maxHeight = '295mm';
-  element.style.height = '295mm';
+  element.style.minHeight = 'auto';
+  element.style.maxHeight = 'none';
+  element.style.height = 'auto';
+  element.style.overflow = 'visible';
+  
+  const scrollHeight = element.scrollHeight;
+  const N = Math.max(1, Math.ceil(scrollHeight / 1122.5));
+  const clampedHeight = `${N * 295}mm`;
+  
+  element.style.minHeight = clampedHeight;
+  element.style.maxHeight = clampedHeight;
+  element.style.height = clampedHeight;
   element.style.overflow = 'hidden';
   
   const opt = {
