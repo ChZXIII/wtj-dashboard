@@ -1469,6 +1469,7 @@ input[type="time"] {
   .main-header, 
   .document-editor-panel, 
   .preview-panel-header,
+  #previewDocTypeSelector,
   #connectionWarning,
   #dashboardConnectionBanner {
     display: none !important;

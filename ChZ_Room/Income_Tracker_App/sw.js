@@ -1,4 +1,4 @@
-const CACHE_NAME = 'chz-app-v26';
+const CACHE_NAME = 'chz-app-v27';
 const ASSETS = [
   'index.html',
   'style.css',
