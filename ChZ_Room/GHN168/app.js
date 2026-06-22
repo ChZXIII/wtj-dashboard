@@ -2333,7 +2333,7 @@ function processDocumentSync() {
     const showSignature = document.getElementById('doc_showSignature') ? document.getElementById('doc_showSignature').checked : false;
 
     const isDetailRequired = currentDocType !== 'quotation';
-    if (!docNo || !dateVal || !clientName || (isDetailRequired && !detail) || subtotal <= 0) {
+    if (!docNo || !dateVal || !clientName || subtotal <= 0) {
       alert('กรุณากรอกข้อมูลเอกสารและระบุรายการสินค้าให้ครบถ้วนก่อนบันทึก');
       return;
     }
@@ -2561,7 +2561,7 @@ function processDocumentSync() {
     const recordedBy = document.getElementById('docRecordedBy').value;
     const remarks = document.getElementById('docRemarks').value;
 
-    if (!docNo || !dateVal || !clientName || !detail || subtotal <= 0) {
+    if (!docNo || !dateVal || !clientName || subtotal <= 0) {
       alert('กรุณากรอกข้อมูลรายรับให้ครบถ้วนก่อนทำการบันทึก');
       return;
     }

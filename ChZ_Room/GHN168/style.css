@@ -1297,7 +1297,7 @@ textarea.form-control {
   }
 
   tr, .signature-box, .doc-signatures-grid {
-    page-break-inside: avoid !important;
+    page-break-inside: avoid !important; /* Prevent mid-row and signature box page breaks */
   }
 
   /* Specific overrides for printing Payment Voucher */
