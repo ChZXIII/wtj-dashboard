@@ -1687,7 +1687,7 @@ function renderPaperTable() {
           <tr style="border: none; background: transparent;">
             <td style="width: 25px; border: none; padding: 0;"></td>
             <td style="width: 320px; text-align: left; border: none; padding: 0; vertical-align: middle;">
-              <div class="doc-baht-text-container" style="border: 1px dashed #000000; padding: 4px 10px; background: #f9fafb; font-weight: bold; text-align: left; border-radius: 4px; display: inline-block; font-size: 9px; max-width: 315px; white-space: nowrap; line-height: 1.2; margin: 0;">
+              <div id="prevBahtTextContainer" class="doc-baht-text-container" style="border: 1px dashed #000000; padding: 4px 10px; background: #f9fafb; font-weight: bold; text-align: left; border-radius: 4px; display: inline-block; font-size: 9px; max-width: 315px; white-space: nowrap; line-height: 1.2; margin: 0;">
                 จำนวนเงินตัวอักษร: &nbsp;<span id="prevBahtTextVal" style="font-weight: bold;">ศูนย์บาทถ้วน</span>
               </div>
             </td>
@@ -1864,7 +1864,23 @@ function calculateDocTotals() {
   }
 
   document.getElementById('prevGrandTotalVal').textContent = `฿${grandTotal.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-  document.getElementById('prevBahtTextVal').textContent = thaiBahtText(grandTotal);
+  const bahtText = thaiBahtText(grandTotal);
+  document.getElementById('prevBahtTextVal').textContent = bahtText;
+
+  const totalLength = 19 + bahtText.length;
+  let fontSize = 9;
+  let paddingHorizontal = 10;
+  let paddingVertical = 4;
+  if (totalLength > 35) {
+    fontSize = Math.max(5, 9 - (totalLength - 35) * 0.057);
+    paddingHorizontal = Math.max(3, 10 - (totalLength - 35) * 0.1);
+    paddingVertical = Math.max(2, 4 - (totalLength - 35) * 0.03);
+  }
+  const container = document.getElementById('prevBahtTextContainer');
+  if (container) {
+    container.style.fontSize = `${fontSize}px`;
+    container.style.padding = `${paddingVertical}px ${paddingHorizontal}px`;
+  }
 
   // Update internal company details calculation
   let retainedAmount = 0;
