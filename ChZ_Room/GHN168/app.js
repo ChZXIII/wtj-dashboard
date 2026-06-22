@@ -1685,13 +1685,13 @@ function renderPaperTable() {
       <td id="prevNetTotalLabelCell" colspan="${labelColspan}" style="width: 502px; padding: 6px 0; font-size: 11px; font-weight: 800; vertical-align: middle; border: none;">
         <table style="width: 502px; border-collapse: collapse; border: none; margin: 0; padding: 0; table-layout: fixed;">
           <tr style="border: none; background: transparent;">
-            <td style="width: 35px; border: none; padding: 0;"></td>
-            <td style="width: 290px; text-align: left; border: none; padding: 0; vertical-align: middle;">
-              <div class="doc-baht-text-container" style="border: 1px dashed #000000; padding: 4px 10px; background: #f9fafb; font-weight: bold; text-align: left; border-radius: 4px; display: inline-block; font-size: 9px; max-width: 285px; white-space: nowrap; line-height: 1.2; margin: 0;">
+            <td style="width: 25px; border: none; padding: 0;"></td>
+            <td style="width: 320px; text-align: left; border: none; padding: 0; vertical-align: middle;">
+              <div class="doc-baht-text-container" style="border: 1px dashed #000000; padding: 4px 10px; background: #f9fafb; font-weight: bold; text-align: left; border-radius: 4px; display: inline-block; font-size: 9px; max-width: 315px; white-space: nowrap; line-height: 1.2; margin: 0;">
                 จำนวนเงินตัวอักษร: &nbsp;<span id="prevBahtTextVal" style="font-weight: bold;">ศูนย์บาทถ้วน</span>
               </div>
             </td>
-            <td style="width: 177px; text-align: right; border: none; padding: 0 12px 0 0; vertical-align: middle; font-weight: 800; white-space: nowrap;">
+            <td style="width: 157px; text-align: right; border: none; padding: 0 12px 0 0; vertical-align: middle; font-weight: 800; white-space: nowrap;">
               ยอดเงินสุทธิ / Net Total
             </td>
           </tr>
