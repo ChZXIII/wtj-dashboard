@@ -1683,19 +1683,14 @@ function renderPaperTable() {
     </tr>
     <tr class="total-row">
       <td id="prevNetTotalLabelCell" colspan="${labelColspan}" style="width: 502px; padding: 6px 0; font-size: 11px; font-weight: 800; vertical-align: middle; border: none;">
-        <table style="width: 502px; border-collapse: collapse; border: none; margin: 0; padding: 0; table-layout: fixed;">
-          <tr style="border: none; background: transparent;">
-            <td style="width: 25px; border: none; padding: 0;"></td>
-            <td style="width: 320px; text-align: left; border: none; padding: 0; vertical-align: middle;">
-              <div id="prevBahtTextContainer" class="doc-baht-text-container" style="border: 1px dashed #000000; padding: 4px 10px; background: #f9fafb; font-weight: bold; text-align: left; border-radius: 4px; display: inline-block; font-size: 9px; max-width: 315px; white-space: nowrap; line-height: 1.2; margin: 0;">
-                จำนวนเงินตัวอักษร: &nbsp;<span id="prevBahtTextVal" style="font-weight: bold;">ศูนย์บาทถ้วน</span>
-              </div>
-            </td>
-            <td style="width: 157px; text-align: right; border: none; padding: 0 12px 0 0; vertical-align: middle; font-weight: 800; white-space: nowrap;">
-              ยอดเงินสุทธิ / Net Total
-            </td>
-          </tr>
-        </table>
+        <div style="display: flex; align-items: center; justify-content: space-between; width: 502px; padding: 0 12px 0 25px; box-sizing: border-box;">
+          <div id="prevBahtTextContainer" class="doc-baht-text-container" style="border: 1px dashed #000000; padding: 4px 10px; background: #f9fafb; font-weight: bold; text-align: left; border-radius: 4px; display: inline-block; font-size: 9px; max-width: 340px; white-space: nowrap; line-height: 1.2; margin: 0;">
+            จำนวนเงินตัวอักษร: &nbsp;<span id="prevBahtTextVal" style="font-weight: bold;">ศูนย์บาทถ้วน</span>
+          </div>
+          <div style="font-weight: 800; white-space: nowrap; text-align: right;">
+            ยอดเงินสุทธิ / Net Total
+          </div>
+        </div>
       </td>
       <td id="prevGrandTotalVal" style="text-align: right; font-weight:800; border: 2px solid #000000; background-color:#f3f4f6;" class="bordered">-</td>
     </tr>
@@ -1871,10 +1866,10 @@ function calculateDocTotals() {
   let fontSize = 9;
   let paddingHorizontal = 10;
   let paddingVertical = 4;
-  if (totalLength > 35) {
-    fontSize = Math.max(5, 9 - (totalLength - 35) * 0.057);
-    paddingHorizontal = Math.max(3, 10 - (totalLength - 35) * 0.1);
-    paddingVertical = Math.max(2, 4 - (totalLength - 35) * 0.03);
+  if (totalLength > 40) {
+    fontSize = Math.max(5, 9 - (totalLength - 40) * 0.0615);
+    paddingHorizontal = Math.max(3, 10 - (totalLength - 40) * 0.1);
+    paddingVertical = Math.max(2, 4 - (totalLength - 40) * 0.03);
   }
   const container = document.getElementById('prevBahtTextContainer');
   if (container) {
