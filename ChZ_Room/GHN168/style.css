@@ -1276,11 +1276,20 @@ textarea.form-control {
     display: block !important;
   }
 
-  .doc-paper, .wht-card-paper {
+  .doc-paper {
     box-shadow: none !important;
-    padding: 0 !important;
+    padding: 20mm !important;
     margin: 0 !important;
-    width: 100% !important;
+    width: 210mm !important;
+    min-height: auto !important;
+    zoom: 1 !important;
+  }
+
+  .wht-card-paper {
+    box-shadow: none !important;
+    padding: 15mm !important;
+    margin: 0 !important;
+    width: 210mm !important;
     min-height: auto !important;
     zoom: 1 !important;
   }
