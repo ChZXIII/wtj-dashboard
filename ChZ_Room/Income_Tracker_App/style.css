@@ -1530,7 +1530,6 @@ input[type="time"] {
     padding: 10mm 15mm !important;
     box-shadow: none !important;
     border: none !important;
-    page-break-inside: avoid !important;
     page-break-after: avoid !important;
     display: flex !important;
     flex-direction: column !important;
@@ -1539,6 +1538,10 @@ input[type="time"] {
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
     box-sizing: border-box !important;
+  }
+
+  .print-paper-row, tr, .doc-signatures-row {
+    page-break-inside: avoid !important;
   }
 
   @page {

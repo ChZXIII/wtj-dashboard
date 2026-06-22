@@ -1,3 +1,10 @@
+window.onerror = function(message, source, lineno, colno, error) {
+  if (message === "Script error." || lineno === 0) {
+    return true; // ละเว้นการเตือน Error ปลอมจาก extension
+  }
+  return false;
+};
+
 document.addEventListener('DOMContentLoaded', () => {
   initTheme();
   initNavigation();
@@ -877,7 +884,8 @@ async function refreshDashboardData(forceRealSheetData = false) {
       },
       body: JSON.stringify({
         type: 'fetch_summary',
-        spreadsheetId: generalSheetId
+        spreadsheetId: generalSheetId,
+        date: '01/01/2026'
       })
     });
     
@@ -1708,7 +1716,7 @@ function updateDocItem(index, key, val) {
 function calculateDocTotals() {
   let subtotal = 0;
   docItems.forEach(item => {
-    subtotal += (item.qty || 0) * (item.price || 0);
+    subtotal += (item.price || 0);
   });
 
   const whtSelect = document.getElementById('docWhtSelect');
