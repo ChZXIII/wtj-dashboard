@@ -1429,12 +1429,14 @@ input[type="time"] {
   .document-layout-container {
     grid-template-columns: 1fr;
   }
+  .document-preview-panel {
+    grid-row: 1;
+    overflow-x: auto;
+  }
   .document-editor-panel {
+    grid-row: 2;
     max-height: none;
     overflow-y: visible;
-  }
-  .document-preview-panel {
-    overflow-x: auto;
   }
   .paper-container {
     padding: 15px;
