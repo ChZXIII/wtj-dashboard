@@ -1316,7 +1316,7 @@ input[type="time"] {
 .preview-summary-area {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: flex-end;
   margin-top: 10px;
   width: 100%;
 }

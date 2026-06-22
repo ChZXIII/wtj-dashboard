@@ -514,15 +514,20 @@
             
             <!-- Document Type Tabs -->
             <div class="btn-group-brutalist" style="margin-bottom: 25px; display: flex;">
-              <button type="button" class="selector-btn active" id="btnDocTypeQuotation" onclick="setDocType('quotation')" style="flex: 1; text-align: center; justify-content: center; font-size: 13px; padding: 10px 5px;">
-                ใบเสนอราคา
-              </button>
-              <button type="button" class="selector-btn" id="btnDocTypeInvoice" onclick="setDocType('invoice')" style="flex: 1; text-align: center; justify-content: center; font-size: 13px; padding: 10px 5px;">
+              <button type="button" class="selector-btn active" id="btnDocTypeInvoice" onclick="setDocType('invoice')" style="flex: 1; text-align: center; justify-content: center; font-size: 13px; padding: 10px 5px;">
                 ใบวางบิล
               </button>
               <button type="button" class="selector-btn" id="btnDocTypeReceipt" onclick="setDocType('receipt')" style="flex: 1; text-align: center; justify-content: center; font-size: 13px; padding: 10px 5px;">
                 ใบเสร็จรับเงิน
               </button>
+            </div>
+
+            <!-- Autofill and History Edit Control -->
+            <div id="groupAutofillDoc" style="display: none; align-items: center; justify-content: space-between; margin-bottom: 20px; padding: 8px 12px; border: var(--card-border); background: var(--bg-card); border-radius: var(--border-radius-button); box-shadow: 2px 2px 0px 0px var(--ink-dark);">
+              <span id="lblAutofill" style="font-size: 12px; font-weight: 700; color: var(--text-primary);">ดึงข้อมูลอ้างอิง:</span>
+              <select id="autofillDocSelect" style="width: 200px; padding: 4px 8px; font-size: 12px; height: 32px; border: var(--card-border); border-radius: var(--border-radius-input); background: var(--bg-app); font-family: inherit; font-weight: 700; color: var(--text-primary); cursor: pointer;">
+                <option value="">-- เลือกเอกสาร --</option>
+              </select>
             </div>
 
             <!-- Seller Settings Details -->
@@ -657,19 +662,29 @@
                 <label for="docSignerName">ชื่อผู้ลงนาม (Authorized Signer)</label>
                 <input type="text" id="docSignerName" value="มงคล วงศ์สกุลยานนท์">
               </div>
+              <div class="form-group" style="display: flex; align-items: center; gap: 8px; margin-top: 25px;">
+                <input type="checkbox" id="docShowSignature" style="width: 20px; height: 20px; cursor: pointer;" checked>
+                <label for="docShowSignature" style="margin-bottom: 0; cursor: pointer; font-weight: 700;">แสดงลายเซ็นเอกสาร</label>
+              </div>
               <div class="form-group">
                 <label for="docProjectName">ชื่อโครงการ/ชื่องาน (ไม่บังคับ)</label>
                 <input type="text" id="docProjectName" placeholder="เช่น ถ่ายภาพพรีเวดดิ้ง, ถ่ายโฆษณา" autocomplete="off">
               </div>
             </div>
 
-            <!-- Print Trigger Button -->
-            <div style="margin-top: 30px;">
-              <button type="button" class="btn-primary" id="btnExportDocPdf" style="width: 100%; padding: 15px; font-size: 16px; display: flex; align-items: center; justify-content: center; gap: 8px;">
-                <svg class="btn-svg-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width: 20px; height: 20px;">
+            <!-- Print & Save Document Buttons -->
+            <div style="margin-top: 30px; display: flex; gap: 10px;">
+              <button type="button" class="btn-secondary" id="btnSaveDocument" style="flex: 1; padding: 12px; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700; color: var(--text-primary);">
+                <svg class="btn-svg-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width: 18px; height: 18px;">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+                </svg>
+                บันทึกข้อมูลเอกสาร
+              </button>
+              <button type="button" class="btn-primary" id="btnExportDocPdf" style="flex: 1; padding: 12px; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                <svg class="btn-svg-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width: 18px; height: 18px;">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
                 </svg>
-                สั่งพิมพ์ / เซฟเป็น PDF (A4)
+                สั่งพิมพ์ / เซฟ PDF
               </button>
             </div>
             
@@ -810,7 +825,8 @@
                   </div>
                   <div class="signature-box" id="prevAuthorizedSigBox">
                     <p id="prevAuthorizedSigTitle">ผู้รับเงิน / Authorized Signature</p>
-                    <div class="sig-line">
+                    <div class="sig-line" style="position: relative;">
+                      <img id="prevSignatureImg" src="signatures/sig_keng.png" alt="Signature" style="display: none; position: absolute; left: 50%; bottom: 10px; transform: translateX(-50%); max-height: 50px; z-index: 10; pointer-events: none;">
                       <span class="signer-preview-name" id="prevSignerNameVal">มงคล วงศ์สกุลยานนท์</span>
                     </div>
                     <p id="prevSignerRoleVal" style="font-size: 11px; color: var(--ink-muted); margin-top: 4px; display: none; text-align: center;">เจ้าของกิจการ Feltz Studio</p>
