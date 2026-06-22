@@ -1299,6 +1299,10 @@ input[type="time"] {
   border-right: 1.5px solid #ffffff !important;
 }
 
+.preview-items-table th:not(:first-child) {
+  border-left: none !important;
+}
+
 .preview-items-table td {
   padding: 6px 8px;
   border-bottom: 1px solid #cbd5e1;

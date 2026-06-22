@@ -36,10 +36,9 @@ function doPost(e) {
       })).setMimeType(ContentService.MimeType.JSON);
     }
     
-    var activeSpreadsheet = SpreadsheetApp.openById(spreadsheetId);
-    
-    // 1. รองรับการดึงสรุปข้อมูลยอดสะสม 12 เดือน (fetch_summary)
+    // 1. รองรับการดึงสรุปข้อมูลยอดสะสม 12 เดือน (fetch_summary) - ขยับเป็นลำดับแรกสุดก่อนตรวจสอบวันที่
     if (sheetType === "fetch_summary") {
+      var activeSpreadsheet = SpreadsheetApp.openById(spreadsheetId);
       var months = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
       var summaryData = [];
       
@@ -119,12 +118,15 @@ function doPost(e) {
       })).setMimeType(ContentService.MimeType.JSON);
     }
     
-    if (!data.date || data.date.split('/').length !== 3) {
+    // ตรวจสอบความถูกต้องของ data.date อย่างปลอดภัยป้องกัน TypeError: split บนมือถือ
+    if (!data || !data.date || typeof data.date !== 'string' || data.date.split('/').length !== 3) {
       return ContentService.createTextOutput(JSON.stringify({
         "status": "error",
         "message": "ไม่พบข้อมูลวันที่ หรือรูปแบบวันที่ผิดรูปแบบนะแก! (คาดหวัง DD/MM/YYYY)"
       })).setMimeType(ContentService.MimeType.JSON);
     }
+    
+    var activeSpreadsheet = SpreadsheetApp.openById(spreadsheetId);
     
     // ดึงข้อมูลวันที่ และฟอร์แมตให้อยู่ในรูปต่างๆ
     var dateParts = data.date.split('/'); // คาดหวัง DD/MM/YYYY
