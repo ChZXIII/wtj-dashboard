@@ -1021,17 +1021,17 @@ input[type="time"] {
    ========================================== */
 
 .document-layout-container {
-  display: grid;
-  grid-template-columns: 480px 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 30px;
-  align-items: start;
   width: 100%;
 }
 
 .document-editor-panel {
-  max-height: calc(100vh - 120px);
-  overflow-y: auto;
-  padding-right: 8px;
+  max-height: none;
+  overflow-y: visible;
+  padding-right: 0;
+  width: 100%;
 }
 
 /* Compact layout style for document generator form to avoid unnecessary scrolling */
@@ -1430,17 +1430,8 @@ input[type="time"] {
 
 /* Responsive adjustments */
 @media (max-width: 1150px) {
-  .document-layout-container {
-    grid-template-columns: 1fr;
-  }
   .document-preview-panel {
-    grid-row: 2;
     overflow-x: auto;
-  }
-  .document-editor-panel {
-    grid-row: 1;
-    max-height: none;
-    overflow-y: visible;
   }
   .paper-container {
     padding: 15px;
