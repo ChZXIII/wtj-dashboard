@@ -1184,8 +1184,8 @@ function initDocumentGenerator() {
   
   // Set default items
   docItems = [
-    { desc: 'บริการถ่ายภาพโฆษณา Feltz Studio (ครึ่งวัน)', price: 15000 },
-    { desc: 'บริการตกแต่งภาพและรีทัชระดับพรีเมียม (5 ภาพ)', price: 4000 }
+    { desc: 'บริการถ่ายภาพโฆษณา Feltz Studio (ครึ่งวัน)', qty: 1, unit: 'งาน', price: 15000 },
+    { desc: 'บริการตกแต่งภาพและรีทัชระดับพรีเมียม (5 ภาพ)', qty: 1, unit: 'งาน', price: 4000 }
   ];
 
   // Set default doc number
@@ -1339,19 +1339,29 @@ function setDocType(type) {
   const prevDueDateRow = document.getElementById('prevDocDueDateRow');
   const prevPaymentTermTitle = document.getElementById('prevPaymentTermTitle');
   const prevPaymentTermVal = document.getElementById('prevPaymentTermVal');
+  const groupDocWht = document.getElementById('groupDocWht');
+  const docWhtSelect = document.getElementById('docWhtSelect');
 
+  // Control Withholding Tax (WHT) group visibility based on doc type (Receipt only)
   if (type === 'receipt') {
     if (groupDueDate) groupDueDate.style.display = 'none';
     if (groupPaymentTerm) groupPaymentTerm.style.display = 'none';
     if (prevDueDateRow) prevDueDateRow.style.display = 'none';
     if (prevPaymentTermTitle) prevPaymentTermTitle.style.display = 'none';
     if (prevPaymentTermVal) prevPaymentTermVal.style.display = 'none';
+    
+    // Show WHT options for Receipt
+    if (groupDocWht) groupDocWht.style.display = 'block';
   } else {
     if (groupDueDate) groupDueDate.style.display = 'block';
     if (groupPaymentTerm) groupPaymentTerm.style.display = 'block';
     if (prevDueDateRow) prevDueDateRow.style.display = (type === 'quotation') ? 'none' : 'flex';
     if (prevPaymentTermTitle) prevPaymentTermTitle.style.display = 'block';
     if (prevPaymentTermVal) prevPaymentTermVal.style.display = 'block';
+    
+    // Hide WHT options for Quotation and Invoice, reset WHT select to 0
+    if (groupDocWht) groupDocWht.style.display = 'none';
+    if (docWhtSelect) docWhtSelect.value = '0';
   }
 
   const prevDepositTerms = document.getElementById('prevDepositTermsBlock');
@@ -1359,7 +1369,7 @@ function setDocType(type) {
     prevDepositTerms.style.display = (type === 'quotation') ? 'block' : 'none';
   }
 
-  // ซ่อน/แสดง ช่องหมายเหตุในฝั่ง Editor
+  // ช่องหมายเหตุในฝั่ง Editor แสดงผลเสมอ
   const groupDocRemarks = document.getElementById('groupDocRemarks');
   if (groupDocRemarks) {
     groupDocRemarks.style.display = 'block';
@@ -1374,11 +1384,11 @@ function setDocType(type) {
     prevTitle.textContent = 'ใบเสนอราคา';
     prevTitleEn.textContent = 'QUOTATION';
   } else if (type === 'invoice') {
-    prevTitle.textContent = 'ใบวางบิล / ใบแจ้งหนี้';
+    prevTitle.textContent = 'ใบวางบิล';
     prevTitleEn.textContent = 'INVOICE';
   } else if (type === 'receipt') {
-    prevTitle.textContent = 'ใบเสร็จรับเงิน / ใบกำกับภาษี';
-    prevTitleEn.textContent = 'RECEIPT / TAX INVOICE';
+    prevTitle.textContent = 'ใบเสร็จรับเงิน';
+    prevTitleEn.textContent = 'RECEIPT';
   }
 
   if (docNumInput) {
@@ -1400,7 +1410,13 @@ function renderDocItemsTable() {
         <input type="text" value="${escapeHtml(item.desc)}" oninput="updateDocItem(${idx}, 'desc', this.value)" style="width:100%; border:none; padding:4px; font-size:12px;" placeholder="รายละเอียดบริการ/สินค้า" required>
       </td>
       <td>
-        <input type="number" value="${item.price}" min="0" step="0.01" oninput="updateDocItem(${idx}, 'price', this.value)" style="width:100%; border:none; padding:4px; font-size:12px; text-align:right;" required>
+        <input type="number" value="${item.qty || 1}" min="1" step="1" oninput="updateDocItem(${idx}, 'qty', this.value)" style="width:100%; border:none; padding:4px; font-size:12px; text-align:center;" required>
+      </td>
+      <td>
+        <input type="text" value="${escapeHtml(item.unit || 'งาน')}" oninput="updateDocItem(${idx}, 'unit', this.value)" style="width:100%; border:none; padding:4px; font-size:12px; text-align:center;" placeholder="เช่น งาน, ชิ้น" required>
+      </td>
+      <td>
+        <input type="number" value="${item.price || 0}" min="0" step="0.01" oninput="updateDocItem(${idx}, 'price', this.value)" style="width:100%; border:none; padding:4px; font-size:12px; text-align:right;" required>
       </td>
       <td style="text-align:center;">
         <button type="button" class="btn-secondary" onclick="deleteDocItem(${idx})" style="padding:2px 6px; font-size:11px; margin:0; background:#fee2e2; color:#b91c1c; border-color:#fee2e2;">ลบ</button>
@@ -1412,18 +1428,23 @@ function renderDocItemsTable() {
   if (docItems.length === 0) {
     prevBody.innerHTML = `
       <tr>
-        <td colspan="3" style="text-align:center; color:#64748b; font-style:italic; padding: 15px;">ไม่มีรายการสินค้าหรือบริการ</td>
+        <td colspan="6" style="text-align:center; color:#64748b; font-style:italic; padding: 15px;">ไม่มีรายการสินค้าหรือบริการ</td>
       </tr>
     `;
     return;
   }
 
   prevBody.innerHTML = docItems.map((item, idx) => {
-    const total = item.price || 0;
+    const qty = item.qty || 0;
+    const price = item.price || 0;
+    const total = qty * price;
     return `
       <tr>
         <td style="text-align:center;">${idx + 1}</td>
         <td style="text-align:left; white-space: pre-wrap;">${escapeHtml(item.desc)}</td>
+        <td style="text-align:center;">${qty.toLocaleString('th-TH')}</td>
+        <td style="text-align:center;">${escapeHtml(item.unit || 'งาน')}</td>
+        <td style="text-align:right;">${price.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
         <td style="text-align:right;">${total.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
       </tr>
     `;
@@ -1431,7 +1452,7 @@ function renderDocItemsTable() {
 }
 
 function addDocItem() {
-  docItems.push({ desc: '', price: 0 });
+  docItems.push({ desc: '', qty: 1, unit: 'งาน', price: 0 });
   renderDocItemsTable();
   syncDocPreview();
 }
@@ -1445,6 +1466,8 @@ function deleteDocItem(index) {
 function updateDocItem(index, key, val) {
   if (key === 'price') {
     docItems[index].price = parseFloat(val) || 0;
+  } else if (key === 'qty') {
+    docItems[index].qty = parseInt(val) || 0;
   } else {
     docItems[index][key] = val;
   }
@@ -1454,18 +1477,20 @@ function updateDocItem(index, key, val) {
 function calculateDocTotals() {
   let subtotal = 0;
   docItems.forEach(item => {
-    subtotal += item.price || 0;
+    subtotal += (item.qty || 0) * (item.price || 0);
   });
 
-  const vatCheck = document.getElementById('docVatCheckbox');
   const whtSelect = document.getElementById('docWhtSelect');
 
-  let vat = 0;
-  if (vatCheck && vatCheck.checked) {
-    vat = subtotal * 0.07;
+  // No VAT for individual Feltz Studio documents
+  const vat = 0;
+
+  // Withholding tax calculated only for receipt (RE) document type
+  let whtRate = 0;
+  if (currentDocType === 'receipt') {
+    whtRate = parseInt(whtSelect ? whtSelect.value : 0) || 0;
   }
 
-  let whtRate = parseInt(whtSelect ? whtSelect.value : 0);
   let wht = 0;
   if (whtRate > 0) {
     wht = subtotal * (whtRate / 100);
@@ -1478,21 +1503,13 @@ function calculateDocTotals() {
   if (prevSubtotal) prevSubtotal.textContent = `฿${subtotal.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
   const prevVatRow = document.getElementById('prevVatRow');
-  const prevVat = document.getElementById('prevVatVal');
-  if (prevVatRow && prevVat) {
-    if (vat > 0) {
-      prevVatRow.style.display = 'flex';
-      prevVat.textContent = `฿${vat.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-    } else {
-      prevVatRow.style.display = 'none';
-    }
-  }
+  if (prevVatRow) prevVatRow.style.display = 'none'; // VAT is always hidden
 
   const prevWhtRow = document.getElementById('prevWhtRow');
   const prevWhtRate = document.getElementById('prevWhtRateVal');
   const prevWht = document.getElementById('prevWhtVal');
   if (prevWhtRow && prevWhtRate && prevWht) {
-    if (wht > 0) {
+    if (wht > 0 && currentDocType === 'receipt') {
       prevWhtRow.style.display = 'flex';
       prevWhtRate.textContent = whtRate;
       prevWht.textContent = `-฿${wht.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
@@ -1516,16 +1533,21 @@ function calculateDocTotals() {
     if (docItems.length === 0) {
       prevBody.innerHTML = `
         <tr>
-          <td colspan="3" style="text-align:center; color:#64748b; font-style:italic; padding: 15px;">ไม่มีรายการสินค้าหรือบริการ</td>
+          <td colspan="6" style="text-align:center; color:#64748b; font-style:italic; padding: 15px;">ไม่มีรายการสินค้าหรือบริการ</td>
         </tr>
       `;
     } else {
       prevBody.innerHTML = docItems.map((item, idx) => {
-        const total = item.price || 0;
+        const qty = item.qty || 0;
+        const price = item.price || 0;
+        const total = qty * price;
         return `
           <tr>
             <td style="text-align:center;">${idx + 1}</td>
             <td style="text-align:left; white-space: pre-wrap;">${escapeHtml(item.desc)}</td>
+            <td style="text-align:center;">${qty.toLocaleString('th-TH')}</td>
+            <td style="text-align:center;">${escapeHtml(item.unit || 'งาน')}</td>
+            <td style="text-align:right;">${price.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
             <td style="text-align:right;">${total.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
           </tr>
         `;
