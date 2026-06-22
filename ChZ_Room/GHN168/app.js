@@ -1636,15 +1636,15 @@ function renderPaperTable() {
 
   let footerHtml = `
     <tr class="total-row" id="prevSubtotalRow">
-      <td id="prevSubtotalLabelCell" colspan="${labelColspan}" style="text-align: right; font-size:11px; padding: 6px 12px; font-weight: 700; border: none; vertical-align: middle;">รวมเงิน / Subtotal&nbsp;&nbsp;&nbsp;&nbsp;</td>
+      <td id="prevSubtotalLabelCell" colspan="${labelColspan}" style="text-align: right; font-size:11px; padding: 6px 12px; font-weight: 700; border: none; vertical-align: middle;">รวมเงิน / Subtotal</td>
       <td id="prevSubtotalVal" style="text-align: right;" class="bordered">-</td>
     </tr>
     <tr class="total-row" id="prevVatRow" style="display: ${displayVat};">
-      <td id="prevVatLabelCell" colspan="${labelColspan}" style="text-align: right; font-size:11px; padding: 6px 12px; font-weight: 700; border: none; vertical-align: middle;">ภาษีมูลค่าเพิ่ม / VAT 7%&nbsp;&nbsp;&nbsp;&nbsp;</td>
+      <td id="prevVatLabelCell" colspan="${labelColspan}" style="text-align: right; font-size:11px; padding: 6px 12px; font-weight: 700; border: none; vertical-align: middle;">ภาษีมูลค่าเพิ่ม / VAT 7%</td>
       <td id="prevVatVal" style="text-align: right;" class="bordered">-</td>
     </tr>
     <tr class="total-row" id="prevWhtRow" style="display: ${displayWht};">
-      <td id="prevWhtLabelCell" colspan="${labelColspan}" style="text-align: right; font-size:11px; padding: 6px 12px; font-weight: 700; border: none; vertical-align: middle;">หัก ณ ที่จ่าย / WHT (50.ทวิ) <span id="prevWhtRateValShow">${whtRate}</span>%&nbsp;&nbsp;&nbsp;&nbsp;</td>
+      <td id="prevWhtLabelCell" colspan="${labelColspan}" style="text-align: right; font-size:11px; padding: 6px 12px; font-weight: 700; border: none; vertical-align: middle;">หัก ณ ที่จ่าย / WHT (50.ทวิ) <span id="prevWhtRateValShow">${whtRate}</span>%</td>
       <td id="prevWhtVal" style="text-align: right; color:#b91c1c;" class="bordered">-</td>
     </tr>
     <tr class="total-row">
@@ -1652,13 +1652,13 @@ function renderPaperTable() {
         <table style="width: 502px; border-collapse: collapse; border: none; margin: 0; padding: 0; table-layout: fixed;">
           <tr style="border: none; background: transparent;">
             <td style="width: 35px; border: none; padding: 0;"></td>
-            <td style="width: 340px; text-align: left; border: none; padding: 0; vertical-align: middle;">
-              <div class="doc-baht-text-container" style="border: 1px dashed #000000; padding: 4px 10px; background: #f9fafb; font-weight: bold; text-align: left; border-radius: 4px; display: inline-block; font-size: 9.5px; max-width: 320px; word-break: break-word; line-height: 1.2; margin: 0;">
+            <td style="width: 290px; text-align: left; border: none; padding: 0; vertical-align: middle;">
+              <div class="doc-baht-text-container" style="border: 1px dashed #000000; padding: 4px 10px; background: #f9fafb; font-weight: bold; text-align: left; border-radius: 4px; display: inline-block; font-size: 9.5px; max-width: 270px; word-break: break-word; line-height: 1.2; margin: 0;">
                 จำนวนเงินตัวอักษร: &nbsp;<span id="prevBahtTextVal" style="font-weight: bold;">ศูนย์บาทถ้วน</span>
               </div>
             </td>
-            <td style="width: 127px; text-align: right; border: none; padding: 0; vertical-align: middle; font-weight: 800; white-space: nowrap;">
-              ยอดเงินสุทธิ / Net Total&nbsp;&nbsp;&nbsp;&nbsp;
+            <td style="width: 177px; text-align: right; border: none; padding: 0 12px 0 0; vertical-align: middle; font-weight: 800; white-space: nowrap;">
+              ยอดเงินสุทธิ / Net Total
             </td>
           </tr>
         </table>
