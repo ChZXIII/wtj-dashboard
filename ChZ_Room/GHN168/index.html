@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GHN168 | Accounting & Document Hub</title>
-  <link rel="stylesheet" href="style.css?v=41">
-  <link rel="manifest" href="manifest.json?v=41">
+  <link rel="stylesheet" href="style.css?v=37">
+  <link rel="manifest" href="manifest.json?v=37">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="GHN168">
@@ -995,13 +995,20 @@
                     <td id="prevWhtVal" style="text-align: right; color:#b91c1c;" class="bordered">-</td>
                   </tr>
                   <tr class="total-row">
-                    <td id="prevNetTotalLabelCell" colspan="5" style="padding: 6px 0; font-size: 11px; font-weight: 800; vertical-align: middle;">
-                      <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; box-sizing: border-box; padding-left: 35px; padding-right: 12px;">
-                        <div class="doc-baht-text-container" style="border: 1px dashed #000000; padding: 4px 10px; background: #f9fafb; font-weight: bold; text-align: left; border-radius: 4px; display: inline-flex; align-items: center; font-size: 11px; width: auto; margin: 0;">
-                          จำนวนเงินตัวอักษร: &nbsp;<span id="prevBahtTextVal" style="font-weight: bold;">ศูนย์บาทถ้วน</span>
-                        </div>
-                        <span style="font-weight: 800; text-align: right; white-space: nowrap;">ยอดเงินสุทธิ / Net Total</span>
-                      </div>
+                    <td id="prevNetTotalLabelCell" colspan="5" style="padding: 6px 0; font-size: 11px; font-weight: 800; vertical-align: middle; border: none;">
+                      <table style="width: 100%; border-collapse: collapse; border: none; margin: 0; padding: 0; table-layout: fixed;">
+                        <tr style="border: none; background: transparent;">
+                          <td style="width: 35px; border: none; padding: 0;"></td>
+                          <td style="text-align: left; border: none; padding: 0; vertical-align: middle;">
+                            <div class="doc-baht-text-container" style="border: 1px dashed #000000; padding: 4px 10px; background: #f9fafb; font-weight: bold; text-align: left; border-radius: 4px; display: inline-block; font-size: 11px; width: auto; margin: 0;">
+                              จำนวนเงินตัวอักษร: &nbsp;<span id="prevBahtTextVal" style="font-weight: bold;">ศูนย์บาทถ้วน</span>
+                            </div>
+                          </td>
+                          <td style="text-align: right; border: none; padding: 0 12px 0 0; vertical-align: middle; font-weight: 800; white-space: nowrap;">
+                            ยอดเงินสุทธิ / Net Total
+                          </td>
+                        </tr>
+                      </table>
                     </td>
                     <td id="prevGrandTotalVal" style="text-align: right; font-weight:800; border: 2px solid #000000; background-color:#f3f4f6;" class="bordered">-</td>
                   </tr>
@@ -2196,7 +2203,7 @@
   </div>
 
   <script src="assets/html2pdf.bundle.min.js"></script>
-  <script src="app.js?v=41"></script>
+  <script src="app.js?v=37"></script>
   <script>
     if ('serviceWorker' in navigator) {
       let refreshing = false;
