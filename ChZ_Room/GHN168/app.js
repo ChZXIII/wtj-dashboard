@@ -1565,29 +1565,113 @@ function createNewDocument() {
   syncDocPreview();
 }
 
-function renderPrevItemsTable() {
-  const prevBody = document.getElementById('prevItemsBody');
-  if (prevBody) {
-    if (docItems.length === 0) {
-      const isStandardHidden = currentDocType === 'quotation' || currentDocType === 'invoice' || currentDocType === 'receipt';
-      const colspan = isStandardHidden ? 3 : 6;
-      prevBody.innerHTML = `<tr><td colspan="${colspan}" style="text-align:center; padding: 15px; font-style:italic;">ไม่มีรายการ</td></tr>`;
-    } else {
-      prevBody.innerHTML = docItems.map((item, idx) => {
-        const total = (item.qty || 0) * (item.price || 0);
+function renderPaperTable() {
+  const isStandardHidden = currentDocType === 'quotation' || currentDocType === 'invoice' || currentDocType === 'receipt';
+  const table = document.getElementById('prevPaperTable');
+  if (!table) return;
+
+  const labelColspan = isStandardHidden ? 2 : 5;
+  const totalColumns = isStandardHidden ? 3 : 6;
+
+  // 1. Build Header
+  let headerHtml = '';
+  if (isStandardHidden) {
+    headerHtml = `
+      <tr>
+        <th style="width: 40px;">ลำดับ<br>No.</th>
+        <th>รายละเอียดสินค้าหรือบริการ<br>Description</th>
+        <th style="width: 140px;">จำนวนเงิน (บาท)<br>Amount (THB)</th>
+      </tr>
+    `;
+  } else {
+    headerHtml = `
+      <tr>
+        <th style="width: 40px;">ลำดับ<br>No.</th>
+        <th>รายละเอียดสินค้าหรือบริการ<br>Description</th>
+        <th style="width: 60px;">จำนวน<br>Qty</th>
+        <th style="width: 60px;">หน่วย<br>Unit</th>
+        <th style="width: 120px;">ราคา/หน่วย<br>Unit Price</th>
+        <th style="width: 140px;">จำนวนเงิน (บาท)<br>Amount (THB)</th>
+      </tr>
+    `;
+  }
+
+  // 2. Build Body
+  let bodyHtml = '';
+  if (docItems.length === 0) {
+    bodyHtml = `<tr><td colspan="${totalColumns}" style="text-align:center; padding: 15px; font-style:italic;">ไม่มีรายการ</td></tr>`;
+  } else {
+    bodyHtml = docItems.map((item, idx) => {
+      const total = (item.qty || 0) * (item.price || 0);
+      if (isStandardHidden) {
         return `
           <tr>
             <td style="text-align:center;">${idx + 1}</td>
             <td style="text-align:left; white-space: pre-wrap;">${escapeHtml(item.desc || '-')}</td>
-            <td style="text-align:center;" class="col-qty">${item.qty}</td>
-            <td style="text-align:center;" class="col-unit">${escapeHtml(item.unit || 'งาน')}</td>
-            <td style="text-align:right;" class="col-price">${item.price.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
             <td style="text-align:right;">${total.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
           </tr>
         `;
-      }).join('');
-    }
+      } else {
+        return `
+          <tr>
+            <td style="text-align:center;">${idx + 1}</td>
+            <td style="text-align:left; white-space: pre-wrap;">${escapeHtml(item.desc || '-')}</td>
+            <td style="text-align:center;">${item.qty}</td>
+            <td style="text-align:center;">${escapeHtml(item.unit || 'งาน')}</td>
+            <td style="text-align:right;">${item.price.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+            <td style="text-align:right;">${total.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+          </tr>
+        `;
+      }
+    }).join('');
   }
+
+  // 3. Build Footer
+  const vatChecked = document.getElementById('docVatCheckbox') ? document.getElementById('docVatCheckbox').checked : true;
+  const whtSelect = document.getElementById('docWhtSelect');
+  const whtRate = whtSelect ? parseInt(whtSelect.value) || 0 : 0;
+
+  const displayVat = vatChecked ? '' : 'none';
+  const displayWht = whtRate > 0 ? '' : 'none';
+
+  let footerHtml = `
+    <tr class="total-row" id="prevSubtotalRow">
+      <td id="prevSubtotalLabelCell" colspan="${labelColspan}" style="text-align: right; font-size:11px; padding: 6px 12px; font-weight: 700; border: none; vertical-align: middle;">รวมเงิน / Subtotal</td>
+      <td id="prevSubtotalVal" style="text-align: right;" class="bordered">-</td>
+    </tr>
+    <tr class="total-row" id="prevVatRow" style="display: ${displayVat};">
+      <td id="prevVatLabelCell" colspan="${labelColspan}" style="text-align: right; font-size:11px; padding: 6px 12px; font-weight: 700; border: none; vertical-align: middle;">ภาษีมูลค่าเพิ่ม / VAT 7%</td>
+      <td id="prevVatVal" style="text-align: right;" class="bordered">-</td>
+    </tr>
+    <tr class="total-row" id="prevWhtRow" style="display: ${displayWht};">
+      <td id="prevWhtLabelCell" colspan="${labelColspan}" style="text-align: right; font-size:11px; padding: 6px 12px; font-weight: 700; border: none; vertical-align: middle;">หัก ณ ที่จ่าย / WHT (50.ทวิ) <span id="prevWhtRateVal">${whtRate}</span>%</td>
+      <td id="prevWhtVal" style="text-align: right; color:#b91c1c;" class="bordered">-</td>
+    </tr>
+    <tr class="total-row">
+      <td id="prevNetTotalLabelCell" colspan="${labelColspan}" style="padding: 6px 0; font-size: 11px; font-weight: 800; vertical-align: middle; border: none;">
+        <table style="width: 100%; border-collapse: collapse; border: none; margin: 0; padding: 0; table-layout: fixed;">
+          <tr style="border: none; background: transparent;">
+            <td style="width: 35px; border: none; padding: 0;"></td>
+            <td style="text-align: left; border: none; padding: 0; vertical-align: middle;">
+              <div class="doc-baht-text-container" style="border: 1px dashed #000000; padding: 4px 10px; background: #f9fafb; font-weight: bold; text-align: left; border-radius: 4px; display: inline-block; font-size: 11px; width: auto; margin: 0;">
+                จำนวนเงินตัวอักษร: &nbsp;<span id="prevBahtTextVal" style="font-weight: bold;">ศูนย์บาทถ้วน</span>
+              </div>
+            </td>
+            <td style="text-align: right; border: none; padding: 0 12px 0 0; vertical-align: middle; font-weight: 800; white-space: nowrap;">
+              ยอดเงินสุทธิ / Net Total
+            </td>
+          </tr>
+        </table>
+      </td>
+      <td id="prevGrandTotalVal" style="text-align: right; font-weight:800; border: 2px solid #000000; background-color:#f3f4f6;" class="bordered">-</td>
+    </tr>
+  `;
+
+  table.innerHTML = `
+    <thead>${headerHtml}</thead>
+    <tbody>${bodyHtml}</tbody>
+    <tfoot>${footerHtml}</tfoot>
+  `;
 }
 
 function renderDocItemsTable() {
@@ -1623,7 +1707,7 @@ function renderDocItemsTable() {
   `).join('');
 
   // Update preview table items
-  renderPrevItemsTable();
+  calculateDocTotals();
 }
 
 function addDocItem() {
@@ -1653,6 +1737,7 @@ function updateDocItem(index, key, val) {
 
 // --- Total Calculations ---
 function calculateDocTotals() {
+  renderPaperTable();
   let subtotal = 0;
   docItems.forEach(item => {
     subtotal += (item.qty || 0) * (item.price || 0);
@@ -1961,7 +2046,7 @@ function syncDocPreview() {
   }
 
   // Render item tables
-  renderPrevItemsTable();
+  calculateDocTotals();
 
   // Toggle company seal visibility
   const showSeal = document.getElementById('doc_showSeal').checked;
