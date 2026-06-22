@@ -1687,7 +1687,7 @@ function renderPaperTable() {
           <tr style="border: none; background: transparent;">
             <td style="width: 35px; border: none; padding: 0;"></td>
             <td style="width: 290px; text-align: left; border: none; padding: 0; vertical-align: middle;">
-              <div class="doc-baht-text-container" style="border: 1px dashed #000000; padding: 4px 10px; background: #f9fafb; font-weight: bold; text-align: left; border-radius: 4px; display: inline-block; font-size: 9.5px; max-width: 270px; word-break: break-word; line-height: 1.2; margin: 0;">
+              <div class="doc-baht-text-container" style="border: 1px dashed #000000; padding: 4px 10px; background: #f9fafb; font-weight: bold; text-align: left; border-radius: 4px; display: inline-block; font-size: 9px; max-width: 285px; white-space: nowrap; line-height: 1.2; margin: 0;">
                 จำนวนเงินตัวอักษร: &nbsp;<span id="prevBahtTextVal" style="font-weight: bold;">ศูนย์บาทถ้วน</span>
               </div>
             </td>
