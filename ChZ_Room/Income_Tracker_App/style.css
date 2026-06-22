@@ -1025,9 +1025,72 @@ input[type="time"] {
 }
 
 .document-editor-panel {
-  max-height: 85vh;
+  max-height: calc(100vh - 120px);
   overflow-y: auto;
   padding-right: 8px;
+}
+
+/* Compact layout style for document generator form to avoid unnecessary scrolling */
+.document-editor-panel .btn-group-brutalist {
+  gap: 8px;
+}
+
+.document-editor-panel .selector-btn {
+  min-width: 0 !important;
+  font-size: 13px !important;
+  padding: 10px 8px !important;
+  flex: 1;
+}
+
+.document-editor-panel .form-header {
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1.5px dashed var(--ink-muted);
+}
+
+.document-editor-panel .form-header h3 {
+  font-size: 18px;
+  margin-bottom: 2px;
+}
+
+.document-editor-panel .form-header h4 {
+  font-size: 13px !important;
+  margin-bottom: 4px;
+}
+
+.document-editor-panel .form-grid {
+  gap: 10px 14px;
+}
+
+.document-editor-panel .form-group {
+  gap: 4px;
+}
+
+.document-editor-panel label {
+  font-size: 12px;
+}
+
+.document-editor-panel input[type="text"],
+.document-editor-panel input[type="number"],
+.document-editor-panel input[type="date"],
+.document-editor-panel select,
+.document-editor-panel textarea {
+  font-size: 13px;
+  padding: 8px 10px;
+}
+
+.document-editor-panel .brutalist-details summary {
+  padding: 8px 12px !important;
+  font-size: 12px !important;
+}
+
+.document-editor-panel .table-responsive {
+  margin-bottom: 12px !important;
+}
+
+.document-editor-panel .brutalist-table th,
+.document-editor-panel .brutalist-table td {
+  padding: 6px 8px !important;
 }
 
 /* Custom scrollbar for editor */
