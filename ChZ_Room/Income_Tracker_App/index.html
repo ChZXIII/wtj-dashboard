@@ -512,19 +512,6 @@
               <p>เลือกประเภท ป้อนข้อมูล และพรีวิวในหน้ากระดาษ A4 ขวามือแก</p>
             </div>
             
-            <!-- Document Type Tabs -->
-            <div class="btn-group-brutalist" style="margin-bottom: 25px; display: flex;">
-              <button type="button" class="selector-btn active" id="btnDocTypeQuotation" onclick="setDocType('quotation')" style="flex: 1; text-align: center; justify-content: center; font-size: 13px; padding: 10px 5px;">
-                ใบเสนอราคา
-              </button>
-              <button type="button" class="selector-btn" id="btnDocTypeInvoice" onclick="setDocType('invoice')" style="flex: 1; text-align: center; justify-content: center; font-size: 13px; padding: 10px 5px;">
-                ใบวางบิล
-              </button>
-              <button type="button" class="selector-btn" id="btnDocTypeReceipt" onclick="setDocType('receipt')" style="flex: 1; text-align: center; justify-content: center; font-size: 13px; padding: 10px 5px;">
-                ใบเสร็จรับเงิน
-              </button>
-            </div>
-
             <!-- Autofill and History Edit Control -->
             <div id="groupAutofillDoc" style="display: none; align-items: center; justify-content: space-between; margin-bottom: 20px; padding: 8px 12px; border: var(--card-border); background: var(--bg-card); border-radius: var(--border-radius-button); box-shadow: 2px 2px 0px 0px var(--ink-dark);">
               <span id="lblAutofill" style="font-size: 12px; font-weight: 700; color: var(--text-primary);">ดึงข้อมูลอ้างอิง:</span>
@@ -536,7 +523,7 @@
             <!-- Seller Settings Details -->
             <details class="brutalist-details" style="margin-bottom: 20px;">
               <summary style="font-weight: 700; cursor: pointer; padding: 10px 14px; border: var(--card-border); background: var(--bg-card); border-radius: var(--border-radius-button); box-shadow: 2px 2px 0px 0px var(--ink-dark); font-size: 13px; display: flex; align-items: center; justify-content: space-between;">
-                <span>⚙️ ตั้งค่าผู้ออกเอกสาร (Seller Settings)</span>
+                <span>ตั้งค่าผู้ออกเอกสาร (Seller Settings)</span>
               </summary>
               <div class="form-grid" style="margin-top: 15px; padding: 15px; border: var(--card-border); background: var(--bg-app); border-radius: var(--border-radius-input);">
                 <div class="form-group">
@@ -624,9 +611,7 @@
                 <thead>
                   <tr style="background: var(--ink-dark); color: var(--bg-card);">
                     <th>รายละเอียดสินค้า/บริการ</th>
-                    <th style="width: 70px; text-align: center;">จำนวน</th>
-                    <th style="width: 70px; text-align: center;">หน่วย</th>
-                    <th style="width: 110px; text-align: right;">ราคาต่อหน่วย</th>
+                    <th style="width: 150px; text-align: right;">จำนวนเงิน (บาท) Amount (THB)</th>
                     <th style="width: 50px; text-align: center;">ลบ</th>
                   </tr>
                 </thead>
@@ -696,8 +681,21 @@
           <!-- Column 2: Live A4 PDF Preview Page -->
           <div class="document-preview-panel">
             <div class="preview-panel-header" style="margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center;">
-              <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 0;">💻 ตัวอย่างหน้ากระดาษ A4 (Live Preview)</h4>
+              <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 0;">ตัวอย่างหน้ากระดาษ A4 (Live Preview)</h4>
               <span style="font-size: 12px; color: var(--ink-muted);">ขนาดจริงมาตราส่วนตอนพิมพ์ A4 เป๊ะๆ</span>
+            </div>
+
+            <!-- Document Type Tabs (Moved from Editor) -->
+            <div class="btn-group-brutalist" style="margin-bottom: 15px; display: flex;">
+              <button type="button" class="selector-btn active" id="btnDocTypeQuotation" onclick="setDocType('quotation')" style="flex: 1; text-align: center; justify-content: center; font-size: 13px; padding: 10px 5px;">
+                ใบเสนอราคา
+              </button>
+              <button type="button" class="selector-btn" id="btnDocTypeInvoice" onclick="setDocType('invoice')" style="flex: 1; text-align: center; justify-content: center; font-size: 13px; padding: 10px 5px;">
+                ใบวางบิล
+              </button>
+              <button type="button" class="selector-btn" id="btnDocTypeReceipt" onclick="setDocType('receipt')" style="flex: 1; text-align: center; justify-content: center; font-size: 13px; padding: 10px 5px;">
+                ใบเสร็จรับเงิน
+              </button>
             </div>
             
             <div class="paper-container">
@@ -760,12 +758,9 @@
                 <table class="preview-items-table">
                   <thead>
                     <tr>
-                      <th style="width: 8%; text-align: center;">ลำดับ</th>
-                      <th style="width: 50%; text-align: left;">รายละเอียดสินค้า/บริการ (Description)</th>
-                      <th style="width: 10%; text-align: center;">จำนวน</th>
-                      <th style="width: 10%; text-align: center;">หน่วย</th>
-                      <th style="width: 12%; text-align: right;">ราคา/หน่วย</th>
-                      <th style="width: 10%; text-align: right;">จำนวนเงิน</th>
+                      <th style="width: 10%; text-align: center;">ลำดับ</th>
+                      <th style="width: 70%; text-align: left;">รายละเอียดสินค้า/บริการ (Description)</th>
+                      <th style="width: 20%; text-align: right;">จำนวนเงิน (บาท) Amount (THB)</th>
                     </tr>
                   </thead>
                   <tbody id="prevItemsBody">
@@ -833,7 +828,7 @@
                       <span class="signer-preview-name" id="prevSignerNameVal">มงคล วงศ์สกุลยานนท์</span>
                     </div>
                     <p id="prevSignerRoleVal" style="font-size: 11px; color: var(--ink-muted); margin-top: 4px; display: none; text-align: center;">เจ้าของกิจการ Feltz Studio</p>
-                    <p>วันที่ / Date: ......./......./.......</p>
+                    <p>วันที่ / Date: <span id="prevSigDateVal">......./......./.......</span></p>
                   </div>
                 </div>
 

@@ -1182,10 +1182,7 @@ function initDocumentGenerator() {
   }
   
   // Set default items
-  docItems = [
-    { desc: 'บริการถ่ายภาพโฆษณา Feltz Studio (ครึ่งวัน)', qty: 1, unit: 'งาน', price: 15000 },
-    { desc: 'บริการตกแต่งภาพและรีทัชระดับพรีเมียม (5 ภาพ)', qty: 1, unit: 'งาน', price: 4000 }
-  ];
+  docItems = [];
 
   // Set default doc number
   const docNumInput = document.getElementById('docNumber');
@@ -1648,12 +1645,6 @@ function renderDocItemsTable() {
         <textarea oninput="updateDocItem(${idx}, 'desc', this.value); autoResizeTextarea(this);" style="width:100%; border:none; padding:4px; font-size:12px; resize:none; font-family:inherit; min-height:40px; box-sizing:border-box; background:transparent; overflow-y:hidden;" placeholder="รายละเอียดบริการ/สินค้า" required>${escapeHtml(item.desc)}</textarea>
       </td>
       <td>
-        <input type="number" value="${item.qty || 1}" min="1" step="1" oninput="updateDocItem(${idx}, 'qty', this.value)" style="width:100%; border:none; padding:4px; font-size:12px; text-align:center; background:transparent;" required>
-      </td>
-      <td>
-        <input type="text" value="${escapeHtml(item.unit || 'งาน')}" oninput="updateDocItem(${idx}, 'unit', this.value)" style="width:100%; border:none; padding:4px; font-size:12px; text-align:center; background:transparent;" placeholder="เช่น งาน, ชิ้น" required>
-      </td>
-      <td>
         <input type="number" value="${item.price || 0}" min="0" step="0.01" oninput="updateDocItem(${idx}, 'price', this.value)" style="width:100%; border:none; padding:4px; font-size:12px; text-align:right; background:transparent;" required>
       </td>
       <td style="text-align:center;">
@@ -1671,23 +1662,20 @@ function renderDocItemsTable() {
   if (docItems.length === 0) {
     prevBody.innerHTML = `
       <tr>
-        <td colspan="6" style="text-align:center; color:#64748b; font-style:italic; padding: 15px;">ไม่มีรายการสินค้าหรือบริการ</td>
+        <td colspan="3" style="text-align:center; color:#64748b; font-style:italic; padding: 15px;">ไม่มีรายการสินค้าหรือบริการ</td>
       </tr>
     `;
     return;
   }
 
   prevBody.innerHTML = docItems.map((item, idx) => {
-    const qty = item.qty || 0;
+    const qty = item.qty || 1;
     const price = item.price || 0;
     const total = qty * price;
     return `
       <tr>
         <td style="text-align:center;">${idx + 1}</td>
         <td style="text-align:left; white-space: pre-wrap;">${escapeHtml(item.desc)}</td>
-        <td style="text-align:center;">${qty.toLocaleString('th-TH')}</td>
-        <td style="text-align:center;">${escapeHtml(item.unit || 'งาน')}</td>
-        <td style="text-align:right;">${price.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
         <td style="text-align:right;">${total.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
       </tr>
     `;
@@ -1776,21 +1764,18 @@ function calculateDocTotals() {
     if (docItems.length === 0) {
       prevBody.innerHTML = `
         <tr>
-          <td colspan="6" style="text-align:center; color:#64748b; font-style:italic; padding: 15px;">ไม่มีรายการสินค้าหรือบริการ</td>
+          <td colspan="3" style="text-align:center; color:#64748b; font-style:italic; padding: 15px;">ไม่มีรายการสินค้าหรือบริการ</td>
         </tr>
       `;
     } else {
       prevBody.innerHTML = docItems.map((item, idx) => {
-        const qty = item.qty || 0;
+        const qty = item.qty || 1;
         const price = item.price || 0;
         const total = qty * price;
         return `
           <tr>
             <td style="text-align:center;">${idx + 1}</td>
             <td style="text-align:left; white-space: pre-wrap;">${escapeHtml(item.desc)}</td>
-            <td style="text-align:center;">${qty.toLocaleString('th-TH')}</td>
-            <td style="text-align:center;">${escapeHtml(item.unit || 'งาน')}</td>
-            <td style="text-align:right;">${price.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
             <td style="text-align:right;">${total.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
           </tr>
         `;
@@ -1831,6 +1816,11 @@ function syncDocPreview() {
   // Date mappings with formatting
   const dateVal = document.getElementById('docDate').value;
   document.getElementById('prevDocDateVal').textContent = formatDocDate(dateVal);
+  
+  const sigDateEl = document.getElementById('prevSigDateVal');
+  if (sigDateEl) {
+    sigDateEl.textContent = formatDocDate(dateVal);
+  }
   
   const dueDateVal = document.getElementById('docDueDate').value;
   document.getElementById('prevDocDueDateVal').textContent = formatDocDate(dueDateVal);

@@ -1378,7 +1378,7 @@ input[type="time"] {
   display: flex;
   justify-content: space-between;
   margin-top: auto; /* Push to bottom of A4 */
-  padding-top: 30px;
+  padding-top: 15px;
   width: 100%;
 }
 
@@ -1390,7 +1390,7 @@ input[type="time"] {
 
 .sig-line {
   border-bottom: 1.5px solid #0f172a;
-  margin: 35px auto 8px auto;
+  margin: 20px auto 8px auto;
   width: 80%;
   height: 20px;
   display: flex;
