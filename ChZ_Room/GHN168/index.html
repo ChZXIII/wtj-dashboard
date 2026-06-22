@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GHN168 | Accounting & Document Hub</title>
-  <link rel="stylesheet" href="style.css?v=47">
-  <link rel="manifest" href="manifest.json?v=47">
+  <link rel="stylesheet" href="style.css?v=49">
+  <link rel="manifest" href="manifest.json?v=49">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="GHN168">
@@ -51,6 +51,14 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
             ออกเอกสารบิล (QT/IV/RE/WHT (50.ทวิ))
+          </button>
+        </li>
+        <li class="nav-item" data-view="retention">
+          <button>
+            <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+            </svg>
+            บันทึกหักเงิน บ. ย้อนหลัง
           </button>
         </li>
         <li class="nav-item" data-view="dochub">
@@ -624,38 +632,26 @@
                   <label for="doc_showSignature" style="cursor: pointer; font-weight: 700; margin-bottom: 0; font-size: 13px;">แสดงลายเซ็นเอกสาร</label>
                 </div>
               </div>
+              <div class="form-row" style="margin-top: 12px; border-top: 1px dashed var(--border-color); padding-top: 12px;">
+                <div class="form-group" style="flex: 1;">
+                  <label for="docRecordedBy">ผู้บันทึกรายการ</label>
+                  <select id="docRecordedBy" class="form-control">
+                    <option value="เก่ง">เก่ง</option>
+                    <option value="มด">มด</option>
+                    <option value="หอม">หอม</option>
+                    <option value="พี่นิค">พี่นิค</option>
+                  </select>
+                </div>
+              </div>
             </div>
             
              <!-- Internal Project Details Card -->
             <div id="formGroupInternalDetails" class="card">
               <div class="card-title" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                <span>ข้อมูลภายในบริษัท (คนดีลงานหลัก & การหักเงินเข้า บ.)</span>
-                <button type="button" id="btnAddDeduction" class="btn-secondary" style="padding: 4px 10px; font-size: 12px;">+ เพิ่มการหักเงิน</button>
+                <span>ข้อมูลการชำระเงิน (Payment & Booking Details)</span>
               </div>
               
               <div class="form-row">
-                <div class="form-group" style="flex: 1.5;">
-                  <label for="docOwner">คนดีลงานหลัก (ค่าเริ่มต้นสำหรับรายการใหม่)</label>
-                  <select id="docOwner" class="form-control">
-                    <option value="เก่ง">เก่ง</option>
-                    <option value="พี่นิค">พี่นิค</option>
-                    <option value="หอม">หอม</option>
-                  </select>
-                </div>
-              </div>
-
-              <!-- Deductions List Container -->
-              <div id="deductionsListContainer" style="margin-top: 12px; display: flex; flex-direction: column; gap: 8px;">
-                <!-- Dynamically rendered rows of deductions -->
-              </div>
-
-              <!-- Calculation preview labels -->
-              <div class="form-row" style="margin-top: 12px; font-size: 13px; font-weight: 700; gap: 16px; background: #f9fafb; padding: 10px; border: 1px solid var(--border-color);">
-                <div>ยอดหักเข้า บ. รวม: <span id="internalRetainedAmount" class="mono" style="color: #b91c1c;">฿0.00</span></div>
-                <div>สัดส่วนจ่ายคนทำงานรวม: <span id="internalPayoutAmount" class="mono" style="color: #15803d;">฿0.00</span></div>
-              </div>
-
-              <div class="form-row" style="margin-top: 12px;">
                 <div class="form-group">
                   <label for="docReceivingBank">รูปแบบการรับเงิน</label>
                   <select id="docReceivingBank" class="form-control">
@@ -676,18 +672,6 @@
                 <div class="form-group">
                   <label for="docActualPaymentDate">วันที่เงินเข้าจริง</label>
                   <input type="date" id="docActualPaymentDate" class="form-control">
-                </div>
-              </div>
-
-              <div class="form-row" style="margin-top: 12px;">
-                <div class="form-group" style="flex: 1;">
-                  <label for="docRecordedBy">ผู้บันทึกรายการ</label>
-                  <select id="docRecordedBy" class="form-control">
-                    <option value="เก่ง">เก่ง</option>
-                    <option value="มด">มด</option>
-                    <option value="หอม">หอม</option>
-                    <option value="พี่นิค">พี่นิค</option>
-                  </select>
                 </div>
               </div>
             </div>
@@ -1085,6 +1069,99 @@
         </div>
       </section>
 
+      <!-- VIEW: RETENTION (บันทึกหักเงิน บ. ย้อนหลัง) -->
+      <section id="retention-view" class="view-section">
+        <div class="view-header">
+          <div class="view-title-group">
+            <h1>บันทึกหักเงิน บ. ย้อนหลัง (Company Retention)</h1>
+            <p>ระบบบันทึกส่วนแบ่งกำไรและรายการหักเงินบริษัทสำหรับเอกสารรับเงินย้อนหลัง</p>
+          </div>
+        </div>
+
+        <div class="grid-cols-2">
+          <!-- Card 1: ค้นหาเอกสาร -->
+          <div class="card">
+            <div class="card-title">ค้นหาและระบุเอกสาร (Select Document)</div>
+            
+            <div class="form-group">
+              <label for="retDocSelect">เลือกเอกสารใบเสร็จในระบบ</label>
+              <select id="retDocSelect" class="form-control">
+                <option value="">-- เลือกใบเสร็จรับเงิน (Receipt) --</option>
+              </select>
+            </div>
+            
+            <div style="text-align: center; margin: 12px 0; font-weight: 700; color: var(--text-secondary);">
+              หรือระบุเลขที่เอกสารด้วยตนเอง (Manual Input)
+            </div>
+            
+            <div class="form-group">
+              <label for="retDocNoManual">เลขที่เอกสาร (ระบุเอง)</label>
+              <input type="text" id="retDocNoManual" class="form-control mono" placeholder="เช่น RE69001">
+            </div>
+
+            <div style="border-top: 1px dashed var(--border-color); margin-top: 16px; padding-top: 16px;">
+              <h3 style="font-size: 14px; margin-bottom: 12px; text-transform: uppercase;">ข้อมูลเอกสารที่เลือก</h3>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>ชื่อลูกค้า</label>
+                  <div id="retClientName" class="form-control" style="background-color: var(--bg-primary); border-color: transparent; display: flex; align-items: center; min-height: 46px;">-</div>
+                </div>
+                <div class="form-group">
+                  <label>วันที่เอกสาร</label>
+                  <div id="retDocDate" class="form-control" style="background-color: var(--bg-primary); border-color: transparent; display: flex; align-items: center; min-height: 46px;">-</div>
+                </div>
+              </div>
+              <div class="form-group" style="margin-top: 12px;">
+                <label>รายละเอียดงาน / โครงการ</label>
+                <div id="retProjectName" class="form-control" style="background-color: var(--bg-primary); border-color: transparent; display: flex; align-items: center; min-height: 46px; white-space: normal; height: auto; word-break: break-word;">-</div>
+              </div>
+              
+              <div class="form-group" style="margin-top: 12px;">
+                <label for="retSubtotal">ยอดเงินก่อน VAT (Pre-VAT Amount)</label>
+                <input type="number" id="retSubtotal" class="form-control mono" value="0" disabled>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2: รายการหักเงิน -->
+          <div class="card">
+            <div class="card-title">
+              <span>รายการหักเงินบริษัท (Retention Details)</span>
+              <button type="button" id="retBtnAddDeduction" class="btn-secondary" style="padding: 4px 10px; font-size: 12px;" onclick="window.addRetDeduction()">+ เพิ่มการหักเงิน</button>
+            </div>
+            
+            <div class="form-group">
+              <label for="retOwner">คนดีลงานหลัก</label>
+              <select id="retOwner" class="form-control">
+                <option value="เก่ง">เก่ง</option>
+                <option value="พี่นิค">พี่นิค</option>
+                <option value="หอม">หอม</option>
+              </select>
+            </div>
+
+            <!-- Dynamic Deductions Container -->
+            <div id="retDeductionsListContainer" style="margin-top: 16px; display: flex; flex-direction: column; gap: 12px; min-height: 100px;">
+              <!-- Rows of deductions will be rendered here -->
+            </div>
+
+            <!-- Summaries -->
+            <div class="form-row" style="margin-top: 20px; font-size: 14px; font-weight: 700; gap: 16px; background: var(--bg-primary); padding: 12px; border: 3px solid var(--border-color); border-radius: 8px;">
+              <div style="flex: 1;">ยอดหักเข้า บ. รวม: <span id="retInternalRetainedVal" class="mono" style="color: #ef4444; font-size: 16px;">฿0.00</span></div>
+              <div style="flex: 1;">สัดส่วนจ่ายคนทำงานรวม: <span id="retInternalPayoutVal" class="mono" style="color: #10b981; font-size: 16px;">฿0.00</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: อัปเดตข้อมูล -->
+        <div class="card" style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 16px;">
+          <div>
+            <h2 style="font-size: 18px; margin-bottom: 8px;">ยืนยันการบันทึกข้อมูลหักเงิน</h2>
+            <p style="color: var(--text-secondary); max-width: 600px; font-size: 14px;">เมื่อกดยืนยัน ระบบจะคำนวณและอัปเดตสัดส่วนส่วนแบ่งกำไร (Profit Share Distribution) ของเอกสารนี้ย้อนหลังในประวัติระบบฐานข้อมูลภายใน และส่งสัญญาณซิงค์กับ Google Sheets อัตโนมัติ</p>
+          </div>
+          <button type="button" id="btnSaveRetention" class="btn-primary" style="padding: 12px 32px;" onclick="window.saveRetentionUpdate()">บันทึกข้อมูลหักเงินย้อนหลัง</button>
+        </div>
+      </section>
+
       <!-- VIEW 3: DOCUMENT HUB -->
       <section id="dochub-view" class="view-section">
         <div class="view-header">
@@ -1412,15 +1489,6 @@
                 </svg>
                 บันทึกการเชื่อมต่อบัญชี
               </button>
-
-              <!-- Initialize Sheets Button (Auto-setup) -->
-              <button id="btnInitSheets" class="btn-primary" style="margin-top: 12px; width: 100%;" onclick="initializeGoogleSheet()">
-                <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                เตรียมโครงสร้างชีตอัตโนมัติ (Initialize)
-              </button>
             </div>
 
             <!-- Backup & Restore Data Card (ADVISORY) -->
@@ -1541,6 +1609,18 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 7.89H18v3" />
             </svg>
             ล้างแคชบราวเซอร์เพื่ออัปเดตระบบ (Clear Cache & Update)
+          </button>
+        </div>
+
+        <div>
+          <h4 style="margin: 0 0 8px 0; font-size: 13px; font-family: 'Prompt', sans-serif; color: var(--text-primary);">การตั้งค่าระบบฐานข้อมูล (สำหรับเจ้าของแอป):</h4>
+          <!-- Initialize Sheets Button (Auto-setup) -->
+          <button id="btnInitSheets" class="btn-primary" style="margin-top: 4px; width: 100%;" onclick="initializeGoogleSheet()">
+            <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            เตรียมโครงสร้างชีตอัตโนมัติ (Initialize)
           </button>
         </div>
 
@@ -2154,7 +2234,7 @@
   </div>
 
   <script src="assets/html2pdf.bundle.min.js"></script>
-  <script src="app.js?v=47"></script>
+  <script src="app.js?v=49"></script>
   <script>
     if ('serviceWorker' in navigator) {
       let refreshing = false;

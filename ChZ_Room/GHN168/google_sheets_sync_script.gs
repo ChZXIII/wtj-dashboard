@@ -379,6 +379,59 @@ function doPost(e) {
       })).setMimeType(ContentService.MimeType.JSON);
     }
     
+    // ----------------------------------------------------
+    // CASE 5: อัปเดต Profit Share ในแท็บรายรับย้อนหลัง
+    // ----------------------------------------------------
+    else if (data.type === "update_profit_share") {
+      var docNo = data.docNo;
+      if (!docNo) {
+        return ContentService.createTextOutput(JSON.stringify({
+          "status": "error",
+          "message": "ไม่พบเลขที่เอกสาร (docNo) นะแก!"
+        })).setMimeType(ContentService.MimeType.JSON);
+      }
+      
+      var sheet = activeSpreadsheet.getSheetByName("รายรับ");
+      if (!sheet) {
+        return ContentService.createTextOutput(JSON.stringify({
+          "status": "error",
+          "message": "ไม่พบแท็บชีต 'รายรับ' นะแก!"
+        })).setMimeType(ContentService.MimeType.JSON);
+      }
+      
+      var lastRow = sheet.getLastRow();
+      if (lastRow > 1) {
+        var docNumbers = sheet.getRange(2, 3, lastRow - 1, 1).getValues();
+        var matchCount = 0;
+        
+        for (var r = 0; r < docNumbers.length; r++) {
+          if (docNumbers[r][0] === docNo) {
+            var rowNum = r + 2;
+            var valToSet = data.profitShare;
+            if (data.rowsProfitShare && Array.isArray(data.rowsProfitShare)) {
+              if (matchCount < data.rowsProfitShare.length) {
+                valToSet = data.rowsProfitShare[matchCount];
+              }
+            }
+            sheet.getRange(rowNum, 19).setValue(valToSet);
+            matchCount++;
+          }
+        }
+        
+        beautifySheet(sheet, "รายรับ");
+        
+        return ContentService.createTextOutput(JSON.stringify({
+          "status": "success",
+          "message": "อัปเดตสัดส่วนส่วนแบ่งกำไร (Profit Share) เลขที่เอกสาร '" + docNo + "' จำนวน " + matchCount + " แถวเรียบร้อยแล้วแก!"
+        })).setMimeType(ContentService.MimeType.JSON);
+      } else {
+        return ContentService.createTextOutput(JSON.stringify({
+          "status": "success",
+          "message": "ไม่พบแถวข้อมูลใดๆ ในแท็บ 'รายรับ' เพื่ออัปเดต"
+        })).setMimeType(ContentService.MimeType.JSON);
+      }
+    }
+    
     // INVALID TYPE
     else {
       return ContentService.createTextOutput(JSON.stringify({

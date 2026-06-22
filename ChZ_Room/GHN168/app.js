@@ -563,6 +563,8 @@ function switchView(viewId) {
     renderBankRec();
   } else if (viewId === 'taxexport') {
     previewTaxFiling();
+  } else if (viewId === 'retention') {
+    initRetentionView();
   }
   
   updatePageTitle();
@@ -795,7 +797,10 @@ function setupEventListeners() {
   document.getElementById('doc_showSeal').addEventListener('change', saveSellerConfig);
   document.getElementById('docVatCheckbox').addEventListener('change', calculateDocTotals);
   document.getElementById('docWhtSelect').addEventListener('change', calculateDocTotals);
-  document.getElementById('docOwner').addEventListener('change', calculateDocTotals);
+  const docOwner = document.getElementById('docOwner');
+  if (docOwner) {
+    docOwner.addEventListener('change', calculateDocTotals);
+  }
   
   const btnAddDeduction = document.getElementById('btnAddDeduction');
   if (btnAddDeduction) {
@@ -1277,6 +1282,28 @@ function setupEventListeners() {
       e.preventDefault();
       saveBankRec();
     });
+  }
+
+  // Retention Event Listeners
+  const retDocSelect = document.getElementById('retDocSelect');
+  if (retDocSelect) {
+    retDocSelect.addEventListener('change', onRetDocSelectChange);
+  }
+  const retDocNoManual = document.getElementById('retDocNoManual');
+  if (retDocNoManual) {
+    retDocNoManual.addEventListener('input', onRetDocNoManualInput);
+  }
+  const retSubtotal = document.getElementById('retSubtotal');
+  if (retSubtotal) {
+    retSubtotal.addEventListener('input', calculateRetTotals);
+  }
+  const btnSaveRetention = document.getElementById('btnSaveRetention');
+  if (btnSaveRetention) {
+    btnSaveRetention.addEventListener('click', saveRetentionUpdate);
+  }
+  const retBtnAddDeduction = document.getElementById('retBtnAddDeduction');
+  if (retBtnAddDeduction) {
+    retBtnAddDeduction.addEventListener('click', addRetDeduction);
   }
 }
 
@@ -2511,37 +2538,11 @@ function processDocumentSync() {
     const vat = Math.round((vatChecked ? subtotal * 0.07 : 0) * 100) / 100;
     const wht = Math.round((subtotal * (whtRate / 100)) * 100) / 100;
     const net = Math.round((subtotal + vat - wht) * 100) / 100;
-    const owner = document.getElementById('docOwner').value;
-    let retainedAmount = 0;
-    docDeductions.forEach(deduction => {
-      const val = parseFloat(deduction.value) || 0;
-      if (deduction.type === 'percent') {
-        retainedAmount += subtotal * (val / 100);
-      } else if (deduction.type === 'fixed') {
-        retainedAmount += val;
-      }
-    });
-    const retentionAmount = Math.round(retainedAmount * 100) / 100;
-
-    let profitShare = '';
-    let itemProfitShareFunc;
-    if (docDeductions.length > 0) {
-      const parts = docDeductions.map(d => {
-        const val = parseFloat(d.value) || 0;
-        if (d.type === 'percent') {
-          return `${d.name} ${val}%`;
-        } else {
-          return `${d.name} ฿${val}`;
-        }
-      });
-      const deductionStr = parts.join(', ');
-      profitShare = `คนดีล: ${owner} | หัก บ.: ${deductionStr}`;
-      itemProfitShareFunc = (itemWorker) => `คนทำงาน: ${itemWorker} | หัก บ.: ${deductionStr}`;
-    } else {
-      profitShare = 'ไม่มีการหักเข้า บ.';
-      itemProfitShareFunc = (itemWorker) => `คนทำงาน: ${itemWorker} | ไม่มีการหักเข้า บ.`;
-    }
-    const payoutAmount = Math.round((subtotal - retentionAmount) * 100) / 100;
+    const owner = "-";
+    const retentionAmount = 0;
+    const profitShare = "ไม่มีการหักเข้า บ.";
+    const itemProfitShareFunc = (itemWorker) => `คนทำงาน: ${itemWorker || owner} | ไม่มีการหักเข้า บ.`;
+    const payoutAmount = subtotal;
 
     const receivingBank = document.getElementById('docReceivingBank').value;
     const paymentStatus = document.getElementById('docPaymentStatus').value;
@@ -2652,6 +2653,8 @@ function processDocumentSync() {
       paymentStatus: paymentStatus,
       actualPaymentDate: actualPaymentDateStr,
       profitShare: profitShare,
+      owner: owner,
+      deductions: [],
       recordedBy: recordedBy,
       remarks: remarks,
       items: localItems.length > 0 ? localItems : null
@@ -5493,6 +5496,343 @@ function setupPreviewAutoScaling() {
   }
 }
 
+let retDeductions = [];
+
+function initRetentionView() {
+  const retDocNoManual = document.getElementById('retDocNoManual');
+  if (retDocNoManual) retDocNoManual.value = '';
+  
+  const retClientName = document.getElementById('retClientName');
+  if (retClientName) retClientName.textContent = '-';
+  
+  const retDocDate = document.getElementById('retDocDate');
+  if (retDocDate) retDocDate.textContent = '-';
+  
+  const retProjectName = document.getElementById('retProjectName');
+  if (retProjectName) retProjectName.textContent = '-';
+  
+  const retSubtotal = document.getElementById('retSubtotal');
+  if (retSubtotal) {
+    retSubtotal.value = '0';
+    retSubtotal.disabled = true;
+  }
+  
+  retDeductions = [];
+  renderRetDeductionsList();
+
+  const select = document.getElementById('retDocSelect');
+  if (select) {
+    select.innerHTML = '<option value="">-- เลือกใบเสร็จรับเงิน (Receipt) --</option>';
+    const receipts = dbDocs.filter(d => d.type === 'receipt');
+    receipts.forEach(doc => {
+      const option = document.createElement('option');
+      option.value = doc.number;
+      option.textContent = `${doc.number} - ${doc.name} (${doc.detail || ''})`;
+      select.appendChild(option);
+    });
+  }
+}
+
+function onRetDocSelectChange() {
+  const select = document.getElementById('retDocSelect');
+  const manualInput = document.getElementById('retDocNoManual');
+  const retSubtotal = document.getElementById('retSubtotal');
+  
+  if (!select) return;
+  const docNo = select.value;
+  
+  if (docNo) {
+    if (manualInput) {
+      manualInput.value = '';
+    }
+    if (retSubtotal) {
+      retSubtotal.disabled = true;
+    }
+    
+    const doc = dbDocs.find(d => d.number === docNo);
+    if (doc) {
+      document.getElementById('retClientName').textContent = doc.name || '-';
+      document.getElementById('retDocDate').textContent = doc.date || '-';
+      document.getElementById('retProjectName').textContent = doc.detail || '-';
+      if (retSubtotal) {
+        retSubtotal.value = doc.amount || 0;
+      }
+      
+      if (doc.deductions && Array.isArray(doc.deductions)) {
+        retDeductions = JSON.parse(JSON.stringify(doc.deductions));
+      } else {
+        retDeductions = [];
+      }
+      
+      if (doc.owner) {
+        const retOwner = document.getElementById('retOwner');
+        if (retOwner) retOwner.value = doc.owner;
+      }
+      
+      renderRetDeductionsList();
+    }
+  } else {
+    if (manualInput && !manualInput.value) {
+      document.getElementById('retClientName').textContent = '-';
+      document.getElementById('retDocDate').textContent = '-';
+      document.getElementById('retProjectName').textContent = '-';
+      if (retSubtotal) {
+        retSubtotal.value = '0';
+        retSubtotal.disabled = true;
+      }
+      retDeductions = [];
+      renderRetDeductionsList();
+    }
+  }
+}
+
+function onRetDocNoManualInput() {
+  const manualInput = document.getElementById('retDocNoManual');
+  const select = document.getElementById('retDocSelect');
+  const retSubtotal = document.getElementById('retSubtotal');
+  
+  if (!manualInput) return;
+  const val = manualInput.value.trim();
+  
+  if (val) {
+    if (select) select.value = '';
+    
+    if (retSubtotal) {
+      retSubtotal.disabled = false;
+    }
+    
+    const doc = dbDocs.find(d => d.number.toLowerCase() === val.toLowerCase());
+    if (doc) {
+      document.getElementById('retClientName').textContent = doc.name || '-';
+      document.getElementById('retDocDate').textContent = doc.date || '-';
+      document.getElementById('retProjectName').textContent = doc.detail || '-';
+      if (retSubtotal) retSubtotal.value = doc.amount || 0;
+      if (doc.deductions && Array.isArray(doc.deductions)) {
+        retDeductions = JSON.parse(JSON.stringify(doc.deductions));
+      } else {
+        retDeductions = [];
+      }
+      if (doc.owner) {
+        const retOwner = document.getElementById('retOwner');
+        if (retOwner) retOwner.value = doc.owner;
+      }
+      renderRetDeductionsList();
+    } else {
+      document.getElementById('retClientName').textContent = 'ระบุข้อมูลแมนนวล';
+      document.getElementById('retDocDate').textContent = 'ระบุข้อมูลแมนนวล';
+      document.getElementById('retProjectName').textContent = 'ระบุข้อมูลแมนนวล';
+    }
+  } else {
+    if (select && select.value) {
+      onRetDocSelectChange();
+    } else {
+      document.getElementById('retClientName').textContent = '-';
+      document.getElementById('retDocDate').textContent = '-';
+      document.getElementById('retProjectName').textContent = '-';
+      if (retSubtotal) {
+        retSubtotal.value = '0';
+        retSubtotal.disabled = true;
+      }
+      retDeductions = [];
+      renderRetDeductionsList();
+    }
+  }
+}
+
+function renderRetDeductionsList() {
+  const container = document.getElementById('retDeductionsListContainer');
+  if (!container) return;
+
+  container.innerHTML = retDeductions.map((deduction, idx) => `
+    <div class="form-row" style="align-items: center; gap: 8px; margin-top: 8px;">
+      <div class="form-group" style="flex: 1.5; margin-bottom: 0;">
+        <select class="form-control" onchange="window.updateRetDeduction(${idx}, 'name', this.value)">
+          <option value="เก่ง" ${deduction.name === 'เก่ง' ? 'selected' : ''}>เก่ง</option>
+          <option value="พี่นิค" ${deduction.name === 'พี่นิค' ? 'selected' : ''}>พี่นิค</option>
+          <option value="หอม" ${deduction.name === 'หอม' ? 'selected' : ''}>หอม</option>
+        </select>
+      </div>
+      <div class="form-group" style="flex: 1.2; margin-bottom: 0;">
+        <select class="form-control" onchange="window.updateRetDeduction(${idx}, 'type', this.value)">
+          <option value="percent" ${deduction.type === 'percent' ? 'selected' : ''}>เปอร์เซ็นต์ (%)</option>
+          <option value="fixed" ${deduction.type === 'fixed' ? 'selected' : ''}>จำนวนเงิน (฿)</option>
+        </select>
+      </div>
+      <div class="form-group" style="flex: 1.3; margin-bottom: 0;">
+        <input type="number" class="form-control" value="${deduction.value}" min="0" oninput="window.updateRetDeduction(${idx}, 'value', this.value)">
+      </div>
+      <div style="flex: 0.5; text-align: center;">
+        <button type="button" class="btn-secondary" onclick="window.deleteRetDeduction(${idx})" style="padding: 4px 8px; margin: 0; background: #fee2e2; color: #b91c1c; border-color: #fee2e2; box-shadow: none;">ลบ</button>
+      </div>
+    </div>
+  `).join('');
+
+  calculateRetTotals();
+}
+
+function addRetDeduction() {
+  retDeductions.push({ name: 'เก่ง', type: 'percent', value: 10 });
+  renderRetDeductionsList();
+}
+
+function deleteRetDeduction(index) {
+  retDeductions.splice(index, 1);
+  renderRetDeductionsList();
+}
+
+function updateRetDeduction(index, key, val) {
+  if (key === 'value') {
+    retDeductions[index].value = parseFloat(val) || 0;
+  } else {
+    retDeductions[index][key] = val;
+  }
+  calculateRetTotals();
+}
+
+function calculateRetTotals() {
+  const retSubtotal = document.getElementById('retSubtotal');
+  const subtotal = retSubtotal ? parseFloat(retSubtotal.value) || 0 : 0;
+  let retainedAmount = 0;
+  
+  retDeductions.forEach(d => {
+    const val = parseFloat(d.value) || 0;
+    if (d.type === 'percent') {
+      retainedAmount += subtotal * (val / 100);
+    } else if (d.type === 'fixed') {
+      retainedAmount += val;
+    }
+  });
+  
+  const payoutAmount = Math.max(0, subtotal - retainedAmount);
+  
+  const retainedValEl = document.getElementById('retInternalRetainedVal');
+  if (retainedValEl) {
+    retainedValEl.textContent = `฿${retainedAmount.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  }
+  
+  const payoutValEl = document.getElementById('retInternalPayoutVal');
+  if (payoutValEl) {
+    payoutValEl.textContent = `฿${payoutAmount.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  }
+}
+
+function saveRetentionUpdate() {
+  const select = document.getElementById('retDocSelect');
+  const manualInput = document.getElementById('retDocNoManual');
+  const retOwnerSelect = document.getElementById('retOwner');
+  const retSubtotal = document.getElementById('retSubtotal');
+  
+  const docNo = (manualInput && manualInput.value.trim()) || (select && select.value);
+  if (!docNo) {
+    alert('กรุณาเลือกหรือระบุเลขที่เอกสารก่อนบันทึกแก!');
+    return;
+  }
+  
+  const owner = retOwnerSelect ? retOwnerSelect.value : 'เก่ง';
+  
+  let profitShare = 'ไม่มีการหักเข้า บ.';
+  let deductionStr = '';
+  if (retDeductions.length > 0) {
+    const parts = retDeductions.map(d => {
+      const val = parseFloat(d.value) || 0;
+      if (d.type === 'percent') {
+        return `${d.name} ${val}%`;
+      } else {
+        return `${d.name} ฿${val}`;
+      }
+    });
+    deductionStr = parts.join(', ');
+    profitShare = `คนดีล: ${owner} | หัก บ.: ${deductionStr}`;
+  }
+  
+  const payload = {
+    type: 'update_profit_share',
+    spreadsheetId: safeStorage.getItem('ghn168_sheet_id'),
+    docNo: docNo,
+    profitShare: profitShare
+  };
+  
+  let doc = dbDocs.find(d => d.number.toLowerCase() === docNo.toLowerCase());
+  
+  let rowsProfitShare = [];
+  if (doc && doc.items && Array.isArray(doc.items)) {
+    rowsProfitShare = doc.items.map(item => {
+      const itemWorker = item.worker || owner;
+      if (retDeductions.length > 0) {
+        return `คนทำงาน: ${itemWorker} | หัก บ.: ${deductionStr}`;
+      } else {
+        return `คนทำงาน: ${itemWorker} | ไม่มีการหักเข้า บ.`;
+      }
+    });
+    payload.rowsProfitShare = rowsProfitShare;
+  }
+  
+  const saveBtn = document.getElementById('btnSaveRetention');
+  if (!saveBtn) return;
+  const origText = saveBtn.textContent;
+  saveBtn.disabled = true;
+  saveBtn.textContent = 'กำลังบันทึกข้อมูล...';
+  
+  const scriptUrl = safeStorage.getItem('ghn168_script_url');
+  if (!scriptUrl) {
+    alert('ไม่พบ Apps Script URL ในระบบการตั้งค่ากรุณาตรวจสอบก่อนแก!');
+    saveBtn.disabled = false;
+    saveBtn.textContent = origText;
+    return;
+  }
+  
+  fetch(scriptUrl, {
+    method: 'POST',
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'text/plain'
+    },
+    body: JSON.stringify(payload)
+  })
+  .then(res => {
+    if (!res.ok) {
+      throw new Error(`HTTP Error Status: ${res.status}`);
+    }
+    return res.json();
+  })
+  .then(res => {
+    if (res.status === 'success') {
+      alert(`บันทึกข้อมูลส่วนแบ่งบริษัทเรียบร้อยแล้วแก!\nข้อความระบบ: ${res.message}`);
+      
+      if (doc) {
+        doc.owner = owner;
+        doc.deductions = JSON.parse(JSON.stringify(retDeductions));
+        doc.profitShare = profitShare;
+        
+        if (doc.items && Array.isArray(doc.items)) {
+          doc.items.forEach(item => {
+            const itemWorker = item.worker || owner;
+            item.worker = itemWorker;
+            if (retDeductions.length > 0) {
+              item.profitShare = `คนทำงาน: ${itemWorker} | หัก บ.: ${deductionStr}`;
+            } else {
+              item.profitShare = `คนทำงาน: ${itemWorker} | ไม่มีการหักเข้า บ.`;
+            }
+          });
+        }
+      }
+      
+      saveData();
+      initRetentionView();
+    } else {
+      alert(`เกิดข้อผิดพลาดในการบันทึก: ${res.message}`);
+    }
+  })
+  .catch(err => {
+    console.error('Retention update failed:', err);
+    alert(`ไม่สามารถเชื่อมต่อระบบหลังบ้านเพื่ออัปเดตได้: ${err.message}`);
+  })
+  .finally(() => {
+    saveBtn.disabled = false;
+    saveBtn.textContent = origText;
+  });
+}
+
 async function forceClearCacheAndReload() {
   if (!confirm('ต้องการล้างแคชแอปพลิเคชันเพื่ออัปเดตระบบใช่หรือไม่? (ข้อมูลที่บันทึกไว้ในเครื่องจะไม่สูญหาย)')) {
     return;
@@ -5544,3 +5884,14 @@ window.editBankRec = editBankRec;
 window.deleteBankRec = deleteBankRec;
 window.previewTaxFiling = previewTaxFiling;
 window.downloadRDPrepText = downloadRDPrepText;
+
+// Expose retention handlers
+window.initRetentionView = initRetentionView;
+window.onRetDocSelectChange = onRetDocSelectChange;
+window.onRetDocNoManualInput = onRetDocNoManualInput;
+window.renderRetDeductionsList = renderRetDeductionsList;
+window.addRetDeduction = addRetDeduction;
+window.deleteRetDeduction = deleteRetDeduction;
+window.updateRetDeduction = updateRetDeduction;
+window.calculateRetTotals = calculateRetTotals;
+window.saveRetentionUpdate = saveRetentionUpdate;
