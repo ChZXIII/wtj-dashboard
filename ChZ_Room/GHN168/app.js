@@ -34,6 +34,7 @@ const safeStorage = {
 let currentView = 'dashboard';
 let currentDocType = 'quotation'; // quotation, invoice, receipt, wht
 let docItems = [{ desc: '', qty: 1, unit: 'งาน', price: 0, worker: 'เก่ง' }];
+let docDeductions = [];
 let dbDocs = []; // Local history of documents
 let docHubLinks = []; // Google Drive documents
 let syncHistory = []; // Logs of synced items
@@ -768,6 +769,9 @@ function setupEventListeners() {
         docItems = [{ desc: sourceDoc.detail || '', qty: 1, unit: 'งาน', price: sourceDoc.amount || 0, worker: 'เก่ง' }];
       }
       
+      docDeductions = [];
+      renderDeductionsList();
+      
       // อัปเดตตารางและคำนวณยอดเงินใหม่
       renderDocItemsTable();
       calculateDocTotals();
@@ -792,9 +796,10 @@ function setupEventListeners() {
   document.getElementById('docVatCheckbox').addEventListener('change', calculateDocTotals);
   document.getElementById('docWhtSelect').addEventListener('change', calculateDocTotals);
   document.getElementById('docOwner').addEventListener('change', calculateDocTotals);
-  document.getElementById('docRetentionRate').addEventListener('input', calculateDocTotals);
-  if (document.getElementById('docRetentionType')) {
-    document.getElementById('docRetentionType').addEventListener('change', calculateDocTotals);
+  
+  const btnAddDeduction = document.getElementById('btnAddDeduction');
+  if (btnAddDeduction) {
+    btnAddDeduction.addEventListener('click', addDeduction);
   }
 
   // Signatures
@@ -1560,6 +1565,8 @@ function createNewDocument() {
   if (creatorSelect) creatorSelect.value = '';
 
   // Render & sync
+  docDeductions = [];
+  renderDeductionsList();
   renderDocItemsTable();
   calculateDocTotals();
   syncDocPreview();
@@ -1735,6 +1742,61 @@ function updateDocItem(index, key, val) {
   syncDocPreview();
 }
 
+function addDeduction() {
+  docDeductions.push({ name: 'เก่ง', type: 'percent', value: 10 });
+  renderDeductionsList();
+}
+
+function deleteDeduction(index) {
+  docDeductions.splice(index, 1);
+  renderDeductionsList();
+}
+
+function updateDeduction(index, key, val) {
+  if (key === 'value') {
+    docDeductions[index].value = parseFloat(val) || 0;
+  } else {
+    docDeductions[index][key] = val;
+  }
+  calculateDocTotals();
+  syncDocPreview();
+}
+
+function renderDeductionsList() {
+  const container = document.getElementById('deductionsListContainer');
+  if (!container) return;
+
+  container.innerHTML = docDeductions.map((deduction, idx) => `
+    <div class="form-row" style="align-items: center; gap: 8px; margin-top: 8px;">
+      <div class="form-group" style="flex: 1.5; margin-bottom: 0;">
+        <select class="form-control" onchange="updateDeduction(${idx}, 'name', this.value)">
+          <option value="เก่ง" ${deduction.name === 'เก่ง' ? 'selected' : ''}>เก่ง</option>
+          <option value="พี่นิค" ${deduction.name === 'พี่นิค' ? 'selected' : ''}>พี่นิค</option>
+          <option value="หอม" ${deduction.name === 'หอม' ? 'selected' : ''}>หอม</option>
+        </select>
+      </div>
+      <div class="form-group" style="flex: 1.2; margin-bottom: 0;">
+        <select class="form-control" onchange="updateDeduction(${idx}, 'type', this.value)">
+          <option value="percent" ${deduction.type === 'percent' ? 'selected' : ''}>เปอร์เซ็นต์ (%)</option>
+          <option value="fixed" ${deduction.type === 'fixed' ? 'selected' : ''}>จำนวนเงิน (฿)</option>
+        </select>
+      </div>
+      <div class="form-group" style="flex: 1.3; margin-bottom: 0;">
+        <input type="number" class="form-control" value="${deduction.value}" min="0" oninput="updateDeduction(${idx}, 'value', this.value)">
+      </div>
+      <div style="flex: 0.5; text-align: center;">
+        <button type="button" class="btn-secondary" onclick="deleteDeduction(${idx})" style="padding: 4px 8px; margin: 0; background: #fee2e2; color: #b91c1c; border-color: #fee2e2; box-shadow: none;">ลบ</button>
+      </div>
+    </div>
+  `).join('');
+
+  calculateDocTotals();
+}
+
+window.addDeduction = addDeduction;
+window.deleteDeduction = deleteDeduction;
+window.updateDeduction = updateDeduction;
+
 // --- Total Calculations ---
 function calculateDocTotals() {
   renderPaperTable();
@@ -1778,25 +1840,25 @@ function calculateDocTotals() {
   document.getElementById('prevBahtTextVal').textContent = thaiBahtText(grandTotal);
 
   // Update internal company details calculation
-  const retentionType = document.getElementById('docRetentionType') ? document.getElementById('docRetentionType').value : 'percent';
-  const retentionVal = parseFloat(document.getElementById('docRetentionRate').value) || 0;
-  
-  // Update label
-  const lblRetentionRate = document.getElementById('lblRetentionRate');
-  if (lblRetentionRate) {
-    lblRetentionRate.textContent = retentionType === 'percent' ? 'หักเก็บเข้าบริษัท (%)' : 'หักเก็บเข้าบริษัท (บาท)';
-  }
-
   let retainedAmount = 0;
-  if (retentionType === 'percent') {
-    retainedAmount = subtotal * (retentionVal / 100);
-  } else {
-    retainedAmount = retentionVal;
-  }
+  docDeductions.forEach(deduction => {
+    const val = parseFloat(deduction.value) || 0;
+    if (deduction.type === 'percent') {
+      retainedAmount += subtotal * (val / 100);
+    } else if (deduction.type === 'fixed') {
+      retainedAmount += val;
+    }
+  });
   const payoutAmount = subtotal - retainedAmount;
   
-  document.getElementById('internalRetainedAmount').textContent = `฿${retainedAmount.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-  document.getElementById('internalPayoutAmount').textContent = `฿${payoutAmount.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  const internalRetainedAmountEl = document.getElementById('internalRetainedAmount');
+  if (internalRetainedAmountEl) {
+    internalRetainedAmountEl.textContent = `฿${retainedAmount.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  }
+  const internalPayoutAmountEl = document.getElementById('internalPayoutAmount');
+  if (internalPayoutAmountEl) {
+    internalPayoutAmountEl.textContent = `฿${payoutAmount.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  }
 
   // Check HITL Limits
   if (currentDocType === 'receipt' && grandTotal > 10000) {
@@ -2450,21 +2512,34 @@ function processDocumentSync() {
     const wht = Math.round((subtotal * (whtRate / 100)) * 100) / 100;
     const net = Math.round((subtotal + vat - wht) * 100) / 100;
     const owner = document.getElementById('docOwner').value;
-    const retentionType = document.getElementById('docRetentionType') ? document.getElementById('docRetentionType').value : 'percent';
-    const retentionVal = parseFloat(document.getElementById('docRetentionRate').value) || 0;
-    
-    let retentionAmount = 0;
+    let retainedAmount = 0;
+    docDeductions.forEach(deduction => {
+      const val = parseFloat(deduction.value) || 0;
+      if (deduction.type === 'percent') {
+        retainedAmount += subtotal * (val / 100);
+      } else if (deduction.type === 'fixed') {
+        retainedAmount += val;
+      }
+    });
+    const retentionAmount = Math.round(retainedAmount * 100) / 100;
+
     let profitShare = '';
     let itemProfitShareFunc;
-    
-    if (retentionType === 'percent') {
-      retentionAmount = Math.round((subtotal * (retentionVal / 100)) * 100) / 100;
-      profitShare = `คนดีล: ${owner} (${100 - retentionVal}%)`;
-      itemProfitShareFunc = (itemWorker) => `คนทำงาน: ${itemWorker} (${100 - retentionVal}%)`;
+    if (docDeductions.length > 0) {
+      const parts = docDeductions.map(d => {
+        const val = parseFloat(d.value) || 0;
+        if (d.type === 'percent') {
+          return `${d.name} ${val}%`;
+        } else {
+          return `${d.name} ฿${val}`;
+        }
+      });
+      const deductionStr = parts.join(', ');
+      profitShare = `คนดีล: ${owner} | หัก บ.: ${deductionStr}`;
+      itemProfitShareFunc = (itemWorker) => `คนทำงาน: ${itemWorker} | หัก บ.: ${deductionStr}`;
     } else {
-      retentionAmount = Math.round(retentionVal * 100) / 100;
-      profitShare = `คนดีล: ${owner} (หัก บ. ฿${retentionVal.toLocaleString('th-TH')})`;
-      itemProfitShareFunc = (itemWorker) => `คนทำงาน: ${itemWorker} (หัก บ. รวม ฿${retentionVal.toLocaleString('th-TH')})`;
+      profitShare = 'ไม่มีการหักเข้า บ.';
+      itemProfitShareFunc = (itemWorker) => `คนทำงาน: ${itemWorker} | ไม่มีการหักเข้า บ.`;
     }
     const payoutAmount = Math.round((subtotal - retentionAmount) * 100) / 100;
 
