@@ -1684,7 +1684,7 @@ function renderPaperTable() {
     <tr class="total-row">
       <td id="prevNetTotalLabelCell" colspan="${labelColspan}" style="width: 502px; padding: 6px 0; font-size: 11px; font-weight: 800; vertical-align: middle; border: none;">
         <div style="display: flex; align-items: center; justify-content: space-between; width: 502px; padding: 0 12px 0 25px; box-sizing: border-box;">
-          <div id="prevBahtTextContainer" class="doc-baht-text-container" style="border: 1px dashed #000000; padding: 4px 10px; background: #f9fafb; font-weight: bold; text-align: left; border-radius: 4px; display: inline-block; font-size: 9px; max-width: 340px; white-space: nowrap; line-height: 1.2; margin: 0;">
+          <div id="prevBahtTextContainer" class="doc-baht-text-container" style="border: 1px dashed #000000; padding: 8px; background: #f9fafb; font-weight: bold; text-align: left; border-radius: 4px; display: inline-block; line-height: 1.2; margin: 0; width: 55%; box-sizing: border-box; font-size: 11px;">
             จำนวนเงินตัวอักษร: &nbsp;<span id="prevBahtTextVal" style="font-weight: bold;">ศูนย์บาทถ้วน</span>
           </div>
           <div style="font-weight: 800; white-space: nowrap; text-align: right;">
@@ -1862,20 +1862,7 @@ function calculateDocTotals() {
   const bahtText = thaiBahtText(grandTotal);
   document.getElementById('prevBahtTextVal').textContent = bahtText;
 
-  const totalLength = 19 + bahtText.length;
-  let fontSize = 9;
-  let paddingHorizontal = 10;
-  let paddingVertical = 4;
-  if (totalLength > 40) {
-    fontSize = Math.max(5, 9 - (totalLength - 40) * 0.0615);
-    paddingHorizontal = Math.max(3, 10 - (totalLength - 40) * 0.1);
-    paddingVertical = Math.max(2, 4 - (totalLength - 40) * 0.03);
-  }
-  const container = document.getElementById('prevBahtTextContainer');
-  if (container) {
-    container.style.fontSize = `${fontSize}px`;
-    container.style.padding = `${paddingVertical}px ${paddingHorizontal}px`;
-  }
+
 
   // Update internal company details calculation
   let retainedAmount = 0;
