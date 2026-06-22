@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GHN168 | Accounting & Document Hub</title>
-  <link rel="stylesheet" href="style.css?v=40">
-  <link rel="manifest" href="manifest.json?v=40">
+  <link rel="stylesheet" href="style.css?v=41">
+  <link rel="manifest" href="manifest.json?v=41">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="GHN168">
@@ -996,19 +996,11 @@
                   </tr>
                   <tr class="total-row">
                     <td id="prevNetTotalLabelCell" colspan="5" style="padding: 6px 0; font-size: 11px; font-weight: 800; vertical-align: middle;">
-                      <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                        <!-- กลุ่มด้านซ้าย: มีบล็อก Spacer ดันหลบขอบซ้าย 35px และกล่องตัวอักษร -->
-                        <div style="display: inline-flex; align-items: center; height: 100%;">
-                          <div style="width: 35px; height: 1px; flex-shrink: 0;"></div> <!-- Left Spacer -->
-                          <div class="doc-baht-text-container" style="border: 1px dashed #000000; padding: 4px 10px; background: #f9fafb; font-weight: bold; text-align: left; border-radius: 4px; display: inline-flex; align-items: center; font-size: 11px; width: auto; margin: 0;">
-                            จำนวนเงินตัวอักษร: &nbsp;<span id="prevBahtTextVal" style="font-weight: bold;">ศูนย์บาทถ้วน</span>
-                          </div>
+                      <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; box-sizing: border-box; padding-left: 35px; padding-right: 12px;">
+                        <div class="doc-baht-text-container" style="border: 1px dashed #000000; padding: 4px 10px; background: #f9fafb; font-weight: bold; text-align: left; border-radius: 4px; display: inline-flex; align-items: center; font-size: 11px; width: auto; margin: 0;">
+                          จำนวนเงินตัวอักษร: &nbsp;<span id="prevBahtTextVal" style="font-weight: bold;">ศูนย์บาทถ้วน</span>
                         </div>
-                        <!-- กลุ่มด้านขวา: มีข้อความ Net Total และบล็อก Spacer ดันหลบขอบขวา 12px -->
-                        <div style="display: inline-flex; align-items: center; margin-left: auto; height: 100%;">
-                          <span style="font-weight: 800; text-align: right; white-space: nowrap;">ยอดเงินสุทธิ / Net Total</span>
-                          <div style="width: 12px; height: 1px; flex-shrink: 0;"></div> <!-- Right Spacer -->
-                        </div>
+                        <span style="font-weight: 800; text-align: right; white-space: nowrap;">ยอดเงินสุทธิ / Net Total</span>
                       </div>
                     </td>
                     <td id="prevGrandTotalVal" style="text-align: right; font-weight:800; border: 2px solid #000000; background-color:#f3f4f6;" class="bordered">-</td>
@@ -2204,7 +2196,7 @@
   </div>
 
   <script src="assets/html2pdf.bundle.min.js"></script>
-  <script src="app.js?v=40"></script>
+  <script src="app.js?v=41"></script>
   <script>
     if ('serviceWorker' in navigator) {
       let refreshing = false;
