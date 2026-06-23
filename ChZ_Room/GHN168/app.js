@@ -140,6 +140,7 @@ function setTheme(theme) {
     `;
   }
   safeStorage.setItem('ghn168_theme', theme);
+  renderDashboard();
 }
 
 function toggleTheme() {
@@ -1077,6 +1078,14 @@ function setupEventListeners() {
   if (btnSyncDocHub) {
     btnSyncDocHub.addEventListener('click', () => {
       fetchDocHubFromSheets(true);
+    });
+  }
+
+  // Sync Documents (Quotation & Invoice) Button
+  const btnSyncDocsFromSheets = document.getElementById('btnSyncDocsFromSheets');
+  if (btnSyncDocsFromSheets) {
+    btnSyncDocsFromSheets.addEventListener('click', () => {
+      fetchDocumentsFromSheets(true);
     });
   }
 
@@ -3369,6 +3378,7 @@ function fetchDocumentsFromSheets(showToast = false) {
     return fetch(scriptUrl, {
       method: 'POST',
       mode: 'cors',
+      cache: 'no-cache',
       headers: { 'Content-Type': 'text/plain' },
       body: JSON.stringify(payload)
     })

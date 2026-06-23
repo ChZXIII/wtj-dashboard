@@ -271,7 +271,7 @@ body.light-mode .logo-light-only {
   gap: 12px;
   padding: 12px;
   border: 2px solid var(--border-color);
-  border-radius: 10px; /* Rounded Agent Widget */
+  border-radius: 12px; /* Rounded Agent Widget */
   background: var(--bg-primary);
   box-shadow: 3px 3px 0px var(--shadow-color);
   cursor: pointer;
@@ -370,7 +370,7 @@ body.light-mode .logo-light-only {
 .card {
   background-color: var(--bg-secondary);
   border: 4px solid var(--border-color);
-  border-radius: 16px; /* Rounded Cards */
+  border-radius: 12px; /* Rounded Cards */
   padding: 24px;
   box-shadow: 6px 6px 0px var(--shadow-color);
   margin-bottom: 12px;
@@ -720,7 +720,7 @@ textarea.form-control {
   flex-grow: 1;
   background: #525659;
   border: 4px solid var(--border-color);
-  border-radius: 16px; /* Rounded Preview Panel */
+  border-radius: 12px; /* Rounded Preview Panel */
   box-shadow: 6px 6px 0px var(--shadow-color);
   display: flex;
   justify-content: safe center;
@@ -1359,7 +1359,7 @@ textarea.form-control {
   display: none;
   background: none;
   border: 2px solid var(--border-color);
-  border-radius: 6px;
+  border-radius: 8px;
   width: 36px;
   height: 36px;
   padding: 0;

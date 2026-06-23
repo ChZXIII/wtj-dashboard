@@ -1,9 +1,9 @@
-const CACHE_NAME = 'ghn168-app-v55';
+const CACHE_NAME = 'ghn168-app-v56';
 const ASSETS = [
   'index.html',
-  'style.css?v=55',
-  'app.js?v=55',
-  'manifest.json?v=55',
+  'style.css?v=56',
+  'app.js?v=56',
+  'manifest.json?v=56',
   'assets/ghn_app_icon.png',
   'assets/logo.png',
   'assets/sidebar_logo_dark.png',
@@ -35,6 +35,8 @@ self.addEventListener('activate', (e) => {
 });
 
 self.addEventListener('fetch', (e) => {
+  if (e.request.method !== 'GET' || !e.request.url.startsWith('http')) return;
+
   e.respondWith(
     caches.match(e.request).then((cachedResponse) => {
       if (cachedResponse) {

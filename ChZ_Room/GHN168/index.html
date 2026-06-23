@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GHN168 | Accounting & Document Hub</title>
-  <link rel="stylesheet" href="style.css?v=55">
-  <link rel="manifest" href="manifest.json?v=55">
+  <link rel="stylesheet" href="style.css?v=56">
+  <link rel="manifest" href="manifest.json?v=56">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="GHN168">
@@ -175,6 +175,7 @@
             <h1>Dashboard</h1>
             <p>ภาพรวมการเงินและการออกเอกสารของ บริษัท จีเอชเอ็น 168 มีเดีย แอนด์ ครีเอชั่น จำกัด</p>
           </div>
+          <button id="btnSyncDocsFromSheets" class="btn-primary">ซิงค์ยอดจาก Sheets</button>
         </div>
         
         <!-- Stat Grid -->
@@ -248,7 +249,7 @@
           
           <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: stretch; margin-top: 16px;">
             <!-- Donut Chart Container (Left Column - Fixed Width to stay square-ish) -->
-            <div style="width: 250px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; border: 2px solid var(--border-color); background: var(--card-bg); box-shadow: 4px 4px 0px var(--shadow-color); border-radius: 4px;">
+            <div style="width: 250px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; border: 2px solid var(--border-color); background: var(--card-bg); box-shadow: 4px 4px 0px var(--shadow-color); border-radius: 12px;">
               <div class="donut-chart-container">
                 <div id="salesDonutChart" style="width: 100%; height: 100%; border-radius: 50%; background: #e5e7eb; border: 2px solid var(--border-color); transition: background 0.3s ease;"></div>
                 <div id="donutCenterHole" style="position: absolute; width: 96px; height: 96px; background: var(--card-bg); border-radius: 50%; border: 2px solid var(--border-color); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
@@ -266,7 +267,7 @@
             <!-- Individual Share Stats List (Right Column - Flex Column of Rows) -->
             <div style="flex: 1; min-width: 300px; display: flex; flex-direction: column; gap: 12px; justify-content: space-between;">
               <!-- เก่ง -->
-              <div class="sales-performance-card" style="border: 2px solid var(--border-color); padding: 12px 16px; background: var(--input-bg); box-shadow: 3px 3px 0px var(--shadow-color); border-radius: 4px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex: 1;">
+              <div class="sales-performance-card" style="border: 2px solid var(--border-color); padding: 12px 16px; background: var(--input-bg); box-shadow: 3px 3px 0px var(--shadow-color); border-radius: 12px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex: 1;">
                 <div style="display: flex; align-items: center; gap: 12px; min-width: 140px; flex-shrink: 0;">
                   <div style="width: 32px; height: 32px; background: #e52521; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; border: 1px solid var(--border-color); border-radius: 4px;">ก</div>
                   <div>
@@ -291,7 +292,7 @@
               </div>
 
               <!-- พี่นิค -->
-              <div class="sales-performance-card" style="border: 2px solid var(--border-color); padding: 12px 16px; background: var(--input-bg); box-shadow: 3px 3px 0px var(--shadow-color); border-radius: 4px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex: 1;">
+              <div class="sales-performance-card" style="border: 2px solid var(--border-color); padding: 12px 16px; background: var(--input-bg); box-shadow: 3px 3px 0px var(--shadow-color); border-radius: 12px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex: 1;">
                 <div style="display: flex; align-items: center; gap: 12px; min-width: 140px; flex-shrink: 0;">
                   <div style="width: 32px; height: 32px; background: #2563eb; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; border: 1px solid var(--border-color); border-radius: 4px;">น</div>
                   <div>
@@ -316,7 +317,7 @@
               </div>
 
               <!-- หอม -->
-              <div class="sales-performance-card" style="border: 2px solid var(--border-color); padding: 12px 16px; background: var(--input-bg); box-shadow: 3px 3px 0px var(--shadow-color); border-radius: 4px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex: 1;">
+              <div class="sales-performance-card" style="border: 2px solid var(--border-color); padding: 12px 16px; background: var(--input-bg); box-shadow: 3px 3px 0px var(--shadow-color); border-radius: 12px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex: 1;">
                 <div style="display: flex; align-items: center; gap: 12px; min-width: 140px; flex-shrink: 0;">
                   <div style="width: 32px; height: 32px; background: #16a34a; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; border: 1px solid var(--border-color); border-radius: 4px;">ห</div>
                   <div>
@@ -367,7 +368,7 @@
           
           <div class="grid-cols-3" style="gap: 16px; margin-top: 16px;">
             <!-- VAT Summary -->
-            <div style="border: 2px solid var(--border-color); padding: 16px; background: var(--input-bg); box-shadow: 3px 3px 0px var(--shadow-color); border-radius: 4px;">
+            <div style="border: 2px solid var(--border-color); padding: 16px; background: var(--input-bg); box-shadow: 3px 3px 0px var(--shadow-color); border-radius: 12px;">
               <h4 style="margin: 0 0 12px 0; font-size: 14px; border-bottom: 2px solid var(--border-color); padding-bottom: 6px; color: var(--text-primary); font-weight: 700;">ภาษีมูลค่าเพิ่ม (ภ.พ.30)</h4>
               <div style="display: flex; flex-direction: column; gap: 8px; font-size: 13px; color: var(--text-primary);">
                 <div style="display: flex; justify-content: space-between;">
@@ -386,7 +387,7 @@
             </div>
             
             <!-- WHT Summary -->
-            <div style="border: 2px solid var(--border-color); padding: 16px; background: var(--input-bg); box-shadow: 3px 3px 0px var(--shadow-color); border-radius: 4px;">
+            <div style="border: 2px solid var(--border-color); padding: 16px; background: var(--input-bg); box-shadow: 3px 3px 0px var(--shadow-color); border-radius: 12px;">
               <h4 style="margin: 0 0 12px 0; font-size: 14px; border-bottom: 2px solid var(--border-color); padding-bottom: 6px; color: var(--text-primary); font-weight: 700;">ภาษีหัก ณ ที่จ่าย (WHT (50.ทวิ))</h4>
               <div style="display: flex; flex-direction: column; gap: 8px; font-size: 13px; color: var(--text-primary);">
                 <div style="display: flex; justify-content: space-between;">
@@ -405,7 +406,7 @@
             </div>
 
             <!-- Financial Summary -->
-            <div style="border: 2px solid var(--border-color); padding: 16px; background: var(--input-bg); box-shadow: 3px 3px 0px var(--shadow-color); border-radius: 4px; display: flex; flex-direction: column; justify-content: space-between;">
+            <div style="border: 2px solid var(--border-color); padding: 16px; background: var(--input-bg); box-shadow: 3px 3px 0px var(--shadow-color); border-radius: 12px; display: flex; flex-direction: column; justify-content: space-between;">
               <div>
                 <h4 style="margin: 0 0 12px 0; font-size: 14px; border-bottom: 2px solid var(--border-color); padding-bottom: 6px; color: var(--text-primary); font-weight: 700;">สัดส่วนทางการเงินสะสม</h4>
                 <div style="display: flex; flex-direction: column; gap: 8px; font-size: 13px; color: var(--text-primary);">
@@ -1246,15 +1247,15 @@
         </div>
 
         <div class="grid-cols-3" style="margin-bottom: 24px;">
-          <div class="card" style="border-left: 6px solid var(--accent-color); box-shadow: 4px 4px 0 var(--border-color); border-radius:4px; padding: 16px;">
+          <div class="card" style="border-left: 6px solid var(--accent-color); box-shadow: 4px 4px 0 var(--border-color); border-radius:12px; padding: 16px;">
             <div class="card-title" style="font-size: 13px; color: var(--text-secondary); margin-bottom: 8px;">เงินสดย่อยคงเหลือในกล่องเซฟ</div>
             <h2 style="font-size: 24px; font-weight: 900; margin-top: 8px;" id="pettyCashSafeBalance" class="mono">฿10,000.00</h2>
           </div>
-          <div class="card" style="border-left: 6px solid #2563eb; box-shadow: 4px 4px 0 var(--border-color); border-radius:4px; padding: 16px;">
+          <div class="card" style="border-left: 6px solid #2563eb; box-shadow: 4px 4px 0 var(--border-color); border-radius:12px; padding: 16px;">
             <div class="card-title" style="font-size: 13px; color: var(--text-secondary); margin-bottom: 8px;">ยอดจ่ายเงินสดย่อยสะสม</div>
             <h2 style="font-size: 24px; font-weight: 900; margin-top: 8px;" id="pettyCashTotalPaid" class="mono">฿0.00</h2>
           </div>
-          <div class="card" style="border-left: 6px solid #16a34a; box-shadow: 4px 4px 0 var(--border-color); border-radius:4px; padding: 16px;">
+          <div class="card" style="border-left: 6px solid #16a34a; box-shadow: 4px 4px 0 var(--border-color); border-radius:12px; padding: 16px;">
             <div class="card-title" style="font-size: 13px; color: var(--text-secondary); margin-bottom: 8px;">วงเงินสดย่อยสำรองทั้งหมด</div>
             <h2 style="font-size: 24px; font-weight: 900; margin-top: 8px;" class="mono">฿10,000.00</h2>
           </div>
@@ -1574,7 +1575,7 @@
         <button id="btnCloseAgentPimModal" class="modal-close-btn">&times;</button>
       </div>
       <div style="display: flex; flex-direction: column; gap: 16px; margin-top: 12px;">
-        <div style="display: flex; align-items: center; gap: 16px; background: rgba(255, 69, 0, 0.05); padding: 16px; border: 2px solid var(--border-color); border-radius: 10px;">
+        <div style="display: flex; align-items: center; gap: 16px; background: rgba(255, 69, 0, 0.05); padding: 16px; border: 2px solid var(--border-color); border-radius: 12px;">
           <div class="agent-avatar" style="width: 50px; height: 50px; font-size: 24px; background-color: var(--accent-color); color: #ffffff; display: flex; align-items: center; justify-content: center; font-weight: 800; border: 2px solid var(--border-color); border-radius: 50%;">
             <svg style="width: 28px; height: 28px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <rect width="16" height="20" x="4" y="2" rx="2" ry="2"/>
@@ -1625,7 +1626,7 @@
         </div>
 
         <!-- Danger Zone Box inside Nong Pim modal -->
-        <div style="border: 2px solid #ef4444; border-radius: 10px; padding: 16px; background: rgba(239, 68, 68, 0.03); margin-top: 8px; box-shadow: 3px 3px 0px #ef4444;">
+        <div style="border: 2px solid #ef4444; border-radius: 12px; padding: 16px; background: rgba(239, 68, 68, 0.03); margin-top: 8px; box-shadow: 3px 3px 0px #ef4444;">
           <h4 style="margin: 0 0 8px 0; font-size: 13px; font-family: 'Prompt', sans-serif; color: #ef4444; display: flex; align-items: center; gap: 6px;">
             <svg style="width: 16px; height: 16px;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
@@ -1868,7 +1869,7 @@
           </div>
         </div>
 
-        <div class="form-group" style="background: var(--input-bg); padding:12px; border:2px solid var(--border-color); margin-top:10px; border-radius:4px; box-shadow: 2px 2px 0 var(--border-color);">
+        <div class="form-group" style="background: var(--input-bg); padding:12px; border:2px solid var(--border-color); margin-top:10px; border-radius:12px; box-shadow: 2px 2px 0 var(--border-color);">
           <span style="font-size:12px; color: var(--text-secondary); font-weight:700;">ยอดคำนวณเงินจ่ายจริง (Real-time Calculator):</span>
           <div style="display:flex; justify-content:space-between; margin-top:8px; font-size:13px;" class="mono">
             <div>ภาษีซื้อ (VAT): <strong id="calcExpenseVat">฿0.00</strong></div>
@@ -2026,7 +2027,7 @@
             <input type="number" id="payrollOtherDeductions" class="form-control mono" placeholder="0.00" oninput="calculatePayrollTotals()">
           </div>
         </div>
-        <div class="form-group" style="background: var(--input-bg); padding:12px; border:2px solid var(--border-color); margin-top:10px; border-radius:4px; box-shadow: 2px 2px 0 var(--border-color);">
+        <div class="form-group" style="background: var(--input-bg); padding:12px; border:2px solid var(--border-color); margin-top:10px; border-radius:12px; box-shadow: 2px 2px 0 var(--border-color);">
           <span style="font-size:12px; color: var(--text-secondary); font-weight:700;">ผลการคำนวณยอดสุทธิ (Net Pay Summary):</span>
           <div style="display:flex; justify-content:space-between; margin-top:8px; font-size:13px;" class="mono">
             <div>ยอดได้ก่อนหัก: <strong id="calcPayrollTotalEarnings">฿0.00</strong></div>
@@ -2119,7 +2120,7 @@
             <input type="number" id="bankRecChargesNotRecorded" class="form-control mono" step="0.01" placeholder="0.00" oninput="calculateBankRecTotals()">
           </div>
         </div>
-        <div class="form-group" style="background: var(--input-bg); padding:12px; border:2px solid var(--border-color); margin-top:10px; border-radius:4px; box-shadow: 2px 2px 0 var(--border-color);">
+        <div class="form-group" style="background: var(--input-bg); padding:12px; border:2px solid var(--border-color); margin-top:10px; border-radius:12px; box-shadow: 2px 2px 0 var(--border-color);">
           <span style="font-size:12px; color: var(--text-secondary); font-weight:700;">ตรวจสอบงบกระทบยอดธนาคาร:</span>
           <div style="display:flex; justify-content:space-between; margin-top:8px; font-size:13px;" class="mono">
             <div>ยอดปรับปรุงธนาคาร (A+C-D): <strong id="calcBankRecAdjustedStatement">฿0.00</strong></div>
@@ -2234,7 +2235,7 @@
   </div>
 
   <script src="assets/html2pdf.bundle.min.js"></script>
-  <script src="app.js?v=55"></script>
+  <script src="app.js?v=56"></script>
   <script>
     if ('serviceWorker' in navigator) {
       let refreshing = false;
