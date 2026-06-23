@@ -2199,12 +2199,6 @@ async function renderCalendar(forceRefresh = false) {
   const scriptUrl = localStorage.getItem('income_tracker_gas_url');
   const generalSheetId = localStorage.getItem('income_tracker_general_sheet_id') || '';
   const calendarWarning = document.getElementById('calendarConnectionBanner');
-  
-  if (!scriptUrl || !generalSheetId) {
-    if (calendarWarning) calendarWarning.style.display = 'block';
-  } else {
-    if (calendarWarning) calendarWarning.style.display = 'none';
-  }
 
   const year = calendarCurrentDate.getFullYear();
   const month = calendarCurrentDate.getMonth();
@@ -2222,6 +2216,21 @@ async function renderCalendar(forceRefresh = false) {
   calendarEvents = [];
 
   await fetchCalendarEvents(startDate, endDate, forceRefresh);
+
+  if (calendarWarning) {
+    const fetchError = localStorage.getItem('income_tracker_calendar_fetch_error');
+    if (!scriptUrl || !generalSheetId) {
+      calendarWarning.className = 'alert-banner warning';
+      calendarWarning.querySelector('.alert-text').innerHTML = '<strong>ปฏิทินยังไม่ได้เชื่อมต่อ Google Sheets!</strong> ดึงเหตุการณ์จำลองเพื่อทดสอบการใช้งานจ้า';
+      calendarWarning.style.display = 'block';
+    } else if (fetchError) {
+      calendarWarning.className = 'alert-banner error';
+      calendarWarning.querySelector('.alert-text').innerHTML = `<strong>เชื่อมต่อ Google Calendar ล้มเหลว!</strong> รายละเอียด: ${fetchError}`;
+      calendarWarning.style.display = 'block';
+    } else {
+      calendarWarning.style.display = 'none';
+    }
+  }
 
   // Toggle view containers based on current mode
   const monthWrapper = document.getElementById('calendarMonthWrapper');
@@ -2262,6 +2271,7 @@ async function fetchCalendarEvents(start, end, forceRefresh) {
       localStorage.setItem(localKey, JSON.stringify(getMockEvents()));
     }
     calendarEvents = JSON.parse(localStorage.getItem(localKey));
+    localStorage.removeItem('income_tracker_calendar_fetch_error');
     return;
   }
 
@@ -2283,12 +2293,15 @@ async function fetchCalendarEvents(start, end, forceRefresh) {
     const result = await response.json();
     if (result.status === 'success') {
       calendarEvents = result.data || [];
+      localStorage.removeItem('income_tracker_calendar_fetch_error');
     } else {
       console.warn("GAS return error for fetch_calendar_events:", result.message);
+      localStorage.setItem('income_tracker_calendar_fetch_error', result.message || 'Unknown GAS error');
       useOfflineEventsFallback(localKey);
     }
   } catch (err) {
     console.error("Fetch calendar events failed, using offline fallback:", err);
+    localStorage.setItem('income_tracker_calendar_fetch_error', err.message || err.toString());
     useOfflineEventsFallback(localKey);
   }
 }
