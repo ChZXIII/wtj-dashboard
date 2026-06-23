@@ -2039,57 +2039,61 @@ html.dark-theme .floating-view-switcher:active {
 
   body.mobile-simulator-active .sidebar {
     position: absolute;
-    bottom: 0;
+    top: 0;
     left: 0;
-    right: 0;
-    height: 65px;
-    width: 100% !important;
-    flex-direction: row;
-    border-top: 2px solid var(--ink-dark);
-    border-right: none;
-    top: auto;
-    z-index: 100;
+    bottom: 0;
+    width: 260px !important;
+    height: 100% !important;
+    flex-direction: column;
+    border-right: 2px solid var(--ink-dark);
+    border-top: none;
+    z-index: 200;
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  body.mobile-simulator-active .sidebar.mobile-open {
+    transform: translateX(0);
   }
 
   body.mobile-simulator-active .sidebar-header,
   body.mobile-simulator-active .sidebar-footer {
-    display: none !important;
+    display: flex !important;
   }
 
   body.mobile-simulator-active .sidebar-menu {
-    flex-direction: row;
-    padding: 0;
+    flex-direction: column;
+    padding: 20px 14px;
     margin: 0;
-    justify-content: space-around;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    gap: 0;
+    justify-content: flex-start;
+    align-items: stretch;
+    width: auto;
+    height: auto;
+    gap: 8px;
   }
 
   body.mobile-simulator-active .sidebar-menu li {
-    flex: 1;
-    height: 100%;
-    list-style: none;
+    flex: none;
+    height: auto;
   }
 
   body.mobile-simulator-active .menu-item {
-    flex-direction: column;
-    justify-content: center;
+    flex-direction: row;
+    justify-content: flex-start;
     align-items: center;
-    height: 100%;
-    padding: 4px 2px;
-    font-size: 11px;
-    gap: 4px;
-    border: none;
-    border-radius: 0;
-    text-align: center;
+    height: auto;
+    padding: 10px 14px;
+    font-size: 14px;
+    gap: 12px;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    text-align: left;
     background: transparent;
   }
 
   body.mobile-simulator-active .menu-item.active {
-    box-shadow: none;
-    border: none;
+    box-shadow: 4px 4px 0px var(--ink-dark);
+    border: 2px solid var(--ink-dark);
     background-color: var(--primary);
     color: #ffffff;
   }
@@ -2099,9 +2103,22 @@ html.dark-theme .floating-view-switcher:active {
     height: 20px;
   }
 
+  body.mobile-simulator-active .mobile-header-bar {
+    display: flex !important;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 150;
+  }
+
+  body.mobile-simulator-active .main-header {
+    display: none !important;
+  }
+
   body.mobile-simulator-active .main-content {
     margin-left: 0 !important;
-    padding: 20px 16px 65px 16px !important;
+    padding: calc(60px + 20px) 16px 20px 16px !important;
     height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
@@ -2163,72 +2180,6 @@ html.dark-theme .floating-view-switcher:active {
     display: none !important;
   }
 
-  .sidebar {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 65px;
-    width: 100% !important;
-    flex-direction: row;
-    border-top: 2px solid var(--ink-dark);
-    border-right: none;
-    top: auto;
-    z-index: 100;
-  }
-
-  .sidebar-header,
-  .sidebar-footer {
-    display: none !important;
-  }
-
-  .sidebar-menu {
-    flex-direction: row;
-    padding: 0;
-    margin: 0;
-    justify-content: space-around;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    gap: 0;
-  }
-
-  .sidebar-menu li {
-    flex: 1;
-    height: 100%;
-    list-style: none;
-  }
-
-  .menu-item {
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    padding: 4px 2px;
-    font-size: 11px;
-    gap: 4px;
-    border: none;
-    border-radius: 0;
-    text-align: center;
-    background: transparent;
-  }
-
-  .menu-item.active {
-    box-shadow: none;
-    border: none;
-    background-color: var(--primary);
-    color: #ffffff;
-  }
-
-  .menu-item svg {
-    width: 20px;
-    height: 20px;
-  }
-
-  .main-content {
-    margin-left: 0 !important;
-    padding: 20px 16px 85px 16px !important;
-  }
 }
 
 /* ==========================================================================
