@@ -17,7 +17,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="ChZ App">
-  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="apple-touch-icon" href="assets/icon-192.png">
   <link rel="manifest" href="manifest.json">
   <script>
     if ('serviceWorker' in navigator) {
@@ -99,6 +99,14 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
             ออกเอกสารการเงิน
+          </a>
+        </li>
+        <li>
+          <a class="menu-item" data-view="calendar-view" id="menuCalendar">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            ปฏิทินงาน
           </a>
         </li>
         <li>
@@ -197,6 +205,7 @@
           </div>
           
           <form id="jsFormGeneral">
+            <input type="hidden" id="calendarEventId" name="calendarEventId">
             <div class="form-grid">
               
               <div class="form-group">
@@ -844,6 +853,98 @@
         
       </section>
 
+      <!-- View 6: Calendar View -->
+      <section id="calendar-view" class="view-panel">
+        
+        <!-- API URL Status Banner for Calendar -->
+        <div id="calendarConnectionBanner" class="alert-banner warning">
+          <div class="alert-content">
+            <svg class="alert-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            <div class="alert-text">
+              <strong>ปฏิทินยังไม่ได้เชื่อมต่อ Google Sheets!</strong> ดึงเหตุการณ์จำลองเพื่อทดสอบการใช้งานจ้า
+            </div>
+          </div>
+        </div>
+
+        <div class="calendar-container-card">
+          <div class="calendar-header">
+            <div class="calendar-nav-controls">
+              <button type="button" class="btn-secondary" id="btnPrevMonth">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width: 16px; height: 16px;">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+              <h3 id="currentMonthYearText" style="margin: 0; font-family: 'Outfit', 'Prompt', sans-serif;">มิถุนายน 2026</h3>
+              <button type="button" class="btn-secondary" id="btnNextMonth">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width: 16px; height: 16px;">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+              <div class="calendar-view-modes" id="calendarViewModes" role="group" aria-label="มุมมองปฏิทิน">
+                <button type="button" class="view-mode-btn active" id="btnViewMonth" data-mode="month">เดือน</button>
+                <button type="button" class="view-mode-btn" id="btnViewWeek" data-mode="week">สัปดาห์</button>
+                <button type="button" class="view-mode-btn" id="btnViewSchedule" data-mode="schedule">วาระงาน</button>
+              </div>
+              <button type="button" class="btn-secondary" id="btnToday" style="padding: 10px 16px; font-size: 14px;">วันนี้</button>
+              <button type="button" class="btn-primary" id="btnRefreshCalendar" style="padding: 10px 16px; font-size: 14px; display: flex; align-items: center; gap: 6px;">
+                <svg class="btn-svg-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 7.89H18v3" />
+                </svg>
+                <span>รีเฟรช</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Color Legends -->
+          <div class="calendar-legends">
+            <div class="legend-item"><span class="legend-dot color-red"></span>คิวคอนเฟิร์มแล้ว (Tomato Red)</div>
+            <div class="legend-item"><span class="legend-dot color-yellow"></span>รอดีล / คิวยังไม่คอนเฟิร์ม (Banana Yellow)</div>
+            <div class="legend-item"><span class="legend-dot color-green"></span>บันทึกรายรับเข้าระบบแล้ว (Sage Green)</div>
+          </div>
+
+          <!-- Calendar Grid -->
+          <div class="calendar-grid-wrapper" id="calendarMonthWrapper">
+            <div class="calendar-weekdays">
+              <div>อา.</div>
+              <div>จ.</div>
+              <div>อ.</div>
+              <div>พ.</div>
+              <div>พฤ.</div>
+              <div>ศ.</div>
+              <div>ส.</div>
+            </div>
+            <div class="calendar-days" id="calendarDaysContainer">
+              <!-- Days will be dynamically injected here -->
+            </div>
+          </div>
+
+          <!-- Week View Container -->
+          <div id="calendarWeekContainer" class="calendar-week-container" style="display:none;"></div>
+
+          <!-- Schedule View Container -->
+          <div id="calendarScheduleContainer" class="calendar-schedule-container" style="display:none;"></div>
+
+          <div class="calendar-agenda-container" id="calendarAgendaContainer">
+            <div class="agenda-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--ink-dark); padding-bottom: 8px; margin-bottom: 12px;">
+              <h4 id="selectedDayText" style="margin: 0; font-family: 'Outfit', 'Prompt', sans-serif; font-size: 15px; font-weight: 700; color: var(--ink-dark);">คิวงานประจำวัน</h4>
+              <button type="button" class="btn-primary" id="btnAgendaAddEvent" style="padding: 6px 12px; font-size: 13px; display: flex; align-items: center; gap: 4px;">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width: 14px; height: 14px;">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
+                </svg>
+                <span>เพิ่มงาน</span>
+              </button>
+            </div>
+            <div id="agendaEventList" class="agenda-event-list" style="display: flex; flex-direction: column; gap: 8px;">
+              <!-- การ์ดรายการคิวงานจะเข้ามาแสดงผลตรงนี้ผ่าน JS -->
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- View 3: Settings View -->
       <section id="settings-view" class="view-panel">
         <div class="form-container-card">
@@ -938,7 +1039,7 @@
         <!-- Setup Guide Card -->
         <div class="form-container-card" style="margin-top: 30px;">
           <div class="form-header">
-            <h3>🛠️ วิธีการติดตั้ง Google Apps Script ในตาราง Google Sheets ของแก</h3>
+            <h3>วิธีการติดตั้ง Google Apps Script ในตาราง Google Sheets ของแก</h3>
             <p>ทำตาม 5 ขั้นตอนสั้นๆ นี้เพื่อรับลิงก์สำหรับคีย์ข้อมูลอัตโนมัติ:</p>
           </div>
           
@@ -996,6 +1097,121 @@
       <button class="btn-primary" onclick="closePopup()" style="width: 100%; margin-top: 15px;">ตกลง</button>
     </div>
   </div>
+
+  <!-- Event Action & Create Modal -->
+  <div id="eventModal" class="popup-overlay" style="display: none;">
+    <div class="popup-box brutalist-modal" style="max-width: 480px; text-align: left; width: 90%;">
+      <div class="modal-header-row" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--ink-dark); padding-bottom: 12px; margin-bottom: 15px;">
+        <h3 id="eventModalTitle" style="margin: 0; font-family: 'Outfit', 'Prompt', sans-serif;">จัดการตารางงาน</h3>
+        <button type="button" class="close-modal-btn" onclick="closeEventModal()" style="background: none; border: none; font-size: 24px; cursor: pointer; color: var(--ink-dark); font-weight: bold; line-height: 1;">&times;</button>
+      </div>
+
+      <!-- Action Area for Existing Event -->
+      <div id="eventActionArea" style="display: none;">
+        <div class="event-details-card" style="padding: 12px; border: var(--card-border); background: var(--bg-app); border-radius: var(--border-radius-input); margin-bottom: 15px; box-shadow: 2px 2px 0px var(--ink-dark);">
+          <h4 id="eventDetailsTitle" style="margin: 0 0 8px 0; font-size: 16px;">ชื่องาน</h4>
+          <p id="eventDetailsTime" style="margin: 0 0 6px 0; font-size: 13px; color: var(--ink-muted); font-weight: 500;">วันและเวลา</p>
+          <p id="eventDetailsDesc" style="margin: 0; font-size: 13px; color: var(--text-primary); line-height: 1.4;">รายละเอียด</p>
+        </div>
+
+        <div id="eventIncomeFormFields">
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label for="eventAmount">จำนวนเงิน (บาท)</label>
+            <div class="input-with-suffix">
+              <input type="text" id="eventAmount" name="eventAmount" placeholder="เช่น 150.00 หรือ 1500+200…" autocomplete="off">
+              <span class="suffix-label">บาท</span>
+            </div>
+          </div>
+          
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label for="eventIncomeDate">วันที่รับเงิน</label>
+            <input type="date" id="eventIncomeDate" name="eventIncomeDate" style="width: 100%; height: 40px; border: var(--card-border); border-radius: var(--border-radius-input); background: var(--bg-card); padding: 0 8px; font-weight: 700; color: var(--text-primary);">
+          </div>
+          
+          <div class="form-group" style="display: flex; align-items: center; gap: 8px; margin-bottom: 15px; margin-top: 5px;">
+            <input type="checkbox" id="eventTaxWithholding" name="eventTaxWithholding" checked style="width: auto; height: auto; cursor: pointer; margin: 0;">
+            <label for="eventTaxWithholding" style="margin-bottom: 0; cursor: pointer; font-weight: 500; font-size: 13px; color: var(--ink-dark);">มีหัก ณ ที่จ่าย 3% (หักภาษี)</label>
+          </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <!-- Auto-fill to Income Form Button -->
+          <button type="button" class="btn-primary" id="btnEventToIncome" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width: 18px; height: 18px;">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            บันทึกรายรับ Feltz Studio
+          </button>
+          
+          <!-- Toggle Status / Color Button -->
+          <button type="button" class="btn-secondary" id="btnEventToggleStatus" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; color: var(--text-primary);">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width: 18px; height: 18px;">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+            </svg>
+            <span id="btnEventToggleStatusText">ยืนยันคิวงาน (เป็นสีเหลือง)</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Form Area for New Event -->
+      <form id="eventCreateForm" style="display: none;">
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label for="eventTitle">หัวข้อตารางงาน</label>
+          <input type="text" id="eventTitle" placeholder="เช่น ถ่ายภาพพรีเวดดิ้ง, ถ่ายงานแบรนด์ X…" required autocomplete="off">
+        </div>
+        
+        <div class="form-grid" style="grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+          <div class="form-group">
+            <label for="eventStartDate">วันที่เริ่ม</label>
+            <input type="date" id="eventStartDate" required>
+          </div>
+          <div class="form-group">
+            <label for="eventStartTime">เวลาเริ่ม</label>
+            <input type="time" id="eventStartTime" value="09:00" required>
+          </div>
+        </div>
+
+        <div class="form-grid" style="grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+          <div class="form-group">
+            <label for="eventEndDate">วันที่สิ้นสุด</label>
+            <input type="date" id="eventEndDate" required>
+          </div>
+          <div class="form-group">
+            <label for="eventEndTime">เวลาสิ้นสุด</label>
+            <input type="time" id="eventEndTime" value="18:00" required>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label for="eventDescription">รายละเอียดงาน (ไม่บังคับ)</label>
+          <input type="text" id="eventDescription" placeholder="เช่น สถานที่ ถ่ายที่สตูดิโอ, มัดจำ 50% แล้ว…" autocomplete="off">
+        </div>
+
+        <div class="form-group" style="margin-bottom: 15px;">
+          <label for="eventColorId">สถานะคิวงาน (สีปฏิทิน)</label>
+          <select id="eventColorId" style="width: 100%; height: 40px; border: var(--card-border); border-radius: var(--border-radius-input); background: var(--bg-card); padding: 0 8px; font-weight: 700; color: var(--text-primary);">
+            <option value="11">คิวคอนเฟิร์มแล้ว (Tomato Red)</option>
+            <option value="5">รอดีล / คิวยังไม่คอนเฟิร์ม (Banana Yellow)</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn-primary" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width: 18px; height: 18px;">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+          </svg>
+          บันทึกลงปฏิทิน Google Calendar
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- View Mode Switcher Button -->
+  <button type="button" id="btnToggleViewMode" class="floating-view-switcher" aria-label="สลับโหมดมุมมอง">
+    <svg id="viewModeIcon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width: 24px; height: 24px;">
+      <!-- เริ่มต้นด้วยไอคอนมือถือ -->
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+    </svg>
+  </button>
 
   <!-- Main app script -->
   <script src="app.js"></script>

@@ -26,7 +26,7 @@ function doPost(e) {
   
   try {
     var data = JSON.parse(e.postData.contents);
-    var sheetType = data.type; // "general", "expense", "grab" หรือ "fetch_summary"
+    var sheetType = data.type; // "general", "expense", "grab", "fetch_summary" หรือ ธุรกรรมปฏิทิน
     var spreadsheetId = data.spreadsheetId; // ID ของ Google Sheets ที่ส่งมาจากเว็บแอป
     
     if (!spreadsheetId) {
@@ -36,7 +36,7 @@ function doPost(e) {
       })).setMimeType(ContentService.MimeType.JSON);
     }
     
-    // 1. รองรับการดึงสรุปข้อมูลยอดสะสม 12 เดือน (fetch_summary) - ขยับเป็นลำดับแรกสุดก่อนตรวจสอบวันที่
+    // 1. รองรับการดึงสรุปข้อมูลยอดสะสม 12 เดือน (fetch_summary)
     if (sheetType === "fetch_summary") {
       var activeSpreadsheet = SpreadsheetApp.openById(spreadsheetId);
       var months = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
@@ -47,7 +47,6 @@ function doPost(e) {
         var mSheet = activeSpreadsheet.getSheetByName(mName);
         
         if (mSheet) {
-          // ค้นหาแถวยอดรวมโดยการค้นหาข้อความ "ยอดรวมทั้งเดือน" ในคอลัมน์ B (เพื่อรองรับเดือนที่มีจำนวนวันต่างกันอย่างไดนามิก)
           var lastRow = mSheet.getLastRow();
           var colBValues = mSheet.getRange("B1:B" + lastRow).getValues();
           var totalRowIdx = -1;
@@ -65,18 +64,12 @@ function doPost(e) {
           var fixedCosts = [];
           
           if (totalRowIdx !== -1) {
-            // แถวยอดรวมทั้งเดือน คอลัมน์ C: รายรับ, E: รายจ่าย
             totalIncome = parseFloat(mSheet.getRange("C" + totalRowIdx).getValue() || 0);
             totalExpense = parseFloat(mSheet.getRange("E" + totalRowIdx).getValue() || 0);
-            
-            // รายได้สุทธิ อยู่ถัดจากแถวยอดรวมไป 1 แถว (คอลัมน์ C)
             netProfit = parseFloat(mSheet.getRange("C" + (totalRowIdx + 1)).getValue() || (totalIncome - totalExpense));
-            
-            // ยอดรวมเงินเก็บสะสม 10% อยู่ถัดจากแถวยอดรวมไป 2 แถว (คอลัมน์ C)
             totalSavings = parseFloat(mSheet.getRange("C" + (totalRowIdx + 2)).getValue() || (totalIncome * 0.1));
             
-            // ดึงข้อมูลรายการ Fix Cost จากตารางชีต (ตั้งแต่แถว 2 จนถึงแถวก่อนแถวยอดรวม คอลัมน์ D และ E)
-            var maxDataRow = totalRowIdx - 2; // แถวก่อนแถวว่างและแถวยอดรวม
+            var maxDataRow = totalRowIdx - 2;
             if (maxDataRow >= 2) {
               var dValues = mSheet.getRange("D2:E" + maxDataRow).getValues();
               for (var r = 0; r < dValues.length; r++) {
@@ -118,6 +111,70 @@ function doPost(e) {
       })).setMimeType(ContentService.MimeType.JSON);
     }
     
+    // 2. ดึงเหตุการณ์ในปฏิทิน (fetch_calendar_events)
+    if (sheetType === "fetch_calendar_events") {
+      var start = new Date(data.startDate);
+      var end = new Date(data.endDate);
+      var cal = CalendarApp.getDefaultCalendar();
+      var events = cal.getEvents(start, end);
+      var eventList = [];
+      for (var i = 0; i < events.length; i++) {
+        var ev = events[i];
+        eventList.push({
+          id: ev.getId(),
+          title: ev.getTitle(),
+          startTime: ev.getStartTime().toISOString(),
+          endTime: ev.getEndTime().toISOString(),
+          colorId: ev.getColor() || "",
+          description: ev.getDescription() || ""
+        });
+      }
+      return ContentService.createTextOutput(JSON.stringify({
+        "status": "success",
+        "data": eventList
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+    
+    // 3. สร้างเหตุการณ์ใหม่ (create_calendar_event)
+    if (sheetType === "create_calendar_event") {
+      var title = data.title;
+      var start = new Date(data.startTime);
+      var end = new Date(data.endTime);
+      var desc = data.description || "";
+      var colorId = data.colorId;
+      
+      var cal = CalendarApp.getDefaultCalendar();
+      var event = cal.createEvent(title, start, end, {description: desc});
+      if (colorId) {
+        event.setColor(getEventColorEnum(colorId));
+      }
+      return ContentService.createTextOutput(JSON.stringify({
+        "status": "success",
+        "eventId": event.getId(),
+        "message": "สร้างกิจกรรมในปฏิทินสำเร็จแล้วแก!"
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+    
+    // 4. อัปเดตสีของเหตุการณ์โดยตรง (update_calendar_event_color)
+    if (sheetType === "update_calendar_event_color") {
+      var eventId = data.eventId;
+      var colorId = data.colorId;
+      var cal = CalendarApp.getDefaultCalendar();
+      var event = cal.getEventById(eventId);
+      if (event) {
+        event.setColor(getEventColorEnum(colorId));
+        return ContentService.createTextOutput(JSON.stringify({
+          "status": "success",
+          "message": "อัปเดตสีกิจกรรมในปฏิทินสำเร็จแล้วแก!"
+        })).setMimeType(ContentService.MimeType.JSON);
+      } else {
+        return ContentService.createTextOutput(JSON.stringify({
+          "status": "error",
+          "message": "ไม่พบกิจกรรมที่ระบุนะแก!"
+        })).setMimeType(ContentService.MimeType.JSON);
+      }
+    }
+    
     // ตรวจสอบความถูกต้องของ data.date อย่างปลอดภัยป้องกัน TypeError: split บนมือถือ
     if (!data || !data.date || typeof data.date !== 'string' || data.date.split('/').length !== 3) {
       return ContentService.createTextOutput(JSON.stringify({
@@ -151,8 +208,6 @@ function doPost(e) {
     
     if (sheetType === "grab") {
       var dateKey = dayStr + "/" + monthStr;
-      
-      // ค้นหาแถววันที่ในคอลัมน์ A (แถวที่ 3 ถึง 33)
       var range = sheet.getRange("A3:A33");
       var values = range.getDisplayValues();
       var targetRow = null;
@@ -160,7 +215,6 @@ function doPost(e) {
       for (var i = 0; i < values.length; i++) {
         var val = values[i][0];
         if (val && val.toString().indexOf(dateKey) !== -1) {
-          // ตรวจสอบว่าช่องเวลายังว่างอยู่ไหม ป้องกันการเขียนทับซ้ำ
           var existingTime = sheet.getRange("B" + (i + 3)).getValue();
           if (existingTime && existingTime.toString().trim() !== "") {
             return ContentService.createTextOutput(JSON.stringify({
@@ -185,29 +239,27 @@ function doPost(e) {
       var distVal = data.distance || "0";
       var incVal = parseFloat(data.amount || 0);
       var tipVal = parseFloat(data.tip || 0);
-      
       var battFormula = "=(" + battVal + ")/100";
       var distFormula = "=" + distVal;
       
-      // จัดวางข้อมูลลงคอลัมน์ B ถึง N ตามกฎเหล็กและสูตรออโต้ของน้องเจน
       var rowValues = [
-        timeVal,                                      // B (เวลา)
-        battFormula,                                  // C (แบตเตอรี่ที่ใช้)
-        distFormula,                                  // D (ระยะทาง)
-        incVal,                                       // E (รายได้ Grab)
-        '',                                           // F
-        tipVal,                                       // G (Tip)
-        "=sum(E" + targetRow + ":G" + targetRow + ")",  // H (ยอดรวมวัน)
-        "=IFERROR(H" + targetRow + "/D" + targetRow + ", 0)", // I (บาท/กิโล)
-        "=IFERROR(H" + targetRow + "/(B" + targetRow + "*1440)*60, 0)", // J (บาท/ชั่วโมง)
-        "=IF(I" + targetRow + ">0, 1, 0)",            // K (ตัวนับวันวิ่ง)
-        "",                                           // L
-        "=H" + targetRow + "*10%",                    // M (หัก VAT 10% ออโต้)
-        "=D" + targetRow + "*2"                       // N (Double Dist ออโต้)
+        timeVal,
+        battFormula,
+        distFormula,
+        incVal,
+        '',
+        tipVal,
+        "=sum(E" + targetRow + ":G" + targetRow + ")",
+        "=IFERROR(H" + targetRow + "/D" + targetRow + ", 0)",
+        "=IFERROR(H" + targetRow + "/(B" + targetRow + "*1440)*60, 0)",
+        "=IF(I" + targetRow + ">0, 1, 0)",
+        "",
+        "=H" + targetRow + "*10%",
+        "=D" + targetRow + "*2"
       ];
       
       sheet.getRange("B" + targetRow + ":N" + targetRow).setValues([rowValues]);
-      autoResizeSheetColumns(sheet); // ปรับความกว้างคอลัมน์ออโต้
+      autoResizeSheetColumns(sheet);
       
       return ContentService.createTextOutput(JSON.stringify({
         "status": "success",
@@ -215,10 +267,7 @@ function doPost(e) {
       })).setMimeType(ContentService.MimeType.JSON);
       
     } else if (sheetType === "general" || sheetType === "expense") {
-      // บันทึกรายรับ/รายจ่ายลงในแท็บปฏิทินรายวันของแผ่นงานรายรับ-รายจ่ายทั่วไป Feltz Studio
       var dateKey = dayStr + "/" + monthStr + "/" + yearStr;
-      
-      // ค้นหาแถววันที่ในคอลัมน์ A (แถวที่ 2 ถึง 32)
       var range = sheet.getRange("A2:A32");
       var values = range.getDisplayValues();
       var targetRow = null;
@@ -226,7 +275,6 @@ function doPost(e) {
       for (var i = 0; i < values.length; i++) {
         var val = values[i][0];
         if (val && val.toString().indexOf(dateKey) !== -1) {
-          // ตรวจสอบข้อมูลซ้ำเพื่อป้องกันการบันทึกทับโดยไม่ตั้งใจ
           if (sheetType === "general") {
             var existingDesc = sheet.getRange("B" + (i + 2)).getValue();
             if (existingDesc && existingDesc.toString().trim() !== "") {
@@ -235,7 +283,7 @@ function doPost(e) {
                 "message": "ข้อมูลรายรับของวันที่ " + dateKey + " มีการบันทึกอยู่แล้วในตารางชีตนะแก!"
               })).setMimeType(ContentService.MimeType.JSON);
             }
-          } else { // expense
+          } else {
             var existingDesc = sheet.getRange("D" + (i + 2)).getValue();
             if (existingDesc && existingDesc.toString().trim() !== "") {
               return ContentService.createTextOutput(JSON.stringify({
@@ -261,7 +309,6 @@ function doPost(e) {
         var amountVal = data.amount;
         var hasTax = data.hasTaxWithholding || false;
         
-        // เขียนข้อมูลลงคอลัมน์ B (รายละเอียดงาน) และ C (รายรับ)
         sheet.getRange("B" + targetRow).setValue(genDescVal);
         if (typeof amountVal === 'string' && amountVal.indexOf('=') === 0) {
           sheet.getRange("C" + targetRow).setFormula(amountVal);
@@ -269,30 +316,42 @@ function doPost(e) {
           sheet.getRange("C" + targetRow).setValue(parseFloat(amountVal || 0));
         }
         
-        // บันทึก/คำนวณ หัก ณ ที่จ่าย 3% ลงคอลัมน์ F
         if (hasTax) {
           sheet.getRange("F" + targetRow).setFormula("=C" + targetRow + "*3%");
         } else {
           sheet.getRange("F" + targetRow).setValue("");
         }
-        autoResizeSheetColumns(sheet); // ปรับความกว้างคอลัมน์ออโต้
+        
+        // หากมี calendarEventId ส่งเข้ามา ให้แก้ไขสีกิจกรรมเป็น Sage Green (ID 2)
+        if (data.calendarEventId) {
+          try {
+            var cal = CalendarApp.getDefaultCalendar();
+            var event = cal.getEventById(data.calendarEventId);
+            if (event) {
+              event.setColor(getEventColorEnum(2)); // Sage Green (ID 2)
+            }
+          } catch (calErr) {
+            Logger.log("ไม่สามารถอัปเดตสีกิจกรรมในปฏิทินได้: " + calErr.toString());
+          }
+        }
+        
+        autoResizeSheetColumns(sheet);
         
         return ContentService.createTextOutput(JSON.stringify({
           "status": "success",
           "message": "บันทึกรายรับ Feltz Studio ลงแท็บ " + tabName + " แถวที่ " + targetRow + " สำเร็จแล้วจ้า!"
         })).setMimeType(ContentService.MimeType.JSON);
-      } else { // expense
+      } else {
         var expDescVal = data.expDesc || "";
         var amountVal = data.amount;
         
-        // เขียนข้อมูลลงคอลัมน์ D (รายละเอียดรายจ่าย) และ E (รายจ่าย)
         sheet.getRange("D" + targetRow).setValue(expDescVal);
         if (typeof amountVal === 'string' && amountVal.indexOf('=') === 0) {
           sheet.getRange("E" + targetRow).setFormula(amountVal);
         } else {
           sheet.getRange("E" + targetRow).setValue(parseFloat(amountVal || 0));
         }
-        autoResizeSheetColumns(sheet); // ปรับความกว้างคอลัมน์ออโต้
+        autoResizeSheetColumns(sheet);
         
         return ContentService.createTextOutput(JSON.stringify({
           "status": "success",
@@ -315,6 +374,15 @@ function doPost(e) {
   } finally {
     lock.releaseLock();
   }
+}
+
+// ฟังก์ชันแปลง Color ID เป็นค่า Enum ของ Google Apps Script
+function getEventColorEnum(colorId) {
+  var cid = parseInt(colorId, 10);
+  if (cid === 2) return CalendarApp.EventColor.PALE_GREEN;
+  if (cid === 5) return CalendarApp.EventColor.YELLOW;
+  if (cid === 11) return CalendarApp.EventColor.RED;
+  return CalendarApp.EventColor.PALE_GREEN; // default
 }
 
 // ฟังก์ชันบันทึกรายจ่ายประจำเดือนอัตโนมัติ ทุกวันที่ 1 ของเดือน
@@ -407,7 +475,7 @@ function autoResizeSheetColumns(sheet) {
   var lastCol = sheet.getLastColumn();
   if (lastCol <= 0) return;
   
-  // ค้นหาแท็บต้นแบบเพื่อใช้อ้างอิงความกว้าง (หา "ต้นแบบ" -> "Template" -> "ม.ค." -> หรือชีตแรกสุดของแผ่นงาน)
+  // ค้นหาแท็บต้นแบบเพื่อใช้อั่งอิงความกว้าง (หา "ต้นแบบ" -> "Template" -> "ม.ค." -> หรือชีตแรกสุดของแผ่นงาน)
   var templateSheet = spreadsheet.getSheetByName("ต้นแบบ") || 
                       spreadsheet.getSheetByName("Template") || 
                       spreadsheet.getSheetByName("ม.ค.") ||

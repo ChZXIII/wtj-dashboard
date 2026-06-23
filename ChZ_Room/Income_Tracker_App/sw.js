@@ -1,11 +1,11 @@
-const CACHE_NAME = 'chz-app-v33';
+const CACHE_NAME = 'chz-app-v50';
 const ASSETS = [
   'index.html',
   'style.css',
   'app.js',
   'manifest.json',
-  'icon-192.png',
-  'icon-512.png',
+  'assets/icon-192.png',
+  'assets/icon-512.png',
   'signatures/sig_keng.png'
 ];
 
