@@ -2413,8 +2413,7 @@ function renderWeekView() {
     const eventsCol = document.createElement('div');
     eventsCol.className = 'week-day-events';
 
-    const dateStrYMD = formatLocalDateYMD(cellDate);
-    const dayEvs = calendarEvents.filter(ev => ev.startTime.split('T')[0] === dateStrYMD);
+    const dayEvs = calendarEvents.filter(ev => isEventActiveOnDate(ev, cellDate));
 
     dayEvs.forEach(ev => {
       const badge = document.createElement('div');
@@ -2453,8 +2452,7 @@ function renderScheduleView() {
   for (let i = 0; i < 30; i++) {
     const d = new Date(today);
     d.setDate(today.getDate() + i);
-    const dateStrYMD = formatLocalDateYMD(d);
-    const dayEvs = calendarEvents.filter(ev => ev.startTime.split('T')[0] === dateStrYMD);
+    const dayEvs = calendarEvents.filter(ev => isEventActiveOnDate(ev, d));
 
     if (dayEvs.length === 0) continue;
     hasAnyEvent = true;
@@ -2528,6 +2526,25 @@ function renderScheduleView() {
   }
 }
 
+function isEventActiveOnDate(event, dateObj) {
+  if (!event.startTime) return false;
+  
+  const start = new Date(event.startTime);
+  let end = event.endTime ? new Date(event.endTime) : new Date(start);
+  
+  if (event.endTime && end.getTime() > start.getTime()) {
+    if (end.getHours() === 0 && end.getMinutes() === 0 && end.getSeconds() === 0 && end.getMilliseconds() === 0) {
+      end = new Date(end.getTime() - 1);
+    }
+  }
+  
+  const dateStrYMD = formatLocalDateYMD(dateObj);
+  const startStrYMD = formatLocalDateYMD(start);
+  const endStrYMD = formatLocalDateYMD(end);
+  
+  return dateStrYMD >= startStrYMD && dateStrYMD <= endStrYMD;
+}
+
 function formatLocalDateYMD(date) {
   const y = date.getFullYear();
   const m = String(date.getMonth() + 1).padStart(2, '0');
@@ -2558,12 +2575,7 @@ function createDayCell(dayNum, dateObj, isEmptyMonth, isToday = false) {
   eventsContainer.className = 'day-events';
   cell.appendChild(eventsContainer);
 
-  const dateStrYMD = formatLocalDateYMD(dateObj);
-  
-  const dayEvents = calendarEvents.filter(ev => {
-    const evDateStr = ev.startTime.split('T')[0];
-    return evDateStr === dateStrYMD;
-  });
+  const dayEvents = calendarEvents.filter(ev => isEventActiveOnDate(ev, dateObj));
 
   dayEvents.forEach(ev => {
     const evBadge = document.createElement('div');
@@ -2628,11 +2640,7 @@ function renderAgendaList(dateObj) {
   if (!listContainer) return;
   listContainer.innerHTML = '';
   
-  const targetDateStr = formatLocalDateYMD(dateObj);
-  const dayEvents = calendarEvents.filter(ev => {
-    const evDateStr = ev.startTime.split('T')[0];
-    return evDateStr === targetDateStr;
-  });
+  const dayEvents = calendarEvents.filter(ev => isEventActiveOnDate(ev, dateObj));
   
   // เรียงตามเวลา
   dayEvents.sort((a, b) => new Date(a.startTime) - new Date(b.startTime));
