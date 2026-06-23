@@ -3390,9 +3390,11 @@ function fetchDocumentsFromSheets(showToast = false) {
 
   return Promise.all([
     fetchTab('ใบเสนอราคา').catch(err => { console.error('Quotation load error:', err); return null; }),
-    fetchTab('ใบวางบิล').catch(err => { console.error('Invoice load error:', err); return null; })
+    fetchTab('ใบวางบิล').catch(err => { console.error('Invoice load error:', err); return null; }),
+    fetchTab('รายรับ').catch(err => { console.error('Income load error:', err); return null; }),
+    fetchTab('รายจ่าย').catch(err => { console.error('Expense load error:', err); return null; })
   ])
-  .then(([qtRes, ivRes]) => {
+  .then(([qtRes, ivRes, incRes, expRes]) => {
     let mergedAny = false;
 
     if (qtRes && qtRes.status === 'success' && Array.isArray(qtRes.values)) {
@@ -3485,6 +3487,107 @@ function fetchDocumentsFromSheets(showToast = false) {
       });
     }
 
+    // จัดกลุ่ม/พาร์สข้อมูลจากแท็บ 'รายรับ' (สะสมยอด)
+    if (incRes && incRes.status === 'success' && Array.isArray(incRes.values)) {
+      const incomeDocsMap = {};
+
+      incRes.values.forEach(row => {
+        if (row.length < 3) return;
+        const docNo = row[2];
+        if (!docNo) return;
+
+        if (!incomeDocsMap[docNo]) {
+          let type = 'receipt';
+          if (docNo.startsWith('QT')) type = 'quotation';
+          else if (docNo.startsWith('IV')) type = 'invoice';
+          else if (docNo.startsWith('RE')) type = 'receipt';
+
+          incomeDocsMap[docNo] = {
+            number: docNo,
+            type: type,
+            date: row[1] || '',
+            name: row[4] || '',
+            detail: row[8] || '',
+            amount: 0,
+            vat: 0,
+            wht: 0,
+            net: 0,
+            whtRate: parseInt(row[12]) || 0,
+            receivingBank: row[15] || 'KBank',
+            paymentStatus: row[16] || 'จ่ายเงินแล้ว',
+            actualPaymentDate: row[17] || '',
+            recordedBy: row[20] || '',
+            remarks: row[21] || '',
+            status: 'synced',
+            timestamp: row[0] || '',
+            items: []
+          };
+        }
+
+        incomeDocsMap[docNo].amount += parseFloat(row[9]) || 0;
+        incomeDocsMap[docNo].vat += parseFloat(row[10]) || 0;
+        incomeDocsMap[docNo].wht += parseFloat(row[13]) || 0;
+        incomeDocsMap[docNo].net += parseFloat(row[14]) || 0;
+
+        incomeDocsMap[docNo].items.push({
+          desc: row[8] || '-',
+          qty: 1,
+          price: parseFloat(row[9]) || 0
+        });
+      });
+
+      Object.values(incomeDocsMap).forEach(docRecord => {
+        docRecord.amount = Math.round(docRecord.amount * 100) / 100;
+        docRecord.vat = Math.round(docRecord.vat * 100) / 100;
+        docRecord.wht = Math.round(docRecord.wht * 100) / 100;
+        docRecord.net = Math.round(docRecord.net * 100) / 100;
+
+        dbDocs = dbDocs.filter(d => d.number !== docRecord.number);
+        dbDocs.push(docRecord);
+        mergedAny = true;
+      });
+    }
+
+    // พาร์สข้อมูลจากแท็บ 'รายจ่าย'
+    if (expRes && expRes.status === 'success' && Array.isArray(expRes.values)) {
+      expRes.values.forEach(row => {
+        if (row.length < 3) return;
+        const docNo = row[2];
+        if (!docNo) return;
+
+        const formType = row[14] || 'none';
+        const docType = (formType !== 'none') ? 'wht' : 'expense';
+
+        const docRecord = {
+          number: docNo,
+          type: docType,
+          date: row[1] || '',
+          name: row[3] || '',
+          detail: row[8] || '',
+          amount: parseFloat(row[9]) || 0,
+          vat: parseFloat(row[10]) || 0,
+          wht: parseFloat(row[13]) || 0,
+          net: parseFloat(row[15]) || 0,
+          whtRate: parseInt(row[12]) || 0,
+          whtType: formType,
+          paymentMethod: row[16] || 'KBank',
+          paymentStatus: row[17] || 'จ่ายเงินแล้ว',
+          actualPaidDate: row[18] || '',
+          billNo: row[19] || '-',
+          billUrl: row[20] || '-',
+          taxFilingStatus: row[21] || 'ยังไม่ได้ยื่น',
+          projectLink: row[22] || '',
+          remarks: row[23] || '',
+          status: 'synced',
+          timestamp: row[0] || ''
+        };
+
+        dbDocs = dbDocs.filter(d => d.number !== docNo);
+        dbDocs.push(docRecord);
+        mergedAny = true;
+      });
+    }
+
     if (mergedAny) {
       saveData();
       renderDashboard();
@@ -3496,7 +3599,7 @@ function fetchDocumentsFromSheets(showToast = false) {
         const isClean = (!clientName && !detail && subtotal === 0);
         setDocType(currentDocType, !isClean); // If clean, update document number (keepCurrentNumber = false)
       }
-      if (showToast) alert('ซิงค์ข้อมูลใบเสนอราคาและใบวางบิลจาก Google Sheets สำเร็จแล้ว');
+      if (showToast) alert('ซิงค์ข้อมูลใบเสนอราคา ใบวางบิล รายรับ และรายจ่ายจาก Google Sheets สำเร็จแล้ว');
     }
   })
   .catch(err => {
