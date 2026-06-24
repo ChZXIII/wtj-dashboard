@@ -4520,6 +4520,9 @@ function exportPdfClientSide() {
   
   document.body.appendChild(clone);
   
+  // บังคับ Reflow
+  const _forceReflow = clone.offsetHeight;
+  
   const scrollHeight = clone.scrollHeight;
   const N = Math.max(1, Math.ceil(scrollHeight / 1122.5));
   const clampedHeight = `${N * 295}mm`;
@@ -4548,17 +4551,19 @@ function exportPdfClientSide() {
   btn.disabled = true;
   btn.innerHTML = 'กำลังสร้างไฟล์ PDF...';
   
-  html2pdf().set(opt).from(clone).save().then(() => {
-    btn.disabled = false;
-    btn.innerHTML = originalBtnText;
-    document.body.removeChild(clone); // ลบโคลนทิ้งทันที
-  }).catch(err => {
-    console.error('PDF export failed:', err);
-    alert('เกิดข้อผิดพลาดในการสร้างไฟล์ PDF');
-    btn.disabled = false;
-    btn.innerHTML = originalBtnText;
-    document.body.removeChild(clone); // ลบโคลนทิ้งทันที
-  });
+  setTimeout(() => {
+    html2pdf().set(opt).from(clone).save().then(() => {
+      btn.disabled = false;
+      btn.innerHTML = originalBtnText;
+      document.body.removeChild(clone); // ลบโคลนทิ้งทันที
+    }).catch(err => {
+      console.error('PDF export failed:', err);
+      alert('เกิดข้อผิดพลาดในการสร้างไฟล์ PDF');
+      btn.disabled = false;
+      btn.innerHTML = originalBtnText;
+      document.body.removeChild(clone); // ลบโคลนทิ้งทันที
+    });
+  }, 250);
 }
 
 // Expose handlers to global window scope
