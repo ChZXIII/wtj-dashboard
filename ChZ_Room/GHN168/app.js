@@ -4793,7 +4793,8 @@ function handleUploadPdfToDrive() {
         pdfBase64: base64Data,
         pdfName: pdfName,
         docType: 'quotation',
-        parentFolderId: parentFolderId
+        parentFolderId: parentFolderId,
+        spreadsheetId: safeStorage.getItem('ghn168_sheet_id') || ''
       };
 
       return fetch(scriptUrl, {
