@@ -861,17 +861,7 @@ function setupEventListeners() {
 
   // Export PDF Button
   document.getElementById('btnExportDocPdf').addEventListener('click', () => {
-    if (currentDocType === 'quotation') {
-      processDocumentSync();
-    } else {
-      const isMobileOrTablet = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
-                               (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-      if (isMobileOrTablet) {
-        window.print();
-      } else {
-        exportPdfClientSide();
-      }
-    }
+    window.print();
   });
 
   // Create New Doc Button
@@ -1108,11 +1098,7 @@ function setupEventListeners() {
 
   // Sync Data Button
   document.getElementById('btnSaveAndSyncDoc').addEventListener('click', () => {
-    if (currentDocType === 'quotation') {
-      saveQuotationDraftLocally();
-    } else {
-      processDocumentSync();
-    }
+    processDocumentSync();
   });
 
   // Sync Document Hub Button
@@ -2038,6 +2024,7 @@ function updateDueDateFromPaymentTerm() {
 function syncDocPreview() {
   const docTitle = currentDocType === 'quotation' ? 'ใบเสนอราคา / สัญญาจ้าง' : (currentDocType === 'invoice' ? 'ใบวางบิล / ใบแจ้งหนี้' : 'ใบเสร็จรับเงิน / ใบกำกับภาษี');
   const docTitleEn = currentDocType === 'quotation' ? 'QUOTATION / CONTRACT' : (currentDocType === 'invoice' ? 'INVOICE' : 'RECEIPT / TAX INVOICE');
+  const showSignature = document.getElementById('doc_showSignature') ? document.getElementById('doc_showSignature').checked : false;
 
   document.getElementById('prevDocTitleText').textContent = docTitle;
   document.getElementById('prevDocTitleEnText').textContent = docTitleEn;
@@ -2115,8 +2102,13 @@ function syncDocPreview() {
   const prevSignerLabel = document.getElementById('prevSignerLabel');
   if (prevSignerNameVal && prevSignerLabel) {
     const signerName = signerNameInput ? signerNameInput.value.trim() : '';
-    // Signer name is wrapped in parentheses for all standard docs (quotation, invoice, receipt)
-    prevSignerNameVal.textContent = signerName ? `( ${signerName} )` : '(           ชื่อ สกุล            )';
+    if (showSignature) {
+      prevSignerNameVal.textContent = signerName ? `( ${signerName} )` : '(           ชื่อ สกุล            )';
+      prevSignerNameVal.style.display = '';
+    } else {
+      prevSignerNameVal.textContent = '';
+      prevSignerNameVal.style.display = 'none';
+    }
     
     if (currentDocType === 'receipt') {
       prevSignerLabel.innerHTML = 'ผู้รับเงิน/บัญชี<br>ในนาม บริษัท จีเอชเอ็น 168 มีเดีย แอนด์ ครีเอชั่น จำกัด';
@@ -2193,7 +2185,6 @@ function syncDocPreview() {
   });
 
   // Toggle signature visibility
-  const showSignature = document.getElementById('doc_showSignature') ? document.getElementById('doc_showSignature').checked : false;
   const signatureSelectVal = document.getElementById('doc_signatureSelect') ? document.getElementById('doc_signatureSelect').value : 'keng';
   const prevSignatureImg = document.getElementById('prevSignatureImg');
   if (prevSignatureImg) {
@@ -2240,7 +2231,17 @@ function syncWhtPreview() {
   document.getElementById('prevWhtTotalTax').textContent = tax > 0 ? `฿${tax.toLocaleString('th-TH', { minimumFractionDigits: 2 })}` : '-';
   document.getElementById('prevWhtNetText').textContent = thaiBahtText(gross - tax);
 
-  document.getElementById('prevWhtSigner').textContent = document.getElementById('doc_signerName').value;
+  const showSignature = document.getElementById('doc_showSignature') ? document.getElementById('doc_showSignature').checked : false;
+  const prevWhtSigner = document.getElementById('prevWhtSigner');
+  if (prevWhtSigner) {
+    if (showSignature) {
+      prevWhtSigner.textContent = document.getElementById('doc_signerName').value;
+      prevWhtSigner.style.display = '';
+    } else {
+      prevWhtSigner.textContent = '';
+      prevWhtSigner.style.display = 'none';
+    }
+  }
 
   // Toggle company seal visibility
   const showSeal = document.getElementById('doc_showSeal').checked;
@@ -4701,13 +4702,13 @@ function exportPdfClientSide() {
   
   if (!element) return;
   
-  // บันทึก parentNode และ nextSibling ของ element ไว้
-  const originalParent = element.parentNode;
-  const originalNextSibling = element.nextSibling;
-  
-  // ย้าย element ไปต่อท้าย body
-  document.body.appendChild(element);
-  
+  const previewPanel = document.querySelector('.doc-preview-panel');
+  let originalPanelScale = '';
+  if (previewPanel) {
+    originalPanelScale = previewPanel.style.getPropertyValue('--preview-scale-factor') || '';
+    previewPanel.style.setProperty('--preview-scale-factor', '1');
+  }
+
   // บันทึกสไตล์ดั้งเดิมของ body
   const originalBodyZoom = document.body.style.zoom;
   const originalBodyHeight = document.body.style.height;
@@ -4723,13 +4724,6 @@ function exportPdfClientSide() {
   const originalElementOverflow = element.style.overflow;
   const originalElementScale = element.style.getPropertyValue('--preview-scale-factor');
   
-  const originalElementPosition = element.style.position;
-  const originalElementLeft = element.style.left;
-  const originalElementTop = element.style.top;
-  const originalElementZIndex = element.style.zIndex;
-  const originalElementWidth = element.style.width;
-  const originalElementBackground = element.style.background;
-  
   // ปรับสไตล์ body ชั่วขณะตอนดาวน์โหลด
   document.body.style.zoom = '1';
   document.body.style.height = 'auto';
@@ -4739,19 +4733,7 @@ function exportPdfClientSide() {
   // ปรับสไตล์ element ชั่วขณะตอนดาวน์โหลด
   element.style.zoom = '1';
   element.style.boxShadow = 'none';
-  element.style.minHeight = 'auto';
-  element.style.maxHeight = 'none';
-  element.style.height = 'auto';
-  element.style.overflow = 'visible';
   element.style.setProperty('--preview-scale-factor', '1');
-  
-  // ตั้งค่าสไตล์ลอยตัว
-  element.style.position = 'absolute';
-  element.style.left = '0';
-  element.style.top = '0';
-  element.style.zIndex = '99999';
-  element.style.width = '794px';
-  element.style.background = '#ffffff';
   
   // วัด scrollHeight จาก element จริง และคำนวณจำนวนหน้า N หน้า
   const scrollHeight = element.scrollHeight;
@@ -4812,20 +4794,14 @@ function exportPdfClientSide() {
     } else {
       element.style.removeProperty('--preview-scale-factor');
     }
-    
-    // คืนค่าสไตล์ลอยตัวกลับคืน
-    element.style.position = originalElementPosition;
-    element.style.left = originalElementLeft;
-    element.style.top = originalElementTop;
-    element.style.zIndex = originalElementZIndex;
-    element.style.width = originalElementWidth;
-    element.style.background = originalElementBackground;
-    
-    // ย้าย element กลับตำแหน่งเดิมใน DOM
-    if (originalNextSibling) {
-      originalParent.insertBefore(element, originalNextSibling);
-    } else {
-      originalParent.appendChild(element);
+
+    // คืนค่า --preview-scale-factor ของ .doc-preview-panel เดิม
+    if (previewPanel) {
+      if (originalPanelScale) {
+        previewPanel.style.setProperty('--preview-scale-factor', originalPanelScale);
+      } else {
+        previewPanel.style.removeProperty('--preview-scale-factor');
+      }
     }
     
     btn.disabled = false;
@@ -6377,13 +6353,13 @@ function generatePdfBase64(element, filename) {
       return;
     }
     
-    // บันทึก parentNode และ nextSibling ของ element ไว้
-    const originalParent = element.parentNode;
-    const originalNextSibling = element.nextSibling;
-    
-    // ย้าย element ไปต่อท้าย body
-    document.body.appendChild(element);
-    
+    const previewPanel = document.querySelector('.doc-preview-panel');
+    let originalPanelScale = '';
+    if (previewPanel) {
+      originalPanelScale = previewPanel.style.getPropertyValue('--preview-scale-factor') || '';
+      previewPanel.style.setProperty('--preview-scale-factor', '1');
+    }
+
     // บันทึกสไตล์ดั้งเดิมของ body
     const originalBodyZoom = document.body.style.zoom;
     const originalBodyHeight = document.body.style.height;
@@ -6399,13 +6375,6 @@ function generatePdfBase64(element, filename) {
     const originalElementOverflow = element.style.overflow;
     const originalElementDisplay = element.style.display;
     const originalElementScale = element.style.getPropertyValue('--preview-scale-factor');
-    
-    const originalElementPosition = element.style.position;
-    const originalElementLeft = element.style.left;
-    const originalElementTop = element.style.top;
-    const originalElementZIndex = element.style.zIndex;
-    const originalElementWidth = element.style.width;
-    const originalElementBackground = element.style.background;
     
     // จัดการกรณีธาตุที่ซ่อนอยู่ (display === 'none')
     const computedStyle = window.getComputedStyle(element);
@@ -6423,19 +6392,7 @@ function generatePdfBase64(element, filename) {
     // ปรับสไตล์ element ชั่วขณะ
     element.style.zoom = '1';
     element.style.boxShadow = 'none';
-    element.style.minHeight = 'auto';
-    element.style.maxHeight = 'none';
-    element.style.height = 'auto';
-    element.style.overflow = 'visible';
     element.style.setProperty('--preview-scale-factor', '1');
-    
-    // ตั้งค่าสไตล์ลอยตัว
-    element.style.position = 'absolute';
-    element.style.left = '0';
-    element.style.top = '0';
-    element.style.zIndex = '99999';
-    element.style.width = '794px';
-    element.style.background = '#ffffff';
     
     // วัด scrollHeight จาก element จริง และคำนวณจำนวนหน้า N หน้า
     const scrollHeight = element.scrollHeight;
@@ -6499,24 +6456,18 @@ function generatePdfBase64(element, filename) {
       } else {
         element.style.removeProperty('--preview-scale-factor');
       }
-      
-      // คืนค่าสไตล์ลอยตัวกลับคืน
-      element.style.position = originalElementPosition;
-      element.style.left = originalElementLeft;
-      element.style.top = originalElementTop;
-      element.style.zIndex = originalElementZIndex;
-      element.style.width = originalElementWidth;
-      element.style.background = originalElementBackground;
+
+      // คืนค่า --preview-scale-factor ของ .doc-preview-panel เดิม
+      if (previewPanel) {
+        if (originalPanelScale) {
+          previewPanel.style.setProperty('--preview-scale-factor', originalPanelScale);
+        } else {
+          previewPanel.style.removeProperty('--preview-scale-factor');
+        }
+      }
       
       if (isHidden) {
         element.style.display = originalElementDisplay;
-      }
-      
-      // ย้าย element กลับตำแหน่งเดิมใน DOM
-      if (originalNextSibling) {
-        originalParent.insertBefore(element, originalNextSibling);
-      } else {
-        originalParent.appendChild(element);
       }
     }
   });
