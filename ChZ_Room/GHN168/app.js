@@ -4579,7 +4579,6 @@ function exportPdfClientSide() {
       scale: optimalScale, 
       useCORS: true, 
       logging: true,
-      letterRendering: true,
       windowWidth: 800
     },
     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
