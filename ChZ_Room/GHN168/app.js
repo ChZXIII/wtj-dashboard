@@ -4505,28 +4505,28 @@ function exportPdfClientSide() {
   
   if (!element) return;
   
-  const originalZoom = element.style.zoom;
-  const originalBoxShadow = element.style.boxShadow;
-  const originalHeight = element.style.height;
-  const originalMinHeight = element.style.minHeight;
-  const originalMaxHeight = element.style.maxHeight;
-  const originalOverflow = element.style.overflow;
+  // โคลนเอกสารเพื่อแยกเรนเดอร์อิสระนอกจอ
+  const clone = element.cloneNode(true);
+  clone.style.position = 'absolute';
+  clone.style.left = '-9999px';
+  clone.style.top = '0';
+  clone.style.zoom = '1';
+  clone.style.boxShadow = 'none';
+  clone.style.minHeight = 'auto';
+  clone.style.maxHeight = 'none';
+  clone.style.height = 'auto';
+  clone.style.overflow = 'visible';
   
-  element.style.zoom = '1';
-  element.style.boxShadow = 'none';
-  element.style.minHeight = 'auto';
-  element.style.maxHeight = 'none';
-  element.style.height = 'auto';
-  element.style.overflow = 'visible';
+  document.body.appendChild(clone);
   
-  const scrollHeight = element.scrollHeight;
+  const scrollHeight = clone.scrollHeight;
   const N = Math.max(1, Math.ceil(scrollHeight / 1122.5));
   const clampedHeight = `${N * 295}mm`;
   
-  element.style.minHeight = clampedHeight;
-  element.style.maxHeight = clampedHeight;
-  element.style.height = clampedHeight;
-  element.style.overflow = 'hidden';
+  clone.style.minHeight = clampedHeight;
+  clone.style.maxHeight = clampedHeight;
+  clone.style.height = clampedHeight;
+  clone.style.overflow = 'hidden';
   
   const opt = {
     margin: 0,
@@ -4547,26 +4547,16 @@ function exportPdfClientSide() {
   btn.disabled = true;
   btn.innerHTML = 'กำลังสร้างไฟล์ PDF...';
   
-  html2pdf().set(opt).from(element).save().then(() => {
+  html2pdf().set(opt).from(clone).save().then(() => {
     btn.disabled = false;
     btn.innerHTML = originalBtnText;
-    element.style.zoom = originalZoom;
-    element.style.boxShadow = originalBoxShadow;
-    element.style.height = originalHeight;
-    element.style.minHeight = originalMinHeight;
-    element.style.maxHeight = originalMaxHeight;
-    element.style.overflow = originalOverflow;
+    document.body.removeChild(clone); // ลบโคลนทิ้งทันที
   }).catch(err => {
     console.error('PDF export failed:', err);
     alert('เกิดข้อผิดพลาดในการสร้างไฟล์ PDF');
     btn.disabled = false;
     btn.innerHTML = originalBtnText;
-    element.style.zoom = originalZoom;
-    element.style.boxShadow = originalBoxShadow;
-    element.style.height = originalHeight;
-    element.style.minHeight = originalMinHeight;
-    element.style.maxHeight = originalMaxHeight;
-    element.style.overflow = originalOverflow;
+    document.body.removeChild(clone); // ลบโคลนทิ้งทันที
   });
 }
 
