@@ -551,6 +551,9 @@ body.light-mode .logo-light-only {
 }
 
 .form-group label {
+  display: block;
+  min-height: 36px;
+  margin-bottom: 6px;
   font-size: 13px;
   font-weight: 700;
   text-transform: uppercase;
@@ -1400,8 +1403,8 @@ textarea.form-control {
   display: block;
 }
 
-/* --- Responsive Layout for Mobile Phones (max-width: 768px) --- */
-@media (max-width: 768px) {
+/* --- Responsive Layout for Mobile Phones (max-width: 1024px) --- */
+@media (max-width: 1024px) {
   .app-container {
     flex-direction: column;
   }
