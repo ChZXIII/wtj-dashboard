@@ -4505,6 +4505,17 @@ function exportPdfClientSide() {
   
   if (!element) return;
   
+  const viewportMeta = document.querySelector('meta[name="viewport"]');
+  const originalViewport = viewportMeta ? viewportMeta.getAttribute('content') : '';
+  const originalBodyWidth = document.body.style.width;
+  
+  if (window.innerWidth < 800) {
+    if (viewportMeta) {
+      viewportMeta.setAttribute('content', 'width=800, initial-scale=1.0, maximum-scale=1.0');
+    }
+    document.body.style.width = '800px';
+  }
+  
   const originalBodyOverflow = document.body.style.overflow;
   document.body.style.overflow = 'hidden';
   
@@ -4598,6 +4609,10 @@ function exportPdfClientSide() {
   }, 350);
   
   function cleanup() {
+    if (viewportMeta) {
+      viewportMeta.setAttribute('content', originalViewport);
+    }
+    document.body.style.width = originalBodyWidth;
     document.body.style.overflow = originalBodyOverflow;
     btn.disabled = false;
     btn.innerHTML = originalBtnText;
