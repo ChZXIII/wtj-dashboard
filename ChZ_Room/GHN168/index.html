@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GHN168 | Accounting & Document Hub</title>
-  <link rel="stylesheet" href="style.css?v=80">
-  <link rel="manifest" href="manifest.json?v=80">
+  <link rel="stylesheet" href="style.css?v=81">
+  <link rel="manifest" href="manifest.json?v=81">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -163,7 +163,7 @@
           </div>
         </div>
         <div style="font-size: 10px; opacity: 0.5; margin-top: 12px; text-align: center; font-family: monospace; letter-spacing: 0.5px;">
-          Version v80
+          Version v81
         </div>
       </div>
     </aside>
@@ -2241,7 +2241,7 @@
   </div>
 
   <script src="assets/html2pdf.bundle.min.js"></script>
-  <script src="app.js?v=80"></script>
+  <script src="app.js?v=81"></script>
   <script>
     if ('serviceWorker' in navigator) {
       let refreshing = false;
@@ -2252,7 +2252,7 @@
         }
       });
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js?v=80')
+        navigator.serviceWorker.register('sw.js?v=81')
           .then(reg => {
             console.log('Service Worker Registered!', reg);
             reg.update();

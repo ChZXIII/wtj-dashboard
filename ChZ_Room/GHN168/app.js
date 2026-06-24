@@ -862,11 +862,11 @@ function setupEventListeners() {
   // Export PDF Button
   document.getElementById('btnExportDocPdf').addEventListener('click', () => {
     const isMobileOrTablet = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
-                            (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+                             (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
     if (isMobileOrTablet) {
-      exportPdfClientSide();
-    } else {
       window.print();
+    } else {
+      exportPdfClientSide();
     }
   });
 
