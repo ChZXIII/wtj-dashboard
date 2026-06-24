@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GHN168 | Accounting & Document Hub</title>
-  <link rel="stylesheet" href="style.css?v=59">
-  <link rel="manifest" href="manifest.json?v=59">
+  <link rel="stylesheet" href="style.css?v=60">
+  <link rel="manifest" href="manifest.json?v=60">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="GHN168">
@@ -242,7 +242,7 @@
 
         <!-- Individual Sales & Fund Summary (Retro Brutalist style) -->
         <div class="card" style="margin-top: 24px;">
-          <div class="card-title">สรุปผลงานและการหักเงินสะสมรายบุคคล (Sales Share & Reserve Fund)</div>
+          <div class="card-title">สรุปเงินสะสมกองกลางบริษัทรายบุคคล (Company Reserve Fund)</div>
           <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 16px;">
             คำนวณจากใบเสร็จรับเงินที่ซิงค์สำเร็จแล้ว เพื่อใช้คำนวณสัดส่วนปันผลและยอดเงินสะสมส่วนตัวที่จะคืนเมื่อปิดงบปี
           </p>
@@ -253,7 +253,7 @@
               <div class="donut-chart-container">
                 <div id="salesDonutChart" style="width: 100%; height: 100%; border-radius: 50%; background: #e5e7eb; border: 2px solid var(--border-color); transition: background 0.3s ease;"></div>
                 <div id="donutCenterHole" style="position: absolute; width: 96px; height: 96px; background: var(--card-bg); border-radius: 50%; border: 2px solid var(--border-color); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
-                  <span style="font-size: 8px; color: var(--text-secondary); font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;">ยอดปันผลรวม</span>
+                  <span style="font-size: 8px; color: var(--text-secondary); font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;">เงินสะสมรวม</span>
                   <strong id="donutTotalRevenue" class="mono" style="font-size: 11px; margin-top: 2px; font-weight: 700; color: var(--text-primary);">฿0.00</strong>
                 </div>
               </div>
@@ -277,15 +277,15 @@
                 </div>
                 <div style="display: flex; gap: 24px; flex-wrap: wrap; flex: 1; justify-content: flex-end; text-align: right; color: var(--text-primary);">
                   <div style="min-width: 90px;">
-                    <span style="font-size: 8px; color: var(--text-secondary); display: block; text-transform: uppercase;">ยอดขายที่ทำได้</span>
+                    <span style="font-size: 8px; color: var(--text-secondary); display: block; text-transform: uppercase;">ค่าแรงที่ได้รับสะสม</span>
                     <strong id="salesRevenue_เก่ง" style="font-size: 12px;">฿0.00</strong>
                   </div>
                   <div style="min-width: 80px;">
-                    <span style="font-size: 8px; color: var(--text-secondary); display: block; text-transform: uppercase;">สัดส่วนปันผล</span>
+                    <span style="font-size: 8px; color: var(--text-secondary); display: block; text-transform: uppercase;">สัดส่วนเงินสะสม</span>
                     <strong id="salesShare_เก่ง" style="font-size: 12px;">0.0%</strong>
                   </div>
                   <div style="min-width: 90px; border-left: 1px dashed var(--border-color); padding-left: 16px;">
-                    <span style="font-size: 8px; color: var(--text-secondary); display: block; text-transform: uppercase;">เงินสะสมเข้า บ.</span>
+                    <span style="font-size: 8px; color: var(--text-secondary); display: block; text-transform: uppercase;">เงินสะสมทิ้งไว้ให้ บ.</span>
                     <strong id="salesRetained_เก่ง" style="color: #ef4444; font-size: 12px;">฿0.00</strong>
                   </div>
                 </div>
@@ -302,15 +302,15 @@
                 </div>
                 <div style="display: flex; gap: 24px; flex-wrap: wrap; flex: 1; justify-content: flex-end; text-align: right; color: var(--text-primary);">
                   <div style="min-width: 90px;">
-                    <span style="font-size: 8px; color: var(--text-secondary); display: block; text-transform: uppercase;">ยอดขายที่ทำได้</span>
+                    <span style="font-size: 8px; color: var(--text-secondary); display: block; text-transform: uppercase;">ค่าแรงที่ได้รับสะสม</span>
                     <strong id="salesRevenue_พี่นิค" style="font-size: 12px;">฿0.00</strong>
                   </div>
                   <div style="min-width: 80px;">
-                    <span style="font-size: 8px; color: var(--text-secondary); display: block; text-transform: uppercase;">สัดส่วนปันผล</span>
+                    <span style="font-size: 8px; color: var(--text-secondary); display: block; text-transform: uppercase;">สัดส่วนเงินสะสม</span>
                     <strong id="salesShare_พี่นิค" style="font-size: 12px;">0.0%</strong>
                   </div>
                   <div style="min-width: 90px; border-left: 1px dashed var(--border-color); padding-left: 16px;">
-                    <span style="font-size: 8px; color: var(--text-secondary); display: block; text-transform: uppercase;">เงินสะสมเข้า บ.</span>
+                    <span style="font-size: 8px; color: var(--text-secondary); display: block; text-transform: uppercase;">เงินสะสมทิ้งไว้ให้ บ.</span>
                     <strong id="salesRetained_พี่นิค" style="color: #ef4444; font-size: 12px;">฿0.00</strong>
                   </div>
                 </div>
@@ -327,15 +327,15 @@
                 </div>
                 <div style="display: flex; gap: 24px; flex-wrap: wrap; flex: 1; justify-content: flex-end; text-align: right; color: var(--text-primary);">
                   <div style="min-width: 90px;">
-                    <span style="font-size: 8px; color: var(--text-secondary); display: block; text-transform: uppercase;">ยอดขายที่ทำได้</span>
+                    <span style="font-size: 8px; color: var(--text-secondary); display: block; text-transform: uppercase;">ค่าแรงที่ได้รับสะสม</span>
                     <strong id="salesRevenue_หอม" style="font-size: 12px;">฿0.00</strong>
                   </div>
                   <div style="min-width: 80px;">
-                    <span style="font-size: 8px; color: var(--text-secondary); display: block; text-transform: uppercase;">สัดส่วนปันผล</span>
+                    <span style="font-size: 8px; color: var(--text-secondary); display: block; text-transform: uppercase;">สัดส่วนเงินสะสม</span>
                     <strong id="salesShare_หอม" style="font-size: 12px;">0.0%</strong>
                   </div>
                   <div style="min-width: 90px; border-left: 1px dashed var(--border-color); padding-left: 16px;">
-                    <span style="font-size: 8px; color: var(--text-secondary); display: block; text-transform: uppercase;">เงินสะสมเข้า บ.</span>
+                    <span style="font-size: 8px; color: var(--text-secondary); display: block; text-transform: uppercase;">เงินสะสมทิ้งไว้ให้ บ.</span>
                     <strong id="salesRetained_หอม" style="color: #ef4444; font-size: 12px;">฿0.00</strong>
                   </div>
                 </div>
@@ -1132,7 +1132,7 @@
             </div>
             
             <div class="form-group">
-              <label for="retOwner">คนดีลงานหลัก</label>
+              <label for="retOwner">คนปิดดีล/รับงาน</label>
               <select id="retOwner" class="form-control">
                 <option value="เก่ง">เก่ง</option>
                 <option value="พี่นิค">พี่นิค</option>
@@ -2235,7 +2235,7 @@
   </div>
 
   <script src="assets/html2pdf.bundle.min.js"></script>
-  <script src="app.js?v=59"></script>
+  <script src="app.js?v=60"></script>
   <script>
     if ('serviceWorker' in navigator) {
       let refreshing = false;

@@ -3128,14 +3128,16 @@ function renderDashboard() {
 
   // Calculate percentages and update Dashboard Sales Summary cards
   let totalRevenueForShare = 0;
+  let totalReserve = 0;
   Object.keys(salesStats).forEach(k => {
     totalRevenueForShare += salesStats[k].revenue;
+    totalReserve += salesStats[k].retained;
   });
 
   Object.keys(salesStats).forEach(k => {
     const revenue = salesStats[k].revenue;
     const retained = salesStats[k].retained;
-    const share = totalRevenueForShare > 0 ? (revenue / totalRevenueForShare) * 100 : 0.0;
+    const share = totalReserve > 0 ? (retained / totalReserve) * 100 : 0.0;
     
     const revEl = document.getElementById(`salesRevenue_${k}`);
     const shareEl = document.getElementById(`salesShare_${k}`);
@@ -3150,10 +3152,10 @@ function renderDashboard() {
   const donutChart = document.getElementById('salesDonutChart');
   const donutTotal = document.getElementById('donutTotalRevenue');
   if (donutTotal) {
-    donutTotal.textContent = `฿${totalRevenueForShare.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    donutTotal.textContent = `฿${totalReserve.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   }
   if (donutChart) {
-    if (totalRevenueForShare === 0) {
+    if (totalReserve === 0) {
       donutChart.style.background = '#e5e7eb';
       donutChart.style.border = '2px solid var(--border-color)';
       donutChart.innerHTML = '';
@@ -3161,9 +3163,9 @@ function renderDashboard() {
       donutChart.style.background = 'none';
       donutChart.style.border = 'none';
       
-      const pKeng = (salesStats['เก่ง'].revenue / totalRevenueForShare) * 100;
-      const pNick = (salesStats['พี่นิค'].revenue / totalRevenueForShare) * 100;
-      const pHom = (salesStats['หอม'].revenue / totalRevenueForShare) * 100;
+      const pKeng = (salesStats['เก่ง'].retained / totalReserve) * 100;
+      const pNick = (salesStats['พี่นิค'].retained / totalReserve) * 100;
+      const pHom = (salesStats['หอม'].retained / totalReserve) * 100;
       
       const slices = [
         { name: 'เก่ง', percent: pKeng, color: '#e52521' },
@@ -3518,11 +3520,37 @@ function fetchDocumentsFromSheets(showToast = false) {
         const docNo = row[2];
         if (!docNo) return;
 
+        const profitShareStr = row[18] || '';
+        let worker = '';
+        const workerMatch = profitShareStr.match(/(?:คนทำงาน|คนดีล):\s*([^|]+)/);
+        if (workerMatch) {
+          worker = workerMatch[1].trim();
+        }
+
+        let itemRetentionAmount = 0;
+        const subtotal = parseFloat(row[9]) || 0;
+        const retentionMatch = profitShareStr.match(/หัก บ\.:\s*([^|]+)/);
+        if (retentionMatch) {
+          const valStr = retentionMatch[1].trim();
+          if (valStr.includes('%')) {
+            const percent = parseFloat(valStr.replace('%', '')) || 0;
+            itemRetentionAmount = subtotal * (percent / 100);
+          } else {
+            const rawVal = parseFloat(valStr.replace('฿', '').replace(',', '')) || 0;
+            itemRetentionAmount = rawVal;
+          }
+        }
+        itemRetentionAmount = Math.round(itemRetentionAmount * 100) / 100;
+
         if (!incomeDocsMap[docNo]) {
           let type = 'receipt';
           if (docNo.startsWith('QT')) type = 'quotation';
           else if (docNo.startsWith('IV')) type = 'invoice';
           else if (docNo.startsWith('RE')) type = 'receipt';
+
+          let ownerName = '';
+          const ownerMatch = profitShareStr.match(/คนดีล:\s*([^|]+)/) || profitShareStr.match(/คนทำงาน:\s*([^|]+)/);
+          if (ownerMatch) ownerName = ownerMatch[1].trim();
 
           incomeDocsMap[docNo] = {
             number: docNo,
@@ -3542,19 +3570,27 @@ function fetchDocumentsFromSheets(showToast = false) {
             remarks: row[21] || '',
             status: 'synced',
             timestamp: row[0] || '',
+            owner: ownerName || worker || '',
+            profitShare: profitShareStr,
+            retentionAmount: 0,
             items: []
           };
         }
 
-        incomeDocsMap[docNo].amount += parseFloat(row[9]) || 0;
+        incomeDocsMap[docNo].amount += subtotal;
         incomeDocsMap[docNo].vat += parseFloat(row[10]) || 0;
         incomeDocsMap[docNo].wht += parseFloat(row[13]) || 0;
         incomeDocsMap[docNo].net += parseFloat(row[14]) || 0;
+        incomeDocsMap[docNo].retentionAmount += itemRetentionAmount;
 
         incomeDocsMap[docNo].items.push({
           desc: row[8] || '-',
           qty: 1,
-          price: parseFloat(row[9]) || 0
+          price: subtotal,
+          subtotal: subtotal,
+          worker: worker,
+          retentionAmount: itemRetentionAmount,
+          profitShare: profitShareStr
         });
       });
 
@@ -5937,7 +5973,10 @@ function saveRetentionUpdate() {
         doc.deductions = JSON.parse(JSON.stringify(retDeductions));
         doc.profitShare = profitShare;
         
-        if (doc.items && Array.isArray(doc.items)) {
+        const docAmount = doc.amount || 1;
+        let totalDocRetention = 0;
+
+        if (doc.items && Array.isArray(doc.items) && doc.items.length > 0) {
           doc.items.forEach(item => {
             const itemWorker = item.worker || owner;
             item.worker = itemWorker;
@@ -5946,7 +5985,38 @@ function saveRetentionUpdate() {
             } else {
               item.profitShare = `คนทำงาน: ${itemWorker} | ไม่มีการหักเข้า บ.`;
             }
+
+            // คำนวณ retentionAmount สำหรับไอเทมนี้
+            let itemRetention = 0;
+            const itemSubtotal = item.price || item.subtotal || 0;
+            if (retDeductions.length > 0) {
+              retDeductions.forEach(d => {
+                const val = parseFloat(d.value) || 0;
+                if (d.type === 'percent') {
+                  itemRetention += itemSubtotal * (val / 100);
+                } else if (d.type === 'fixed') {
+                  itemRetention += val * (itemSubtotal / docAmount);
+                }
+              });
+            }
+            item.retentionAmount = Math.round(itemRetention * 100) / 100;
+            totalDocRetention += item.retentionAmount;
           });
+          doc.retentionAmount = Math.round(totalDocRetention * 100) / 100;
+        } else {
+          // หากไม่มี items ให้คำนวณบนยอดรวมเอกสารตรงๆ
+          let docRetention = 0;
+          if (retDeductions.length > 0) {
+            retDeductions.forEach(d => {
+              const val = parseFloat(d.value) || 0;
+              if (d.type === 'percent') {
+                docRetention += docAmount * (val / 100);
+              } else if (d.type === 'fixed') {
+                docRetention += val;
+              }
+            });
+          }
+          doc.retentionAmount = Math.round(docRetention * 100) / 100;
         }
       }
       
