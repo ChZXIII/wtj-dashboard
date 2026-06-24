@@ -1095,6 +1095,12 @@ function setupEventListeners() {
   // Sync Data Button
   document.getElementById('btnSaveAndSyncDoc').addEventListener('click', processDocumentSync);
 
+  // Upload PDF to Google Drive Button
+  const btnUploadPdfToDrive = document.getElementById('btnUploadPdfToDrive');
+  if (btnUploadPdfToDrive) {
+    btnUploadPdfToDrive.addEventListener('click', handleUploadPdfToDrive);
+  }
+
   // Sync Document Hub Button
   const btnSyncDocHub = document.getElementById('btnSyncDocHub');
   if (btnSyncDocHub) {
@@ -1567,6 +1573,11 @@ function setDocType(type, keepCurrentNumber = false) {
     renderDocItemsTable();
     calculateDocTotals();
     syncDocPreview();
+  }
+
+  const uploadBtn = document.getElementById('btnUploadPdfToDrive');
+  if (uploadBtn) {
+    uploadBtn.style.display = (type === 'quotation') ? 'inline-flex' : 'none';
   }
 
   hideHitlWarning();
@@ -4604,6 +4615,214 @@ window.toggleTheme = toggleTheme;
 window.switchView = switchView;
 window.printPaymentVoucher = printPaymentVoucher;
 window.exportPdfClientSide = exportPdfClientSide;
+window.generatePdfBase64 = generatePdfBase64;
+window.handleUploadPdfToDrive = handleUploadPdfToDrive;
+
+function generatePdfBase64(element, filename) {
+  return new Promise((resolve, reject) => {
+    if (!element) {
+      reject(new Error('Element not found'));
+      return;
+    }
+    
+    const previewPanel = document.querySelector('.doc-preview-panel');
+    let originalPanelScale = '';
+    if (previewPanel) {
+      originalPanelScale = previewPanel.style.getPropertyValue('--preview-scale-factor') || '';
+      previewPanel.style.setProperty('--preview-scale-factor', '1');
+    }
+
+    const originalBodyZoom = document.body.style.zoom;
+    const originalBodyHeight = document.body.style.height;
+    const originalBodyWidth = document.body.style.width;
+    const originalBodyOverflow = document.body.style.overflow;
+    
+    const originalElementZoom = element.style.zoom;
+    const originalElementBoxShadow = element.style.boxShadow;
+    const originalElementHeight = element.style.height;
+    const originalElementMinHeight = element.style.minHeight;
+    const originalElementMaxHeight = element.style.maxHeight;
+    const originalElementOverflow = element.style.overflow;
+    const originalElementDisplay = element.style.display;
+    const originalElementScale = element.style.getPropertyValue('--preview-scale-factor');
+    
+    const computedStyle = window.getComputedStyle(element);
+    const isHidden = computedStyle.display === 'none' || originalElementDisplay === 'none';
+    if (isHidden) {
+      element.style.display = 'block';
+    }
+    
+    document.body.style.zoom = '1';
+    document.body.style.height = 'auto';
+    document.body.style.width = 'auto';
+    document.body.style.overflow = 'visible';
+    
+    element.style.zoom = '1';
+    element.style.boxShadow = 'none';
+    element.style.setProperty('--preview-scale-factor', '1');
+    
+    const scrollHeight = element.scrollHeight;
+    const N = Math.max(1, Math.ceil(scrollHeight / 1122.5));
+    const clampedHeight = `${N * 295}mm`;
+    
+    element.style.minHeight = clampedHeight;
+    element.style.maxHeight = clampedHeight;
+    element.style.height = clampedHeight;
+    element.style.overflow = 'hidden';
+    
+    const opt = {
+      margin: 0,
+      filename: filename || 'document.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { 
+        scale: 2, 
+        useCORS: true, 
+        logging: false,
+        windowWidth: 800
+      },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+    
+    function cleanup() {
+      document.body.style.zoom = originalBodyZoom;
+      document.body.style.height = originalBodyHeight;
+      document.body.style.width = originalBodyWidth;
+      document.body.style.overflow = originalBodyOverflow;
+      
+      element.style.zoom = originalElementZoom;
+      element.style.boxShadow = originalElementBoxShadow;
+      element.style.minHeight = originalElementMinHeight;
+      element.style.maxHeight = originalElementMaxHeight;
+      element.style.height = originalElementHeight;
+      element.style.overflow = originalElementOverflow;
+      if (originalElementScale) {
+        element.style.setProperty('--preview-scale-factor', originalElementScale);
+      } else {
+        element.style.removeProperty('--preview-scale-factor');
+      }
+
+      if (previewPanel) {
+        if (originalPanelScale) {
+          previewPanel.style.setProperty('--preview-scale-factor', originalPanelScale);
+        } else {
+          previewPanel.style.removeProperty('--preview-scale-factor');
+        }
+      }
+    }
+    
+    setTimeout(() => {
+      html2pdf().set(opt).from(element).output('datauristring').then((dataUri) => {
+        cleanup();
+        try {
+          const parts = dataUri.split(',');
+          if (parts.length > 1) {
+            resolve(parts[1]);
+          } else {
+            reject(new Error('Invalid data URI format'));
+          }
+        } catch (e) {
+          reject(e);
+        }
+      }).catch((err) => {
+        cleanup();
+        reject(err);
+      });
+    }, 100);
+  });
+}
+
+function handleUploadPdfToDrive() {
+  const docNo = (document.getElementById('docNumber') ? document.getElementById('docNumber').value : '').trim();
+  const clientName = (document.getElementById('docClientName') ? document.getElementById('docClientName').value : '').trim();
+  
+  if (!docNo || !clientName) {
+    alert('กรุณากรอกเลขที่เอกสารและชื่อลูกค้าก่อนนะแก!');
+    return;
+  }
+
+  const companyDriveUrl = safeStorage.getItem('ghn168_company_drive_url') || '';
+  if (!companyDriveUrl) {
+    alert('กรุณาตั้งค่าโฟลเดอร์ Google Drive ใน Settings ก่อนนะแก!');
+    return;
+  }
+
+  let parentFolderId = '';
+  const matchFolders = companyDriveUrl.match(/\/folders\/([a-zA-Z0-9\-_]+)/);
+  if (matchFolders && matchFolders[1]) {
+    parentFolderId = matchFolders[1];
+  } else {
+    const matchId = companyDriveUrl.match(/[?&]id=([a-zA-Z0-9\-_]+)/);
+    if (matchId && matchId[1]) {
+      parentFolderId = matchId[1];
+    } else if (/^[a-zA-Z0-9\-_]{25,60}$/.test(companyDriveUrl.trim())) {
+      parentFolderId = companyDriveUrl.trim();
+    }
+  }
+
+  if (!parentFolderId) {
+    alert('ไม่พบ Folder ID ในลิงก์ Google Drive นะแก! กรุณาตรวจสอบลิงก์ใน Settings');
+    return;
+  }
+
+  const scriptUrl = safeStorage.getItem('ghn168_script_url');
+  if (!scriptUrl) {
+    alert('กรุณาตั้งค่า Web App Script URL ใน Settings ก่อนนะแก!');
+    return;
+  }
+
+  const btn = document.getElementById('btnUploadPdfToDrive');
+  const originalHtml = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = `
+    <svg class="btn-icon animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="animation: spin 1s linear infinite;">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 7.89H18" />
+    </svg>
+    กำลังอัปโหลด PDF ขึ้น Google Drive...
+  `;
+
+  // สร้างชื่อไฟล์
+  const sanitizedClientName = clientName.replace(/[^a-zA-Z0-9ก-๙_\-\s]/g, '').trim();
+  const pdfName = `${docNo}_${sanitizedClientName}.pdf`;
+
+  const previewElement = document.getElementById('previewStandardDoc');
+  
+  generatePdfBase64(previewElement, pdfName)
+    .then(base64Data => {
+      const payload = {
+        type: 'upload_only',
+        pdfBase64: base64Data,
+        pdfName: pdfName,
+        docType: 'quotation',
+        parentFolderId: parentFolderId
+      };
+
+      return fetch(scriptUrl, {
+        method: 'POST',
+        mode: 'cors',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify(payload)
+      });
+    })
+    .then(res => res.json())
+    .then(res => {
+      if (res.status === 'success') {
+        alert(res.message);
+        if (res.pdfUrl) {
+          window.open(res.pdfUrl, '_blank');
+        }
+      } else {
+        alert('อัปโหลดล้มเหลว: ' + res.message);
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      alert('เกิดข้อผิดพลาดในการอัปโหลด: ' + err.toString());
+    })
+    .finally(() => {
+      btn.disabled = false;
+      btn.innerHTML = originalHtml;
+    });
+}
 window.editExpense = editExpense;
 window.deleteExpense = deleteExpense;
 window.setExpenseMode = setExpenseMode;

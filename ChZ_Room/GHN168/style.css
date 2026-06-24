@@ -518,6 +518,33 @@ body.light-mode .logo-light-only {
   box-shadow: 2px 2px 0px var(--shadow-color);
 }
 
+.btn-success {
+  background-color: #22c55e;
+  color: #ffffff;
+  border: 3px solid var(--border-color);
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 800;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 4px 4px 0px var(--shadow-color);
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.btn-success:hover {
+  background-color: #16a34a;
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px var(--shadow-color);
+}
+.btn-success:active {
+  transform: translate(1px, 1px);
+  box-shadow: 2px 2px 0px var(--shadow-color);
+}
+
 .btn-icon {
   width: 16px;
   height: 16px;
@@ -532,6 +559,7 @@ body.light-mode .logo-light-only {
 
 .btn-primary:hover .btn-icon,
 .btn-secondary:hover .btn-icon,
+.btn-success:hover .btn-icon,
 .btn-danger:hover .btn-icon {
   transform: scale(1.1);
 }

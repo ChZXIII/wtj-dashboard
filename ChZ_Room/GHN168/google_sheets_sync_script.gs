@@ -166,6 +166,21 @@ function doPost(e) {
   
   try {
     var data = JSON.parse(e.postData.contents);
+    
+    if (data.type === "upload_only") {
+      var pdfBase64 = data.pdfBase64;
+      var pdfName = data.pdfName;
+      var docType = data.docType;
+      var parentFolderId = data.parentFolderId;
+      var pdfUrl = uploadPdfToDrive(pdfBase64, pdfName, docType, parentFolderId);
+      
+      return ContentService.createTextOutput(JSON.stringify({
+        "status": "success",
+        "message": "อัปโหลดไฟล์ PDF ขึ้น Google Drive เรียบร้อยแล้วแก!",
+        "pdfUrl": pdfUrl
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+    
     var spreadsheetId = data.spreadsheetId;
     
     if (!spreadsheetId) {
@@ -683,5 +698,40 @@ function beautifySheet(sheet, sheetName) {
     if (w < 85) {
       sheet.setColumnWidth(c, 85);
     }
+  }
+}
+
+function uploadPdfToDrive(pdfBase64, pdfName, docType, parentFolderId) {
+  if (!pdfBase64 || !parentFolderId) return null;
+  try {
+    var parentFolder = DriveApp.getFolderById(parentFolderId);
+    if (!parentFolder) return null;
+    var prefix = "";
+    if (docType === "quotation") prefix = "01";
+    else if (docType === "invoice") prefix = "02";
+    else if (docType === "receipt") prefix = "03";
+    else if (docType === "wht") prefix = "04";
+    else if (docType === "expense" || docType === "pv") prefix = "05";
+    
+    var subFolder = null;
+    var folders = parentFolder.getFolders();
+    while (folders.hasNext()) {
+      var folder = folders.next();
+      var name = folder.getName();
+      if (name.indexOf(prefix + "_") === 0 || name.indexOf(prefix + " ") === 0 || name === prefix) {
+        subFolder = folder;
+        break;
+      }
+    }
+    var uploadFolder = subFolder || parentFolder;
+    var contentType = "application/pdf";
+    var decoded = Utilities.base64Decode(pdfBase64);
+    var blob = Utilities.newBlob(decoded, contentType, pdfName);
+    var file = uploadFolder.createFile(blob);
+    file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+    return file.getUrl();
+  } catch (err) {
+    Logger.log("Error in uploadPdfToDrive: " + err.toString());
+    return null;
   }
 }
