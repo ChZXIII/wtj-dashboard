@@ -311,6 +311,12 @@ function initializeGoogleSheet() {
 }
 
 function loadData() {
+  const scriptUrl = safeStorage.getItem('ghn168_script_url');
+  const sheetId = safeStorage.getItem('ghn168_sheet_id');
+  if (scriptUrl && sheetId) {
+    safeStorage.setItem('ghn168_disable_mock', 'true');
+  }
+
   const disableMock = safeStorage.getItem('ghn168_disable_mock') === 'true';
 
   // FIXED STABILITY: Wrapped parsing in try-catch and defensive filters to prevent app crash on data corruption
@@ -493,6 +499,22 @@ function loadData() {
       }
     ];
     safeStorage.setItem('ghn168_bank_rec', JSON.stringify(bankRecDb));
+  }
+
+  if (disableMock) {
+    const mockDbDocNums = ["RE-20260615-001", "PV-20260616-102", "PV-20260618-999"];
+    dbDocs = dbDocs.filter(d => d && !mockDbDocNums.includes(d.number));
+
+    const mockPettyCashNums = ["PCV-260618-001"];
+    pettyCashDb = pettyCashDb.filter(d => d && !mockPettyCashNums.includes(d.voucherNo));
+
+    const mockPayrollNums = ["PAY-2026-06"];
+    payrollDb = payrollDb.filter(d => d && !mockPayrollNums.includes(d.payrollId));
+
+    const mockBankRecNums = ["REC-2026-06"];
+    bankRecDb = bankRecDb.filter(d => d && !mockBankRecNums.includes(d.reconciliationId));
+
+    saveData();
   }
 }
 
