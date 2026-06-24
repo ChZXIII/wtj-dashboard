@@ -2709,10 +2709,16 @@ function processDocumentSync() {
   syncBtn.disabled = true;
 
   const pdfBehavior = safeStorage.getItem('ghn168_pdf_behavior') || 'download_drive';
-  const driveUrl = safeStorage.getItem('ghn168_company_drive_url') || '';
-  const folderIdRegex = /\/folders\/([a-zA-Z0-9-_]+)/;
-  const folderMatch = driveUrl.match(folderIdRegex);
-  const parentFolderId = folderMatch ? folderMatch[1] : null;
+  const driveUrl = (safeStorage.getItem('ghn168_company_drive_url') || '').trim();
+  let parentFolderId = null;
+  if (driveUrl) {
+    if (driveUrl.includes('/folders/')) {
+      const match = driveUrl.match(/\/folders\/([a-zA-Z0-9-_]+)/);
+      parentFolderId = match ? match[1] : null;
+    } else if (!driveUrl.includes('/') && driveUrl.length > 10) {
+      parentFolderId = driveUrl;
+    }
+  }
 
   const isDriveUpload = (pdfBehavior === 'download_drive' || pdfBehavior === 'drive_only') && parentFolderId;
 
@@ -2740,7 +2746,11 @@ function processDocumentSync() {
     })
     .then(res => {
       if (res.status === 'success') {
-        alert(`บันทึกและซิงค์ข้อมูลลง Google Sheets เรียบร้อยแล้ว\nข้อความระบบ: ${res.message}`);
+        let alertMsg = `บันทึกและซิงค์ข้อมูลลง Google Sheets เรียบร้อยแล้ว\nข้อความระบบ: ${res.message}`;
+        if (isDriveUpload && !res.pdfUrl) {
+          alertMsg += `\n\n[คำเตือน]: อัปโหลด PDF ขึ้น Google Drive ล้มเหลว! กรุณาตรวจสอบการตั้งค่า URL โฟลเดอร์ในแท็บการตั้งค่า หรือตรวจสอบว่าคุณได้กด Deploy Apps Script เป็นเวอร์ชันล่าสุดแล้ว`;
+        }
+        alert(alertMsg);
         
         docRecord.status = 'synced';
         if (res.pdfUrl) {
@@ -4347,10 +4357,16 @@ function saveExpense() {
       submitBtn.disabled = true;
 
       const pdfBehavior = safeStorage.getItem('ghn168_pdf_behavior') || 'download_drive';
-      const driveUrl = safeStorage.getItem('ghn168_company_drive_url') || '';
-      const folderIdRegex = /\/folders\/([a-zA-Z0-9-_]+)/;
-      const folderMatch = driveUrl.match(folderIdRegex);
-      const parentFolderId = folderMatch ? folderMatch[1] : null;
+      const driveUrl = (safeStorage.getItem('ghn168_company_drive_url') || '').trim();
+      let parentFolderId = null;
+      if (driveUrl) {
+        if (driveUrl.includes('/folders/')) {
+          const match = driveUrl.match(/\/folders\/([a-zA-Z0-9-_]+)/);
+          parentFolderId = match ? match[1] : null;
+        } else if (!driveUrl.includes('/') && driveUrl.length > 10) {
+          parentFolderId = driveUrl;
+        }
+      }
 
       const isDriveUpload = (pdfBehavior === 'download_drive' || pdfBehavior === 'drive_only') && parentFolderId;
 
@@ -4374,7 +4390,11 @@ function saveExpense() {
         })
         .then(res => {
           if (res.status === 'success') {
-            alert(`บันทึกและซิงค์รายจ่ายลง Google Sheets สำเร็จแล้ว\nข้อความ: ${res.message}`);
+            let alertMsg = `บันทึกและซิงค์รายจ่ายลง Google Sheets สำเร็จแล้ว\nข้อความ: ${res.message}`;
+            if (isDriveUpload && !res.pdfUrl) {
+              alertMsg += `\n\n[คำเตือน]: อัปโหลด PDF ขึ้น Google Drive ล้มเหลว! กรุณาตรวจสอบการตั้งค่า URL โฟลเดอร์ในแท็บการตั้งค่า หรือตรวจสอบว่าคุณได้กด Deploy Apps Script เป็นเวอร์ชันล่าสุดแล้ว`;
+            }
+            alert(alertMsg);
             
             docRecord.status = 'synced';
             if (res.pdfUrl) {
@@ -4603,6 +4623,7 @@ function exportPdfClientSide() {
   const originalElementMinHeight = element.style.minHeight;
   const originalElementMaxHeight = element.style.maxHeight;
   const originalElementOverflow = element.style.overflow;
+  const originalElementScale = element.style.getPropertyValue('--preview-scale-factor');
   
   // ปรับสไตล์ body ชั่วขณะตอนดาวน์โหลด
   document.body.style.zoom = '1';
@@ -4617,6 +4638,7 @@ function exportPdfClientSide() {
   element.style.maxHeight = 'none';
   element.style.height = 'auto';
   element.style.overflow = 'visible';
+  element.style.setProperty('--preview-scale-factor', '1');
   
   // วัด scrollHeight จาก element จริง และคำนวณจำนวนหน้า N หน้า
   const scrollHeight = element.scrollHeight;
@@ -4672,6 +4694,11 @@ function exportPdfClientSide() {
     element.style.maxHeight = originalElementMaxHeight;
     element.style.height = originalElementHeight;
     element.style.overflow = originalElementOverflow;
+    if (originalElementScale) {
+      element.style.setProperty('--preview-scale-factor', originalElementScale);
+    } else {
+      element.style.removeProperty('--preview-scale-factor');
+    }
     
     btn.disabled = false;
     btn.innerHTML = originalBtnText;
@@ -6238,6 +6265,7 @@ function generatePdfBase64(element, filename) {
     const originalElementDisplay = element.style.display;
     const originalElementPosition = element.style.position;
     const originalElementLeft = element.style.left;
+    const originalElementScale = element.style.getPropertyValue('--preview-scale-factor');
     
     // จัดการกรณีธาตุที่ซ่อนอยู่ (display === 'none')
     const computedStyle = window.getComputedStyle(element);
@@ -6261,6 +6289,7 @@ function generatePdfBase64(element, filename) {
     element.style.maxHeight = 'none';
     element.style.height = 'auto';
     element.style.overflow = 'visible';
+    element.style.setProperty('--preview-scale-factor', '1');
     
     // วัด scrollHeight จาก element จริง และคำนวณจำนวนหน้า N หน้า
     const scrollHeight = element.scrollHeight;
@@ -6319,6 +6348,11 @@ function generatePdfBase64(element, filename) {
       element.style.maxHeight = originalElementMaxHeight;
       element.style.height = originalElementHeight;
       element.style.overflow = originalElementOverflow;
+      if (originalElementScale) {
+        element.style.setProperty('--preview-scale-factor', originalElementScale);
+      } else {
+        element.style.removeProperty('--preview-scale-factor');
+      }
       
       if (isHidden) {
         element.style.display = originalElementDisplay;
