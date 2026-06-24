@@ -4505,18 +4505,35 @@ function exportPdfClientSide() {
   
   if (!element) return;
   
-  // โคลนเอกสารเพื่อแยกเรนเดอร์อิสระนอกจอ
+  const isDark = document.body.classList.contains('dark-mode');
+  const overlayColor = isDark ? 'rgba(18, 19, 21, 0.99)' : 'rgba(241, 245, 249, 0.99)';
+  
+  // สร้าง translucent overlay เพื่อแก้ปัญหา Safari occlusion culling
+  const overlay = document.createElement('div');
+  overlay.style.position = 'fixed';
+  overlay.style.left = '0';
+  overlay.style.top = '0';
+  overlay.style.width = '100vw';
+  overlay.style.height = '100vh';
+  overlay.style.backgroundColor = overlayColor;
+  overlay.style.zIndex = '99997';
+  document.body.appendChild(overlay);
+  
+  // โคลนเอกสารเพื่อแยกเรนเดอร์อิสระในตำแหน่งที่ WebKit บังคับเรนเดอร์
   const clone = element.cloneNode(true);
-  clone.style.position = 'absolute';
+  clone.style.position = 'fixed';
+  clone.style.zIndex = '99998';
   clone.style.left = '0';
-  clone.style.zIndex = '-9999';
   clone.style.top = '0';
+  clone.style.width = '210mm';
   clone.style.zoom = '1';
   clone.style.boxShadow = 'none';
   clone.style.minHeight = 'auto';
   clone.style.maxHeight = 'none';
   clone.style.height = 'auto';
   clone.style.overflow = 'visible';
+  clone.style.transform = 'translate3d(0,0,0)';
+  clone.style.webkitTransform = 'translate3d(0,0,0)';
   
   document.body.appendChild(clone);
   
@@ -4532,14 +4549,21 @@ function exportPdfClientSide() {
   clone.style.height = clampedHeight;
   clone.style.overflow = 'hidden';
   
+  // คำนวณ optimalScale ป้องกัน Safari canvas memory crash
+  const heightInPx = N * 295 * 3.7795;
+  let optimalScale = 2;
+  if (optimalScale * heightInPx > 4000) {
+    optimalScale = Math.max(1, Math.floor((4000 / heightInPx) * 10) / 10);
+  }
+  
   const opt = {
     margin: 0,
     filename: document.title + '.pdf',
     image: { type: 'jpeg', quality: 0.98 },
     html2canvas: { 
-      scale: 3, 
+      scale: optimalScale, 
       useCORS: true, 
-      logging: false,
+      logging: true,
       letterRendering: true,
       windowWidth: 800
     },
@@ -4551,19 +4575,37 @@ function exportPdfClientSide() {
   btn.disabled = true;
   btn.innerHTML = 'กำลังสร้างไฟล์ PDF...';
   
+  const spinnerStyle = document.createElement('style');
+  spinnerStyle.innerHTML = `
+    .pdf-loading-spinner {
+      animation: spin 1s linear infinite;
+    }
+  `;
+  document.head.appendChild(spinnerStyle);
+  
   setTimeout(() => {
     html2pdf().set(opt).from(clone).save().then(() => {
-      btn.disabled = false;
-      btn.innerHTML = originalBtnText;
-      document.body.removeChild(clone); // ลบโคลนทิ้งทันที
+      cleanup();
     }).catch(err => {
       console.error('PDF export failed:', err);
       alert('เกิดข้อผิดพลาดในการสร้างไฟล์ PDF');
-      btn.disabled = false;
-      btn.innerHTML = originalBtnText;
-      document.body.removeChild(clone); // ลบโคลนทิ้งทันที
+      cleanup();
     });
-  }, 250);
+  }, 300);
+  
+  function cleanup() {
+    btn.disabled = false;
+    btn.innerHTML = originalBtnText;
+    if (document.body.contains(clone)) {
+      document.body.removeChild(clone);
+    }
+    if (document.body.contains(overlay)) {
+      document.body.removeChild(overlay);
+    }
+    if (document.head.contains(spinnerStyle)) {
+      document.head.removeChild(spinnerStyle);
+    }
+  }
 }
 
 // Expose handlers to global window scope
