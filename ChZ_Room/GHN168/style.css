@@ -1719,3 +1719,10 @@ textarea.form-control {
 .doc-type-quotation .paper-table .col-price {
   display: none !important;
 }
+
+/* UI Zoom for Desktop */
+@media screen and (min-width: 769px) {
+  body {
+    zoom: 1.2;
+  }
+}
