@@ -3532,13 +3532,20 @@ function fetchDocumentsFromSheets(showToast = false) {
         const retentionMatch = profitShareStr.match(/หัก บ\.:\s*([^|]+)/);
         if (retentionMatch) {
           const valStr = retentionMatch[1].trim();
-          if (valStr.includes('%')) {
-            const percent = parseFloat(valStr.replace('%', '')) || 0;
-            itemRetentionAmount = subtotal * (percent / 100);
-          } else {
-            const rawVal = parseFloat(valStr.replace('฿', '').replace(',', '')) || 0;
-            itemRetentionAmount = rawVal;
-          }
+          const parts = valStr.split(',');
+          parts.forEach(part => {
+            const cleanPart = part.trim().replace(/,/g, '');
+            const pctMatch = cleanPart.match(/(\d+(?:\.\d+)?)\s*%/);
+            if (pctMatch) {
+              const percent = parseFloat(pctMatch[1]) || 0;
+              itemRetentionAmount += subtotal * (percent / 100);
+            }
+            const moneyMatch = cleanPart.match(/฿\s*(\d+(?:\.\d+)?)/);
+            if (moneyMatch) {
+              const rawVal = parseFloat(moneyMatch[1]) || 0;
+              itemRetentionAmount += rawVal;
+            }
+          });
         }
         itemRetentionAmount = Math.round(itemRetentionAmount * 100) / 100;
 
