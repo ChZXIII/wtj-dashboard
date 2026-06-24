@@ -6126,25 +6126,6 @@ async function forceClearCacheAndReload() {
 }
 window.forceClearCacheAndReload = forceClearCacheAndReload;
 
-async function forceClearAppCache() {
-  if (confirm("ต้องการล้างแคชและอัปเดตระบบใช่ไหมแก?")) {
-    if ('serviceWorker' in navigator) {
-      const registrations = await navigator.serviceWorker.getRegistrations();
-      for (let registration of registrations) {
-        await registration.unregister();
-      }
-    }
-    if ('caches' in window) {
-      const keys = await caches.keys();
-      for (let key of keys) {
-        await caches.delete(key);
-      }
-    }
-    window.location.reload(true);
-  }
-}
-window.forceClearAppCache = forceClearAppCache;
-
 // Expose corporate handlers to global window scope
 window.autoGeneratePettyCashVoucherNo = autoGeneratePettyCashVoucherNo;
 window.renderPettyCash = renderPettyCash;
