@@ -703,6 +703,11 @@ textarea.form-control {
   color: #c2410c;
 }
 
+.badge.draft {
+  background-color: var(--input-bg);
+  color: var(--text-secondary);
+}
+
 /* --- Document Generator Split Layout --- */
 .doc-gen-container {
   display: flex;

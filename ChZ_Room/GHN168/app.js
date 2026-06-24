@@ -861,12 +861,16 @@ function setupEventListeners() {
 
   // Export PDF Button
   document.getElementById('btnExportDocPdf').addEventListener('click', () => {
-    const isMobileOrTablet = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
-                             (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-    if (isMobileOrTablet) {
-      window.print();
+    if (currentDocType === 'quotation') {
+      processDocumentSync();
     } else {
-      exportPdfClientSide();
+      const isMobileOrTablet = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+                               (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+      if (isMobileOrTablet) {
+        window.print();
+      } else {
+        exportPdfClientSide();
+      }
     }
   });
 
@@ -1103,7 +1107,13 @@ function setupEventListeners() {
   });
 
   // Sync Data Button
-  document.getElementById('btnSaveAndSyncDoc').addEventListener('click', processDocumentSync);
+  document.getElementById('btnSaveAndSyncDoc').addEventListener('click', () => {
+    if (currentDocType === 'quotation') {
+      saveQuotationDraftLocally();
+    } else {
+      processDocumentSync();
+    }
+  });
 
   // Sync Document Hub Button
   const btnSyncDocHub = document.getElementById('btnSyncDocHub');
@@ -2825,6 +2835,87 @@ function processDocumentSync() {
   }
 }
 
+// --- Save Quotation Draft Locally ---
+function saveQuotationDraftLocally() {
+  const docNo = document.getElementById('docNumber').value;
+  const dateVal = document.getElementById('docDate').value;
+  const clientName = document.getElementById('docClientName').value;
+  const clientTaxId = document.getElementById('docClientTaxId').value;
+  const clientBranch = document.getElementById('docClientBranch').value || '00000';
+  const clientAddress = document.getElementById('docClientAddress').value || '-';
+  const phoneInput = document.getElementById('docClientPhone');
+  const clientPhone = phoneInput ? phoneInput.value : '-';
+  const detail = document.getElementById('docProjectName').value;
+  const remarks = document.getElementById('docRemarks').value || '-';
+
+  let subtotal = 0;
+  docItems.forEach(item => {
+    subtotal += (item.qty || 0) * (item.price || 0);
+  });
+
+  const vatChecked = document.getElementById('docVatCheckbox').checked;
+  const whtRate = parseInt(document.getElementById('docWhtSelect').value) || 0;
+  const vat = Math.round((vatChecked ? subtotal * 0.07 : 0) * 100) / 100;
+  const wht = Math.round((subtotal * (whtRate / 100)) * 100) / 100;
+  const net = Math.round((subtotal + vat - wht) * 100) / 100;
+  const paymentTerm = document.getElementById('docPaymentTerm').value;
+  const dueDate = document.getElementById('docDueDate').value;
+
+  const signatureSelectVal = document.getElementById('doc_signatureSelect') ? document.getElementById('doc_signatureSelect').value : 'keng';
+  const signerName = document.getElementById('doc_signerName') ? document.getElementById('doc_signerName').value : '';
+  const showSeal = document.getElementById('doc_showSeal') ? document.getElementById('doc_showSeal').checked : false;
+  const showSignature = document.getElementById('doc_showSignature') ? document.getElementById('doc_showSignature').checked : false;
+
+  if (!docNo || !dateVal || !clientName || subtotal <= 0) {
+    alert('กรุณากรอกข้อมูลเอกสารและระบุรายการสินค้าให้ครบถ้วนก่อนบันทึก');
+    return;
+  }
+
+  const dateStr = formatDate(dateVal);
+  const dueDateStr = formatDate(dueDate);
+
+  const docRecord = {
+    number: docNo,
+    type: 'quotation',
+    date: dateStr,
+    name: clientName,
+    detail: detail,
+    amount: subtotal,
+    status: 'draft',
+    driveLink: '-',
+    timestamp: new Date().toLocaleString(),
+    clientBranch: clientBranch,
+    clientAddress: clientAddress,
+    clientTaxId: clientTaxId,
+    clientPhone: clientPhone,
+    vat: vat,
+    wht: wht,
+    net: net,
+    whtRate: whtRate,
+    paymentTerm: paymentTerm,
+    dueDate: dueDateStr,
+    signatureSelect: signatureSelectVal,
+    signerName: signerName,
+    showSeal: showSeal,
+    showSignature: showSignature,
+    remarks: remarks,
+    items: docItems.map(item => ({
+      desc: item.desc || "-",
+      qty: item.qty || 1,
+      unit: item.unit || "งาน",
+      price: item.price || 0,
+      worker: item.worker || "เก่ง"
+    }))
+  };
+
+  dbDocs = dbDocs.filter(d => d.number !== docNo);
+  dbDocs.unshift(docRecord);
+
+  saveData();
+  setDocType(currentDocType, true);
+  alert("บันทึกแบบร่างใบเสนอราคาเลขที่ '" + docNo + "' ลงเครื่องเรียบร้อยแล้วแก");
+}
+
 // --- Sync Pending Queue (ADVISORY) ---
 function syncPendingDocs() {
   const pendingDocs = dbDocs.filter(d => d.status === 'pending');
@@ -3319,7 +3410,7 @@ function renderDashboard() {
           </td>
           <td style="text-align:right; font-weight:700;">฿${d.amount.toLocaleString('th-TH', { minimumFractionDigits: 2 })}</td>
           <td style="text-align:center;">
-            <span class="badge ${d.status}">${d.status === 'synced' ? 'ซิงค์แล้ว' : (d.status === 'pending_approval' ? 'รออนุมัติ' : 'ค้างส่ง')}</span>
+            <span class="badge ${d.status}">${d.status === 'synced' ? 'ซิงค์แล้ว' : (d.status === 'pending_approval' ? 'รออนุมัติ' : (d.status === 'draft' ? 'แบบร่าง' : 'ค้างส่ง'))}</span>
           </td>
         </tr>
       `).join('');
@@ -4610,6 +4701,13 @@ function exportPdfClientSide() {
   
   if (!element) return;
   
+  // บันทึก parentNode และ nextSibling ของ element ไว้
+  const originalParent = element.parentNode;
+  const originalNextSibling = element.nextSibling;
+  
+  // ย้าย element ไปต่อท้าย body
+  document.body.appendChild(element);
+  
   // บันทึกสไตล์ดั้งเดิมของ body
   const originalBodyZoom = document.body.style.zoom;
   const originalBodyHeight = document.body.style.height;
@@ -4625,6 +4723,13 @@ function exportPdfClientSide() {
   const originalElementOverflow = element.style.overflow;
   const originalElementScale = element.style.getPropertyValue('--preview-scale-factor');
   
+  const originalElementPosition = element.style.position;
+  const originalElementLeft = element.style.left;
+  const originalElementTop = element.style.top;
+  const originalElementZIndex = element.style.zIndex;
+  const originalElementWidth = element.style.width;
+  const originalElementBackground = element.style.background;
+  
   // ปรับสไตล์ body ชั่วขณะตอนดาวน์โหลด
   document.body.style.zoom = '1';
   document.body.style.height = 'auto';
@@ -4639,6 +4744,14 @@ function exportPdfClientSide() {
   element.style.height = 'auto';
   element.style.overflow = 'visible';
   element.style.setProperty('--preview-scale-factor', '1');
+  
+  // ตั้งค่าสไตล์ลอยตัว
+  element.style.position = 'absolute';
+  element.style.left = '0';
+  element.style.top = '0';
+  element.style.zIndex = '99999';
+  element.style.width = '794px';
+  element.style.background = '#ffffff';
   
   // วัด scrollHeight จาก element จริง และคำนวณจำนวนหน้า N หน้า
   const scrollHeight = element.scrollHeight;
@@ -4698,6 +4811,21 @@ function exportPdfClientSide() {
       element.style.setProperty('--preview-scale-factor', originalElementScale);
     } else {
       element.style.removeProperty('--preview-scale-factor');
+    }
+    
+    // คืนค่าสไตล์ลอยตัวกลับคืน
+    element.style.position = originalElementPosition;
+    element.style.left = originalElementLeft;
+    element.style.top = originalElementTop;
+    element.style.zIndex = originalElementZIndex;
+    element.style.width = originalElementWidth;
+    element.style.background = originalElementBackground;
+    
+    // ย้าย element กลับตำแหน่งเดิมใน DOM
+    if (originalNextSibling) {
+      originalParent.insertBefore(element, originalNextSibling);
+    } else {
+      originalParent.appendChild(element);
     }
     
     btn.disabled = false;
@@ -6249,6 +6377,13 @@ function generatePdfBase64(element, filename) {
       return;
     }
     
+    // บันทึก parentNode และ nextSibling ของ element ไว้
+    const originalParent = element.parentNode;
+    const originalNextSibling = element.nextSibling;
+    
+    // ย้าย element ไปต่อท้าย body
+    document.body.appendChild(element);
+    
     // บันทึกสไตล์ดั้งเดิมของ body
     const originalBodyZoom = document.body.style.zoom;
     const originalBodyHeight = document.body.style.height;
@@ -6263,17 +6398,20 @@ function generatePdfBase64(element, filename) {
     const originalElementMaxHeight = element.style.maxHeight;
     const originalElementOverflow = element.style.overflow;
     const originalElementDisplay = element.style.display;
+    const originalElementScale = element.style.getPropertyValue('--preview-scale-factor');
+    
     const originalElementPosition = element.style.position;
     const originalElementLeft = element.style.left;
-    const originalElementScale = element.style.getPropertyValue('--preview-scale-factor');
+    const originalElementTop = element.style.top;
+    const originalElementZIndex = element.style.zIndex;
+    const originalElementWidth = element.style.width;
+    const originalElementBackground = element.style.background;
     
     // จัดการกรณีธาตุที่ซ่อนอยู่ (display === 'none')
     const computedStyle = window.getComputedStyle(element);
     const isHidden = computedStyle.display === 'none' || originalElementDisplay === 'none';
     if (isHidden) {
       element.style.display = 'block';
-      element.style.position = 'absolute';
-      element.style.left = '-9999px';
     }
     
     // ปรับสไตล์ body ชั่วขณะตอนดาวน์โหลด
@@ -6290,6 +6428,14 @@ function generatePdfBase64(element, filename) {
     element.style.height = 'auto';
     element.style.overflow = 'visible';
     element.style.setProperty('--preview-scale-factor', '1');
+    
+    // ตั้งค่าสไตล์ลอยตัว
+    element.style.position = 'absolute';
+    element.style.left = '0';
+    element.style.top = '0';
+    element.style.zIndex = '99999';
+    element.style.width = '794px';
+    element.style.background = '#ffffff';
     
     // วัด scrollHeight จาก element จริง และคำนวณจำนวนหน้า N หน้า
     const scrollHeight = element.scrollHeight;
@@ -6354,10 +6500,23 @@ function generatePdfBase64(element, filename) {
         element.style.removeProperty('--preview-scale-factor');
       }
       
+      // คืนค่าสไตล์ลอยตัวกลับคืน
+      element.style.position = originalElementPosition;
+      element.style.left = originalElementLeft;
+      element.style.top = originalElementTop;
+      element.style.zIndex = originalElementZIndex;
+      element.style.width = originalElementWidth;
+      element.style.background = originalElementBackground;
+      
       if (isHidden) {
         element.style.display = originalElementDisplay;
-        element.style.position = originalElementPosition;
-        element.style.left = originalElementLeft;
+      }
+      
+      // ย้าย element กลับตำแหน่งเดิมใน DOM
+      if (originalNextSibling) {
+        originalParent.insertBefore(element, originalNextSibling);
+      } else {
+        originalParent.appendChild(element);
       }
     }
   });
