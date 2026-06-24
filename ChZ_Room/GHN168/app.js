@@ -4579,7 +4579,17 @@ function exportPdfClientSide() {
       scale: optimalScale, 
       useCORS: true, 
       logging: true,
-      windowWidth: 800
+      windowWidth: 800,
+      onclone: (clonedDoc) => {
+        const paper = clonedDoc.querySelector('.doc-paper') || clonedDoc.querySelector('.wht-card-paper');
+        if (paper) {
+          paper.style.setProperty('font-family', '"Sukhumvit Set", "Thonburi", -apple-system, sans-serif', 'important');
+        }
+        const allElements = clonedDoc.querySelectorAll('*');
+        allElements.forEach(el => {
+          el.style.setProperty('font-family', '"Sukhumvit Set", "Thonburi", -apple-system, sans-serif', 'important');
+        });
+      }
     },
     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
   };
