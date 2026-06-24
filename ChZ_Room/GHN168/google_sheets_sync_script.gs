@@ -131,8 +131,7 @@ var QUOTATION_HEADERS = [
   "แสดงลายเซ็น (Show Document Signature)",
   "ข้อมูลรายการสินค้าและราคา JSON (Items JSON)",
   "วันเวลาที่อัปเดตล่าสุด (Last Updated)",
-  "หมายเหตุ (Remarks)",
-  "ลิงก์เอกสาร Google Drive (PDF Link)"
+  "หมายเหตุ (Remarks)"
 ];
 
 var INVOICE_HEADERS = [
@@ -158,8 +157,7 @@ var INVOICE_HEADERS = [
   "วันเวลาที่อัปเดตล่าสุด (Last Updated)",
   "เงื่อนไขการชำระเงิน (Payment Terms)",
   "วันครบกำหนด (Due Date)",
-  "หมายเหตุ (Remarks)",
-  "ลิงก์เอกสาร Google Drive (PDF Link)"
+  "หมายเหตุ (Remarks)"
 ];
 
 function doPost(e) {
@@ -178,16 +176,6 @@ function doPost(e) {
     }
     
     var activeSpreadsheet = SpreadsheetApp.openById(spreadsheetId);
-    
-    // อัปโหลด PDF ขึ้น Google Drive (ถ้ามีการแนบมา)
-    var pdfBase64 = data.pdfBase64;
-    var pdfName = data.pdfName;
-    var docType = data.docType;
-    var parentFolderId = data.parentFolderId;
-    var pdfUrl = null;
-    if (pdfBase64 && parentFolderId) {
-      pdfUrl = uploadPdfToDrive(pdfBase64, pdfName, docType, parentFolderId);
-    }
     
     // ----------------------------------------------------
     // CASE 1: ซิงค์แถวข้อมูลลงแท็บใดๆ แบบ Generic
@@ -209,22 +197,8 @@ function doPost(e) {
         })).setMimeType(ContentService.MimeType.JSON);
       }
       
-      // ค้นหาคอลัมน์ PDF Link
-      var headers = [];
-      if (sheet.getLastColumn() > 0) {
-        headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
-      }
-      var pdfColIdx = findPdfLinkColumnIndex(headers);
-      
       // บันทึกหลายแถวพร้อมกัน (กรณี Split Items ในรายรับ)
       if (data.rows && Array.isArray(data.rows) && data.rows.length > 0) {
-        if (pdfUrl && pdfColIdx !== -1) {
-          for (var r = 0; r < data.rows.length; r++) {
-            if (pdfColIdx < data.rows[r].length) {
-              data.rows[r][pdfColIdx] = pdfUrl;
-            }
-          }
-        }
         var numRows = data.rows.length;
         var numCols = data.rows[0].length;
         sheet.getRange(sheet.getLastRow() + 1, 1, numRows, numCols).setValues(data.rows);
@@ -232,20 +206,13 @@ function doPost(e) {
         
         return ContentService.createTextOutput(JSON.stringify({
           "status": "success",
-          "message": "ซิงค์ข้อมูล " + numRows + " แถว ลงแท็บ '" + sheetName + "' เรียบร้อยแล้วแก!",
-          "pdfUrl": pdfUrl
+          "message": "ซิงค์ข้อมูล " + numRows + " แถว ลงแท็บ '" + sheetName + "' เรียบร้อยแล้วแก!"
         })).setMimeType(ContentService.MimeType.JSON);
       } 
       // บันทึกแถวเดี่ยว
       else if (data.values && Array.isArray(data.values) && data.values.length > 0) {
         var docNo = data.values[2]; // index 2 is column 3 (Document No)
         var updated = false;
-        
-        if (pdfUrl && pdfColIdx !== -1) {
-          if (pdfColIdx < data.values.length) {
-            data.values[pdfColIdx] = pdfUrl;
-          }
-        }
         
         if ((sheetName === "ใบเสนอราคา" || sheetName === "ใบวางบิล") && docNo) {
           var lastRow = sheet.getLastRow();
@@ -271,8 +238,7 @@ function doPost(e) {
         
         return ContentService.createTextOutput(JSON.stringify({
           "status": "success",
-          "message": updated ? "อัปเดตข้อมูลเอกสารเลขที่ '" + docNo + "' ในแท็บ '" + sheetName + "' เรียบร้อยแล้วแก!" : "ซิงค์บันทึกข้อมูลลงแท็บ '" + sheetName + "' เรียบร้อยแล้วแก!",
-          "pdfUrl": pdfUrl
+          "message": updated ? "อัปเดตข้อมูลเอกสารเลขที่ '" + docNo + "' ในแท็บ '" + sheetName + "' เรียบร้อยแล้วแก!" : "ซิงค์บันทึกข้อมูลลงแท็บ '" + sheetName + "' เรียบร้อยแล้วแก!"
         })).setMimeType(ContentService.MimeType.JSON);
       } 
       else {
@@ -518,7 +484,8 @@ function migrateSheetIfNeeded(sheet, targetHeaders) {
     for (var r = 0; r < oldValues.length; r++) {
       var oldRow = oldValues[r];
       var newRow = new Array(targetHeaders.length).fill("");
-      if (sheet.getName() === "รายรับ") { // แท็บรายรับ (Income)
+      
+      if (targetHeaders.length === 22) { // แท็บรายรับ (Income)
         if (lastCol === 14) {
           newRow[0] = oldRow[0]; // Record Date
           newRow[1] = oldRow[0]; // Tax Invoice Date
@@ -552,7 +519,7 @@ function migrateSheetIfNeeded(sheet, targetHeaders) {
             newRow[c] = oldRow[c];
           }
         }
-      } else if (sheet.getName() === "รายจ่าย") { // แท็บรายจ่าย (Expense)
+      } else if (targetHeaders.length === 24) { // แท็บรายจ่าย (Expense)
         if (lastCol === 9) {
           newRow[0] = oldRow[0]; // Record Date
           newRow[1] = oldRow[0]; // Tax Invoice Date
@@ -618,11 +585,6 @@ function migrateSheetIfNeeded(sheet, targetHeaders) {
             newRow[c] = oldRow[c];
           }
         }
-      } else {
-        // คัดลอกคอลัมน์ข้อมูลเดิมสำหรับชีตอื่นๆ (ใบเสนอราคา, ใบวางบิล, คลังเอกสาร ฯลฯ)
-        for (var c = 0; c < Math.min(lastCol, targetHeaders.length); c++) {
-          newRow[c] = oldRow[c];
-        }
       }
       newValues.push(newRow);
     }
@@ -634,51 +596,6 @@ function migrateSheetIfNeeded(sheet, targetHeaders) {
     }
     
     beautifySheet(sheet, sheet.getName());
-  }
-}
-
-function findPdfLinkColumnIndex(headers) {
-  for (var i = 0; i < headers.length; i++) {
-    var h = headers[i].toString();
-    if (h.indexOf("ลิงก์เอกสาร Google Drive") !== -1 || h.indexOf("PDF Link") !== -1 || h.indexOf("Receipt Link") !== -1 || h.indexOf("Pay Slip Link") !== -1) {
-      return i;
-    }
-  }
-  return -1;
-}
-
-function uploadPdfToDrive(pdfBase64, pdfName, docType, parentFolderId) {
-  if (!pdfBase64 || !parentFolderId) return null;
-  try {
-    var parentFolder = DriveApp.getFolderById(parentFolderId);
-    if (!parentFolder) return null;
-    var prefix = "";
-    if (docType === "quotation") prefix = "01";
-    else if (docType === "invoice") prefix = "02";
-    else if (docType === "receipt") prefix = "03";
-    else if (docType === "wht") prefix = "04";
-    else if (docType === "expense" || docType === "pv") prefix = "05";
-    
-    var subFolder = null;
-    var folders = parentFolder.getFolders();
-    while (folders.hasNext()) {
-      var folder = folders.next();
-      var name = folder.getName();
-      if (name.indexOf(prefix + "_") === 0 || name.indexOf(prefix + " ") === 0 || name === prefix) {
-        subFolder = folder;
-        break;
-      }
-    }
-    var uploadFolder = subFolder || parentFolder;
-    var contentType = "application/pdf";
-    var decoded = Utilities.base64Decode(pdfBase64);
-    var blob = Utilities.newBlob(decoded, contentType, pdfName);
-    var file = uploadFolder.createFile(blob);
-    file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
-    return file.getUrl();
-  } catch (err) {
-    Logger.log("Error in uploadPdfToDrive: " + err.toString());
-    return null;
   }
 }
 

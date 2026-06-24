@@ -212,13 +212,6 @@ function loadConfiguration() {
   if (driveUrlInput) {
     driveUrlInput.value = companyDriveUrl;
   }
-  
-  // Load PDF Behavior setting
-  const pdfBehavior = safeStorage.getItem('ghn168_pdf_behavior') || 'download_drive';
-  const selectPdfBehavior = document.getElementById('settingPdfBehavior');
-  if (selectPdfBehavior) {
-    selectPdfBehavior.value = pdfBehavior;
-  }
 }
 
 function saveSellerConfig() {
@@ -242,8 +235,6 @@ function saveScriptSettings() {
   let id = document.getElementById('settingSheetId').value.trim();
   const driveUrlInput = document.getElementById('settingCompanyDriveUrl');
   const driveUrl = driveUrlInput ? driveUrlInput.value.trim() : 'https://drive.google.com';
-  const selectPdfBehavior = document.getElementById('settingPdfBehavior');
-  const pdfBehavior = selectPdfBehavior ? selectPdfBehavior.value : 'download_drive';
   
   // Auto-extract ID if full Google Sheets URL is pasted
   const sheetUrlRegex = /\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/;
@@ -256,7 +247,6 @@ function saveScriptSettings() {
   safeStorage.setItem('ghn168_script_url', url);
   safeStorage.setItem('ghn168_sheet_id', id);
   safeStorage.setItem('ghn168_company_drive_url', driveUrl);
-  safeStorage.setItem('ghn168_pdf_behavior', pdfBehavior);
   
   // Sync changes to dashboard shortcuts immediately
   renderDashboardDocHubShortcuts();
@@ -861,7 +851,13 @@ function setupEventListeners() {
 
   // Export PDF Button
   document.getElementById('btnExportDocPdf').addEventListener('click', () => {
-    window.print();
+    const isMobileOrTablet = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+                            (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    if (isMobileOrTablet) {
+      exportPdfClientSide();
+    } else {
+      window.print();
+    }
   });
 
   // Create New Doc Button
@@ -1097,9 +1093,7 @@ function setupEventListeners() {
   });
 
   // Sync Data Button
-  document.getElementById('btnSaveAndSyncDoc').addEventListener('click', () => {
-    processDocumentSync();
-  });
+  document.getElementById('btnSaveAndSyncDoc').addEventListener('click', processDocumentSync);
 
   // Sync Document Hub Button
   const btnSyncDocHub = document.getElementById('btnSyncDocHub');
@@ -2024,7 +2018,6 @@ function updateDueDateFromPaymentTerm() {
 function syncDocPreview() {
   const docTitle = currentDocType === 'quotation' ? 'ใบเสนอราคา / สัญญาจ้าง' : (currentDocType === 'invoice' ? 'ใบวางบิล / ใบแจ้งหนี้' : 'ใบเสร็จรับเงิน / ใบกำกับภาษี');
   const docTitleEn = currentDocType === 'quotation' ? 'QUOTATION / CONTRACT' : (currentDocType === 'invoice' ? 'INVOICE' : 'RECEIPT / TAX INVOICE');
-  const showSignature = document.getElementById('doc_showSignature') ? document.getElementById('doc_showSignature').checked : false;
 
   document.getElementById('prevDocTitleText').textContent = docTitle;
   document.getElementById('prevDocTitleEnText').textContent = docTitleEn;
@@ -2102,13 +2095,8 @@ function syncDocPreview() {
   const prevSignerLabel = document.getElementById('prevSignerLabel');
   if (prevSignerNameVal && prevSignerLabel) {
     const signerName = signerNameInput ? signerNameInput.value.trim() : '';
-    if (showSignature) {
-      prevSignerNameVal.textContent = signerName ? `( ${signerName} )` : '(           ชื่อ สกุล            )';
-      prevSignerNameVal.style.display = '';
-    } else {
-      prevSignerNameVal.textContent = '';
-      prevSignerNameVal.style.display = 'none';
-    }
+    // Signer name is wrapped in parentheses for all standard docs (quotation, invoice, receipt)
+    prevSignerNameVal.textContent = signerName ? `( ${signerName} )` : '(           ชื่อ สกุล            )';
     
     if (currentDocType === 'receipt') {
       prevSignerLabel.innerHTML = 'ผู้รับเงิน/บัญชี<br>ในนาม บริษัท จีเอชเอ็น 168 มีเดีย แอนด์ ครีเอชั่น จำกัด';
@@ -2185,6 +2173,7 @@ function syncDocPreview() {
   });
 
   // Toggle signature visibility
+  const showSignature = document.getElementById('doc_showSignature') ? document.getElementById('doc_showSignature').checked : false;
   const signatureSelectVal = document.getElementById('doc_signatureSelect') ? document.getElementById('doc_signatureSelect').value : 'keng';
   const prevSignatureImg = document.getElementById('prevSignatureImg');
   if (prevSignatureImg) {
@@ -2231,17 +2220,7 @@ function syncWhtPreview() {
   document.getElementById('prevWhtTotalTax').textContent = tax > 0 ? `฿${tax.toLocaleString('th-TH', { minimumFractionDigits: 2 })}` : '-';
   document.getElementById('prevWhtNetText').textContent = thaiBahtText(gross - tax);
 
-  const showSignature = document.getElementById('doc_showSignature') ? document.getElementById('doc_showSignature').checked : false;
-  const prevWhtSigner = document.getElementById('prevWhtSigner');
-  if (prevWhtSigner) {
-    if (showSignature) {
-      prevWhtSigner.textContent = document.getElementById('doc_signerName').value;
-      prevWhtSigner.style.display = '';
-    } else {
-      prevWhtSigner.textContent = '';
-      prevWhtSigner.style.display = 'none';
-    }
-  }
+  document.getElementById('prevWhtSigner').textContent = document.getElementById('doc_signerName').value;
 
   // Toggle company seal visibility
   const showSeal = document.getElementById('doc_showSeal').checked;
@@ -2438,8 +2417,7 @@ function processDocumentSync() {
         showSignature,
         JSON.stringify(docRecord.items),
         new Date().toLocaleString(),
-        document.getElementById('docRemarks').value || "-",
-        "-" // PDF Link placeholder at index 21
+        document.getElementById('docRemarks').value || "-"
       ];
     } else {
       payload.sheetName = 'ใบวางบิล';
@@ -2466,8 +2444,7 @@ function processDocumentSync() {
         new Date().toLocaleString(),
         paymentTerm || "-",
         dueDateStr || "-",
-        document.getElementById('docRemarks').value || "-",
-        "-" // PDF Link placeholder at index 23
+        document.getElementById('docRemarks').value || "-"
       ];
     }
   } else if (currentDocType === 'wht') {
@@ -2719,85 +2696,27 @@ function processDocumentSync() {
   syncBtn.textContent = 'กำลังซิงค์ข้อมูลลงชีต...';
   syncBtn.disabled = true;
 
-  const pdfBehavior = safeStorage.getItem('ghn168_pdf_behavior') || 'download_drive';
-  const driveUrl = (safeStorage.getItem('ghn168_company_drive_url') || '').trim();
-  let parentFolderId = null;
-  if (driveUrl) {
-    if (driveUrl.includes('/folders/')) {
-      const match = driveUrl.match(/\/folders\/([a-zA-Z0-9-_]+)/);
-      parentFolderId = match ? match[1] : null;
-    } else if (!driveUrl.includes('/') && driveUrl.length > 10) {
-      parentFolderId = driveUrl;
+  fetch(scriptUrl, {
+    method: 'POST',
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'text/plain'
+    },
+    body: JSON.stringify(payload)
+  })
+  .then(res => {
+    if (!res.ok) {
+      throw new Error(`HTTP Error Status: ${res.status}`);
     }
-  }
-
-  const isDriveUpload = (pdfBehavior === 'download_drive' || pdfBehavior === 'drive_only') && parentFolderId;
-
-  const performFetch = (base64Data = null) => {
-    if (base64Data) {
-      payload.pdfBase64 = base64Data;
-      payload.pdfName = `${docRecord.number}.pdf`;
-      payload.docType = currentDocType;
-      payload.parentFolderId = parentFolderId;
-    }
-
-    fetch(scriptUrl, {
-      method: 'POST',
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'text/plain'
-      },
-      body: JSON.stringify(payload)
-    })
-    .then(res => {
-      if (!res.ok) {
-        throw new Error(`HTTP Error Status: ${res.status}`);
-      }
-      return res.json();
-    })
-    .then(res => {
-      if (res.status === 'success') {
-        let alertMsg = `บันทึกและซิงค์ข้อมูลลง Google Sheets เรียบร้อยแล้ว\nข้อความระบบ: ${res.message}`;
-        if (isDriveUpload && !res.pdfUrl) {
-          alertMsg += `\n\n[คำเตือน]: อัปโหลด PDF ขึ้น Google Drive ล้มเหลว! กรุณาตรวจสอบการตั้งค่า URL โฟลเดอร์ในแท็บการตั้งค่า หรือตรวจสอบว่าคุณได้กด Deploy Apps Script เป็นเวอร์ชันล่าสุดแล้ว`;
-        }
-        alert(alertMsg);
-        
-        docRecord.status = 'synced';
-        if (res.pdfUrl) {
-          docRecord.driveLink = res.pdfUrl;
-        }
-        dbDocs.unshift(docRecord);
-        syncHistory.unshift({ docNo: docRecord.number, status: 'Success', time: new Date().toLocaleString() });
-
-        // Update referenced invoice status
-        if (currentDocType === 'receipt' && docRecord.invoiceNo && docRecord.invoiceNo !== '-') {
-          const matchingInv = dbDocs.find(d => d.number === docRecord.invoiceNo && d.type === 'invoice');
-          if (matchingInv) {
-            matchingInv.paymentStatus = 'ชำระเงินแล้ว';
-          }
-        }
-
-        saveData();
-        setDocType(currentDocType, true);
-
-        // Download to local device if required
-        if (base64Data && pdfBehavior === 'download_drive') {
-          downloadBase64Pdf(base64Data, `${docRecord.number}.pdf`);
-        } else if (!base64Data && (pdfBehavior === 'download_drive' || pdfBehavior === 'download_only')) {
-          exportPdfClientSide();
-        }
-      } else {
-        alert(`ซิงค์ข้อมูลล้มเหลว: ${res.message}`);
-      }
-    })
-    .catch(err => {
-      console.error(err);
-      alert(`เกิดข้อผิดพลาดในการเชื่อมต่อระบบ Apps Script: ${err.toString()}\n\nแต่ระบบได้บันทึกข้อมูลแบบออฟไลน์ (Pending) ไว้ในเครื่องเรียบร้อยแล้ว`);
+    return res.json();
+  })
+  .then(res => {
+    if (res.status === 'success') {
+      alert(`บันทึกและซิงค์ข้อมูลลง Google Sheets เรียบร้อยแล้ว\nข้อความระบบ: ${res.message}`);
       
-      // Save as pending locally
-      docRecord.status = 'pending';
+      docRecord.status = 'synced';
       dbDocs.unshift(docRecord);
+      syncHistory.unshift({ docNo: docRecord.number, status: 'Success', time: new Date().toLocaleString() });
 
       // Update referenced invoice status
       if (currentDocType === 'receipt' && docRecord.invoiceNo && docRecord.invoiceNo !== '-') {
@@ -2809,112 +2728,33 @@ function processDocumentSync() {
 
       saveData();
       setDocType(currentDocType, true);
+    } else {
+      alert(`ซิงค์ข้อมูลล้มเหลว: ${res.message}`);
+    }
+  })
+  .catch(err => {
+    console.error(err);
+    alert(`เกิดข้อผิดพลาดในการเชื่อมต่อระบบ Apps Script: ${err.toString()}\n\nแต่ระบบได้บันทึกข้อมูลแบบออฟไลน์ (Pending) ไว้ในเครื่องเรียบร้อยแล้ว`);
+    
+    // Save as pending locally
+    docRecord.status = 'pending';
+    dbDocs.unshift(docRecord);
 
-      if (pdfBehavior === 'download_drive' || pdfBehavior === 'download_only') {
-        exportPdfClientSide();
+    // Update referenced invoice status
+    if (currentDocType === 'receipt' && docRecord.invoiceNo && docRecord.invoiceNo !== '-') {
+      const matchingInv = dbDocs.find(d => d.number === docRecord.invoiceNo && d.type === 'invoice');
+      if (matchingInv) {
+        matchingInv.paymentStatus = 'ชำระเงินแล้ว';
       }
-    })
-    .finally(() => {
-      syncBtn.innerHTML = origHtml;
-      syncBtn.disabled = false;
-    });
-  };
+    }
 
-  if (isDriveUpload) {
-    syncBtn.textContent = 'กำลังสร้างไฟล์ PDF...';
-    const element = currentDocType === 'wht' ? document.getElementById('previewWhtDoc') : document.getElementById('previewStandardDoc');
-    generatePdfBase64(element, `${docRecord.number}.pdf`)
-      .then(base64 => {
-        performFetch(base64);
-      })
-      .catch(err => {
-        console.error('PDF creation failed, syncing without PDF', err);
-        performFetch(null);
-      });
-  } else {
-    performFetch(null);
-  }
-}
-
-// --- Save Quotation Draft Locally ---
-function saveQuotationDraftLocally() {
-  const docNo = document.getElementById('docNumber').value;
-  const dateVal = document.getElementById('docDate').value;
-  const clientName = document.getElementById('docClientName').value;
-  const clientTaxId = document.getElementById('docClientTaxId').value;
-  const clientBranch = document.getElementById('docClientBranch').value || '00000';
-  const clientAddress = document.getElementById('docClientAddress').value || '-';
-  const phoneInput = document.getElementById('docClientPhone');
-  const clientPhone = phoneInput ? phoneInput.value : '-';
-  const detail = document.getElementById('docProjectName').value;
-  const remarks = document.getElementById('docRemarks').value || '-';
-
-  let subtotal = 0;
-  docItems.forEach(item => {
-    subtotal += (item.qty || 0) * (item.price || 0);
+    saveData();
+    setDocType(currentDocType, true);
+  })
+  .finally(() => {
+    syncBtn.innerHTML = origHtml;
+    syncBtn.disabled = false;
   });
-
-  const vatChecked = document.getElementById('docVatCheckbox').checked;
-  const whtRate = parseInt(document.getElementById('docWhtSelect').value) || 0;
-  const vat = Math.round((vatChecked ? subtotal * 0.07 : 0) * 100) / 100;
-  const wht = Math.round((subtotal * (whtRate / 100)) * 100) / 100;
-  const net = Math.round((subtotal + vat - wht) * 100) / 100;
-  const paymentTerm = document.getElementById('docPaymentTerm').value;
-  const dueDate = document.getElementById('docDueDate').value;
-
-  const signatureSelectVal = document.getElementById('doc_signatureSelect') ? document.getElementById('doc_signatureSelect').value : 'keng';
-  const signerName = document.getElementById('doc_signerName') ? document.getElementById('doc_signerName').value : '';
-  const showSeal = document.getElementById('doc_showSeal') ? document.getElementById('doc_showSeal').checked : false;
-  const showSignature = document.getElementById('doc_showSignature') ? document.getElementById('doc_showSignature').checked : false;
-
-  if (!docNo || !dateVal || !clientName || subtotal <= 0) {
-    alert('กรุณากรอกข้อมูลเอกสารและระบุรายการสินค้าให้ครบถ้วนก่อนบันทึก');
-    return;
-  }
-
-  const dateStr = formatDate(dateVal);
-  const dueDateStr = formatDate(dueDate);
-
-  const docRecord = {
-    number: docNo,
-    type: 'quotation',
-    date: dateStr,
-    name: clientName,
-    detail: detail,
-    amount: subtotal,
-    status: 'draft',
-    driveLink: '-',
-    timestamp: new Date().toLocaleString(),
-    clientBranch: clientBranch,
-    clientAddress: clientAddress,
-    clientTaxId: clientTaxId,
-    clientPhone: clientPhone,
-    vat: vat,
-    wht: wht,
-    net: net,
-    whtRate: whtRate,
-    paymentTerm: paymentTerm,
-    dueDate: dueDateStr,
-    signatureSelect: signatureSelectVal,
-    signerName: signerName,
-    showSeal: showSeal,
-    showSignature: showSignature,
-    remarks: remarks,
-    items: docItems.map(item => ({
-      desc: item.desc || "-",
-      qty: item.qty || 1,
-      unit: item.unit || "งาน",
-      price: item.price || 0,
-      worker: item.worker || "เก่ง"
-    }))
-  };
-
-  dbDocs = dbDocs.filter(d => d.number !== docNo);
-  dbDocs.unshift(docRecord);
-
-  saveData();
-  setDocType(currentDocType, true);
-  alert("บันทึกแบบร่างใบเสนอราคาเลขที่ '" + docNo + "' ลงเครื่องเรียบร้อยแล้วแก");
 }
 
 // --- Sync Pending Queue (ADVISORY) ---
@@ -3401,9 +3241,7 @@ function renderDashboard() {
       tbody.innerHTML = dbDocs.slice(0, 8).map(d => `
         <tr>
           <td>${d.date}</td>
-          <td class="mono" style="font-weight: 700;">
-            ${d.driveLink && d.driveLink !== '-' ? `<a href="${d.driveLink}" target="_blank" style="color: var(--accent-color); text-decoration: underline;">${escapeHtml(d.number)}</a>` : escapeHtml(d.number)}
-          </td>
+          <td class="mono" style="font-weight: 700;">${d.number}</td>
           <td><span class="badge" style="background-color: ${d.type === 'wht' ? '#fee2e2' : (d.type === 'expense' ? '#ffedd5' : '#dcfce7')}; color: ${d.type === 'wht' ? '#991b1b' : (d.type === 'expense' ? '#c2410c' : '#166534')}; border: 1px solid var(--border-color);">${d.type.toUpperCase()}</span></td>
           <td>
             <div>${escapeHtml(d.name)}</div>
@@ -3411,7 +3249,7 @@ function renderDashboard() {
           </td>
           <td style="text-align:right; font-weight:700;">฿${d.amount.toLocaleString('th-TH', { minimumFractionDigits: 2 })}</td>
           <td style="text-align:center;">
-            <span class="badge ${d.status}">${d.status === 'synced' ? 'ซิงค์แล้ว' : (d.status === 'pending_approval' ? 'รออนุมัติ' : (d.status === 'draft' ? 'แบบร่าง' : 'ค้างส่ง'))}</span>
+            <span class="badge ${d.status}">${d.status === 'synced' ? 'ซิงค์แล้ว' : (d.status === 'pending_approval' ? 'รออนุมัติ' : 'ค้างส่ง')}</span>
           </td>
         </tr>
       `).join('');
@@ -4123,12 +3961,9 @@ function renderExpenseList() {
           <span class="badge ${doc.status}">${doc.status === 'synced' ? 'ซิงค์แล้ว' : (doc.status === 'pending_approval' ? 'รออนุมัติ' : 'ค้างส่ง')}</span>
         </td>
         <td style="text-align:center;">
-          <div style="display:flex; gap:6px; justify-content:center; align-items:center;">
+          <div style="display:flex; gap:6px; justify-content:center;">
             ${doc.status === 'pending_approval' ? `
               <button class="btn-primary" onclick="approveExpense(${globalIdx})" style="padding: 4px 8px; font-size:11px; box-shadow: 2px 2px 0 var(--border-color); font-weight:700; background:#f97316; border-color:#f97316; color:#fff;">อนุมัติจ่าย</button>
-            ` : ''}
-            ${doc.driveLink && doc.driveLink !== '-' ? `
-              <a href="${doc.driveLink}" target="_blank" class="btn-primary" style="padding: 4px 8px; font-size:11px; box-shadow: 2px 2px 0 var(--border-color); font-weight:700; text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">เปิด PDF</a>
             ` : ''}
             <button class="btn-secondary" onclick="printPaymentVoucher(${globalIdx})" style="padding: 4px 8px; font-size:11px; box-shadow: 2px 2px 0 var(--border-color); font-weight:700;">
               <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width: 12px; height: 12px; stroke-width: 2.5; display: inline-block; vertical-align: middle; margin-right: 4px;">
@@ -4448,77 +4283,21 @@ function saveExpense() {
       submitBtn.textContent = 'กำลังซิงค์...';
       submitBtn.disabled = true;
 
-      const pdfBehavior = safeStorage.getItem('ghn168_pdf_behavior') || 'download_drive';
-      const driveUrl = (safeStorage.getItem('ghn168_company_drive_url') || '').trim();
-      let parentFolderId = null;
-      if (driveUrl) {
-        if (driveUrl.includes('/folders/')) {
-          const match = driveUrl.match(/\/folders\/([a-zA-Z0-9-_]+)/);
-          parentFolderId = match ? match[1] : null;
-        } else if (!driveUrl.includes('/') && driveUrl.length > 10) {
-          parentFolderId = driveUrl;
-        }
-      }
-
-      const isDriveUpload = (pdfBehavior === 'download_drive' || pdfBehavior === 'drive_only') && parentFolderId;
-
-      const performFetch = (base64Data = null) => {
-        if (base64Data) {
-          payload.pdfBase64 = base64Data;
-          payload.pdfName = `${docRecord.number}.pdf`;
-          payload.docType = 'pv'; // pv or expense
-          payload.parentFolderId = parentFolderId;
-        }
-
-        fetch(scriptUrl, {
-          method: 'POST',
-          mode: 'cors',
-          headers: { 'Content-Type': 'text/plain' },
-          body: JSON.stringify(payload)
-        })
-        .then(res => {
-          if (!res.ok) throw new Error(`HTTP ${res.status}`);
-          return res.json();
-        })
-        .then(res => {
-          if (res.status === 'success') {
-            let alertMsg = `บันทึกและซิงค์รายจ่ายลง Google Sheets สำเร็จแล้ว\nข้อความ: ${res.message}`;
-            if (isDriveUpload && !res.pdfUrl) {
-              alertMsg += `\n\n[คำเตือน]: อัปโหลด PDF ขึ้น Google Drive ล้มเหลว! กรุณาตรวจสอบการตั้งค่า URL โฟลเดอร์ในแท็บการตั้งค่า หรือตรวจสอบว่าคุณได้กด Deploy Apps Script เป็นเวอร์ชันล่าสุดแล้ว`;
-            }
-            alert(alertMsg);
-            
-            docRecord.status = 'synced';
-            if (res.pdfUrl) {
-              docRecord.driveLink = res.pdfUrl;
-            }
-
-            if (isNew) {
-              dbDocs.unshift(docRecord);
-            } else {
-              dbDocs[editingDocIndex] = docRecord;
-              editingDocIndex = null;
-            }
-
-            saveData();
-            renderExpenseList();
-            document.getElementById('addExpenseModal').classList.remove('active');
-
-            // Download PDF locally if behavior is download_drive
-            if (base64Data && pdfBehavior === 'download_drive') {
-              downloadBase64Pdf(base64Data, `${docRecord.number}.pdf`);
-            }
-          } else {
-            alert(`ซิงค์ล้มเหลว: ${res.message}`);
-            submitBtn.innerHTML = origHtml;
-            submitBtn.disabled = false;
-          }
-        })
-        .catch(err => {
-          console.error(err);
-          alert(`เกิดข้อผิดพลาดในการเชื่อมต่อสคริปต์: ${err.toString()}\n\nแต่ระบบได้บันทึกข้อมูลแบบออฟไลน์ (Pending) ไว้ในเครื่องเรียบร้อยแล้ว`);
+      fetch(scriptUrl, {
+        method: 'POST',
+        mode: 'cors',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify(payload)
+      })
+      .then(res => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
+      .then(res => {
+        if (res.status === 'success') {
+          alert(`บันทึกและซิงค์รายจ่ายลง Google Sheets สำเร็จแล้ว\nข้อความ: ${res.message}`);
           
-          docRecord.status = 'pending';
+          docRecord.status = 'synced';
 
           if (isNew) {
             dbDocs.unshift(docRecord);
@@ -4530,23 +4309,29 @@ function saveExpense() {
           saveData();
           renderExpenseList();
           document.getElementById('addExpenseModal').classList.remove('active');
-        });
-      };
+        } else {
+          alert(`ซิงค์ล้มเหลว: ${res.message}`);
+          submitBtn.innerHTML = origHtml;
+          submitBtn.disabled = false;
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        alert(`เกิดข้อผิดพลาดในการเชื่อมต่อสคริปต์: ${err.toString()}\n\nแต่ระบบได้บันทึกข้อมูลแบบออฟไลน์ (Pending) ไว้ในเครื่องเรียบร้อยแล้ว`);
+        
+        docRecord.status = 'pending';
 
-      if (isDriveUpload) {
-        submitBtn.textContent = 'กำลังสร้างไฟล์ PDF...';
-        populatePvPrintPaper(docRecord);
-        generatePdfBase64(document.getElementById('printPvPaper'), `${docRecord.number}.pdf`)
-          .then(base64 => {
-            performFetch(base64);
-          })
-          .catch(err => {
-            console.error('PDF creation for PV failed, syncing without PDF', err);
-            performFetch(null);
-          });
-      } else {
-        performFetch(null);
-      }
+        if (isNew) {
+          dbDocs.unshift(docRecord);
+        } else {
+          dbDocs[editingDocIndex] = docRecord;
+          editingDocIndex = null;
+        }
+
+        saveData();
+        renderExpenseList();
+        document.getElementById('addExpenseModal').classList.remove('active');
+      });
     } else {
       // Offline Save directly
       alert('ไม่พบการเชื่อมต่อชีต ระบบได้ทำการบันทึกข้อมูลแบบออฟไลน์ไว้ในเครื่องชั่วคราว');
@@ -4684,7 +4469,25 @@ function editExpense(index) {
 
 function printPaymentVoucher(index) {
   const doc = dbDocs[index];
-  populatePvPrintPaper(doc);
+  
+  document.getElementById('pvPrintNo').textContent = cleanDocNo(doc.number);
+  document.getElementById('pvPrintDate').textContent = doc.date;
+  document.getElementById('pvPrintPayee').textContent = doc.name;
+  document.getElementById('pvPrintPayeeTaxId').textContent = doc.payeeTaxId || '-';
+  
+  document.getElementById('pvPrintDesc').textContent = `${doc.category || 'รายจ่าย'}: ${doc.desc || ''}`;
+  document.getElementById('pvPrintNote').textContent = `บันทึกรายการจ่าย: ${doc.timestamp || ''}`;
+  
+  const base = doc.baseAmount || doc.amount;
+  const vat = doc.vatAmount || 0;
+  const wht = doc.whtAmount || 0;
+  const net = doc.amount;
+
+  document.getElementById('pvPrintBaseAmount').textContent = `฿${base.toLocaleString('th-TH', { minimumFractionDigits: 2 })}`;
+  document.getElementById('pvPrintVat').textContent = `฿${vat.toLocaleString('th-TH', { minimumFractionDigits: 2 })}`;
+  document.getElementById('pvPrintWht').textContent = `฿${wht.toLocaleString('th-TH', { minimumFractionDigits: 2 })}`;
+  document.getElementById('pvPrintNet').textContent = `฿${net.toLocaleString('th-TH', { minimumFractionDigits: 2 })}`;
+  document.getElementById('pvPrintNetText').textContent = thaiBahtText(net);
 
   // Set printing class
   document.body.classList.add('printing-pv');
@@ -4702,13 +4505,6 @@ function exportPdfClientSide() {
   
   if (!element) return;
   
-  const previewPanel = document.querySelector('.doc-preview-panel');
-  let originalPanelScale = '';
-  if (previewPanel) {
-    originalPanelScale = previewPanel.style.getPropertyValue('--preview-scale-factor') || '';
-    previewPanel.style.setProperty('--preview-scale-factor', '1');
-  }
-
   // บันทึกสไตล์ดั้งเดิมของ body
   const originalBodyZoom = document.body.style.zoom;
   const originalBodyHeight = document.body.style.height;
@@ -4722,7 +4518,6 @@ function exportPdfClientSide() {
   const originalElementMinHeight = element.style.minHeight;
   const originalElementMaxHeight = element.style.maxHeight;
   const originalElementOverflow = element.style.overflow;
-  const originalElementScale = element.style.getPropertyValue('--preview-scale-factor');
   
   // ปรับสไตล์ body ชั่วขณะตอนดาวน์โหลด
   document.body.style.zoom = '1';
@@ -4733,7 +4528,10 @@ function exportPdfClientSide() {
   // ปรับสไตล์ element ชั่วขณะตอนดาวน์โหลด
   element.style.zoom = '1';
   element.style.boxShadow = 'none';
-  element.style.setProperty('--preview-scale-factor', '1');
+  element.style.minHeight = 'auto';
+  element.style.maxHeight = 'none';
+  element.style.height = 'auto';
+  element.style.overflow = 'visible';
   
   // วัด scrollHeight จาก element จริง และคำนวณจำนวนหน้า N หน้า
   const scrollHeight = element.scrollHeight;
@@ -4789,20 +4587,6 @@ function exportPdfClientSide() {
     element.style.maxHeight = originalElementMaxHeight;
     element.style.height = originalElementHeight;
     element.style.overflow = originalElementOverflow;
-    if (originalElementScale) {
-      element.style.setProperty('--preview-scale-factor', originalElementScale);
-    } else {
-      element.style.removeProperty('--preview-scale-factor');
-    }
-
-    // คืนค่า --preview-scale-factor ของ .doc-preview-panel เดิม
-    if (previewPanel) {
-      if (originalPanelScale) {
-        previewPanel.style.setProperty('--preview-scale-factor', originalPanelScale);
-      } else {
-        previewPanel.style.removeProperty('--preview-scale-factor');
-      }
-    }
     
     btn.disabled = false;
     btn.innerHTML = originalBtnText;
@@ -6344,173 +6128,3 @@ window.deleteRetDeduction = deleteRetDeduction;
 window.updateRetDeduction = updateRetDeduction;
 window.calculateRetTotals = calculateRetTotals;
 window.saveRetentionUpdate = saveRetentionUpdate;
-
-// --- PDF Helpers for Google Drive Integration & Client-side Downloads ---
-function generatePdfBase64(element, filename) {
-  return new Promise((resolve, reject) => {
-    if (!element) {
-      reject(new Error('Element not found'));
-      return;
-    }
-    
-    const previewPanel = document.querySelector('.doc-preview-panel');
-    let originalPanelScale = '';
-    if (previewPanel) {
-      originalPanelScale = previewPanel.style.getPropertyValue('--preview-scale-factor') || '';
-      previewPanel.style.setProperty('--preview-scale-factor', '1');
-    }
-
-    // บันทึกสไตล์ดั้งเดิมของ body
-    const originalBodyZoom = document.body.style.zoom;
-    const originalBodyHeight = document.body.style.height;
-    const originalBodyWidth = document.body.style.width;
-    const originalBodyOverflow = document.body.style.overflow;
-    
-    // บันทึกสไตล์ดั้งเดิมของ element
-    const originalElementZoom = element.style.zoom;
-    const originalElementBoxShadow = element.style.boxShadow;
-    const originalElementHeight = element.style.height;
-    const originalElementMinHeight = element.style.minHeight;
-    const originalElementMaxHeight = element.style.maxHeight;
-    const originalElementOverflow = element.style.overflow;
-    const originalElementDisplay = element.style.display;
-    const originalElementScale = element.style.getPropertyValue('--preview-scale-factor');
-    
-    // จัดการกรณีธาตุที่ซ่อนอยู่ (display === 'none')
-    const computedStyle = window.getComputedStyle(element);
-    const isHidden = computedStyle.display === 'none' || originalElementDisplay === 'none';
-    if (isHidden) {
-      element.style.display = 'block';
-    }
-    
-    // ปรับสไตล์ body ชั่วขณะตอนดาวน์โหลด
-    document.body.style.zoom = '1';
-    document.body.style.height = 'auto';
-    document.body.style.width = 'auto';
-    document.body.style.overflow = 'visible';
-    
-    // ปรับสไตล์ element ชั่วขณะ
-    element.style.zoom = '1';
-    element.style.boxShadow = 'none';
-    element.style.setProperty('--preview-scale-factor', '1');
-    
-    // วัด scrollHeight จาก element จริง และคำนวณจำนวนหน้า N หน้า
-    const scrollHeight = element.scrollHeight;
-    const N = Math.max(1, Math.ceil(scrollHeight / 1122.5));
-    const clampedHeight = `${N * 295}mm`;
-    
-    // ล็อกความสูงและซ่อนส่วนล้น
-    element.style.minHeight = clampedHeight;
-    element.style.maxHeight = clampedHeight;
-    element.style.height = clampedHeight;
-    element.style.overflow = 'hidden';
-    
-    const opt = {
-      margin: 0,
-      filename: filename || 'document.pdf',
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { 
-        scale: 2, 
-        useCORS: true, 
-        logging: false,
-        windowWidth: 800
-      },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-    };
-    
-    setTimeout(() => {
-      html2pdf().set(opt).from(element).output('datauristring').then((dataUri) => {
-        cleanup();
-        try {
-          const parts = dataUri.split(',');
-          if (parts.length > 1) {
-            resolve(parts[1]); // คืนค่าเฉพาะตัว base64
-          } else {
-            reject(new Error('Invalid data URI format'));
-          }
-        } catch (e) {
-          reject(e);
-        }
-      }).catch((err) => {
-        cleanup();
-        reject(err);
-      });
-    }, 350);
-    
-    function cleanup() {
-      // คืนค่าสไตล์ดั้งเดิมทั้งหมดของ body
-      document.body.style.zoom = originalBodyZoom;
-      document.body.style.height = originalBodyHeight;
-      document.body.style.width = originalBodyWidth;
-      document.body.style.overflow = originalBodyOverflow;
-      
-      // คืนค่าสไตล์ดั้งเดิมทั้งหมดของ element
-      element.style.zoom = originalElementZoom;
-      element.style.boxShadow = originalElementBoxShadow;
-      element.style.minHeight = originalElementMinHeight;
-      element.style.maxHeight = originalElementMaxHeight;
-      element.style.height = originalElementHeight;
-      element.style.overflow = originalElementOverflow;
-      if (originalElementScale) {
-        element.style.setProperty('--preview-scale-factor', originalElementScale);
-      } else {
-        element.style.removeProperty('--preview-scale-factor');
-      }
-
-      // คืนค่า --preview-scale-factor ของ .doc-preview-panel เดิม
-      if (previewPanel) {
-        if (originalPanelScale) {
-          previewPanel.style.setProperty('--preview-scale-factor', originalPanelScale);
-        } else {
-          previewPanel.style.removeProperty('--preview-scale-factor');
-        }
-      }
-      
-      if (isHidden) {
-        element.style.display = originalElementDisplay;
-      }
-    }
-  });
-}
-
-function downloadBase64Pdf(base64Data, filename) {
-  const byteCharacters = atob(base64Data);
-  const byteNumbers = new Array(byteCharacters.length);
-  for (let i = 0; i < byteCharacters.length; i++) {
-    byteNumbers[i] = byteCharacters.charCodeAt(i);
-  }
-  const byteArray = new Uint8Array(byteNumbers);
-  const blob = new Blob([byteArray], { type: 'application/pdf' });
-  const url = URL.createObjectURL(blob);
-  
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = filename || 'document.pdf';
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  URL.revokeObjectURL(url);
-}
-
-function populatePvPrintPaper(doc) {
-  if (!doc) return;
-  document.getElementById('pvPrintNo').textContent = cleanDocNo(doc.number);
-  document.getElementById('pvPrintDate').textContent = doc.date;
-  document.getElementById('pvPrintPayee').textContent = doc.name;
-  document.getElementById('pvPrintPayeeTaxId').textContent = doc.payeeTaxId || '-';
-  
-  document.getElementById('pvPrintDesc').textContent = `${doc.category || 'รายจ่าย'}: ${doc.desc || ''}`;
-  document.getElementById('pvPrintNote').textContent = `บันทึกรายการจ่าย: ${doc.timestamp || ''}`;
-  
-  const base = doc.baseAmount || doc.amount;
-  const vat = doc.vatAmount || 0;
-  const wht = doc.whtAmount || 0;
-  const net = doc.amount;
-
-  document.getElementById('pvPrintBaseAmount').textContent = `฿${base.toLocaleString('th-TH', { minimumFractionDigits: 2 })}`;
-  document.getElementById('pvPrintVat').textContent = `฿${vat.toLocaleString('th-TH', { minimumFractionDigits: 2 })}`;
-  document.getElementById('pvPrintWht').textContent = `฿${wht.toLocaleString('th-TH', { minimumFractionDigits: 2 })}`;
-  document.getElementById('pvPrintNet').textContent = `฿${net.toLocaleString('th-TH', { minimumFractionDigits: 2 })}`;
-  document.getElementById('pvPrintNetText').textContent = thaiBahtText(net);
-}
-
