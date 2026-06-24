@@ -4505,6 +4505,9 @@ function exportPdfClientSide() {
   
   if (!element) return;
   
+  const originalBodyOverflow = document.body.style.overflow;
+  document.body.style.overflow = 'hidden';
+  
   const isDark = document.body.classList.contains('dark-mode');
   const overlayColor = isDark ? 'rgba(18, 19, 21, 0.99)' : 'rgba(241, 245, 249, 0.99)';
   
@@ -4521,11 +4524,12 @@ function exportPdfClientSide() {
   
   // โคลนเอกสารเพื่อแยกเรนเดอร์อิสระในตำแหน่งที่ WebKit บังคับเรนเดอร์
   const clone = element.cloneNode(true);
-  clone.style.position = 'fixed';
-  clone.style.zIndex = '99998';
+  clone.style.position = 'relative';
+  clone.style.zIndex = '1';
   clone.style.left = '0';
   clone.style.top = '0';
   clone.style.width = '210mm';
+  clone.style.margin = '0 auto';
   clone.style.zoom = '1';
   clone.style.boxShadow = 'none';
   clone.style.minHeight = 'auto';
@@ -4591,9 +4595,10 @@ function exportPdfClientSide() {
       alert('เกิดข้อผิดพลาดในการสร้างไฟล์ PDF');
       cleanup();
     });
-  }, 300);
+  }, 350);
   
   function cleanup() {
+    document.body.style.overflow = originalBodyOverflow;
     btn.disabled = false;
     btn.innerHTML = originalBtnText;
     if (document.body.contains(clone)) {
