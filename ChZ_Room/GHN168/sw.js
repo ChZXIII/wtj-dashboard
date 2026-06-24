@@ -1,9 +1,9 @@
-const CACHE_NAME = 'ghn168-app-v72';
+const CACHE_NAME = 'ghn168-app-v73';
 const ASSETS = [
   'index.html',
-  'style.css?v=72',
-  'app.js?v=72',
-  'manifest.json?v=72',
+  'style.css?v=73',
+  'app.js?v=73',
+  'manifest.json?v=73',
   'assets/ghn_app_icon.png',
   'assets/logo.png',
   'assets/sidebar_logo_dark.png',
@@ -43,7 +43,7 @@ self.addEventListener('fetch', (e) => {
         fetch(e.request).then((networkResponse) => {
           if (networkResponse.status === 200) {
             caches.open(CACHE_NAME).then((cache) => {
-              cache.put(e.request, networkResponse);
+              cache.put(e.request, networkResponse.clone());
             });
           }
         }).catch(() => {});

@@ -743,10 +743,15 @@ textarea.form-control {
   gap: 20px;
   position: relative;
   font-size: 13px;
+  font-family: 'Outfit', 'Prompt', 'IBM Plex Sans Thai', sans-serif !important;
   line-height: 1.4;
   margin: 0 auto;
   zoom: var(--preview-scale-factor, 1);
   flex-shrink: 0;
+}
+
+.wht-card-paper {
+  font-family: 'Outfit', 'Prompt', 'IBM Plex Sans Thai', sans-serif !important;
 }
 
 .doc-header-grid {
@@ -989,6 +994,7 @@ textarea.form-control {
   font-size: 11px;
   zoom: var(--preview-scale-factor, 1);
   flex-shrink: 0;
+  font-family: 'Outfit', 'Prompt', 'IBM Plex Sans Thai', sans-serif !important;
 }
 
 .wht-header-box {
