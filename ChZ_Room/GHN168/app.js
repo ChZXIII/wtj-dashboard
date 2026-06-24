@@ -4505,91 +4505,55 @@ function exportPdfClientSide() {
   
   if (!element) return;
   
-  const viewportMeta = document.querySelector('meta[name="viewport"]');
-  const originalViewport = viewportMeta ? viewportMeta.getAttribute('content') : '';
+  // บันทึกสไตล์ดั้งเดิมของ body
+  const originalBodyZoom = document.body.style.zoom;
+  const originalBodyHeight = document.body.style.height;
   const originalBodyWidth = document.body.style.width;
-  
-  if (window.innerWidth < 800) {
-    if (viewportMeta) {
-      viewportMeta.setAttribute('content', 'width=800, initial-scale=1.0, maximum-scale=1.0');
-    }
-    document.body.style.width = '800px';
-  }
-  
   const originalBodyOverflow = document.body.style.overflow;
-  document.body.style.overflow = 'hidden';
   
-  const isDark = document.body.classList.contains('dark-mode');
-  const overlayColor = isDark ? 'rgba(18, 19, 21, 0.99)' : 'rgba(241, 245, 249, 0.99)';
+  // บันทึกสไตล์ดั้งเดิมของ element
+  const originalElementZoom = element.style.zoom;
+  const originalElementBoxShadow = element.style.boxShadow;
+  const originalElementHeight = element.style.height;
+  const originalElementMinHeight = element.style.minHeight;
+  const originalElementMaxHeight = element.style.maxHeight;
+  const originalElementOverflow = element.style.overflow;
   
-  // สร้าง translucent overlay เพื่อแก้ปัญหา Safari occlusion culling
-  const overlay = document.createElement('div');
-  overlay.style.position = 'fixed';
-  overlay.style.left = '0';
-  overlay.style.top = '0';
-  overlay.style.width = '100vw';
-  overlay.style.height = '100vh';
-  overlay.style.backgroundColor = overlayColor;
-  overlay.style.zIndex = '99997';
-  document.body.appendChild(overlay);
+  // ปรับสไตล์ body ชั่วขณะตอนดาวน์โหลด
+  document.body.style.zoom = '1';
+  document.body.style.height = 'auto';
+  document.body.style.width = 'auto';
+  document.body.style.overflow = 'visible';
   
-  // โคลนเอกสารเพื่อแยกเรนเดอร์อิสระในตำแหน่งที่ WebKit บังคับเรนเดอร์
-  const clone = element.cloneNode(true);
-  clone.style.position = 'relative';
-  clone.style.zIndex = '1';
-  clone.style.left = '0';
-  clone.style.top = '0';
-  clone.style.width = '210mm';
-  clone.style.margin = '0 auto';
-  clone.style.zoom = '1';
-  clone.style.boxShadow = 'none';
-  clone.style.minHeight = 'auto';
-  clone.style.maxHeight = 'none';
-  clone.style.height = 'auto';
-  clone.style.overflow = 'visible';
-  clone.style.transform = 'translate3d(0,0,0)';
-  clone.style.webkitTransform = 'translate3d(0,0,0)';
+  // ปรับสไตล์ element ชั่วขณะตอนดาวน์โหลด
+  element.style.zoom = '1';
+  element.style.boxShadow = 'none';
+  element.style.minHeight = 'auto';
+  element.style.maxHeight = 'none';
+  element.style.height = 'auto';
+  element.style.overflow = 'visible';
   
-  document.body.appendChild(clone);
-  
-  // บังคับ Reflow
-  const _forceReflow = clone.offsetHeight;
-  
-  const scrollHeight = clone.scrollHeight;
+  // วัด scrollHeight จาก element จริง และคำนวณจำนวนหน้า N หน้า
+  const scrollHeight = element.scrollHeight;
   const N = Math.max(1, Math.ceil(scrollHeight / 1122.5));
   const clampedHeight = `${N * 295}mm`;
   
-  clone.style.minHeight = clampedHeight;
-  clone.style.maxHeight = clampedHeight;
-  clone.style.height = clampedHeight;
-  clone.style.overflow = 'hidden';
+  // ล็อกความสูงและซ่อนส่วนล้น
+  element.style.minHeight = clampedHeight;
+  element.style.maxHeight = clampedHeight;
+  element.style.height = clampedHeight;
+  element.style.overflow = 'hidden';
   
-  // คำนวณ optimalScale ป้องกัน Safari canvas memory crash
-  const heightInPx = N * 295 * 3.7795;
-  let optimalScale = 2;
-  if (optimalScale * heightInPx > 4000) {
-    optimalScale = Math.max(1, Math.floor((4000 / heightInPx) * 10) / 10);
-  }
-  
+  // ตั้งค่าตัวเลือก html2canvas ใน opt
   const opt = {
     margin: 0,
     filename: document.title + '.pdf',
     image: { type: 'jpeg', quality: 0.98 },
     html2canvas: { 
-      scale: optimalScale, 
+      scale: 2, 
       useCORS: true, 
-      logging: true,
-      windowWidth: 800,
-      onclone: (clonedDoc) => {
-        const paper = clonedDoc.querySelector('.doc-paper') || clonedDoc.querySelector('.wht-card-paper');
-        if (paper) {
-          paper.style.setProperty('font-family', '"Sukhumvit Set", "Thonburi", -apple-system, sans-serif', 'important');
-        }
-        const allElements = clonedDoc.querySelectorAll('*');
-        allElements.forEach(el => {
-          el.style.setProperty('font-family', '"Sukhumvit Set", "Thonburi", -apple-system, sans-serif', 'important');
-        });
-      }
+      logging: false,
+      windowWidth: 800
     },
     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
   };
@@ -4599,16 +4563,8 @@ function exportPdfClientSide() {
   btn.disabled = true;
   btn.innerHTML = 'กำลังสร้างไฟล์ PDF...';
   
-  const spinnerStyle = document.createElement('style');
-  spinnerStyle.innerHTML = `
-    .pdf-loading-spinner {
-      animation: spin 1s linear infinite;
-    }
-  `;
-  document.head.appendChild(spinnerStyle);
-  
   setTimeout(() => {
-    html2pdf().set(opt).from(clone).save().then(() => {
+    html2pdf().set(opt).from(element).save().then(() => {
       cleanup();
     }).catch(err => {
       console.error('PDF export failed:', err);
@@ -4618,22 +4574,22 @@ function exportPdfClientSide() {
   }, 350);
   
   function cleanup() {
-    if (viewportMeta) {
-      viewportMeta.setAttribute('content', originalViewport);
-    }
+    // คืนค่าสไตล์ดั้งเดิมทั้งหมดของ body
+    document.body.style.zoom = originalBodyZoom;
+    document.body.style.height = originalBodyHeight;
     document.body.style.width = originalBodyWidth;
     document.body.style.overflow = originalBodyOverflow;
+    
+    // คืนค่าสไตล์ดั้งเดิมทั้งหมดของ element
+    element.style.zoom = originalElementZoom;
+    element.style.boxShadow = originalElementBoxShadow;
+    element.style.minHeight = originalElementMinHeight;
+    element.style.maxHeight = originalElementMaxHeight;
+    element.style.height = originalElementHeight;
+    element.style.overflow = originalElementOverflow;
+    
     btn.disabled = false;
     btn.innerHTML = originalBtnText;
-    if (document.body.contains(clone)) {
-      document.body.removeChild(clone);
-    }
-    if (document.body.contains(overlay)) {
-      document.body.removeChild(overlay);
-    }
-    if (document.head.contains(spinnerStyle)) {
-      document.head.removeChild(spinnerStyle);
-    }
   }
 }
 
