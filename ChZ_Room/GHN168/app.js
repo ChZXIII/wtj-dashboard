@@ -4508,7 +4508,8 @@ function exportPdfClientSide() {
   // โคลนเอกสารเพื่อแยกเรนเดอร์อิสระนอกจอ
   const clone = element.cloneNode(true);
   clone.style.position = 'absolute';
-  clone.style.left = '-9999px';
+  clone.style.left = '0';
+  clone.style.zIndex = '-9999';
   clone.style.top = '0';
   clone.style.zoom = '1';
   clone.style.boxShadow = 'none';
