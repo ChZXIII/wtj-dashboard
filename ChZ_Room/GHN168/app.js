@@ -4727,7 +4727,7 @@ function generatePdfBase64(element, filename) {
         cleanup();
         reject(err);
       });
-    }, 100);
+    }, 500);
   });
 }
 
