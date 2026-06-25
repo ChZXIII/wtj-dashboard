@@ -188,6 +188,58 @@ function doPost(e) {
       })).setMimeType(ContentService.MimeType.JSON);
     }
     
+    if (data.type === "upload_html") {
+      var htmlContent = data.htmlContent;
+      var pdfName = data.pdfName;
+      var docType = data.docType;
+      var parentFolderId = data.parentFolderId;
+      var pdfShiftApiKey = data.pdfShiftApiKey;
+      
+      if (!htmlContent) {
+        return ContentService.createTextOutput(JSON.stringify({
+          "status": "error",
+          "message": "ไม่พบ htmlContent ในข้อมูลที่ส่งเข้ามานะแก!"
+        })).setMimeType(ContentService.MimeType.JSON);
+      }
+      
+      if (!parentFolderId) {
+        return ContentService.createTextOutput(JSON.stringify({
+          "status": "error",
+          "message": "ไม่พบ parentFolderId ในข้อมูลที่ส่งเข้ามานะแก!"
+        })).setMimeType(ContentService.MimeType.JSON);
+      }
+      
+      if (!pdfShiftApiKey) {
+        return ContentService.createTextOutput(JSON.stringify({
+          "status": "error",
+          "message": "ไม่พบ PDFShift API Key ในข้อมูลที่ส่งเข้ามานะแก!"
+        })).setMimeType(ContentService.MimeType.JSON);
+      }
+      
+      var convertResult = convertHtmlToPdfWithPdfShift(htmlContent, pdfShiftApiKey, pdfName);
+      if (!convertResult.success) {
+        return ContentService.createTextOutput(JSON.stringify({
+          "status": "error",
+          "message": "การแปลง HTML เป็น PDF ด้วย PDFShift API ล้มเหลวนะแก! รายละเอียด: " + convertResult.error
+        })).setMimeType(ContentService.MimeType.JSON);
+      }
+      
+      var pdfBlob = convertResult.blob;
+      var pdfUrl = saveBlobToFolder(pdfBlob, docType, parentFolderId);
+      if (!pdfUrl) {
+        return ContentService.createTextOutput(JSON.stringify({
+          "status": "error",
+          "message": "เซฟไฟล์ PDF ลงโฟลเดอร์ล้มเหลว (อาจเกิดจากสิทธิ์เข้าถึง หรือโฟลเดอร์ไม่ถูกต้องนะแก!)"
+        })).setMimeType(ContentService.MimeType.JSON);
+      }
+      
+      return ContentService.createTextOutput(JSON.stringify({
+        "status": "success",
+        "message": "อัปโหลดไฟล์ PDF (ผ่าน PDFShift) ขึ้น Google Drive เรียบร้อยแล้วแก!",
+        "pdfUrl": pdfUrl
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+    
     var spreadsheetId = data.spreadsheetId;
     
     if (!spreadsheetId) {
@@ -734,6 +786,78 @@ function uploadPdfToDrive(pdfBase64, pdfName, docType, parentFolderId) {
   var decoded = Utilities.base64Decode(pdfBase64);
   var blob = Utilities.newBlob(decoded, contentType, pdfName);
   var file = uploadFolder.createFile(blob);
-  file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+  try {
+    file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+  } catch (sharingError) {
+    Logger.log("ไม่สามารถตั้งค่าการแชร์ไฟล์ได้เนื่องจากข้อจำกัดสิทธิ์ของโดเมนองค์กร: " + sharingError.toString());
+  }
+  return file.getUrl();
+}
+
+function convertHtmlToPdfWithPdfShift(htmlContent, apiKey, filename) {
+  var url = "https://api.pdfshift.io/v3/convert/pdf";
+  
+  var payload = {
+    source: htmlContent,
+    sandbox: false
+  };
+  
+  var options = {
+    method: "post",
+    contentType: "application/json",
+    headers: {
+      "X-API-Key": apiKey
+    },
+    payload: JSON.stringify(payload),
+    muteHttpExceptions: true
+  };
+  
+  try {
+    var response = UrlFetchApp.fetch(url, options);
+    var code = response.getResponseCode();
+    var responseText = response.getContentText();
+    
+    if (code === 200 || code === 201) {
+      var blob = response.getBlob();
+      blob.setName(filename || "document.pdf");
+      return { success: true, blob: blob };
+    } else {
+      return { success: false, error: "HTTP Code: " + code + ", Details: " + responseText };
+    }
+  } catch (e) {
+    return { success: false, error: "Network/Script Exception: " + e.toString() };
+  }
+}
+
+function saveBlobToFolder(blob, docType, parentFolderId) {
+  if (!blob || !parentFolderId) return null;
+  var parentFolder = DriveApp.getFolderById(parentFolderId);
+  if (!parentFolder) return null;
+  
+  var prefix = "";
+  if (docType === "quotation") prefix = "01";
+  else if (docType === "invoice") prefix = "02";
+  else if (docType === "receipt") prefix = "03";
+  else if (docType === "wht") prefix = "04";
+  else if (docType === "expense" || docType === "pv") prefix = "05";
+  
+  var subFolder = null;
+  var folders = parentFolder.getFolders();
+  while (folders.hasNext()) {
+    var folder = folders.next();
+    var name = folder.getName();
+    if (name.indexOf(prefix + "_") === 0 || name.indexOf(prefix + " ") === 0 || name === prefix) {
+      subFolder = folder;
+      break;
+    }
+  }
+  
+  var uploadFolder = subFolder || parentFolder;
+  var file = uploadFolder.createFile(blob);
+  try {
+    file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+  } catch (sharingError) {
+    Logger.log("ไม่สามารถตั้งค่าการแชร์ไฟล์ได้เนื่องจากข้อจำกัดสิทธิ์ของโดเมนองค์กร: " + sharingError.toString());
+  }
   return file.getUrl();
 }
