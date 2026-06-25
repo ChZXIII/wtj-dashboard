@@ -1797,17 +1797,17 @@ function renderPaperTable() {
       <td id="prevWhtVal" style="text-align: right; color:#b91c1c;" class="bordered">-</td>
     </tr>
     <tr class="total-row">
-      <td id="prevNetTotalLabelCell" colspan="${labelColspan}" style="width: 502px; padding: 6px 0; font-size: 11px; font-weight: 800; vertical-align: middle; border: none;">
-        <div style="display: flex; align-items: center; justify-content: space-between; width: 502px; padding: 0 12px 0 25px; box-sizing: border-box;">
-          <div id="prevBahtTextContainer" class="doc-baht-text-container" style="border: 1px dashed #000000; padding: 8px; background: #f9fafb; font-weight: bold; text-align: left; border-radius: 4px; display: inline-block; line-height: 1.2; margin: 0; width: 55%; box-sizing: border-box; font-size: 11px;">
-            จำนวนเงินตัวอักษร: &nbsp;<span id="prevBahtTextVal" style="font-weight: bold;">ศูนย์บาทถ้วน</span>
-          </div>
-          <div style="font-weight: 800; white-space: nowrap; text-align: right;">
-            ยอดเงินสุทธิ / Net Total
-          </div>
-        </div>
+      <td id="prevNetTotalLabelCell" colspan="${labelColspan}" style="text-align: right; font-size: 11px; font-weight: 800; vertical-align: middle; padding: 6px 12px; border: none;">
+        ยอดเงินสุทธิ / Net Total
       </td>
       <td id="prevGrandTotalVal" style="text-align: right; font-weight:800; border: 2px solid #000000; background-color:#f3f4f6;" class="bordered">-</td>
+    </tr>
+    <tr class="total-row" id="prevBahtTextRow">
+      <td id="prevBahtTextCell" colspan="${labelColspan + 1}" style="padding: 6px 12px; border: 1px solid #d1d5db; background: #f9fafb; font-weight: bold; text-align: left; font-size: 11px; vertical-align: middle;">
+        <div id="prevBahtTextContainer" class="doc-baht-text-container" style="font-weight: bold; text-align: left; line-height: 1.2; margin: 0; width: 100%; box-sizing: border-box; font-size: 11px;">
+          จำนวนเงินตัวอักษร: &nbsp;<span id="prevBahtTextVal" style="font-weight: bold;">ศูนย์บาทถ้วน</span>
+        </div>
+      </td>
     </tr>
   `;
 
