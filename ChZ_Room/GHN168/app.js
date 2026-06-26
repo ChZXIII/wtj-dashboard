@@ -2296,8 +2296,8 @@ function syncDocPreview() {
   });
 
   // Seller & Client address format
-  document.getElementById('prevSellerAddress').innerHTML = document.getElementById('doc_sellerAddress').value.replace(/\n/g, '<br>');
-  document.getElementById('prevClientAddress').innerHTML = document.getElementById('docClientAddress').value.replace(/\n/g, '<br>');
+  document.getElementById('prevSellerAddress').innerHTML = formatAddressForPreview(document.getElementById('doc_sellerAddress').value, true);
+  document.getElementById('prevClientAddress').innerHTML = formatAddressForPreview(document.getElementById('docClientAddress').value, true);
 
   // Date format
   document.getElementById('prevDocDateVal').textContent = formatDate(document.getElementById('docDate').value);
@@ -2432,12 +2432,12 @@ function syncWhtPreview() {
   // Seller config mappings
   document.getElementById('prevWhtSellerName').textContent = document.getElementById('doc_sellerName').value;
   document.getElementById('prevWhtSellerTaxId').textContent = document.getElementById('doc_sellerTaxId').value;
-  document.getElementById('prevWhtSellerAddress').textContent = document.getElementById('doc_sellerAddress').value;
+  document.getElementById('prevWhtSellerAddress').textContent = formatAddressForPreview(document.getElementById('doc_sellerAddress').value, false);
 
   // Payee config mappings
   document.getElementById('prevWhtPayeeName').textContent = document.getElementById('whtPayeeName').value || '-';
   document.getElementById('prevWhtPayeeTaxId').textContent = document.getElementById('whtPayeeTaxId').value || '-';
-  document.getElementById('prevWhtPayeeAddress').textContent = document.getElementById('whtPayeeAddress').value || '-';
+  document.getElementById('prevWhtPayeeAddress').textContent = formatAddressForPreview(document.getElementById('whtPayeeAddress').value || '-', false);
 
   // Money table
   const gross = parseFloat(document.getElementById('whtGrossAmount').value) || 0;
@@ -2485,6 +2485,15 @@ function cleanDocNo(val) {
     }
   }
   return val;
+}
+
+function formatAddressForPreview(text, isHtml = false) {
+  if (!text) return '-';
+  let result = text.replace(/([\u0E00-\u0E7F])\s+(?=\d|[a-zA-Z])/g, '$1\u00A0');
+  if (isHtml) {
+    result = result.replace(/\n/g, '<br>');
+  }
+  return result;
 }
 
 function updateCreatorSelectFromDocNo(docNo) {
