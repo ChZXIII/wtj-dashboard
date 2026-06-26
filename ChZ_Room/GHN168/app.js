@@ -619,6 +619,73 @@ function switchView(viewId) {
   updatePageTitle();
 }
 
+// --- Quick Clients Selection Constants and Functions ---
+const DEFAULT_CLIENTS = [
+  {
+    name: 'บริษัท เอ็ม-คูล เฮ้าส์ ออแกไนซ์ จำกัด',
+    taxId: '0505568016475',
+    branch: 'สำนักงานใหญ่',
+    phone: '092-419-3953',
+    address: '21/6 หมู่ 2 ต.ริมใต้ อ.แม่ริม จ.เชียงใหม่ 50180\nE-mail : m-cool-house@hotmail.com, m.cool.house@gmail.com'
+  },
+  {
+    name: 'บริษัท ไอเด็กซ์ ไมซ์ จำกัด',
+    taxId: '0505555007201',
+    branch: '00000',
+    phone: '',
+    address: '500/60 หมู่ที่ 2 ตำบลแม่เหียะ อำเภอเมืองเชียงใหม่ จังหวัดเชียงใหม่'
+  }
+];
+
+function renderQuickClientsDropdown(selectedTaxId = '') {
+  const selectEl = document.getElementById('selQuickClient');
+  if (!selectEl) return;
+
+  let customClients = [];
+  try {
+    const raw = safeStorage.getItem('ghn168_custom_clients');
+    if (raw) {
+      customClients = JSON.parse(raw);
+    }
+  } catch (e) {
+    console.error('Error reading ghn168_custom_clients:', e);
+  }
+
+  const mergedClients = [...DEFAULT_CLIENTS];
+
+  customClients.forEach(custom => {
+    const existingIndex = mergedClients.findIndex(c => c.taxId === custom.taxId);
+    if (existingIndex !== -1) {
+      mergedClients[existingIndex] = custom;
+    } else {
+      mergedClients.push(custom);
+    }
+  });
+
+  selectEl.innerHTML = '';
+
+  const defaultOpt = document.createElement('option');
+  defaultOpt.value = '';
+  defaultOpt.textContent = '-- เลือกบริษัท / ลูกค้า --';
+  selectEl.appendChild(defaultOpt);
+
+  mergedClients.forEach(client => {
+    const opt = document.createElement('option');
+    opt.value = client.taxId;
+    opt.textContent = client.name;
+    opt.dataset.name = client.name;
+    opt.dataset.taxId = client.taxId;
+    opt.dataset.branch = client.branch || '';
+    opt.dataset.phone = client.phone || '';
+    opt.dataset.address = client.address || '';
+    
+    if (selectedTaxId && client.taxId === selectedTaxId) {
+      opt.selected = true;
+    }
+    selectEl.appendChild(opt);
+  });
+}
+
 // --- Event Listeners Setup ---
 function setupEventListeners() {
   // Auto-blur date inputs on change to close calendar picker on select
@@ -692,30 +759,92 @@ function setupEventListeners() {
   document.getElementById('btnDocTypeReceipt').addEventListener('click', () => setDocType('receipt'));
   document.getElementById('btnDocTypeWht').addEventListener('click', () => setDocType('wht'));
 
-  // Quick-select client listeners
-  const btnQuickClientMCool = document.getElementById('btnQuickClientMCool');
-  if (btnQuickClientMCool) {
-    btnQuickClientMCool.addEventListener('click', () => {
-      document.getElementById('docClientName').value = 'บริษัท เอ็ม-คูล เฮ้าส์ ออแกไนซ์ จำกัด';
-      document.getElementById('docClientTaxId').value = '0505568016475';
-      document.getElementById('docClientBranch').value = 'สำนักงานใหญ่';
-      const phoneInput = document.getElementById('docClientPhone');
-      if (phoneInput) phoneInput.value = '092-419-3953';
-      document.getElementById('docClientAddress').value = '21/6 หมู่ 2 ต.ริมใต้ อ.แม่ริม จ.เชียงใหม่ 50180\nE-mail : m-cool-house@hotmail.com, m.cool.house@gmail.com';
+  // Quick-select client listeners (Dropdown and Save Button)
+  renderQuickClientsDropdown();
+
+  const selQuickClient = document.getElementById('selQuickClient');
+  if (selQuickClient) {
+    selQuickClient.addEventListener('change', () => {
+      const selectedOption = selQuickClient.options[selQuickClient.selectedIndex];
+      if (!selectedOption || !selectedOption.value) {
+        return;
+      }
+      
+      const clientName = selectedOption.dataset.name || '';
+      const clientTaxId = selectedOption.dataset.taxId || '';
+      const clientBranch = selectedOption.dataset.branch || '';
+      const clientPhone = selectedOption.dataset.phone || '';
+      const clientAddress = selectedOption.dataset.address || '';
+
+      const nameEl = document.getElementById('docClientName');
+      const taxIdEl = document.getElementById('docClientTaxId');
+      const branchEl = document.getElementById('docClientBranch');
+      const phoneEl = document.getElementById('docClientPhone');
+      const addressEl = document.getElementById('docClientAddress');
+
+      if (nameEl) nameEl.value = clientName;
+      if (taxIdEl) taxIdEl.value = clientTaxId;
+      if (branchEl) branchEl.value = clientBranch;
+      if (phoneEl) phoneEl.value = clientPhone;
+      if (addressEl) addressEl.value = clientAddress;
+
       syncDocPreview();
     });
   }
 
-  const btnQuickClientIdex = document.getElementById('btnQuickClientIdex');
-  if (btnQuickClientIdex) {
-    btnQuickClientIdex.addEventListener('click', () => {
-      document.getElementById('docClientName').value = 'บริษัท ไอเด็กซ์ ไมซ์ จำกัด';
-      document.getElementById('docClientTaxId').value = '0505555007201';
-      document.getElementById('docClientBranch').value = '00000';
-      const phoneInput = document.getElementById('docClientPhone');
-      if (phoneInput) phoneInput.value = '';
-      document.getElementById('docClientAddress').value = '500/60 หมู่ที่ 2 ตำบลแม่เหียะ อำเภอเมืองเชียงใหม่ จังหวัดเชียงใหม่';
-      syncDocPreview();
+  const btnSaveQuickClient = document.getElementById('btnSaveQuickClient');
+  if (btnSaveQuickClient) {
+    btnSaveQuickClient.addEventListener('click', () => {
+      const nameEl = document.getElementById('docClientName');
+      const taxIdEl = document.getElementById('docClientTaxId');
+      const branchEl = document.getElementById('docClientBranch');
+      const phoneEl = document.getElementById('docClientPhone');
+      const addressEl = document.getElementById('docClientAddress');
+
+      const name = nameEl ? nameEl.value.trim() : '';
+      const taxId = taxIdEl ? taxIdEl.value.trim() : '';
+      const branch = branchEl ? branchEl.value.trim() : '';
+      const phone = phoneEl ? phoneEl.value.trim() : '';
+      const address = addressEl ? addressEl.value.trim() : '';
+
+      if (!name || !taxId) {
+        alert('กรุณากรอกชื่อลูกค้าและเลขประจำตัวผู้เสียภาษีก่อนบันทึกนะแก!');
+        return;
+      }
+
+      let customClients = [];
+      try {
+        const raw = safeStorage.getItem('ghn168_custom_clients');
+        if (raw) {
+          customClients = JSON.parse(raw);
+        }
+      } catch (e) {
+        console.error('Error reading custom clients:', e);
+      }
+
+      const existingInCustomIdx = customClients.findIndex(c => c.taxId === taxId);
+      const existsInDefaults = DEFAULT_CLIENTS.some(c => c.taxId === taxId);
+
+      const clientObj = { name, taxId, branch, phone, address };
+
+      if (existingInCustomIdx !== -1) {
+        customClients[existingInCustomIdx] = clientObj;
+        alert(`อัปเดตข้อมูลของ ${name} เรียบร้อยแล้ว!`);
+      } else if (existsInDefaults) {
+        customClients.push(clientObj);
+        alert(`อัปเดตข้อมูลของ ${name} เรียบร้อยแล้ว!`);
+      } else {
+        customClients.push(clientObj);
+        alert(`บันทึกข้อมูลลูกค้าใหม่เรียบร้อยแล้ว!`);
+      }
+
+      try {
+        safeStorage.setItem('ghn168_custom_clients', JSON.stringify(customClients));
+      } catch (e) {
+        console.error('Error saving custom clients:', e);
+      }
+
+      renderQuickClientsDropdown(taxId);
     });
   }
 
@@ -4803,6 +4932,10 @@ async function handleUploadPdfToDrive(triggerBtnId = 'btnSaveAndSyncDoc') {
       margin: 0;
       padding: 0;
       background: white;
+    }
+    #previewStandardDoc, #previewWhtDoc, .doc-paper, .wht-card-paper {
+      --preview-scale-factor: 1 !important;
+      zoom: 1 !important;
     }
   </style>
 </head>
