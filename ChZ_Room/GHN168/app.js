@@ -3674,6 +3674,7 @@ function fetchDocumentsFromSheets(showToast = false) {
     let mergedAny = false;
 
     if (qtRes && qtRes.status === 'success' && Array.isArray(qtRes.values)) {
+      dbDocs = dbDocs.filter(d => !(d.type === 'quotation' && d.status === 'synced'));
       qtRes.values.forEach(row => {
         if (row.length < 3) return;
         const docNo = row[2];
@@ -3718,6 +3719,7 @@ function fetchDocumentsFromSheets(showToast = false) {
     }
 
     if (ivRes && ivRes.status === 'success' && Array.isArray(ivRes.values)) {
+      dbDocs = dbDocs.filter(d => !(d.type === 'invoice' && d.status === 'synced'));
       ivRes.values.forEach(row => {
         if (row.length < 3) return;
         const docNo = row[2];
@@ -3765,6 +3767,7 @@ function fetchDocumentsFromSheets(showToast = false) {
 
     // จัดกลุ่ม/พาร์สข้อมูลจากแท็บ 'รายรับ' (สะสมยอด)
     if (incRes && incRes.status === 'success' && Array.isArray(incRes.values)) {
+      dbDocs = dbDocs.filter(d => !(d.type === 'receipt' && d.status === 'synced'));
       const incomeDocsMap = {};
 
       incRes.values.forEach(row => {
@@ -3867,6 +3870,7 @@ function fetchDocumentsFromSheets(showToast = false) {
 
     // พาร์สข้อมูลจากแท็บ 'รายจ่าย'
     if (expRes && expRes.status === 'success' && Array.isArray(expRes.values)) {
+      dbDocs = dbDocs.filter(d => !((d.type === 'expense' || d.type === 'wht') && d.status === 'synced'));
       expRes.values.forEach(row => {
         if (row.length < 3) return;
         const docNo = row[2];
@@ -6079,7 +6083,7 @@ function setupPreviewAutoScaling() {
                                   (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
           
           let scale = 1;
-          if (panelWidth < targetWidth) {
+          if (!isMobileOrTablet && panelWidth < targetWidth) {
             scale = panelWidth / targetWidth;
             // Cap the minimum scale to 0.4 on extremely small screens to keep it readable
             if (scale < 0.4) scale = 0.4;
