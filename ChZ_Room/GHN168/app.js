@@ -125,6 +125,15 @@ document.addEventListener('DOMContentLoaded', () => {
     setDocType('quotation');
     fetchDocHubFromSheets(false);
     fetchDocumentsFromSheets(false);
+
+    const docDateEl = document.getElementById('docDate');
+    if (docDateEl && !docDateEl.value) {
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      const mm = String(today.getMonth() + 1).padStart(2, '0');
+      const dd = String(today.getDate()).padStart(2, '0');
+      docDateEl.value = `${yyyy}-${mm}-${dd}`;
+    }
   } catch (err) {
     alert(`LOCAL ERROR IN INITIALIZATION:\nName: ${err.name}\nMessage: ${err.message}\nStack: ${err.stack}`);
   }
@@ -1823,6 +1832,13 @@ function createNewDocument() {
   if (phoneEl) phoneEl.value = '';
   document.getElementById('docProjectName').value = '';
   document.getElementById('docRemarks').value = '';
+  
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth() + 1).padStart(2, '0');
+  const dd = String(today.getDate()).padStart(2, '0');
+  const docDateEl = document.getElementById('docDate');
+  if (docDateEl) docDateEl.value = `${yyyy}-${mm}-${dd}`;
   
   // Reset items
   const defaultWorker = document.getElementById('docOwner') ? document.getElementById('docOwner').value : 'เก่ง';
@@ -4921,6 +4937,10 @@ async function handleUploadPdfToDrive(triggerBtnId = 'btnSaveAndSyncDoc') {
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">`;
     
     const elementHtml = previewElement.outerHTML;
+    let elementHtmlFiltered = elementHtml;
+    elementHtmlFiltered = elementHtmlFiltered.replace(/--preview-scale-factor:\s*[^;"]+/g, '--preview-scale-factor: 1');
+    elementHtmlFiltered = elementHtmlFiltered.replace(/zoom:\s*[^;"]+/g, 'zoom: 1');
+
     const fullHtml = `<!DOCTYPE html>
 <html>
 <head>
@@ -4940,7 +4960,7 @@ async function handleUploadPdfToDrive(triggerBtnId = 'btnSaveAndSyncDoc') {
   </style>
 </head>
 <body>
-  ${elementHtml}
+  ${elementHtmlFiltered}
 </body>
 </html>`;
 
