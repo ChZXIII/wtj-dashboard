@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loadConfiguration();
     loadData();
     setupEventListeners();
-    setupPreviewAutoScaling();
+    // setupPreviewAutoScaling();
     renderDashboard();
     switchView('dashboard');
     setDocType('quotation');
