@@ -4611,6 +4611,9 @@ async function saveExpense() {
   }
 
   try {
+    const scriptUrl = safeStorage.getItem('ghn168_script_url');
+    const sheetId = safeStorage.getItem('ghn168_sheet_id');
+
     // Parse date from YYYY-MM-DD to DD/MM/YYYY
     const dateParts = dateVal.split('-');
     const dateStr = dateParts.length === 3 ? `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}` : '';
@@ -5112,9 +5115,6 @@ async function saveExpense() {
     }
 
     // Construct payload
-    const scriptUrl = safeStorage.getItem('ghn168_script_url');
-    const sheetId = safeStorage.getItem('ghn168_sheet_id');
-
     const payload = {
       spreadsheetId: sheetId,
       type: 'sync',
