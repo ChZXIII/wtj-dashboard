@@ -1951,7 +1951,7 @@ function renderPaperTable() {
 
   const discountDescInput = document.getElementById('docDiscountDesc');
   const discountDescVal = discountDescInput ? discountDescInput.value.trim() : '';
-  const labelText = discountDescVal ? `ส่วนลด (${discountDescVal}) / Discount (${discountDescVal})` : 'ส่วนลด / Discount';
+  const labelText = discountDescVal ? `ส่วนลด / Discount (${discountDescVal})` : 'ส่วนลด / Discount';
 
   const displayVat = vatChecked ? '' : 'none';
   const displayWht = whtRate > 0 ? '' : 'none';
@@ -2145,11 +2145,7 @@ function calculateDocTotals() {
     const discountDescVal = discountDescInput ? discountDescInput.value.trim() : '';
     const prevDiscountLabelCell = document.getElementById('prevDiscountLabelCell');
     if (prevDiscountLabelCell) {
-      if (discountDescVal) {
-        prevDiscountLabelCell.textContent = `ส่วนลด (${discountDescVal}) / Discount (${discountDescVal})`;
-      } else {
-        prevDiscountLabelCell.textContent = 'ส่วนลด / Discount';
-      }
+      prevDiscountLabelCell.textContent = discountDescVal ? `ส่วนลด / Discount (${discountDescVal})` : 'ส่วนลด / Discount';
     }
   }
 
