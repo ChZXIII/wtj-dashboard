@@ -4645,6 +4645,7 @@ async function saveExpense() {
     const staffPayee = document.getElementById('expenseStaffPayee').value;
     const autoWht = document.getElementById('expenseAutoWhtCheckbox').checked;
     const isSplit = document.getElementById('expenseSplitCheckbox').checked;
+    const shouldUpload = document.getElementById('expenseUploadPdfCheckbox') ? document.getElementById('expenseUploadPdfCheckbox').checked : false;
 
     if (expenseMode === 'simple') {
       if (staffPayee !== 'none' && staffPayee !== 'other') {
