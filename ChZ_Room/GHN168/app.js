@@ -2438,6 +2438,15 @@ function syncDocPreview() {
     } else {
       prevSignerLabel.innerHTML = 'ในนาม บริษัท จีเอชเอ็น 168 มีเดีย แอนด์ ครีเอชั่น จำกัด';
     }
+
+    const signatureImg = document.getElementById('prevSignatureImg');
+    if (signatureImg) {
+      if (currentDocType === 'receipt') {
+        signatureImg.style.bottom = '68px';
+      } else {
+        signatureImg.style.bottom = '48px';
+      }
+    }
   }
 
   // Toggle left signature box (use visibility to preserve right signature alignment)

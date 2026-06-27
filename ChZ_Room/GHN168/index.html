@@ -1781,7 +1781,7 @@ textarea.form-control {
 }
 
   </style>
-  <link rel="manifest" href="manifest.json?v=119">
+  <link rel="manifest" href="manifest.json?v=120">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -1939,7 +1939,7 @@ textarea.form-control {
           </div>
         </div>
         <div style="font-size: 10px; opacity: 0.5; margin-top: 12px; text-align: center; font-family: monospace; letter-spacing: 0.5px;">
-          Version V1.19
+          Version V1.20
         </div>
       </div>
     </aside>
@@ -3634,17 +3634,20 @@ textarea.form-control {
              <option value="other">อื่นๆ (ระบุเอง)</option>
            </select>
          </div>
-         <div class="form-group" id="expenseAutoWhtContainer" style="flex: 1; align-self: center; display: flex; align-items: center; padding-top: 20px;">
-           <label class="checkbox-label" style="margin-bottom: 0; font-weight: 700; font-size: 13px; cursor: pointer;">
-             <input type="checkbox" id="expenseAutoWhtCheckbox" checked style="width: 18px; height: 18px; cursor: pointer; margin-right: 8px;">
-             ออกใบ 50 ทวิ อัตโนมัติ
-           </label>
+         <div class="form-group" id="expenseAutoWhtContainer" style="flex: 1;">
+           <label style="visibility: hidden; display: block; margin-bottom: 6px;">Spacer</label>
+           <div style="display: flex; align-items: center; height: 44px;">
+             <label class="checkbox-label" style="margin-bottom: 0; font-weight: 700; font-size: 13px; cursor: pointer; display: flex; align-items: center;">
+               <input type="checkbox" id="expenseAutoWhtCheckbox" checked style="width: 18px; height: 18px; cursor: pointer; margin-right: 8px;">
+               ออกใบ 50 ทวิ อัตโนมัติ
+             </label>
+           </div>
          </div>
        </div>
 
         <div class="form-group" style="margin-bottom: 12px;">
           <label for="expenseDesc">รายละเอียดการจ่ายเงิน (Note)</label>
-          <input type="text" id="expenseDesc" class="form-control" placeholder="เช่น ค่าโฆษณาโปรโมตแคมเปญมิถุนายน" required>
+          <input type="text" id="expenseDesc" class="form-control" placeholder="เช่น ค่าโฆษณาโปรโมตแคมเปญมิถุนายน">
         </div>
 
         <!-- Row 1: Price Type, Amount, VAT -->
@@ -4121,7 +4124,7 @@ textarea.form-control {
   </div>
 
   <script src="assets/html2pdf.bundle.min.js"></script>
-  <script src="app.js?v=119"></script>
+  <script src="app.js?v=120"></script>
   <script>
     if ('serviceWorker' in navigator) {
       let refreshing = false;
@@ -4132,7 +4135,7 @@ textarea.form-control {
         }
       });
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js?v=119')
+        navigator.serviceWorker.register('sw.js?v=120')
           .then(reg => {
             console.log('Service Worker Registered!', reg);
             reg.update();
