@@ -1212,6 +1212,8 @@ textarea.form-control {
 .modal-card {
   width: 480px;
   max-width: 90%;
+  max-height: 85vh;
+  overflow-y: auto;
   background-color: var(--bg-secondary);
   border: 4px solid var(--border-color);
   border-radius: 12px;
@@ -1779,7 +1781,7 @@ textarea.form-control {
 }
 
   </style>
-  <link rel="manifest" href="manifest.json?v=117">
+  <link rel="manifest" href="manifest.json?v=118">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -1937,7 +1939,7 @@ textarea.form-control {
           </div>
         </div>
         <div style="font-size: 10px; opacity: 0.5; margin-top: 12px; text-align: center; font-family: monospace; letter-spacing: 0.5px;">
-          Version V1.17
+          Version V1.18
         </div>
       </div>
     </aside>
@@ -2107,10 +2109,62 @@ textarea.form-control {
                     <strong id="salesRetained_หอม" style="color: #ef4444; font-size: 12px;">฿0.00</strong>
                   </div>
                 </div>
-              </div>
-            </div>
           </div>
         </div>
+
+       <!-- Individual YTD Wage Summary -->
+       <div class="card" style="margin-top: 24px;">
+         <div class="card-title">สรุปยอดเบิกค่าแรงรายบุคคลสะสม YTD (YTD Wage Summary)</div>
+         <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 16px;">
+           คำนวณจากบันทึกรายจ่ายบริษัทที่มีการระบุตัวบุคคลผู้เบิกค่าแรง (ยอดเงินก่อนหักภาษี) เพื่อใช้วางแผนจัดการภาษีส่วนบุคคล
+         </p>
+         <div style="display: flex; flex-wrap: wrap; gap: 16px;">
+           <!-- เก่ง -->
+           <div style="border: 2px solid var(--border-color); padding: 12px 16px; background: var(--input-bg); box-shadow: 3px 3px 0px var(--shadow-color); border-radius: 12px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex: 1; min-width: 220px;">
+             <div style="display: flex; align-items: center; gap: 12px;">
+               <div style="width: 32px; height: 32px; background: #e52521; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; border: 1px solid var(--border-color); border-radius: 4px;">ก</div>
+               <div>
+                 <h4 style="margin: 0; font-size: 14px; color: var(--text-primary); font-weight: 700;">เก่ง (Keng)</h4>
+                 <span style="font-size: 10px; color: var(--text-secondary);">ค่าแรงสะสมปีนี้</span>
+               </div>
+             </div>
+             <strong id="wageYTD_เก่ง" style="font-size: 16px; color: var(--text-primary);">฿0.00</strong>
+           </div>
+           <!-- หอม -->
+           <div style="border: 2px solid var(--border-color); padding: 12px 16px; background: var(--input-bg); box-shadow: 3px 3px 0px var(--shadow-color); border-radius: 12px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex: 1; min-width: 220px;">
+             <div style="display: flex; align-items: center; gap: 12px;">
+               <div style="width: 32px; height: 32px; background: #16a34a; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; border: 1px solid var(--border-color); border-radius: 4px;">ห</div>
+               <div>
+                 <h4 style="margin: 0; font-size: 14px; color: var(--text-primary); font-weight: 700;">หอม (Hom)</h4>
+                 <span style="font-size: 10px; color: var(--text-secondary);">ค่าแรงสะสมปีนี้</span>
+               </div>
+             </div>
+             <strong id="wageYTD_หอม" style="font-size: 16px; color: var(--text-primary);">฿0.00</strong>
+           </div>
+           <!-- พี่นิค -->
+           <div style="border: 2px solid var(--border-color); padding: 12px 16px; background: var(--input-bg); box-shadow: 3px 3px 0px var(--shadow-color); border-radius: 12px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex: 1; min-width: 220px;">
+             <div style="display: flex; align-items: center; gap: 12px;">
+               <div style="width: 32px; height: 32px; background: #2563eb; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; border: 1px solid var(--border-color); border-radius: 4px;">น</div>
+               <div>
+                 <h4 style="margin: 0; font-size: 14px; color: var(--text-primary); font-weight: 700;">พี่นิค (Nick)</h4>
+                 <span style="font-size: 10px; color: var(--text-secondary);">ค่าแรงสะสมปีนี้</span>
+               </div>
+             </div>
+             <strong id="wageYTD_พี่นิค" style="font-size: 16px; color: var(--text-primary);">฿0.00</strong>
+           </div>
+           <!-- มด -->
+           <div style="border: 2px solid var(--border-color); padding: 12px 16px; background: var(--input-bg); box-shadow: 3px 3px 0px var(--shadow-color); border-radius: 12px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex: 1; min-width: 220px;">
+             <div style="display: flex; align-items: center; gap: 12px;">
+               <div style="width: 32px; height: 32px; background: #ea580c; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; border: 1px solid var(--border-color); border-radius: 4px;">ม</div>
+               <div>
+                 <h4 style="margin: 0; font-size: 14px; color: var(--text-primary); font-weight: 700;">มด (Mod)</h4>
+                 <span style="font-size: 10px; color: var(--text-secondary);">ค่าแรงสะสมปีนี้</span>
+               </div>
+             </div>
+             <strong id="wageYTD_มด" style="font-size: 16px; color: var(--text-primary);">฿0.00</strong>
+           </div>
+         </div>
+       </div>
 
         <!-- Expense Category Breakdown Card -->
         <div class="card" style="margin-top: 24px;">
@@ -3567,6 +3621,27 @@ textarea.form-control {
           </div>
         </div>
 
+       <!-- Row: Staff Payee Select & Automatic 50 Bis Checkbox -->
+       <div class="form-row" style="display: flex; gap: 12px; margin-bottom: 12px;">
+         <div class="form-group" style="flex: 1.5;">
+           <label for="expenseStaffPayee">ผู้เบิกค่าแรง / พนักงาน (Staff Payee)</label>
+           <select id="expenseStaffPayee" class="form-control">
+             <option value="none" selected>ไม่ใช่ค่าแรงพนักงาน (ค่าใช้จ่ายส่วนกลาง บ.)</option>
+             <option value="เก่ง">เก่ง (มงคล)</option>
+             <option value="หอม">หอม (ณัฐวัฒน์)</option>
+             <option value="พี่นิค">พี่นิค (อนุชิต)</option>
+             <option value="มด">มด (ณัฐนรี)</option>
+             <option value="other">อื่นๆ (ระบุเอง)</option>
+           </select>
+         </div>
+         <div class="form-group" id="expenseAutoWhtContainer" style="flex: 1; align-self: center; display: flex; align-items: center; padding-top: 20px;">
+           <label class="checkbox-label" style="margin-bottom: 0; font-weight: 700; font-size: 13px; cursor: pointer;">
+             <input type="checkbox" id="expenseAutoWhtCheckbox" checked style="width: 18px; height: 18px; cursor: pointer; margin-right: 8px;">
+             ออกใบ 50 ทวิ อัตโนมัติ
+           </label>
+         </div>
+       </div>
+
         <div class="form-group" style="margin-bottom: 12px;">
           <label for="expenseDesc">รายละเอียดการจ่ายเงิน (Note)</label>
           <input type="text" id="expenseDesc" class="form-control" placeholder="เช่น ค่าโฆษณาโปรโมตแคมเปญมิถุนายน" required>
@@ -3629,6 +3704,32 @@ textarea.form-control {
             </select>
           </div>
         </div>
+
+       <!-- Split Wages Section -->
+       <div class="expense-detailed-field" style="margin-bottom: 12px; border-top: 1px dashed var(--border-color); padding-top: 12px;">
+         <label class="checkbox-label" style="font-weight: 700; font-size: 13px; cursor: pointer;">
+           <input type="checkbox" id="expenseSplitCheckbox" style="width: 18px; height: 18px; cursor: pointer; margin-right: 8px;">
+           แบ่งปันส่วนค่าแรง / จ่ายเงินหลายคน (Split Wages)
+         </label>
+       </div>
+
+       <div id="expenseSplitContainer" style="display: none; border: 2px solid var(--border-color); border-radius: 8px; padding: 12px; background: var(--input-bg); margin-bottom: 12px; box-shadow: 2px 2px 0 var(--border-color);">
+         <strong style="font-size: 13px; color: var(--text-primary); display: block; margin-bottom: 8px;">รายการผู้ร่วมปันส่วนค่าแรง (Split Wages Grid)</strong>
+         <table class="editor-items-table" style="font-size: 12px; width: 100%;">
+           <thead>
+             <tr>
+               <th>ผู้เบิกค่าแรง / พนักงาน</th>
+               <th style="width: 150px;">ยอดเงินค่าแรง (ก่อน WHT)</th>
+               <th style="width: 150px;">อัตราหัก ณ ที่จ่าย</th>
+               <th style="width: 60px;">ลบ</th>
+             </tr>
+           </thead>
+           <tbody id="expenseSplitBody">
+             <!-- Split rows rendered dynamically -->
+           </tbody>
+         </table>
+         <button type="button" id="btnExpenseAddSplitRow" class="btn-secondary" style="margin-top: 8px; padding: 4px 10px; font-size: 12px;">+ เพิ่มผู้รับเงิน</button>
+       </div>
 
         <!-- Row 3: Payment details -->
         <div class="form-row" style="display: flex; gap: 12px; margin-bottom: 12px;">
@@ -4020,7 +4121,7 @@ textarea.form-control {
   </div>
 
   <script src="assets/html2pdf.bundle.min.js"></script>
-  <script src="app.js?v=117"></script>
+  <script src="app.js?v=118"></script>
   <script>
     if ('serviceWorker' in navigator) {
       let refreshing = false;
@@ -4031,7 +4132,7 @@ textarea.form-control {
         }
       });
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js?v=117')
+        navigator.serviceWorker.register('sw.js?v=118')
           .then(reg => {
             console.log('Service Worker Registered!', reg);
             reg.update();

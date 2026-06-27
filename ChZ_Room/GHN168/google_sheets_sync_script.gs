@@ -56,7 +56,8 @@ var EXPENSE_HEADERS = [
   "ลิงก์เอกสาร Google Drive (PDF Link)",
   "สถานะการยื่นภาษี (Tax Filing Status)",
   "โครงการที่ผูก (Project Link)",
-  "หมายเหตุ (Remarks)"
+  "หมายเหตุ (Remarks)",
+  "ผู้เบิกค่าแรง / พนักงาน (Staff Payee / Employee)"
 ];
 
 var PETTY_CASH_HEADERS = [
@@ -599,7 +600,7 @@ function migrateSheetIfNeeded(sheet, targetHeaders) {
             newRow[c] = oldRow[c];
           }
         }
-      } else if (targetHeaders.length === 24) { // แท็บรายจ่าย (Expense)
+      } else if (targetHeaders.length === 25) { // แท็บรายจ่าย (Expense)
         if (lastCol === 9) {
           newRow[0] = oldRow[0]; // Record Date
           newRow[1] = oldRow[0]; // Tax Invoice Date
@@ -630,6 +631,7 @@ function migrateSheetIfNeeded(sheet, targetHeaders) {
           newRow[21] = "ยื่นแล้ว"; // Tax Filing Status
           newRow[22] = "";       // Project Link
           newRow[23] = "Migrated from 9-column layout";
+          newRow[24] = "none";   // Staff Payee
         } else if (lastCol === 12) {
           newRow[0] = oldRow[0]; // Record Date
           newRow[1] = oldRow[0]; // Tax Invoice Date
@@ -660,9 +662,18 @@ function migrateSheetIfNeeded(sheet, targetHeaders) {
           newRow[21] = "ยื่นแล้ว"; // Tax Filing Status
           newRow[22] = oldRow[11]; // Project Link
           newRow[23] = "Migrated from 12-column layout";
+          newRow[24] = "none";   // Staff Payee
+        } else if (lastCol === 24) {
+          for (var c = 0; c < 24; c++) {
+            newRow[c] = oldRow[c];
+          }
+          newRow[24] = "none";   // Staff Payee
         } else {
           for (var c = 0; c < Math.min(lastCol, targetHeaders.length); c++) {
             newRow[c] = oldRow[c];
+          }
+          if (lastCol < 25) {
+            newRow[24] = "none";
           }
         }
       }

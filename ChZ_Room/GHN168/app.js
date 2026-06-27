@@ -48,6 +48,7 @@ let dbDocs = []; // Local history of documents
 let docHubLinks = []; // Google Drive documents
 let syncHistory = []; // Logs of synced items
 let editingDocIndex = null;
+let expenseSplits = [];
 let pettyCashDb = [];
 let payrollDb = [];
 let bankRecDb = [];
@@ -1339,6 +1340,11 @@ function setupEventListeners() {
         บันทึกรายจ่าย
       `;
       formAddExpense.reset();
+      expenseSplits = [];
+      const splitBody = document.getElementById('expenseSplitBody');
+      if (splitBody) splitBody.innerHTML = '';
+      const splitCont = document.getElementById('expenseSplitContainer');
+      if (splitCont) splitCont.style.display = 'none';
       setExpenseMode('simple');
       document.getElementById('expenseDate').value = new Date().toISOString().slice(0, 10);
       groupCustomExpenseCategory.style.display = 'none';
@@ -1413,6 +1419,54 @@ function setupEventListeners() {
         }
       }
     });
+
+    // Split wages checkbox toggle
+    const splitCheckbox = document.getElementById('expenseSplitCheckbox');
+    const splitContainer = document.getElementById('expenseSplitContainer');
+    if (splitCheckbox && splitContainer) {
+      splitCheckbox.addEventListener('change', () => {
+        if (splitCheckbox.checked) {
+          splitContainer.style.display = 'block';
+          if (expenseSplits.length === 0) {
+            addExpenseSplit();
+          }
+          calculateSplitWagesSum();
+        } else {
+          splitContainer.style.display = 'none';
+        }
+      });
+    }
+
+    // Add split row button click
+    const btnAddSplit = document.getElementById('btnExpenseAddSplitRow');
+    if (btnAddSplit) {
+      btnAddSplit.addEventListener('click', () => {
+        addExpenseSplit();
+      });
+    }
+
+    // Staff payee auto-fill
+    const staffPayeeSelect = document.getElementById('expenseStaffPayee');
+    if (staffPayeeSelect) {
+      staffPayeeSelect.addEventListener('change', (e) => {
+        const val = e.target.value;
+        if (val !== 'none' && val !== 'other') {
+          const details = PREDEFINED_PAYEES[val];
+          if (details) {
+            document.getElementById('expensePayee').value = details.name;
+            document.getElementById('expensePayeeTaxId').value = details.taxId;
+            document.getElementById('expensePayeeBranch').value = details.branch || '00000';
+            document.getElementById('expensePayeeAddress').value = details.address || '-';
+            document.getElementById('expenseCategory').value = details.category || '101 - ค่าจ้างทีมงานภายนอก/ฟรีแลนซ์ (Freelance Crew Fee)';
+          }
+        } else if (val === 'none') {
+          document.getElementById('expensePayee').value = '';
+          document.getElementById('expensePayeeTaxId').value = '';
+          document.getElementById('expensePayeeBranch').value = '00000';
+          document.getElementById('expensePayeeAddress').value = '';
+        }
+      });
+    }
 
     // Form Submit Expense
     formAddExpense.addEventListener('submit', (e) => {
@@ -3161,7 +3215,7 @@ function syncPendingDocs() {
         recordDate, taxInvoiceDate, docNo, payeeName, payeeTaxId, payeeAddress, payeeBranch,
         category, detail, gross, vat, totalAmount, whtRate, tax, whtType, net,
         paymentMethod, paymentStatus, actualPaidDate, whtCertificateNo, driveLink,
-        taxFilingStatus, projectLink, remarks
+        taxFilingStatus, projectLink, remarks, doc.staffPayee || 'none'
       ];
     } else if (doc.type === 'receipt') {
       payload.sheetName = 'รายรับ';
@@ -3398,6 +3452,15 @@ function clearLocalDatabase() {
   }
 }
 
+function getStaffKeyFromName(name) {
+  if (!name) return 'none';
+  if (name.includes('มงคล') || name.includes('เก่ง')) return 'เก่ง';
+  if (name.includes('ณัฐวัฒน์') || name.includes('หอม')) return 'หอม';
+  if (name.includes('อนุชิต') || name.includes('นิค')) return 'พี่นิค';
+  if (name.includes('ณัฐนรี') || name.includes('มด')) return 'มด';
+  return 'none';
+}
+
 // --- Dashboard Rendering ---
 function renderDashboard() {
   // Sum cards
@@ -3615,6 +3678,26 @@ function renderDashboard() {
       }).join('');
     }
   }
+
+  // Calculate and update YTD Staff Wages
+  const wageYTD = { 'เก่ง': 0, 'หอม': 0, 'พี่นิค': 0, 'มด': 0 };
+  dbDocs.forEach(d => {
+    if (d.type === 'expense') {
+      let staff = d.staffPayee;
+      if (!staff || staff === 'none') {
+        staff = getStaffKeyFromName(d.name);
+      }
+      if (staff && wageYTD[staff] !== undefined) {
+        wageYTD[staff] += (d.baseAmount || d.amount || 0);
+      }
+    }
+  });
+  Object.keys(wageYTD).forEach(k => {
+    const el = document.getElementById(`wageYTD_${k}`);
+    if (el) {
+      el.textContent = `฿${wageYTD[k].toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    }
+  });
 
   // Render shortcuts
   renderDashboardDocHubShortcuts();
@@ -3976,7 +4059,8 @@ function fetchDocumentsFromSheets(showToast = false) {
           projectLink: row[22] || '',
           remarks: row[23] || '',
           status: 'synced',
-          timestamp: row[0] || ''
+          timestamp: row[0] || '',
+          staffPayee: row[24] || 'none'
         };
 
         dbDocs = dbDocs.filter(d => d.number !== docNo);
@@ -4431,6 +4515,78 @@ function calculateExpenseForm() {
   document.getElementById('calcExpenseNet').textContent = `฿${net.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 }
 
+function renderExpenseSplitTable() {
+  const body = document.getElementById('expenseSplitBody');
+  if (!body) return;
+  body.innerHTML = expenseSplits.map((split, idx) => {
+    const isOther = split.staff === 'other';
+    return `
+      <tr>
+        <td>
+          <select onchange="updateExpenseSplit(${idx}, 'staff', this.value)" class="form-control" style="border:none; padding:4px;">
+            <option value="เก่ง" ${split.staff === 'เก่ง' ? 'selected' : ''}>เก่ง (มงคล)</option>
+            <option value="หอม" ${split.staff === 'หอม' ? 'selected' : ''}>หอม (ณัฐวัฒน์)</option>
+            <option value="พี่นิค" ${split.staff === 'พี่นิค' ? 'selected' : ''}>พี่นิค (อนุชิต)</option>
+            <option value="มด" ${split.staff === 'มด' ? 'selected' : ''}>มด (ณัฐนรี)</option>
+            <option value="other" ${split.staff === 'other' ? 'selected' : ''}>อื่นๆ (ระบุเอง)</option>
+          </select>
+          ${isOther ? `
+            <input type="text" value="${split.customName || ''}" onchange="updateExpenseSplit(${idx}, 'customName', this.value)" class="form-control" style="margin-top:4px; padding:4px;" placeholder="พิมพ์ชื่อผู้รับเงิน" required>
+            <input type="text" value="${split.customTaxId || ''}" onchange="updateExpenseSplit(${idx}, 'customTaxId', this.value)" class="form-control" style="margin-top:4px; padding:4px; font-family:monospace;" placeholder="เลขผู้เสียภาษี">
+            <input type="text" value="${split.customAddress || ''}" onchange="updateExpenseSplit(${idx}, 'customAddress', this.value)" class="form-control" style="margin-top:4px; padding:4px;" placeholder="ที่อยู่ (50 ทวิ)">
+          ` : ''}
+        </td>
+        <td>
+          <input type="number" value="${split.amount || 0}" onchange="updateExpenseSplit(${idx}, 'amount', this.value)" class="form-control" style="border:none; padding:4px; text-align:right;" required min="0" step="0.01">
+        </td>
+        <td>
+          <select onchange="updateExpenseSplit(${idx}, 'wht', this.value)" class="form-control" style="border:none; padding:4px;">
+            <option value="0" ${split.wht === 0 ? 'selected' : ''}>ไม่มีหัก (0%)</option>
+            <option value="3" ${split.wht === 3 ? 'selected' : ''}>หัก 3% (จ้างทำของ)</option>
+            <option value="1" ${split.wht === 1 ? 'selected' : ''}>หัก 1% (ขนส่ง)</option>
+            <option value="5" ${split.wht === 5 ? 'selected' : ''}>หัก 5% (เช่า/โฆษณา)</option>
+          </select>
+        </td>
+        <td style="text-align:center;">
+          <button type="button" class="btn-secondary" onclick="deleteExpenseSplit(${idx})" style="padding:4px 8px; margin:0; background:#fee2e2; color:#b91c1c; border-color:#fee2e2; box-shadow:none;">ลบ</button>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+window.updateExpenseSplit = function(idx, key, val) {
+  if (key === 'amount') {
+    expenseSplits[idx].amount = parseFloat(val) || 0;
+    calculateSplitWagesSum();
+  } else if (key === 'wht') {
+    expenseSplits[idx].wht = parseInt(val, 10) || 0;
+  } else {
+    expenseSplits[idx][key] = val;
+  }
+  renderExpenseSplitTable();
+};
+
+window.deleteExpenseSplit = function(idx) {
+  expenseSplits.splice(idx, 1);
+  renderExpenseSplitTable();
+  calculateSplitWagesSum();
+};
+
+function addExpenseSplit() {
+  expenseSplits.push({ staff: 'หอม', amount: 0, wht: 3, customName: '', customTaxId: '', customAddress: '' });
+  renderExpenseSplitTable();
+}
+
+function calculateSplitWagesSum() {
+  const splitCheckbox = document.getElementById('expenseSplitCheckbox');
+  if (splitCheckbox && splitCheckbox.checked) {
+    const sum = expenseSplits.reduce((acc, s) => acc + (s.amount || 0), 0);
+    document.getElementById('expenseBaseAmount').value = sum;
+    calculateExpenseForm();
+  }
+}
+
 function saveExpense() {
   try {
     const dateVal = document.getElementById('expenseDate').value;
@@ -4469,6 +4625,10 @@ function saveExpense() {
     let remarks = document.getElementById('expenseRemarks').value.trim();
     let projectLink = document.getElementById('expenseProjectLink').value;
 
+    const staffPayee = document.getElementById('expenseStaffPayee').value;
+    const autoWht = document.getElementById('expenseAutoWhtCheckbox').checked;
+    const isSplit = document.getElementById('expenseSplitCheckbox').checked;
+
     if (expenseMode === 'simple') {
       payee = "ทั่วไป";
       payeeTaxId = "";
@@ -4489,28 +4649,6 @@ function saveExpense() {
       payeeAddress = payeeAddress || '-';
     }
 
-    // Calculations based on Price Type (VAT Inclusive vs Exclusive)
-    let baseAmount = 0;
-    let vatAmount = 0;
-
-    if (priceType === 'include') {
-      if (vatRate > 0) {
-        baseAmount = inputVal / (1 + vatRate / 100);
-        vatAmount = inputVal - baseAmount;
-      } else {
-        baseAmount = inputVal;
-        vatAmount = 0;
-      }
-    } else {
-      baseAmount = inputVal;
-      vatAmount = baseAmount * (vatRate / 100);
-    }
-
-    baseAmount = Math.round(baseAmount * 100) / 100;
-    vatAmount = Math.round(vatAmount * 100) / 100;
-    const whtAmount = Math.round((baseAmount * (whtRate / 100)) * 100) / 100;
-    const netAmount = Math.round((baseAmount + vatAmount - whtAmount) * 100) / 100;
-
     // Generate PV number if empty
     if (!billNo) {
       const cleanDate = dateVal.replace(/-/g, '');
@@ -4518,50 +4656,370 @@ function saveExpense() {
       billNo = `PV-${cleanDate}-${rand}`;
     }
 
+    const recordsToSave = [];
+    const payloadRows = [];
+    const recordDate = formatDate(new Date().toISOString().split('T')[0]);
+
+    if (isSplit) {
+      if (expenseSplits.length === 0) {
+        alert('กรุณาเพิ่มผู้รับเงินอย่างน้อย 1 คน');
+        return;
+      }
+      
+      expenseSplits.forEach((split, idx) => {
+        const splitBillNo = `${billNo}-${idx + 1}`;
+        let payeeName = '';
+        let payeeTaxIdVal = '';
+        let payeeBranchVal = '00000';
+        let payeeAddressVal = '-';
+        let payeeCategory = category;
+
+        if (split.staff !== 'other') {
+          const details = PREDEFINED_PAYEES[split.staff];
+          if (details) {
+            payeeName = details.name;
+            payeeTaxIdVal = details.taxId;
+            payeeBranchVal = details.branch || '00000';
+            payeeAddressVal = details.address || '-';
+            payeeCategory = details.category || category;
+          }
+        } else {
+          payeeName = split.customName || '-';
+          payeeTaxIdVal = split.customTaxId || '';
+          payeeBranchVal = '00000';
+          payeeAddressVal = split.customAddress || '-';
+        }
+
+        const splitBaseAmount = Math.round(split.amount * 100) / 100;
+        const splitVatAmount = 0; // Wages do not have VAT
+        const splitWhtRate = split.wht || 0;
+        const splitWhtAmount = Math.round((splitBaseAmount * (splitWhtRate / 100)) * 100) / 100;
+        const splitNetAmount = Math.round((splitBaseAmount - splitWhtAmount) * 100) / 100;
+
+        // Determine formType
+        let formType = 'none';
+        if (splitWhtRate > 0) {
+          const cleanId = payeeTaxIdVal.replace(/\D/g, '');
+          if (cleanId.startsWith('0')) {
+            formType = 'pnd53';
+          } else {
+            formType = 'pnd3';
+          }
+        }
+
+        const splitRecord = {
+          number: splitBillNo,
+          type: 'expense',
+          date: dateStr,
+          name: payeeName,
+          category: payeeCategory,
+          desc: `${desc} (ปันส่วนค่าแรง - ${split.staff === 'other' ? split.customName : split.staff})`,
+          baseAmount: splitBaseAmount,
+          vatAmount: splitVatAmount,
+          whtAmount: splitWhtAmount,
+          amount: splitNetAmount,
+          driveLink: billUrl,
+          whtType: formType,
+          projectLink: projectLink,
+          priceType: 'exclude',
+          status: 'pending',
+          timestamp: new Date().toLocaleString(),
+          payeeTaxId: payeeTaxIdVal,
+          payeeBranch: payeeBranchVal,
+          payeeAddress: payeeAddressVal,
+          taxFilingStatus: taxFilingStatus,
+          paymentMethod: paymentMethod,
+          paymentStatus: paymentStatus,
+          actualPaidDate: actualPaidDate,
+          whtCertificateNo: (splitWhtRate > 0) ? splitBillNo : '-',
+          remarks: remarks,
+          vatRate: 0,
+          whtRate: splitWhtRate,
+          expenseMode: expenseMode,
+          staffPayee: split.staff,
+          autoWht: autoWht
+        };
+
+        recordsToSave.push(splitRecord);
+
+        // Sync array row (Index 24 / Column Y is staffPayee)
+        payloadRows.push([
+          recordDate,
+          dateStr,
+          splitBillNo,
+          payeeName,
+          payeeTaxIdVal || '-',
+          payeeAddressVal || '-',
+          payeeBranchVal || '00000',
+          payeeCategory,
+          splitRecord.desc,
+          splitBaseAmount,
+          0,
+          splitBaseAmount,
+          splitWhtRate,
+          splitWhtAmount,
+          formType,
+          splitNetAmount,
+          paymentMethod || 'KBank',
+          paymentStatus || 'จ่ายเงินแล้ว',
+          actualPaidDate,
+          (splitWhtRate > 0) ? splitBillNo : '-',
+          billUrl || '-',
+          taxFilingStatus,
+          projectLink || '',
+          remarks || '',
+          split.staff
+        ]);
+
+        // Auto WHT Certificate creation
+        if (splitWhtRate > 0 && autoWht) {
+          const whtRecord = {
+            number: splitBillNo,
+            type: 'wht',
+            date: dateStr,
+            name: payeeName,
+            detail: splitRecord.desc,
+            amount: splitBaseAmount,
+            status: 'pending',
+            timestamp: new Date().toLocaleString(),
+            payeeTaxId: payeeTaxIdVal,
+            payeeBranch: payeeBranchVal,
+            payeeAddress: payeeAddressVal,
+            category: payeeCategory,
+            vat: 0,
+            wht: splitWhtAmount,
+            net: splitNetAmount,
+            whtRate: splitWhtRate,
+            receivingBank: '-',
+            paymentStatus: paymentStatus,
+            actualPaymentDate: '-',
+            profitShare: '-',
+            recordedBy: '-',
+            remarks: remarks,
+            paymentMethod: paymentMethod,
+            actualPaidDate: actualPaidDate,
+            whtCertificateNo: splitBillNo,
+            taxFilingStatus: taxFilingStatus,
+            projectLink: projectLink,
+            items: null,
+            staffPayee: split.staff,
+            autoWht: autoWht
+          };
+
+          recordsToSave.push(whtRecord);
+
+          payloadRows.push([
+            recordDate,
+            dateStr,
+            splitBillNo,
+            payeeName,
+            payeeTaxIdVal || '-',
+            payeeAddressVal || '-',
+            payeeBranchVal || '00000',
+            payeeCategory || '-',
+            splitRecord.desc,
+            splitBaseAmount,
+            0,
+            splitBaseAmount,
+            splitWhtRate,
+            splitWhtAmount,
+            formType,
+            splitNetAmount,
+            paymentMethod || 'KBank',
+            paymentStatus || 'จ่ายเงินแล้ว',
+            actualPaidDate,
+            splitBillNo,
+            '-',
+            taxFilingStatus,
+            projectLink || '',
+            remarks || '',
+            split.staff
+          ]);
+        }
+      });
+    } else {
+      // Calculations based on Price Type (VAT Inclusive vs Exclusive)
+      let baseAmount = 0;
+      let vatAmount = 0;
+
+      if (priceType === 'include') {
+        if (vatRate > 0) {
+          baseAmount = inputVal / (1 + vatRate / 100);
+          vatAmount = inputVal - baseAmount;
+        } else {
+          baseAmount = inputVal;
+          vatAmount = 0;
+        }
+      } else {
+        baseAmount = inputVal;
+        vatAmount = baseAmount * (vatRate / 100);
+      }
+
+      baseAmount = Math.round(baseAmount * 100) / 100;
+      vatAmount = Math.round(vatAmount * 100) / 100;
+      const whtAmount = Math.round((baseAmount * (whtRate / 100)) * 100) / 100;
+      const netAmount = Math.round((baseAmount + vatAmount - whtAmount) * 100) / 100;
+
+      // Determine formType
+      let formType = whtType;
+      if (whtRate > 0 && whtType === 'none') {
+        const cleanId = payeeTaxId.replace(/\D/g, '');
+        if (cleanId.startsWith('0')) {
+          formType = 'pnd53';
+        } else {
+          formType = 'pnd3';
+        }
+      }
+
+      const docRecord = {
+        number: billNo,
+        type: 'expense',
+        date: dateStr,
+        name: payee,
+        category: category,
+        desc: desc,
+        baseAmount: baseAmount,
+        vatAmount: vatAmount,
+        whtAmount: whtAmount,
+        amount: netAmount,
+        driveLink: billUrl,
+        whtType: formType,
+        projectLink: projectLink,
+        priceType: priceType,
+        status: 'pending',
+        timestamp: new Date().toLocaleString(),
+        payeeTaxId: payeeTaxId,
+        payeeBranch: payeeBranch,
+        payeeAddress: payeeAddress,
+        taxFilingStatus: taxFilingStatus,
+        paymentMethod: paymentMethod,
+        paymentStatus: paymentStatus,
+        actualPaidDate: actualPaidDate,
+        whtCertificateNo: (whtRate > 0) ? billNo : '-',
+        remarks: remarks,
+        vatRate: vatRate,
+        whtRate: whtRate,
+        expenseMode: expenseMode,
+        staffPayee: staffPayee,
+        autoWht: autoWht
+      };
+
+      recordsToSave.push(docRecord);
+
+      payloadRows.push([
+        recordDate,
+        dateStr,
+        billNo,
+        payee,
+        payeeTaxId || '-',
+        payeeAddress || '-',
+        payeeBranch || '00000',
+        category,
+        desc,
+        baseAmount,
+        vatAmount,
+        Math.round((baseAmount + vatAmount) * 100) / 100,
+        whtRate,
+        whtAmount,
+        formType,
+        netAmount,
+        paymentMethod || 'KBank',
+        paymentStatus || 'จ่ายเงินแล้ว',
+        actualPaidDate,
+        (whtRate > 0) ? billNo : '-',
+        billUrl || '-',
+        taxFilingStatus,
+        projectLink || '',
+        remarks || '',
+        staffPayee || 'none'
+      ]);
+
+      // Auto WHT Certificate creation for normal doc
+      if (whtRate > 0 && autoWht) {
+        const whtRecord = {
+          number: billNo,
+          type: 'wht',
+          date: dateStr,
+          name: payee,
+          detail: desc,
+          amount: baseAmount,
+          status: 'pending',
+          timestamp: new Date().toLocaleString(),
+          payeeTaxId: payeeTaxId,
+          payeeBranch: payeeBranch,
+          payeeAddress: payeeAddress,
+          category: category,
+          vat: 0,
+          wht: whtAmount,
+          net: netAmount,
+          whtRate: whtRate,
+          receivingBank: '-',
+          paymentStatus: paymentStatus,
+          actualPaymentDate: '-',
+          profitShare: '-',
+          recordedBy: '-',
+          remarks: remarks,
+          paymentMethod: paymentMethod,
+          actualPaidDate: actualPaidDate,
+          whtCertificateNo: billNo,
+          taxFilingStatus: taxFilingStatus,
+          projectLink: projectLink,
+          items: null,
+          staffPayee: staffPayee,
+          autoWht: autoWht
+        };
+
+        recordsToSave.push(whtRecord);
+
+        payloadRows.push([
+          recordDate,
+          dateStr,
+          billNo,
+          payee,
+          payeeTaxId || '-',
+          payeeAddress || '-',
+          payeeBranch || '00000',
+          category || '-',
+          desc,
+          baseAmount,
+          0,
+          baseAmount,
+          whtRate,
+          whtAmount,
+          formType,
+          netAmount,
+          paymentMethod || 'KBank',
+          paymentStatus || 'จ่ายเงินแล้ว',
+          actualPaidDate,
+          billNo,
+          '-',
+          taxFilingStatus,
+          projectLink || '',
+          remarks || '',
+          staffPayee || 'none'
+        ]);
+      }
+    }
+
+    const netAmountTotal = isSplit ? expenseSplits.reduce((acc, s) => acc + (s.amount || 0), 0) : netAmount;
     const isNew = editingDocIndex === null;
 
-    const docRecord = {
-      number: billNo,
-      type: 'expense',
-      date: dateStr,
-      name: payee,
-      category: category,
-      desc: desc,
-      baseAmount: baseAmount,
-      vatAmount: vatAmount,
-      whtAmount: whtAmount,
-      amount: netAmount,
-      driveLink: billUrl,
-      whtType: whtType,
-      projectLink: projectLink,
-      priceType: priceType,
-      status: 'pending',
-      timestamp: new Date().toLocaleString(),
-      payeeTaxId: payeeTaxId,
-      payeeBranch: payeeBranch,
-      payeeAddress: payeeAddress,
-      taxFilingStatus: taxFilingStatus,
-      paymentMethod: paymentMethod,
-      paymentStatus: paymentStatus,
-      actualPaidDate: actualPaidDate,
-      whtCertificateNo: (whtRate > 0) ? billNo : '-',
-      remarks: remarks,
-      vatRate: vatRate,
-      whtRate: whtRate,
-      expenseMode: expenseMode
-    };
-
     // Check if HITL approval is required (Amount > 10,000 THB)
-    if (netAmount > 10000 && paymentStatus === 'รออนุมัติจ่าย') {
-      alert(`รายการรายจ่ายนี้มียอดโอนจริง ฿${netAmount.toLocaleString('th-TH', { minimumFractionDigits: 2 })} เกิน 10,000 บาท\n\nระบบได้บันทึกข้อมูลไว้ในเครื่องเพื่อรอการอนุมัติ (Pending Approval) เรียบร้อยแล้ว กรุณารอผู้มีอำนาจทำการอนุมัติก่อนซิงค์ลงชีตจริง`);
+    if (netAmountTotal > 10000 && paymentStatus === 'รออนุมัติจ่าย') {
+      alert(`รายการรายจ่ายนี้มียอดโอนจริง ฿${netAmountTotal.toLocaleString('th-TH', { minimumFractionDigits: 2 })} เกิน 10,000 บาท\n\nระบบได้บันทึกข้อมูลไว้ในเครื่องเพื่อรอการอนุมัติ (Pending Approval) เรียบร้อยแล้ว กรุณารอผู้มีอำนาจทำการอนุมัติก่อนซิงค์ลงชีตจริง`);
       
-      docRecord.status = 'pending_approval';
-      docRecord.paymentStatus = 'รออนุมัติจ่าย';
+      recordsToSave.forEach(r => {
+        r.status = 'pending_approval';
+        r.paymentStatus = 'รออนุมัติจ่าย';
+      });
 
       if (isNew) {
-        dbDocs.unshift(docRecord);
+        dbDocs.unshift(...recordsToSave);
       } else {
-        dbDocs[editingDocIndex] = docRecord;
+        dbDocs[editingDocIndex] = recordsToSave[0];
+        if (recordsToSave.length > 1) {
+          dbDocs.unshift(...recordsToSave.slice(1));
+        }
         editingDocIndex = null;
       }
 
@@ -4580,32 +5038,7 @@ function saveExpense() {
       spreadsheetId: sheetId,
       type: 'sync',
       sheetName: 'รายจ่าย',
-      values: [
-        formatDate(new Date().toISOString().split('T')[0]), // A: วันที่บันทึก
-        dateStr,                            // B: วันที่ตามใบเสร็จ
-        billNo,                             // C: เลขที่บิล/ใบเสร็จ
-        payee,                              // D: ชื่อผู้ให้บริการ
-        payeeTaxId || '-',                  // E: เลขประจำตัวผู้เสียภาษี
-        payeeAddress || '-',                // F: ที่อยู่
-        payeeBranch || '00000',             // G: รหัสสาขา
-        category,                           // H: หมวดหมู่ค่าใช้จ่าย
-        desc,                               // I: รายละเอียด
-        Math.round(baseAmount * 100) / 100, // J: ยอดก่อน VAT
-        Math.round(vatAmount * 100) / 100,  // K: VAT 7%
-        Math.round((baseAmount + vatAmount) * 100) / 100, // L: ยอดรวม VAT
-        whtRate,                            // M: อัตรา WHT %
-        Math.round(whtAmount * 100) / 100,  // N: ยอดหัก WHT
-        whtType || 'none',                  // O: ประเภทยื่น WHT
-        Math.round(netAmount * 100) / 100,  // P: ยอดจ่ายเงินสุทธิ
-        paymentMethod || 'KBank',           // Q: ช่องทางจ่ายเงิน
-        paymentStatus || 'จ่ายเงินแล้ว',    // R: สถานะจ่ายเงิน
-        actualPaidDate,                     // S: วันที่จ่ายเงินจริง
-        (whtRate > 0) ? billNo : '-',       // T: เลขใบ 50 ทวิ
-        billUrl || '-',                     // U: ลิงก์ Drive
-        taxFilingStatus,                    // V: สถานะยื่นภาษี
-        projectLink || '',                  // W: โครงการที่ผูก
-        remarks || ''                       // X: หมายเหตุ
-      ]
+      rows: payloadRows
     };
 
     // Send request
@@ -4629,17 +5062,21 @@ function saveExpense() {
         if (res.status === 'success') {
           alert(`บันทึกและซิงค์รายจ่ายลง Google Sheets สำเร็จแล้ว\nข้อความ: ${res.message}`);
           
-          docRecord.status = 'synced';
+          recordsToSave.forEach(r => r.status = 'synced');
 
           if (isNew) {
-            dbDocs.unshift(docRecord);
+            dbDocs.unshift(...recordsToSave);
           } else {
-            dbDocs[editingDocIndex] = docRecord;
+            dbDocs[editingDocIndex] = recordsToSave[0];
+            if (recordsToSave.length > 1) {
+              dbDocs.unshift(...recordsToSave.slice(1));
+            }
             editingDocIndex = null;
           }
 
           saveData();
           renderExpenseList();
+          renderDashboard();
           document.getElementById('addExpenseModal').classList.remove('active');
         } else {
           alert(`ซิงค์ล้มเหลว: ${res.message}`);
@@ -4651,33 +5088,41 @@ function saveExpense() {
         console.error(err);
         alert(`เกิดข้อผิดพลาดในการเชื่อมต่อสคริปต์: ${err.toString()}\n\nแต่ระบบได้บันทึกข้อมูลแบบออฟไลน์ (Pending) ไว้ในเครื่องเรียบร้อยแล้ว`);
         
-        docRecord.status = 'pending';
+        recordsToSave.forEach(r => r.status = 'pending');
 
         if (isNew) {
-          dbDocs.unshift(docRecord);
+          dbDocs.unshift(...recordsToSave);
         } else {
-          dbDocs[editingDocIndex] = docRecord;
+          dbDocs[editingDocIndex] = recordsToSave[0];
+          if (recordsToSave.length > 1) {
+            dbDocs.unshift(...recordsToSave.slice(1));
+          }
           editingDocIndex = null;
         }
 
         saveData();
         renderExpenseList();
+        renderDashboard();
         document.getElementById('addExpenseModal').classList.remove('active');
       });
     } else {
       // Offline Save directly
       alert('ไม่พบการเชื่อมต่อชีต ระบบได้ทำการบันทึกข้อมูลแบบออฟไลน์ไว้ในเครื่องชั่วคราว');
-      docRecord.status = 'pending';
+      recordsToSave.forEach(r => r.status = 'pending');
 
       if (isNew) {
-        dbDocs.unshift(docRecord);
+        dbDocs.unshift(...recordsToSave);
       } else {
-        dbDocs[editingDocIndex] = docRecord;
+        dbDocs[editingDocIndex] = recordsToSave[0];
+        if (recordsToSave.length > 1) {
+          dbDocs.unshift(...recordsToSave.slice(1));
+        }
         editingDocIndex = null;
       }
 
       saveData();
       renderExpenseList();
+      renderDashboard();
       document.getElementById('addExpenseModal').classList.remove('active');
     }
   } catch (err) {
@@ -4699,6 +5144,22 @@ function editExpense(index) {
   editingDocIndex = index;
 
   populateProjectList(); // Populate project list dynamically
+
+  // Reset split wages state on edit
+  document.getElementById('expenseSplitCheckbox').checked = false;
+  expenseSplits = [];
+  const splitContainer = document.getElementById('expenseSplitContainer');
+  if (splitContainer) splitContainer.style.display = 'none';
+  const splitBody = document.getElementById('expenseSplitBody');
+  if (splitBody) splitBody.innerHTML = '';
+
+  // Staff payee & Auto WHT
+  let staffPayeeVal = doc.staffPayee || 'none';
+  if (staffPayeeVal === 'none') {
+    staffPayeeVal = getStaffKeyFromName(doc.name);
+  }
+  document.getElementById('expenseStaffPayee').value = staffPayeeVal;
+  document.getElementById('expenseAutoWhtCheckbox').checked = doc.autoWht !== undefined ? doc.autoWht : true;
 
   document.querySelector('#addExpenseModal .modal-title').textContent = 'แก้ไขข้อมูลรายจ่าย';
   document.getElementById('btnSubmitExpenseModal').innerHTML = `
