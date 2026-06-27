@@ -4596,13 +4596,21 @@ function calculateSplitWagesSum() {
   }
 }
 
-function saveExpense() {
+async function saveExpense() {
+  const dateVal = document.getElementById('expenseDate').value;
+  if (!dateVal) {
+    alert('กรุณาระบุวันที่จ่ายเงินก่อนทำการบันทึก');
+    return;
+  }
+
+  const submitBtn = document.getElementById('btnSubmitExpenseModal');
+  const origHtml = submitBtn ? submitBtn.innerHTML : '';
+  if (submitBtn) {
+    submitBtn.textContent = 'กำลังบันทึกและอัปโหลด...';
+    submitBtn.disabled = true;
+  }
+
   try {
-    const dateVal = document.getElementById('expenseDate').value;
-    if (!dateVal) {
-      alert('กรุณาระบุวันที่จ่ายเงินก่อนทำการบันทึก');
-      return;
-    }
     // Parse date from YYYY-MM-DD to DD/MM/YYYY
     const dateParts = dateVal.split('-');
     const dateStr = dateParts.length === 3 ? `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}` : '';
@@ -4639,16 +4647,23 @@ function saveExpense() {
     const isSplit = document.getElementById('expenseSplitCheckbox').checked;
 
     if (expenseMode === 'simple') {
-      payee = "ทั่วไป";
-      payeeTaxId = "";
-      payeeBranch = "00000";
-      payeeAddress = "-";
+      if (staffPayee !== 'none' && staffPayee !== 'other') {
+        const details = PREDEFINED_PAYEES[staffPayee];
+        if (details) {
+          payee = details.name;
+          payeeTaxId = details.taxId;
+          payeeBranch = details.branch || '00000';
+          payeeAddress = details.address || '-';
+        }
+      } else {
+        payee = payee || "ทั่วไป";
+        payeeTaxId = payeeTaxId || "";
+        payeeBranch = payeeBranch || "00000";
+        payeeAddress = payeeAddress || "-";
+      }
       taxFilingStatus = "ยังไม่ได้ยื่น";
       paymentStatus = "จ่ายเงินแล้ว";
       actualPaidDate = dateStr;
-      billUrl = "";
-      remarks = "";
-      projectLink = "";
       whtType = (whtRate > 0) ? "pnd3" : "none";
       if (!desc) {
         desc = category;
@@ -4676,7 +4691,8 @@ function saveExpense() {
         return;
       }
       
-      expenseSplits.forEach((split, idx) => {
+      for (let idx = 0; idx < expenseSplits.length; idx++) {
+        const split = expenseSplits[idx];
         const splitBillNo = `${billNo}-${idx + 1}`;
         let payeeName = '';
         let payeeTaxIdVal = '';
@@ -4717,6 +4733,33 @@ function saveExpense() {
           }
         }
 
+        let splitUploadedPdfUrl = '';
+        if (shouldUpload && scriptUrl && sheetId) {
+          // ปรับคำอธิบายปุ่มแบบ Real-time ให้ผู้ใช้รู้สถานะ
+          if (submitBtn) {
+            submitBtn.textContent = `กำลังอัปโหลด PV (${idx + 1}/${expenseSplits.length})...`;
+          }
+          const tempDoc = {
+            number: splitBillNo,
+            date: dateStr,
+            name: payeeName,
+            payeeTaxId: payeeTaxIdVal,
+            category: payeeCategory,
+            desc: `${desc} (ปันส่วนค่าแรง - ${split.staff === 'other' ? split.customName : split.staff})`,
+            baseAmount: splitBaseAmount,
+            vatAmount: splitVatAmount,
+            whtAmount: splitWhtAmount,
+            amount: splitNetAmount,
+            timestamp: new Date().toLocaleString()
+          };
+          try {
+            splitUploadedPdfUrl = await uploadExpensePvPdf(tempDoc);
+          } catch (err) {
+            console.error(err);
+          }
+        }
+        let finalSplitBillUrl = splitUploadedPdfUrl || split.customBillUrl || '';
+
         const splitRecord = {
           number: splitBillNo,
           type: 'expense',
@@ -4728,7 +4771,7 @@ function saveExpense() {
           vatAmount: splitVatAmount,
           whtAmount: splitWhtAmount,
           amount: splitNetAmount,
-          driveLink: billUrl,
+          driveLink: finalSplitBillUrl,
           whtType: formType,
           projectLink: projectLink,
           priceType: 'exclude',
@@ -4774,7 +4817,7 @@ function saveExpense() {
           paymentStatus || 'จ่ายเงินแล้ว',
           actualPaidDate,
           (splitWhtRate > 0) ? splitBillNo : '-',
-          billUrl || '-',
+          finalSplitBillUrl || '-',
           taxFilingStatus,
           projectLink || '',
           remarks || '',
@@ -4846,7 +4889,7 @@ function saveExpense() {
             split.staff
           ]);
         }
-      });
+      }
     } else {
       // Calculations based on Price Type (VAT Inclusive vs Exclusive)
       let baseAmount = 0;
@@ -4879,6 +4922,33 @@ function saveExpense() {
         } else {
           formType = 'pnd3';
         }
+      }
+
+      if (shouldUpload && scriptUrl && sheetId) {
+        const tempDoc = {
+          number: billNo,
+          date: dateStr,
+          name: payee,
+          payeeTaxId: payeeTaxId,
+          category: category,
+          desc: desc,
+          baseAmount: baseAmount,
+          vatAmount: vatAmount,
+          whtAmount: whtAmount,
+          amount: netAmount,
+          timestamp: new Date().toLocaleString()
+        };
+        if (submitBtn) {
+          submitBtn.textContent = 'กำลังอัปโหลด PV...';
+        }
+        try {
+          uploadedPdfUrl = await uploadExpensePvPdf(tempDoc);
+        } catch (err) {
+          console.error(err);
+        }
+      }
+      if (uploadedPdfUrl) {
+        billUrl = uploadedPdfUrl;
       }
 
       const docRecord = {
@@ -5053,22 +5123,24 @@ function saveExpense() {
 
     // Send request
     if (scriptUrl && sheetId) {
-      const submitBtn = document.getElementById('btnSubmitExpenseModal');
-      const origHtml = submitBtn.innerHTML;
-      submitBtn.textContent = 'กำลังซิงค์...';
-      submitBtn.disabled = true;
+      if (submitBtn) {
+        submitBtn.textContent = 'กำลังซิงค์...';
+      }
 
-      fetch(scriptUrl, {
-        method: 'POST',
-        mode: 'cors',
-        headers: { 'Content-Type': 'text/plain' },
-        body: JSON.stringify(payload)
-      })
-      .then(res => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        return res.json();
-      })
-      .then(res => {
+      try {
+        const response = await fetch(scriptUrl, {
+          method: 'POST',
+          mode: 'cors',
+          headers: { 'Content-Type': 'text/plain' },
+          body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+
+        const res = await response.json();
+
         if (res.status === 'success') {
           alert(`บันทึกและซิงค์รายจ่ายลง Google Sheets สำเร็จแล้ว\nข้อความ: ${res.message}`);
           
@@ -5090,11 +5162,8 @@ function saveExpense() {
           document.getElementById('addExpenseModal').classList.remove('active');
         } else {
           alert(`ซิงค์ล้มเหลว: ${res.message}`);
-          submitBtn.innerHTML = origHtml;
-          submitBtn.disabled = false;
         }
-      })
-      .catch(err => {
+      } catch (err) {
         console.error(err);
         alert(`เกิดข้อผิดพลาดในการเชื่อมต่อสคริปต์: ${err.toString()}\n\nแต่ระบบได้บันทึกข้อมูลแบบออฟไลน์ (Pending) ไว้ในเครื่องเรียบร้อยแล้ว`);
         
@@ -5114,7 +5183,7 @@ function saveExpense() {
         renderExpenseList();
         renderDashboard();
         document.getElementById('addExpenseModal').classList.remove('active');
-      });
+      }
     } else {
       // Offline Save directly
       alert('ไม่พบการเชื่อมต่อชีต ระบบได้ทำการบันทึกข้อมูลแบบออฟไลน์ไว้ในเครื่องชั่วคราว');
@@ -5138,6 +5207,11 @@ function saveExpense() {
   } catch (err) {
     console.error(err);
     alert('บันทึกรายจ่ายล้มเหลวเนื่องจากข้อผิดพลาด: ' + err.toString());
+  } finally {
+    if (submitBtn) {
+      submitBtn.innerHTML = origHtml;
+      submitBtn.disabled = false;
+    }
   }
 }
 
@@ -7097,3 +7171,122 @@ window.deleteRetDeduction = deleteRetDeduction;
 window.updateRetDeduction = updateRetDeduction;
 window.calculateRetTotals = calculateRetTotals;
 window.saveRetentionUpdate = saveRetentionUpdate;
+
+async function uploadExpensePvPdf(doc) {
+  const pdfShiftApiKey = safeStorage.getItem('ghn168_pdfshift_api_key') || '';
+  const companyDriveUrl = safeStorage.getItem('ghn168_company_drive_url') || '';
+  const scriptUrl = safeStorage.getItem('ghn168_script_url');
+  
+  if (!pdfShiftApiKey || !companyDriveUrl || !scriptUrl) {
+    console.warn('Skipping PV upload: API settings not configured.');
+    return '';
+  }
+
+  let parentFolderId = '';
+  const matchFolders = companyDriveUrl.match(/\/folders\/([a-zA-Z0-9\-_]+)/);
+  if (matchFolders && matchFolders[1]) {
+    parentFolderId = matchFolders[1];
+  } else {
+    const matchId = companyDriveUrl.match(/[?&]id=([a-zA-Z0-9\-_]+)/);
+    if (matchId && matchId[1]) {
+      parentFolderId = matchId[1];
+    } else if (/^[a-zA-Z0-9\-_]{25,60}$/.test(companyDriveUrl.trim())) {
+      parentFolderId = companyDriveUrl.trim();
+    }
+  }
+
+  if (!parentFolderId) return '';
+
+  // 1. จำลองกรอกข้อมูลลงกระดาษ PV ชั่วคราวเพื่อดึง HTML
+  document.getElementById('pvPrintNo').textContent = cleanDocNo(doc.number);
+  document.getElementById('pvPrintDate').textContent = doc.date;
+  document.getElementById('pvPrintPayee').textContent = doc.name;
+  document.getElementById('pvPrintPayeeTaxId').textContent = doc.payeeTaxId || '-';
+  document.getElementById('pvPrintDesc').textContent = `${doc.category || 'รายจ่าย'}: ${doc.desc || ''}`;
+  document.getElementById('pvPrintNote').textContent = `บันทึกรายการจ่าย: ${doc.timestamp || ''}`;
+  
+  const base = parseFloat(doc.baseAmount) || 0;
+  const vat = parseFloat(doc.vatAmount) || 0;
+  const wht = parseFloat(doc.whtAmount) || 0;
+  const net = parseFloat(doc.amount) || 0;
+
+  document.getElementById('pvPrintBaseAmount').textContent = `฿${base.toLocaleString('th-TH', { minimumFractionDigits: 2 })}`;
+  document.getElementById('pvPrintVat').textContent = `฿${vat.toLocaleString('th-TH', { minimumFractionDigits: 2 })}`;
+  document.getElementById('pvPrintWht').textContent = `฿${wht.toLocaleString('th-TH', { minimumFractionDigits: 2 })}`;
+  document.getElementById('pvPrintNet').textContent = `฿${net.toLocaleString('th-TH', { minimumFractionDigits: 2 })}`;
+  document.getElementById('pvPrintNetText').textContent = thaiBahtText(net);
+
+  const previewElement = document.getElementById('printPvPaper');
+  if (!previewElement) return '';
+
+  try {
+    const cssStyles = await fetchEmbeddedStyles();
+    const fontLink = `<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">`;
+    
+    const originalDisplay = previewElement.style.display;
+    previewElement.style.display = 'block';
+    const elementHtml = previewElement.outerHTML;
+    previewElement.style.display = originalDisplay;
+
+    const fullHtml = `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  ${fontLink}
+  <style>
+    ${cssStyles}
+    body {
+      margin: 0;
+      padding: 0;
+      background: white;
+    }
+    #printPvPaper {
+      display: block !important;
+      box-shadow: none !important;
+      border: none !important;
+      padding: 15mm !important;
+      margin: 0 auto !important;
+      width: 210mm !important;
+      box-sizing: border-box !important;
+    }
+  </style>
+</head>
+<body>
+  ${elementHtml}
+</body>
+</html>`;
+
+    const pdfName = `ใบสำคัญจ่าย_${cleanDocNo(doc.number)}.pdf`.replace(/[\/\?%*:|"<>\s]+/g, '_');
+
+    const payload = {
+      type: 'upload_html',
+      htmlContent: fullHtml,
+      pdfName: pdfName,
+      docType: 'pv',
+      parentFolderId: parentFolderId,
+      pdfShiftApiKey: pdfShiftApiKey,
+      spreadsheetId: safeStorage.getItem('ghn168_sheet_id') || ''
+    };
+
+    const response = await fetch(scriptUrl, {
+      method: 'POST',
+      mode: 'cors',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify(payload)
+    });
+    
+    const res = await response.json();
+    if (res.status === 'success') {
+      return res.pdfUrl || '';
+    } else {
+      console.error('PV Upload failed in script:', res.message);
+      return '';
+    }
+  } catch (err) {
+    console.error('PV Upload exception:', err);
+    return '';
+  }
+}
+window.uploadExpensePvPdf = uploadExpensePvPdf;
