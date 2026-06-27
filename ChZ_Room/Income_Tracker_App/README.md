@@ -26,7 +26,59 @@ function doPost(e) {
   
   try {
     var data = JSON.parse(e.postData.contents);
-    var sheetType = data.type; // "general", "expense", "grab", "fetch_summary" หรือ ธุรกรรมปฏิทิน
+    var sheetType = data.type; // "general", "expense", "grab", "fetch_summary" หรือ "upload_html" หรือ ธุรกรรมปฏิทิน
+    
+    // รองรับการแปลง HTML เป็น PDF และอัปโหลดขึ้น Google Drive
+    if (sheetType === "upload_html") {
+      var htmlContent = data.htmlContent;
+      var pdfName = data.pdfName;
+      var docType = data.docType;
+      var parentFolderId = data.parentFolderId;
+      var pdfShiftApiKey = data.pdfShiftApiKey;
+      
+      if (!htmlContent) {
+        return ContentService.createTextOutput(JSON.stringify({
+          "status": "error",
+          "message": "ไม่พบ htmlContent ในข้อมูลที่ส่งเข้ามานะแก!"
+        })).setMimeType(ContentService.MimeType.JSON);
+      }
+      if (!parentFolderId) {
+        return ContentService.createTextOutput(JSON.stringify({
+          "status": "error",
+          "message": "ไม่พบ parentFolderId ในข้อมูลที่ส่งเข้ามานะแก!"
+        })).setMimeType(ContentService.MimeType.JSON);
+      }
+      if (!pdfShiftApiKey) {
+        return ContentService.createTextOutput(JSON.stringify({
+          "status": "error",
+          "message": "ไม่พบ PDFShift API Key ในข้อมูลที่ส่งเข้ามานะแก!"
+        })).setMimeType(ContentService.MimeType.JSON);
+      }
+      
+      var convertResult = convertHtmlToPdfWithPdfShift(htmlContent, pdfShiftApiKey, pdfName);
+      if (!convertResult.success) {
+        return ContentService.createTextOutput(JSON.stringify({
+          "status": "error",
+          "message": "การแปลง HTML เป็น PDF ด้วย PDFShift API ล้มเหลวนะแก! รายละเอียด: " + convertResult.error
+        })).setMimeType(ContentService.MimeType.JSON);
+      }
+      
+      var pdfBlob = convertResult.blob;
+      var pdfUrl = saveBlobToFolder(pdfBlob, docType, parentFolderId);
+      if (!pdfUrl) {
+        return ContentService.createTextOutput(JSON.stringify({
+          "status": "error",
+          "message": "เซฟไฟล์ PDF ลงโฟลเดอร์ล้มเหลว (อาจเกิดจากสิทธิ์เข้าถึง หรือโฟลเดอร์ไม่ถูกต้องนะแก!)"
+        })).setMimeType(ContentService.MimeType.JSON);
+      }
+      
+      return ContentService.createTextOutput(JSON.stringify({
+        "status": "success",
+        "message": "อัปโหลดไฟล์ PDF (ผ่าน PDFShift) ขึ้น Google Drive เรียบร้อยแล้วแก!",
+        "pdfUrl": pdfUrl
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+    
     var spreadsheetId = data.spreadsheetId; // ID ของ Google Sheets ที่ส่งมาจากเว็บแอป
     
     if (!spreadsheetId) {
@@ -61,6 +113,7 @@ function doPost(e) {
           var totalExpense = 0;
           var netProfit = 0;
           var totalSavings = 0;
+          var cumulativeProfit = 0;
           var fixedCosts = [];
           
           if (totalRowIdx !== -1) {
@@ -68,6 +121,7 @@ function doPost(e) {
             totalExpense = parseFloat(mSheet.getRange("E" + totalRowIdx).getValue() || 0);
             netProfit = parseFloat(mSheet.getRange("C" + (totalRowIdx + 1)).getValue() || (totalIncome - totalExpense));
             totalSavings = parseFloat(mSheet.getRange("C" + (totalRowIdx + 2)).getValue() || (totalIncome * 0.1));
+            cumulativeProfit = parseFloat(mSheet.getRange("C" + (totalRowIdx + 4)).getValue() || 0);
             
             var maxDataRow = totalRowIdx - 2;
             if (maxDataRow >= 2) {
@@ -91,6 +145,7 @@ function doPost(e) {
             expense: totalExpense,
             profit: netProfit,
             savings: totalSavings,
+            cumulativeProfit: cumulativeProfit,
             fixedCosts: fixedCosts
           });
         } else {
@@ -100,6 +155,7 @@ function doPost(e) {
             expense: 0,
             profit: 0,
             savings: 0,
+            cumulativeProfit: 0,
             fixedCosts: []
           });
         }
@@ -532,6 +588,71 @@ function beautifyAllSheetsNow() {
     }
   }
   Logger.log("ปรับขนาดทุกชีตจำนวน " + count + " แท็บ โดยอิงตามต้นแบบเรียบร้อยแล้วแก!");
+}
+
+// ฟังก์ชันแปลง HTML เป็น PDF ด้วย API ของ PDFShift
+function convertHtmlToPdfWithPdfShift(htmlContent, apiKey, filename) {
+  var url = "https://api.pdfshift.io/v3/convert/pdf";
+  var payload = {
+    source: htmlContent,
+    sandbox: false,
+    delay: 1000
+  };
+  var options = {
+    method: "post",
+    contentType: "application/json",
+    headers: {
+      "X-API-Key": apiKey
+    },
+    payload: JSON.stringify(payload),
+    muteHttpExceptions: true
+  };
+  try {
+    var response = UrlFetchApp.fetch(url, options);
+    var code = response.getResponseCode();
+    var responseText = response.getContentText();
+    if (code === 200 || code === 201) {
+      var blob = response.getBlob();
+      blob.setName(filename || "document.pdf");
+      return { success: true, blob: blob };
+    } else {
+      return { success: false, error: "HTTP Code: " + code + ", Details: " + responseText };
+    }
+  } catch (e) {
+    return { success: false, error: "Network/Script Exception: " + e.toString() };
+  }
+}
+
+// ฟังก์ชันบันทึก Blob PDF ลงในโฟลเดอร์ Google Drive
+function saveBlobToFolder(blob, docType, parentFolderId) {
+  if (!blob || !parentFolderId) return null;
+  var parentFolder = DriveApp.getFolderById(parentFolderId);
+  if (!parentFolder) return null;
+  
+  var prefix = "";
+  if (docType === "quotation") prefix = "01";
+  else if (docType === "invoice") prefix = "02";
+  else if (docType === "receipt") prefix = "03";
+  
+  var subFolder = null;
+  var folders = parentFolder.getFolders();
+  while (folders.hasNext()) {
+    var folder = folders.next();
+    var name = folder.getName();
+    if (name.indexOf(prefix + "_") === 0 || name.indexOf(prefix + " ") === 0 || name === prefix) {
+      subFolder = folder;
+      break;
+    }
+  }
+  
+  var uploadFolder = subFolder || parentFolder;
+  var file = uploadFolder.createFile(blob);
+  try {
+    file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+  } catch (sharingError) {
+    Logger.log("ไม่สามารถตั้งค่าการแชร์ไฟล์ได้: " + sharingError.toString());
+  }
+  return file.getUrl();
 }
 ```
 

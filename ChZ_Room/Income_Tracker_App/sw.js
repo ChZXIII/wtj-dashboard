@@ -1,7 +1,6 @@
-const CACHE_NAME = 'chz-app-v54';
+const CACHE_NAME = 'chz-app-v1.0';
 const ASSETS = [
   'index.html',
-  'style.css',
   'app.js',
   'manifest.json',
   'assets/icon-192.png',
