@@ -1779,7 +1779,7 @@ textarea.form-control {
 }
 
   </style>
-  <link rel="manifest" href="manifest.json?v=115">
+  <link rel="manifest" href="manifest.json?v=116">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -1937,7 +1937,7 @@ textarea.form-control {
           </div>
         </div>
         <div style="font-size: 10px; opacity: 0.5; margin-top: 12px; text-align: center; font-family: monospace; letter-spacing: 0.5px;">
-          Version V1.15
+          Version V1.16
         </div>
       </div>
     </aside>
@@ -2610,9 +2610,12 @@ textarea.form-control {
                     <input type="checkbox" id="docVatCheckbox" checked> คำนวณภาษีมูลค่าเพิ่ม (VAT 7%)
                   </label>
                 </div>
-                <div class="form-group" style="flex: 1;">
-                  <label for="docDiscountInput">ส่วนลด (บาท) / Discount (THB)</label>
-                  <input type="number" id="docDiscountInput" class="form-control" placeholder="ไม่มีส่วนลด" min="0" step="0.01" style="box-sizing: border-box;">
+                <div class="form-group" style="flex: 1.5;">
+                  <label style="display: block; margin-bottom: 6px;">ส่วนลด (บาท) / รายละเอียดส่วนลด</label>
+                  <div style="display: flex; gap: 8px;">
+                    <input type="number" id="docDiscountInput" class="form-control" placeholder="ไม่มีส่วนลด" min="0" step="0.01" style="flex: 1; box-sizing: border-box;">
+                    <input type="text" id="docDiscountDesc" class="form-control" placeholder="เช่น ส่วนลดลูกค้าเก่า" style="flex: 1.5; box-sizing: border-box;">
+                  </div>
                 </div>
                 <div class="form-group" style="flex: 1;">
                   <label for="docWhtSelect">หัก ณ ที่จ่าย (WHT (50.ทวิ))</label>
@@ -4017,7 +4020,7 @@ textarea.form-control {
   </div>
 
   <script src="assets/html2pdf.bundle.min.js"></script>
-  <script src="app.js?v=115"></script>
+  <script src="app.js?v=116"></script>
   <script>
     if ('serviceWorker' in navigator) {
       let refreshing = false;
@@ -4028,7 +4031,7 @@ textarea.form-control {
         }
       });
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js?v=115')
+        navigator.serviceWorker.register('sw.js?v=116')
           .then(reg => {
             console.log('Service Worker Registered!', reg);
             reg.update();

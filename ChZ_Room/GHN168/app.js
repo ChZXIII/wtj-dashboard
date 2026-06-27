@@ -971,6 +971,10 @@ function setupEventListeners() {
       if (discountInput) {
         discountInput.value = sourceDoc.discount || '';
       }
+      const discountDescInput = document.getElementById('docDiscountDesc');
+      if (discountDescInput) {
+        discountDescInput.value = sourceDoc.discountDesc || '';
+      }
       
       docDeductions = [];
       renderDeductionsList();
@@ -1001,6 +1005,10 @@ function setupEventListeners() {
   const discountInput = document.getElementById('docDiscountInput');
   if (discountInput) {
     discountInput.addEventListener('input', calculateDocTotals);
+  }
+  const discountDescEl = document.getElementById('docDiscountDesc');
+  if (discountDescEl) {
+    discountDescEl.addEventListener('input', calculateDocTotals);
   }
   const docOwner = document.getElementById('docOwner');
   if (docOwner) {
@@ -1842,6 +1850,8 @@ function createNewDocument() {
   document.getElementById('docRemarks').value = '';
   const discountInput = document.getElementById('docDiscountInput');
   if (discountInput) discountInput.value = '';
+  const discountDescInput = document.getElementById('docDiscountDesc');
+  if (discountDescInput) discountDescInput.value = '';
   
   const today = new Date();
   const yyyy = today.getFullYear();
@@ -1939,6 +1949,10 @@ function renderPaperTable() {
   const discountVal = discountInput ? (parseFloat(discountInput.value) || 0) : 0;
   const displayDiscount = discountVal > 0 ? '' : 'none';
 
+  const discountDescInput = document.getElementById('docDiscountDesc');
+  const discountDescVal = discountDescInput ? discountDescInput.value.trim() : '';
+  const labelText = discountDescVal ? `ส่วนลด (${discountDescVal}) / Discount (${discountDescVal})` : 'ส่วนลด / Discount';
+
   const displayVat = vatChecked ? '' : 'none';
   const displayWht = whtRate > 0 ? '' : 'none';
 
@@ -1948,7 +1962,7 @@ function renderPaperTable() {
       <td id="prevSubtotalVal" style="text-align: right;" class="bordered">-</td>
     </tr>
     <tr class="total-row" id="prevDiscountRow" style="display: ${displayDiscount};">
-      <td id="prevDiscountLabelCell" colspan="${labelColspan}" style="text-align: right; font-size:11px; padding: 6px 12px; font-weight: 700; border: none; vertical-align: middle;">ส่วนลด / Discount</td>
+      <td id="prevDiscountLabelCell" colspan="${labelColspan}" style="text-align: right; font-size:11px; padding: 6px 12px; font-weight: 700; border: none; vertical-align: middle;">${labelText}</td>
       <td id="prevDiscountVal" style="text-align: right; color:#b91c1c;" class="bordered">-฿${discountVal.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
     </tr>
     <tr class="total-row" id="prevVatRow" style="display: ${displayVat};">
@@ -2126,6 +2140,16 @@ function calculateDocTotals() {
       document.getElementById('prevDiscountVal').textContent = `-฿${discount.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
     } else {
       prevDiscountRow.style.display = 'none';
+    }
+    const discountDescInput = document.getElementById('docDiscountDesc');
+    const discountDescVal = discountDescInput ? discountDescInput.value.trim() : '';
+    const prevDiscountLabelCell = document.getElementById('prevDiscountLabelCell');
+    if (prevDiscountLabelCell) {
+      if (discountDescVal) {
+        prevDiscountLabelCell.textContent = `ส่วนลด (${discountDescVal}) / Discount (${discountDescVal})`;
+      } else {
+        prevDiscountLabelCell.textContent = 'ส่วนลด / Discount';
+      }
     }
   }
 
@@ -2651,6 +2675,7 @@ function processDocumentSync() {
       detail: detail,
       amount: subtotal,
       discount: discount,
+      discountDesc: document.getElementById('docDiscountDesc') ? document.getElementById('docDiscountDesc').value.trim() : '',
       status: 'pending', // จะเปลี่ยนเป็น synced เมื่อซิงค์สำเร็จ
       timestamp: new Date().toLocaleString(),
       clientBranch: clientBranch,
@@ -2699,7 +2724,9 @@ function processDocumentSync() {
         showSignature,
         JSON.stringify(docRecord.items),
         new Date().toLocaleString(),
-        document.getElementById('docRemarks').value || "-"
+        document.getElementById('docRemarks').value || "-",
+        discount,
+        document.getElementById('docDiscountDesc') ? document.getElementById('docDiscountDesc').value.trim() : ''
       ];
     } else {
       payload.sheetName = 'ใบวางบิล';
@@ -2726,7 +2753,9 @@ function processDocumentSync() {
         new Date().toLocaleString(),
         paymentTerm || "-",
         dueDateStr || "-",
-        document.getElementById('docRemarks').value || "-"
+        document.getElementById('docRemarks').value || "-",
+        discount,
+        document.getElementById('docDiscountDesc') ? document.getElementById('docDiscountDesc').value.trim() : ''
       ];
     }
   } else if (currentDocType === 'wht') {
@@ -2919,7 +2948,9 @@ function processDocumentSync() {
           item.profitShare,
           '-',
           recordedBy || "-",
-          remarks || "-"
+          remarks || "-",
+          discount,
+          document.getElementById('docDiscountDesc') ? document.getElementById('docDiscountDesc').value.trim() : ''
         ];
       });
     } else {
@@ -2945,7 +2976,9 @@ function processDocumentSync() {
         profitShare,
         '-',
         recordedBy || "-",
-        remarks || "-"
+        remarks || "-",
+        discount,
+        document.getElementById('docDiscountDesc') ? document.getElementById('docDiscountDesc').value.trim() : ''
       ];
     }
 
@@ -2956,6 +2989,8 @@ function processDocumentSync() {
       name: clientName,
       detail: detail,
       amount: subtotal,
+      discount: discount,
+      discountDesc: document.getElementById('docDiscountDesc') ? document.getElementById('docDiscountDesc').value.trim() : '',
       status: 'pending', // Will update to synced on success
       timestamp: new Date().toLocaleString(),
       invoiceNo: invoiceNo,
@@ -3748,6 +3783,8 @@ function fetchDocumentsFromSheets(showToast = false) {
           showSeal: String(row[16]) === 'true',
           showSignature: String(row[17]) === 'true',
           remarks: row[20] || '-',
+          discount: parseFloat(row[21]) || 0,
+          discountDesc: row[22] || '',
           items: items
         };
 
@@ -3795,7 +3832,9 @@ function fetchDocumentsFromSheets(showToast = false) {
           items: items,
           paymentTerm: row[20] || '-',
           dueDate: row[21] || '',
-          remarks: row[22] || '-'
+          remarks: row[22] || '-',
+          discount: parseFloat(row[23]) || 0,
+          discountDesc: row[24] || ''
         };
 
         dbDocs = dbDocs.filter(d => d.number !== docNo);
@@ -3869,6 +3908,8 @@ function fetchDocumentsFromSheets(showToast = false) {
             actualPaymentDate: row[17] || '',
             recordedBy: row[20] || '',
             remarks: row[21] || '',
+            discount: parseFloat(row[22]) || 0,
+            discountDesc: row[23] || '',
             status: 'synced',
             timestamp: row[0] || '',
             owner: ownerName || worker || '',

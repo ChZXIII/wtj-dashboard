@@ -27,7 +27,9 @@ var INCOME_HEADERS = [
   "สัดส่วนผู้รับผลประโยชน์ (Profit Share Distribution)",
   "ลิงก์เอกสาร Google Drive (PDF Link)",
   "ผู้บันทึกรายการ (Recorded By)",
-  "หมายเหตุ (Remarks)"
+  "หมายเหตุ (Remarks)",
+  "ส่วนลด (Discount)",
+  "รายละเอียดส่วนลด (Discount Description)"
 ];
 
 var EXPENSE_HEADERS = [
@@ -131,7 +133,9 @@ var QUOTATION_HEADERS = [
   "แสดงลายเซ็น (Show Document Signature)",
   "ข้อมูลรายการสินค้าและราคา JSON (Items JSON)",
   "วันเวลาที่อัปเดตล่าสุด (Last Updated)",
-  "หมายเหตุ (Remarks)"
+  "หมายเหตุ (Remarks)",
+  "ส่วนลด (Discount)",
+  "รายละเอียดส่วนลด (Discount Description)"
 ];
 
 var INVOICE_HEADERS = [
@@ -157,7 +161,9 @@ var INVOICE_HEADERS = [
   "วันเวลาที่อัปเดตล่าสุด (Last Updated)",
   "เงื่อนไขการชำระเงิน (Payment Terms)",
   "วันครบกำหนด (Due Date)",
-  "หมายเหตุ (Remarks)"
+  "หมายเหตุ (Remarks)",
+  "ส่วนลด (Discount)",
+  "รายละเอียดส่วนลด (Discount Description)"
 ];
 
 function doPost(e) {
