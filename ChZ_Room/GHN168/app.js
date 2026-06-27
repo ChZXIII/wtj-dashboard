@@ -4658,6 +4658,7 @@ function saveExpense() {
 
     const recordsToSave = [];
     const payloadRows = [];
+    let netAmount = 0;
     const recordDate = formatDate(new Date().toISOString().split('T')[0]);
 
     if (isSplit) {
@@ -4858,7 +4859,7 @@ function saveExpense() {
       baseAmount = Math.round(baseAmount * 100) / 100;
       vatAmount = Math.round(vatAmount * 100) / 100;
       const whtAmount = Math.round((baseAmount * (whtRate / 100)) * 100) / 100;
-      const netAmount = Math.round((baseAmount + vatAmount - whtAmount) * 100) / 100;
+      netAmount = Math.round((baseAmount + vatAmount - whtAmount) * 100) / 100;
 
       // Determine formType
       let formType = whtType;
