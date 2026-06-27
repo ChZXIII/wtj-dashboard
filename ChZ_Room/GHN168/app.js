@@ -60,7 +60,7 @@ const defaultSellerConfig = {
   sellerAddress: '65/1 ถนนต้นขาม 2 ตำบลท่าศาลา อำเภอเมือง จังหวัดเชียงใหม่ 50000',
   sellerPhone: '089-554-4355',
   sellerEmail: 'ghn168media@gmail.com',
-  bankDetails: 'ธนาคารกสิกรไทย เลขที่ 123-4-56789-0 บจก. จีเอชเอ็น 168 มีเดีย แอนด์ ครีเอชั่น',
+  bankDetails: 'ธนาคารกรุงไทย เลขที่ 520-0-61960-2 บจ. จีเอชเอ็น 168 มีเดีย แอนด์ ครีเอชั่น',
   signerName: 'มงคล วงศ์สกุลยานนท์'
 };
 
@@ -967,6 +967,11 @@ function setupEventListeners() {
         docItems = [{ desc: sourceDoc.detail || '', qty: 1, unit: 'งาน', price: sourceDoc.amount || 0, worker: 'เก่ง' }];
       }
       
+      const discountInput = document.getElementById('docDiscountInput');
+      if (discountInput) {
+        discountInput.value = sourceDoc.discount || '';
+      }
+      
       docDeductions = [];
       renderDeductionsList();
       
@@ -993,6 +998,10 @@ function setupEventListeners() {
   document.getElementById('doc_showSeal').addEventListener('change', saveSellerConfig);
   document.getElementById('docVatCheckbox').addEventListener('change', calculateDocTotals);
   document.getElementById('docWhtSelect').addEventListener('change', calculateDocTotals);
+  const discountInput = document.getElementById('docDiscountInput');
+  if (discountInput) {
+    discountInput.addEventListener('input', calculateDocTotals);
+  }
   const docOwner = document.getElementById('docOwner');
   if (docOwner) {
     docOwner.addEventListener('change', calculateDocTotals);
@@ -1830,8 +1839,9 @@ function createNewDocument() {
   document.getElementById('docClientAddress').value = '';
   const phoneEl = document.getElementById('docClientPhone');
   if (phoneEl) phoneEl.value = '';
-  document.getElementById('docProjectName').value = '';
   document.getElementById('docRemarks').value = '';
+  const discountInput = document.getElementById('docDiscountInput');
+  if (discountInput) discountInput.value = '';
   
   const today = new Date();
   const yyyy = today.getFullYear();
@@ -1925,6 +1935,10 @@ function renderPaperTable() {
   const whtSelect = document.getElementById('docWhtSelect');
   const whtRate = whtSelect ? parseInt(whtSelect.value) || 0 : 0;
 
+  const discountInput = document.getElementById('docDiscountInput');
+  const discountVal = discountInput ? (parseFloat(discountInput.value) || 0) : 0;
+  const displayDiscount = discountVal > 0 ? '' : 'none';
+
   const displayVat = vatChecked ? '' : 'none';
   const displayWht = whtRate > 0 ? '' : 'none';
 
@@ -1932,6 +1946,10 @@ function renderPaperTable() {
     <tr class="total-row" id="prevSubtotalRow">
       <td id="prevSubtotalLabelCell" colspan="${labelColspan}" style="text-align: right; font-size:11px; padding: 6px 12px; font-weight: 700; border: none; vertical-align: middle;">รวมเงิน / Subtotal</td>
       <td id="prevSubtotalVal" style="text-align: right;" class="bordered">-</td>
+    </tr>
+    <tr class="total-row" id="prevDiscountRow" style="display: ${displayDiscount};">
+      <td id="prevDiscountLabelCell" colspan="${labelColspan}" style="text-align: right; font-size:11px; padding: 6px 12px; font-weight: 700; border: none; vertical-align: middle;">ส่วนลด / Discount</td>
+      <td id="prevDiscountVal" style="text-align: right; color:#b91c1c;" class="bordered">-฿${discountVal.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
     </tr>
     <tr class="total-row" id="prevVatRow" style="display: ${displayVat};">
       <td id="prevVatLabelCell" colspan="${labelColspan}" style="text-align: right; font-size:11px; padding: 6px 12px; font-weight: 700; border: none; vertical-align: middle;">ภาษีมูลค่าเพิ่ม / VAT 7%</td>
@@ -2090,13 +2108,27 @@ function calculateDocTotals() {
   const vatChecked = document.getElementById('docVatCheckbox').checked;
   const whtRate = parseInt(document.getElementById('docWhtSelect').value) || 0;
 
-  const vat = vatChecked ? subtotal * 0.07 : 0;
-  const wht = subtotal * (whtRate / 100);
-  const grandTotal = subtotal + vat - wht;
+  const discountInput = document.getElementById('docDiscountInput');
+  const discount = discountInput ? (parseFloat(discountInput.value) || 0) : 0;
+
+  const totalAfterDiscount = Math.max(0, subtotal - discount);
+  const vat = vatChecked ? totalAfterDiscount * 0.07 : 0;
+  const wht = totalAfterDiscount * (whtRate / 100);
+  const grandTotal = totalAfterDiscount + vat - wht;
 
   // Render previews
   document.getElementById('prevSubtotalVal').textContent = `฿${subtotal.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   
+  const prevDiscountRow = document.getElementById('prevDiscountRow');
+  if (prevDiscountRow) {
+    if (discount > 0) {
+      prevDiscountRow.style.display = '';
+      document.getElementById('prevDiscountVal').textContent = `-฿${discount.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    } else {
+      prevDiscountRow.style.display = 'none';
+    }
+  }
+
   const prevVatRow = document.getElementById('prevVatRow');
   if (prevVatRow) {
     if (vatChecked) {
@@ -2584,9 +2616,12 @@ function processDocumentSync() {
     
     const vatChecked = document.getElementById('docVatCheckbox').checked;
     const whtRate = parseInt(document.getElementById('docWhtSelect').value) || 0;
-    const vat = Math.round((vatChecked ? subtotal * 0.07 : 0) * 100) / 100;
-    const wht = Math.round((subtotal * (whtRate / 100)) * 100) / 100;
-    const net = Math.round((subtotal + vat - wht) * 100) / 100;
+    const discountInput = document.getElementById('docDiscountInput');
+    const discount = discountInput ? (parseFloat(discountInput.value) || 0) : 0;
+    const totalAfterDiscount = Math.max(0, subtotal - discount);
+    const vat = Math.round((vatChecked ? totalAfterDiscount * 0.07 : 0) * 100) / 100;
+    const wht = Math.round((totalAfterDiscount * (whtRate / 100)) * 100) / 100;
+    const net = Math.round((totalAfterDiscount + vat - wht) * 100) / 100;
     const paymentTerm = document.getElementById('docPaymentTerm').value;
     const dueDate = document.getElementById('docDueDate').value;
 
@@ -2615,6 +2650,7 @@ function processDocumentSync() {
       name: clientName,
       detail: detail,
       amount: subtotal,
+      discount: discount,
       status: 'pending', // จะเปลี่ยนเป็น synced เมื่อซิงค์สำเร็จ
       timestamp: new Date().toLocaleString(),
       clientBranch: clientBranch,
@@ -2811,9 +2847,12 @@ function processDocumentSync() {
 
     const vatChecked = document.getElementById('docVatCheckbox').checked;
     const whtRate = parseInt(document.getElementById('docWhtSelect').value) || 0;
-    const vat = Math.round((vatChecked ? subtotal * 0.07 : 0) * 100) / 100;
-    const wht = Math.round((subtotal * (whtRate / 100)) * 100) / 100;
-    const net = Math.round((subtotal + vat - wht) * 100) / 100;
+    const discountInput = document.getElementById('docDiscountInput');
+    const discount = discountInput ? (parseFloat(discountInput.value) || 0) : 0;
+    const totalAfterDiscount = Math.max(0, subtotal - discount);
+    const vat = Math.round((vatChecked ? totalAfterDiscount * 0.07 : 0) * 100) / 100;
+    const wht = Math.round((totalAfterDiscount * (whtRate / 100)) * 100) / 100;
+    const net = Math.round((totalAfterDiscount + vat - wht) * 100) / 100;
     const owner = "-";
     const retentionAmount = 0;
     const profitShare = "ไม่มีการหักเข้า บ.";
@@ -4801,9 +4840,19 @@ function exportPdfClientSide() {
   element.style.overflow = 'hidden';
   
   // ตั้งค่าตัวเลือก html2canvas ใน opt
+  const docNoInput = document.getElementById(currentDocType === 'wht' ? 'whtDocNumber' : 'docNumber');
+  const docNo = docNoInput ? docNoInput.value.trim() : '';
+  const cleanedDocNo = cleanDocNo(docNo);
+  let displayDocType = 'เอกสาร';
+  if (currentDocType === 'quotation') displayDocType = 'ใบเสนอราคา_สัญญาจ้าง';
+  else if (currentDocType === 'invoice') displayDocType = 'ใบวางบิล';
+  else if (currentDocType === 'receipt') displayDocType = 'ใบเสร็จรับเงิน';
+  else if (currentDocType === 'wht') displayDocType = 'ใบหัก_ณ_ที่จ่าย_50_ทวิ';
+  const finalFilename = `${displayDocType}_${cleanedDocNo}.pdf`.replace(/[\/\\?%*:|"<>\s]+/g, '_');
+
   const opt = {
     margin: 0,
-    filename: document.title + '.pdf',
+    filename: finalFilename,
     image: { type: 'jpeg', quality: 0.98 },
     html2canvas: { 
       scale: 2, 
@@ -4929,8 +4978,13 @@ async function handleUploadPdfToDrive(triggerBtnId = 'btnSaveAndSyncDoc') {
   `;
 
   // สร้างชื่อไฟล์
-  const sanitizedClientName = clientName.replace(/[^a-zA-Z0-9ก-๙_\-\s]/g, '').trim();
-  const pdfName = `${docNo}_${sanitizedClientName}.pdf`;
+  const cleanedDocNo = cleanDocNo(docNo);
+  let displayDocType = 'เอกสาร';
+  if (currentDocType === 'quotation') displayDocType = 'ใบเสนอราคา_สัญญาจ้าง';
+  else if (currentDocType === 'invoice') displayDocType = 'ใบวางบิล';
+  else if (currentDocType === 'receipt') displayDocType = 'ใบเสร็จรับเงิน';
+  else if (currentDocType === 'wht') displayDocType = 'ใบหัก_ณ_ที่จ่าย_50_ทวิ';
+  const pdfName = `${displayDocType}_${cleanedDocNo}.pdf`.replace(/[\/\\?%*:|"<>\s]+/g, '_');
 
   const previewElement = currentDocType === 'wht'
     ? document.getElementById('previewWhtDoc')
