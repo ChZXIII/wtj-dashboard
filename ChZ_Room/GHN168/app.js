@@ -4055,7 +4055,7 @@ function fetchDocumentsFromSheets(showToast = false) {
         if (!docNo) return;
 
         const formType = row[14] || 'none';
-        const docType = (formType !== 'none') ? 'wht' : 'expense';
+        const docType = docNo.startsWith('PV-') ? 'expense' : ((formType !== 'none') ? 'wht' : 'expense');
 
         const docRecord = {
           number: docNo,
@@ -4063,10 +4063,10 @@ function fetchDocumentsFromSheets(showToast = false) {
           date: row[1] || '',
           name: row[3] || '',
           detail: row[8] || '',
-          amount: parseFloat(row[9]) || 0,
-          vat: parseFloat(row[10]) || 0,
-          wht: parseFloat(row[13]) || 0,
-          net: parseFloat(row[15]) || 0,
+          baseAmount: parseFloat(row[9]) || 0,
+          vatAmount: parseFloat(row[10]) || 0,
+          whtAmount: parseFloat(row[13]) || 0,
+          amount: docType === 'wht' ? (parseFloat(row[9]) || 0) : (parseFloat(row[15]) || 0),
           whtRate: parseInt(row[12]) || 0,
           whtType: formType,
           paymentMethod: row[16] || 'KBank',
@@ -4838,71 +4838,7 @@ async function saveExpense() {
           split.staff
         ]);
 
-        // Auto WHT Certificate creation
-        if (splitWhtRate > 0 && autoWht) {
-          const whtRecord = {
-            number: splitBillNo,
-            type: 'wht',
-            date: dateStr,
-            name: payeeName,
-            detail: splitRecord.desc,
-            amount: splitBaseAmount,
-            status: 'pending',
-            timestamp: new Date().toLocaleString(),
-            payeeTaxId: payeeTaxIdVal,
-            payeeBranch: payeeBranchVal,
-            payeeAddress: payeeAddressVal,
-            category: payeeCategory,
-            vat: 0,
-            wht: splitWhtAmount,
-            net: splitNetAmount,
-            whtRate: splitWhtRate,
-            receivingBank: '-',
-            paymentStatus: paymentStatus,
-            actualPaymentDate: '-',
-            profitShare: '-',
-            recordedBy: '-',
-            remarks: remarks,
-            paymentMethod: paymentMethod,
-            actualPaidDate: actualPaidDate,
-            whtCertificateNo: splitBillNo,
-            taxFilingStatus: taxFilingStatus,
-            projectLink: projectLink,
-            items: null,
-            staffPayee: split.staff,
-            autoWht: autoWht
-          };
 
-          recordsToSave.push(whtRecord);
-
-          payloadRows.push([
-            recordDate,
-            dateStr,
-            splitBillNo,
-            payeeName,
-            payeeTaxIdVal || '-',
-            payeeAddressVal || '-',
-            payeeBranchVal || '00000',
-            payeeCategory || '-',
-            splitRecord.desc,
-            splitBaseAmount,
-            0,
-            splitBaseAmount,
-            splitWhtRate,
-            splitWhtAmount,
-            formType,
-            splitNetAmount,
-            paymentMethod || 'KBank',
-            paymentStatus || 'จ่ายเงินแล้ว',
-            actualPaidDate,
-            splitBillNo,
-            '-',
-            taxFilingStatus,
-            projectLink || '',
-            remarks || '',
-            split.staff
-          ]);
-        }
       }
     } else {
       // Calculations based on Price Type (VAT Inclusive vs Exclusive)
@@ -5028,71 +4964,7 @@ async function saveExpense() {
         staffPayee || 'none'
       ]);
 
-      // Auto WHT Certificate creation for normal doc
-      if (whtRate > 0 && autoWht) {
-        const whtRecord = {
-          number: billNo,
-          type: 'wht',
-          date: dateStr,
-          name: payee,
-          detail: desc,
-          amount: baseAmount,
-          status: 'pending',
-          timestamp: new Date().toLocaleString(),
-          payeeTaxId: payeeTaxId,
-          payeeBranch: payeeBranch,
-          payeeAddress: payeeAddress,
-          category: category,
-          vat: 0,
-          wht: whtAmount,
-          net: netAmount,
-          whtRate: whtRate,
-          receivingBank: '-',
-          paymentStatus: paymentStatus,
-          actualPaymentDate: '-',
-          profitShare: '-',
-          recordedBy: '-',
-          remarks: remarks,
-          paymentMethod: paymentMethod,
-          actualPaidDate: actualPaidDate,
-          whtCertificateNo: billNo,
-          taxFilingStatus: taxFilingStatus,
-          projectLink: projectLink,
-          items: null,
-          staffPayee: staffPayee,
-          autoWht: autoWht
-        };
 
-        recordsToSave.push(whtRecord);
-
-        payloadRows.push([
-          recordDate,
-          dateStr,
-          billNo,
-          payee,
-          payeeTaxId || '-',
-          payeeAddress || '-',
-          payeeBranch || '00000',
-          category || '-',
-          desc,
-          baseAmount,
-          0,
-          baseAmount,
-          whtRate,
-          whtAmount,
-          formType,
-          netAmount,
-          paymentMethod || 'KBank',
-          paymentStatus || 'จ่ายเงินแล้ว',
-          actualPaidDate,
-          billNo,
-          '-',
-          taxFilingStatus,
-          projectLink || '',
-          remarks || '',
-          staffPayee || 'none'
-        ]);
-      }
     }
 
     const netAmountTotal = isSplit ? expenseSplits.reduce((acc, s) => acc + (s.amount || 0), 0) : netAmount;
