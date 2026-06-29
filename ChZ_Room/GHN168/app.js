@@ -4758,7 +4758,8 @@ async function saveExpense() {
         }
 
         let splitUploadedPdfUrl = '';
-        if (shouldUpload && scriptUrl && sheetId) {
+        const needsWhtUpload = autoWht && splitWhtRate > 0;
+        if ((shouldUpload || needsWhtUpload) && scriptUrl && sheetId) {
           // ปรับคำอธิบายปุ่มแบบ Real-time ให้ผู้ใช้รู้สถานะ
           if (submitBtn) {
             submitBtn.textContent = `กำลังอัปโหลด PV (${idx + 1}/${expenseSplits.length})...`;
@@ -4889,7 +4890,8 @@ async function saveExpense() {
       }
 
       let uploadedPdfUrl = '';
-      if (shouldUpload && scriptUrl && sheetId) {
+      const needsWhtUpload = autoWht && whtRate > 0;
+      if ((shouldUpload || needsWhtUpload) && scriptUrl && sheetId) {
         const tempDoc = {
           number: billNo,
           date: dateStr,
