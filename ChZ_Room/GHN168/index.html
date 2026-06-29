@@ -1370,6 +1370,31 @@ textarea.form-control {
     margin: 0 auto !important;
     width: 210mm !important;
     box-sizing: border-box !important;
+  }
+
+  /* Specific overrides for printing Withholding Tax 50 Tawi */
+  body.printing-wht {
+    background: #ffffff !important;
+    color: #000000 !important;
+    display: block !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+  body.printing-wht .sidebar,
+  body.printing-wht .main-content,
+  body.printing-wht .modal-overlay,
+  body.printing-wht #addDocModal,
+  body.printing-wht #addExpenseModal {
+    display: none !important;
+  }
+  body.printing-wht #printWhtPaper {
+    display: block !important;
+    box-shadow: none !important;
+    border: none !important;
+    padding: 15mm !important;
+    margin: 0 auto !important;
+    width: 210mm !important;
+    box-sizing: border-box !important;
     min-height: auto !important;
   }
 }
@@ -1783,7 +1808,7 @@ textarea.form-control {
 }
 
   </style>
-  <link rel="manifest" href="manifest.json?v=128">
+  <link rel="manifest" href="manifest.json?v=129">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -1941,7 +1966,7 @@ textarea.form-control {
           </div>
         </div>
         <div style="font-size: 10px; opacity: 0.5; margin-top: 12px; text-align: center; font-family: monospace; letter-spacing: 0.5px;">
-          Version V1.28
+          Version V1.29
         </div>
       </div>
     </aside>
@@ -4129,8 +4154,89 @@ textarea.form-control {
     </div>
   </div>
 
+  <!-- Printable Withholding Tax 50 Tawi -->
+  <div id="printWhtPaper" class="wht-card-paper" style="display: none; font-family: 'Prompt', 'IBM Plex Sans Thai', sans-serif; padding: 30px; background: #fff; max-width: 800px; margin: 0 auto; color: #000;">
+    <div class="wht-header-box" style="text-align: center; font-size: 16px; font-weight: 900; border: 2px solid #000; padding: 8px; margin-bottom: 12px; letter-spacing: 0.5px;">
+      หนังสือรับรองการหักภาษี ณ ที่จ่าย (50 ทวิ)
+    </div>
+    
+    <div class="wht-sections" style="border: 1px solid #000; border-bottom: none; font-size: 11px;">
+      <div class="wht-row" style="display: flex; border-bottom: 1px solid #000;">
+        <div class="wht-col-title" style="width: 180px; padding: 8px; font-weight: 700; border-right: 1px solid #000; background: #f9fafb;">ผู้มีหน้าที่หักภาษี ณ ที่จ่าย</div>
+        <div class="wht-col-content" style="padding: 8px; flex: 1; line-height: 1.4;">
+          <strong id="whtPrintSellerName">-</strong><br>
+          เลขประจำตัวผู้เสียภาษี: <span id="whtPrintSellerTaxId" class="mono" style="font-weight:700;">-</span><br>
+          ที่อยู่: <span id="whtPrintSellerAddress">-</span>
+        </div>
+      </div>
+
+      <div class="wht-row" style="display: flex; border-bottom: 1px solid #000;">
+        <div class="wht-col-title" style="width: 180px; padding: 8px; font-weight: 700; border-right: 1px solid #000; background: #f9fafb;">ผู้ถูกหักภาษี ณ ที่จ่าย</div>
+        <div class="wht-col-content" style="padding: 8px; flex: 1; line-height: 1.4;">
+          <strong id="whtPrintPayeeName">-</strong><br>
+          เลขประจำตัวผู้เสียภาษี / บัตรประชาชน: <span id="whtPrintPayeeTaxId" class="mono" style="font-weight:700;">-</span><br>
+          ที่อยู่: <span id="whtPrintPayeeAddress">-</span>
+        </div>
+      </div>
+
+      <div class="wht-row" style="display: flex; border-bottom: 1px solid #000;">
+        <div class="wht-col-title" style="width: 180px; padding: 8px; font-weight: 700; border-right: 1px solid #000; background: #f9fafb;">ข้อมูลเอกสาร</div>
+        <div class="wht-col-content" style="padding: 8px; flex: 1; display: flex; gap: 40px;">
+          <div>เลขที่เอกสาร: <strong id="whtPrintDocNo" class="mono">-</strong></div>
+          <div>วันที่จ่ายเงิน: <strong id="whtPrintDate">-</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Money table -->
+    <table class="wht-table" style="width: 100%; border-collapse: collapse; border: 1px solid #000; font-size: 11px; margin-top: -1px;">
+      <thead>
+        <tr style="background-color: #f3f4f6; font-weight:700; border-bottom: 1px solid #000;">
+          <th style="border-right: 1px solid #000; padding: 8px; text-align: left;">ประเภทเงินได้ที่จ่าย (Description)</th>
+          <th style="width: 120px; border-right: 1px solid #000; padding: 8px; text-align: center;">อัตราภาษี (Rate)</th>
+          <th style="width: 150px; border-right: 1px solid #000; padding: 8px; text-align: right;">จำนวนเงินที่จ่าย (Gross)</th>
+          <th style="width: 150px; padding: 8px; text-align: right;">ภาษีที่หักและนำส่ง (Tax)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom: 1px solid #000;">
+          <td id="whtPrintDesc" style="border-right: 1px solid #000; padding: 8px; height: 35px; vertical-align: middle;">-</td>
+          <td style="text-align:center; border-right: 1px solid #000; padding: 8px; vertical-align: middle;" id="whtPrintRate">-</td>
+          <td style="text-align:right; border-right: 1px solid #000; padding: 8px; vertical-align: middle;" id="whtPrintGross">-</td>
+          <td style="text-align:right; padding: 8px; vertical-align: middle;" id="whtPrintTax">-</td>
+        </tr>
+        <tr style="font-weight: 700; background-color:#f9fafb;">
+          <td colspan="2" style="text-align: right; border-right: 1px solid #000; padding: 8px;">รวมเงินที่จ่ายและภาษีที่นำส่ง (Total)</td>
+          <td style="text-align:right; border-right: 1px solid #000; padding: 8px;" id="whtPrintTotalGross">-</td>
+          <td style="text-align:right; padding: 8px;" id="whtPrintTotalTax">-</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="border: 1px solid #000; padding:10px; font-weight:700; background-color:#f9fafb; margin-top:8px; font-size: 11px; box-shadow: 2px 2px 0 #000;">
+      ตัวหนังสือยอดเงินภาษีสุทธิ (Net Tax Words): <span id="whtPrintNetText" style="margin-left: 10px; font-weight: 700;">-</span>
+    </div>
+
+    <p style="font-size: 9px; color: #4b5563; margin-top: 12px; line-height: 1.3;">
+      ขอรับรองว่าข้อความและตัวเลขภาษีที่หักและนำส่งไว้นี้ถูกต้องตรงกับความเป็นจริงทุกประการ
+    </p>
+
+    <div class="doc-signatures-grid" style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 25px;">
+      <img src="assets/GHN_company_seal.png" class="company-seal-img" style="max-height: 75px; width: auto; mix-blend-mode: multiply;" alt="ตราประทับบริษัท">
+      <div class="signature-box" style="width: 250px; text-align: center; position: relative;">
+        <div style="margin-bottom: 8px;">
+          <!-- Signature placeholder logic -->
+          <img id="whtPrintSignatureImg" src="signatures/sig_keng.png" style="max-height: 60px; width: auto; display: block; margin: 0 auto; mix-blend-mode: multiply;" alt="ลายเซ็น">
+        </div>
+        <div class="signature-line" style="border-bottom: 1px dashed #000; width: 90%; margin: 8px auto 6px auto;"></div>
+        <strong style="font-size:11px;" id="whtPrintSigner">-</strong><br>
+        <span style="font-size: 9px; color:#475569;">ผู้มีอำนาจนำส่งภาษี</span>
+      </div>
+    </div>
+  </div>
+
   <script src="assets/html2pdf.bundle.min.js"></script>
-  <script src="app.js?v=128"></script>
+  <script src="app.js?v=129"></script>
   <script>
     if ('serviceWorker' in navigator) {
       let refreshing = false;
@@ -4141,7 +4247,7 @@ textarea.form-control {
         }
       });
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js?v=128')
+        navigator.serviceWorker.register('sw.js?v=129')
           .then(reg => {
             console.log('Service Worker Registered!', reg);
             reg.update();

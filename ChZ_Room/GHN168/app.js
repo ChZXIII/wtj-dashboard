@@ -4408,6 +4408,14 @@ function renderExpenseList() {
               </svg>
               พิมพ์ PV
             </button>
+            ${(doc.whtRate > 0 || doc.whtAmount > 0) ? `
+              <button class="btn-secondary" onclick="printWhtCertificate(${globalIdx})" style="padding: 4px 8px; font-size:11px; box-shadow: 2px 2px 0 var(--border-color); font-weight:700; background:#0284c7; border-color:#0284c7; color:#fff;">
+                <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width: 12px; height: 12px; stroke-width: 2.5; display: inline-block; vertical-align: middle; margin-right: 4px;">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                </svg>
+                พิมพ์ 50 ทวิ
+              </button>
+            ` : ''}
             <button class="btn-secondary" onclick="editExpense(${globalIdx})" style="padding: 4px 8px; font-size:11px; box-shadow: 2px 2px 0 var(--border-color); font-weight:700; color:var(--text-primary);">แก้ไข</button>
             <button class="btn-danger" onclick="deleteExpense(${globalIdx})" style="padding: 4px 8px; font-size:11px; box-shadow: 2px 2px 0 var(--border-color);">ลบ</button>
           </div>
@@ -4769,7 +4777,11 @@ async function saveExpense() {
             timestamp: new Date().toLocaleString()
           };
           try {
-            splitUploadedPdfUrl = await uploadExpensePvPdf(tempDoc);
+            if (autoWht && splitWhtRate > 0) {
+              splitUploadedPdfUrl = await uploadExpenseWhtPdf(tempDoc);
+            } else {
+              splitUploadedPdfUrl = await uploadExpensePvPdf(tempDoc);
+            }
           } catch (err) {
             console.error(err);
           }
@@ -4890,11 +4902,14 @@ async function saveExpense() {
           amount: netAmount,
           timestamp: new Date().toLocaleString()
         };
-        if (submitBtn) {
-          submitBtn.textContent = 'กำลังอัปโหลด PV...';
-        }
         try {
-          uploadedPdfUrl = await uploadExpensePvPdf(tempDoc);
+          if (autoWht && whtRate > 0) {
+            if (submitBtn) submitBtn.textContent = 'กำลังอัปโหลด 50 ทวิ...';
+            uploadedPdfUrl = await uploadExpenseWhtPdf(tempDoc);
+          } else {
+            if (submitBtn) submitBtn.textContent = 'กำลังอัปโหลด PV...';
+            uploadedPdfUrl = await uploadExpensePvPdf(tempDoc);
+          }
         } catch (err) {
           console.error(err);
         }
@@ -7232,3 +7247,170 @@ async function uploadExpensePvPdf(doc) {
   }
 }
 window.uploadExpensePvPdf = uploadExpensePvPdf;
+
+function printWhtCertificate(index) {
+  const doc = dbDocs[index];
+  populateWhtPrintPaper(doc);
+  document.body.classList.add('printing-wht');
+  window.print();
+  setTimeout(() => {
+    document.body.classList.remove('printing-wht');
+  }, 1000);
+}
+
+function populateWhtPrintPaper(doc) {
+  document.getElementById('whtPrintDocNo').textContent = cleanDocNo(doc.number);
+  document.getElementById('whtPrintDate').textContent = doc.date;
+  
+  // Seller Config
+  const sellerNameEl = document.getElementById('doc_sellerName');
+  const sellerTaxIdEl = document.getElementById('doc_sellerTaxId');
+  const sellerAddressEl = document.getElementById('doc_sellerAddress');
+  
+  document.getElementById('whtPrintSellerName').textContent = sellerNameEl ? sellerNameEl.value : 'บริษัท จีเอชเอ็น 168 มีเดีย แอนด์ ครีเอชั่น จำกัด';
+  document.getElementById('whtPrintSellerTaxId').textContent = sellerTaxIdEl ? sellerTaxIdEl.value : '0105566123456';
+  document.getElementById('whtPrintSellerAddress').textContent = sellerAddressEl ? formatAddressForPreview(sellerAddressEl.value, false) : '65/1 ถนนต้นขาม 2 ต.ท่าศาลา อ.เมือง จ.เชียงใหม่ 50000';
+  
+  // Payee (Customer / Worker)
+  document.getElementById('whtPrintPayeeName').textContent = doc.name || '-';
+  document.getElementById('whtPrintPayeeTaxId').textContent = doc.payeeTaxId || '-';
+  document.getElementById('whtPrintPayeeAddress').textContent = doc.payeeAddress || '-';
+  
+  // Calculation
+  const base = parseFloat(doc.baseAmount) || parseFloat(doc.amount) || 0;
+  const rate = parseInt(doc.whtRate) || 0;
+  const tax = parseFloat(doc.whtAmount) || (base * (rate / 100));
+  
+  document.getElementById('whtPrintDesc').textContent = doc.desc || doc.category || 'ค่าบริการ';
+  document.getElementById('whtPrintRate').textContent = rate > 0 ? `${rate}%` : '-';
+  document.getElementById('whtPrintGross').textContent = base > 0 ? `฿${base.toLocaleString('th-TH', { minimumFractionDigits: 2 })}` : '-';
+  document.getElementById('whtPrintTax').textContent = tax > 0 ? `฿${tax.toLocaleString('th-TH', { minimumFractionDigits: 2 })}` : '-';
+  
+  document.getElementById('whtPrintTotalGross').textContent = base > 0 ? `฿${base.toLocaleString('th-TH', { minimumFractionDigits: 2 })}` : '-';
+  document.getElementById('whtPrintTotalTax').textContent = tax > 0 ? `฿${tax.toLocaleString('th-TH', { minimumFractionDigits: 2 })}` : '-';
+  document.getElementById('whtPrintNetText').textContent = tax > 0 ? thaiBahtText(tax) : 'ศูนย์บาทถ้วน';
+
+  // Signer & signature image
+  const signerEl = document.getElementById('doc_signerName');
+  const signerName = signerEl ? signerEl.value : 'นาย มงคล วงศ์สกุลยานนท์';
+  document.getElementById('whtPrintSigner').textContent = signerName;
+  
+  const sigImgEl = document.getElementById('whtPrintSignatureImg');
+  if (sigImgEl) {
+    const showSignature = document.getElementById('doc_showSignature') ? document.getElementById('doc_showSignature').checked : true;
+    const signatureSelectVal = document.getElementById('doc_signatureSelect') ? document.getElementById('doc_signatureSelect').value : 'keng';
+    if (showSignature) {
+      sigImgEl.style.display = 'block';
+      if (typeof INLINED_ASSETS !== 'undefined' && INLINED_ASSETS[`sig_${signatureSelectVal}`]) {
+        sigImgEl.src = INLINED_ASSETS[`sig_${signatureSelectVal}`];
+      } else {
+        sigImgEl.src = `signatures/sig_${signatureSelectVal}.png`;
+      }
+    } else {
+      sigImgEl.style.display = 'none';
+    }
+  }
+}
+
+async function uploadExpenseWhtPdf(doc) {
+  const pdfShiftApiKey = safeStorage.getItem('ghn168_pdfshift_api_key') || '';
+  const companyDriveUrl = safeStorage.getItem('ghn168_company_drive_url') || '';
+  const scriptUrl = safeStorage.getItem('ghn168_script_url');
+  
+  if (!pdfShiftApiKey || !companyDriveUrl || !scriptUrl) {
+    console.warn('Skipping WHT upload: API settings not configured.');
+    return '';
+  }
+
+  let parentFolderId = '';
+  const matchFolders = companyDriveUrl.match(/\/folders\/([a-zA-Z0-9\-_]+)/);
+  if (matchFolders && matchFolders[1]) {
+    parentFolderId = matchFolders[1];
+  } else {
+    const matchId = companyDriveUrl.match(/[?&]id=([a-zA-Z0-9\-_]+)/);
+    if (matchId && matchId[1]) {
+      parentFolderId = matchId[1];
+    } else if (/^[a-zA-Z0-9\-_]{25,60}$/.test(companyDriveUrl.trim())) {
+      parentFolderId = companyDriveUrl.trim();
+    }
+  }
+
+  if (!parentFolderId) return '';
+
+  // Populate printable container
+  populateWhtPrintPaper(doc);
+
+  const previewElement = document.getElementById('printWhtPaper');
+  if (!previewElement) return '';
+
+  try {
+    const cssStyles = await fetchEmbeddedStyles();
+    const fontLink = `<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">`;
+    
+    const originalDisplay = previewElement.style.display;
+    previewElement.style.display = 'block';
+    const elementHtml = previewElement.outerHTML;
+    previewElement.style.display = originalDisplay;
+
+    const fullHtml = `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  ${fontLink}
+  <style>
+    ${cssStyles}
+    body {
+      margin: 0;
+      padding: 0;
+      background: white;
+    }
+    #printWhtPaper {
+      display: block !important;
+      box-shadow: none !important;
+      border: none !important;
+      padding: 15mm !important;
+      margin: 0 auto !important;
+      width: 210mm !important;
+      box-sizing: border-box !important;
+    }
+  </style>
+</head>
+<body>
+  ${elementHtml}
+</body>
+</html>`;
+
+    const cleanedDocNo = cleanDocNo(doc.number);
+    const pdfName = `ใบหัก_ณ_ที่จ่าย_50_ทวิ_${cleanedDocNo}.pdf`.replace(/[\/\\?%*:|"<>\s]+/g, '_');
+
+    const payload = {
+      type: 'upload_html',
+      htmlContent: fullHtml,
+      pdfName: pdfName,
+      docType: 'wht',
+      parentFolderId: parentFolderId,
+      pdfShiftApiKey: pdfShiftApiKey,
+      spreadsheetId: safeStorage.getItem('ghn168_sheet_id') || ''
+    };
+
+    const response = await fetch(scriptUrl, {
+      method: 'POST',
+      mode: 'cors',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify(payload)
+    });
+
+    const resJson = await response.json();
+    if (resJson.status === 'success') {
+      return resJson.pdfUrl || '';
+    }
+  } catch (err) {
+    console.error('Failed to upload WHT PDF:', err);
+  }
+  return '';
+}
+
+window.printWhtCertificate = printWhtCertificate;
+window.uploadExpenseWhtPdf = uploadExpenseWhtPdf;
