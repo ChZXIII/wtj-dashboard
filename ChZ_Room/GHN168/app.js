@@ -4062,6 +4062,8 @@ function fetchDocumentsFromSheets(showToast = false) {
           type: docType,
           date: row[1] || '',
           name: row[3] || '',
+          category: row[7] || '', // ดึงหมวดหมู่ค่าใช้จ่าย (Column H)
+          desc: row[8] || '',     // ดึงรายละเอียดค่าใช้จ่าย (Column I)
           detail: row[8] || '',
           baseAmount: parseFloat(row[9]) || 0,
           vatAmount: parseFloat(row[10]) || 0,
