@@ -548,34 +548,13 @@ function autoResizeSheetColumns(sheet) {
       }
     }
   } else {
-    // ถ้าเป็นแท็บต้นแบบเอง ให้ปรับขนาดคอลัมน์ตามข้อมูลจริง และตั้งความกว้างขั้นต่ำ 85px
-    sheet.autoResizeColumns(1, lastCol);
-    SpreadsheetApp.flush(); // บังคับให้ Google Sheets เคลียร์คิวและอัปเดตขนาดความกว้างลงระบบจริง
-    for (var c = 1; c <= lastCol; c++) {
-      var w = sheet.getColumnWidth(c);
-      if (w < 85) {
-        sheet.setColumnWidth(c, 85);
-      }
-    }
+    // แท็บต้นแบบจะไม่ถูกบังคับปรับขนาดคอลัมน์อัตโนมัติ เพื่อให้ผู้ใช้สามารถกำหนดขนาดความกว้างคอลัมน์ได้อย่างอิสระ
   }
 }
 
 // ฟังก์ชันสำหรับรันใน Apps Script เพื่อจัดหน้าและคัดลอกขนาดคอลัมน์จากต้นแบบไปยังทุกแท็บทันที!
 function beautifyAllSheetsNow() {
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-  
-  // บังคับให้ระบบอัปเดตสเตทความกว้างล่าสุดของแท็บต้นแบบก่อน (ม.ค.)
-  var templateSheet = spreadsheet.getSheetByName("ต้นแบบ") || 
-                      spreadsheet.getSheetByName("Template") || 
-                      spreadsheet.getSheetByName("ม.ค.") ||
-                      spreadsheet.getSheets()[0];
-  if (templateSheet) {
-    var templateLastCol = templateSheet.getLastColumn();
-    if (templateLastCol > 0) {
-      templateSheet.autoResizeColumns(1, templateLastCol);
-      SpreadsheetApp.flush(); // บังคับอัปเดต
-    }
-  }
   
   var sheets = spreadsheet.getSheets();
   var count = 0;
