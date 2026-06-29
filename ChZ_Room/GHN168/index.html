@@ -1808,7 +1808,7 @@ textarea.form-control {
 }
 
   </style>
-  <link rel="manifest" href="manifest.json?v=133">
+  <link rel="manifest" href="manifest.json?v=134">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -1966,7 +1966,7 @@ textarea.form-control {
           </div>
         </div>
         <div style="font-size: 10px; opacity: 0.5; margin-top: 12px; text-align: center; font-family: monospace; letter-spacing: 0.5px;">
-          Version V1.33
+          Version V1.34
         </div>
       </div>
     </aside>
@@ -2986,7 +2986,7 @@ textarea.form-control {
           <div class="card">
             <div class="card-title">
               <span>รายการหักเงินบริษัท (Retention Details)</span>
-              <button type="button" id="retBtnAddDeduction" class="btn-secondary" style="padding: 4px 10px; font-size: 12px;" onclick="window.addRetDeduction()">+ เพิ่มการหักเงิน</button>
+              <button type="button" id="retBtnAddDeduction" class="btn-secondary" style="padding: 4px 10px; font-size: 12px;">+ เพิ่มการหักเงิน</button>
             </div>
             
             <div class="form-group">
@@ -3017,7 +3017,7 @@ textarea.form-control {
             <h2 style="font-size: 18px; margin-bottom: 8px;">ยืนยันการบันทึกข้อมูลหักเงิน</h2>
             <p style="color: var(--text-secondary); max-width: 600px; font-size: 14px;">เมื่อกดยืนยัน ระบบจะคำนวณและอัปเดตสัดส่วนส่วนแบ่งกำไร (Profit Share Distribution) ของเอกสารนี้ย้อนหลังในประวัติระบบฐานข้อมูลภายใน และส่งสัญญาณซิงค์กับ Google Sheets อัตโนมัติ</p>
           </div>
-          <button type="button" id="btnSaveRetention" class="btn-primary" style="padding: 12px 32px;" onclick="window.saveRetentionUpdate()">บันทึกข้อมูลหักเงินย้อนหลัง</button>
+          <button type="button" id="btnSaveRetention" class="btn-primary" style="padding: 12px 32px;">บันทึกข้อมูลหักเงินย้อนหลัง</button>
         </div>
       </section>
 
@@ -4235,7 +4235,7 @@ textarea.form-control {
   </div>
 
   <script src="assets/html2pdf.bundle.min.js"></script>
-  <script src="app.js?v=133"></script>
+  <script src="app.js?v=134"></script>
   <script>
     if ('serviceWorker' in navigator) {
       let refreshing = false;
@@ -4246,7 +4246,7 @@ textarea.form-control {
         }
       });
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js?v=133')
+        navigator.serviceWorker.register('sw.js?v=134')
           .then(reg => {
             console.log('Service Worker Registered!', reg);
             reg.update();

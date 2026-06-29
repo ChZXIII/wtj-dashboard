@@ -826,7 +826,7 @@ function setupEventListeners() {
       const address = addressEl ? addressEl.value.trim() : '';
 
       if (!name || !taxId) {
-        alert('กรุณากรอกชื่อลูกค้าและเลขประจำตัวผู้เสียภาษีก่อนบันทึกนะแก!');
+        alert('กรุณากรอกชื่อลูกค้าและเลขประจำตัวผู้เสียภาษีก่อนบันทึก');
         return;
       }
 
@@ -3502,18 +3502,36 @@ function renderDashboard() {
       // Sum stats for individual salesperson if present and synced
       if (d.status === 'synced') {
         if (d.items && Array.isArray(d.items) && d.items.length > 0) {
-          // Loop over individual items to sum up split stats
           d.items.forEach(item => {
             const worker = item.worker || d.owner;
             if (salesStats[worker]) {
               salesStats[worker].revenue += item.subtotal || 0;
-              salesStats[worker].retained += item.retentionAmount || 0;
             }
+            
+            // พาร์สสัดส่วนเงินสะสมรายบุคคลแยกเข้ากระเป๋าจริง
+            const profitShareStr = item.profitShare || d.profitShare || '';
+            const breakdown = getRetentionBreakdown(profitShareStr, item.subtotal || 0);
+            Object.keys(breakdown).forEach(k => {
+              if (salesStats[k]) {
+                salesStats[k].retained += breakdown[k];
+              }
+            });
           });
         } else if (d.owner && salesStats[d.owner]) {
-          // Fallback for older data without itemized arrays
           salesStats[d.owner].revenue += d.amount || 0;
-          salesStats[d.owner].retained += d.retentionAmount || 0;
+          
+          const profitShareStr = d.profitShare || '';
+          const breakdown = getRetentionBreakdown(profitShareStr, d.amount || 0);
+          let totalParsed = 0;
+          Object.keys(breakdown).forEach(k => {
+            if (salesStats[k]) {
+              salesStats[k].retained += breakdown[k];
+              totalParsed += breakdown[k];
+            }
+          });
+          if (totalParsed === 0) {
+            salesStats[d.owner].retained += d.retentionAmount || 0;
+          }
         }
       }
     } else if (d.type === 'wht' || d.type === 'expense') {
@@ -3963,7 +3981,8 @@ function fetchDocumentsFromSheets(showToast = false) {
         const retentionMatch = profitShareStr.match(/หัก บ\.:\s*([^|]+)/);
         if (retentionMatch) {
           const valStr = retentionMatch[1].trim();
-          const parts = valStr.split(',');
+          const valStrClean = valStr.replace(/,(\d{3})/g, '$1');
+          const parts = valStrClean.split(',');
           parts.forEach(part => {
             const cleanPart = part.trim().replace(/,/g, '');
             const pctMatch = cleanPart.match(/(\d+(?:\.\d+)?)\s*%/);
@@ -4012,6 +4031,7 @@ function fetchDocumentsFromSheets(showToast = false) {
             timestamp: row[0] || '',
             owner: ownerName || worker || '',
             profitShare: profitShareStr,
+            deductions: parseDeductionsFromProfitShare(profitShareStr),
             retentionAmount: 0,
             items: []
           };
@@ -4022,6 +4042,8 @@ function fetchDocumentsFromSheets(showToast = false) {
         incomeDocsMap[docNo].wht += parseFloat(row[13]) || 0;
         incomeDocsMap[docNo].net += parseFloat(row[14]) || 0;
         incomeDocsMap[docNo].retentionAmount += itemRetentionAmount;
+        const parsedDeductions = parseDeductionsFromProfitShare(profitShareStr);
+        incomeDocsMap[docNo].deductions = mergeDeductions(incomeDocsMap[docNo].deductions || [], parsedDeductions);
 
         incomeDocsMap[docNo].items.push({
           desc: row[8] || '-',
@@ -5412,19 +5434,19 @@ async function handleUploadPdfToDrive(triggerBtnId = 'btnSaveAndSyncDoc') {
   }
   
   if (!docNo || !clientName) {
-    alert('กรุณากรอกเลขที่เอกสารและชื่อลูกค้าก่อนนะแก!');
+    alert('กรุณากรอกเลขที่เอกสารและชื่อลูกค้าก่อน');
     return;
   }
 
   const pdfShiftApiKey = safeStorage.getItem('ghn168_pdfshift_api_key') || '';
   if (!pdfShiftApiKey) {
-    alert('กรุณากรอก PDFShift API Key ใน Settings ก่อนนะแก!');
+    alert('กรุณากรอก PDFShift API Key ใน Settings ก่อน');
     return;
   }
 
   const companyDriveUrl = safeStorage.getItem('ghn168_company_drive_url') || '';
   if (!companyDriveUrl) {
-    alert('กรุณาตั้งค่าโฟลเดอร์ Google Drive ใน Settings ก่อนนะแก!');
+    alert('กรุณาตั้งค่าโฟลเดอร์ Google Drive ใน Settings ก่อน');
     return;
   }
 
@@ -5442,13 +5464,13 @@ async function handleUploadPdfToDrive(triggerBtnId = 'btnSaveAndSyncDoc') {
   }
 
   if (!parentFolderId) {
-    alert('ไม่พบ Folder ID ในลิงก์ Google Drive นะแก! กรุณาตรวจสอบลิงก์ใน Settings');
+    alert('ไม่พบ Folder ID ในลิงก์ Google Drive กรุณาตรวจสอบลิงก์ใน Settings');
     return;
   }
 
   const scriptUrl = safeStorage.getItem('ghn168_script_url');
   if (!scriptUrl) {
-    alert('กรุณาตั้งค่า Web App Script URL ใน Settings ก่อนนะแก!');
+    alert('กรุณาตั้งค่า Web App Script URL ใน Settings ก่อน');
     return;
   }
 
@@ -6705,8 +6727,11 @@ function onRetDocSelectChange() {
         retSubtotal.value = doc.amount || 0;
       }
       
-      if (doc.deductions && Array.isArray(doc.deductions)) {
+      if (doc.deductions && Array.isArray(doc.deductions) && doc.deductions.length > 0) {
         retDeductions = JSON.parse(JSON.stringify(doc.deductions));
+      } else if (doc.profitShare) {
+        retDeductions = parseDeductionsFromProfitShare(doc.profitShare);
+        doc.deductions = JSON.parse(JSON.stringify(retDeductions));
       } else {
         retDeductions = [];
       }
@@ -6754,8 +6779,11 @@ function onRetDocNoManualInput() {
       document.getElementById('retDocDate').textContent = doc.date || '-';
       document.getElementById('retProjectName').textContent = doc.detail || '-';
       if (retSubtotal) retSubtotal.value = doc.amount || 0;
-      if (doc.deductions && Array.isArray(doc.deductions)) {
+      if (doc.deductions && Array.isArray(doc.deductions) && doc.deductions.length > 0) {
         retDeductions = JSON.parse(JSON.stringify(doc.deductions));
+      } else if (doc.profitShare) {
+        retDeductions = parseDeductionsFromProfitShare(doc.profitShare);
+        doc.deductions = JSON.parse(JSON.stringify(retDeductions));
       } else {
         retDeductions = [];
       }
@@ -6871,7 +6899,7 @@ function saveRetentionUpdate() {
   
   const docNo = (manualInput && manualInput.value.trim()) || (select && select.value);
   if (!docNo) {
-    alert('กรุณาเลือกหรือระบุเลขที่เอกสารก่อนบันทึกแก!');
+    alert('กรุณาเลือกหรือระบุเลขที่เอกสารก่อนบันทึก');
     return;
   }
   
@@ -6957,7 +6985,7 @@ function saveRetentionUpdate() {
   
   const scriptUrl = safeStorage.getItem('ghn168_script_url');
   if (!scriptUrl) {
-    alert('ไม่พบ Apps Script URL ในระบบการตั้งค่ากรุณาตรวจสอบก่อนแก!');
+    alert('ไม่พบ Apps Script URL ในระบบการตั้งค่ากรุณาตรวจสอบก่อน');
     saveBtn.disabled = false;
     saveBtn.textContent = origText;
     return;
@@ -6979,7 +7007,7 @@ function saveRetentionUpdate() {
   })
   .then(res => {
     if (res.status === 'success') {
-      alert(`บันทึกข้อมูลส่วนแบ่งบริษัทเรียบร้อยแล้วแก!\nข้อความระบบ: ${res.message}`);
+      alert(`บันทึกข้อมูลส่วนแบ่งบริษัทเรียบร้อยแล้ว\nข้อความระบบ: ${res.message}`);
       
       if (doc) {
         doc.owner = owner;
@@ -7413,6 +7441,101 @@ async function uploadExpenseWhtPdf(doc) {
     console.error('Failed to upload WHT PDF:', err);
   }
   return '';
+}
+
+// 1. ฟังก์ชันสกัดข้อมูลหักเงินบริษัทรายบุคคลสำหรับแดชบอร์ด
+function getRetentionBreakdown(profitShareStr, subtotal) {
+  const breakdown = {
+    'เก่ง': 0,
+    'พี่นิค': 0,
+    'หอม': 0
+  };
+  if (!profitShareStr) return breakdown;
+  
+  const match = profitShareStr.match(/หัก บ\.:\s*([^|]+)/);
+  if (!match) return breakdown;
+  
+  const valStr = match[1].trim();
+  const valStrClean = valStr.replace(/,(\d{3})/g, '$1');
+  const parts = valStrClean.split(',');
+  parts.forEach(part => {
+    const cleanPart = part.trim();
+    if (!cleanPart) return;
+    
+    let nameKey = '';
+    if (cleanPart.includes('เก่ง') || cleanPart.includes('มงคล')) nameKey = 'เก่ง';
+    else if (cleanPart.includes('นิค') || cleanPart.includes('อนุชิต')) nameKey = 'พี่นิค';
+    else if (cleanPart.includes('หอม') || cleanPart.includes('ณัฐวัฒน์')) nameKey = 'หอม';
+    
+    if (nameKey) {
+      const moneyMatch = cleanPart.match(/฿\s*(\d+(?:\.\d+)?)/);
+      if (moneyMatch) {
+        breakdown[nameKey] += parseFloat(moneyMatch[1]) || 0;
+      } else {
+        const pctMatch = cleanPart.match(/(\d+(?:\.\d+)?)\s*%/);
+        if (pctMatch) {
+          const percent = parseFloat(pctMatch[1]) || 0;
+          breakdown[nameKey] += subtotal * (percent / 100);
+        }
+      }
+    }
+  });
+  return breakdown;
+}
+
+// 2. ฟังก์ชันพาร์สแกะประวัติข้อความจาก Google Sheets กลับมาเป็นอาร์เรย์ deductions ในฟอร์มแก้ไข
+function parseDeductionsFromProfitShare(profitShareStr) {
+  const deductions = [];
+  if (!profitShareStr) return deductions;
+  
+  const match = profitShareStr.match(/หัก บ\.:\s*([^|]+)/);
+  if (!match) return deductions;
+  
+  const valStr = match[1].trim();
+  const valStrClean = valStr.replace(/,(\d{3})/g, '$1');
+  const parts = valStrClean.split(',');
+  parts.forEach(part => {
+    const cleanPart = part.trim();
+    if (!cleanPart) return;
+    
+    let name = '';
+    if (cleanPart.includes('เก่ง') || cleanPart.includes('มงคล')) name = 'เก่ง';
+    else if (cleanPart.includes('นิค') || cleanPart.includes('อนุชิต')) name = 'พี่นิค';
+    else if (cleanPart.includes('หอม') || cleanPart.includes('ณัฐวัฒน์')) name = 'หอม';
+    
+    if (name) {
+      const moneyMatch = cleanPart.match(/฿\s*(\d+(?:\.\d+)?)/);
+      if (moneyMatch) {
+        deductions.push({
+          name: name,
+          type: 'fixed',
+          value: moneyMatch[1]
+        });
+      } else {
+        const pctMatch = cleanPart.match(/(\d+(?:\.\d+)?)\s*%/);
+        if (pctMatch) {
+          deductions.push({
+            name: name,
+            type: 'percent',
+            value: pctMatch[1]
+          });
+        }
+      }
+    }
+  });
+  return deductions;
+}
+
+// 3. ฟังก์ชันสำหรับรวมอาร์เรย์รายการหักเงินแบบป้องกันการเซฟทับตัวตนซ้ำกัน
+function mergeDeductions(existingDeductions, newDeductions) {
+  const map = {};
+  existingDeductions.forEach(d => {
+    map[d.name + '_' + d.type] = d;
+  });
+  newDeductions.forEach(d => {
+    map[d.name + '_' + d.type] = d;
+  });
+  return Object.values(map);
 }
 
 window.printWhtCertificate = printWhtCertificate;
