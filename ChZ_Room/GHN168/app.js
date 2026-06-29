@@ -4888,6 +4888,7 @@ async function saveExpense() {
         }
       }
 
+      let uploadedPdfUrl = '';
       if (shouldUpload && scriptUrl && sheetId) {
         const tempDoc = {
           number: billNo,
