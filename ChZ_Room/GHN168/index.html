@@ -1808,7 +1808,7 @@ textarea.form-control {
 }
 
   </style>
-  <link rel="manifest" href="manifest.json?v=129">
+  <link rel="manifest" href="manifest.json?v=130">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -1966,7 +1966,7 @@ textarea.form-control {
           </div>
         </div>
         <div style="font-size: 10px; opacity: 0.5; margin-top: 12px; text-align: center; font-family: monospace; letter-spacing: 0.5px;">
-          Version V1.29
+          Version V1.30
         </div>
       </div>
     </aside>
@@ -3669,7 +3669,7 @@ textarea.form-control {
                ออกใบ 50 ทวิ ออโต้
              </label>
              <label class="checkbox-label" style="margin-bottom: 0; font-weight: 700; font-size: 12px; cursor: pointer; display: flex; align-items: center;">
-               <input type="checkbox" id="expenseUploadPdfCheckbox" checked style="width: 16px; height: 16px; cursor: pointer; margin-right: 6px;">
+               <input type="checkbox" id="expenseUploadPdfCheckbox" style="width: 16px; height: 16px; cursor: pointer; margin-right: 6px;">
                อัปโหลด PV ขึ้น Drive
              </label>
            </div>
@@ -4236,7 +4236,7 @@ textarea.form-control {
   </div>
 
   <script src="assets/html2pdf.bundle.min.js"></script>
-  <script src="app.js?v=129"></script>
+  <script src="app.js?v=130"></script>
   <script>
     if ('serviceWorker' in navigator) {
       let refreshing = false;
@@ -4247,7 +4247,7 @@ textarea.form-control {
         }
       });
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js?v=129')
+        navigator.serviceWorker.register('sw.js?v=130')
           .then(reg => {
             console.log('Service Worker Registered!', reg);
             reg.update();
