@@ -202,8 +202,8 @@ function loadConfiguration() {
         parsed.sellerNameEn = 'GHN 168 MEDIA & CREATION COMPANY LIMITED';
         safeStorage.setItem('ghn168_seller_config', JSON.stringify(parsed));
       }
-      if (parsed.bankDetails && parsed.bankDetails.includes('จีเอชเอ็น168 มีเดีย ครีเอชั่น')) {
-        parsed.bankDetails = parsed.bankDetails.replace('จีเอชเอ็น168 มีเดีย ครีเอชั่น', 'จีเอชเอ็น 168 มีเดีย แอนด์ ครีเอชั่น');
+      if (parsed.bankDetails && (parsed.bankDetails.includes('123-4-56789-0') || parsed.bankDetails.includes('กสิกรไทย') || parsed.bankDetails.includes('จีเอชเอ็น168 มีเดีย ครีเอชั่น') || parsed.bankDetails.includes('จีเอชเอ็น168'))) {
+        parsed.bankDetails = 'ธนาคารกรุงไทย เลขที่ 520-0-61960-2 บจ. จีเอชเอ็น 168 มีเดีย แอนด์ ครีเอชั่น';
         safeStorage.setItem('ghn168_seller_config', JSON.stringify(parsed));
       }
 
