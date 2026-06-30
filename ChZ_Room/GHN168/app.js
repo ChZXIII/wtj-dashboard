@@ -65,7 +65,7 @@ let bankRecDb = [];
 const defaultSellerConfig = {
   sellerName: 'บริษัท จีเอชเอ็น 168 มีเดีย แอนด์ ครีเอชั่น จำกัด',
   sellerNameEn: 'GHN 168 MEDIA & CREATION COMPANY LIMITED',
-  sellerTaxId: '0105566123456',
+  sellerTaxId: '0505566010089',
   sellerAddress: '65/1 ถนนต้นขาม 2 ตำบลท่าศาลา อำเภอเมือง จังหวัดเชียงใหม่ 50000',
   sellerPhone: '089-554-4355',
   sellerEmail: 'ghn168media@gmail.com',
@@ -204,6 +204,12 @@ function loadConfiguration() {
       }
       if (parsed.bankDetails && parsed.bankDetails.includes('จีเอชเอ็น168 มีเดีย ครีเอชั่น')) {
         parsed.bankDetails = parsed.bankDetails.replace('จีเอชเอ็น168 มีเดีย ครีเอชั่น', 'จีเอชเอ็น 168 มีเดีย แอนด์ ครีเอชั่น');
+        safeStorage.setItem('ghn168_seller_config', JSON.stringify(parsed));
+      }
+
+      // Auto-migrate sellerTaxId from old default value to the new one
+      if (parsed.sellerTaxId === '0105566123456') {
+        parsed.sellerTaxId = '0505566010089';
         safeStorage.setItem('ghn168_seller_config', JSON.stringify(parsed));
       }
 
@@ -7299,7 +7305,7 @@ function populateWhtPrintPaper(doc) {
   const sellerAddressEl = document.getElementById('doc_sellerAddress');
   
   document.getElementById('whtPrintSellerName').textContent = sellerNameEl ? sellerNameEl.value : 'บริษัท จีเอชเอ็น 168 มีเดีย แอนด์ ครีเอชั่น จำกัด';
-  document.getElementById('whtPrintSellerTaxId').textContent = sellerTaxIdEl ? sellerTaxIdEl.value : '0105566123456';
+  document.getElementById('whtPrintSellerTaxId').textContent = sellerTaxIdEl ? sellerTaxIdEl.value : '0505566010089';
   document.getElementById('whtPrintSellerAddress').textContent = sellerAddressEl ? formatAddressForPreview(sellerAddressEl.value, false) : '65/1 ถนนต้นขาม 2 ต.ท่าศาลา อ.เมือง จ.เชียงใหม่ 50000';
   
   // Payee (Customer / Worker)
