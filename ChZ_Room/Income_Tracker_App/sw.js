@@ -1,10 +1,11 @@
-const CACHE_NAME = 'chz-app-v1.02';
+const CACHE_NAME = 'chz-app-v1.04';
 const ASSETS = [
   'index.html',
   'app.js',
   'manifest.json',
   'assets/icon-192.png',
   'assets/icon-512.png',
+  'assets/keng_avatar.jpg',
   'signatures/sig_keng.png'
 ];
 
@@ -31,6 +32,10 @@ self.addEventListener('activate', (e) => {
 });
 
 self.addEventListener('fetch', (e) => {
+  // Only intercept GET requests
+  if (e.request.method !== 'GET') {
+    return;
+  }
   // Offline-first strategy: try cache, then network
   e.respondWith(
     caches.match(e.request).then((cachedResponse) => {

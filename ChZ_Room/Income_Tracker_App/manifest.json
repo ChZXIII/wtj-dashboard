@@ -1,6 +1,6 @@
 {
-  "name": "ChZ App",
-  "short_name": "ChZ App",
+  "name": "ChZ Super App",
+  "short_name": "ChZ Super App",
   "description": "Super App for ChZ Agent Corp (wtj-dashboard)",
   "start_url": "index.html",
   "display": "standalone",
