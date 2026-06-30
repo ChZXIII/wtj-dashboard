@@ -324,32 +324,59 @@ function doPost(e) {
       
     } else if (sheetType === "general" || sheetType === "expense") {
       var dateKey = dayStr + "/" + monthStr + "/" + yearStr;
-      var range = sheet.getRange("A2:A32");
+      
+      // Dynamic Boundary Search in Column B
+      var lastRow = sheet.getLastRow();
+      if (lastRow < 1) {
+        lastRow = 1;
+      }
+      var bValues = sheet.getRange("B1:B" + lastRow).getValues();
+      var totalRowIdx = -1;
+      for (var r = 0; r < bValues.length; r++) {
+        if (bValues[r][0] && bValues[r][0].toString().trim() === "ยอดรวมทั้งเดือน") {
+          totalRowIdx = r + 1;
+          break;
+        }
+      }
+      
+      var maxDataRow = (totalRowIdx !== -1) ? (totalRowIdx - 2) : lastRow;
+      if (maxDataRow < 2) {
+        maxDataRow = 2;
+      }
+      
+      var range = sheet.getRange("A2:A" + maxDataRow);
       var values = range.getDisplayValues();
       var targetRow = null;
+      var lastMatchedRow = null;
+      var matchedRows = [];
       
+      // Scan all matching dates in the range A2:A{maxDataRow}
       for (var i = 0; i < values.length; i++) {
         var val = values[i][0];
         if (val && val.toString().indexOf(dateKey) !== -1) {
-          if (sheetType === "general") {
-            var existingDesc = sheet.getRange("B" + (i + 2)).getValue();
-            if (existingDesc && existingDesc.toString().trim() !== "") {
-              return ContentService.createTextOutput(JSON.stringify({
-                "status": "error",
-                "message": "ข้อมูลรายรับของวันที่ " + dateKey + " มีการบันทึกอยู่แล้วในตารางชีตนะแก!"
-              })).setMimeType(ContentService.MimeType.JSON);
-            }
-          } else {
-            var existingDesc = sheet.getRange("D" + (i + 2)).getValue();
-            if (existingDesc && existingDesc.toString().trim() !== "") {
-              return ContentService.createTextOutput(JSON.stringify({
-                "status": "error",
-                "message": "ข้อมูลรายจ่ายของวันที่ " + dateKey + " มีการบันทึกอยู่แล้วในตารางชีตนะแก!"
-              })).setMimeType(ContentService.MimeType.JSON);
-            }
-          }
-          targetRow = i + 2;
+          matchedRows.push(i + 2);
+        }
+      }
+      
+      // Check existing matched rows for availability (empty Column B for general, D for expense)
+      for (var k = 0; k < matchedRows.length; k++) {
+        var rowNum = matchedRows[k];
+        lastMatchedRow = rowNum;
+        var checkCol = (sheetType === "general") ? "B" : "D";
+        var cellValue = sheet.getRange(checkCol + rowNum).getValue();
+        if (!cellValue || cellValue.toString().trim() === "") {
+          targetRow = rowNum;
           break;
+        }
+      }
+      
+      // If all matched rows are filled, insert a new row after the last matched row
+      if (!targetRow && matchedRows.length > 0) {
+        sheet.insertRowAfter(lastMatchedRow);
+        targetRow = lastMatchedRow + 1;
+        sheet.getRange("A" + targetRow).setValue(dateKey);
+        if (sheetType === "general") {
+          sheet.getRange("G" + targetRow).setFormula("=C" + targetRow + "*10%");
         }
       }
       
@@ -360,14 +387,26 @@ function doPost(e) {
         })).setMimeType(ContentService.MimeType.JSON);
       }
       
+      // Helper function to check and build formulas for amounts starting with =, +, -, *, /
+      var amountVal = data.amount;
+      var isFormula = false;
+      var formulaVal = "";
+      if (typeof amountVal === 'string') {
+        var trimmedAmount = amountVal.trim();
+        var firstChar = trimmedAmount.charAt(0);
+        if (firstChar === '=' || firstChar === '+' || firstChar === '-' || firstChar === '*' || firstChar === '/') {
+          isFormula = true;
+          formulaVal = (firstChar === '=') ? trimmedAmount : '=' + trimmedAmount;
+        }
+      }
+      
       if (sheetType === "general") {
         var genDescVal = data.genDesc || "";
-        var amountVal = data.amount;
         var hasTax = data.hasTaxWithholding || false;
         
         sheet.getRange("B" + targetRow).setValue(genDescVal);
-        if (typeof amountVal === 'string' && amountVal.indexOf('=') === 0) {
-          sheet.getRange("C" + targetRow).setFormula(amountVal);
+        if (isFormula) {
+          sheet.getRange("C" + targetRow).setFormula(formulaVal);
         } else {
           sheet.getRange("C" + targetRow).setValue(parseFloat(amountVal || 0));
         }
@@ -377,6 +416,9 @@ function doPost(e) {
         } else {
           sheet.getRange("F" + targetRow).setValue("");
         }
+        
+        // เขียนสูตรเงินเก็บ 10% ลงในคอลัมน์ G เสมอเพื่อความชัวร์ในกรณีสูตรหาย
+        sheet.getRange("G" + targetRow).setFormula("=C" + targetRow + "*10%");
         
         // หากมี calendarEventId ส่งเข้ามา ให้แก้ไขสีกิจกรรมเป็น Sage Green (ID 2)
         if (data.calendarEventId) {
@@ -399,14 +441,14 @@ function doPost(e) {
         })).setMimeType(ContentService.MimeType.JSON);
       } else {
         var expDescVal = data.expDesc || "";
-        var amountVal = data.amount;
         
         sheet.getRange("D" + targetRow).setValue(expDescVal);
-        if (typeof amountVal === 'string' && amountVal.indexOf('=') === 0) {
-          sheet.getRange("E" + targetRow).setFormula(amountVal);
+        if (isFormula) {
+          sheet.getRange("E" + targetRow).setFormula(formulaVal);
         } else {
           sheet.getRange("E" + targetRow).setValue(parseFloat(amountVal || 0));
         }
+        
         autoResizeSheetColumns(sheet);
         
         return ContentService.createTextOutput(JSON.stringify({

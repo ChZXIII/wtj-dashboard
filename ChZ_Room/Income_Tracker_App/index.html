@@ -2581,7 +2581,7 @@ html.dark-theme .floating-view-switcher:active {
           <div class="user-info">
             <span class="user-name">คุณเก่ง (Keng)</span>
             <span class="user-role">ChZ Manager</span>
-            <span class="user-role" style="font-size: 10px; opacity: 0.6; display: block; margin-top: 2px;">Version 1.01</span>
+            <span class="user-role" style="font-size: 10px; opacity: 0.6; display: block; margin-top: 2px;">Version 1.02</span>
           </div>
         </div>
       </div>
@@ -2893,6 +2893,32 @@ html.dark-theme .floating-view-switcher:active {
           </div>
           <div class="chart-wrapper" id="chartWrapper">
             <!-- SVG chart generated dynamically -->
+          </div>
+        </div>
+
+        <!-- Monthly Summary Table Card -->
+        <div class="table-container-card" style="margin-top: 20px; margin-bottom: 20px;">
+          <div class="form-header" style="border-bottom:none; margin-bottom:15px; padding-bottom:0;">
+            <h3>สรุปรายรับ - รายจ่าย รายเดือน ปี 2026</h3>
+            <p>ตารางเปรียบเทียบและอัตราเงินเก็บสะสมรายเดือน</p>
+          </div>
+          <div class="table-responsive">
+            <table class="brutalist-table">
+              <thead>
+                <tr>
+                  <th>เดือน</th>
+                  <th>รายรับ (บาท)</th>
+                  <th>รายจ่าย (บาท)</th>
+                  <th>กำไรสุทธิ (บาท)</th>
+                  <th>เงินเก็บ 10% (บาท)</th>
+                </tr>
+              </thead>
+              <tbody id="dashboardMonthlySummaryBody">
+                <tr>
+                  <td colspan="5" style="text-align:center;">กำลังโหลดข้อมูล...</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
 

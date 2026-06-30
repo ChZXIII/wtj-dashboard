@@ -1027,6 +1027,7 @@ async function refreshDashboardData(forceRealSheetData = false) {
     drawSvgChart(MOCK_MONTHLY_DATA);
     calculateAndRenderInsights(MOCK_MONTHLY_DATA);
     renderDashboardFixedCosts(MOCK_MONTHLY_DATA);
+    renderMonthlySummaryTable(MOCK_MONTHLY_DATA);
     return;
   }
   
@@ -1067,6 +1068,7 @@ async function refreshDashboardData(forceRealSheetData = false) {
       drawSvgChart(result.data);
       calculateAndRenderInsights(result.data);
       renderDashboardFixedCosts(result.data);
+      renderMonthlySummaryTable(result.data);
     } else {
       throw new Error(result.message || 'ไม่ได้รับข้อมูลที่ถูกต้อง');
     }
@@ -1079,6 +1081,7 @@ async function refreshDashboardData(forceRealSheetData = false) {
     drawSvgChart(MOCK_MONTHLY_DATA);
     calculateAndRenderInsights(MOCK_MONTHLY_DATA);
     renderDashboardFixedCosts(MOCK_MONTHLY_DATA);
+    renderMonthlySummaryTable(MOCK_MONTHLY_DATA);
   } finally {
     if (btn) {
       btn.disabled = false;
@@ -1133,6 +1136,46 @@ function updateKpis(data) {
   }
   
   document.getElementById('kpiTotalSavings').textContent = `฿${totalSavings.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+}
+
+function renderMonthlySummaryTable(data) {
+  const tbody = document.getElementById('dashboardMonthlySummaryBody');
+  if (!tbody) return;
+
+  if (!data || data.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">ไม่พบข้อมูลสรุปรายเดือน</td></tr>';
+    return;
+  }
+
+  let html = '';
+  data.forEach(m => {
+    const income = m.income || 0;
+    const expense = m.expense || 0;
+    const profit = typeof m.profit !== 'undefined' ? m.profit : (income - expense);
+    const savings = typeof m.savings !== 'undefined' ? m.savings : (income * 0.1);
+
+    const formattedIncome = income.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const formattedExpense = expense.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const formattedProfit = profit.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const formattedSavings = savings.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+    const profitColor = profit >= 0 ? '#10b981' : '#ef4444';
+    const profitStyle = `color: ${profitColor}; font-weight: bold;`;
+    const savingsStyle = `color: #fbbf24; font-weight: bold;`;
+    const expenseStyle = `color: #ef4444;`;
+
+    html += `
+      <tr>
+        <td style="font-weight: 500;">${m.month}</td>
+        <td>฿${formattedIncome}</td>
+        <td style="${expenseStyle}">฿${formattedExpense}</td>
+        <td style="${profitStyle}">฿${formattedProfit}</td>
+        <td style="${savingsStyle}">฿${formattedSavings}</td>
+      </tr>
+    `;
+  });
+
+  tbody.innerHTML = html;
 }
 
 function drawSvgChart(data) {
