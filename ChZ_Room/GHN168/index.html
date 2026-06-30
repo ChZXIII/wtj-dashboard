@@ -1808,7 +1808,7 @@ textarea.form-control {
 }
 
   </style>
-  <link rel="manifest" href="manifest.json?v=137">
+  <link rel="manifest" href="manifest.json?v=138">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -1966,7 +1966,7 @@ textarea.form-control {
           </div>
         </div>
         <div style="font-size: 10px; opacity: 0.5; margin-top: 12px; text-align: center; font-family: monospace; letter-spacing: 0.5px;">
-          Version V1.37
+          Version V1.38
         </div>
       </div>
     </aside>
@@ -3315,48 +3315,7 @@ textarea.form-control {
         <div class="grid-cols-2">
           <!-- Connection & Backup Settings -->
           <div style="display: flex; flex-direction: column; gap: 24px;">
-            <div class="card">
-              <div class="card-title">เชื่อมต่อ Google Sheets API</div>
-              
-              <div class="form-group">
-                <label for="settingScriptUrl">Google Apps Script Web App URL</label>
-                <input type="text" id="settingScriptUrl" class="form-control mono" placeholder="https://script.google.com/macros/s/.../exec">
-                <p style="font-size: 11px; color: var(--text-secondary); line-height: 1.4; margin-top:4px;">
-                  * ลิงก์ปลายทาง Apps Script ที่ติดตั้ง (Deploy) ไว้เพื่อยิงประวัติเข้าชีต (ลงท้ายด้วย /exec)
-                </p>
-              </div>
 
-              <div class="form-group" style="margin-top: 16px;">
-                <label for="settingSheetId">Google Spreadsheet ID</label>
-                <input type="text" id="settingSheetId" class="form-control mono" placeholder="เช่น 1aBcDeFgHiJkLmNoPqRsTuVwXyZ...">
-                <p style="font-size: 11px; color: var(--text-secondary); line-height: 1.4; margin-top:4px;">
-                  * คัดลอกจาก URL ของชีตปฏิทินบัญชีบริษัทตรงช่องหลัง /d/ ในบราวเซอร์
-                </p>
-              </div>
-
-              <div class="form-group" style="margin-top: 16px;">
-                <label for="settingCompanyDriveUrl">ลิงก์ Google Drive หลักของบริษัท</label>
-                <input type="text" id="settingCompanyDriveUrl" class="form-control mono" placeholder="https://drive.google.com/drive/folders/...">
-                <p style="font-size: 11px; color: var(--text-secondary); line-height: 1.4; margin-top:4px;">
-                  * ลิงก์โฟลเดอร์ Google Drive หลักของบริษัท สำหรับกดเข้าด่วนที่หน้าแรก
-                </p>
-              </div>
-
-              <div class="form-group" style="margin-top: 16px;">
-                <label for="settingPdfShiftApiKey">PDFShift API Key (สำหรับอัปโหลด PDF ขึ้น Drive)</label>
-                <input type="text" id="settingPdfShiftApiKey" class="form-control mono" placeholder="เช่น sk_a1b2c3d4...">
-                <p style="font-size: 11px; color: var(--text-secondary); line-height: 1.4; margin-top:4px;">
-                  * สมัครรับคีย์ฟรี 50 ครั้ง/เดือน ได้ที่ pdfshift.io เพื่อให้ระบบหลังบ้านแปลงและเซฟ PDF ลง Drive ได้เสถียร 100%
-                </p>
-              </div>
-
-              <button id="btnSaveConfig" class="btn-primary" style="margin-top: 16px; width: 100%;">
-                <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
-                </svg>
-                บันทึกการเชื่อมต่อบัญชี
-              </button>
-            </div>
 
             <!-- Backup & Restore Data Card (ADVISORY) -->
             <div class="card">
@@ -3435,7 +3394,7 @@ textarea.form-control {
 
   <!-- Modal: Agent Nong Pim Profile (Danger Zone Inside) -->
   <div id="agentPimModal" class="modal-overlay">
-    <div class="modal-card" style="max-width: 450px;">
+    <div class="modal-card" style="max-width: 520px;">
       <div class="modal-header">
         <h2 class="modal-title">ข้อมูลผู้ช่วย AI: น้องพิม</h2>
         <button id="btnCloseAgentPimModal" class="modal-close-btn">&times;</button>
@@ -3479,12 +3438,39 @@ textarea.form-control {
           </button>
         </div>
 
-        <div>
-          <h4 style="margin: 0 0 8px 0; font-size: 13px; font-family: 'Prompt', sans-serif; color: var(--text-primary);">การตั้งค่าระบบฐานข้อมูล (สำหรับเจ้าของแอป):</h4>
-          <!-- Initialize Sheets Button (Auto-setup) -->
-          <button id="btnInitSheets" class="btn-primary" style="margin-top: 4px; width: 100%;" onclick="initializeGoogleSheet()">
-            <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                <div style="border: 2px solid var(--border-color); border-radius: 12px; padding: 16px; background: var(--bg-primary); box-shadow: 3px 3px 0px var(--shadow-color);">
+          <h4 style="margin: 0 0 12px 0; font-size: 13px; font-family: 'Prompt', sans-serif; color: var(--text-primary);">เชื่อมต่อ Google Sheets API (สำหรับแอดมิน):</h4>
+          
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label for="settingScriptUrl" style="font-size: 11px; font-weight: 700; display: block; margin-bottom: 4px;">Google Apps Script Web App URL</label>
+            <input type="text" id="settingScriptUrl" class="form-control mono" placeholder="https://script.google.com/macros/s/.../exec" style="font-size: 12px; padding: 6px 10px; height: auto;">
+          </div>
+
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label for="settingSheetId" style="font-size: 11px; font-weight: 700; display: block; margin-bottom: 4px;">Google Spreadsheet ID</label>
+            <input type="text" id="settingSheetId" class="form-control mono" placeholder="เช่น 1aBcDeFg..." style="font-size: 12px; padding: 6px 10px; height: auto;">
+          </div>
+
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label for="settingCompanyDriveUrl" style="font-size: 11px; font-weight: 700; display: block; margin-bottom: 4px;">ลิงก์ Google Drive หลักของบริษัท</label>
+            <input type="text" id="settingCompanyDriveUrl" class="form-control mono" placeholder="https://drive.google.com/..." style="font-size: 12px; padding: 6px 10px; height: auto;">
+          </div>
+
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label for="settingPdfShiftApiKey" style="font-size: 11px; font-weight: 700; display: block; margin-bottom: 4px;">PDFShift API Key (สำหรับอัปโหลด PDF ขึ้น Drive)</label>
+            <input type="text" id="settingPdfShiftApiKey" class="form-control mono" placeholder="เช่น sk_a1b2c3d4..." style="font-size: 12px; padding: 6px 10px; height: auto;">
+          </div>
+
+          <button id="btnSaveConfig" class="btn-primary" style="margin-top: 16px; width: 100%; height: auto; padding: 10px 16px; font-size: 13px;">
+            <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width: 14px; height: 14px;">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+            </svg>
+            บันทึกการเชื่อมต่อบัญชี
+          </button>
+          
+          <button id="btnInitSheets" class="btn-secondary" style="margin-top: 12px; width: 100%; height: auto; padding: 10px 16px; font-size: 13px; border-color: var(--accent-color); color: var(--accent-color); background: transparent;" onclick="initializeGoogleSheet()">
+            <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width: 14px; height: 14px;">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37-2.37.996.608 2.296.07 2.572-1.065z" />
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
             เตรียมโครงสร้างชีตอัตโนมัติ (Initialize)
@@ -4235,7 +4221,7 @@ textarea.form-control {
   </div>
 
   <script src="assets/html2pdf.bundle.min.js"></script>
-  <script src="app.js?v=137"></script>
+  <script src="app.js?v=138"></script>
   <script>
     if ('serviceWorker' in navigator) {
       let refreshing = false;
@@ -4246,7 +4232,7 @@ textarea.form-control {
         }
       });
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js?v=137')
+        navigator.serviceWorker.register('sw.js?v=138')
           .then(reg => {
             console.log('Service Worker Registered!', reg);
             reg.update();

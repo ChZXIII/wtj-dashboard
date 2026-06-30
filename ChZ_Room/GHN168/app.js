@@ -1196,16 +1196,22 @@ function setupEventListeners() {
 
   if (agentProfileWidget && agentPimModal) {
     agentProfileWidget.addEventListener('click', () => {
-      // Clear confirmation text on open
-      if (confirmPimResetInput) {
-        confirmPimResetInput.value = '';
+      const pin = prompt('กรุณากรอกรหัสผ่าน 4 หลัก เพื่อเข้าใช้งานฟังก์ชันผู้จัดการ (น้องพิม):');
+      if (pin === null) return;
+      if (pin === '5099') {
+        // Clear confirmation text on open
+        if (confirmPimResetInput) {
+          confirmPimResetInput.value = '';
+        }
+        if (btnClearDb) {
+          btnClearDb.disabled = true;
+          btnClearDb.style.cursor = 'not-allowed';
+          btnClearDb.style.opacity = '0.6';
+        }
+        agentPimModal.classList.add('active');
+      } else {
+        alert('รหัสผ่านไม่ถูกต้อง');
       }
-      if (btnClearDb) {
-        btnClearDb.disabled = true;
-        btnClearDb.style.cursor = 'not-allowed';
-        btnClearDb.style.opacity = '0.6';
-      }
-      agentPimModal.classList.add('active');
     });
   }
 
