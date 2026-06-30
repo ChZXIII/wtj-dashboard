@@ -73,6 +73,13 @@ const defaultSellerConfig = {
   signerName: 'มงคล วงศ์สกุลยานนท์'
 };
 
+const defaultScriptConfig = {
+  scriptUrl: 'https://script.google.com/macros/s/AKfycbylMN5ot9w2_LfD4hgwnmTz4y7dSRLKdR-__0THDVzDivW-lUeF0YG25Hj3apCf0lWx/exec',
+  sheetId: '1vIc7kxO9q_FN2mmgyAYf8aly9lMdPRp7onqRaGx8y20',
+  companyDriveUrl: 'https://drive.google.com/drive/folders/162o80GF4BPGGt-DlltxRvMFvAXxRWYOY',
+  pdfShiftApiKey: 'sk_d8cecf2bf72214f73d19e6de9520cacacb8f60ad'
+};
+
 const PREDEFINED_PAYEES = {
   'เก่ง': {
     name: 'นาย มงคล วงศ์สกุลยานนท์',
@@ -245,10 +252,27 @@ function loadConfiguration() {
   }
 
   // Load Script Settings
-  const scriptUrl = safeStorage.getItem('ghn168_script_url') || '';
-  const sheetId = safeStorage.getItem('ghn168_sheet_id') || '';
-  const companyDriveUrl = safeStorage.getItem('ghn168_company_drive_url') || 'https://drive.google.com';
-  const pdfShiftApiKey = safeStorage.getItem('ghn168_pdfshift_api_key') || '';
+  let scriptUrl = safeStorage.getItem('ghn168_script_url');
+  if (!scriptUrl) {
+    scriptUrl = defaultScriptConfig.scriptUrl;
+    safeStorage.setItem('ghn168_script_url', scriptUrl);
+  }
+  let sheetId = safeStorage.getItem('ghn168_sheet_id');
+  if (!sheetId) {
+    sheetId = defaultScriptConfig.sheetId;
+    safeStorage.setItem('ghn168_sheet_id', sheetId);
+  }
+  let companyDriveUrl = safeStorage.getItem('ghn168_company_drive_url');
+  if (!companyDriveUrl || companyDriveUrl === 'https://drive.google.com') {
+    companyDriveUrl = defaultScriptConfig.companyDriveUrl;
+    safeStorage.setItem('ghn168_company_drive_url', companyDriveUrl);
+  }
+  let pdfShiftApiKey = safeStorage.getItem('ghn168_pdfshift_api_key');
+  if (!pdfShiftApiKey) {
+    pdfShiftApiKey = defaultScriptConfig.pdfShiftApiKey;
+    safeStorage.setItem('ghn168_pdfshift_api_key', pdfShiftApiKey);
+  }
+
   document.getElementById('settingScriptUrl').value = scriptUrl;
   document.getElementById('settingSheetId').value = sheetId;
   const driveUrlInput = document.getElementById('settingCompanyDriveUrl');
@@ -281,7 +305,7 @@ function saveScriptSettings() {
   const url = document.getElementById('settingScriptUrl').value.trim();
   let id = document.getElementById('settingSheetId').value.trim();
   const driveUrlInput = document.getElementById('settingCompanyDriveUrl');
-  const driveUrl = driveUrlInput ? driveUrlInput.value.trim() : 'https://drive.google.com';
+  const driveUrl = driveUrlInput ? driveUrlInput.value.trim() : defaultScriptConfig.companyDriveUrl;
   const pdfShiftApiKeyInput = document.getElementById('settingPdfShiftApiKey');
   const pdfShiftApiKey = pdfShiftApiKeyInput ? pdfShiftApiKeyInput.value.trim() : '';
   
@@ -4282,7 +4306,7 @@ function renderDashboardDocHubShortcuts() {
   const container = document.getElementById('dashDocHubShortcutContainer');
   if (!container) return;
 
-  const companyDriveUrl = safeStorage.getItem('ghn168_company_drive_url') || 'https://drive.google.com';
+  const companyDriveUrl = safeStorage.getItem('ghn168_company_drive_url') || defaultScriptConfig.companyDriveUrl;
 
   let html = '';
   // Show first 3 links from the hub
