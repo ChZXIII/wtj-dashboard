@@ -817,7 +817,8 @@ function convertHtmlToPdfWithPdfShift(htmlContent, apiKey, filename) {
   var payload = {
     source: htmlContent,
     sandbox: false,
-    delay: 1000
+    delay: 3000,
+    use_print_media: true
   };
   
   var options = {
