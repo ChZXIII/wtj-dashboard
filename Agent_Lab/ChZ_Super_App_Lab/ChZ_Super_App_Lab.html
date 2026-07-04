@@ -2657,7 +2657,7 @@
             </div>
             <div class="user-info-text">
               <div class="user-role">CHZ MANAGER</div>
-              <div class="user-version">Version 2.01</div>
+              <div class="user-version">Version 2.02</div>
             </div>
           </div>
         </div>
@@ -2672,7 +2672,7 @@
             <!-- หัวข้อและปุ่มย้อนกลับสไลด์ -->
             <div class="settings-header">
               <div class="settings-header-text">
-                <h3 class="settings-title">Google Sheets Connection</h3>
+                <h3 class="settings-title" style="display: flex; align-items: center; gap: 8px;">Google Sheets Connection <span style="font-size: 11px; background: rgba(0,0,0,0.06); color: var(--color-text-secondary); padding: 2px 8px; border-radius: 8px; font-weight: 500;">Version 2.02</span></h3>
                 <p style="font-size: 11px; color: var(--color-text-secondary); margin-top: 4px;">ผูกแอปเข้ากับสิทธิ์ Google Sheets ของแกผ่าน API หรือ Google Apps Script</p>
               </div>
               <button class="capsule-btn btn-back-to-overview" id="settings-back-to-overview-btn" style="display: none; cursor: pointer; background: rgba(39, 168, 115, 0.1) !important; color: #27a873 !important; border: none !important;">
@@ -5830,7 +5830,55 @@
         return '';
       }
 
-      let transactions = JSON.parse(localStorage.getItem('income_tracker_history')) || defaultTransactions;
+      let rawTransactions = JSON.parse(localStorage.getItem('income_tracker_history')) || defaultTransactions;
+      
+      // Auto Migration: ตรวจสอบและแปลงรูปแบบข้อมูลเดิมของคุณเก่งให้อ่านได้ทันที
+      let transactions = rawTransactions.map(tx => {
+        // หากอยู่ในรูปแบบใหม่แล้ว ให้คืนค่าเดิมกลับไป
+        if (tx.date && tx.remarks && (tx.type === 'income' || tx.type === 'expense')) {
+          return tx;
+        }
+
+        // แปลงคีย์ dateTime เดิม ("YYYY-MM-DD HH:MM") แยกเป็น date และ time
+        let dPart = '2026-07-05';
+        let tPart = '12:00';
+        if (tx.dateTime) {
+          const parts = tx.dateTime.split(' ');
+          if (parts[0]) dPart = parts[0];
+          if (parts[1]) tPart = parts[1];
+        } else if (tx.date) {
+          dPart = tx.date;
+        }
+
+        // แปลงคีย์ type เดิม (เช่น "รายจ่าย Feltz Studio") ให้เข้าประเภทสากล
+        let normalizedType = 'expense';
+        if (tx.type === 'income' || (tx.type && (tx.type.includes('รายรับ') || tx.type.includes('รายได้')))) {
+          normalizedType = 'income';
+        }
+
+        // แปลงหมวดหมู่
+        let normalizedCat = 'Fixed Cost';
+        if (tx.category) {
+          normalizedCat = tx.category;
+        } else if (tx.type) {
+          if (tx.type.includes('Grab')) normalizedCat = 'Grab Income';
+          else if (tx.type.includes('รายรับ')) normalizedCat = 'Feltz Studio';
+        }
+
+        return {
+          id: tx.id || 'tx-' + Math.random().toString(36).substr(2, 9),
+          date: dPart,
+          time: tPart,
+          type: normalizedType,
+          category: normalizedCat,
+          remarks: tx.remarks || tx.detail || 'บันทึกการเงิน',
+          amount: parseFloat(tx.amount) || 0,
+          syncStatus: tx.syncStatus || tx.status || 'synced'
+        };
+      });
+
+      // เซฟข้อมูลที่แปลงฟอร์แมตแล้วเก็บกลับเข้าที่เดิมทันทีเพื่อป้องกันค้าง
+      localStorage.setItem('income_tracker_history', JSON.stringify(transactions));
 
       function saveTransactions() {
         localStorage.setItem('income_tracker_history', JSON.stringify(transactions));

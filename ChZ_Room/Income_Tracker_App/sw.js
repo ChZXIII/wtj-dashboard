@@ -1,4 +1,4 @@
-const CACHE_NAME = 'chz-app-v2.01';
+const CACHE_NAME = 'chz-app-v2.02';
 const ASSETS = [
   'index.html',
   'manifest.json',
@@ -36,6 +36,10 @@ self.addEventListener('activate', (e) => {
 });
 
 self.addEventListener('fetch', (e) => {
+  // Only intercept HTTP/HTTPS requests
+  if (!e.request.url.startsWith('http')) {
+    return;
+  }
   // Only intercept GET requests
   if (e.request.method !== 'GET') {
     return;
