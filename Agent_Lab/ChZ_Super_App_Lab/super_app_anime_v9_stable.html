@@ -1,0 +1,2203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anime Super App Dashboard</title>
+  <!-- Google Fonts Connection -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style id="main-styles">
+    :root {
+      /* Brand Pastel Colors */
+      --color-white: #ffffff;
+      --color-ice-blue: #b3ddf2;     /* สีฟ้าพาสเทลอ่อน */
+      --color-neon-rose: #ff4b72;    /* สีชมพูอมแดงเรืองแสง */
+      --color-violet: #8f3dff;       /* สีม่วงสว่าง */
+      --color-pastel-green: #a2e8c4;   /* สีเขียวพาสเทล */
+      --color-pastel-yellow: #fde68a;  /* สีเหลืองพาสเทล */
+      
+      /* Background & Surface Colors */
+      --color-app-bg: linear-gradient(135deg, #fceeff 0%, #e3f2fd 50%, #efe5fd 100%); /* พื้นหลังไล่เฉดพาสเทล */
+      --color-panel-bg: #ffffff;     /* แผงควบคุมหลักสีขาว */
+      --color-card-bg: #f8fafc;      /* การ์ดย่อยสีขาวอมเทาอ่อน */
+      --color-skeleton-bg: #ffffff;  /* กล่องโครงร่างการ์ดสีขาวที่ถูกเคลียร์ว่าง */
+      
+      /* Text & Icon Colors */
+      --color-text-primary: #181a1e;   /* สีตัวอักษรหลัก ดำเข้มเกือบสนิท */
+      --color-text-secondary: #7b8b9b; /* สีตัวอักษรรองและไอคอน เทาอ่อน */
+      --color-text-muted: #a0aec0;     /* ตัวอักษรรายละเอียดและเส้นขอบจาง */
+      
+      /* Button & Tag States */
+      --color-btn-dark-bg: #181a1e;    /* ปุ่มสีดำเข้ม */
+      --color-btn-dark-text: #ffffff;  /* ตัวอักษรในการ์ดหรือปุ่มสีดำ */
+      --color-border-light: #e2e8f0;   /* เส้นขอบบางสำหรับปุ่มและตาราง */
+
+      /* Fonts Definition */
+      --font-heading: 'Outfit', 'Prompt', 'IBM Plex Sans Thai', sans-serif;
+      --font-body: 'Inter', 'Prompt', 'IBM Plex Sans Thai', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      background: var(--color-app-bg);
+      font-family: var(--font-body);
+      color: var(--color-text-primary);
+      overflow: hidden;
+    }
+
+    .app-background {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Container Configuration */
+    .app-container {
+      width: 1280px;
+      height: 800px;
+      background-color: var(--color-panel-bg);
+      box-shadow: 0 30px 70px rgba(143, 61, 255, 0.08), 0 10px 30px rgba(0, 0, 0, 0.02);
+      border-radius: 32px;
+      display: flex;
+      padding: 24px;
+      gap: 20px;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      transform-origin: center center;
+      flex-shrink: 0;
+    }
+
+    /* Left Sidebar Styling */
+    .sidebar {
+      width: 90px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-right: 1px solid var(--color-border-light);
+    }
+
+    .sidebar-top {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+
+    .logo {
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 48px;
+    }
+
+    .nav-menu {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      width: 100%;
+      align-items: center;
+    }
+
+    .nav-item {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-text-secondary);
+      text-decoration: none;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .nav-item:not(.active):hover {
+      background-color: var(--color-ice-blue) !important;
+      color: var(--color-neon-rose) !important;
+    }
+
+    .nav-item.active {
+      background-color: var(--color-neon-rose) !important;
+      color: var(--color-white) !important;
+      box-shadow: 0 8px 20px rgba(255, 75, 114, 0.35) !important;
+    }
+
+    .nav-item .icon {
+      width: 20px;
+      height: 20px;
+    }
+
+    .sidebar-bottom {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 22px;
+      width: 100%;
+    }
+
+    .user-avatar-wrap {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--color-ice-blue), var(--color-violet));
+      padding: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 10px rgba(143, 61, 255, 0.15);
+    }
+
+    .user-avatar-placeholder {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background-color: var(--color-white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .user-avatar-img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .user-profile-capsule {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      width: 68px;
+      padding: 10px 4px;
+      border-radius: 20px;
+      background-color: var(--color-card-bg);
+      border: 1px solid var(--color-border-light);
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    }
+
+    .user-profile-capsule:hover {
+      border-color: var(--color-text-secondary);
+      box-shadow: 0 4px 12px rgba(143, 61, 255, 0.05);
+    }
+
+    .user-info-text {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      width: 100%;
+    }
+
+    .user-role {
+      font-family: var(--font-heading);
+      font-size: 8px;
+      font-weight: 800;
+      color: var(--color-text-primary);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      line-height: 1.2;
+    }
+
+    .user-version {
+      font-family: var(--font-body);
+      font-size: 7.5px;
+      color: var(--color-text-secondary);
+      margin-top: 2px;
+      opacity: 0.8;
+      font-weight: 500;
+    }
+
+    .connection-btn {
+      color: var(--color-text-secondary);
+      background: none;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      transition: all 0.2s ease;
+    }
+
+    .connection-btn:hover {
+      color: var(--color-text-primary);
+      background-color: var(--color-card-bg);
+    }
+
+    .connection-btn .icon {
+      width: 20px;
+      height: 20px;
+    }
+
+    .lang-switch-capsule {
+      width: 32px;
+      height: 64px;
+      border-radius: 9999px;
+      border: 1px solid rgba(255, 75, 114, 0.15) !important;
+      background-color: var(--color-ice-blue) !important;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 0;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .lang-switch-capsule:hover {
+      border-color: var(--color-text-secondary);
+    }
+
+    .lang-label {
+      font-size: 10px;
+      font-weight: 800;
+      font-family: var(--font-heading);
+      color: var(--color-neon-rose) !important;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .toggle-circle {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background-color: var(--color-white) !important;
+      box-shadow: 0 2px 5px rgba(255, 75, 114, 0.15) !important;
+      transition: all 0.2s ease;
+    }
+
+    /* Center Section Styling */
+    .main-content {
+      position: relative;
+      width: 764px;
+      height: 100%;
+      display: block;
+    }
+
+    /* Hero Banner Area */
+    .hero-banner-skeleton {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      background-image: url('assets/hero_anime.jpg');
+      background-size: cover;
+      background-position: center;
+      clip-path: path('M 0,28 A 28,28 0 0 1 28,0 L 736,0 A 28,28 0 0 1 764,28 L 764,724 A 28,28 0 0 1 736,752 L 356,752 A 28,28 0 0 1 328,724 L 328,580 A 28,28 0 0 0 300,552 L 28,552 A 28,28 0 0 1 0,524 Z');
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 24px;
+    }
+
+    .hero-header-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      z-index: 10;
+      position: relative;
+    }
+
+    .capsule-btn {
+      height: 38px;
+      padding: 0 18px;
+      border: 1px solid var(--color-ice-blue) !important;
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 9999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--color-text-primary);
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+      text-decoration: none;
+    }
+
+    .capsule-btn:hover {
+      background: var(--color-neon-rose) !important;
+      border-color: var(--color-neon-rose) !important;
+      color: var(--color-white) !important;
+      transform: translateY(-1px);
+    }
+
+    .capsule-btn:hover .icon {
+      color: var(--color-white) !important;
+    }
+
+    .capsule-btn .icon {
+      width: 16px;
+      height: 16px;
+      color: var(--color-text-primary);
+    }
+
+    .status-capsule {
+      height: 38px;
+      padding: 0 18px;
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 9999px;
+      border: 1px solid var(--color-border-light);
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      font-family: var(--font-heading);
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--color-text-primary);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    }
+
+    .status-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .status-item .icon {
+      width: 16px;
+      height: 16px;
+      color: var(--color-text-secondary);
+    }
+
+    .bell-noti {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--color-text-secondary);
+      transition: color 0.2s ease;
+    }
+
+    .bell-noti:hover {
+      color: var(--color-text-primary);
+    }
+
+    .bell-noti::after {
+      content: "";
+      position: absolute;
+      top: 1px;
+      right: 1px;
+      width: 6px;
+      height: 6px;
+      background-color: var(--color-neon-rose);
+      border-radius: 50%;
+    }
+
+    .bell-noti .icon {
+      width: 18px;
+      height: 18px;
+    }
+
+    /* Navigation side arrow in Hero */
+    .hero-nav-arrow-left {
+      width: 24px;
+      height: 52px;
+      background: var(--color-btn-dark-bg);
+      border-radius: 0 14px 14px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--color-white);
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.1);
+      z-index: 10;
+    }
+
+    .hero-nav-arrow-left:hover {
+      width: 28px;
+    }
+
+    .hero-nav-arrow-left .icon {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* Dungeon & Dragon Overlay Card Wrapper */
+    .hero-overlay-card-wrapper {
+      position: absolute;
+      right: 24px;
+      bottom: 24px;
+      width: 380px;
+      height: 140px;
+      z-index: 10;
+      filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.04));
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .hero-overlay-card-wrapper:hover {
+      transform: translateY(-4px);
+    }
+
+    /* Dungeon & Dragon Overlay Card styling */
+    .hero-overlay-card {
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      clip-path: path('M 0,32 A 32,32 0 0 1 32,0 L 348,0 A 32,32 0 0 1 380,32 L 380,108 A 32,32 0 0 1 348,140 L 180,140 A 32,32 0 0 1 148,108 L 148,90 A 24,24 0 0 0 124,66 L 32,66 A 32,32 0 0 1 0,34 Z');
+      position: relative;
+    }
+
+    .overlay-card-border {
+      pointer-events: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 5;
+    }
+
+    .overlay-left {
+      position: absolute;
+      top: 0;
+      left: 12px;
+      width: 112px;
+      height: 66px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      border-right: 1px solid rgba(24, 26, 30, 0.08);
+      padding: 0;
+    }
+
+    .date-month {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--color-neon-rose) !important;
+      text-transform: uppercase;
+      font-family: var(--font-body);
+      letter-spacing: 0.5px;
+    }
+
+    .date-day {
+      font-size: 46px;
+      font-weight: 800;
+      color: var(--color-neon-rose) !important;
+      font-family: var(--font-heading);
+      line-height: 1;
+      margin-top: 4px;
+    }
+
+    .overlay-right {
+      position: absolute;
+      top: 0;
+      left: 148px;
+      width: 232px;
+      height: 140px;
+      padding: 20px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .anime-title {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--color-text-primary);
+      font-family: var(--font-heading);
+      line-height: 1.25;
+      margin-bottom: 0;
+      text-align: right;
+      margin-left: auto;
+    }
+
+    .hero-overlay-card-wrapper .interaction-bar {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      width: 100%;
+    }
+
+    .hero-overlay-card-wrapper .social-actions {
+      display: flex;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      padding: 4px 10px;
+      border-radius: 9999px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+    }
+
+    .hero-overlay-card-wrapper .btn-icon {
+      gap: 3px;
+      font-size: 10px;
+    }
+
+    .hero-overlay-card-wrapper .btn-icon .icon {
+      width: 14px;
+      height: 14px;
+    }
+
+    .hero-overlay-card-wrapper .btn-circle-action {
+      position: absolute;
+      left: 124px;
+      top: 66px;
+      z-index: 2;
+    }
+
+    .interaction-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+
+    .social-actions {
+      display: flex;
+      gap: 14px;
+    }
+
+    .btn-icon {
+      background: none;
+      border: none;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      color: var(--color-text-secondary);
+      cursor: pointer;
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 11px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-icon:hover {
+      color: var(--color-neon-rose) !important;
+    }
+
+    .btn-icon .icon {
+      width: 16px;
+      height: 16px;
+      transition: transform 0.2s ease;
+    }
+
+    .btn-icon:hover .icon {
+      transform: scale(1.1);
+    }
+
+    .btn-circle-action {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--color-neon-rose) 0%, var(--color-violet) 100%) !important;
+      box-shadow: 0 8px 24px rgba(255, 75, 114, 0.45) !important;
+      color: var(--color-white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .btn-circle-action:hover {
+      transform: translateY(-2px) scale(1.05) !important;
+      box-shadow: 0 12px 28px rgba(255, 75, 114, 0.55), 0 4px 12px rgba(143, 61, 255, 0.25) !important;
+    }
+
+    .btn-circle-action .icon {
+      width: 22px;
+      height: 22px;
+    }
+
+    /* Promo Card Area (Bottom Left) */
+    .promo-card {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 300px;
+      height: 180px;
+      z-index: 5;
+      background-color: var(--color-panel-bg);
+      border-radius: 24px;
+      border: 1px solid var(--color-border-light);
+      padding: 22px 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.015);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+    }
+    .promo-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 15px 35px rgba(255, 75, 114, 0.1);
+    }
+
+    .promo-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      width: 100%;
+    }
+
+    .promo-title-wrap {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .promo-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--color-text-secondary);
+      text-transform: uppercase;
+      font-family: var(--font-body);
+      letter-spacing: 0.5px;
+    }
+
+    .promo-count {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--color-text-primary);
+      font-family: var(--font-heading);
+      margin-top: 4px;
+      line-height: 1;
+      display: flex;
+      align-items: baseline;
+    }
+
+    .ready-text {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--color-text-secondary);
+      font-family: var(--font-body);
+      margin-left: 6px;
+    }
+
+    .promo-badge-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--color-btn-dark-bg);
+      color: var(--color-white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    }
+
+    .promo-badge-icon .icon {
+      width: 18px;
+      height: 18px;
+    }
+
+    .promo-tags {
+      display: flex;
+      gap: 10px;
+    }
+
+    .tag-capsule {
+      height: 32px;
+      padding: 0 16px;
+      border: 1px solid var(--color-border-light);
+      background-color: var(--color-card-bg);
+      border-radius: 9999px;
+      display: inline-flex;
+      align-items: center;
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--color-text-primary);
+      transition: all 0.2s ease;
+      cursor: default;
+    }
+
+    .tag-capsule:hover {
+      border-color: var(--color-text-secondary);
+      background-color: var(--color-white);
+    }
+
+    .promo-tags .tag-capsule:nth-child(1) {
+      background-color: rgba(255, 75, 114, 0.12) !important;
+      color: var(--color-neon-rose) !important;
+      border: 1px solid rgba(255, 75, 114, 0.25) !important;
+    }
+
+    .promo-tags .tag-capsule:nth-child(2) {
+      background-color: rgba(179, 221, 242, 0.3) !important;
+      color: #bf8eff !important;
+      border: 1px solid rgba(179, 221, 242, 0.5) !important;
+    }
+
+    .promo-tags .tag-capsule:nth-child(3) {
+      background-color: var(--color-white) !important;
+      color: var(--color-text-secondary) !important;
+      border: 1px solid var(--color-ice-blue) !important;
+    }
+
+    /* Right Sidebar Styling */
+    .right-sidebar {
+      width: 330px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Slot Card Configuration */
+    .slot-card {
+      flex: 1.2;
+      background-color: var(--color-panel-bg);
+      border-radius: 24px;
+      border: 1px solid var(--color-border-light);
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.015);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .slot-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--color-text-primary);
+      font-family: var(--font-heading);
+      margin: 0;
+    }
+
+    .location-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--color-text-secondary);
+      font-size: 11px;
+      font-weight: 600;
+      font-family: var(--font-body);
+      max-width: 180px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .location-badge .icon {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+    }
+
+    /* 4. Dynamic Calendar Slider & Mini Calendar Grid */
+    .month-slider {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 14px 0;
+      background: var(--color-card-bg);
+      padding: 4px;
+      border-radius: 9999px;
+      border: 1px solid var(--color-border-light);
+    }
+
+    .month-btn {
+      flex: 1;
+      height: 32px;
+      border: none;
+      background: transparent;
+      border-radius: 9999px;
+      font-family: var(--font-heading);
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--color-text-secondary);
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .month-btn.active {
+      background: var(--color-neon-rose) !important;
+      color: var(--color-white) !important;
+      box-shadow: 0 4px 10px rgba(255, 75, 114, 0.25) !important;
+    }
+
+    .month-btn:not(.active):hover {
+      color: var(--color-neon-rose);
+    }
+
+    .month-slider-arrow {
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: transparent;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-text-secondary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .month-slider-arrow:hover {
+      background-color: rgba(24, 26, 30, 0.05);
+      color: var(--color-neon-rose) !important;
+    }
+
+    .month-slider-arrow svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .mini-calendar-container {
+      background: var(--color-card-bg);
+      padding: 14px 12px;
+      border-radius: 18px;
+      border: 1px solid var(--color-border-light);
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .mini-calendar-container:hover {
+      border-color: var(--color-text-secondary);
+      box-shadow: 0 6px 16px rgba(143, 61, 255, 0.06);
+      transform: translateY(-1px);
+    }
+
+    .mini-calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+      flex: 1;
+      justify-items: center;
+    }
+
+    .cal-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: var(--color-white);
+      border: 1px solid var(--color-border-light);
+      transition: all 0.2s ease;
+    }
+
+    .cal-dot.status-active {
+      background-color: var(--color-neon-rose) !important;
+      border: none !important;
+      box-shadow: 0 0 6px var(--color-neon-rose) !important;
+    }
+
+    .cal-dot.status-paid {
+      background-color: var(--color-pastel-green) !important;
+      border: none !important;
+      box-shadow: 0 0 6px var(--color-pastel-green) !important;
+    }
+
+    .cal-dot.status-booked {
+      background-color: var(--color-pastel-yellow) !important;
+      border: none !important;
+      box-shadow: 0 0 6px var(--color-pastel-yellow) !important;
+    }
+
+    .cal-dot.status-empty {
+      background-color: var(--color-white) !important;
+      border: 1px solid var(--color-border-light) !important;
+      box-shadow: none !important;
+    }
+
+    /* 5. Job Carousel Layout & Animations */
+    .job-carousel-container {
+      height: 48px;
+      overflow: hidden;
+      position: relative;
+      flex: 1;
+      margin: 0;
+      border-radius: 12px;
+      background: rgba(24, 26, 30, 0.02);
+      border: 1px dashed var(--color-border-light);
+    }
+
+    .job-carousel-wrapper {
+      display: flex;
+      height: 100%;
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .job-carousel-slide {
+      min-width: 100%;
+      height: 100%;
+      padding: 4px 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      box-sizing: border-box;
+    }
+
+    .job-title {
+      font-family: var(--font-heading);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--color-text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .job-meta-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 2px;
+    }
+
+    .job-time {
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--color-text-secondary);
+    }
+
+    .job-status-tag {
+      font-size: 8px;
+      font-weight: 800;
+      padding: 1px 6px;
+      border-radius: 9999px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .job-status-tag.status-active {
+      background-color: rgba(255, 75, 114, 0.12);
+      color: var(--color-neon-rose);
+    }
+
+    .job-status-tag.status-paid {
+      background-color: rgba(162, 232, 196, 0.15);
+      color: #27a873;
+    }
+
+    .job-status-tag.status-booked {
+      background-color: rgba(253, 230, 138, 0.2);
+      color: #b58900;
+    }
+
+    /* 6. Footer Animations & Dynamic Actions */
+    .slot-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 14px;
+      gap: 12px;
+    }
+
+    .slot-footer-details {
+      display: flex;
+      flex-direction: column;
+      transition: opacity 0.3s ease;
+      min-width: 50px;
+    }
+
+    .slot-footer-details.fade-out {
+      opacity: 0;
+    }
+
+    .num-seats {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--color-text-primary);
+      font-family: var(--font-heading);
+      line-height: 1;
+    }
+
+    .info-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--color-text-secondary);
+      font-family: var(--font-body);
+      margin-top: 2px;
+    }
+
+    .btn-circle-action.paid {
+      background: var(--color-pastel-green) !important;
+      color: var(--color-text-primary) !important;
+      box-shadow: 0 8px 24px rgba(162, 232, 196, 0.45) !important;
+    }
+
+    .btn-circle-action.booked {
+      background: var(--color-pastel-yellow) !important;
+      color: var(--color-text-primary) !important;
+      box-shadow: 0 8px 24px rgba(253, 230, 138, 0.45) !important;
+    }
+
+    .btn-circle-action.urgent {
+      background: var(--color-neon-rose) !important;
+      color: var(--color-white) !important;
+      box-shadow: 0 8px 24px rgba(255, 75, 114, 0.45) !important;
+    }
+
+    /* 7. Large Calendar Modal (Expanding Glassmorphic Modal) */
+    .modal-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(24, 26, 30, 0.25);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+      border-radius: 32px;
+    }
+
+    .modal-overlay.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .calendar-modal {
+      width: 720px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      border-radius: 28px;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.08), 0 10px 30px rgba(143, 61, 255, 0.02);
+      padding: 28px;
+      transform: scale(0);
+      transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .modal-overlay.show .calendar-modal {
+      transform: scale(1);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-title-wrap {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal-title {
+      font-family: var(--font-heading);
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--color-text-primary);
+    }
+
+    .modal-subtitle {
+      font-size: 12px;
+      color: var(--color-text-secondary);
+      font-weight: 500;
+      margin-top: 2px;
+    }
+
+    .btn-close-modal {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--color-border-light);
+      background: var(--color-white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-text-secondary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-close-modal:hover {
+      border-color: var(--color-text-primary);
+      color: var(--color-text-primary);
+      transform: rotate(90deg);
+    }
+
+    .btn-close-modal .icon {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* Big Calendar Grid & Tables */
+    .big-calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 8px;
+      background: rgba(24, 26, 30, 0.01);
+      padding: 8px;
+      border-radius: 18px;
+      border: 1px solid var(--color-border-light);
+    }
+
+    .weekday-header {
+      font-family: var(--font-heading);
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--color-text-secondary);
+      text-align: center;
+      padding: 6px 0;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      min-width: 0;
+    }
+
+    .day-cell {
+      background: var(--color-white);
+      border: 1px solid var(--color-border-light);
+      border-radius: 12px;
+      min-height: 72px;
+      padding: 6px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-sizing: border-box;
+      transition: all 0.2s ease;
+      min-width: 0;
+    }
+
+    .day-cell:hover {
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
+      border-color: var(--color-text-secondary);
+    }
+
+    .day-number {
+      font-family: var(--font-heading);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--color-text-secondary);
+      align-self: flex-end;
+    }
+
+    .day-cell.today {
+      border-color: var(--color-neon-rose);
+      background: rgba(255, 75, 114, 0.02);
+    }
+
+    .day-cell.today .day-number {
+      color: var(--color-neon-rose);
+    }
+
+    .day-cell.other-month {
+      opacity: 0.35;
+      background: rgba(24, 26, 30, 0.01);
+    }
+
+    .day-job-pill {
+      font-size: 9.5px;
+      font-weight: 700;
+      padding: 2.5px 6px;
+      border-radius: 6px;
+      margin-top: 4px;
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+
+    .day-job-pill.status-active {
+      background-color: rgba(255, 75, 114, 0.12);
+      color: var(--color-neon-rose);
+      border-left: 3px solid var(--color-neon-rose);
+    }
+
+    .day-job-pill.status-paid {
+      background-color: rgba(162, 232, 196, 0.15);
+      color: #27a873;
+      border-left: 3px solid var(--color-pastel-green);
+    }
+
+    .day-job-pill.status-booked {
+      background-color: rgba(253, 230, 138, 0.2);
+      color: #b58900;
+      border-left: 3px solid var(--color-pastel-yellow);
+    }
+
+    /* Casting Card Configuration (Bottom Right) */
+    .casting-card {
+      min-height: 250px;
+      background-color: var(--color-panel-bg);
+      border-radius: 24px;
+      border: 1px solid var(--color-border-light);
+      padding: 20px 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.015);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .casting-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .slider-arrows {
+      display: flex;
+      gap: 6px;
+    }
+
+    .arrow-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid var(--color-border-light);
+      background: var(--color-white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-text-secondary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .arrow-btn:hover {
+      border-color: var(--color-text-secondary);
+      color: var(--color-text-primary);
+    }
+
+    .arrow-btn .icon {
+      width: 14px;
+      height: 14px;
+    }
+
+    /* Casting Cleared Empty White Card */
+    .casting-image-skeleton {
+      background-color: var(--color-skeleton-bg);
+      border: 1px solid var(--color-border-light);
+      border-radius: 24px;
+      height: 180px;
+      margin-bottom: 16px;
+      box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.01);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-text-muted);
+      font-size: 11px;
+      font-family: var(--font-body);
+      font-weight: 500;
+      position: relative;
+    }
+
+    .casting-image-skeleton::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(rgba(226, 232, 240, 0.1) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(226, 232, 240, 0.1) 1px, transparent 1px);
+      background-size: 12px 12px;
+      border-radius: 24px;
+      pointer-events: none;
+    }
+
+    .casting-list {
+      display: flex;
+      gap: 16px;
+    }
+
+    .cast-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cast-avatar-placeholder {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--color-border-light), var(--color-card-bg));
+      border: 1px solid var(--color-border-light);
+    }
+
+    .cast-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--color-text-primary);
+      font-family: var(--font-body);
+    }
+
+    /* SVG Border Overlay for Red Line Cutout */
+    .hero-banner-border {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 764px;
+      height: 752px;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    @keyframes border-glow {
+      0% {
+        filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.4)) drop-shadow(0 0 6px rgba(255, 75, 114, 0.2));
+        stroke: rgba(255, 255, 255, 0.8);
+      }
+      50% {
+        filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.9)) drop-shadow(0 0 14px rgba(255, 75, 114, 0.5));
+        stroke: rgba(255, 255, 255, 1);
+      }
+      100% {
+        filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.4)) drop-shadow(0 0 6px rgba(255, 75, 114, 0.2));
+        stroke: rgba(255, 255, 255, 0.8);
+      }
+    }
+
+    .hero-banner-border path {
+      animation: border-glow 4s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-background">
+    <main class="app-container" id="anime-super-app">
+      
+      <!-- 1. คอลัมน์ซ้ายสุด: Navigation Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-top">
+          <div class="logo">
+            <!-- Modern Logo Lineart similar to "Ch" / "4" -->
+            <svg viewBox="0 0 40 40" width="40" height="40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 8C12 8 20 8 24 12C28 16 28 24 28 24M12 32C12 32 20 32 24 28C28 24 28 16 28 16M12 8V32M12 20H28" stroke="var(--color-text-primary)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          
+          <nav class="nav-menu">
+            <a href="#" class="nav-item active">
+              <!-- Home Icon -->
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                <polyline points="9 22 9 12 15 12 15 22"/>
+              </svg>
+            </a>
+            <a href="#" class="nav-item">
+              <!-- Star Icon -->
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+              </svg>
+            </a>
+            <a href="#" class="nav-item">
+              <!-- Location/Pin Icon -->
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+            </a>
+            <a href="#" class="nav-item">
+              <!-- Portfolio/Briefcase Icon -->
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="20" height="14" x="2" y="7" rx="2" ry="2"/>
+                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+              </svg>
+            </a>
+          </nav>
+        </div>
+        
+        <div class="sidebar-bottom">
+          <div class="user-profile-capsule">
+            <div class="user-avatar-wrap">
+              <div class="user-avatar-placeholder">
+                <img src="assets/keng_avatar.jpg" alt="CHZ Manager" class="user-avatar-img">
+              </div>
+            </div>
+            <div class="user-info-text">
+              <div class="user-role">CHZ MANAGER</div>
+              <div class="user-version">Version 1.05</div>
+            </div>
+          </div>
+          
+          <button class="connection-btn">
+            <!-- Connection Icon (คนคู่/ตัวเชื่อม) -->
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+          </button>
+          
+          <div class="lang-switch-capsule">
+            <span class="lang-label">Eng</span>
+            <div class="toggle-circle"></div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- 2. คอลัมน์กลาง: Main Content Area -->
+      <section class="main-content">
+        
+        <!-- แผง Hero Banner ครึ่งบน (เคลียร์รูปภาพออก แสดงเป็นแผ่นเปล่าสีขาวที่มีความโค้งมน 28px) -->
+        <div class="hero-banner-skeleton">
+          <div class="hero-header-controls">
+            <button class="capsule-btn btn-back">
+              <!-- Left Arrow SVG -->
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m15 18-6-6 6-6"/>
+              </svg>
+              <span>Back to Home</span>
+            </button>
+            
+            <div class="status-capsule">
+              <div class="status-item">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+                  <circle cx="12" cy="7" r="4"/>
+                </svg>
+                <span>3</span>
+              </div>
+              <div class="status-item">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                </svg>
+                <span>65</span>
+              </div>
+              <span class="bell-noti">
+                <!-- Bell Icon -->
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/>
+                  <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
+                </svg>
+              </span>
+            </div>
+            
+            <button class="capsule-btn btn-next">
+              <span>Next: The Null</span>
+              <!-- Right Arrow SVG -->
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m9 18 6-6-6-6"/>
+              </svg>
+            </button>
+          </div>
+          
+          <!-- ขอบซ้ายตรงกลาง: ไอคอนปุ่มลูกศรทิศทางสีกระบอกสีดำมีมุมมน -->
+          <div class="hero-nav-arrow-left">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m15 18-6-6 6-6"/>
+            </svg>
+          </div>
+          
+          <!-- กล่องข้อมูลซ้อนทับ Dungeon Dragon (Overlay Card) ด้านล่างขวา -->
+          <div class="hero-overlay-card-wrapper">
+            <div class="hero-overlay-card">
+              <!-- Border Stroke Overlay SVG -->
+              <svg class="overlay-card-border" viewBox="0 0 380 140">
+                <path d="M 0,32 A 32,32 0 0 1 32,0 L 348,0 A 32,32 0 0 1 380,32 L 380,108 A 32,32 0 0 1 348,140 L 180,140 A 32,32 0 0 1 148,108 L 148,90 A 24,24 0 0 0 124,66 L 32,66 A 32,32 0 0 1 0,34 Z" fill="none" stroke="rgba(255, 255, 255, 0.5)" stroke-width="1.5"/>
+              </svg>
+              
+              <div class="overlay-left">
+                <span class="date-month">Oct, 2024</span>
+                <h1 class="date-day">02</h1>
+              </div>
+              <div class="overlay-right">
+                <div class="anime-title">Dungeon & Dragon</div>
+                <div class="interaction-bar">
+                  <div class="social-actions">
+                    <button class="btn-icon">
+                      <!-- Heart Icon -->
+                      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+                      </svg>
+                      <span class="count">32,190</span>
+                    </button>
+                    <button class="btn-icon">
+                      <!-- Star Icon -->
+                      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                      </svg>
+                      <span class="count">9,571</span>
+                    </button>
+                    <button class="btn-icon">
+                      <!-- Bookmark Icon -->
+                      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2Z"/>
+                      </svg>
+                      <span class="count">21,688</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Play Button placed here (in wrapper, so it's not clipped) -->
+            <button class="btn-circle-action">
+              <!-- Ticket Play Icon -->
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/>
+                <path d="M9 14.5v-5l4 2.5-4 2.5Z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        
+        <!-- SVG Border Overlay for Red Line Cutout -->
+        <svg class="hero-banner-border" viewBox="0 0 764 752" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M 0,28 A 28,28 0 0 1 28,0 L 736,0 A 28,28 0 0 1 764,28 L 764,724 A 28,28 0 0 1 736,752 L 356,752 A 28,28 0 0 1 328,724 L 328,580 A 28,28 0 0 0 300,552 L 28,552 A 28,28 0 0 1 0,524 Z" stroke="rgba(255, 255, 255, 0.8)" stroke-width="2" />
+        </svg>
+
+        <!-- การ์ดโปรโมชั่น Promo ครึ่งล่างซ้าย -->
+        <div class="promo-card">
+          <div class="promo-header">
+            <div class="promo-title-wrap">
+              <span class="promo-label">Promo</span>
+              <h2 class="promo-count">24 <span class="ready-text">ready</span></h2>
+            </div>
+            
+            <div class="promo-badge-icon">
+              <!-- Discount Tag/Percent Icon -->
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2H2v10l9.29 9.29c.94.94 2.48.94 3.42 0l6.58-6.58c.94-.94.94-2.48 0-3.42L12 2Z"/>
+                <path d="M7 7h.01"/>
+              </svg>
+            </div>
+          </div>
+          
+          <div class="promo-tags">
+            <span class="tag-capsule">20% off</span>
+            <span class="tag-capsule">Free Popcorn</span>
+            <span class="tag-capsule">5% off</span>
+          </div>
+        </div>
+        
+      </section>
+
+      <!-- 3. คอลัมน์ขวาสุด: Right Sidebar -->
+      <aside class="right-sidebar">
+        
+        <!-- การ์ด Slot (การ์ดบน) ปรับปรุงเป็น Dynamic Calendar / Job Carousel -->
+        <div class="slot-card">
+          <div class="slot-header">
+            <h2 class="section-title">Schedule</h2>
+            <div class="location-badge">
+              <!-- Calendar icon -->
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="18" height="18" x="3" y="4" rx="2" ry="2"/>
+                <line x1="16" x2="16" y1="2" y2="6"/>
+                <line x1="8" x2="8" y1="2" y2="6"/>
+                <line x1="3" x2="21" y1="10" y2="10"/>
+              </svg>
+              <span>ChZ Agent Corp Workspace</span>
+            </div>
+          </div>
+          
+          <!-- Month Slider: Arrow Left | Sep | Oct (Active) | Nov | Arrow Right -->
+          <div class="month-slider">
+            <button class="month-slider-arrow prev" id="slider-prev-month" title="Previous Month">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m15 18-6-6 6-6"/>
+              </svg>
+            </button>
+            <button class="month-btn" data-month="Sep">Sep</button>
+            <button class="month-btn active" data-month="Oct">Oct</button>
+            <button class="month-btn" data-month="Nov">Nov</button>
+            <button class="month-slider-arrow next" id="slider-next-month" title="Next Month">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m9 18 6-6-6-6"/>
+              </svg>
+            </button>
+          </div>
+          
+          <!-- Mini Calendar Grid -->
+          <div class="mini-calendar-container" id="mini-calendar" title="Click to view large calendar">
+            <div class="mini-calendar-grid" id="mini-calendar-grid">
+              <!-- Will be dynamically populated with 30 dots -->
+            </div>
+          </div>
+          
+          <div class="slot-footer">
+            <div class="slot-footer-details" id="slot-footer-details">
+              <span class="num-seats" id="slot-date-num">02</span>
+              <span class="info-label" id="slot-date-label">Mon, Oct</span>
+            </div>
+
+            <!-- Job Carousel -->
+            <div class="job-carousel-container">
+              <div class="job-carousel-wrapper" id="job-carousel-wrapper">
+                <!-- Will be dynamically populated with jobs -->
+              </div>
+            </div>
+            
+            <button class="btn-circle-action urgent" id="slot-action-btn">
+              <!-- Calendar Check SVG -->
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="18" height="18" x="3" y="4" rx="2" ry="2"/>
+                <line x1="16" x2="16" y1="2" y2="6"/>
+                <line x1="8" x2="8" y1="2" y2="6"/>
+                <line x1="3" x2="21" y1="10" y2="10"/>
+                <path d="m9 16 2 2 4-4"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Modal Overlay for Large Calendar (Centered inside App Container for exact scaling alignment) -->
+        <div class="modal-overlay" id="calendar-modal-overlay">
+          <div class="calendar-modal">
+            <div class="modal-header">
+              <div class="modal-title-wrap">
+                <h3 class="modal-title" id="modal-month-title">October 2024</h3>
+                <span class="modal-subtitle">ChZ Agent Corp Job Calendar</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div class="slider-arrows" style="margin-right: 8px;">
+                  <button class="arrow-btn" id="modal-prev-month">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="m15 18-6-6 6-6"/>
+                    </svg>
+                  </button>
+                  <button class="arrow-btn" id="modal-next-month">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="m9 18 6-6-6-6"/>
+                    </svg>
+                  </button>
+                </div>
+                <button class="btn-close-modal" id="close-calendar-modal" title="Close Calendar">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+            
+            <div class="big-calendar-grid" id="big-calendar-grid">
+              <!-- Will be dynamically populated with weekday headers and day cells -->
+            </div>
+          </div>
+        </div>
+
+        <!-- การ์ด Casting (การ์ดล่าง) เคลียร์รูปภาพและประวัตินักแสดงออก แสดงผลเป็นกล่องสีขาวโค้งมนว่างเปล่า -->
+        <div class="casting-card">
+          <div class="casting-header">
+            <h2 class="section-title">Casting</h2>
+            <div class="slider-arrows">
+              <button class="arrow-btn">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m15 18-6-6 6-6"/>
+                </svg>
+              </button>
+              <button class="arrow-btn">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m9 18 6-6-6-6"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+          
+          <!-- กล่องสีขาวโค้งมนว่างเปล่า (Casting image skeleton) -->
+          <div class="casting-image-skeleton">
+            <!-- ปล่อยว่างเว้นไว้ก่อน -->
+          </div>
+          
+          <div class="casting-list">
+            <div class="cast-item">
+              <div class="cast-avatar-placeholder"></div>
+              <span class="cast-name">Shitoda</span>
+            </div>
+            <div class="cast-item">
+              <div class="cast-avatar-placeholder"></div>
+              <span class="cast-name">James Carl</span>
+            </div>
+          </div>
+        </div>
+        
+      </aside>
+
+    </main>
+  </div>
+
+  <script>
+    // 1. Scaler adjustment block
+    (function() {
+      const container = document.getElementById('anime-super-app');
+      
+      function adjustScale() {
+        if (!container) return;
+        
+        const baseWidth = 1280;
+        const baseHeight = 800;
+        const padding = 24; // Margin padding to keep dashboard beautiful on margins
+        
+        const winWidth = window.innerWidth - padding * 2;
+        const winHeight = window.innerHeight - padding * 2;
+        
+        // Find smallest scale ratio to fit both dimensions
+        let scale = Math.min(winWidth / baseWidth, winHeight / baseHeight);
+        
+        // Max limit scale to 1 (only scale down for small screens)
+        if (scale > 1) {
+          scale = 1;
+        }
+        
+        // Apply transform layout centering with scale
+        container.style.transform = `translate(-50%, -50%) scale(${scale})`;
+      }
+      
+      // Register load and resize scaling calculations
+      window.addEventListener('DOMContentLoaded', adjustScale);
+      window.addEventListener('resize', adjustScale);
+      
+      // Invoke immediately to prevent visual flash
+      adjustScale();
+    })();
+
+    // 2. Dynamic Calendar & Job Carousel logic
+    (function() {
+      // Configuration for month short names
+      const monthShortNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      
+      // Dynamic Month Config Generator (Replacing the fixed monthConfigs object)
+      function getMonthConfig(year, monthIndex) {
+        const monthNames = [
+          'January', 'February', 'March', 'April', 'May', 'June',
+          'July', 'August', 'September', 'October', 'November', 'December'
+        ];
+        const name = `${monthNames[monthIndex]} ${year}`;
+        
+        // Days in active month
+        const days = new Date(year, monthIndex + 1, 0).getDate();
+        
+        // Start day of active month (0=Sun, 1=Mon, ..., 6=Sat)
+        const firstDayOfWeek = new Date(year, monthIndex, 1).getDay();
+        // Convert to standard dashboard offset (0=Mon, 6=Sun)
+        const startOffset = (firstDayOfWeek === 0) ? 6 : firstDayOfWeek - 1;
+        
+        // Days in previous month
+        const prevMonthDays = new Date(year, monthIndex, 0).getDate();
+        
+        return { name, days, startOffset, prevMonthDays };
+      }
+
+      // Job listings mapped to months
+      const monthlyJobs = {
+        Sep: [
+          { date: '05', dayLabel: 'Tue, Sep', title: 'WTJ Story Prep', time: '10:00 - 12:00', status: 'paid', dotIndex: 5 },
+          { date: '15', dayLabel: 'Fri, Sep', title: 'Shoot Portrait Session', time: '13:00 - 16:00', status: 'booked', dotIndex: 15 },
+          { date: '25', dayLabel: 'Mon, Sep', title: 'Video Subtitles EP40', time: '09:00 - 11:00', status: 'urgent', dotIndex: 25 }
+        ],
+        Oct: [
+          { date: '02', dayLabel: 'Mon, Oct', title: 'WTJ Podcast Episode 42', time: '18:00 - 20:00', status: 'urgent', dotIndex: 2 },
+          { date: '12', dayLabel: 'Thu, Oct', title: 'Video Clean Cut - EP42', time: '10:00 - 12:00', status: 'paid', dotIndex: 12 },
+          { date: '19', dayLabel: 'Thu, Oct', title: 'Shoot New Photo Set', time: '13:00 - 17:00', status: 'booked', dotIndex: 19 },
+          { date: '26', dayLabel: 'Thu, Oct', title: 'Affiliate Content Prep', time: '15:00 - 16:30', status: 'booked', dotIndex: 26 },
+          { date: '31', dayLabel: 'Tue, Oct', title: 'WTJ Story Scripting', time: '09:30 - 11:30', status: 'urgent', dotIndex: 30 }
+        ],
+        Nov: [
+          { date: '08', dayLabel: 'Wed, Nov', title: 'AI Sidekick Lesson 2', time: '14:00 - 16:00', status: 'booked', dotIndex: 8 },
+          { date: '18', dayLabel: 'Sat, Nov', title: 'WTJ Talk EP43 Recording', time: '17:00 - 19:00', status: 'urgent', dotIndex: 18 },
+          { date: '28', dayLabel: 'Tue, Nov', title: 'Corporate Sync Meeting', time: '11:00 - 12:30', status: 'paid', dotIndex: 28 }
+        ]
+      };
+
+      // Retrieve jobs dynamically (Supporting backward compatibility and dynamic formats)
+      function getMonthlyJobs(year, monthIndex) {
+        const shortName = monthShortNames[monthIndex];
+        const key = `${year}-${(monthIndex + 1).toString().padStart(2, '0')}`;
+        
+        if (year === 2024 && (shortName === 'Sep' || shortName === 'Oct' || shortName === 'Nov')) {
+          return monthlyJobs[shortName] || [];
+        }
+        return monthlyJobs[key] || [];
+      }
+
+      // App state
+      let activeYear = 2024;
+      let activeMonth = 9; // October (0-indexed)
+      let carouselIndex = 0;
+      let carouselInterval = null;
+
+      const miniCalendar = document.getElementById('mini-calendar');
+      const miniGrid = document.getElementById('mini-calendar-grid');
+      const carouselWrapper = document.getElementById('job-carousel-wrapper');
+      
+      const modalOverlay = document.getElementById('calendar-modal-overlay');
+      const modalContainer = document.querySelector('.calendar-modal');
+      const modalTitle = document.getElementById('modal-month-title');
+      const bigCalendarGrid = document.getElementById('big-calendar-grid');
+
+      // Update Slider Navigation buttons UI
+      function updateMonthSliderUI() {
+        const prevMonthIdx = (activeMonth === 0) ? 11 : activeMonth - 1;
+        const nextMonthIdx = (activeMonth === 11) ? 0 : activeMonth + 1;
+        
+        const prevMonthName = monthShortNames[prevMonthIdx];
+        const currentMonthName = monthShortNames[activeMonth];
+        const nextMonthName = monthShortNames[nextMonthIdx];
+        
+        const monthButtons = document.querySelectorAll('.month-slider .month-btn');
+        if (monthButtons.length === 3) {
+          monthButtons[0].textContent = prevMonthName;
+          monthButtons[0].setAttribute('data-month', prevMonthName);
+          
+          monthButtons[1].textContent = currentMonthName;
+          monthButtons[1].setAttribute('data-month', currentMonthName);
+          
+          monthButtons[2].textContent = nextMonthName;
+          monthButtons[2].setAttribute('data-month', nextMonthName);
+        }
+      }
+
+      // Initialize the dynamic Slot Card components
+      function initMonth(year, monthIndex) {
+        activeYear = year;
+        activeMonth = monthIndex;
+        carouselIndex = 0;
+        
+        // 1. Update active states and texts in month slider
+        updateMonthSliderUI();
+
+        // 2. Generate Mini Grid (30 dots)
+        miniGrid.innerHTML = '';
+        const jobs = getMonthlyJobs(year, monthIndex);
+        for (let i = 1; i <= 30; i++) {
+          const dot = document.createElement('div');
+          dot.className = 'cal-dot';
+          const matchedJob = jobs.find(job => job.dotIndex === i);
+          if (matchedJob) {
+            if (matchedJob.status === 'urgent') {
+              dot.classList.add('status-active');
+            } else {
+              dot.classList.add('status-' + matchedJob.status);
+            }
+          } else {
+            dot.classList.add('status-empty');
+          }
+          miniGrid.appendChild(dot);
+        }
+
+        // 3. Generate Carousel Slides
+        carouselWrapper.innerHTML = '';
+        if (jobs.length > 0) {
+          jobs.forEach(job => {
+            const slide = document.createElement('div');
+            slide.className = 'job-carousel-slide';
+            
+            let statusClass = 'status-booked';
+            let statusText = 'Booked';
+            if (job.status === 'urgent') {
+              statusClass = 'status-active';
+              statusText = 'Urgent';
+            } else if (job.status === 'paid') {
+              statusClass = 'status-paid';
+              statusText = 'Paid';
+            }
+
+            slide.innerHTML = `
+              <div class="job-title">${job.title}</div>
+              <div class="job-meta-row">
+                <span class="job-time">${job.time}</span>
+                <span class="job-status-tag ${statusClass}">${statusText}</span>
+              </div>
+            `;
+            carouselWrapper.appendChild(slide);
+          });
+          carouselWrapper.style.transform = `translateX(0)`;
+          updateFooter(jobs[0]);
+          startCarousel();
+        } else {
+          carouselWrapper.innerHTML = `
+            <div class="job-carousel-slide">
+              <div class="job-title" style="text-align: center; color: var(--color-text-secondary);">No scheduled jobs</div>
+            </div>
+          `;
+          
+          // Generate fallback footer date for empty months (1st of the month)
+          const firstDayDate = new Date(year, monthIndex, 1);
+          const firstDayName = firstDayDate.toLocaleDateString('en-US', { weekday: 'short' });
+          const dayLabel = `${firstDayName}, ${monthShortNames[monthIndex]}`;
+          updateFooter({ date: '01', dayLabel: dayLabel, status: 'empty' });
+          
+          stopCarousel();
+        }
+
+        // If Large Calendar Modal is visible, re-render it
+        if (modalOverlay.classList.contains('show')) {
+          renderBigCalendar(year, monthIndex);
+        }
+      }
+
+      // Update Footer elements with smooth transition fade
+      function updateFooter(job) {
+        const footerDetails = document.getElementById('slot-footer-details');
+        const numSeats = document.getElementById('slot-date-num');
+        const infoLabel = document.getElementById('slot-date-label');
+        const actionBtn = document.getElementById('slot-action-btn');
+
+        if (!job) return;
+
+        footerDetails.classList.add('fade-out');
+        setTimeout(() => {
+          numSeats.textContent = job.date;
+          infoLabel.textContent = job.dayLabel;
+          
+          // Switch action button status classes (paid, booked, urgent)
+          actionBtn.className = `btn-circle-action ${job.status}`;
+          
+          footerDetails.classList.remove('fade-out');
+        }, 300);
+      }
+
+      // Carousel Autoplay Timer functions
+      function startCarousel() {
+        stopCarousel();
+        const jobs = getMonthlyJobs(activeYear, activeMonth);
+        if (jobs.length <= 1) return;
+
+        carouselInterval = setInterval(() => {
+          carouselIndex = (carouselIndex + 1) % jobs.length;
+          carouselWrapper.style.transform = `translateX(-${carouselIndex * 100}%)`;
+          updateFooter(jobs[carouselIndex]);
+        }, 3900); // 3.5s Delay + 0.4s Transition
+      }
+
+      // Stop Carousel
+      function stopCarousel() {
+        if (carouselInterval) {
+          clearInterval(carouselInterval);
+          carouselInterval = null;
+        }
+      }
+
+      // Render the Big Calendar Grid inside the Modal
+      function renderBigCalendar(year, monthIndex) {
+        const config = getMonthConfig(year, monthIndex);
+        modalTitle.textContent = config.name;
+        bigCalendarGrid.innerHTML = '';
+
+        // Render Weekday headers (Monday - Sunday)
+        const weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+        weekdays.forEach(day => {
+          const header = document.createElement('div');
+          header.className = 'weekday-header';
+          header.textContent = day;
+          bigCalendarGrid.appendChild(header);
+        });
+
+        // 1. Render previous month offset days (Other Month days)
+        const offset = config.startOffset;
+        const prevMonthMax = config.prevMonthDays;
+        for (let i = offset - 1; i >= 0; i--) {
+          const cell = document.createElement('div');
+          cell.className = 'day-cell other-month';
+          
+          const num = document.createElement('span');
+          num.className = 'day-number';
+          num.textContent = prevMonthMax - i;
+          
+          cell.appendChild(num);
+          bigCalendarGrid.appendChild(cell);
+        }
+
+        // 2. Render current month days (1 to Max)
+        const jobs = getMonthlyJobs(year, monthIndex);
+        const activeJob = jobs[carouselIndex];
+        
+        for (let day = 1; day <= config.days; day++) {
+          const cell = document.createElement('div');
+          cell.className = 'day-cell';
+          
+          const formattedDay = day.toString().padStart(2, '0');
+          
+          // Highlight day matching the active carousel job
+          if (activeJob && formattedDay === activeJob.date) {
+            cell.classList.add('today');
+          }
+
+          const num = document.createElement('span');
+          num.className = 'day-number';
+          num.textContent = day;
+          cell.appendChild(num);
+
+          // Check if there is a job scheduled on this day
+          const matchedJobs = jobs.filter(j => parseInt(j.date) === day);
+          matchedJobs.forEach(job => {
+            const pill = document.createElement('div');
+            let statusClass = 'status-booked';
+            if (job.status === 'urgent') {
+              statusClass = 'status-active';
+            } else if (job.status === 'paid') {
+              statusClass = 'status-paid';
+            }
+            pill.className = `day-job-pill ${statusClass}`;
+            pill.textContent = job.title;
+            pill.title = `${job.title} (${job.time})`;
+            cell.appendChild(pill);
+          });
+
+          bigCalendarGrid.appendChild(cell);
+        }
+
+        // 3. Render next month padding days (Other Month days)
+        const totalRendered = offset + config.days;
+        const remainder = (7 - (totalRendered % 7)) % 7;
+        for (let nextDay = 1; nextDay <= remainder; nextDay++) {
+          const cell = document.createElement('div');
+          cell.className = 'day-cell other-month';
+          
+          const num = document.createElement('span');
+          num.className = 'day-number';
+          num.textContent = nextDay;
+          
+          cell.appendChild(num);
+          bigCalendarGrid.appendChild(cell);
+        }
+      }
+
+      // Open Modal with Expanding Zoom Transition
+      function openLargeCalendar() {
+        stopCarousel(); // Pause auto-rotation while viewing calendar modal
+        renderBigCalendar(activeYear, activeMonth);
+
+        // Get centers of both Mini Calendar container and the Modal
+        const slotRect = miniCalendar.getBoundingClientRect();
+        const slotCenterX = slotRect.left + slotRect.width / 2;
+        const slotCenterY = slotRect.top + slotRect.height / 2;
+
+        // Temporarily display overlay & modal container to calculate positions
+        modalOverlay.classList.add('show');
+        modalContainer.style.transition = 'none';
+        modalContainer.style.transform = 'scale(1)';
+        
+        const modalRect = modalContainer.getBoundingClientRect();
+        modalContainer.style.transform = 'scale(0)';
+
+        // Extract scale from container transformation transformation matrix
+        const mainContainer = document.getElementById('anime-super-app');
+        const containerRect = mainContainer.getBoundingClientRect();
+        const scale = containerRect.width / 1280; // normalized layout ratio
+
+        // Compute local layout offsets
+        const originX = (slotCenterX - modalRect.left) / scale;
+        const originY = (slotCenterY - modalRect.top) / scale;
+        
+        modalContainer.style.transformOrigin = `${originX}px ${originY}px`;
+        
+        // Force Reflow
+        modalContainer.offsetHeight;
+
+        // Play smooth bouncing entry animation scale 0 -> 1
+        modalContainer.style.transition = 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease';
+        modalContainer.style.transform = 'scale(1)';
+      }
+
+      // Close Calendar Modal
+      function closeLargeCalendar() {
+        modalContainer.style.transform = 'scale(0)';
+        modalOverlay.classList.remove('show');
+        startCarousel(); // Resume Slot Card auto rotation
+      }
+
+      // Select Previous Month
+      function selectPrevMonth() {
+        if (activeMonth === 0) {
+          activeMonth = 11;
+          activeYear -= 1;
+        } else {
+          activeMonth -= 1;
+        }
+        initMonth(activeYear, activeMonth);
+      }
+
+      // Select Next Month
+      function selectNextMonth() {
+        if (activeMonth === 11) {
+          activeMonth = 0;
+          activeYear += 1;
+        } else {
+          activeMonth += 1;
+        }
+        initMonth(activeYear, activeMonth);
+      }
+
+      // Attach Month Button event listeners (Left, Center, Right buttons)
+      const monthButtons = document.querySelectorAll('.month-slider .month-btn');
+      if (monthButtons.length === 3) {
+        monthButtons[0].addEventListener('click', selectPrevMonth);
+        monthButtons[1].addEventListener('click', () => {
+          // Center button is activeMonth, no-op or trigger layout re-flow
+        });
+        monthButtons[2].addEventListener('click', selectNextMonth);
+      }
+
+      // Month Slider Arrow Event Listeners
+      document.getElementById('slider-prev-month').addEventListener('click', selectPrevMonth);
+      document.getElementById('slider-next-month').addEventListener('click', selectNextMonth);
+
+      // Big Modal Month navigation buttons
+      document.getElementById('modal-prev-month').addEventListener('click', () => {
+        selectPrevMonth();
+      });
+
+      document.getElementById('modal-next-month').addEventListener('click', () => {
+        selectNextMonth();
+      });
+
+      // Modal Open/Close clicks
+      miniCalendar.addEventListener('click', openLargeCalendar);
+      document.getElementById('close-calendar-modal').addEventListener('click', closeLargeCalendar);
+
+      // Close modal on background overlay clicks
+      modalOverlay.addEventListener('click', (e) => {
+        if (e.target === modalOverlay) {
+          closeLargeCalendar();
+        }
+      });
+
+      // Init Default State (October 2024)
+      initMonth(2024, 9);
+    })();
+  </script>
+</body>
+</html>
