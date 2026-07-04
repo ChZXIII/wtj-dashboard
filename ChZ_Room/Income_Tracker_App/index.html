@@ -2452,9 +2452,15 @@
         left: 16px !important;
         right: 16px !important;
         width: auto !important;
-        z-index: 50 !important;
-        transform: translateZ(0) !important;
-        -webkit-transform: translateZ(0) !important;
+        z-index: 999 !important;
+        transform: translate3d(0, 0, 0) !important;
+        -webkit-transform: translate3d(0, 0, 0) !important;
+        will-change: transform !important;
+      }
+      .hero-header-controls .capsule-btn,
+      .hero-header-controls .status-capsule {
+        transform: translate3d(0, 0, 0) !important;
+        -webkit-transform: translate3d(0, 0, 0) !important;
       }
       
       .hero-overlay-card-wrapper {
@@ -5851,10 +5857,10 @@
         return '';
       }
 
-      let transactions = JSON.parse(localStorage.getItem('ledger_transactions')) || defaultTransactions;
+      let transactions = JSON.parse(localStorage.getItem('income_tracker_history')) || defaultTransactions;
 
       function saveTransactions() {
-        localStorage.setItem('ledger_transactions', JSON.stringify(transactions));
+        localStorage.setItem('income_tracker_history', JSON.stringify(transactions));
       }
 
       function updateDashboardMetrics() {
