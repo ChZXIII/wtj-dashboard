@@ -1,4 +1,4 @@
-const CACHE_NAME = 'chz-app-v2.00';
+const CACHE_NAME = 'chz-app-v2.01';
 const ASSETS = [
   'index.html',
   'manifest.json',
