@@ -3705,6 +3705,39 @@ textarea.form-control {
             <input type="text" id="settingPdfShiftApiKey" class="form-control mono" placeholder="เช่น sk_a1b2c3d4..." style="font-size: 12px; padding: 6px 10px; height: auto;">
           </div>
 
+          <div style="border-top: 1px dashed var(--border-color); margin-top: 16px; padding-top: 16px; margin-bottom: 16px;">
+            <h5 style="margin: 0 0 8px 0; font-size: 11px; font-weight: 700; color: var(--text-primary);">กำหนดสิทธิ์ผู้ใช้งาน (User Roles):</h5>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+              <div class="form-group" style="margin-bottom: 8px;">
+                <label style="font-size: 10px; display: block; margin-bottom: 2px;">เก่ง</label>
+                <select id="role-select-เก่ง" class="form-control" style="font-size: 11px; height: auto; padding: 4px 8px;" disabled>
+                  <option value="admin" selected>Admin</option>
+                </select>
+              </div>
+              <div class="form-group" style="margin-bottom: 8px;">
+                <label style="font-size: 10px; display: block; margin-bottom: 2px;">มด</label>
+                <select id="role-select-มด" class="form-control" style="font-size: 11px; height: auto; padding: 4px 8px;">
+                  <option value="admin">Admin</option>
+                  <option value="user" selected>User</option>
+                </select>
+              </div>
+              <div class="form-group" style="margin-bottom: 8px;">
+                <label style="font-size: 10px; display: block; margin-bottom: 2px;">หอม</label>
+                <select id="role-select-หอม" class="form-control" style="font-size: 11px; height: auto; padding: 4px 8px;">
+                  <option value="admin">Admin</option>
+                  <option value="user" selected>User</option>
+                </select>
+              </div>
+              <div class="form-group" style="margin-bottom: 8px;">
+                <label style="font-size: 10px; display: block; margin-bottom: 2px;">พี่นิค</label>
+                <select id="role-select-พี่นิค" class="form-control" style="font-size: 11px; height: auto; padding: 4px 8px;">
+                  <option value="admin">Admin</option>
+                  <option value="user" selected>User</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
           <button id="btnSaveConfig" class="btn-primary" style="margin-top: 16px; width: 100%; height: auto; padding: 10px 16px; font-size: 13px;">
             <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width: 14px; height: 14px;">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />

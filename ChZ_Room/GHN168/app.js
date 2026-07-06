@@ -298,6 +298,21 @@ function loadConfiguration() {
   if (pdfShiftApiKeyInput) {
     pdfShiftApiKeyInput.value = pdfShiftApiKey;
   }
+
+  // Load User Roles
+  const roleKeng = safeStorage.getItem('ghn_user_role_เก่ง') || 'admin';
+  const roleMod = safeStorage.getItem('ghn_user_role_มด') || 'user';
+  const roleHom = safeStorage.getItem('ghn_user_role_หอม') || 'user';
+  const roleNick = safeStorage.getItem('ghn_user_role_พี่นิค') || 'user';
+
+  const selectKeng = document.getElementById('role-select-เก่ง');
+  if (selectKeng) selectKeng.value = roleKeng;
+  const selectMod = document.getElementById('role-select-มด');
+  if (selectMod) selectMod.value = roleMod;
+  const selectHom = document.getElementById('role-select-หอม');
+  if (selectHom) selectHom.value = roleHom;
+  const selectNick = document.getElementById('role-select-พี่นิค');
+  if (selectNick) selectNick.value = roleNick;
 }
 
 function saveSellerConfig() {
@@ -336,9 +351,26 @@ function saveScriptSettings() {
   safeStorage.setItem('ghn168_sheet_id', id);
   safeStorage.setItem('ghn168_company_drive_url', driveUrl);
   safeStorage.setItem('ghn168_pdfshift_api_key', pdfShiftApiKey);
+
+  // Save User Roles
+  safeStorage.setItem('ghn_user_role_เก่ง', 'admin');
+  const roleMod = document.getElementById('role-select-มด') ? document.getElementById('role-select-มด').value : 'user';
+  const roleHom = document.getElementById('role-select-หอม') ? document.getElementById('role-select-หอม').value : 'user';
+  const roleNick = document.getElementById('role-select-พี่นิค') ? document.getElementById('role-select-พี่นิค').value : 'user';
+  safeStorage.setItem('ghn_user_role_มด', roleMod);
+  safeStorage.setItem('ghn_user_role_หอม', roleHom);
+  safeStorage.setItem('ghn_user_role_พี่นิค', roleNick);
   
   // Sync changes to dashboard shortcuts immediately
   renderDashboardDocHubShortcuts();
+  
+  // Evaluate the active user's role
+  const activeUserRole = safeStorage.getItem('ghn_user_role_' + currentActiveUser) || (currentActiveUser === 'เก่ง' ? 'admin' : 'user');
+  if (activeUserRole === 'user') {
+    const navSettings = document.querySelector('li.nav-item[data-view="settings"]');
+    if (navSettings) navSettings.style.display = 'none';
+    switchView('dashboard');
+  }
   
   alert('บันทึกการเชื่อมต่อเรียบร้อยแล้ว');
 }
@@ -7893,5 +7925,19 @@ function syncSettingsUI() {
   if (checkbox) {
     const credKey = 'ghn_webauthn_cred_id_' + currentActiveUser;
     checkbox.checked = !!safeStorage.getItem(credKey);
+  }
+
+  // Check role of the logged-in user
+  const role = safeStorage.getItem('ghn_user_role_' + currentActiveUser) || (currentActiveUser === 'เก่ง' ? 'admin' : 'user');
+  const navSettings = document.querySelector('li.nav-item[data-view="settings"]');
+  if (navSettings) {
+    if (role === 'admin') {
+      navSettings.style.display = '';
+    } else {
+      navSettings.style.display = 'none';
+      if (typeof currentView !== 'undefined' && currentView === 'settings') {
+        switchView('dashboard');
+      }
+    }
   }
 }
