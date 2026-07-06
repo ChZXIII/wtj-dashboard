@@ -2077,6 +2077,13 @@
       to { opacity: 0.4; }
     }
 
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .spin-icon {
+      animation: spin 1s linear infinite;
+    }
+
     /* --- Task 12: To Do Dropdown Styles --- */
     .todo-dropdown-menu {
       position: absolute;
@@ -3648,9 +3655,15 @@
 
           <!-- Slide 5: To do list Page -->
           <div id="todo-panel" class="workspace-page todo-page frosted" style="display: block;">
-            <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--color-neon-rose)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-              <h2 style="margin:0; font-family:'Outfit','Prompt',sans-serif; font-size:18px; font-weight:700; color:var(--color-text-primary,#0f172a);">To do list</h2>
+            <div style="display:flex; align-items:center; justify-content: space-between; width: 100%; margin-bottom:12px;">
+              <div style="display:flex; align-items:center; gap:10px;">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--color-neon-rose)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                <h2 style="margin:0; font-family:'Outfit','Prompt',sans-serif; font-size:18px; font-weight:700; color:var(--color-text-primary,#0f172a);">To do list</h2>
+              </div>
+              <div id="todo-sync-status" style="display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--color-text-secondary); opacity: 0.85;">
+                <svg id="todo-sync-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+                <span id="todo-sync-text">Checking...</span>
+              </div>
             </div>
             <!-- Input Row -->
             <div style="display:flex; gap:8px; margin-bottom:12px; flex-wrap: wrap; align-items: center; width: 100%;">
@@ -5474,6 +5487,9 @@
         }
         if (typeof fetchCalendarEvents === 'function') {
           fetchCalendarEvents();
+        }
+        if (typeof window.fetchOnlineTasks === 'function') {
+          window.fetchOnlineTasks();
         }
 
         window.loadSettings = loadSettings;
@@ -8522,7 +8538,117 @@
         { id: 'save-grab', text: '2. บันทึก Grab รายสัปดาห์', completed: false, day: 'monday', type: 'recurring' },
         { id: 'export-tax', text: '3. ส่งออกเอกสารภาษี', completed: false, day: 'monday', type: 'recurring' }
       ];
-      
+
+      function updateSyncStatus(status, text) {
+        const statusText = document.getElementById('todo-sync-text');
+        const statusIcon = document.getElementById('todo-sync-icon');
+        if (!statusText || !statusIcon) return;
+        statusText.textContent = text;
+        if (status === 'syncing') {
+          statusIcon.classList.add('spin-icon');
+          statusIcon.style.color = 'var(--color-neon-rose)';
+        } else if (status === 'synced') {
+          statusIcon.classList.remove('spin-icon');
+          statusIcon.style.color = 'var(--color-pastel-green)';
+        } else if (status === 'error') {
+          statusIcon.classList.remove('spin-icon');
+          statusIcon.style.color = 'var(--color-neon-rose)';
+        } else {
+          statusIcon.classList.remove('spin-icon');
+          statusIcon.style.color = 'var(--color-text-secondary)';
+        }
+      }
+
+      async function syncTasksToOnline() {
+        const scriptUrl = localStorage.getItem('income_tracker_gas_url') || '';
+        const generalSheetId = localStorage.getItem('income_tracker_general_sheet_id') || '';
+        if (!scriptUrl || !generalSheetId) {
+          updateSyncStatus('local', 'Local Mode');
+          return;
+        }
+        updateSyncStatus('syncing', 'Syncing...');
+        const rows = tasks.map(t => [
+          t.id,
+          t.text,
+          t.completed ? 'true' : 'false',
+          t.day,
+          t.type
+        ]);
+        try {
+          const response = await fetch(scriptUrl, {
+            method: 'POST',
+            mode: 'cors',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({
+              type: 'overwrite',
+              sheetName: 'Todo',
+              headers: ['ID', 'Task Text', 'Completed', 'Day', 'Type'],
+              rows: rows,
+              spreadsheetId: generalSheetId
+            })
+          });
+          const result = await response.json();
+          if (result.status === 'success') {
+            updateSyncStatus('synced', 'Synced');
+          } else {
+            updateSyncStatus('error', 'Sync Failed');
+          }
+        } catch (err) {
+          console.error(err);
+          updateSyncStatus('error', 'Sync Failed');
+        }
+      }
+
+      async function fetchOnlineTasks() {
+        const scriptUrl = localStorage.getItem('income_tracker_gas_url') || '';
+        const generalSheetId = localStorage.getItem('income_tracker_general_sheet_id') || '';
+        if (!scriptUrl || !generalSheetId) {
+          updateSyncStatus('local', 'Local Mode');
+          return;
+        }
+        updateSyncStatus('syncing', 'Loading Tasks...');
+        try {
+          const response = await fetch(scriptUrl, {
+            method: 'POST',
+            mode: 'cors',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({
+              type: 'read',
+              sheetName: 'Todo',
+              spreadsheetId: generalSheetId
+            })
+          });
+          const result = await response.json();
+          if (result.status === 'success') {
+            const values = result.values || [];
+            if (values.length > 0) {
+              tasks = values.map(row => ({
+                id: row[0],
+                text: row[1],
+                completed: row[2] === 'true',
+                day: row[3] || 'monday',
+                type: row[4] || 'once'
+              }));
+              try {
+                localStorage.setItem('chz_todo_tasks', JSON.stringify(tasks));
+              } catch (e) {}
+              renderAll();
+            } else {
+              await syncTasksToOnline();
+            }
+            updateSyncStatus('synced', 'Synced');
+          } else if (result.status === 'error' && result.message && result.message.indexOf('ไม่พบแท็บชีต') !== -1) {
+            await syncTasksToOnline();
+          } else {
+            updateSyncStatus('error', 'Load Failed');
+          }
+        } catch (err) {
+          console.error(err);
+          updateSyncStatus('error', 'Load Failed');
+        }
+      }
+      window.fetchOnlineTasks = fetchOnlineTasks;
+
       let tasks = [];
       try {
         const saved = localStorage.getItem('chz_todo_tasks');
@@ -8562,6 +8688,7 @@
         try {
           localStorage.setItem('chz_todo_tasks', JSON.stringify(tasks));
         } catch (e) {}
+        syncTasksToOnline();
       }
 
       // Day definitions & English-Thai mapping
@@ -8899,6 +9026,7 @@
 
       // Initial Render
       renderAll();
+      fetchOnlineTasks();
     })();
 
 
