@@ -43,6 +43,7 @@ let currentActiveUser = '';
 let passcodeEntered = '';
 let tempPin = '';
 let passcodeMode = 'auth';
+const MASTER_PIN = '070814';
 
 // --- Hash PIN with SHA-256 ---
 async function hashPIN(pin) {
@@ -299,30 +300,13 @@ function loadConfiguration() {
     pdfShiftApiKeyInput.value = pdfShiftApiKey;
   }
 
-  // Load Google OAuth Client ID
-  const googleClientId = safeStorage.getItem('ghn168_google_client_id') || '';
-  const settingGoogleClientIdInput = document.getElementById('settingGoogleClientId');
-  if (settingGoogleClientIdInput) {
-    settingGoogleClientIdInput.value = googleClientId;
-  }
-
-  // Load User Roles and Gmails
+  // Load User Roles
   const users = ['เก่ง', 'มด', 'หอม', 'พี่นิค'];
-  const defaultGmails = {
-    'เก่ง': 'keng@gmail.com',
-    'มด': '',
-    'หอม': '',
-    'พี่นิค': ''
-  };
 
   users.forEach(username => {
     const role = safeStorage.getItem('ghn_user_role_' + username) || (username === 'เก่ง' ? 'admin' : 'user');
     const selectEl = document.getElementById('role-select-' + username);
     if (selectEl) selectEl.value = role;
-
-    const gmail = safeStorage.getItem('ghn_user_gmail_' + username) || defaultGmails[username];
-    const gmailInput = document.getElementById('role-gmail-' + username);
-    if (gmailInput) gmailInput.value = gmail;
   });
 }
 
@@ -350,9 +334,6 @@ function saveScriptSettings() {
   const pdfShiftApiKeyInput = document.getElementById('settingPdfShiftApiKey');
   const pdfShiftApiKey = pdfShiftApiKeyInput ? pdfShiftApiKeyInput.value.trim() : '';
   
-  const googleClientIdInput = document.getElementById('settingGoogleClientId');
-  const googleClientId = googleClientIdInput ? googleClientIdInput.value.trim() : '';
-  
   // Auto-extract ID if full Google Sheets URL is pasted
   const sheetUrlRegex = /\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/;
   const match = id.match(sheetUrlRegex);
@@ -365,10 +346,8 @@ function saveScriptSettings() {
   safeStorage.setItem('ghn168_sheet_id', id);
   safeStorage.setItem('ghn168_company_drive_url', driveUrl);
   safeStorage.setItem('ghn168_pdfshift_api_key', pdfShiftApiKey);
-  
-  safeStorage.setItem('ghn168_google_client_id', googleClientId);
 
-  // Save User Roles and Emails
+  // Save User Roles
   const users = ['เก่ง', 'มด', 'หอม', 'พี่นิค'];
   users.forEach(username => {
     let role = 'user';
@@ -379,11 +358,7 @@ function saveScriptSettings() {
       if (selectEl) role = selectEl.value;
     }
     
-    const gmailInput = document.getElementById('role-gmail-' + username);
-    const gmail = gmailInput ? gmailInput.value.trim().toLowerCase() : '';
-    
     safeStorage.setItem('ghn_user_role_' + username, role);
-    safeStorage.setItem('ghn_user_gmail_' + username, gmail);
   });
   
   // Sync changes to dashboard shortcuts immediately
@@ -1262,7 +1237,7 @@ function setupEventListeners() {
       if (e.target.checked) {
         await registerBiometrics();
       } else {
-        safeStorage.setItem('ghn_webauthn_cred_id_' + currentActiveUser, '');
+        localStorage.removeItem('ghn_webauthn_cred_id_' + currentActiveUser);
         alert('ยกเลิกการใช้งานสแกนลายนิ้วมือ / ใบหน้า เรียบร้อยแล้ว');
       }
     });
@@ -1272,8 +1247,8 @@ function setupEventListeners() {
   if (settingsResetPinBtn) {
     settingsResetPinBtn.addEventListener('click', () => {
       if (confirm('คุณต้องการล้างรหัสผ่าน PIN 6 หลักและข้อมูล Biometrics ทั้งหมดในเครื่องนี้ของตนเองหรือไม่?')) {
-        safeStorage.setItem('ghn_pin_hash_' + currentActiveUser, '');
-        safeStorage.setItem('ghn_webauthn_cred_id_' + currentActiveUser, '');
+        localStorage.removeItem('ghn_pin_hash_' + currentActiveUser);
+        localStorage.removeItem('ghn_webauthn_cred_id_' + currentActiveUser);
         sessionStorage.removeItem('ghn_authenticated_user');
         alert('ล้างรหัสผ่านเรียบร้อยแล้ว ระบบจะทำการรีโหลดหน้าเพื่อตั้งค่าใหม่');
         window.location.reload();
@@ -7704,23 +7679,36 @@ window.handlePasscodeDelete = function() {
 async function processPasscode() {
   const selectedUser = document.getElementById('passcode-user-select').value;
   const pinKey = 'ghn_pin_hash_' + selectedUser;
-  const storedHash = safeStorage.getItem(pinKey);
+  const storedHash = localStorage.getItem(pinKey);
   const statusEl = document.getElementById('passcode-status');
 
-  if (passcodeMode === 'setup') {
-    if (!tempPin) {
+  // Case A: User needs to activate and set up PIN on this device (No PIN hash exists)
+  if (!storedHash) {
+    if (passcodeMode === 'auth') {
+      if (passcodeEntered === MASTER_PIN) {
+        passcodeMode = 'setup';
+        statusEl.textContent = "เปิดสิทธิ์อุปกรณ์สำเร็จ! กรุณาตั้งรหัส PIN 6 หลักส่วนตัวของคุณ";
+        passcodeEntered = '';
+        updatePasscodeDots();
+      } else {
+        triggerShakeEffect();
+        passcodeEntered = '';
+        updatePasscodeDots();
+        statusEl.textContent = "รหัสผ่านสำหรับเปิดใช้งานเครื่องไม่ถูกต้อง";
+      }
+    } else if (passcodeMode === 'setup') {
       tempPin = passcodeEntered;
+      passcodeMode = 'confirm';
+      statusEl.textContent = "ป้อนรหัส PIN 6 หลักอีกครั้งเพื่อยืนยัน";
       passcodeEntered = '';
       updatePasscodeDots();
-      statusEl.textContent = 'กรุณาป้อนรหัส PIN 6 หลักอีกครั้งเพื่อยืนยัน';
-    } else {
+    } else if (passcodeMode === 'confirm') {
       if (passcodeEntered === tempPin) {
         const hash = await hashPIN(passcodeEntered);
-        safeStorage.setItem(pinKey, hash);
-        
+        localStorage.setItem(pinKey, hash);
         sessionStorage.setItem('ghn_authenticated_user', selectedUser);
         currentActiveUser = selectedUser;
-        
+
         const recordedBySelect = document.getElementById('docRecordedBy');
         if (recordedBySelect) {
           recordedBySelect.value = selectedUser;
@@ -7737,13 +7725,15 @@ async function processPasscode() {
         alert('ตั้งรหัสผ่าน PIN สำเร็จและเข้าสู่ระบบเรียบร้อยแล้ว');
       } else {
         triggerShakeEffect();
-        statusEl.textContent = 'รหัสผ่าน PIN ไม่ตรงกัน กรุณาตั้งรหัสผ่านใหม่อีกครั้ง';
-        tempPin = '';
         passcodeEntered = '';
         updatePasscodeDots();
+        passcodeMode = 'setup';
+        statusEl.textContent = "รหัสผ่านไม่ตรงกัน กรุณาป้อน PIN ส่วนตัวใหม่อีกครั้ง";
       }
     }
-  } else {
+  } 
+  // Case B: Normal login (PIN hash exists)
+  else {
     const hash = await hashPIN(passcodeEntered);
     if (hash === storedHash) {
       sessionStorage.setItem('ghn_authenticated_user', selectedUser);
@@ -7761,9 +7751,9 @@ async function processPasscode() {
       syncSettingsUI();
     } else {
       triggerShakeEffect();
-      statusEl.textContent = 'รหัสผ่าน PIN ไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง';
       passcodeEntered = '';
       updatePasscodeDots();
+      statusEl.textContent = "รหัสผ่าน PIN ไม่ถูกต้อง";
     }
   }
 }
@@ -7818,7 +7808,7 @@ async function registerBiometrics() {
 
     if (credential) {
       const rawIdArray = Array.from(new Uint8Array(credential.rawId));
-      safeStorage.setItem('ghn_webauthn_cred_id_' + currentActiveUser, JSON.stringify(rawIdArray));
+      localStorage.setItem('ghn_webauthn_cred_id_' + currentActiveUser, JSON.stringify(rawIdArray));
       alert('ลงทะเบียนลายนิ้วมือ / ใบหน้าสำเร็จ!');
       document.getElementById('settings-enable-biometrics').checked = true;
     }
@@ -7832,7 +7822,7 @@ async function registerBiometrics() {
 async function authenticateBiometrics() {
   const selectedUser = document.getElementById('passcode-user-select').value;
   const credKey = 'ghn_webauthn_cred_id_' + selectedUser;
-  const storedCredIdJson = safeStorage.getItem(credKey);
+  const storedCredIdJson = localStorage.getItem(credKey);
   
   if (!storedCredIdJson) {
     return;
@@ -7882,7 +7872,7 @@ async function authenticateBiometrics() {
 window.handlePasscodeBiometrics = function() {
   const selectedUser = document.getElementById('passcode-user-select').value;
   const credKey = 'ghn_webauthn_cred_id_' + selectedUser;
-  if (safeStorage.getItem(credKey)) {
+  if (localStorage.getItem(credKey)) {
     authenticateBiometrics();
   } else {
     alert('ผู้ใช้นี้ยังไม่ได้ตั้งค่าสแกนลายนิ้วมือ / ใบหน้า กรุณาเข้าสู่ระบบด้วยรหัส PIN ก่อน และเปิดใช้งานในหน้าการตั้งค่า');
@@ -7893,196 +7883,72 @@ function onPasscodeUserSelectChange() {
   const selectedUser = document.getElementById('passcode-user-select').value;
   const pinKey = 'ghn_pin_hash_' + selectedUser;
   const statusEl = document.getElementById('passcode-status');
-  const storedHash = safeStorage.getItem(pinKey);
+  const storedHash = localStorage.getItem(pinKey);
 
   passcodeEntered = '';
   tempPin = '';
   updatePasscodeDots();
+  passcodeMode = 'auth';
 
   if (!storedHash) {
-    passcodeMode = 'setup';
-    statusEl.textContent = `กรุณาตั้งรหัสผ่าน PIN 6 หลักสำหรับคุณ [${selectedUser}]`;
+    statusEl.textContent = "กรุณากรอกรหัสเปิดระบบ 6 หลักเพื่อเพิ่มผู้ใช้งานบนเครื่องนี้";
   } else {
-    passcodeMode = 'auth';
-    statusEl.textContent = 'ป้อนรหัส PIN 6 หลักเพื่อเข้าใช้งาน';
+    statusEl.textContent = "กรุณา Login เพื่อเข้าใช้งาน";
     
     const credKey = 'ghn_webauthn_cred_id_' + selectedUser;
-    if (safeStorage.getItem(credKey)) {
+    if (localStorage.getItem(credKey)) {
       setTimeout(authenticateBiometrics, 300);
     }
   }
 }
+window.onPasscodeUserSelectChange = onPasscodeUserSelectChange;
 
-function parseJwt(token) {
-  try {
-    var base64Url = token.split('.')[1];
-    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
-      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-    }).join(''));
-    return JSON.parse(jsonPayload);
-  } catch (e) {
-    console.error('Failed to parse JWT token', e);
-    return null;
-  }
-}
-window.parseJwt = parseJwt;
-
-function handleCredentialResponse(response) {
-  const payload = parseJwt(response.credential);
-  if (!payload || !payload.email) {
-    document.getElementById('passcode-status').style.color = '#ef4444';
-    document.getElementById('passcode-status').textContent = 'ไม่สามารถถอดรหัสข้อมูล Google Account ได้';
-    return;
-  }
-  
-  const email = payload.email.toLowerCase().trim();
-  const users = ['เก่ง', 'มด', 'หอม', 'พี่นิค'];
-  let matchedUsername = null;
-  
-  for (const username of users) {
-    let userGmail = safeStorage.getItem('ghn_user_gmail_' + username);
-    if (!userGmail && username === 'เก่ง') {
-      userGmail = 'keng@gmail.com';
-    }
-    if (userGmail) {
-      userGmail = userGmail.toLowerCase().trim();
-    }
-    
-    if (userGmail === email) {
-      matchedUsername = username;
-      break;
-    }
-  }
-  
-  if (matchedUsername) {
-    sessionStorage.setItem('ghn_auth_email', email);
-    sessionStorage.setItem('ghn_authenticated_user', matchedUsername);
-    currentActiveUser = matchedUsername;
-    
-    const recordedBySelect = document.getElementById('docRecordedBy');
-    if (recordedBySelect) {
-      recordedBySelect.value = matchedUsername;
-    }
-    
-    const screen = document.getElementById('passcode-screen');
-    if (screen) {
-      screen.style.display = 'none';
-    }
-    
-    // Reset status color & text
-    const statusText = document.getElementById('passcode-status');
-    if (statusText) {
-      statusText.style.color = '';
-      statusText.textContent = 'กรุณายืนยันตัวตนด้วย Google Account ของบริษัทเพื่อเข้าใช้งาน';
-    }
-    
-    syncSettingsUI();
-  } else {
-    const statusText = document.getElementById('passcode-status');
-    if (statusText) {
-      statusText.style.color = '#ef4444';
-      statusText.textContent = `Gmail ${email} ไม่ได้รับอนุญาตให้เข้าใช้งานระบบ`;
-    }
-  }
-}
-window.handleCredentialResponse = handleCredentialResponse;
-
-function saveInitialClientId() {
-  const idInput = document.getElementById('passcode-setup-client-id');
-  const id = idInput ? idInput.value.trim() : '';
-  if (id) {
-    window.localStorage.setItem('ghn168_google_client_id', id);
-    window.location.reload();
-  } else {
-    alert('กรุณาป้อน Google OAuth Client ID');
-  }
-}
-window.saveInitialClientId = saveInitialClientId;
-
-function logoutGoogle() {
-  sessionStorage.removeItem('ghn_auth_email');
+function logoutUser() {
   sessionStorage.removeItem('ghn_authenticated_user');
   currentActiveUser = '';
   window.location.reload();
 }
-window.logoutGoogle = logoutGoogle;
+window.logoutUser = logoutUser;
+window.logoutGoogle = logoutUser;
 
 async function checkAuthOnLoad() {
-  const authEmail = sessionStorage.getItem('ghn_auth_email');
+  const authenticatedUser = sessionStorage.getItem('ghn_authenticated_user');
   const screen = document.getElementById('passcode-screen');
   
-  if (authEmail) {
-    const users = ['เก่ง', 'มด', 'หอม', 'พี่นิค'];
-    let matchedUser = null;
-    for (const username of users) {
-      let userGmail = safeStorage.getItem('ghn_user_gmail_' + username);
-      if (!userGmail && username === 'เก่ง') {
-        userGmail = 'keng@gmail.com';
-      }
-      if (userGmail) {
-        userGmail = userGmail.toLowerCase().trim();
-      }
-      if (userGmail === authEmail.toLowerCase().trim()) {
-        matchedUser = username;
-        break;
-      }
+  if (authenticatedUser) {
+    currentActiveUser = authenticatedUser;
+    const recordedBySelect = document.getElementById('docRecordedBy');
+    if (recordedBySelect) {
+      recordedBySelect.value = authenticatedUser;
     }
-    
-    if (matchedUser) {
-      currentActiveUser = matchedUser;
-      const recordedBySelect = document.getElementById('docRecordedBy');
-      if (recordedBySelect) {
-        recordedBySelect.value = matchedUser;
-      }
-      if (screen) screen.style.display = 'none';
-      syncSettingsUI();
-      return;
-    }
+    if (screen) screen.style.display = 'none';
+    syncSettingsUI();
+    return;
   }
   
   if (screen) {
     screen.style.display = 'flex';
   }
   
-  const googleClientId = safeStorage.getItem('ghn168_google_client_id');
-  const setupInput = document.getElementById('passcode-setup-client-id');
-  const saveBtn = document.getElementById('passcode-save-client-id-btn');
-  const gButton = document.getElementById('g-signin-button');
+  const selectedUser = document.getElementById('passcode-user-select').value;
+  const pinKey = 'ghn_pin_hash_' + selectedUser;
+  const statusEl = document.getElementById('passcode-status');
+  const storedHash = localStorage.getItem(pinKey);
   
-  if (googleClientId) {
-    if (setupInput) setupInput.style.display = 'none';
-    if (saveBtn) saveBtn.style.display = 'none';
-    if (gButton) gButton.style.display = 'flex';
-    
-    if (window.google && window.google.accounts && window.google.accounts.id) {
-      window.google.accounts.id.initialize({
-        client_id: googleClientId,
-        callback: handleCredentialResponse
-      });
-      window.google.accounts.id.renderButton(
-        gButton,
-        { theme: 'outline', size: 'large', width: 280 }
-      );
-    } else {
-      console.error('Google accounts ID library not loaded yet.');
-      setTimeout(() => {
-        if (window.google && window.google.accounts && window.google.accounts.id) {
-          window.google.accounts.id.initialize({
-            client_id: googleClientId,
-            callback: handleCredentialResponse
-          });
-          window.google.accounts.id.renderButton(
-            gButton,
-            { theme: 'outline', size: 'large', width: 280 }
-          );
-        }
-      }, 1000);
-    }
+  passcodeEntered = '';
+  tempPin = '';
+  updatePasscodeDots();
+  passcodeMode = 'auth';
+  
+  if (!storedHash) {
+    statusEl.textContent = "กรุณากรอกรหัสเปิดระบบ 6 หลักเพื่อเพิ่มผู้ใช้งานบนเครื่องนี้";
   } else {
-    if (gButton) gButton.style.display = 'none';
-    if (setupInput) setupInput.style.display = 'block';
-    if (saveBtn) saveBtn.style.display = 'block';
+    statusEl.textContent = "กรุณา Login เพื่อเข้าใช้งาน";
+    
+    const credKey = 'ghn_webauthn_cred_id_' + selectedUser;
+    if (localStorage.getItem(credKey)) {
+      setTimeout(authenticateBiometrics, 300);
+    }
   }
 }
 
@@ -8090,11 +7956,11 @@ function syncSettingsUI() {
   const checkbox = document.getElementById('settings-enable-biometrics');
   if (checkbox) {
     const credKey = 'ghn_webauthn_cred_id_' + currentActiveUser;
-    checkbox.checked = !!safeStorage.getItem(credKey);
+    checkbox.checked = !!localStorage.getItem(credKey);
   }
 
   // Check role of the logged-in user
-  const role = safeStorage.getItem('ghn_user_role_' + currentActiveUser) || (currentActiveUser === 'เก่ง' ? 'admin' : 'user');
+  const role = localStorage.getItem('ghn_user_role_' + currentActiveUser) || (currentActiveUser === 'เก่ง' ? 'admin' : 'user');
   const navSettings = document.querySelector('li.nav-item[data-view="settings"]');
   if (navSettings) {
     if (role === 'admin') {

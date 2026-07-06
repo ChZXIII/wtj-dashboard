@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GHN168 | Accounting & Document Hub</title>
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
+
   <style id="main-styles">
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Prompt:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap');
 
@@ -1986,11 +1986,58 @@ textarea.form-control {
   <div id="passcode-screen" style="display: none;">
     <div class="passcode-container">
       <div class="passcode-logo">GHN168</div>
-      <div style="font-size: 13px; color: var(--text-secondary); margin-bottom: 24px; text-align: center;">ระบบเชื่อมต่อข้อมูลบัญชีและการเงินระดับองค์กร</div>
-      <p id="passcode-status" class="passcode-status" style="font-size: 13px; line-height: 1.5; color: var(--text-primary); margin-bottom: 16px;">กรุณายืนยันตัวตนด้วย Google Account ของบริษัทเพื่อเข้าใช้งาน</p>
-      <div id="g-signin-button" style="margin-top: 24px; display: flex; justify-content: center;"></div>
-      <input type="text" id="passcode-setup-client-id" class="form-control" placeholder="ป้อน Google OAuth Client ID ที่นี่เพื่อเริ่มระบบ" style="max-width: 320px; margin: 16px auto; text-align: center; display: none;">
-      <button type="button" id="passcode-save-client-id-btn" class="btn-primary" style="margin: 8px auto; display: none;" onclick="saveInitialClientId()">บันทึกและเริ่มระบบ</button>
+      <p id="passcode-status" style="font-family:'Prompt',sans-serif; font-size:13px; color:var(--text-secondary); margin-bottom:20px;">กรุณา Login เพื่อเข้าใช้งาน</p>
+      
+      <!-- User Dropdown selector -->
+      <select id="passcode-user-select" class="form-control" style="font-family:'Prompt',sans-serif; text-align:center; max-width:240px; margin:0 auto 20px auto; border-radius:10px; background:rgba(255,255,255,0.08); color:#ffffff; border:1px solid rgba(255,255,255,0.15); height:auto; padding:6px 12px;" onchange="onPasscodeUserSelectChange()">
+        <option value="เก่ง" style="background:#1a1c1e; color:#ffffff;">เก่ง</option>
+        <option value="มด" style="background:#1a1c1e; color:#ffffff;">มด</option>
+        <option value="หอม" style="background:#1a1c1e; color:#ffffff;">หอม</option>
+        <option value="พี่นิค" style="background:#1a1c1e; color:#ffffff;">พี่นิค</option>
+      </select>
+      
+      <!-- Dots Container (6 dots) -->
+      <div class="passcode-dots-wrapper" id="passcode-dots-container">
+        <div class="passcode-dot"></div>
+        <div class="passcode-dot"></div>
+        <div class="passcode-dot"></div>
+        <div class="passcode-dot"></div>
+        <div class="passcode-dot"></div>
+        <div class="passcode-dot"></div>
+      </div>
+      
+      <!-- Keypad Grid -->
+      <div class="keypad-grid">
+        <button type="button" class="keypad-btn" onclick="handlePasscodeInput('1')">1</button>
+        <button type="button" class="keypad-btn" onclick="handlePasscodeInput('2')">2</button>
+        <button type="button" class="keypad-btn" onclick="handlePasscodeInput('3')">3</button>
+        <button type="button" class="keypad-btn" onclick="handlePasscodeInput('4')">4</button>
+        <button type="button" class="keypad-btn" onclick="handlePasscodeInput('5')">5</button>
+        <button type="button" class="keypad-btn" onclick="handlePasscodeInput('6')">6</button>
+        <button type="button" class="keypad-btn" onclick="handlePasscodeInput('7')">7</button>
+        <button type="button" class="keypad-btn" onclick="handlePasscodeInput('8')">8</button>
+        <button type="button" class="keypad-btn" onclick="handlePasscodeInput('9')">9</button>
+        
+        <!-- Biometrics Button (Left bottom) -->
+        <button type="button" class="keypad-btn key-utility" id="passcode-biometrics-btn" onclick="handlePasscodeBiometrics()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 28px; height: 28px; color: #ffffff;">
+            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
+            <path d="M8 12a4 4 0 0 1 8 0v1a3 3 0 0 0 6 0v-1a9 9 0 0 0-18 0" />
+            <path d="M10 15h4M12 15v3" />
+          </svg>
+        </button>
+        
+        <button type="button" class="keypad-btn" onclick="handlePasscodeInput('0')">0</button>
+        
+        <!-- Backspace Button (Right bottom) -->
+        <button type="button" class="keypad-btn key-utility" onclick="handlePasscodeDelete()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 28px; height: 28px; color: #ffffff;">
+            <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z" />
+            <line x1="18" y1="9" x2="12" y2="15" />
+            <line x1="12" y1="9" x2="18" y2="15" />
+          </svg>
+        </button>
+      </div>
     </div>
   </div>
   <div class="app-container">
@@ -3660,48 +3707,39 @@ textarea.form-control {
             <input type="text" id="settingPdfShiftApiKey" class="form-control mono" placeholder="เช่น sk_a1b2c3d4..." style="font-size: 12px; padding: 6px 10px; height: auto;">
           </div>
 
-          <div class="form-group" style="margin-bottom: 12px;">
-            <label for="settingGoogleClientId" style="font-size: 11px; font-weight: 700; display: block; margin-bottom: 4px;">Google OAuth Client ID</label>
-            <input type="text" id="settingGoogleClientId" class="form-control mono" placeholder="เช่น xxxxxxxxxxxx-xxxxxxxxxxxx.apps.googleusercontent.com" style="font-size: 12px; padding: 6px 10px; height: auto;">
-          </div>
-
           <div style="border-top: 1px dashed var(--border-color); margin-top: 16px; padding-top: 16px; margin-bottom: 16px;">
-            <h5 style="margin: 0 0 8px 0; font-size: 11px; font-weight: 700; color: var(--text-primary);">กำหนดสิทธิ์และ Gmail ของผู้ใช้งาน (User Roles & Emails):</h5>
+            <h5 style="margin: 0 0 8px 0; font-size: 11px; font-weight: 700; color: var(--text-primary);">กำหนดสิทธิ์ของผู้ใช้งาน (User Roles):</h5>
             <div style="display: flex; flex-direction: column; gap: 12px;">
               <!-- Keng -->
-              <div style="display: grid; grid-template-columns: 1fr 1.2fr 1.8fr; gap: 8px; align-items: center;">
+              <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 8px; align-items: center;">
                 <span style="font-size: 12px; font-weight: 600;">เก่ง</span>
                 <select id="role-select-เก่ง" class="form-control" style="font-size: 11px; height: auto; padding: 4px 8px;" disabled>
                   <option value="admin" selected>Admin</option>
                 </select>
-                <input type="email" id="role-gmail-เก่ง" class="form-control" placeholder="keng@gmail.com" style="font-size: 11px; padding: 4px 8px; height: auto;">
               </div>
               <!-- Mod -->
-              <div style="display: grid; grid-template-columns: 1fr 1.2fr 1.8fr; gap: 8px; align-items: center;">
+              <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 8px; align-items: center;">
                 <span style="font-size: 12px; font-weight: 600;">มด</span>
                 <select id="role-select-มด" class="form-control" style="font-size: 11px; height: auto; padding: 4px 8px;">
                   <option value="admin">Admin</option>
                   <option value="user" selected>User</option>
                 </select>
-                <input type="email" id="role-gmail-มด" class="form-control" placeholder="mod@gmail.com" style="font-size: 11px; padding: 4px 8px; height: auto;">
               </div>
               <!-- Hom -->
-              <div style="display: grid; grid-template-columns: 1fr 1.2fr 1.8fr; gap: 8px; align-items: center;">
+              <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 8px; align-items: center;">
                 <span style="font-size: 12px; font-weight: 600;">หอม</span>
                 <select id="role-select-หอม" class="form-control" style="font-size: 11px; height: auto; padding: 4px 8px;">
                   <option value="admin">Admin</option>
                   <option value="user" selected>User</option>
                 </select>
-                <input type="email" id="role-gmail-หอม" class="form-control" placeholder="hom@gmail.com" style="font-size: 11px; padding: 4px 8px; height: auto;">
               </div>
               <!-- Nick -->
-              <div style="display: grid; grid-template-columns: 1fr 1.2fr 1.8fr; gap: 8px; align-items: center;">
+              <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 8px; align-items: center;">
                 <span style="font-size: 12px; font-weight: 600;">พี่นิค</span>
                 <select id="role-select-พี่นิค" class="form-control" style="font-size: 11px; height: auto; padding: 4px 8px;">
                   <option value="admin">Admin</option>
                   <option value="user" selected>User</option>
                 </select>
-                <input type="email" id="role-gmail-พี่นิค" class="form-control" placeholder="nick@gmail.com" style="font-size: 11px; padding: 4px 8px; height: auto;">
               </div>
             </div>
           </div>
