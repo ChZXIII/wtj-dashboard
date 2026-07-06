@@ -1803,6 +1803,174 @@ textarea.form-control {
   }
 }
 
+/* --- Passcode Lock Screen Overlay --- */
+#passcode-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter', 'Prompt', sans-serif;
+  color: #ffffff;
+}
+
+.passcode-container {
+  background: #181a1d;
+  border: 4px solid #ffffff;
+  box-shadow: 6px 6px 0px #ffffff;
+  border-radius: 12px;
+  padding: 30px;
+  width: 100%;
+  max-width: 380px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.passcode-logo {
+  font-family: 'Outfit', 'Prompt', sans-serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #ffffff;
+  margin-bottom: 20px;
+}
+
+.passcode-status {
+  font-size: 0.95rem;
+  color: #9ea3a9;
+  margin-bottom: 25px;
+  min-height: 2.4em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#passcode-user-select {
+  width: 100%;
+  padding: 12px;
+  background: #202327;
+  border: 2px solid #ffffff;
+  color: #ffffff;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 25px;
+  outline: none;
+  cursor: pointer;
+}
+
+#passcode-user-select option {
+  background: #181a1d;
+  color: #ffffff;
+}
+
+.passcode-dots-wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 30px;
+}
+
+.passcode-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+  background: transparent;
+  transition: all 0.15s ease-in-out;
+}
+
+.passcode-dot.active {
+  background: #ff4500;
+  border-color: #ff4500;
+  box-shadow: 0 0 8px rgba(255, 69, 0, 0.6);
+}
+
+.shake-dots {
+  animation: shakeDots 0.4s ease;
+}
+
+@keyframes shakeDots {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-10px); }
+  40%, 80% { transform: translateX(10px); }
+}
+
+.keypad-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  justify-items: center;
+  margin-top: 10px;
+}
+
+.keypad-btn {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+  background: #202327;
+  color: #ffffff;
+  font-family: 'Outfit', 'Prompt', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.keypad-btn:hover {
+  background: #ff4500;
+  border-color: #ff4500;
+  transform: scale(1.05);
+}
+
+.keypad-btn:active {
+  background: #ff4500;
+  border-color: #ff4500;
+  transform: scale(0.95);
+}
+
+.keypad-btn.key-utility {
+  background: transparent;
+  border-color: transparent;
+  font-size: 1.2rem;
+}
+
+.keypad-btn.key-utility:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: transparent;
+  transform: scale(1.05);
+}
+
+.keypad-btn.key-utility svg {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+}
+
+@media screen and (max-width: 480px) {
+  .passcode-container {
+    max-width: 90%;
+    padding: 20px;
+  }
+  .keypad-btn {
+    width: 60px;
+    height: 60px;
+    font-size: 1.4rem;
+  }
+}
+
   </style>
   <link rel="manifest" href="manifest.json?v=139">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1812,8 +1980,67 @@ textarea.form-control {
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="GHN168">
   <link rel="apple-touch-icon" href="assets/ghn_app_icon.png">
-</head>
 <body class="dark-mode">
+  <!-- Passcode Overlay Screen -->
+  <div id="passcode-screen" style="display: none;">
+    <div class="passcode-container">
+      <div class="passcode-logo">GHN168</div>
+      
+      <!-- User select dropdown -->
+      <select id="passcode-user-select" class="form-control">
+        <option value="เก่ง">เก่ง</option>
+        <option value="มด">มด</option>
+        <option value="หอม">หอม</option>
+        <option value="พี่นิค">พี่นิค</option>
+      </select>
+
+      <!-- Status label -->
+      <div id="passcode-status" class="passcode-status">ป้อนรหัส PIN 6 หลักเพื่อเข้าใช้งาน</div>
+
+      <!-- Passcode dots (6 dots) -->
+      <div id="passcode-dots-container" class="passcode-dots-wrapper">
+        <div class="passcode-dot"></div>
+        <div class="passcode-dot"></div>
+        <div class="passcode-dot"></div>
+        <div class="passcode-dot"></div>
+        <div class="passcode-dot"></div>
+        <div class="passcode-dot"></div>
+      </div>
+
+      <!-- Keypad Grid -->
+      <div class="keypad-grid">
+        <button class="keypad-btn" onclick="handlePasscodeInput('1')">1</button>
+        <button class="keypad-btn" onclick="handlePasscodeInput('2')">2</button>
+        <button class="keypad-btn" onclick="handlePasscodeInput('3')">3</button>
+        
+        <button class="keypad-btn" onclick="handlePasscodeInput('4')">4</button>
+        <button class="keypad-btn" onclick="handlePasscodeInput('5')">5</button>
+        <button class="keypad-btn" onclick="handlePasscodeInput('6')">6</button>
+        
+        <button class="keypad-btn" onclick="handlePasscodeInput('7')">7</button>
+        <button class="keypad-btn" onclick="handlePasscodeInput('8')">8</button>
+        <button class="keypad-btn" onclick="handlePasscodeInput('9')">9</button>
+        
+        <!-- Biometrics trigger -->
+        <button id="passcode-biometrics-btn" class="keypad-btn key-utility" onclick="handlePasscodeBiometrics()">
+          <!-- Fingerprint SVG icon -->
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path fill="currentColor" d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M15.6,8.4C16,8.9 16.2,9.6 16.2,10.2C16.2,10.6 15.9,11 15.5,11C15.1,11 14.8,10.7 14.8,10.3C14.8,9.9 14.6,9.5 14.3,9.2C13.7,8.6 12.8,8.2 11.8,8.2C10.8,8.2 9.9,8.6 9.3,9.2C8.9,9.6 8.7,10.1 8.7,10.7C8.7,12.3 10,13 10.9,13.6C11.5,14 12.3,14.5 12.9,15.2C13.5,15.9 13.8,16.8 13.8,17.8C13.8,18.2 13.5,18.5 13.1,18.5C12.7,18.5 12.4,18.2 12.4,17.8C12.4,17.2 12.2,16.6 11.8,16.1C11.3,15.5 10.7,15.1 9.9,14.6C8.8,13.9 7.3,12.9 7.3,10.7C7.3,9.6 7.7,8.7 8.3,8C9.2,7.1 10.5,6.6 11.9,6.6C13.3,6.6 14.6,7.1 15.6,8.4M12,10.2C12.4,10.2 12.7,10.5 12.7,10.9C12.7,11.3 12.4,11.6 12,11.6C11.6,11.6 11.3,11.3 11.3,10.9C11.3,10.5 11.6,10.2 12,10.2M12.5,15.2V15.3C12,15.3 11.5,14.9 11.3,14.4C10.6,13.9 10,13.4 9.9,12.3C9.9,11.9 10.2,11.6 10.6,11.6C11,11.6 11.3,11.9 11.3,12.3C11.4,12.9 11.7,13.2 12.3,13.6C12.9,14.1 13.5,14.6 13.7,15.2H12.5M15.1,12.3C15.4,12.7 15.6,13.1 15.6,13.6C15.6,14.1 15.3,14.7 14.8,15.2C14.5,15.5 14,15.5 13.7,15.2C13.4,14.9 13.4,14.4 13.7,14.1C14,13.8 14.2,13.4 14.2,13.1C14.2,12.8 14,12.5 13.7,12.3C13.4,12.1 13.3,11.6 13.5,11.3C13.8,11 14.3,10.9 14.6,11.1C15,11.4 15.2,11.8 15.3,12.3H15.1Z"/>
+          </svg>
+        </button>
+        
+        <button class="keypad-btn" onclick="handlePasscodeInput('0')">0</button>
+        
+        <!-- Backspace -->
+        <button class="keypad-btn key-utility" onclick="handlePasscodeDelete()">
+          <!-- Delete SVG icon -->
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path fill="currentColor" d="M22,3H7C6.31,3 5.77,3.35 5.41,3.88L0,12L5.41,20.11C5.77,20.64 6.31,21 7,21H22A2,2 0 0,0 24,19V5A2,2 0 0,0 22,3M19,15.59L17.59,17L14,13.41L10.41,17L9,15.59L12.59,12L9,8.41L10.41,7L14,10.59L17.59,7L19,8.41L15.41,12L19,15.59Z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
   <div class="app-container">
     
     <!-- Sidebar Navigation -->
@@ -1962,7 +2189,7 @@ textarea.form-control {
           </div>
         </div>
         <div style="font-size: 10px; opacity: 0.5; margin-top: 12px; text-align: center; font-family: monospace; letter-spacing: 0.5px;">
-          Version V1.39
+          Version V1.40
         </div>
       </div>
     </aside>
@@ -3334,6 +3561,27 @@ textarea.form-control {
                 </button>
               </div>
               <input type="file" id="importBackupFile" style="display: none;" accept=".json">
+            </div>
+
+            <!-- Security Settings Card -->
+            <div class="card">
+              <div class="card-title">ความปลอดภัย (Security Settings)</div>
+              <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.4;">
+                ตั้งค่าระบบปลดล็อกด้วยลายนิ้วมือ ใบหน้า หรือระบบความปลอดภัยของอุปกรณ์นี้สำหรับบัญชีของคุณ
+              </p>
+              
+              <div class="form-group" style="margin-bottom: 16px;">
+                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-weight: normal;">
+                  <input type="checkbox" id="settings-enable-biometrics">
+                  เปิดใช้งานการเข้าสู่ระบบด้วยลายนิ้วมือ / ใบหน้า (Biometrics)
+                </label>
+              </div>
+
+              <div>
+                <button type="button" id="settings-reset-pin-btn" class="btn-secondary" style="width: 100%; justify-content: center; color: #ef4444; border-color: #ef4444;">
+                  ล้างและตั้งรหัสผ่าน PIN 6 หลักใหม่ของฉัน
+                </button>
+              </div>
             </div>
 
           </div>
