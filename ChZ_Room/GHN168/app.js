@@ -299,20 +299,31 @@ function loadConfiguration() {
     pdfShiftApiKeyInput.value = pdfShiftApiKey;
   }
 
-  // Load User Roles
-  const roleKeng = safeStorage.getItem('ghn_user_role_เก่ง') || 'admin';
-  const roleMod = safeStorage.getItem('ghn_user_role_มด') || 'user';
-  const roleHom = safeStorage.getItem('ghn_user_role_หอม') || 'user';
-  const roleNick = safeStorage.getItem('ghn_user_role_พี่นิค') || 'user';
+  // Load Google OAuth Client ID
+  const googleClientId = safeStorage.getItem('ghn168_google_client_id') || '';
+  const settingGoogleClientIdInput = document.getElementById('settingGoogleClientId');
+  if (settingGoogleClientIdInput) {
+    settingGoogleClientIdInput.value = googleClientId;
+  }
 
-  const selectKeng = document.getElementById('role-select-เก่ง');
-  if (selectKeng) selectKeng.value = roleKeng;
-  const selectMod = document.getElementById('role-select-มด');
-  if (selectMod) selectMod.value = roleMod;
-  const selectHom = document.getElementById('role-select-หอม');
-  if (selectHom) selectHom.value = roleHom;
-  const selectNick = document.getElementById('role-select-พี่นิค');
-  if (selectNick) selectNick.value = roleNick;
+  // Load User Roles and Gmails
+  const users = ['เก่ง', 'มด', 'หอม', 'พี่นิค'];
+  const defaultGmails = {
+    'เก่ง': 'keng@gmail.com',
+    'มด': '',
+    'หอม': '',
+    'พี่นิค': ''
+  };
+
+  users.forEach(username => {
+    const role = safeStorage.getItem('ghn_user_role_' + username) || (username === 'เก่ง' ? 'admin' : 'user');
+    const selectEl = document.getElementById('role-select-' + username);
+    if (selectEl) selectEl.value = role;
+
+    const gmail = safeStorage.getItem('ghn_user_gmail_' + username) || defaultGmails[username];
+    const gmailInput = document.getElementById('role-gmail-' + username);
+    if (gmailInput) gmailInput.value = gmail;
+  });
 }
 
 function saveSellerConfig() {
@@ -339,6 +350,9 @@ function saveScriptSettings() {
   const pdfShiftApiKeyInput = document.getElementById('settingPdfShiftApiKey');
   const pdfShiftApiKey = pdfShiftApiKeyInput ? pdfShiftApiKeyInput.value.trim() : '';
   
+  const googleClientIdInput = document.getElementById('settingGoogleClientId');
+  const googleClientId = googleClientIdInput ? googleClientIdInput.value.trim() : '';
+  
   // Auto-extract ID if full Google Sheets URL is pasted
   const sheetUrlRegex = /\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/;
   const match = id.match(sheetUrlRegex);
@@ -351,26 +365,32 @@ function saveScriptSettings() {
   safeStorage.setItem('ghn168_sheet_id', id);
   safeStorage.setItem('ghn168_company_drive_url', driveUrl);
   safeStorage.setItem('ghn168_pdfshift_api_key', pdfShiftApiKey);
+  
+  safeStorage.setItem('ghn168_google_client_id', googleClientId);
 
-  // Save User Roles
-  safeStorage.setItem('ghn_user_role_เก่ง', 'admin');
-  const roleMod = document.getElementById('role-select-มด') ? document.getElementById('role-select-มด').value : 'user';
-  const roleHom = document.getElementById('role-select-หอม') ? document.getElementById('role-select-หอม').value : 'user';
-  const roleNick = document.getElementById('role-select-พี่นิค') ? document.getElementById('role-select-พี่นิค').value : 'user';
-  safeStorage.setItem('ghn_user_role_มด', roleMod);
-  safeStorage.setItem('ghn_user_role_หอม', roleHom);
-  safeStorage.setItem('ghn_user_role_พี่นิค', roleNick);
+  // Save User Roles and Emails
+  const users = ['เก่ง', 'มด', 'หอม', 'พี่นิค'];
+  users.forEach(username => {
+    let role = 'user';
+    if (username === 'เก่ง') {
+      role = 'admin';
+    } else {
+      const selectEl = document.getElementById('role-select-' + username);
+      if (selectEl) role = selectEl.value;
+    }
+    
+    const gmailInput = document.getElementById('role-gmail-' + username);
+    const gmail = gmailInput ? gmailInput.value.trim().toLowerCase() : '';
+    
+    safeStorage.setItem('ghn_user_role_' + username, role);
+    safeStorage.setItem('ghn_user_gmail_' + username, gmail);
+  });
   
   // Sync changes to dashboard shortcuts immediately
   renderDashboardDocHubShortcuts();
   
-  // Evaluate the active user's role
-  const activeUserRole = safeStorage.getItem('ghn_user_role_' + currentActiveUser) || (currentActiveUser === 'เก่ง' ? 'admin' : 'user');
-  if (activeUserRole === 'user') {
-    const navSettings = document.querySelector('li.nav-item[data-view="settings"]');
-    if (navSettings) navSettings.style.display = 'none';
-    switchView('dashboard');
-  }
+  // Sync settings UI (roles visibility, redirect if user)
+  syncSettingsUI();
   
   alert('บันทึกการเชื่อมต่อเรียบร้อยแล้ว');
 }
@@ -7893,30 +7913,176 @@ function onPasscodeUserSelectChange() {
   }
 }
 
-async function checkAuthOnLoad() {
-  const authUser = sessionStorage.getItem('ghn_authenticated_user');
-  const screen = document.getElementById('passcode-screen');
+function parseJwt(token) {
+  try {
+    var base64Url = token.split('.')[1];
+    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+    return JSON.parse(jsonPayload);
+  } catch (e) {
+    console.error('Failed to parse JWT token', e);
+    return null;
+  }
+}
+window.parseJwt = parseJwt;
+
+function handleCredentialResponse(response) {
+  const payload = parseJwt(response.credential);
+  if (!payload || !payload.email) {
+    document.getElementById('passcode-status').style.color = '#ef4444';
+    document.getElementById('passcode-status').textContent = 'ไม่สามารถถอดรหัสข้อมูล Google Account ได้';
+    return;
+  }
   
-  if (authUser) {
-    currentActiveUser = authUser;
+  const email = payload.email.toLowerCase().trim();
+  const users = ['เก่ง', 'มด', 'หอม', 'พี่นิค'];
+  let matchedUsername = null;
+  
+  for (const username of users) {
+    let userGmail = safeStorage.getItem('ghn_user_gmail_' + username);
+    if (!userGmail && username === 'เก่ง') {
+      userGmail = 'keng@gmail.com';
+    }
+    if (userGmail) {
+      userGmail = userGmail.toLowerCase().trim();
+    }
+    
+    if (userGmail === email) {
+      matchedUsername = username;
+      break;
+    }
+  }
+  
+  if (matchedUsername) {
+    sessionStorage.setItem('ghn_auth_email', email);
+    sessionStorage.setItem('ghn_authenticated_user', matchedUsername);
+    currentActiveUser = matchedUsername;
     
     const recordedBySelect = document.getElementById('docRecordedBy');
     if (recordedBySelect) {
-      recordedBySelect.value = authUser;
+      recordedBySelect.value = matchedUsername;
     }
     
-    if (screen) screen.style.display = 'none';
+    const screen = document.getElementById('passcode-screen');
+    if (screen) {
+      screen.style.display = 'none';
+    }
+    
+    // Reset status color & text
+    const statusText = document.getElementById('passcode-status');
+    if (statusText) {
+      statusText.style.color = '';
+      statusText.textContent = 'กรุณายืนยันตัวตนด้วย Google Account ของบริษัทเพื่อเข้าใช้งาน';
+    }
+    
     syncSettingsUI();
   } else {
-    if (screen) {
-      screen.style.display = 'flex';
-      
-      const selectEl = document.getElementById('passcode-user-select');
-      if (selectEl) {
-        selectEl.addEventListener('change', onPasscodeUserSelectChange);
-        onPasscodeUserSelectChange();
+    const statusText = document.getElementById('passcode-status');
+    if (statusText) {
+      statusText.style.color = '#ef4444';
+      statusText.textContent = `Gmail ${email} ไม่ได้รับอนุญาตให้เข้าใช้งานระบบ`;
+    }
+  }
+}
+window.handleCredentialResponse = handleCredentialResponse;
+
+function saveInitialClientId() {
+  const idInput = document.getElementById('passcode-setup-client-id');
+  const id = idInput ? idInput.value.trim() : '';
+  if (id) {
+    window.localStorage.setItem('ghn168_google_client_id', id);
+    window.location.reload();
+  } else {
+    alert('กรุณาป้อน Google OAuth Client ID');
+  }
+}
+window.saveInitialClientId = saveInitialClientId;
+
+function logoutGoogle() {
+  sessionStorage.removeItem('ghn_auth_email');
+  sessionStorage.removeItem('ghn_authenticated_user');
+  currentActiveUser = '';
+  window.location.reload();
+}
+window.logoutGoogle = logoutGoogle;
+
+async function checkAuthOnLoad() {
+  const authEmail = sessionStorage.getItem('ghn_auth_email');
+  const screen = document.getElementById('passcode-screen');
+  
+  if (authEmail) {
+    const users = ['เก่ง', 'มด', 'หอม', 'พี่นิค'];
+    let matchedUser = null;
+    for (const username of users) {
+      let userGmail = safeStorage.getItem('ghn_user_gmail_' + username);
+      if (!userGmail && username === 'เก่ง') {
+        userGmail = 'keng@gmail.com';
+      }
+      if (userGmail) {
+        userGmail = userGmail.toLowerCase().trim();
+      }
+      if (userGmail === authEmail.toLowerCase().trim()) {
+        matchedUser = username;
+        break;
       }
     }
+    
+    if (matchedUser) {
+      currentActiveUser = matchedUser;
+      const recordedBySelect = document.getElementById('docRecordedBy');
+      if (recordedBySelect) {
+        recordedBySelect.value = matchedUser;
+      }
+      if (screen) screen.style.display = 'none';
+      syncSettingsUI();
+      return;
+    }
+  }
+  
+  if (screen) {
+    screen.style.display = 'flex';
+  }
+  
+  const googleClientId = safeStorage.getItem('ghn168_google_client_id');
+  const setupInput = document.getElementById('passcode-setup-client-id');
+  const saveBtn = document.getElementById('passcode-save-client-id-btn');
+  const gButton = document.getElementById('g-signin-button');
+  
+  if (googleClientId) {
+    if (setupInput) setupInput.style.display = 'none';
+    if (saveBtn) saveBtn.style.display = 'none';
+    if (gButton) gButton.style.display = 'flex';
+    
+    if (window.google && window.google.accounts && window.google.accounts.id) {
+      window.google.accounts.id.initialize({
+        client_id: googleClientId,
+        callback: handleCredentialResponse
+      });
+      window.google.accounts.id.renderButton(
+        gButton,
+        { theme: 'outline', size: 'large', width: 280 }
+      );
+    } else {
+      console.error('Google accounts ID library not loaded yet.');
+      setTimeout(() => {
+        if (window.google && window.google.accounts && window.google.accounts.id) {
+          window.google.accounts.id.initialize({
+            client_id: googleClientId,
+            callback: handleCredentialResponse
+          });
+          window.google.accounts.id.renderButton(
+            gButton,
+            { theme: 'outline', size: 'large', width: 280 }
+          );
+        }
+      }, 1000);
+    }
+  } else {
+    if (gButton) gButton.style.display = 'none';
+    if (setupInput) setupInput.style.display = 'block';
+    if (saveBtn) saveBtn.style.display = 'block';
   }
 }
 
