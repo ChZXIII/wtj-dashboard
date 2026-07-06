@@ -2631,9 +2631,177 @@
         max-height: min(280px, 35vh) !important;
       }
     }
+
+    /* --- Task: Passcode Screen Styles --- */
+    #passcode-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      z-index: 999999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-family: var(--font-body);
+    }
+    .passcode-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 320px;
+      width: 100%;
+      padding: 24px;
+      text-align: center;
+      box-sizing: border-box;
+    }
+    .passcode-logo-text {
+      font-family: 'Drunken Hour', var(--font-heading);
+      font-size: 38px;
+      color: #ffffff;
+      margin-bottom: 8px;
+      letter-spacing: 1px;
+    }
+    #passcode-status-msg {
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.6);
+      margin-bottom: 32px;
+      height: 20px;
+      font-family: var(--font-body);
+    }
+    .passcode-dots {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 48px;
+    }
+    .passcode-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.35);
+      background: transparent;
+      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-sizing: border-box;
+    }
+    .passcode-dot.active {
+      background: var(--color-neon-rose);
+      border-color: var(--color-neon-rose);
+      box-shadow: 0 0 12px var(--color-neon-rose);
+      transform: scale(1.15);
+    }
+    .keypad {
+      display: grid;
+      grid-template-columns: repeat(3, 72px);
+      gap: 20px 24px;
+      justify-content: center;
+      width: 100%;
+    }
+    .keypad-btn {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.07);
+      color: #ffffff;
+      font-size: 26px;
+      font-weight: 500;
+      font-family: var(--font-heading);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.2s ease, transform 0.1s ease, border-color 0.2s ease;
+      outline: none;
+      box-sizing: border-box;
+    }
+    .keypad-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+    .keypad-btn:active {
+      background: rgba(255, 255, 255, 0.35);
+      transform: scale(0.92);
+    }
+    .keypad-btn.action-btn {
+      font-size: 14px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.85);
+      background: transparent;
+      border: none;
+    }
+    .keypad-btn.action-btn:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .keypad-btn.action-btn:active {
+      background: rgba(255, 255, 255, 0.15);
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-8px); }
+      40%, 80% { transform: translateX(8px); }
+    }
+    .shake-dots {
+      animation: shake 0.3s ease-in-out;
+    }
   </style>
 </head>
 <body>
+  <!-- Passcode Screen Overlay -->
+  <div id="passcode-screen" style="display: none;">
+    <div class="passcode-container">
+      <div class="passcode-header">
+        <div class="passcode-logo-text">CHZ</div>
+        <div id="passcode-status-msg">กรุณาป้อนรหัสผ่านเพื่อเข้าใช้งาน</div>
+      </div>
+      <div id="passcode-dots-wrapper" class="passcode-dots">
+        <div class="passcode-dot"></div>
+        <div class="passcode-dot"></div>
+        <div class="passcode-dot"></div>
+        <div class="passcode-dot"></div>
+        <div class="passcode-dot"></div>
+        <div class="passcode-dot"></div>
+      </div>
+      <div class="keypad">
+        <button type="button" class="keypad-btn num-key" data-num="1">1</button>
+        <button type="button" class="keypad-btn num-key" data-num="2">2</button>
+        <button type="button" class="keypad-btn num-key" data-num="3">3</button>
+        <button type="button" class="keypad-btn num-key" data-num="4">4</button>
+        <button type="button" class="keypad-btn num-key" data-num="5">5</button>
+        <button type="button" class="keypad-btn num-key" data-num="6">6</button>
+        <button type="button" class="keypad-btn num-key" data-num="7">7</button>
+        <button type="button" class="keypad-btn num-key" data-num="8">8</button>
+        <button type="button" class="keypad-btn num-key" data-num="9">9</button>
+        <button type="button" id="passcode-biometrics-btn" class="keypad-btn action-btn">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="color: #ffffff;">
+            <path d="M3 7V5a2 2 0 0 1 2-2h2" />
+            <path d="M17 3h2a2 2 0 0 1 2 2v2" />
+            <path d="M21 17v2a2 2 0 0 1-2 2h-2" />
+            <path d="M7 21H5a2 2 0 0 1-2-2v-2" />
+            <path d="M8 14s1.5 2 4 2 4-2 4-2" />
+            <path d="M9 9h.01" />
+            <path d="M15 9h.01" />
+            <path d="M12 11v2" />
+          </svg>
+        </button>
+        <button type="button" class="keypad-btn num-key" data-num="0">0</button>
+        <button type="button" id="passcode-delete-btn" class="keypad-btn action-btn">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="color: #ffffff;">
+            <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z" />
+            <line x1="18" y1="9" x2="12" y2="15" />
+            <line x1="12" y1="9" x2="18" y2="15" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Responsive SVG Clip Path Defs -->
   <svg width="0" height="0" style="position: absolute;">
     <defs>
@@ -2705,7 +2873,7 @@
             </div>
             <div class="user-info-text">
               <div class="user-role">CHZ MANAGER</div>
-              <div class="user-version">Version 2.04</div>
+              <div class="user-version">Version 2.05</div>
             </div>
           </div>
         </div>
@@ -2720,7 +2888,7 @@
             <!-- หัวข้อและปุ่มย้อนกลับสไลด์ -->
             <div class="settings-header">
               <div class="settings-header-text">
-                <h3 class="settings-title" style="display: flex; align-items: center; gap: 8px;">Google Sheets Connection <span style="font-size: 11px; background: rgba(0,0,0,0.06); color: var(--color-text-secondary); padding: 2px 8px; border-radius: 8px; font-weight: 500;">Version 2.04</span></h3>
+                <h3 class="settings-title" style="display: flex; align-items: center; gap: 8px;">Google Sheets Connection <span style="font-size: 11px; background: rgba(0,0,0,0.06); color: var(--color-text-secondary); padding: 2px 8px; border-radius: 8px; font-weight: 500;">Version 2.05</span></h3>
                 <p style="font-size: 11px; color: var(--color-text-secondary); margin-top: 4px;">ผูกแอปเข้ากับสิทธิ์ Google Sheets ของแกผ่าน API หรือ Google Apps Script</p>
               </div>
               <button class="capsule-btn btn-back-to-overview" id="settings-back-to-overview-btn" style="display: none; cursor: pointer; background: rgba(39, 168, 115, 0.1) !important; color: #27a873 !important; border: none !important;">
@@ -2816,6 +2984,29 @@
               <div class="settings-form-group" style="margin-top: 16px;">
                 <label>ข้อมูลการชำระเงิน (บัญชีธนาคาร)</label>
                 <input type="text" id="settings-seller-bank" placeholder="เช่น ธ.กสิกรไทย เลขที่ 862-2-21524-2 ชื่อบัญชี มงคล วงศ์สกุลยานนท์" value="">
+              </div>
+            </div>
+
+            <!-- Security Settings (ความปลอดภัย) -->
+            <div class="settings-info-card" style="margin-top: 24px; margin-bottom: 24px;">
+              <h4 style="font-size: 13px; font-weight: 700; color: var(--color-text-primary); margin-bottom: 16px;">Security Settings (ความปลอดภัย)</h4>
+              <div style="display: flex; flex-direction: column; gap: 16px;">
+                <div class="settings-form-group" style="display: flex; align-items: center; justify-content: space-between; flex-direction: row; gap: 12px;">
+                  <div>
+                    <label style="margin-bottom: 4px; display: block; font-weight: 600;">สแกนใบหน้า / ลายนิ้วมือ (Face ID / Biometrics)</label>
+                    <span style="font-size: 11px; color: var(--color-text-secondary); text-transform: none; font-weight: normal; letter-spacing: 0;">เปิดใช้งานการตรวจสอบสิทธิ์แบบไร้สัมผัสผ่านอุปกรณ์ของคุณ</span>
+                  </div>
+                  <div style="display: flex; align-items: center;">
+                    <input type="checkbox" id="settings-enable-faceid" style="width: 18px; height: 18px; accent-color: var(--color-neon-rose); cursor: pointer;">
+                  </div>
+                </div>
+                <div class="settings-form-group" style="display: flex; align-items: center; justify-content: space-between; flex-direction: row; gap: 12px; border-top: 1px solid rgba(0, 0, 0, 0.05); padding-top: 16px;">
+                  <div>
+                    <label style="margin-bottom: 4px; display: block; font-weight: 600;">รหัสผ่าน PIN 6 หลัก</label>
+                    <span style="font-size: 11px; color: var(--color-text-secondary); text-transform: none; font-weight: normal; letter-spacing: 0;">เปลี่ยนรหัสผ่านที่ใช้ปลดล็อกการเข้าถึง ChZ Super App</span>
+                  </div>
+                  <button type="button" id="settings-change-pin-btn" class="capsule-btn" style="background: var(--color-neon-rose); color: white; border: none; padding: 8px 16px; border-radius: 8px; font-size: 11px; cursor: pointer;">เปลี่ยนรหัสผ่าน PIN 6 หลัก</button>
+                </div>
               </div>
             </div>
             
@@ -3961,6 +4152,252 @@
 
   <script>
 
+    // --- Passcode & Face ID State & Logic ---
+    let passcodeEntered = "";
+    let passcodeMode = "auth"; // "auth" | "setup" | "setup_confirm"
+    let passcodeTempPin = "";
+
+    async function hashPIN(pin) {
+      const msgBuffer = new TextEncoder().encode(pin);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    function updatePasscodeDots() {
+      const dots = document.querySelectorAll('#passcode-dots-wrapper .passcode-dot');
+      dots.forEach((dot, idx) => {
+        if (idx < passcodeEntered.length) {
+          dot.classList.add('active');
+        } else {
+          dot.classList.remove('active');
+        }
+      });
+    }
+
+    window.handlePasscodeInput = function(num) {
+      if (passcodeEntered.length < 6) {
+        passcodeEntered += num;
+        updatePasscodeDots();
+        if (passcodeEntered.length === 6) {
+          setTimeout(processPasscode, 150);
+        }
+      }
+    };
+
+    window.handlePasscodeDelete = function() {
+      if (passcodeEntered.length > 0) {
+        passcodeEntered = passcodeEntered.slice(0, -1);
+        updatePasscodeDots();
+      }
+    };
+
+    async function processPasscode() {
+      const statusMsg = document.getElementById('passcode-status-msg');
+      const dotsWrapper = document.getElementById('passcode-dots-wrapper');
+
+      if (passcodeMode === 'setup') {
+        passcodeTempPin = passcodeEntered;
+        passcodeEntered = "";
+        updatePasscodeDots();
+        passcodeMode = 'setup_confirm';
+        if (statusMsg) statusMsg.textContent = 'กรุณาป้อนรหัสผ่านอีกครั้งเพื่อยืนยัน';
+      } else if (passcodeMode === 'setup_confirm') {
+        if (passcodeEntered === passcodeTempPin) {
+          const pinHash = await hashPIN(passcodeEntered);
+          localStorage.setItem('chz_super_app_pin_hash', pinHash);
+          sessionStorage.setItem('chz_super_app_authenticated', 'true');
+          
+          if (statusMsg) {
+            statusMsg.textContent = 'ตั้งรหัสผ่าน PIN สำเร็จ';
+            statusMsg.style.color = '#27a873';
+          }
+          
+          setTimeout(() => {
+            const screen = document.getElementById('passcode-screen');
+            if (screen) screen.style.display = 'none';
+            if (statusMsg) statusMsg.style.color = '';
+          }, 800);
+        } else {
+          if (statusMsg) {
+            statusMsg.textContent = 'รหัสผ่านไม่ตรงกัน กรุณาตั้งรหัสใหม่อีกครั้ง';
+            statusMsg.style.color = '#ff4b72';
+          }
+          if (dotsWrapper) {
+            dotsWrapper.classList.add('shake-dots');
+            setTimeout(() => dotsWrapper.classList.remove('shake-dots'), 300);
+          }
+          passcodeEntered = "";
+          passcodeTempPin = "";
+          updatePasscodeDots();
+          passcodeMode = 'setup';
+          setTimeout(() => {
+            if (statusMsg) {
+              statusMsg.textContent = 'กรุณาตั้งรหัสผ่าน PIN 6 หลักของคุณ';
+              statusMsg.style.color = '';
+            }
+          }, 2000);
+        }
+      } else if (passcodeMode === 'auth') {
+        const pinHash = await hashPIN(passcodeEntered);
+        const storedHash = localStorage.getItem('chz_super_app_pin_hash');
+        if (pinHash === storedHash) {
+          sessionStorage.setItem('chz_super_app_authenticated', 'true');
+          const screen = document.getElementById('passcode-screen');
+          if (screen) screen.style.display = 'none';
+          passcodeEntered = "";
+          updatePasscodeDots();
+        } else {
+          if (statusMsg) {
+            statusMsg.textContent = 'รหัสผ่านไม่ถูกต้อง กรุณาลองใหม่';
+            statusMsg.style.color = '#ff4b72';
+          }
+          if (dotsWrapper) {
+            dotsWrapper.classList.add('shake-dots');
+            setTimeout(() => dotsWrapper.classList.remove('shake-dots'), 300);
+          }
+          passcodeEntered = "";
+          updatePasscodeDots();
+          setTimeout(() => {
+            if (statusMsg) {
+              statusMsg.textContent = 'กรุณาป้อนรหัสผ่านเพื่อเข้าใช้งาน';
+              statusMsg.style.color = '';
+            }
+          }, 2000);
+        }
+      }
+    }
+
+    async function registerBiometrics() {
+      try {
+        const challenge = crypto.getRandomValues(new Uint8Array(32));
+        const userId = crypto.getRandomValues(new Uint8Array(16));
+        const hostname = window.location.hostname || "localhost";
+        const credential = await navigator.credentials.create({
+          publicKey: {
+            challenge: challenge,
+            rp: { name: "CHZ Super App", id: hostname },
+            user: {
+              id: userId,
+              name: "keng@chz",
+              displayName: "Keng CHZ"
+            },
+            pubKeyCredParams: [{ alg: -7, type: "public-key" }],
+            authenticatorSelection: {
+              authenticatorAttachment: "platform",
+              userVerification: "required"
+            },
+            timeout: 60000
+          }
+        });
+        if (credential) {
+          const rawIdArray = Array.from(new Uint8Array(credential.rawId));
+          localStorage.setItem('chz_super_app_webauthn_cred_id', JSON.stringify(rawIdArray));
+          return true;
+        }
+      } catch (e) {
+        console.error("Biometrics registration failed:", e);
+      }
+      return false;
+    }
+
+    async function authenticateBiometrics() {
+      try {
+        const storedCredIdJson = localStorage.getItem('chz_super_app_webauthn_cred_id');
+        if (!storedCredIdJson) return false;
+        const credIdBytes = new Uint8Array(JSON.parse(storedCredIdJson));
+        const challenge = crypto.getRandomValues(new Uint8Array(32));
+        const assertion = await navigator.credentials.get({
+          publicKey: {
+            challenge: challenge,
+            allowCredentials: [{
+              id: credIdBytes,
+              type: "public-key"
+            }],
+            userVerification: "required",
+            timeout: 60000
+          }
+        });
+        if (assertion) {
+          sessionStorage.setItem('chz_super_app_authenticated', 'true');
+          const passcodeScreen = document.getElementById('passcode-screen');
+          if (passcodeScreen) passcodeScreen.style.display = 'none';
+          return true;
+        }
+      } catch (e) {
+        console.error("Biometrics auth failed:", e);
+      }
+      return false;
+    }
+
+    async function checkAuthOnLoad() {
+      const passcodeScreen = document.getElementById('passcode-screen');
+      if (!passcodeScreen) return;
+
+      const isSessionAuthenticated = sessionStorage.getItem('chz_super_app_authenticated') === 'true';
+      if (isSessionAuthenticated) {
+        passcodeScreen.style.display = 'none';
+        return;
+      }
+
+      const storedPinHash = localStorage.getItem('chz_super_app_pin_hash');
+      const statusMsg = document.getElementById('passcode-status-msg');
+      if (!storedPinHash) {
+        passcodeMode = 'setup';
+        if (statusMsg) statusMsg.textContent = 'กรุณาตั้งรหัสผ่าน PIN 6 หลักของคุณ';
+      } else {
+        passcodeMode = 'auth';
+        if (statusMsg) statusMsg.textContent = 'กรุณาป้อนรหัสผ่านเพื่อเข้าใช้งาน';
+      }
+
+      passcodeScreen.style.display = 'flex';
+
+      if (passcodeMode === 'auth') {
+        const storedCredId = localStorage.getItem('chz_super_app_webauthn_cred_id');
+        if (storedCredId) {
+          if (window.PublicKeyCredential && (typeof PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable === 'function')) {
+            const available = await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();
+            if (available) {
+              setTimeout(() => {
+                authenticateBiometrics();
+              }, 400);
+            }
+          }
+        }
+      }
+    }
+
+    async function triggerBiometricsAuthFromLockScreen() {
+      const storedCredId = localStorage.getItem('chz_super_app_webauthn_cred_id');
+      if (!storedCredId) {
+        const statusMsg = document.getElementById('passcode-status-msg');
+        if (statusMsg) {
+          statusMsg.textContent = 'ยังไม่ได้เปิดใช้งาน Face ID/Touch ID ในหน้าตั้งค่า';
+          statusMsg.style.color = '#ff4b72';
+          setTimeout(() => {
+            statusMsg.textContent = passcodeMode === 'setup' ? 'กรุณาตั้งรหัสผ่าน PIN 6 หลักของคุณ' : 'กรุณาป้อนรหัสผ่านเพื่อเข้าใช้งาน';
+            statusMsg.style.color = '';
+          }, 2500);
+        }
+        return;
+      }
+      const success = await authenticateBiometrics();
+      if (!success) {
+        const statusMsg = document.getElementById('passcode-status-msg');
+        if (statusMsg) {
+          statusMsg.textContent = 'การสแกนล้มเหลว กรุณาป้อน PIN หรือลองอีกครั้ง';
+          statusMsg.style.color = '#ff4b72';
+          setTimeout(() => {
+            statusMsg.textContent = 'กรุณาป้อนรหัสผ่านเพื่อเข้าใช้งาน';
+            statusMsg.style.color = '';
+          }, 2500);
+        }
+      }
+    }
+
+    // Call authentication check immediately
+    checkAuthOnLoad();
+
     window.lastOverviewNavigated = false;
 
     // Global Control Variables for Hero Banner Autoplay & Sync
@@ -4196,6 +4633,63 @@
     };
 
     window.addEventListener('DOMContentLoaded', function() {
+      // --- Passcode Keypad Event Listeners ---
+      document.querySelectorAll('#passcode-screen .keypad-btn.num-key').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const num = this.getAttribute('data-num');
+          handlePasscodeInput(num);
+        });
+      });
+
+      const passcodeDeleteBtn = document.getElementById('passcode-delete-btn');
+      if (passcodeDeleteBtn) {
+        passcodeDeleteBtn.addEventListener('click', handlePasscodeDelete);
+      }
+
+      const passcodeBiometricsBtn = document.getElementById('passcode-biometrics-btn');
+      if (passcodeBiometricsBtn) {
+        passcodeBiometricsBtn.addEventListener('click', triggerBiometricsAuthFromLockScreen);
+      }
+
+      // Keyboard support for lock screen input
+      window.addEventListener('keydown', function(e) {
+        const passcodeScreen = document.getElementById('passcode-screen');
+        if (passcodeScreen && passcodeScreen.style.display !== 'none') {
+          if (e.key >= '0' && e.key <= '9') {
+            handlePasscodeInput(e.key);
+          } else if (e.key === 'Backspace') {
+            handlePasscodeDelete();
+          }
+        }
+      });
+
+      // --- Security settings Event Listeners ---
+      const faceidToggle = document.getElementById('settings-enable-faceid');
+      if (faceidToggle) {
+        faceidToggle.addEventListener('change', async function() {
+          if (this.checked) {
+            const success = await registerBiometrics();
+            if (!success) {
+              this.checked = false;
+              alert('ไม่สามารถลงทะเบียน Face ID/Touch ID ได้ อุปกรณ์ของแกอาจไม่รองรับหรือกดยกเลิก');
+            }
+          } else {
+            localStorage.removeItem('chz_super_app_webauthn_cred_id');
+          }
+        });
+      }
+
+      const changePinBtn = document.getElementById('settings-change-pin-btn');
+      if (changePinBtn) {
+        changePinBtn.addEventListener('click', function() {
+          if (confirm('คุณต้องการลบข้อมูลรหัสผ่าน PIN ปัจจุบันและตั้งรหัสใหม่ใช่หรือไม่? เมื่อเปลี่ยนแล้วหน้านี้จะโหลดใหม่เพื่อทำขั้นตอนตั้งค่า PIN ทันที')) {
+            localStorage.removeItem('chz_super_app_pin_hash');
+            sessionStorage.removeItem('chz_super_app_authenticated');
+            window.location.reload();
+          }
+        });
+      }
+
       const addBtn = document.getElementById('settings-add-fixed-cost-btn');
       if (addBtn) {
         addBtn.addEventListener('click', window.addSettingsFixedCost);
@@ -5490,6 +5984,10 @@
         }
         if (typeof window.fetchOnlineTasks === 'function') {
           window.fetchOnlineTasks();
+        }
+
+        if (document.getElementById('settings-enable-faceid')) {
+          document.getElementById('settings-enable-faceid').checked = !!localStorage.getItem('chz_super_app_webauthn_cred_id');
         }
 
         window.loadSettings = loadSettings;
