@@ -2806,6 +2806,10 @@
                   <input type="email" id="settings-seller-email" placeholder="ระบุอีเมลผู้ขาย" value="">
                 </div>
               </div>
+              <div class="settings-form-group" style="margin-top: 16px;">
+                <label>ข้อมูลการชำระเงิน (บัญชีธนาคาร)</label>
+                <input type="text" id="settings-seller-bank" placeholder="เช่น ธ.กสิกรไทย เลขที่ 862-2-21524-2 ชื่อบัญชี มงคล วงศ์สกุลยานนท์" value="">
+              </div>
             </div>
             
             <!-- ปุ่มแอ็กชันล่างสุด -->
@@ -5350,6 +5354,7 @@
         const sellerAddress = document.getElementById('settings-seller-address')?.value || '';
         const sellerPhone = document.getElementById('settings-seller-phone')?.value || '';
         const sellerEmail = document.getElementById('settings-seller-email')?.value || '';
+        const sellerBank = document.getElementById('settings-seller-bank')?.value || '';
 
         localStorage.setItem('income_tracker_gas_url', scriptUrl);
         localStorage.setItem('income_tracker_grab_sheet_id', grabSheetId);
@@ -5362,6 +5367,7 @@
         localStorage.setItem('income_tracker_seller_address', sellerAddress);
         localStorage.setItem('income_tracker_seller_phone', sellerPhone);
         localStorage.setItem('income_tracker_seller_email', sellerEmail);
+        localStorage.setItem('income_tracker_seller_bank', sellerBank);
 
         if (document.getElementById('seller-name')) {
           document.getElementById('seller-name').value = sellerName;
@@ -5371,6 +5377,12 @@
         }
         if (document.getElementById('seller-phone')) {
           document.getElementById('seller-phone').value = sellerPhone;
+        }
+        if (document.getElementById('doc-bank-info')) {
+          document.getElementById('doc-bank-info').value = sellerBank;
+        }
+        if (document.getElementById('preview-bank-info')) {
+          document.getElementById('preview-bank-info').textContent = sellerBank;
         }
 
         // Update logs and Drive status if changed
@@ -5398,6 +5410,7 @@
         const sellerAddress = localStorage.getItem('income_tracker_seller_address') || '65/1 ถ.ต้นขาม2 ต.ท่าศาลา อ.เมือง จ.เชียงใหม่';
         const sellerPhone = localStorage.getItem('income_tracker_seller_phone') || '0895544355';
         const sellerEmail = localStorage.getItem('income_tracker_seller_email') || 'feltzstudio@gmail.com';
+        const sellerBank = localStorage.getItem('income_tracker_seller_bank') || 'ธ.กสิกรไทย เลขที่ 862-2-21524-2 ชื่อบัญชี มงคล วงศ์สกุลยานนท์';
 
         if (document.getElementById('settings-script-url')) {
           document.getElementById('settings-script-url').value = scriptUrl;
@@ -5430,6 +5443,9 @@
         if (document.getElementById('settings-seller-email')) {
           document.getElementById('settings-seller-email').value = sellerEmail;
         }
+        if (document.getElementById('settings-seller-bank')) {
+          document.getElementById('settings-seller-bank').value = sellerBank;
+        }
 
         if (document.getElementById('seller-name')) {
           document.getElementById('seller-name').value = sellerName;
@@ -5439,6 +5455,12 @@
         }
         if (document.getElementById('seller-phone')) {
           document.getElementById('seller-phone').value = sellerPhone;
+        }
+        if (document.getElementById('doc-bank-info')) {
+          document.getElementById('doc-bank-info').value = sellerBank;
+        }
+        if (document.getElementById('preview-bank-info')) {
+          document.getElementById('preview-bank-info').textContent = sellerBank;
         }
 
         updateDriveStatus(driveFolderLink);
@@ -5453,6 +5475,8 @@
         if (typeof fetchCalendarEvents === 'function') {
           fetchCalendarEvents();
         }
+
+        window.loadSettings = loadSettings;
       }
 
       function discardUnsavedSettings() {
@@ -7274,6 +7298,12 @@
               exportLogs.innerHTML += `<br>[System] Finished! Form reset.`;
               
               exportForm.reset();
+              if (typeof window.loadSettings === 'function') {
+                window.loadSettings();
+              }
+              if (typeof updateA4Preview === 'function') {
+                updateA4Preview();
+              }
               exportItems = [{ desc: '', amount: 0 }]; // reset กลับเป็น 1 ช่องว่างพร้อมกรอก
               renderExportItemsForm();
               
