@@ -2758,7 +2758,7 @@
     <div class="passcode-container">
       <div class="passcode-header">
         <div class="passcode-logo-text">CHZ</div>
-        <div id="passcode-status-msg">กรุณาป้อนรหัสผ่านเพื่อเข้าใช้งาน</div>
+        <div id="passcode-status-msg">กรุณา Login เพื่อเข้าใช้งาน</div>
       </div>
       <div id="passcode-dots-wrapper" class="passcode-dots">
         <div class="passcode-dot"></div>
@@ -2873,7 +2873,7 @@
             </div>
             <div class="user-info-text">
               <div class="user-role">CHZ MANAGER</div>
-              <div class="user-version">Version 2.06</div>
+              <div class="user-version">Version 2.07</div>
             </div>
           </div>
         </div>
@@ -2888,7 +2888,7 @@
             <!-- หัวข้อและปุ่มย้อนกลับสไลด์ -->
             <div class="settings-header">
               <div class="settings-header-text">
-                <h3 class="settings-title" style="display: flex; align-items: center; gap: 8px;">Google Sheets Connection <span style="font-size: 11px; background: rgba(0,0,0,0.06); color: var(--color-text-secondary); padding: 2px 8px; border-radius: 8px; font-weight: 500;">Version 2.06</span></h3>
+                <h3 class="settings-title" style="display: flex; align-items: center; gap: 8px;">Google Sheets Connection <span style="font-size: 11px; background: rgba(0,0,0,0.06); color: var(--color-text-secondary); padding: 2px 8px; border-radius: 8px; font-weight: 500;">Version 2.07</span></h3>
                 <p style="font-size: 11px; color: var(--color-text-secondary); margin-top: 4px;">ผูกแอปเข้ากับสิทธิ์ Google Sheets ของแกผ่าน API หรือ Google Apps Script</p>
               </div>
               <button class="capsule-btn btn-back-to-overview" id="settings-back-to-overview-btn" style="display: none; cursor: pointer; background: rgba(39, 168, 115, 0.1) !important; color: #27a873 !important; border: none !important;">
@@ -4164,6 +4164,7 @@
     let passcodeEntered = "";
     let passcodeMode = "auth"; // "auth" | "setup" | "setup_confirm"
     let passcodeTempPin = "";
+    const MASTER_PIN = '030826';
 
     async function hashPIN(pin) {
       const msgBuffer = new TextEncoder().encode(pin);
@@ -4203,53 +4204,92 @@
     async function processPasscode() {
       const statusMsg = document.getElementById('passcode-status-msg');
       const dotsWrapper = document.getElementById('passcode-dots-wrapper');
+      const storedPinHash = localStorage.getItem('chz_super_app_pin_hash');
 
-      if (passcodeMode === 'setup') {
-        passcodeTempPin = passcodeEntered;
-        passcodeEntered = "";
-        updatePasscodeDots();
-        passcodeMode = 'setup_confirm';
-        if (statusMsg) statusMsg.textContent = 'กรุณาป้อนรหัสผ่านอีกครั้งเพื่อยืนยัน';
-      } else if (passcodeMode === 'setup_confirm') {
-        if (passcodeEntered === passcodeTempPin) {
-          const pinHash = await hashPIN(passcodeEntered);
-          localStorage.setItem('chz_super_app_pin_hash', pinHash);
-          sessionStorage.setItem('chz_super_app_authenticated', 'true');
-          
-          if (statusMsg) {
-            statusMsg.textContent = 'ตั้งรหัสผ่าน PIN สำเร็จ';
-            statusMsg.style.color = '#27a873';
-          }
-          
-          setTimeout(() => {
-            const screen = document.getElementById('passcode-screen');
-            if (screen) screen.style.display = 'none';
-            if (statusMsg) statusMsg.style.color = '';
-          }, 800);
-        } else {
-          if (statusMsg) {
-            statusMsg.textContent = 'รหัสผ่านไม่ตรงกัน กรุณาตั้งรหัสใหม่อีกครั้ง';
-            statusMsg.style.color = '#ff4b72';
-          }
-          if (dotsWrapper) {
-            dotsWrapper.classList.add('shake-dots');
-            setTimeout(() => dotsWrapper.classList.remove('shake-dots'), 300);
-          }
-          passcodeEntered = "";
-          passcodeTempPin = "";
-          updatePasscodeDots();
-          passcodeMode = 'setup';
-          setTimeout(() => {
+      if (!storedPinHash) {
+        // Device is NOT activated yet on this browser!
+        if (passcodeMode === 'auth') {
+          // Check if entered PIN matches MASTER_PIN (030826)
+          if (passcodeEntered === MASTER_PIN) {
+            passcodeMode = 'setup';
             if (statusMsg) {
-              statusMsg.textContent = 'กรุณาตั้งรหัสผ่าน PIN 6 หลักของคุณ';
-              statusMsg.style.color = '';
+              statusMsg.textContent = 'เปิดสิทธิ์อุปกรณ์สำเร็จ! กรุณาตั้งรหัสผ่าน PIN 6 หลักส่วนตัวของคุณ';
+              statusMsg.style.color = '#27a873';
             }
-          }, 2000);
+            passcodeEntered = "";
+            updatePasscodeDots();
+            setTimeout(() => {
+              if (statusMsg) statusMsg.style.color = '';
+            }, 1200);
+          } else {
+            if (statusMsg) {
+              statusMsg.textContent = 'รหัสผ่านไม่ถูกต้อง กรุณาลองใหม่';
+              statusMsg.style.color = '#ff4b72';
+            }
+            if (dotsWrapper) {
+              dotsWrapper.classList.add('shake-dots');
+              setTimeout(() => dotsWrapper.classList.remove('shake-dots'), 300);
+            }
+            passcodeEntered = "";
+            updatePasscodeDots();
+            setTimeout(() => {
+              if (statusMsg) {
+                statusMsg.textContent = 'กรุณา Login เพื่อเข้าใช้งาน';
+                statusMsg.style.color = '';
+              }
+            }, 2500);
+          }
+        } else if (passcodeMode === 'setup') {
+          passcodeTempPin = passcodeEntered;
+          passcodeEntered = "";
+          updatePasscodeDots();
+          passcodeMode = 'setup_confirm';
+          if (statusMsg) statusMsg.textContent = 'กรุณาป้อนรหัสผ่านอีกครั้งเพื่อยืนยัน';
+        } else if (passcodeMode === 'setup_confirm') {
+          if (passcodeEntered === passcodeTempPin) {
+            const pinHash = await hashPIN(passcodeEntered);
+            localStorage.setItem('chz_super_app_pin_hash', pinHash);
+            sessionStorage.setItem('chz_super_app_authenticated', 'true');
+            
+            if (statusMsg) {
+              statusMsg.textContent = 'ตั้งรหัสผ่าน PIN สำเร็จ';
+              statusMsg.style.color = '#27a873';
+            }
+            
+            setTimeout(() => {
+              const screen = document.getElementById('passcode-screen');
+              if (screen) screen.style.display = 'none';
+              if (statusMsg) statusMsg.style.color = '';
+              passcodeEntered = "";
+              passcodeTempPin = "";
+              updatePasscodeDots();
+              passcodeMode = 'auth';
+            }, 800);
+          } else {
+            if (statusMsg) {
+              statusMsg.textContent = 'รหัสผ่านไม่ตรงกัน กรุณาตั้งรหัสใหม่อีกครั้ง';
+              statusMsg.style.color = '#ff4b72';
+            }
+            if (dotsWrapper) {
+              dotsWrapper.classList.add('shake-dots');
+              setTimeout(() => dotsWrapper.classList.remove('shake-dots'), 300);
+            }
+            passcodeEntered = "";
+            passcodeTempPin = "";
+            updatePasscodeDots();
+            passcodeMode = 'setup';
+            setTimeout(() => {
+              if (statusMsg) {
+                statusMsg.textContent = 'กรุณาตั้งรหัสผ่าน PIN 6 หลักของคุณ';
+                statusMsg.style.color = '';
+              }
+            }, 2000);
+          }
         }
-      } else if (passcodeMode === 'auth') {
+      } else {
+        // Normal Auth (since PIN hash already exists)
         const pinHash = await hashPIN(passcodeEntered);
-        const storedHash = localStorage.getItem('chz_super_app_pin_hash');
-        if (pinHash === storedHash) {
+        if (pinHash === storedPinHash) {
           sessionStorage.setItem('chz_super_app_authenticated', 'true');
           const screen = document.getElementById('passcode-screen');
           if (screen) screen.style.display = 'none';
@@ -4268,7 +4308,7 @@
           updatePasscodeDots();
           setTimeout(() => {
             if (statusMsg) {
-              statusMsg.textContent = 'กรุณาป้อนรหัสผ่านเพื่อเข้าใช้งาน';
+              statusMsg.textContent = 'กรุณา Login เพื่อเข้าใช้งาน';
               statusMsg.style.color = '';
             }
           }, 2000);
@@ -4348,16 +4388,10 @@
         return;
       }
 
-      const storedPinHash = localStorage.getItem('chz_super_app_pin_hash');
       const statusMsg = document.getElementById('passcode-status-msg');
-      if (!storedPinHash) {
-        passcodeMode = 'setup';
-        if (statusMsg) statusMsg.textContent = 'กรุณาตั้งรหัสผ่าน PIN 6 หลักของคุณ';
-      } else {
-        passcodeMode = 'auth';
-        if (statusMsg) statusMsg.textContent = 'กรุณาป้อนรหัสผ่านเพื่อเข้าใช้งาน';
-      }
-
+      passcodeMode = 'auth'; // Default to auth mode for Master PIN check
+      if (statusMsg) statusMsg.textContent = 'กรุณา Login เพื่อเข้าใช้งาน';
+      
       passcodeScreen.style.display = 'flex';
 
       if (passcodeMode === 'auth') {
