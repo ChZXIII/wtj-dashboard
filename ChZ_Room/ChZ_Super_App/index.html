@@ -485,6 +485,17 @@
       font-weight: 800;
       color: var(--color-text-primary);
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .status-capsule:hover {
+      background: rgba(255, 75, 114, 0.08) !important;
+      border-color: rgba(255, 75, 114, 0.3) !important;
+      color: var(--color-neon-rose) !important;
+      transform: translateY(-1px);
+    }
+    .status-capsule:active {
+      transform: translateY(0);
     }
 
     .status-item {
@@ -1240,6 +1251,20 @@
       font-family: var(--font-body);
       box-sizing: border-box;
       width: 100%;
+      min-width: 0;
+    }
+
+    .event-time-row {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    @media (min-width: 768px) {
+      .event-time-row {
+        flex-direction: row;
+        gap: 10px;
+      }
     }
     
     .event-action-modal input:focus,
@@ -1818,6 +1843,8 @@
 
     .settings-form-group input,
     .settings-form-group select {
+      width: 100%;
+      max-width: 100%;
       background: rgba(255, 255, 255, 0.65);
       border: none;
       border-radius: 12px;
@@ -2477,6 +2504,17 @@
         transform: translate3d(0, 0, 0) !important;
         -webkit-transform: translate3d(0, 0, 0) !important;
         will-change: transform !important;
+        gap: 12px !important;
+      }
+      .hero-header-controls .capsule-btn span {
+        display: none !important;
+      }
+      .hero-header-controls .capsule-btn {
+        padding: 0 !important;
+        width: 38px !important;
+        height: 38px !important;
+        justify-content: center !important;
+        flex-shrink: 0 !important;
       }
       .hero-header-controls .capsule-btn,
       .hero-header-controls .status-capsule {
@@ -2750,6 +2788,61 @@
     .shake-dots {
       animation: shake 0.3s ease-in-out;
     }
+
+    /* Premium Stopwatch & Pull Time Styles */
+    #btn-stopwatch-start,
+    #btn-stopwatch-pause,
+    #btn-stopwatch-save,
+    #btn-stopwatch-reset,
+    #btn-pull-stopwatch {
+      border: none;
+      box-shadow: none;
+      background: var(--color-white);
+      color: var(--color-text-primary);
+      font-family: inherit;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+    }
+    #btn-stopwatch-start,
+    #btn-stopwatch-pause,
+    #btn-stopwatch-save,
+    #btn-stopwatch-reset {
+      padding: 4px 10px;
+      height: 28px;
+    }
+    #btn-pull-stopwatch {
+      padding: 0 12px;
+      height: 38px;
+      flex-shrink: 0;
+    }
+    
+    #btn-stopwatch-start:hover {
+      background: rgba(162, 232, 196, 0.2);
+      color: #27a873;
+      transform: translateY(-2px);
+    }
+    #btn-stopwatch-pause:hover {
+      background: rgba(253, 230, 138, 0.25);
+      color: #d97706;
+      transform: translateY(-2px);
+    }
+    #btn-stopwatch-save:hover,
+    #btn-pull-stopwatch:hover {
+      background: rgba(179, 221, 242, 0.35);
+      color: #0284c7;
+      transform: translateY(-2px);
+    }
+    #btn-stopwatch-reset:hover {
+      background: rgba(255, 75, 114, 0.15);
+      color: var(--color-neon-rose);
+      transform: translateY(-2px);
+    }
   </style>
 </head>
 <body>
@@ -2873,7 +2966,7 @@
             </div>
             <div class="user-info-text">
               <div class="user-role">CHZ MANAGER</div>
-              <div class="user-version">Version 2.07</div>
+              <div class="user-version">Version 2.1.0</div>
             </div>
           </div>
         </div>
@@ -2888,7 +2981,7 @@
             <!-- หัวข้อและปุ่มย้อนกลับสไลด์ -->
             <div class="settings-header">
               <div class="settings-header-text">
-                <h3 class="settings-title" style="display: flex; align-items: center; gap: 8px;">Google Sheets Connection <span style="font-size: 11px; background: rgba(0,0,0,0.06); color: var(--color-text-secondary); padding: 2px 8px; border-radius: 8px; font-weight: 500;">Version 2.07</span></h3>
+                <h3 class="settings-title" style="display: flex; align-items: center; gap: 8px;">Google Sheets Connection <span style="font-size: 11px; background: rgba(0,0,0,0.06); color: var(--color-text-secondary); padding: 2px 8px; border-radius: 8px; font-weight: 500;">Version 2.1.0</span></h3>
                 <p style="font-size: 11px; color: var(--color-text-secondary); margin-top: 4px;">ผูกแอปเข้ากับสิทธิ์ Google Sheets ของแกผ่าน API หรือ Google Apps Script</p>
               </div>
               <button class="capsule-btn btn-back-to-overview" id="settings-back-to-overview-btn" style="display: none; cursor: pointer; background: rgba(39, 168, 115, 0.1) !important; color: #27a873 !important; border: none !important;">
@@ -2911,13 +3004,21 @@
               <!-- คอลัมน์ซ้าย: ฟิลด์ URL และ ID ต่างๆ -->
               <div class="settings-col-left">
                 <div class="settings-form-group">
-                  <label>Google Apps Script Web App URL</label>
+                  <label>Google Apps Script Web App URL (Feltz Studio)</label>
                   <input type="url" id="settings-script-url" name="scriptUrl" placeholder="https://script.google.com/macros/s/.../exec" value="">
                   <span class="settings-field-tip">นำลิงก์ Web App URL ที่ได้จากการดีพลอยสคริปต์ใน Google Sheets มาวางที่นี่จ้า</span>
                 </div>
                 <div class="settings-form-group">
+                  <label>Google Apps Script Web App URL (Grab)</label>
+                  <input type="url" id="settings-grab-script-url" name="grabScriptUrl" placeholder="https://script.google.com/macros/s/.../exec" value="">
+                  <span class="settings-field-tip">นำลิงก์ Web App URL ของสคริปต์รายได้ Grab มาวางที่นี่จ้า</span>
+                </div>
+                <div class="settings-form-group">
                   <label>Grab Spreadsheet ID</label>
-                  <input type="text" id="settings-grab-sheet-id" name="grabSheetId" placeholder="ID ของกูเกิลชีตสำหรับรายได้ Grab" value="">
+                  <div style="display: flex; gap: 8px;">
+                    <input type="text" id="settings-grab-sheet-id" name="grabSheetId" placeholder="ID ของกูเกิลชีตสำหรับรายได้ Grab" value="">
+                    <button type="button" id="settings-init-grab-sheet-btn" class="capsule-btn" style="background: rgba(162, 232, 196, 0.15) !important; color: #27a873 !important; font-size: 11px; padding: 0 12px; height: 38px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; flex-shrink: 0; box-shadow: none !important;">สร้างตาราง 12 เดือน</button>
+                  </div>
                   <span class="settings-field-tip">ID ของ Google Sheets สำหรับรายได้ Grab (ดูจาก URL ของชีต)</span>
                 </div>
                 <div class="settings-form-group">
@@ -3041,9 +3142,15 @@
                     <span>Back to Home</span>
                   </button>
                   
-                  <div class="status-capsule" style="justify-content: center;">
+                  <button class="capsule-btn" id="btn-show-qr" style="justify-content: center; font-family: var(--font-heading); font-weight: 800; border: none !important;">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="3" y="3" width="7" height="7" />
+                      <rect x="14" y="3" width="7" height="7" />
+                      <rect x="14" y="14" width="7" height="7" />
+                      <rect x="3" y="14" width="7" height="7" />
+                    </svg>
                     <span>ChZ Super App</span>
-                  </div>
+                  </button>
                   
                   <button class="capsule-btn btn-next" id="todo-btn">
                     <span>To do list</span>
@@ -3103,6 +3210,29 @@
                         </div>
                       </div>
                       <div class="anime-subtitle" style="font-size: 12px; color: var(--color-text-secondary); margin-top: 4px; text-align: right; margin-left: auto;">ChZ Agent Workspace</div>
+                      
+                      <!-- Clock/Stopwatch Mode Controls -->
+                      <div class="clock-mode-controls" style="display: flex; align-items: center; gap: 8px; margin-top: 4px; justify-content: flex-end;">
+                        <button type="button" class="mode-toggle-btn active" id="btn-mode-clock" title="Normal Clock" style="background: none; border: none; padding: 4px; color: var(--color-neon-rose); cursor: pointer; display: flex; align-items: center; transition: color 0.2s;">
+                          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 15px; height: 15px;">
+                            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                          </svg>
+                        </button>
+                        <button type="button" class="mode-toggle-btn" id="btn-mode-stopwatch" title="Stopwatch" style="background: none; border: none; padding: 4px; color: var(--color-text-secondary); cursor: pointer; display: flex; align-items: center; transition: color 0.2s;">
+                          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 15px; height: 15px;">
+                            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 12"/>
+                            <line x1="12" y1="2" x2="12" y2="4"/>
+                          </svg>
+                        </button>
+                      </div>
+                      
+                      <!-- Stopwatch Control Buttons -->
+                      <div id="stopwatch-controls" style="display: none; align-items: center; gap: 8px; justify-content: flex-end; margin-top: 6px;">
+                        <button type="button" class="btn-action" id="btn-stopwatch-start">เริ่มงาน</button>
+                        <button type="button" class="btn-action" id="btn-stopwatch-pause" style="display: none;">หยุดพัก</button>
+                        <button type="button" class="btn-action" id="btn-stopwatch-save">บันทึกเวลา</button>
+                        <button type="button" class="btn-action" id="btn-stopwatch-reset">รีเซ็ต</button>
+                      </div>
                     </div>
                   </div>
                   
@@ -3446,21 +3576,32 @@
               <div style="display: flex; gap: 12px;">
                 <div class="settings-form-group" style="flex: 1;">
                   <label for="grab-battery">เปอร์เซ็นต์แบต (%)</label>
-                  <input type="number" id="grab-battery" min="0" max="100" placeholder="เช่น 85">
+                  <input type="text" id="grab-battery" placeholder="เช่น 85">
+                  <span class="live-preview" id="preview-grab-battery" style="font-size: 11px; color: var(--color-neon-rose); font-weight: 700; display: none; margin-top: 2px;"></span>
                 </div>
                 <div class="settings-form-group" style="flex: 1;">
                   <label for="grab-distance">ระยะทาง (กิโลเมตร)</label>
-                  <input type="number" id="grab-distance" min="0" step="any" placeholder="เช่น 24.5">
+                  <input type="text" id="grab-distance" placeholder="เช่น 24.5">
+                  <span class="live-preview" id="preview-grab-distance" style="font-size: 11px; color: var(--color-neon-rose); font-weight: 700; display: none; margin-top: 2px;"></span>
                 </div>
               </div>
               <div style="display: flex; gap: 12px;">
                 <div class="settings-form-group" style="flex: 1;">
                   <label for="grab-amount">ยอดเงินค่าโดยสาร (THB)</label>
-                  <input type="number" id="grab-amount" min="1" step="any" required placeholder="0.00">
+                  <input type="text" id="grab-amount" required placeholder="0.00">
+                  <span class="live-preview" id="preview-grab-amount" style="font-size: 11px; color: var(--color-neon-rose); font-weight: 700; display: none; margin-top: 2px;"></span>
                 </div>
                 <div class="settings-form-group" style="flex: 1;">
                   <label for="grab-tip">ยอดทิป (THB)</label>
-                  <input type="number" id="grab-tip" min="0" step="any" placeholder="0.00" value="0">
+                  <input type="text" id="grab-tip" placeholder="0.00" value="0">
+                  <span class="live-preview" id="preview-grab-tip" style="font-size: 11px; color: var(--color-neon-rose); font-weight: 700; display: none; margin-top: 2px;"></span>
+                </div>
+              </div>
+              <div class="settings-form-group">
+                <label for="grab-hours">เวลาทำงาน (ชั่วโมง:นาที)</label>
+                <div style="display: flex; gap: 8px;">
+                  <input type="text" id="grab-hours" placeholder="เช่น 8:30" style="flex: 1;">
+                  <button type="button" class="btn-action" id="btn-pull-stopwatch">ดึงเวลา</button>
                 </div>
               </div>
               <div class="settings-form-group">
@@ -4136,7 +4277,7 @@
               <label for="event-create-desc" style="font-weight: 700;">รายละเอียด</label>
               <textarea id="event-create-desc" placeholder="ระบุรายละเอียดเพิ่มเติม" style="min-height: 65px;"></textarea>
             </div>
-            <div style="display: flex; gap: 10px;">
+            <div class="event-time-row">
               <div class="settings-form-group" style="flex: 1;">
                 <label for="event-create-start" style="font-weight: 700;">เวลาคิวเริ่มต้น</label>
                 <input type="datetime-local" id="event-create-start" required>
@@ -4153,12 +4294,32 @@
         </div>
       </div>
 
+      <!-- QR Code Modal Overlay -->
+      <div class="modal-overlay" id="qr-modal-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 2000; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease;">
+        <div class="qr-modal-container" style="width: 90%; max-width: 360px; background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.5); border-radius: 28px; box-shadow: 0 30px 80px rgba(0, 0, 0, 0.15); padding: 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px; position: relative; transform: scale(0.9); opacity: 0; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);">
+          <button class="btn-close-modal" id="btn-close-qr-modal" type="button" title="Close Modal" onclick="closeQRModal()" style="position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; border-radius: 50%; border: none; background: rgba(0, 0, 0, 0.05); color: var(--color-text-primary); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; z-index: 100 !important;">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 16px; height: 16px;">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+          <div style="text-align: center; margin-top: 10px;">
+            <h3 style="font-family: var(--font-heading); font-size: 16px; font-weight: 800; color: var(--color-text-primary); margin: 0 0 4px 0;">MAKE by KBank QR</h3>
+            <span style="font-size: 11px; color: var(--color-text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Scan to Pay / Transfer</span>
+          </div>
+          <div style="background: var(--color-white); padding: 12px; border-radius: 20px; border: 1px solid rgba(0, 0, 0, 0.05); display: flex; justify-content: center; align-items: center;">
+            <img src="assets/make_kbank_qr.jpg" alt="PromptPay QR Code" style="width: 100%; max-width: 280px; height: auto; border-radius: 12px; display: block;">
+          </div>
+        </div>
+      </div>
+
 
 
     </main>
   </div>
 
   <script>
+    const DEFAULT_GRAB_SHEET_ID = '17YAN81SlDDDjd-CMu1POJUN7gRSALg2d9vgPoN8OSbg';
 
     // --- Passcode & Face ID State & Logic ---
     let passcodeEntered = "";
@@ -4843,10 +5004,14 @@
 
           const res = await response.json();
           if (res.status === 'success' && Array.isArray(res.data)) {
-            const existingIds = new Set(window.calendarEvents.map(ev => ev.id));
-            res.data.forEach(ev => {
-              if (ev && ev.id && !existingIds.has(ev.id)) {
-                window.calendarEvents.push(ev);
+            res.data.forEach(newEv => {
+              if (newEv && newEv.id) {
+                const idx = window.calendarEvents.findIndex(ev => ev.id === newEv.id);
+                if (idx !== -1) {
+                  window.calendarEvents[idx] = newEv; // อัปเดตทับด้วยข้อมูลล่าสุดจาก Google Calendar
+                } else {
+                  window.calendarEvents.push(newEv);
+                }
               }
             });
 
@@ -4939,12 +5104,12 @@
                 timeStr = `${sh}:${sm}`;
               }
               
-              let statusVal = 'booked';
+              let statusVal = 'urgent'; // เปลี่ยนจากเดิมที่เป็น 'booked' เพื่อให้งานทั่วไปที่ดึงมาแล้วไม่มีรหัสสีเฉพาะเจาะจง (สีปฏิทินหลักของพี่เก่งที่เป็นสีแดง) แสดงเป็นสีแดง/Rose ทันที
               if (ev.colorId === "5") {
                 statusVal = 'booked';
-              } else if (ev.colorId === "11") {
+              } else if (ev.colorId === "11" || ev.colorId === "4") {
                 statusVal = 'urgent';
-              } else if (ev.colorId === "2") {
+              } else if (ev.colorId === "2" || ev.colorId === "10") {
                 statusVal = 'paid';
               }
               
@@ -5053,10 +5218,11 @@
         heroBannerIndex = slideIdx;
         startHeroBannerTimer();
 
-        // 2. Generate Mini Grid (30 dots)
+        // 2. Generate Mini Grid (dynamic dots)
         miniGrid.innerHTML = '';
         const jobs = getMonthlyJobs(year, monthIndex);
-        for (let i = 1; i <= 30; i++) {
+        const config = getMonthConfig(year, monthIndex);
+        for (let i = 1; i <= config.days; i++) {
           const dot = document.createElement('div');
           dot.className = 'cal-dot';
           const matchedJob = jobs.find(job => job.dotIndex === i);
@@ -5711,12 +5877,13 @@
             window.addTransactionToList(newTx);
           }
           
+          let updateCacheColor = true;
           if (eventObj.id) {
             try {
               const gasUrl = localStorage.getItem('income_tracker_gas_url') || '';
               const feltzSheetId = localStorage.getItem('income_tracker_general_sheet_id') || '';
               if (gasUrl) {
-                await fetch(gasUrl, {
+                const colorRes = await fetch(gasUrl, {
                   method: 'POST',
                   mode: 'cors',
                   headers: { 'Content-Type': 'text/plain;charset=utf-8' },
@@ -5727,19 +5894,25 @@
                     colorId: "2"
                   })
                 });
+                if (!colorRes.ok) throw new Error('Network response not ok');
+                const colorData = await colorRes.json();
+                if (colorData.status !== 'success') throw new Error(colorData.message || 'Failed to update calendar event color');
               }
             } catch (colorErr) {
               console.warn("Failed to update Google Calendar color, but ledger is saved:", colorErr);
+              updateCacheColor = false;
             }
           }
           
-          window.calendarEvents = window.calendarEvents.map(ev => {
-            if (ev.id === eventObj.id) {
-              return { ...ev, colorId: "2" };
-            }
-            return ev;
-          });
-          localStorage.setItem('income_tracker_calendar_events_cache', JSON.stringify(window.calendarEvents));
+          if (updateCacheColor) {
+            window.calendarEvents = window.calendarEvents.map(ev => {
+              if (ev.id === eventObj.id) {
+                return { ...ev, colorId: "2" };
+              }
+              return ev;
+            });
+            localStorage.setItem('income_tracker_calendar_events_cache', JSON.stringify(window.calendarEvents));
+          }
           
           alert('บันทึกรายรับ Feltz Studio เรียบร้อยแล้ว!');
           closeEventModal();
@@ -5893,6 +6066,7 @@
 
       function saveSettings() {
         const scriptUrl = document.getElementById('settings-script-url')?.value || '';
+        const grabScriptUrl = document.getElementById('settings-grab-script-url')?.value || '';
         const grabSheetId = document.getElementById('settings-grab-sheet-id')?.value || '';
         const feltzSheetId = document.getElementById('settings-feltz-sheet-id')?.value || '';
         const pdfShiftKey = document.getElementById('settings-pdfshift-key')?.value || '';
@@ -5906,6 +6080,7 @@
         const sellerBank = document.getElementById('settings-seller-bank')?.value || '';
 
         localStorage.setItem('income_tracker_gas_url', scriptUrl);
+        localStorage.setItem('income_tracker_grab_gas_url', grabScriptUrl);
         localStorage.setItem('income_tracker_grab_sheet_id', grabSheetId);
         localStorage.setItem('income_tracker_general_sheet_id', feltzSheetId);
         localStorage.setItem('income_tracker_pdfshift_api_key', pdfShiftKey);
@@ -5949,7 +6124,8 @@
 
       function loadSettings() {
         const scriptUrl = localStorage.getItem('income_tracker_gas_url') || '';
-        const grabSheetId = localStorage.getItem('income_tracker_grab_sheet_id') || '';
+        const grabScriptUrl = localStorage.getItem('income_tracker_grab_gas_url') || '';
+        const grabSheetId = localStorage.getItem('income_tracker_grab_sheet_id') || DEFAULT_GRAB_SHEET_ID;
         const feltzSheetId = localStorage.getItem('income_tracker_general_sheet_id') || '';
         const pdfShiftKey = localStorage.getItem('income_tracker_pdfshift_api_key') || '';
         const driveFolderLink = localStorage.getItem('income_tracker_company_drive_url') || '';
@@ -5963,6 +6139,9 @@
 
         if (document.getElementById('settings-script-url')) {
           document.getElementById('settings-script-url').value = scriptUrl;
+        }
+        if (document.getElementById('settings-grab-script-url')) {
+          document.getElementById('settings-grab-script-url').value = grabScriptUrl;
         }
         if (document.getElementById('settings-grab-sheet-id')) {
           document.getElementById('settings-grab-sheet-id').value = grabSheetId;
@@ -6084,8 +6263,61 @@
         }
       }
 
+      async function initGrabSheetOnline(grabSheetId) {
+        const scriptUrl = localStorage.getItem('income_tracker_grab_gas_url') || '';
+        if (!scriptUrl) {
+          alert('กรุณาตั้งค่า Google Apps Script URL (Grab) ในหน้า Settings ก่อนจ้า');
+          return;
+        }
+        if (!grabSheetId) {
+          alert('กรุณากรอก Grab Spreadsheet ID ก่อนกดสร้างตารางจ้า');
+          return;
+        }
+
+        const btn = document.getElementById('settings-init-grab-sheet-btn');
+        const originalText = btn ? btn.textContent : 'สร้างตาราง 12 เดือน';
+        if (btn) {
+          btn.disabled = true;
+          btn.textContent = 'กำลังสร้าง...';
+        }
+
+        try {
+          const response = await fetch(scriptUrl, {
+            method: 'POST',
+            mode: 'cors',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({
+              type: 'init_grab_sheet',
+              grabSpreadsheetId: grabSheetId
+            })
+          });
+          const result = await response.json();
+          if (result.status === 'success') {
+            alert('สร้างตารางรายได้ Grab 12 เดือน (ปี 2026) สำเร็จแล้วแก!');
+          } else {
+            alert('เกิดข้อผิดพลาด: ' + (result.message || 'ไม่สามารถสร้างตารางได้'));
+          }
+        } catch (err) {
+          console.error(err);
+          alert('เกิดข้อผิดพลาดในการเชื่อมต่อ: ' + err.message);
+        } finally {
+          if (btn) {
+            btn.disabled = false;
+            btn.textContent = originalText;
+          }
+        }
+      }
+
       // Load Settings on initial load
       loadSettings();
+
+      const initGrabSheetBtn = document.getElementById('settings-init-grab-sheet-btn');
+      if (initGrabSheetBtn) {
+        initGrabSheetBtn.addEventListener('click', function() {
+          const grabSheetId = document.getElementById('settings-grab-sheet-id')?.value || '';
+          initGrabSheetOnline(grabSheetId);
+        });
+      }
 
       if (saveSettingsBtn) {
         saveSettingsBtn.addEventListener('click', function() {
@@ -6349,6 +6581,7 @@
           const res = await response.json();
           if (res.status === 'success' && Array.isArray(res.data)) {
             window.calendarEvents = res.data;
+            localStorage.setItem('income_tracker_calendar_events_cache', JSON.stringify(window.calendarEvents));
             
             queueSelect.innerHTML = '<option value="">-- ไม่เชื่อมโยงคิวงาน / ทั่วไป --</option>';
             const confirmedEvents = window.calendarEvents.filter(ev => ev.colorId === "11");
@@ -6376,9 +6609,13 @@
       }
 
       async function sendTransactionToGAS(tx) {
-        const scriptUrl = localStorage.getItem('income_tracker_gas_url') || '';
+        let scriptUrl = localStorage.getItem('income_tracker_gas_url') || '';
         const generalSheetId = localStorage.getItem('income_tracker_general_sheet_id') || '';
-        const grabSheetId = localStorage.getItem('income_tracker_grab_sheet_id') || '';
+        const grabSheetId = localStorage.getItem('income_tracker_grab_sheet_id') || DEFAULT_GRAB_SHEET_ID;
+
+        if (tx.category === 'Grab Income') {
+          scriptUrl = localStorage.getItem('income_tracker_grab_gas_url') || '';
+        }
 
         if (!scriptUrl) {
           tx.syncStatus = 'local';
@@ -6414,6 +6651,7 @@
           payload.distance = parseFloat(tx.grabDistance) || 0;
           payload.amount = parseFloat(tx.grabFare) || tx.amount;
           payload.tip = parseFloat(tx.grabTip) || 0;
+          payload.workingHours = tx.grabWorkingHours || '0:00';
         } else {
           tx.syncStatus = 'local';
           return false;
@@ -7066,10 +7304,25 @@
           try {
             const date = document.getElementById('grab-date').value;
             const time = document.getElementById('grab-time').value;
-            const battery = document.getElementById('grab-battery').value || '-';
-            const distance = document.getElementById('grab-distance').value || '-';
-            const amountVal = parseFloat(document.getElementById('grab-amount').value) || 0;
-            const tip = parseFloat(document.getElementById('grab-tip').value) || 0;
+            const batteryInput = document.getElementById('grab-battery').value.trim() || '-';
+            const distanceInput = document.getElementById('grab-distance').value.trim() || '-';
+            const amountInput = document.getElementById('grab-amount').value.trim();
+            const tipInput = document.getElementById('grab-tip').value.trim() || '0';
+            const workingHours = document.getElementById('grab-hours').value.trim() || '0:00';
+
+            // Safely evaluate expressions
+            const evaluatedBattery = evaluateGrabExpression(batteryInput);
+            const battery = evaluatedBattery !== null ? Math.round(evaluatedBattery).toString() : (batteryInput || '0');
+
+            const evaluatedDistance = evaluateGrabExpression(distanceInput);
+            const distance = evaluatedDistance !== null ? evaluatedDistance.toString() : (distanceInput || '0');
+
+            const evaluatedAmount = evaluateGrabExpression(amountInput);
+            const amountVal = evaluatedAmount !== null ? evaluatedAmount : (parseFloat(amountInput) || 0);
+
+            const evaluatedTip = evaluateGrabExpression(tipInput);
+            const tip = evaluatedTip !== null ? evaluatedTip : (parseFloat(tipInput) || 0);
+            
             const remarksVal = document.getElementById('grab-remarks').value;
 
             if (!date || isNaN(amountVal)) return;
@@ -7090,6 +7343,7 @@
               grabDistance: distance,
               grabFare: amountVal,
               grabTip: tip,
+              grabWorkingHours: workingHours,
               syncStatus: 'local'
             };
 
@@ -7110,6 +7364,17 @@
             updateDashboardMetrics();
 
             recordGrabForm.reset();
+            
+            // Hide preview elements
+            const previewBattery = document.getElementById('preview-grab-battery');
+            const previewDistance = document.getElementById('preview-grab-distance');
+            const previewAmount = document.getElementById('preview-grab-amount');
+            const previewTip = document.getElementById('preview-grab-tip');
+            if (previewBattery) previewBattery.style.display = 'none';
+            if (previewDistance) previewDistance.style.display = 'none';
+            if (previewAmount) previewAmount.style.display = 'none';
+            if (previewTip) previewTip.style.display = 'none';
+
             const fresh = new Date();
             if (grabDateInput) grabDateInput.value = fresh.toISOString().split('T')[0];
             if (grabTimeInput) grabTimeInput.value = fresh.toTimeString().split(' ')[0].substring(0, 5);
@@ -8738,6 +9003,7 @@
           
           const payload = {
             spreadsheetId: feltzSheetId,
+            grabSpreadsheetId: localStorage.getItem('income_tracker_grab_sheet_id') || DEFAULT_GRAB_SHEET_ID,
             type: 'fetch_summary',
             date: '01/01/2026'
           };
@@ -8787,6 +9053,7 @@
                 
                 const payload = {
                   spreadsheetId: feltzSheetId,
+                  grabSpreadsheetId: localStorage.getItem('income_tracker_grab_sheet_id') || DEFAULT_GRAB_SHEET_ID,
                   type: 'fetch_summary',
                   date: '01/01/2026'
                 };
@@ -8852,6 +9119,7 @@
             
             const payload = {
               spreadsheetId: feltzSheetId,
+              grabSpreadsheetId: localStorage.getItem('income_tracker_grab_sheet_id') || DEFAULT_GRAB_SHEET_ID,
               type: 'fetch_summary',
               date: '01/01/2026'
             };
@@ -9112,28 +9380,47 @@
     // 5. Digital Clock Real-Time Banner (Task 6 JS)
     function updateBannerClock() {
       const now = new Date();
-      let hours = now.getHours();
-      const ampm = hours >= 12 ? 'PM' : 'AM';
-      hours = hours % 12;
-      hours = hours ? hours : 12;
-      const minutes = String(now.getMinutes()).padStart(2, '0');
-      const seconds = String(now.getSeconds()).padStart(2, '0');
-      const hoursStr = String(hours).padStart(2, '0');
-
-      // Direct DOM update — guaranteed correct display every second
+      
       function setClockUnit(id, val) {
         const el = document.getElementById(id);
         if (!el) return;
         el.querySelectorAll('span').forEach(s => s.textContent = val);
       }
-      setClockUnit('flip-hour', hoursStr);
-      setClockUnit('flip-min', minutes);
-      setClockUnit('flip-sec', seconds);
 
-      // AM/PM direct update
-      const ampmEl = document.getElementById('flip-ampm');
-      if (ampmEl) {
-        ampmEl.querySelectorAll('span').forEach(s => s.textContent = ampm);
+      if (activeClockMode === 'stopwatch') {
+        const hours = Math.floor(stopwatchSeconds / 3600);
+        const minutes = Math.floor((stopwatchSeconds % 3600) / 60);
+        const seconds = stopwatchSeconds % 60;
+        
+        const hStr = String(hours).padStart(2, '0');
+        const mStr = String(minutes).padStart(2, '0');
+        const sStr = String(seconds).padStart(2, '0');
+        
+        setClockUnit('flip-hour', hStr);
+        setClockUnit('flip-min', mStr);
+        setClockUnit('flip-sec', sStr);
+        
+        const ampmEl = document.getElementById('flip-ampm');
+        if (ampmEl) {
+          ampmEl.querySelectorAll('span').forEach(s => s.textContent = 'SW');
+        }
+      } else {
+        let hours = now.getHours();
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        hours = hours ? hours : 12;
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        const hoursStr = String(hours).padStart(2, '0');
+
+        setClockUnit('flip-hour', hoursStr);
+        setClockUnit('flip-min', minutes);
+        setClockUnit('flip-sec', seconds);
+
+        const ampmEl = document.getElementById('flip-ampm');
+        if (ampmEl) {
+          ampmEl.querySelectorAll('span').forEach(s => s.textContent = ampm);
+        }
       }
 
       // Update Day
@@ -9154,27 +9441,367 @@
     // Delayed 400ms to outlast any in-flight flipSplitCard setTimeout(350ms)
     function forceResetClock() {
       setTimeout(() => {
-        const now = new Date();
-        let h = now.getHours();
-        const ap = h >= 12 ? 'PM' : 'AM';
-        h = h % 12 || 12;
-        const hStr = String(h).padStart(2, '0');
-        const mStr = String(now.getMinutes()).padStart(2, '0');
-        const sStr = String(now.getSeconds()).padStart(2, '0');
-        // Directly set all span text contents to current time (no animation)
-        ['flip-hour', 'flip-min', 'flip-sec'].forEach((id, i) => {
-          const val = [hStr, mStr, sStr][i];
-          const el = document.getElementById(id);
-          if (el) el.querySelectorAll('span').forEach(s => s.textContent = val);
-        });
-        const ampmEl = document.getElementById('flip-ampm');
-        if (ampmEl) ampmEl.querySelectorAll('span').forEach(s => s.textContent = ap);
+        if (activeClockMode === 'stopwatch') {
+          const startTime = parseInt(localStorage.getItem('chz_stopwatch_start_time'));
+          if (stopwatchRunning && startTime) {
+            stopwatchSeconds = Math.floor((Date.now() - startTime) / 1000);
+          }
+          const hours = Math.floor(stopwatchSeconds / 3600);
+          const minutes = Math.floor((stopwatchSeconds % 3600) / 60);
+          const seconds = stopwatchSeconds % 60;
+          const hStr = String(hours).padStart(2, '0');
+          const mStr = String(minutes).padStart(2, '0');
+          const sStr = String(seconds).padStart(2, '0');
+          ['flip-hour', 'flip-min', 'flip-sec'].forEach((id, i) => {
+            const val = [hStr, mStr, sStr][i];
+            const el = document.getElementById(id);
+            if (el) el.querySelectorAll('span').forEach(s => s.textContent = val);
+          });
+          const ampmEl = document.getElementById('flip-ampm');
+          if (ampmEl) ampmEl.querySelectorAll('span').forEach(s => s.textContent = 'SW');
+        } else {
+          const now = new Date();
+          let h = now.getHours();
+          const ap = h >= 12 ? 'PM' : 'AM';
+          h = h % 12 || 12;
+          const hStr = String(h).padStart(2, '0');
+          const mStr = String(now.getMinutes()).padStart(2, '0');
+          const sStr = String(now.getSeconds()).padStart(2, '0');
+          // Directly set all span text contents to current time (no animation)
+          ['flip-hour', 'flip-min', 'flip-sec'].forEach((id, i) => {
+            const val = [hStr, mStr, sStr][i];
+            const el = document.getElementById(id);
+            if (el) el.querySelectorAll('span').forEach(s => s.textContent = val);
+          });
+          const ampmEl = document.getElementById('flip-ampm');
+          if (ampmEl) ampmEl.querySelectorAll('span').forEach(s => s.textContent = ap);
+        }
       }, 400); // 400ms > flipSplitCard's 350ms timeout — prevents race condition
     }
     // Re-sync clock when browser tab becomes visible again (fixes tab-sleep stall)
     document.addEventListener('visibilitychange', () => {
       if (!document.hidden) forceResetClock();
     });
+
+    // --- QR Code Modal JavaScript Controls ---
+    const qrOverlay = document.getElementById('qr-modal-overlay');
+    const qrContainer = qrOverlay ? qrOverlay.querySelector('.qr-modal-container') : null;
+    
+    function openQRModal() {
+      if (!qrOverlay || !qrContainer) return;
+      qrOverlay.style.display = 'flex';
+      setTimeout(() => {
+        qrOverlay.style.opacity = '1';
+        qrOverlay.style.pointerEvents = 'auto';
+        qrContainer.style.opacity = '1';
+        qrContainer.style.transform = 'scale(1)';
+      }, 10);
+    }
+    
+    function closeQRModal() {
+      if (!qrOverlay || !qrContainer) return;
+      qrOverlay.style.pointerEvents = 'none';
+      qrContainer.style.transform = 'scale(0.9)';
+      qrContainer.style.opacity = '0';
+      qrOverlay.style.opacity = '0';
+      setTimeout(() => {
+        qrOverlay.style.display = 'none';
+      }, 300);
+    }
+
+    // Bind to window to allow inline onclick handlers (since this script is inside an IIFE)
+    window.openQRModal = openQRModal;
+    window.closeQRModal = closeQRModal;
+    
+    const btnShowQr = document.getElementById('btn-show-qr');
+    if (btnShowQr) {
+      btnShowQr.addEventListener('click', openQRModal);
+    }
+    const btnCloseQrModal = document.getElementById('btn-close-qr-modal');
+    if (btnCloseQrModal) {
+      btnCloseQrModal.addEventListener('click', closeQRModal);
+    }
+    if (qrOverlay) {
+      qrOverlay.addEventListener('click', (e) => {
+        if (e.target === qrOverlay) closeQRModal();
+      });
+    }
+
+    // --- Stopwatch & Clock Mode State & Logic ---
+    let activeClockMode = localStorage.getItem('chz_active_clock_mode') || 'clock';
+    let stopwatchSeconds = parseInt(localStorage.getItem('chz_stopwatch_seconds')) || 0;
+    let stopwatchRunning = localStorage.getItem('chz_stopwatch_running') === 'true';
+    let stopwatchInterval = null;
+
+    function saveStopwatchState() {
+      localStorage.setItem('chz_active_clock_mode', activeClockMode);
+      localStorage.setItem('chz_stopwatch_seconds', stopwatchSeconds);
+      localStorage.setItem('chz_stopwatch_running', stopwatchRunning);
+      if (stopwatchRunning) {
+        const startTime = Date.now() - stopwatchSeconds * 1000;
+        localStorage.setItem('chz_stopwatch_start_time', startTime);
+      } else {
+        localStorage.removeItem('chz_stopwatch_start_time');
+      }
+    }
+
+    function startStopwatchInterval() {
+      if (stopwatchInterval) clearInterval(stopwatchInterval);
+      stopwatchInterval = setInterval(() => {
+        if (stopwatchRunning) {
+          const startTime = parseInt(localStorage.getItem('chz_stopwatch_start_time'));
+          if (startTime) {
+            stopwatchSeconds = Math.floor((Date.now() - startTime) / 1000);
+          } else {
+            stopwatchSeconds++;
+          }
+          saveStopwatchState();
+          if (activeClockMode === 'stopwatch') {
+            updateBannerClock();
+          }
+        }
+      }, 1000);
+    }
+
+    function loadStopwatchState() {
+      activeClockMode = localStorage.getItem('chz_active_clock_mode') || 'clock';
+      stopwatchRunning = localStorage.getItem('chz_stopwatch_running') === 'true';
+      if (stopwatchRunning) {
+        const startTime = parseInt(localStorage.getItem('chz_stopwatch_start_time'));
+        if (startTime) {
+          stopwatchSeconds = Math.floor((Date.now() - startTime) / 1000);
+          if (stopwatchSeconds < 0) stopwatchSeconds = 0;
+        } else {
+          stopwatchSeconds = parseInt(localStorage.getItem('chz_stopwatch_seconds')) || 0;
+        }
+        startStopwatchInterval();
+      } else {
+        stopwatchSeconds = parseInt(localStorage.getItem('chz_stopwatch_seconds')) || 0;
+      }
+    }
+
+    // --- Formula Evaluator & Live Previews for Grab Form ---
+    function evaluateGrabExpression(str) {
+      if (!str) return null;
+      const cleaned = str.replace(/\s+/g, '');
+      if (!/^[0-9+\-*/().]+$/.test(cleaned)) {
+        return null;
+      }
+      try {
+        const result = new Function(`return (${cleaned})`)();
+        if (typeof result === 'number' && !isNaN(result) && isFinite(result)) {
+          return result;
+        }
+      } catch (e) {}
+      return null;
+    }
+
+    function setupGrabLivePreview(inputId, previewId) {
+      const inputEl = document.getElementById(inputId);
+      const previewEl = document.getElementById(previewId);
+      if (!inputEl || !previewEl) return;
+      
+      function updatePreview() {
+        const val = inputEl.value.trim();
+        if (!val) {
+          previewEl.style.display = 'none';
+          return;
+        }
+        if (/[+\-*/()]/.test(val)) {
+          const evalResult = evaluateGrabExpression(val);
+          if (evalResult !== null) {
+            previewEl.textContent = `= ${evalResult.toFixed(2).replace(/\.00$/, '')}`;
+            previewEl.style.display = 'block';
+            previewEl.style.color = 'var(--color-neon-rose)';
+          } else {
+            previewEl.textContent = 'สูตรไม่ถูกต้อง';
+            previewEl.style.display = 'block';
+            previewEl.style.color = '#ef4444';
+          }
+        } else {
+          previewEl.style.display = 'none';
+        }
+      }
+      inputEl.addEventListener('input', updatePreview);
+    }
+
+    function setupGrabLivePreviewBattery(inputId, previewId) {
+      const inputEl = document.getElementById(inputId);
+      const previewEl = document.getElementById(previewId);
+      if (!inputEl || !previewEl) return;
+      
+      function updatePreview() {
+        const val = inputEl.value.trim();
+        if (!val) {
+          previewEl.style.display = 'none';
+          return;
+        }
+        if (/[+\-*/()]/.test(val)) {
+          const evalResult = evaluateGrabExpression(val);
+          if (evalResult !== null) {
+            previewEl.textContent = `= ${Math.round(evalResult)}%`;
+            previewEl.style.display = 'block';
+            previewEl.style.color = 'var(--color-neon-rose)';
+          } else {
+            previewEl.textContent = 'สูตรไม่ถูกต้อง';
+            previewEl.style.display = 'block';
+            previewEl.style.color = '#ef4444';
+          }
+        } else {
+          previewEl.style.display = 'none';
+        }
+      }
+      inputEl.addEventListener('input', updatePreview);
+    }
+
+    // Clock/Stopwatch Mode Controls Bindings
+    const btnModeClock = document.getElementById('btn-mode-clock');
+    const btnModeStopwatch = document.getElementById('btn-mode-stopwatch');
+    const stopwatchControls = document.getElementById('stopwatch-controls');
+    
+    function setClockMode(mode) {
+      activeClockMode = mode;
+      localStorage.setItem('chz_active_clock_mode', mode);
+      
+      if (!btnModeClock || !btnModeStopwatch || !stopwatchControls) return;
+      
+      if (mode === 'clock') {
+        btnModeClock.classList.add('active');
+        btnModeClock.style.color = 'var(--color-neon-rose)';
+        btnModeStopwatch.classList.remove('active');
+        btnModeStopwatch.style.color = 'var(--color-text-secondary)';
+        stopwatchControls.style.display = 'none';
+      } else {
+        btnModeStopwatch.classList.add('active');
+        btnModeStopwatch.style.color = 'var(--color-neon-rose)';
+        btnModeClock.classList.remove('active');
+        btnModeClock.style.color = 'var(--color-text-secondary)';
+        stopwatchControls.style.display = 'flex';
+      }
+      updateBannerClock();
+    }
+    
+    if (btnModeClock) btnModeClock.addEventListener('click', () => setClockMode('clock'));
+    if (btnModeStopwatch) btnModeStopwatch.addEventListener('click', () => setClockMode('stopwatch'));
+
+    // Stopwatch Control Buttons Bindings
+    const btnStart = document.getElementById('btn-stopwatch-start');
+    const btnPause = document.getElementById('btn-stopwatch-pause');
+    const btnSave = document.getElementById('btn-stopwatch-save');
+    const btnReset = document.getElementById('btn-stopwatch-reset');
+    
+    function updateStopwatchButtonsUI() {
+      if (!btnStart || !btnPause) return;
+      if (stopwatchRunning) {
+        btnStart.style.display = 'none';
+        btnPause.style.display = 'block';
+      } else {
+        btnStart.style.display = 'block';
+        btnPause.style.display = 'none';
+      }
+    }
+    
+    if (btnStart) {
+      btnStart.addEventListener('click', () => {
+        stopwatchRunning = true;
+        const startTime = Date.now() - stopwatchSeconds * 1000;
+        localStorage.setItem('chz_stopwatch_start_time', startTime);
+        saveStopwatchState();
+        startStopwatchInterval();
+        updateStopwatchButtonsUI();
+        updateBannerClock();
+      });
+    }
+    
+    if (btnPause) {
+      btnPause.addEventListener('click', () => {
+        stopwatchRunning = false;
+        saveStopwatchState();
+        if (stopwatchInterval) {
+          clearInterval(stopwatchInterval);
+          stopwatchInterval = null;
+        }
+        updateStopwatchButtonsUI();
+        updateBannerClock();
+      });
+    }
+    
+    if (btnReset) {
+      btnReset.addEventListener('click', () => {
+        stopwatchRunning = false;
+        stopwatchSeconds = 0;
+        saveStopwatchState();
+        if (stopwatchInterval) {
+          clearInterval(stopwatchInterval);
+          stopwatchInterval = null;
+        }
+        updateStopwatchButtonsUI();
+        updateBannerClock();
+      });
+    }
+
+    if (btnSave) {
+      btnSave.addEventListener('click', () => {
+        const hours = Math.floor(stopwatchSeconds / 3600);
+        const minutes = Math.floor((stopwatchSeconds % 3600) / 60);
+        const formattedTime = `${hours}:${String(minutes).padStart(2, '0')}`;
+        
+        const grabHoursInput = document.getElementById('grab-hours');
+        if (grabHoursInput) {
+          grabHoursInput.value = formattedTime;
+        }
+        
+        const workspaceTrack = document.querySelector('.workspace-pages-track');
+        if (workspaceTrack) {
+          workspaceTrack.style.transform = 'translateX(-33.3333%)';
+        }
+        
+        const navItems = document.querySelectorAll('.nav-menu .nav-item');
+        navItems.forEach((nav, idx) => {
+          if (idx === 1) {
+            nav.classList.add('active');
+          } else {
+            nav.classList.remove('active');
+          }
+        });
+        
+        const viewport = document.querySelector('.workspace-viewport');
+        if (viewport) {
+          viewport.style.backgroundImage = "url('assets/hero_anime_white.jpg')";
+        }
+        
+        const slide2TabButtons = document.querySelectorAll('.record-income-page .segment-btn-tab');
+        slide2TabButtons.forEach(btn => {
+          if (btn.getAttribute('data-target') === 'form-record-grab') {
+            btn.click();
+          }
+        });
+      });
+    }
+
+    // Pull Stopwatch hours click
+    const btnPullStopwatch = document.getElementById('btn-pull-stopwatch');
+    if (btnPullStopwatch) {
+      btnPullStopwatch.addEventListener('click', () => {
+        const hours = Math.floor(stopwatchSeconds / 3600);
+        const minutes = Math.floor((stopwatchSeconds % 3600) / 60);
+        const formattedTime = `${hours}:${String(minutes).padStart(2, '0')}`;
+        const grabHoursInput = document.getElementById('grab-hours');
+        if (grabHoursInput) {
+          grabHoursInput.value = formattedTime;
+        }
+      });
+    }
+
+    // Initialize state
+    loadStopwatchState();
+    setClockMode(activeClockMode);
+    updateStopwatchButtonsUI();
+    setupGrabLivePreview('grab-amount', 'preview-grab-amount');
+    setupGrabLivePreview('grab-distance', 'preview-grab-distance');
+    setupGrabLivePreview('grab-tip', 'preview-grab-tip');
+    setupGrabLivePreviewBattery('grab-battery', 'preview-grab-battery');
+
     // Initialize immediately and set interval
     updateBannerClock();
     setInterval(updateBannerClock, 1000);
