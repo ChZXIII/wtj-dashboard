@@ -2873,7 +2873,7 @@
             </div>
             <div class="user-info-text">
               <div class="user-role">CHZ MANAGER</div>
-              <div class="user-version">Version 2.05</div>
+              <div class="user-version">Version 2.06</div>
             </div>
           </div>
         </div>
@@ -2888,7 +2888,7 @@
             <!-- หัวข้อและปุ่มย้อนกลับสไลด์ -->
             <div class="settings-header">
               <div class="settings-header-text">
-                <h3 class="settings-title" style="display: flex; align-items: center; gap: 8px;">Google Sheets Connection <span style="font-size: 11px; background: rgba(0,0,0,0.06); color: var(--color-text-secondary); padding: 2px 8px; border-radius: 8px; font-weight: 500;">Version 2.05</span></h3>
+                <h3 class="settings-title" style="display: flex; align-items: center; gap: 8px;">Google Sheets Connection <span style="font-size: 11px; background: rgba(0,0,0,0.06); color: var(--color-text-secondary); padding: 2px 8px; border-radius: 8px; font-weight: 500;">Version 2.06</span></h3>
                 <p style="font-size: 11px; color: var(--color-text-secondary); margin-top: 4px;">ผูกแอปเข้ากับสิทธิ์ Google Sheets ของแกผ่าน API หรือ Google Apps Script</p>
               </div>
               <button class="capsule-btn btn-back-to-overview" id="settings-back-to-overview-btn" style="display: none; cursor: pointer; background: rgba(39, 168, 115, 0.1) !important; color: #27a873 !important; border: none !important;">
@@ -3537,6 +3537,14 @@
                     <label for="autofillDocSelect">ดึงข้อมูลอ้างอิง / Reference Doc</label>
                     <select id="autofillDocSelect" style="width: 100%; height: 38px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.1); background: var(--color-white); padding: 0 8px; font-family: inherit; font-size: 12px; cursor: pointer; color: var(--color-text-primary);">
                       <option value="">-- เลือกเอกสาร --</option>
+                    </select>
+                  </div>
+
+                  <!-- History Edit Autofill -->
+                  <div id="groupHistoryEditDoc" class="settings-form-group" style="display: none;">
+                    <label for="historyEditDocSelect">แก้ไขเอกสารเดิม / Edit Saved Doc</label>
+                    <select id="historyEditDocSelect" style="width: 100%; height: 38px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.1); background: var(--color-white); padding: 0 8px; font-family: inherit; font-size: 12px; cursor: pointer; color: var(--color-text-primary);">
+                      <option value="">-- เลือกเอกสารเดิมเพื่อแก้ไข --</option>
                     </select>
                   </div>
 
@@ -7796,6 +7804,8 @@
                 signerName: signerName,
                 showSignature: showSig,
                 whtRate: whtRate,
+                discount: discount,
+                discountDesc: document.getElementById('doc-discount-desc')?.value || '',
                 amount: netTotal,
                 items: JSON.parse(JSON.stringify(exportItems))
               };
@@ -7909,19 +7919,10 @@
         const docType = document.getElementById('export-doc-type')?.value || 'quotation';
         const groupAutofillDoc = document.getElementById('groupAutofillDoc');
         const autofillDocSelect = document.getElementById('autofillDocSelect');
+        const groupHistoryEditDoc = document.getElementById('groupHistoryEditDoc');
+        const historyEditDocSelect = document.getElementById('historyEditDocSelect');
         
-        if (!groupAutofillDoc || !autofillDocSelect) return;
-        
-        if (docType === 'quotation') {
-          groupAutofillDoc.style.display = 'none';
-          return;
-        }
-        
-        const targetType = docType === 'invoice' ? 'quotation' : 'invoice';
-        const labelText = docType === 'invoice' ? 'ดึงข้อมูลอ้างอิงจากใบเสนอราคา / Ref Quotation' : 'ดึงข้อมูลอ้างอิงจากใบวางบิล / Ref Invoice';
-        
-        const labelEl = groupAutofillDoc.querySelector('label');
-        if (labelEl) labelEl.textContent = labelText;
+        if (!groupAutofillDoc || !autofillDocSelect || !groupHistoryEditDoc || !historyEditDocSelect) return;
         
         let dbDocs = [];
         try {
@@ -7931,20 +7932,58 @@
           console.error('Error reading feltz_db_docs:', e);
         }
         
-        const filteredDocs = dbDocs.filter(d => d.type === targetType);
-        
-        autofillDocSelect.innerHTML = '<option value="">-- เลือกเอกสาร --</option>';
-        
-        if (filteredDocs.length > 0) {
-          groupAutofillDoc.style.display = 'block';
-          filteredDocs.forEach(doc => {
-            const opt = document.createElement('option');
-            opt.value = doc.number;
-            opt.textContent = `${doc.number} - ${doc.name} (${parseFloat(doc.amount || 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} THB)`;
-            autofillDocSelect.appendChild(opt);
-          });
-        } else {
+        // 1. Cross-Reference Dropdown (only for invoice & receipt)
+        if (docType === 'quotation') {
           groupAutofillDoc.style.display = 'none';
+        } else {
+          const targetType = docType === 'invoice' ? 'quotation' : 'invoice';
+          const labelText = docType === 'invoice' ? 'ดึงข้อมูลอ้างอิงจากใบเสนอราคา / Ref Quotation' : 'ดึงข้อมูลอ้างอิงจากใบวางบิล / Ref Invoice';
+          
+          const labelEl = groupAutofillDoc.querySelector('label');
+          if (labelEl) labelEl.textContent = labelText;
+          
+          const filteredDocs = dbDocs.filter(d => d.type === targetType);
+          
+          autofillDocSelect.innerHTML = '<option value="">-- เลือกเอกสาร --</option>';
+          
+          if (filteredDocs.length > 0) {
+            groupAutofillDoc.style.display = 'block';
+            filteredDocs.forEach(doc => {
+              const opt = document.createElement('option');
+              opt.value = doc.number;
+              opt.textContent = `${doc.number} - ${doc.name} (${parseFloat(doc.amount || 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} THB)`;
+              autofillDocSelect.appendChild(opt);
+            });
+          } else {
+            groupAutofillDoc.style.display = 'none';
+          }
+        }
+        
+        // 2. History Edit Dropdown (only for quotation & invoice)
+        if (docType === 'quotation' || docType === 'invoice') {
+          const filteredDocs = dbDocs.filter(d => d.type === docType);
+          const labelText = docType === 'quotation' 
+            ? 'ดึงใบเสนอราคาเดิมมาแก้ไข / Edit Saved Quotation' 
+            : 'ดึงใบวางบิลเดิมมาแก้ไข / Edit Saved Invoice';
+          
+          const labelEl = groupHistoryEditDoc.querySelector('label');
+          if (labelEl) labelEl.textContent = labelText;
+          
+          historyEditDocSelect.innerHTML = '<option value="">-- เลือกเอกสารเดิมเพื่อแก้ไข --</option>';
+          
+          if (filteredDocs.length > 0) {
+            groupHistoryEditDoc.style.display = 'block';
+            filteredDocs.forEach(doc => {
+              const opt = document.createElement('option');
+              opt.value = doc.number;
+              opt.textContent = `${doc.number} - ${doc.name} (${parseFloat(doc.amount || 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} THB)`;
+              historyEditDocSelect.appendChild(opt);
+            });
+          } else {
+            groupHistoryEditDoc.style.display = 'none';
+          }
+        } else {
+          groupHistoryEditDoc.style.display = 'none';
         }
       }
 
@@ -7989,6 +8028,79 @@
         
         if (bankInfoEl) bankInfoEl.value = doc.bankDetails || '';
         if (signerNameEl) signerNameEl.value = doc.signerName || '';
+        
+        const whtSelectEl = document.getElementById('doc-wht-select');
+        if (whtSelectEl) {
+          whtSelectEl.value = doc.whtRate !== undefined ? doc.whtRate.toString() : '0';
+        }
+        
+        updateA4Preview();
+      }
+
+      function handleHistoryEditSelectChange(e) {
+        const docNo = e.target.value;
+        if (!docNo) return;
+        
+        let dbDocs = [];
+        try {
+          const raw = localStorage.getItem('feltz_db_docs');
+          if (raw) dbDocs = JSON.parse(raw);
+        } catch (err) {
+          console.error(err);
+        }
+        
+        const doc = dbDocs.find(d => d.number === docNo);
+        if (!doc) return;
+        
+        // Load Document Meta
+        const docNumberEl = document.getElementById('export-doc-number');
+        const docDateEl = document.getElementById('export-doc-date');
+        const paymentTermsEl = document.getElementById('export-doc-payment-terms');
+        const dueDateEl = document.getElementById('export-doc-due-date');
+        
+        if (docNumberEl) docNumberEl.value = doc.number || '';
+        if (docDateEl) docDateEl.value = doc.date || '';
+        if (paymentTermsEl) paymentTermsEl.value = doc.paymentTerm || '';
+        if (dueDateEl) dueDateEl.value = doc.dueDate || '';
+        
+        // Load Client details
+        const clientNameEl = document.getElementById('client-name');
+        const clientAddressEl = document.getElementById('client-address');
+        const clientPhoneEl = document.getElementById('client-phone');
+        const clientTaxIdEl = document.getElementById('client-tax-id');
+        
+        if (clientNameEl) clientNameEl.value = doc.name || '';
+        if (clientAddressEl) clientAddressEl.value = doc.clientAddress || '';
+        if (clientPhoneEl) clientPhoneEl.value = doc.clientPhone || '';
+        if (clientTaxIdEl) clientTaxIdEl.value = doc.clientTaxId || '';
+        
+        // Load Project & Remarks
+        const projectNameEl = document.getElementById('doc-project-name');
+        const docRemarksEl = document.getElementById('doc-remarks');
+        
+        if (projectNameEl) projectNameEl.value = doc.detail || '';
+        if (docRemarksEl) docRemarksEl.value = doc.remarks || '';
+        
+        // Load Discount
+        const discountEl = document.getElementById('doc-discount');
+        const discountDescEl = document.getElementById('doc-discount-desc');
+        if (discountEl) discountEl.value = doc.discount !== undefined ? doc.discount : '0';
+        if (discountDescEl) discountDescEl.value = doc.discountDesc !== undefined ? doc.discountDesc : '';
+        
+        // Load Items
+        if (doc.items && Array.isArray(doc.items)) {
+          exportItems = JSON.parse(JSON.stringify(doc.items));
+          renderExportItemsForm();
+        }
+        
+        // Load Signatures and Bank Details
+        const bankInfoEl = document.getElementById('doc-bank-info');
+        const signerNameEl = document.getElementById('doc-signer-name');
+        const showSigEl = document.getElementById('doc-show-sig');
+        
+        if (bankInfoEl) bankInfoEl.value = doc.bankDetails || '';
+        if (signerNameEl) signerNameEl.value = doc.signerName || '';
+        if (showSigEl) showSigEl.checked = doc.showSignature !== undefined ? doc.showSignature : true;
         
         const whtSelectEl = document.getElementById('doc-wht-select');
         if (whtSelectEl) {
@@ -8114,6 +8226,11 @@
         const autofillDocSelect = document.getElementById('autofillDocSelect');
         if (autofillDocSelect) {
           autofillDocSelect.addEventListener('change', handleAutofillSelectChange);
+        }
+        
+        const historyEditDocSelect = document.getElementById('historyEditDocSelect');
+        if (historyEditDocSelect) {
+          historyEditDocSelect.addEventListener('change', handleHistoryEditSelectChange);
         }
         
         updateAutofillSelect();
