@@ -728,8 +728,8 @@ function getEventColorIdFromEnum(colorEnum) {
   
   if (str.indexOf("PALE_BLUE") !== -1) return "1";
   if (str.indexOf("MAUVE") !== -1) return "3";
-  if (str.indexOf("CYAN") !== -1) return "7";
+  if (str.indexOf("CYAN") !== -1 || str.indexOf("PEACOCK") !== -1) return "7";
   if (str.indexOf("GRAY") !== -1) return "8";
-  if (str.indexOf("BLUE") !== -1) return "9";
+  if (str.indexOf("BLUE") !== -1 || str.indexOf("COBALT") !== -1) return "9";
   return "";
 }
