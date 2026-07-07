@@ -2412,6 +2412,19 @@
     .segment-btn-tab { flex: 1; padding: 8px; border-radius: 8px; border: none; font-weight: 600; font-size: 11px; cursor: pointer; transition: all 0.2s; background: transparent; color: var(--color-text-secondary); }
     .segment-btn-tab.active { background: var(--color-pastel-green); color: #27a873; }
 
+    .form-flex-row {
+      display: flex;
+      gap: 12px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .form-flex-row-gap-8 {
+      display: flex;
+      gap: 8px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
     /* Todo Modal Styles */
     .todo-modal-container {
       width: 400px;
@@ -2680,19 +2693,18 @@
         display: block !important;
       }
 
-      /* เคลียร์ inline style flex: 1 เดิมของ settings-form-group ในแถวสลักคู่ป้องกันเบราว์เซอร์ iOS ยืดขยายเอง */
-      #form-record-general > div,
-      #form-record-expense > div,
-      #form-record-grab > div {
+      .form-flex-row,
+      .form-flex-row-gap-8 {
         display: block !important;
         width: 100% !important;
         max-width: 100% !important;
         box-sizing: border-box !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
         margin-bottom: 0 !important;
       }
-      #form-record-general > div .settings-form-group,
-      #form-record-expense > div .settings-form-group,
-      #form-record-grab > div .settings-form-group {
+      .form-flex-row .settings-form-group,
+      .form-flex-row-gap-8 .settings-form-group {
         flex: none !important;
         width: 100% !important;
         box-sizing: border-box !important;
@@ -2704,41 +2716,13 @@
         box-sizing: border-box !important;
       }
       
-      /* จัดการกล่องคู่อินพุตบันทึกรายรับ Feltz (Date/Time, ยอดเงิน/Checkbox) บนมือถือ */
-      #form-record-general div[style*="display: flex"] {
-        gap: 8px !important;
-      }
       #form-record-general input, 
       #form-record-general select {
         font-size: 11.5px !important;
       }
       
-      /* จัดการกล่องคู่อินพุตของหน้ารถ Grab บนมือถือ */
-      #form-record-grab div[style*="display: flex"] {
-        gap: 8px !important;
-      }
       #form-record-grab input {
         font-size: 11.5px !important;
-      }
-
-      /* บังคับช่องคู่ในหน้าธุรกรรมให้สลับเป็น block ทั้งหมดบนมือถือป้องกันการเบียดล้น */
-      #form-record-general div[style*="display: flex"],
-      #form-record-expense div[style*="display: flex"],
-      #form-record-grab div[style*="display: flex"] {
-        display: block !important;
-        width: 100% !important;
-        max-width: 100% !important;
-        box-sizing: border-box !important;
-        margin-left: 0 !important;
-        margin-right: 0 !important;
-      }
-      
-      /* เอา margin ล้นของปุ่ม Checkbox หักภาษี 3% ออก */
-      #form-record-general div[style*="display: flex"] .settings-form-group {
-        margin-bottom: 0 !important;
-      }
-      #form-record-general div[style*="display: flex"] label[style*="align-items: center"] {
-        margin-top: 4px !important;
       }
       
       /* Inner page responsive layout styles */
@@ -3237,7 +3221,7 @@
             </div>
             <div class="user-info-text">
               <div class="user-role">CHZ MANAGER</div>
-              <div class="user-version">Version 2.4.1</div>
+              <div class="user-version">Version 2.4.2</div>
             </div>
           </div>
         </div>
@@ -3252,7 +3236,7 @@
             <!-- หัวข้อและปุ่มย้อนกลับสไลด์ -->
             <div class="settings-header">
               <div class="settings-header-text">
-                <h3 class="settings-title" style="display: flex; align-items: center; gap: 8px;">Google Sheets Connection <span style="font-size: 11px; background: rgba(0,0,0,0.06); color: var(--color-text-secondary); padding: 2px 8px; border-radius: 8px; font-weight: 500;">Version 2.4.1</span></h3>
+                <h3 class="settings-title" style="display: flex; align-items: center; gap: 8px;">Google Sheets Connection <span style="font-size: 11px; background: rgba(0,0,0,0.06); color: var(--color-text-secondary); padding: 2px 8px; border-radius: 8px; font-weight: 500;">Version 2.4.2</span></h3>
                 <p style="font-size: 11px; color: var(--color-text-secondary); margin-top: 4px;">ผูกแอปเข้ากับสิทธิ์ Google Sheets ของแกผ่าน API หรือ Google Apps Script</p>
               </div>
               <button class="capsule-btn btn-back-to-overview" id="settings-back-to-overview-btn" style="display: none; cursor: pointer; background: rgba(39, 168, 115, 0.1) !important; color: #27a873 !important; border: none !important;">
@@ -3761,7 +3745,7 @@
 
             <!-- 1. General Income Form -->
             <form id="form-record-general" style="display: flex; flex-direction: column; gap: 12px; max-width: 500px; margin-top: 8px;">
-              <div style="display: flex; gap: 12px;">
+              <div class="form-flex-row">
                 <div class="settings-form-group" style="flex: 1;">
                   <label for="feltz-inc-date">Date</label>
                   <input type="date" id="feltz-inc-date" required>
@@ -3781,7 +3765,7 @@
                 <label for="feltz-inc-remarks">รายละเอียดงาน</label>
                 <input type="text" id="feltz-inc-remarks" placeholder="บันทึกรายละเอียดงาน..." required>
               </div>
-              <div style="display: flex; gap: 12px; align-items: flex-end;">
+              <div class="form-flex-row" style="align-items: flex-end;">
                 <div class="settings-form-group" style="flex: 1.5;">
                   <label for="feltz-inc-amount">ยอดเงิน (THB)</label>
                   <input type="number" id="feltz-inc-amount" min="1" step="any" required placeholder="0.00">
@@ -3802,7 +3786,7 @@
 
             <!-- 2. Expense Form -->
             <form id="form-record-expense" style="display: none; flex-direction: column; gap: 12px; max-width: 500px; margin-top: 8px;">
-              <div style="display: flex; gap: 12px;">
+              <div class="form-flex-row">
                 <div class="settings-form-group" style="flex: 1;">
                   <label for="feltz-exp-date">Date</label>
                   <input type="date" id="feltz-exp-date" required>
@@ -3837,7 +3821,7 @@
 
             <!-- 3. Grab Driving Form -->
             <form id="form-record-grab" style="display: none; flex-direction: column; gap: 12px; max-width: 500px; margin-top: 8px;">
-              <div style="display: flex; gap: 12px;">
+              <div class="form-flex-row">
                 <div class="settings-form-group" style="flex: 1;">
                   <label for="grab-date">Date</label>
                   <input type="date" id="grab-date" required>
@@ -3847,7 +3831,7 @@
                   <input type="time" id="grab-time" required>
                 </div>
               </div>
-              <div style="display: flex; gap: 12px;">
+              <div class="form-flex-row">
                 <div class="settings-form-group" style="flex: 1;">
                   <label for="grab-battery">เปอร์เซ็นต์แบต (%)</label>
                   <input type="text" id="grab-battery" placeholder="เช่น 85">
@@ -3859,7 +3843,7 @@
                   <span class="live-preview" id="preview-grab-distance" style="font-size: 11px; color: var(--color-neon-rose); font-weight: 700; display: none; margin-top: 2px;"></span>
                 </div>
               </div>
-              <div style="display: flex; gap: 12px;">
+              <div class="form-flex-row">
                 <div class="settings-form-group" style="flex: 1;">
                   <label for="grab-amount">ยอดเงินค่าโดยสาร (THB)</label>
                   <input type="text" id="grab-amount" required placeholder="0.00">
@@ -3873,7 +3857,7 @@
               </div>
               <div class="settings-form-group">
                 <label for="grab-hours">เวลาทำงาน (ชั่วโมง:นาที)</label>
-                <div style="display: flex; gap: 8px;">
+                <div class="form-flex-row-gap-8">
                   <input type="text" id="grab-hours" placeholder="เช่น 8:30" style="flex: 1;">
                   <button type="button" class="btn-action" id="btn-pull-stopwatch">ดึงเวลา</button>
                 </div>
