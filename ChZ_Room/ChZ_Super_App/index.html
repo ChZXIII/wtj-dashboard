@@ -3043,7 +3043,7 @@
             </div>
             <div class="user-info-text">
               <div class="user-role">CHZ MANAGER</div>
-              <div class="user-version">Version 2.1.5</div>
+              <div class="user-version">Version 2.1.6</div>
             </div>
           </div>
         </div>
@@ -3058,7 +3058,7 @@
             <!-- หัวข้อและปุ่มย้อนกลับสไลด์ -->
             <div class="settings-header">
               <div class="settings-header-text">
-                <h3 class="settings-title" style="display: flex; align-items: center; gap: 8px;">Google Sheets Connection <span style="font-size: 11px; background: rgba(0,0,0,0.06); color: var(--color-text-secondary); padding: 2px 8px; border-radius: 8px; font-weight: 500;">Version 2.1.5</span></h3>
+                <h3 class="settings-title" style="display: flex; align-items: center; gap: 8px;">Google Sheets Connection <span style="font-size: 11px; background: rgba(0,0,0,0.06); color: var(--color-text-secondary); padding: 2px 8px; border-radius: 8px; font-weight: 500;">Version 2.1.6</span></h3>
                 <p style="font-size: 11px; color: var(--color-text-secondary); margin-top: 4px;">ผูกแอปเข้ากับสิทธิ์ Google Sheets ของแกผ่าน API หรือ Google Apps Script</p>
               </div>
               <button class="capsule-btn btn-back-to-overview" id="settings-back-to-overview-btn" style="display: none; cursor: pointer; background: rgba(39, 168, 115, 0.1) !important; color: #27a873 !important; border: none !important;">
@@ -3316,24 +3316,44 @@
                 </div>
               </div>
       
-              <!-- การ์ดโปรโมชั่น Quick Actions ครึ่งล่างซ้าย -->
-              <div class="promo-card">
-                <div class="promo-header">
+              <!-- การ์ดโปรโมชั่น Quick Actions ปรับปรุงเป็น Grab Quick Record -->
+              <div class="promo-card" style="padding: 12px 14px !important; display: flex; flex-direction: column; gap: 8px; justify-content: flex-start !important; box-sizing: border-box;">
+                <div class="promo-header" style="margin-bottom: 2px; align-items: center;">
                   <div class="promo-title-wrap">
-                    <span class="promo-label">Quick Actions</span>
-                    <h2 class="promo-count">3 <span class="ready-text">shortcuts</span></h2>
+                    <span class="promo-label" style="font-size: 10px; font-weight: 700; color: var(--color-text-secondary); text-transform: uppercase;">Grab Quick Record</span>
                   </div>
-                  <div class="promo-badge-icon">
-                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <div class="promo-badge-icon" style="width: 28px; height: 28px; background: rgba(0,0,0,0.05) !important; color: var(--color-text-primary) !important; flex-shrink: 0; box-shadow: none !important;">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 14px; height: 14px;">
                       <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
                     </svg>
                   </div>
                 </div>
-                <div class="promo-tags">
-                  <button class="tag-capsule action-btn-nav" data-index="2" style="background: var(--color-white); border: none; padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; cursor: pointer; color: var(--color-text-primary); transition: all 0.2s ease;">บันทึกรายรับ</button>
-                  <button class="tag-capsule action-btn-nav" data-index="3" style="background: var(--color-white); border: none; padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; cursor: pointer; color: var(--color-text-primary); transition: all 0.2s ease;">ประวัติการบันทึก</button>
-                  <button class="tag-capsule action-btn-nav" data-index="4" style="background: var(--color-white); border: none; padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; cursor: pointer; color: var(--color-text-primary); transition: all 0.2s ease;">ออกเอกสาร PDF</button>
-                </div>
+                
+                <form id="quick-record-grab-form" style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px 8px; width: 100%; box-sizing: border-box;">
+                  <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <label style="font-size: 9px; font-weight: 700; color: var(--color-text-secondary);">เปอร์เซ็นต์แบต (%)</label>
+                    <input type="text" id="quick-grab-battery" placeholder="เช่น 85" style="width: 100%; height: 28px; padding: 0 8px; border-radius: 8px; border: none; background: rgba(255,255,255,0.7); font-size: 10px; font-weight: 600; box-sizing: border-box; font-family: var(--font-body); color: var(--color-text-primary);">
+                  </div>
+                  <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <label style="font-size: 9px; font-weight: 700; color: var(--color-text-secondary);">ระยะทาง (กิโลเมตร)</label>
+                    <input type="text" id="quick-grab-distance" placeholder="เช่น 24.5" style="width: 100%; height: 28px; padding: 0 8px; border-radius: 8px; border: none; background: rgba(255,255,255,0.7); font-size: 10px; font-weight: 600; box-sizing: border-box; font-family: var(--font-body); color: var(--color-text-primary);">
+                  </div>
+                  <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <label style="font-size: 9px; font-weight: 700; color: var(--color-text-secondary);">ยอดเงินค่าโดยสาร (THB)</label>
+                    <input type="text" id="quick-grab-amount" placeholder="0.00" style="width: 100%; height: 28px; padding: 0 8px; border-radius: 8px; border: none; background: rgba(255,255,255,0.7); font-size: 10px; font-weight: 600; box-sizing: border-box; font-family: var(--font-body); color: var(--color-text-primary);">
+                  </div>
+                  <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <label style="font-size: 9px; font-weight: 700; color: var(--color-text-secondary);">ยอดทิป (THB)</label>
+                    <input type="text" id="quick-grab-tip" placeholder="0" value="0" style="width: 100%; height: 28px; padding: 0 8px; border-radius: 8px; border: none; background: rgba(255,255,255,0.7); font-size: 10px; font-weight: 600; box-sizing: border-box; font-family: var(--font-body); color: var(--color-text-primary);">
+                  </div>
+                </form>
+                
+                <button type="button" id="btn-quick-grab-submit" class="tag-capsule" style="width: 100%; height: 28px; background: var(--color-neon-rose) !important; color: var(--color-white) !important; border: none; border-radius: 8px; font-size: 10px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; box-shadow: 0 3px 8px rgba(255,75,114,0.15); transition: all 0.2s ease; margin-top: 2px; flex-shrink: 0;">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 12px; height: 12px; color: var(--color-white);">
+                    <path d="M5 12h14M12 5v14"/>
+                  </svg>
+                  <span>บันทึกรายได้ Grab</span>
+                </button>
               </div>
             </section>
       
@@ -7493,6 +7513,102 @@
               submitBtn.disabled = false;
               submitBtn.innerHTML = originalBtnHtml;
             }
+          }
+        });
+      }
+
+      // Grab Quick Record Form Submit Handler
+      const btnQuickGrabSubmit = document.getElementById('btn-quick-grab-submit');
+      if (btnQuickGrabSubmit) {
+        btnQuickGrabSubmit.addEventListener('click', async (e) => {
+          e.preventDefault();
+          
+          try {
+            const batteryInput = document.getElementById('quick-grab-battery').value.trim() || '-';
+            const distanceInput = document.getElementById('quick-grab-distance').value.trim() || '-';
+            const amountInput = document.getElementById('quick-grab-amount').value.trim();
+            const tipInput = document.getElementById('quick-grab-tip').value.trim() || '0';
+            
+            // Safely evaluate expressions
+            const evaluatedBattery = evaluateGrabExpression(batteryInput);
+            const battery = evaluatedBattery !== null ? Math.round(evaluatedBattery).toString() : (batteryInput || '0');
+
+            const evaluatedDistance = evaluateGrabExpression(distanceInput);
+            const distance = evaluatedDistance !== null ? evaluatedDistance.toString() : (distanceInput || '0');
+
+            const evaluatedAmount = evaluateGrabExpression(amountInput);
+            const amountVal = evaluatedAmount !== null ? evaluatedAmount : (parseFloat(amountInput) || 0);
+
+            const evaluatedTip = evaluateGrabExpression(tipInput);
+            const tip = evaluatedTip !== null ? evaluatedTip : (parseFloat(tipInput) || 0);
+
+            if (!amountInput || isNaN(amountVal)) {
+              alert('กรุณากรอกยอดเงินค่าโดยสารก่อนจ้าแก');
+              return;
+            }
+
+            const fresh = new Date();
+            const dateStr = fresh.toISOString().split('T')[0];
+            const timeStr = fresh.toTimeString().split(' ')[0].substring(0, 5);
+
+            const totalAmount = amountVal + tip;
+            let remarks = 'Quick Record';
+            remarks += ` [แบต: ${battery}% | ${distance} กม. | ทิป: ${tip} THB]`;
+
+            const newTx = {
+              id: Date.now(),
+              date: dateStr,
+              time: timeStr,
+              type: 'income',
+              category: 'Grab Income',
+              remarks: remarks,
+              amount: totalAmount,
+              grabBattery: battery,
+              grabDistance: distance,
+              grabFare: amountVal,
+              grabTip: tip,
+              grabWorkingHours: '0:00',
+              syncStatus: 'local'
+            };
+
+            // Visual loading feedback
+            btnQuickGrabSubmit.disabled = true;
+            btnQuickGrabSubmit.querySelector('span').textContent = 'กำลังบันทึก...';
+
+            const scriptUrl = localStorage.getItem('income_tracker_gas_url') || '';
+            if (scriptUrl) {
+              const success = await sendTransactionToGAS(newTx);
+              if (success) {
+                newTx.syncStatus = 'synced';
+              } else {
+                newTx.syncStatus = 'failed';
+              }
+            }
+
+            transactions.push(newTx);
+            saveTransactions();
+            updateDashboardMetrics();
+
+            // Reset inputs
+            document.getElementById('quick-record-grab-form').reset();
+            document.getElementById('quick-grab-tip').value = '0';
+            
+            // Live update Overview modals if active
+            if (window.cachedOverviewData) {
+              const dataToUse = calculateLocalOverviewData();
+              renderOverviewKPIs(dataToUse);
+              renderOverviewMonthlySummaryTable(dataToUse);
+              drawOverviewSvgChart(dataToUse);
+            }
+
+            alert('บันทึกรายได้ Grab สำเร็จเรียบร้อยแล้วจ้าแก!');
+
+          } catch (err) {
+            console.error(err);
+            alert('เกิดข้อผิดพลาดในการบันทึกจ้า: ' + err.message);
+          } finally {
+            btnQuickGrabSubmit.disabled = false;
+            btnQuickGrabSubmit.querySelector('span').textContent = 'บันทึกรายได้ Grab';
           }
         });
       }
