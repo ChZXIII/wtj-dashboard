@@ -685,17 +685,34 @@ function getEventColorEnum(colorId) {
 // Convert CalendarApp.EventColor Enum to Color ID
 function getEventColorIdFromEnum(colorEnum) {
   if (!colorEnum) return "";
-  var str = String(colorEnum);
-  if (str.indexOf("PALE_BLUE") !== -1) return "1";
+  var str = String(colorEnum).toUpperCase();
+  
   if (str.indexOf("PALE_GREEN") !== -1) return "2";
+  
+  // Green variations mapping (Sage, Basil, Mint, Sprout, Teal, Forest, Olive etc.)
+  if (str.indexOf("GREEN") !== -1 || str.indexOf("MINT") !== -1 || str.indexOf("SPROUT") !== -1 || 
+      str.indexOf("TEAL") !== -1 || str.indexOf("FOREST") !== -1 || str.indexOf("OLIVE") !== -1 || 
+      str.indexOf("SAGE") !== -1 || str.indexOf("BASIL") !== -1) {
+    return "10";
+  }
+  
+  // Red variations mapping (Flamingo, Tomato, Cherry, Crimson etc.)
+  if (str.indexOf("RED") !== -1 || str.indexOf("CHERRY") !== -1 || str.indexOf("CRIMSON") !== -1 || 
+      str.indexOf("FLAMINGO") !== -1 || str.indexOf("TOMATO") !== -1) {
+    return "11";
+  }
+  
+  // Yellow/Orange variations mapping
+  if (str.indexOf("YELLOW") !== -1 || str.indexOf("LEMON") !== -1 || str.indexOf("MUSTARD") !== -1 || 
+      str.indexOf("ORANGE") !== -1 || str.indexOf("PEACH") !== -1 || str.indexOf("PUMPKIN") !== -1 || 
+      str.indexOf("MELON") !== -1) {
+    return "5";
+  }
+  
+  if (str.indexOf("PALE_BLUE") !== -1) return "1";
   if (str.indexOf("MAUVE") !== -1) return "3";
-  if (str.indexOf("PALE_RED") !== -1) return "4";
-  if (str.indexOf("YELLOW") !== -1) return "5";
-  if (str.indexOf("ORANGE") !== -1) return "6";
   if (str.indexOf("CYAN") !== -1) return "7";
   if (str.indexOf("GRAY") !== -1) return "8";
   if (str.indexOf("BLUE") !== -1) return "9";
-  if (str.indexOf("GREEN") !== -1) return "10";
-  if (str.indexOf("RED") !== -1) return "11";
   return "";
 }
