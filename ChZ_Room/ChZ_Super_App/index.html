@@ -2087,6 +2087,32 @@
       text-align: center;
     }
 
+    /* 4th Calendar status color: Personal (Cyan/Sky blue) */
+    .status-personal {
+      background: rgba(14, 165, 233, 0.08) !important;
+      color: #0ea5e9 !important;
+      border-left: 4px solid #0ea5e9 !important;
+    }
+    .dot.personal, .cal-dot.status-personal {
+      background-color: #0ea5e9 !important;
+      border: none !important;
+      box-shadow: 0 0 6px #0ea5e9 !important;
+    }
+    .day-job-pill.status-personal {
+      background: rgba(14, 165, 233, 0.08) !important;
+      color: #0ea5e9 !important;
+      border-left: 3px solid #0ea5e9 !important;
+    }
+    .job-status-tag.status-personal {
+      background-color: rgba(14, 165, 233, 0.08) !important;
+      color: #0ea5e9 !important;
+    }
+    .btn-circle-action.personal {
+      background: #0ea5e9 !important;
+      color: var(--color-white) !important;
+      box-shadow: 0 8px 24px rgba(14, 165, 233, 0.45) !important;
+    }
+
     #flip-ampm .flip-card-back {
       transform: rotateX(180deg);
     }
@@ -3083,7 +3109,7 @@
             </div>
             <div class="user-info-text">
               <div class="user-role">CHZ MANAGER</div>
-              <div class="user-version">Version 2.2.3</div>
+              <div class="user-version">Version 2.2.4</div>
             </div>
           </div>
         </div>
@@ -3098,7 +3124,7 @@
             <!-- หัวข้อและปุ่มย้อนกลับสไลด์ -->
             <div class="settings-header">
               <div class="settings-header-text">
-                <h3 class="settings-title" style="display: flex; align-items: center; gap: 8px;">Google Sheets Connection <span style="font-size: 11px; background: rgba(0,0,0,0.06); color: var(--color-text-secondary); padding: 2px 8px; border-radius: 8px; font-weight: 500;">Version 2.2.3</span></h3>
+                <h3 class="settings-title" style="display: flex; align-items: center; gap: 8px;">Google Sheets Connection <span style="font-size: 11px; background: rgba(0,0,0,0.06); color: var(--color-text-secondary); padding: 2px 8px; border-radius: 8px; font-weight: 500;">Version 2.2.4</span></h3>
                 <p style="font-size: 11px; color: var(--color-text-secondary); margin-top: 4px;">ผูกแอปเข้ากับสิทธิ์ Google Sheets ของแกผ่าน API หรือ Google Apps Script</p>
               </div>
               <button class="capsule-btn btn-back-to-overview" id="settings-back-to-overview-btn" style="display: none; cursor: pointer; background: rgba(39, 168, 115, 0.1) !important; color: #27a873 !important; border: none !important;">
@@ -5285,6 +5311,8 @@
                 statusVal = 'urgent';
               } else if (activeColorId === "2" || activeColorId === "10") {
                 statusVal = 'paid';
+              } else if (activeColorId === "1" || activeColorId === "7" || activeColorId === "9") {
+                statusVal = 'personal'; // ธุระสำคัญสีฟ้า
               }
               
               // Offline Matching Block
@@ -5426,11 +5454,14 @@
         const config = getMonthConfig(year, monthIndex);
         for (let i = 1; i <= config.days; i++) {
           const dot = document.createElement('div');
-          dot.className = 'cal-dot';
+          dot.className = 'cal-dot dot';
           const matchedJob = jobs.find(job => job.dotIndex === i);
           if (matchedJob) {
             if (matchedJob.status === 'urgent') {
               dot.classList.add('status-active');
+            } else if (matchedJob.status === 'personal') {
+              dot.classList.add('status-personal');
+              dot.classList.add('personal');
             } else {
               dot.classList.add('status-' + matchedJob.status);
             }
@@ -5455,6 +5486,9 @@
             } else if (job.status === 'paid') {
               statusClass = 'status-paid';
               statusText = 'Paid';
+            } else if (job.status === 'personal') {
+              statusClass = 'status-personal';
+              statusText = 'Personal';
             }
 
             slide.innerHTML = `
@@ -5613,6 +5647,8 @@
               statusClass = 'status-active';
             } else if (job.status === 'paid') {
               statusClass = 'status-paid';
+            } else if (job.status === 'personal') {
+              statusClass = 'status-personal';
             }
             pill.className = `day-job-pill ${statusClass}`;
             pill.textContent = job.title;
@@ -5834,6 +5870,17 @@
         document.getElementById('event-action-modal-overlay').classList.add('show');
       }
 
+      function resolveEventColorId(eventObj) {
+        let colorId = eventObj.colorId;
+        if (!colorId) {
+          if (eventObj.status === 'urgent') return "11";
+          if (eventObj.status === 'paid') return "2";
+          if (eventObj.status === 'personal') return "1";
+          return "5";
+        }
+        return colorId;
+      }
+
       function openManageEventModal(eventObj) {
         window.currentActiveEvent = eventObj;
         
@@ -5870,12 +5917,7 @@
         
         document.getElementById('view-event-time').textContent = formatDateThai(startISO, endISO);
         
-        let colorId = eventObj.colorId;
-        if (!colorId) {
-          if (eventObj.status === 'urgent') colorId = "11";
-          else if (eventObj.status === 'paid') colorId = "2";
-          else colorId = "5";
-        }
+        let colorId = resolveEventColorId(eventObj);
         
         const incomeSection = document.getElementById('event-income-section');
         const toggleSection = document.getElementById('event-toggle-status-section');
@@ -5898,6 +5940,9 @@
           document.getElementById('event-income-date').value = new Date().toISOString().slice(0, 10);
           document.getElementById('event-income-tax').checked = true;
         } else if (colorId === "2") {
+          incomeSection.style.display = 'none';
+          toggleSection.style.display = 'none';
+        } else if (colorId === "1" || colorId === "7" || colorId === "9") {
           incomeSection.style.display = 'none';
           toggleSection.style.display = 'none';
         }
@@ -6144,11 +6189,12 @@
         const eventObj = window.currentActiveEvent;
         if (!eventObj) return;
         
-        let colorId = eventObj.colorId;
-        if (!colorId) {
-          if (eventObj.status === 'urgent') colorId = "11";
-          else if (eventObj.status === 'paid') colorId = "2";
-          else colorId = "5";
+        let colorId = resolveEventColorId(eventObj);
+        
+        // Defensive: Do not allow status toggling for paid or personal events
+        if (colorId === "2" || colorId === "1" || colorId === "7" || colorId === "9") {
+          console.warn('Cannot toggle status for paid or personal events.');
+          return;
         }
         
         let newColorId = "5";
