@@ -1939,23 +1939,23 @@
       display: inline-flex;
       align-items: center;
       justify-content: flex-end;
-      gap: 4px;
+      gap: 2px;
       margin-left: auto;
-      margin-right: 28px;
+      margin-right: 12px;
       margin-top: 26px; /* Shifts clock down cleanly */
-      height: 60px; /* Matches digit height */
+      height: 48px; /* Matches digit height */
     }
 
     .flip-card-unit {
       position: relative;
-      width: 58px; /* Increased to give numbers more horizontal breathing room */
-      height: 60px;
+      width: 46px;
+      height: 48px;
       perspective: 1000px;
       background: transparent;
     }
 
     .flip-card-unit.ampm-unit {
-      width: 60px; /* Increased to prevent PM/AM from touching borders */
+      width: 48px;
     }
 
     /* 3D split-leaf card halves for digits */
@@ -1963,7 +1963,7 @@
       position: absolute;
       left: 0;
       width: 100%;
-      height: 30px; /* Exactly half of unit height */
+      height: 24px; /* Exactly half of unit height */
       overflow: hidden;
       background: #1c1b22;
       backface-visibility: hidden;
@@ -1991,11 +1991,11 @@
     /* Split-leaf text alignment logic */
     .card-part span {
       font-family: var(--font-heading);
-      font-size: 38px;
+      font-size: 28px;
       font-weight: 800;
       color: #ffffff !important;
-      height: 60px; /* Full card height */
-      line-height: 60px;
+      height: 48px; /* Full card height */
+      line-height: 48px;
       position: absolute;
       left: 0;
       width: 100%;
@@ -2008,7 +2008,7 @@
     }
 
     .card-part.bottom span {
-      top: -30px; /* Shift text up by exactly 30px to align halves perfectly */
+      top: -24px; /* Shift text up by exactly 24px to align halves perfectly */
     }
 
     /* 3D mechanical fold transitions */
@@ -2078,10 +2078,11 @@
 
     #flip-ampm .flip-card-face span {
       font-family: var(--font-heading);
-      font-size: 17px;
+      font-size: 13px;
       font-weight: 700;
       color: #ffffff !important;
-      line-height: 1;
+      height: 48px;
+      line-height: 48px;
       display: block;
       text-align: center;
     }
@@ -2092,11 +2093,33 @@
 
     .flip-colon {
       font-family: var(--font-heading);
-      font-size: 38px;
+      font-size: 28px;
       font-weight: 800;
       color: var(--color-text-primary);
       margin: 0 1px;
       animation: flip-pulse 1s infinite alternate;
+    }
+
+    .flip-clock-container.mode-clock-color .card-part span,
+    .flip-clock-container.mode-clock-color #flip-ampm .flip-card-face span,
+    .flip-clock-container.mode-clock-color .flip-colon {
+      color: #0ea5e9 !important;
+    }
+
+    .flip-clock-container.mode-stopwatch-color .card-part span,
+    .flip-clock-container.mode-stopwatch-color #flip-ampm .flip-card-face span,
+    .flip-clock-container.mode-stopwatch-color .flip-colon {
+      color: #f43f5e !important;
+    }
+
+    .neumorphic-toggle-badge:hover {
+      transform: scale(1.05);
+      color: var(--color-neon-rose) !important;
+      box-shadow: 4px 4px 8px rgba(0,0,0,0.12), -4px -4px 8px rgba(255,255,255,0.9) !important;
+    }
+    .neumorphic-toggle-badge:active {
+      transform: scale(0.95) translateY(1px);
+      box-shadow: inset 2px 2px 5px rgba(0,0,0,0.15), inset -2px -2px 5px rgba(255,255,255,0.8) !important;
     }
 
     @keyframes flip-pulse {
@@ -3051,7 +3074,7 @@
             </div>
             <div class="user-info-text">
               <div class="user-role">CHZ MANAGER</div>
-              <div class="user-version">Version 2.1.9</div>
+              <div class="user-version">Version 2.2.0</div>
             </div>
           </div>
         </div>
@@ -3066,7 +3089,7 @@
             <!-- หัวข้อและปุ่มย้อนกลับสไลด์ -->
             <div class="settings-header">
               <div class="settings-header-text">
-                <h3 class="settings-title" style="display: flex; align-items: center; gap: 8px;">Google Sheets Connection <span style="font-size: 11px; background: rgba(0,0,0,0.06); color: var(--color-text-secondary); padding: 2px 8px; border-radius: 8px; font-weight: 500;">Version 2.1.9</span></h3>
+                <h3 class="settings-title" style="display: flex; align-items: center; gap: 8px;">Google Sheets Connection <span style="font-size: 11px; background: rgba(0,0,0,0.06); color: var(--color-text-secondary); padding: 2px 8px; border-radius: 8px; font-weight: 500;">Version 2.2.0</span></h3>
                 <p style="font-size: 11px; color: var(--color-text-secondary); margin-top: 4px;">ผูกแอปเข้ากับสิทธิ์ Google Sheets ของแกผ่าน API หรือ Google Apps Script</p>
               </div>
               <button class="capsule-btn btn-back-to-overview" id="settings-back-to-overview-btn" style="display: none; cursor: pointer; background: rgba(39, 168, 115, 0.1) !important; color: #27a873 !important; border: none !important;">
@@ -3258,7 +3281,7 @@
                       <h1 class="date-day" id="banner-date-day">01</h1>
                     </div>
                     <div class="overlay-right">
-                      <div class="flip-clock-container" id="banner-clock-time">
+                      <div class="flip-clock-container mode-clock-color" id="banner-clock-time">
                         <!-- Hour Unit -->
                         <div class="flip-card-unit hour-unit" id="flip-hour">
                           <div class="card-part top static"><span>12</span></div>
@@ -3330,11 +3353,9 @@
                   <div class="promo-title-wrap">
                     <span class="promo-label" style="font-size: 10px; font-weight: 700; color: var(--color-text-secondary); text-transform: uppercase;">Grab Quick Record</span>
                   </div>
-                  <div class="promo-badge-icon" style="width: 28px; height: 28px; background: rgba(0,0,0,0.05) !important; color: var(--color-text-primary) !important; flex-shrink: 0; box-shadow: none !important;">
-                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 14px; height: 14px;">
-                      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-                    </svg>
-                  </div>
+                  <button type="button" id="btn-clock-mode-toggle" class="neumorphic-toggle-badge" style="width: 28px; height: 28px; background: #ffe4e6; border: none; border-radius: 50%; color: #4b5563; flex-shrink: 0; box-shadow: 3px 3px 6px rgba(0,0,0,0.1), -3px -3px 6px rgba(255,255,255,0.8); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); outline: none !important;">
+                    <!-- SVG จะเขียนจากสคริปต์แทน -->
+                  </button>
                 </div>
                 
                 <form id="quick-record-grab-form" style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px 8px; width: 100%; box-sizing: border-box;">
@@ -9950,6 +9971,37 @@
       activeClockMode = mode;
       localStorage.setItem('chz_active_clock_mode', mode);
       
+      const bannerClockTime = document.getElementById('banner-clock-time');
+      if (bannerClockTime) {
+        if (mode === 'clock') {
+          bannerClockTime.classList.add('mode-clock-color');
+          bannerClockTime.classList.remove('mode-stopwatch-color');
+        } else {
+          bannerClockTime.classList.add('mode-stopwatch-color');
+          bannerClockTime.classList.remove('mode-clock-color');
+        }
+      }
+      
+      const btnToggle = document.getElementById('btn-clock-mode-toggle');
+      if (btnToggle) {
+        if (mode === 'clock') {
+          btnToggle.innerHTML = `
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 14px; height: 14px;">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 14 12"></polyline>
+              <line x1="12" y1="2" x2="12" y2="4"></line>
+            </svg>
+          `;
+        } else {
+          btnToggle.innerHTML = `
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 14px; height: 14px;">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+          `;
+        }
+      }
+      
       if (!btnModeClock || !btnModeStopwatch || !stopwatchControls) return;
       
       if (mode === 'clock') {
@@ -9970,6 +10022,15 @@
     
     if (btnModeClock) btnModeClock.addEventListener('click', () => setClockMode('clock'));
     if (btnModeStopwatch) btnModeStopwatch.addEventListener('click', () => setClockMode('stopwatch'));
+
+    const btnClockModeToggle = document.getElementById('btn-clock-mode-toggle');
+    if (btnClockModeToggle) {
+      btnClockModeToggle.addEventListener('click', () => {
+        playClickSound();
+        const nextMode = (activeClockMode === 'clock') ? 'stopwatch' : 'clock';
+        setClockMode(nextMode);
+      });
+    }
 
     // Stopwatch Control Buttons Bindings
     const btnStart = document.getElementById('btn-stopwatch-start');
@@ -10591,6 +10652,26 @@
       renderAll();
       fetchOnlineTasks();
     })();
+
+    function playClickSound() {
+      try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+        osc.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(900, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.04);
+        
+        gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.04);
+        
+        osc.start(audioCtx.currentTime);
+        osc.stop(audioCtx.currentTime + 0.04);
+      } catch (e) {}
+    }
 
 
   </script>
