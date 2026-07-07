@@ -312,9 +312,24 @@ function doPost(e) {
       var startDate = data.startDate;
       var endDate = data.endDate;
       var eventsData = getCalendarEvents(startDate, endDate);
+      
+      var defaultColorId = "";
+      var calendarColorHex = "";
+      try {
+        if (typeof Calendar !== 'undefined') {
+          var cal = Calendar.Calendars.get("primary");
+          defaultColorId = cal.colorId || "";
+        }
+      } catch(e) {}
+      try {
+        calendarColorHex = CalendarApp.getDefaultCalendar().getColor();
+      } catch(e) {}
+      
       return createJsonResponse({
         "status": "success",
-        "data": eventsData
+        "data": eventsData,
+        "defaultColorId": defaultColorId,
+        "calendarColorHex": calendarColorHex
       });
     }
     
