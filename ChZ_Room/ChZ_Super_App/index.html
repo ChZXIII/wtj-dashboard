@@ -3109,7 +3109,7 @@
             </div>
             <div class="user-info-text">
               <div class="user-role">CHZ MANAGER</div>
-              <div class="user-version">Version 2.2.5</div>
+              <div class="user-version">Version 2.2.6</div>
             </div>
           </div>
         </div>
@@ -3124,7 +3124,7 @@
             <!-- หัวข้อและปุ่มย้อนกลับสไลด์ -->
             <div class="settings-header">
               <div class="settings-header-text">
-                <h3 class="settings-title" style="display: flex; align-items: center; gap: 8px;">Google Sheets Connection <span style="font-size: 11px; background: rgba(0,0,0,0.06); color: var(--color-text-secondary); padding: 2px 8px; border-radius: 8px; font-weight: 500;">Version 2.2.5</span></h3>
+                <h3 class="settings-title" style="display: flex; align-items: center; gap: 8px;">Google Sheets Connection <span style="font-size: 11px; background: rgba(0,0,0,0.06); color: var(--color-text-secondary); padding: 2px 8px; border-radius: 8px; font-weight: 500;">Version 2.2.6</span></h3>
                 <p style="font-size: 11px; color: var(--color-text-secondary); margin-top: 4px;">ผูกแอปเข้ากับสิทธิ์ Google Sheets ของแกผ่าน API หรือ Google Apps Script</p>
               </div>
               <button class="capsule-btn btn-back-to-overview" id="settings-back-to-overview-btn" style="display: none; cursor: pointer; background: rgba(39, 168, 115, 0.1) !important; color: #27a873 !important; border: none !important;">
@@ -4427,9 +4427,25 @@
 
             <!-- Status Toggle Action Buttons (colorId "5" or "11") -->
             <div id="event-toggle-status-section" style="display: flex; flex-direction: column; gap: 8px; margin-top: 6px;">
-              <button type="button" class="btn-action" id="btn-event-toggle-status" style="background: rgba(255, 75, 114, 0.1) !important; color: var(--color-neon-rose) !important; width: 100%;">
-                ยืนยันคิวงาน (เป็นสีแดง)
-              </button>
+              <div style="font-size: 11px; font-weight: 700; color: var(--color-text-secondary); text-transform: uppercase; margin-bottom: 2px;">เปลี่ยนสีปฏิทินเองทันที</div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+                <button type="button" class="btn-action status-btn" id="btn-color-red" style="padding: 6px !important; font-size: 11.5px !important; background: rgba(244, 63, 94, 0.1) !important; color: #f43f5e !important; border: 1px solid rgba(244, 63, 94, 0.15) !important; border-radius: 12px !important; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 4px; transition: all 0.2s ease;">
+                  <span style="display: inline-block; width: 8px; height: 8px; background: #f43f5e; border-radius: 50%;"></span>
+                  <span>คอนเฟิร์ม (แดง)</span>
+                </button>
+                <button type="button" class="btn-action status-btn" id="btn-color-yellow" style="padding: 6px !important; font-size: 11.5px !important; background: rgba(245, 158, 11, 0.1) !important; color: #f59e0b !important; border: 1px solid rgba(245, 158, 11, 0.15) !important; border-radius: 12px !important; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 4px; transition: all 0.2s ease;">
+                  <span style="display: inline-block; width: 8px; height: 8px; background: #f59e0b; border-radius: 50%;"></span>
+                  <span>รอคอนเฟิร์ม (เหลือง)</span>
+                </button>
+                <button type="button" class="btn-action status-btn" id="btn-color-blue" style="padding: 6px !important; font-size: 11.5px !important; background: rgba(14, 165, 233, 0.1) !important; color: #0ea5e9 !important; border: 1px solid rgba(14, 165, 233, 0.15) !important; border-radius: 12px !important; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 4px; transition: all 0.2s ease;">
+                  <span style="display: inline-block; width: 8px; height: 8px; background: #0ea5e9; border-radius: 50%;"></span>
+                  <span>ธุระสำคัญ (ฟ้า)</span>
+                </button>
+                <button type="button" class="btn-action status-btn" id="btn-color-green" style="padding: 6px !important; font-size: 11.5px !important; background: rgba(16, 185, 129, 0.1) !important; color: #10b981 !important; border: 1px solid rgba(16, 185, 129, 0.15) !important; border-radius: 12px !important; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 4px; transition: all 0.2s ease;">
+                  <span style="display: inline-block; width: 8px; height: 8px; background: #10b981; border-radius: 50%;"></span>
+                  <span>จ่ายเงินแล้ว (เขียว)</span>
+                </button>
+              </div>
             </div>
           </div>
 
@@ -5925,30 +5941,18 @@
         
         const incomeSection = document.getElementById('event-income-section');
         const toggleSection = document.getElementById('event-toggle-status-section');
-        const toggleBtn = document.getElementById('btn-event-toggle-status');
         
-        if (colorId === "5") {
-          incomeSection.style.display = 'none';
-          toggleSection.style.display = 'flex';
-          toggleBtn.textContent = 'ยืนยันคิวงาน (เป็นสีแดง)';
-          toggleBtn.style.setProperty('background', 'rgba(255, 75, 114, 0.1)', 'important');
-          toggleBtn.style.setProperty('color', 'var(--color-neon-rose)', 'important');
-        } else if (colorId === "11") {
+        // แสดงแผงปุ่ม 4 สีเสมอ
+        toggleSection.style.display = 'flex';
+        
+        if (colorId === "11") {
           incomeSection.style.display = 'flex';
-          toggleSection.style.display = 'flex';
-          toggleBtn.textContent = 'ยกเลิกการยืนยัน (เป็นสีเหลือง)';
-          toggleBtn.style.setProperty('background', 'rgba(234, 179, 8, 0.1)', 'important');
-          toggleBtn.style.setProperty('color', '#ca8a04', 'important');
           
           document.getElementById('event-income-amount').value = '';
           document.getElementById('event-income-date').value = new Date().toISOString().slice(0, 10);
           document.getElementById('event-income-tax').checked = true;
-        } else if (colorId === "2") {
+        } else {
           incomeSection.style.display = 'none';
-          toggleSection.style.display = 'none';
-        } else if (colorId === "1" || colorId === "7" || colorId === "9") {
-          incomeSection.style.display = 'none';
-          toggleSection.style.display = 'none';
         }
         
         document.getElementById('event-action-modal-overlay').classList.add('show');
@@ -6012,7 +6016,7 @@
         }
       }
 
-      async function updateCalendarEventColor(eventId, newColorId) {
+      async function updateCalendarEventColor(eventId, newColorId, clickedBtn = null) {
         const gasUrl = localStorage.getItem('income_tracker_gas_url') || '';
         const feltzSheetId = localStorage.getItem('income_tracker_general_sheet_id') || '';
         if (!gasUrl) {
@@ -6020,10 +6024,12 @@
           return;
         }
         
-        const toggleBtn = document.getElementById('btn-event-toggle-status');
-        const originalText = toggleBtn.textContent;
-        toggleBtn.disabled = true;
-        toggleBtn.textContent = 'กำลังสลับสถานะ...';
+        let originalText = '';
+        if (clickedBtn) {
+          originalText = clickedBtn.innerHTML;
+          clickedBtn.disabled = true;
+          clickedBtn.textContent = '...';
+        }
         
         try {
           const payload = {
@@ -6054,6 +6060,9 @@
             localStorage.setItem('income_tracker_calendar_events_cache', JSON.stringify(window.calendarEvents));
             closeEventModal();
             initMonth(activeYear, activeMonth);
+            if (typeof updateCalendarView === 'function') {
+              updateCalendarView();
+            }
           } else {
             throw new Error(res.message || 'สลับสถานะไม่สำเร็จ');
           }
@@ -6061,8 +6070,10 @@
           console.error(err);
           alert('เกิดข้อผิดพลาด: ' + err.message);
         } finally {
-          toggleBtn.disabled = false;
-          toggleBtn.textContent = originalText;
+          if (clickedBtn) {
+            clickedBtn.disabled = false;
+            clickedBtn.innerHTML = originalText;
+          }
         }
       }
 
@@ -6189,26 +6200,25 @@
         }
       });
       
-      document.getElementById('btn-event-toggle-status').addEventListener('click', async () => {
+      document.getElementById('btn-color-red').addEventListener('click', async function() {
         const eventObj = window.currentActiveEvent;
         if (!eventObj) return;
-        
-        let colorId = resolveEventColorId(eventObj);
-        
-        // Defensive: Do not allow status toggling for paid or personal events
-        if (colorId === "2" || colorId === "1" || colorId === "7" || colorId === "9") {
-          console.warn('Cannot toggle status for paid or personal events.');
-          return;
-        }
-        
-        let newColorId = "5";
-        if (colorId === "5") {
-          newColorId = "11";
-        } else if (colorId === "11") {
-          newColorId = "5";
-        }
-        
-        await updateCalendarEventColor(eventObj.id, newColorId);
+        await updateCalendarEventColor(eventObj.id, "11", this);
+      });
+      document.getElementById('btn-color-yellow').addEventListener('click', async function() {
+        const eventObj = window.currentActiveEvent;
+        if (!eventObj) return;
+        await updateCalendarEventColor(eventObj.id, "5", this);
+      });
+      document.getElementById('btn-color-blue').addEventListener('click', async function() {
+        const eventObj = window.currentActiveEvent;
+        if (!eventObj) return;
+        await updateCalendarEventColor(eventObj.id, "9", this);
+      });
+      document.getElementById('btn-color-green').addEventListener('click', async function() {
+        const eventObj = window.currentActiveEvent;
+        if (!eventObj) return;
+        await updateCalendarEventColor(eventObj.id, "10", this);
       });
       
       document.getElementById('btn-event-save-income').addEventListener('click', handleSaveIncome);
@@ -10744,23 +10754,29 @@
       fetchOnlineTasks();
     })();
 
+    let sharedAudioCtx = null;
     function playClickSound() {
       try {
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        const osc = audioCtx.createOscillator();
-        const gainNode = audioCtx.createGain();
+        if (!sharedAudioCtx) {
+          sharedAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (sharedAudioCtx.state === 'suspended') {
+          sharedAudioCtx.resume();
+        }
+        const osc = sharedAudioCtx.createOscillator();
+        const gainNode = sharedAudioCtx.createGain();
         osc.connect(gainNode);
-        gainNode.connect(audioCtx.destination);
+        gainNode.connect(sharedAudioCtx.destination);
         
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(900, audioCtx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.04);
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(2800, sharedAudioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(1000, sharedAudioCtx.currentTime + 0.03);
         
-        gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.04);
+        gainNode.gain.setValueAtTime(0.15, sharedAudioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, sharedAudioCtx.currentTime + 0.03);
         
-        osc.start(audioCtx.currentTime);
-        osc.stop(audioCtx.currentTime + 0.04);
+        osc.start(sharedAudioCtx.currentTime);
+        osc.stop(sharedAudioCtx.currentTime + 0.03);
       } catch (e) {}
     }
 
