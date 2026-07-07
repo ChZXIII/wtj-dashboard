@@ -1726,6 +1726,60 @@ textarea.form-control {
     flex-wrap: wrap;
     gap: 8px 16px;
   }
+
+  /* Mobile Dashboard Alignment Fixes */
+  .main-content {
+    overflow-x: hidden !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  
+  .card {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  
+  .table-container {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: auto !important;
+  }
+  
+  .fund-summary-flex {
+    flex-direction: column !important;
+    gap: 16px !important;
+  }
+  
+  .donut-chart-col {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex-shrink: 1 !important;
+  }
+  
+  .share-stats-col {
+    min-width: 0 !important;
+    width: 100% !important;
+  }
+  
+  .sales-performance-card {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+  }
+  
+  .sales-performance-card > div:last-child {
+    width: 100% !important;
+    justify-content: space-between !important;
+    border-top: 1px dashed var(--border-color);
+    padding-top: 12px;
+    border-left: none !important;
+    padding-left: 0 !important;
+  }
+  
+  .sales-performance-card > div:last-child > div {
+    text-align: left !important;
+  }
 }
 
 /* --- Donut Chart 3D & Bounce Effects --- */
@@ -2279,9 +2333,9 @@ textarea.form-control {
             คำนวณจากใบเสร็จรับเงินที่ซิงค์สำเร็จแล้ว เพื่อใช้คำนวณสัดส่วนปันผลและยอดเงินสะสมส่วนตัวที่จะคืนเมื่อปิดงบปี
           </p>
           
-          <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: stretch; margin-top: 16px;">
+          <div class="fund-summary-flex" style="display: flex; flex-wrap: wrap; gap: 24px; align-items: stretch; margin-top: 16px;">
             <!-- Donut Chart Container (Left Column - Fixed Width to stay square-ish) -->
-            <div style="width: 250px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; border: 2px solid var(--border-color); background: var(--card-bg); box-shadow: 4px 4px 0px var(--shadow-color); border-radius: 12px;">
+            <div class="donut-chart-col" style="width: 250px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; border: 2px solid var(--border-color); background: var(--card-bg); box-shadow: 4px 4px 0px var(--shadow-color); border-radius: 12px;">
               <div class="donut-chart-container">
                 <div id="salesDonutChart" style="width: 100%; height: 100%; border-radius: 50%; background: #e5e7eb; border: 2px solid var(--border-color); transition: background 0.3s ease;"></div>
                 <div id="donutCenterHole" style="position: absolute; width: 96px; height: 96px; background: var(--card-bg); border-radius: 50%; border: 2px solid var(--border-color); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
@@ -2297,7 +2351,7 @@ textarea.form-control {
             </div>
 
             <!-- Individual Share Stats List (Right Column - Flex Column of Rows) -->
-            <div style="flex: 1; min-width: 300px; display: flex; flex-direction: column; gap: 12px; justify-content: space-between;">
+            <div class="share-stats-col" style="flex: 1; min-width: 300px; display: flex; flex-direction: column; gap: 12px; justify-content: space-between;">
               <!-- เก่ง -->
               <div class="sales-performance-card" style="border: 2px solid var(--border-color); padding: 12px 16px; background: var(--input-bg); box-shadow: 3px 3px 0px var(--shadow-color); border-radius: 12px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex: 1;">
                 <div style="display: flex; align-items: center; gap: 12px; min-width: 140px; flex-shrink: 0;">
@@ -2359,6 +2413,8 @@ textarea.form-control {
                     <strong id="salesRetained_หอม" style="color: #ef4444; font-size: 12px;">฿0.00</strong>
                   </div>
                 </div>
+              </div>
+            </div>
           </div>
         </div>
 
