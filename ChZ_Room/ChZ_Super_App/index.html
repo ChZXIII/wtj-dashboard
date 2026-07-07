@@ -2544,6 +2544,17 @@
         flex-wrap: nowrap !important;
         display: flex !important;
         max-width: 100% !important;
+        padding-right: 12px !important;
+        -webkit-overflow-scrolling: touch;
+      }
+      .segment-switcher-container::-webkit-scrollbar {
+        display: none !important;
+      }
+      .segment-switcher-container::after {
+        content: "" !important;
+        flex: 0 0 12px !important;
+        width: 12px !important;
+        display: block !important;
       }
       .segment-btn-tab {
         flex: 0 0 auto !important;
@@ -3229,7 +3240,7 @@
             </div>
             <div class="user-info-text">
               <div class="user-role">CHZ MANAGER</div>
-              <div class="user-version">Version 2.3.9</div>
+              <div class="user-version">Version 2.4.0</div>
             </div>
           </div>
         </div>
@@ -3244,7 +3255,7 @@
             <!-- หัวข้อและปุ่มย้อนกลับสไลด์ -->
             <div class="settings-header">
               <div class="settings-header-text">
-                <h3 class="settings-title" style="display: flex; align-items: center; gap: 8px;">Google Sheets Connection <span style="font-size: 11px; background: rgba(0,0,0,0.06); color: var(--color-text-secondary); padding: 2px 8px; border-radius: 8px; font-weight: 500;">Version 2.3.9</span></h3>
+                <h3 class="settings-title" style="display: flex; align-items: center; gap: 8px;">Google Sheets Connection <span style="font-size: 11px; background: rgba(0,0,0,0.06); color: var(--color-text-secondary); padding: 2px 8px; border-radius: 8px; font-weight: 500;">Version 2.4.0</span></h3>
                 <p style="font-size: 11px; color: var(--color-text-secondary); margin-top: 4px;">ผูกแอปเข้ากับสิทธิ์ Google Sheets ของแกผ่าน API หรือ Google Apps Script</p>
               </div>
               <button class="capsule-btn btn-back-to-overview" id="settings-back-to-overview-btn" style="display: none; cursor: pointer; background: rgba(39, 168, 115, 0.1) !important; color: #27a873 !important; border: none !important;">
@@ -3268,25 +3279,25 @@
               <div class="settings-col-left">
                 <div class="settings-form-group">
                   <label>Google Apps Script Web App URL (Feltz Studio)</label>
-                  <input type="url" id="settings-script-url" name="scriptUrl" placeholder="https://script.google.com/macros/s/.../exec" value="">
+                  <input type="url" id="settings-script-url" name="scriptUrl" placeholder="https://script.google.com/macros/s/.../exec" value="https://script.google.com/macros/s/AKfycbylwuezISiTMzVhklcyus1gEMyTQG7OttGFSTIFyCB4yMjvpqeo20WRGp_8HIJk8Gup/exec">
                   <span class="settings-field-tip">นำลิงก์ Web App URL ที่ได้จากการดีพลอยสคริปต์ใน Google Sheets มาวางที่นี่จ้า</span>
                 </div>
                 <div class="settings-form-group">
                   <label>Google Apps Script Web App URL (Grab)</label>
-                  <input type="url" id="settings-grab-script-url" name="grabScriptUrl" placeholder="https://script.google.com/macros/s/.../exec" value="">
+                  <input type="url" id="settings-grab-script-url" name="grabScriptUrl" placeholder="https://script.google.com/macros/s/.../exec" value="https://script.google.com/macros/s/AKfycbz4YHh2FO6rFjCl8iVYrQF3Z8APkE5hTWTt_gn7NgrvaIkCDf9yc5ol2MC1hFcilnA/exec">
                   <span class="settings-field-tip">นำลิงก์ Web App URL ของสคริปต์รายได้ Grab มาวางที่นี่จ้า</span>
                 </div>
                 <div class="settings-form-group">
                   <label>Grab Spreadsheet ID</label>
                   <div style="display: flex; gap: 8px;">
-                    <input type="text" id="settings-grab-sheet-id" name="grabSheetId" placeholder="ID ของกูเกิลชีตสำหรับรายได้ Grab" value="">
+                    <input type="text" id="settings-grab-sheet-id" name="grabSheetId" placeholder="ID ของกูเกิลชีตสำหรับรายได้ Grab" value="17YAN81SlDDDjd-CMu1POJUN7gRSALg2d9vgPoN8OSbg">
                     <button type="button" id="settings-init-grab-sheet-btn" class="capsule-btn" style="background: rgba(162, 232, 196, 0.15) !important; color: #27a873 !important; font-size: 11px; padding: 0 12px; height: 38px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; flex-shrink: 0; box-shadow: none !important;">สร้างตาราง 12 เดือน</button>
                   </div>
                   <span class="settings-field-tip">ID ของ Google Sheets สำหรับรายได้ Grab (ดูจาก URL ของชีต)</span>
                 </div>
                 <div class="settings-form-group">
                   <label>Feltz Studio Spreadsheet ID</label>
-                  <input type="text" id="settings-feltz-sheet-id" name="feltzSheetId" placeholder="ID ของกูเกิลชีตสำหรับรายรับ-รายจ่าย Feltz Studio" value="">
+                  <input type="text" id="settings-feltz-sheet-id" name="feltzSheetId" placeholder="ID ของกูเกิลชีตสำหรับรายรับ-รายจ่าย Feltz Studio" value="1pfPzlhov1898x4rRDytDRxjYaiuFIfMuJPamEwLxeMU">
                   <span class="settings-field-tip">ID ของ Google Sheets สำหรับรายรับ-รายจ่ายของ Feltz Studio</span>
                 </div>
               </div>
@@ -3295,12 +3306,12 @@
               <div class="settings-col-right">
                 <div class="settings-form-group">
                   <label>PDFShift API Key</label>
-                  <input type="password" id="settings-pdfshift-key" name="pdfShiftKey" placeholder="เช่น api_xxxxxxxxx" value="">
+                  <input type="password" id="settings-pdfshift-key" name="pdfShiftKey" placeholder="เช่น api_xxxxxxxxx" value="sk_94ce6e74aaead507e8d0921c641822140e76a06d">
                   <span class="settings-field-tip">API Key สำหรับแปลง HTML เป็น PDF จากเว็บ PDFShift</span>
                 </div>
                 <div class="settings-form-group">
                   <label>Google Drive Folder Link</label>
-                  <input type="url" id="settings-drive-folder-link" name="driveFolderLink" placeholder="https://drive.google.com/drive/folders/..." value="">
+                  <input type="url" id="settings-drive-folder-link" name="driveFolderLink" placeholder="https://drive.google.com/drive/folders/..." value="https://drive.google.com/drive/u/0/folders/1b7U4fS_3EQTPF1TTtcvrHSrSFGsamrjO">
                   <span class="settings-field-tip">ลิงก์โฟลเดอร์ Google Drive ของบริษัทที่จะใช้อัปโหลดเก็บไฟล์</span>
                 </div>
                 
@@ -4622,6 +4633,11 @@
 
   <script>
     const DEFAULT_GRAB_SHEET_ID = '17YAN81SlDDDjd-CMu1POJUN7gRSALg2d9vgPoN8OSbg';
+    const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbylwuezISiTMzVhklcyus1gEMyTQG7OttGFSTIFyCB4yMjvpqeo20WRGp_8HIJk8Gup/exec';
+    const DEFAULT_GRAB_GAS_URL = 'https://script.google.com/macros/s/AKfycbz4YHh2FO6rFjCl8iVYrQF3Z8APkE5hTWTt_gn7NgrvaIkCDf9yc5ol2MC1hFcilnA/exec';
+    const DEFAULT_FELTZ_SHEET_ID = '1pfPzlhov1898x4rRDytDRxjYaiuFIfMuJPamEwLxeMU';
+    const DEFAULT_PDFSHIFT_API_KEY = 'sk_94ce6e74aaead507e8d0921c641822140e76a06d';
+    const DEFAULT_COMPANY_DRIVE_URL = 'https://drive.google.com/drive/u/0/folders/1b7U4fS_3EQTPF1TTtcvrHSrSFGsamrjO';
 
     // --- Passcode & Face ID State & Logic ---
     let passcodeEntered = "";
@@ -6557,12 +6573,31 @@
       }
 
       function loadSettings() {
-        const scriptUrl = localStorage.getItem('income_tracker_gas_url') || '';
-        const grabScriptUrl = localStorage.getItem('income_tracker_grab_gas_url') || '';
+        if (!localStorage.getItem('income_tracker_gas_url')) {
+          localStorage.setItem('income_tracker_gas_url', DEFAULT_GAS_URL);
+        }
+        if (!localStorage.getItem('income_tracker_grab_gas_url')) {
+          localStorage.setItem('income_tracker_grab_gas_url', DEFAULT_GRAB_GAS_URL);
+        }
+        if (!localStorage.getItem('income_tracker_grab_sheet_id')) {
+          localStorage.setItem('income_tracker_grab_sheet_id', DEFAULT_GRAB_SHEET_ID);
+        }
+        if (!localStorage.getItem('income_tracker_general_sheet_id')) {
+          localStorage.setItem('income_tracker_general_sheet_id', DEFAULT_FELTZ_SHEET_ID);
+        }
+        if (!localStorage.getItem('income_tracker_pdfshift_api_key')) {
+          localStorage.setItem('income_tracker_pdfshift_api_key', DEFAULT_PDFSHIFT_API_KEY);
+        }
+        if (!localStorage.getItem('income_tracker_company_drive_url')) {
+          localStorage.setItem('income_tracker_company_drive_url', DEFAULT_COMPANY_DRIVE_URL);
+        }
+
+        const scriptUrl = localStorage.getItem('income_tracker_gas_url') || DEFAULT_GAS_URL;
+        const grabScriptUrl = localStorage.getItem('income_tracker_grab_gas_url') || DEFAULT_GRAB_GAS_URL;
         const grabSheetId = localStorage.getItem('income_tracker_grab_sheet_id') || DEFAULT_GRAB_SHEET_ID;
-        const feltzSheetId = localStorage.getItem('income_tracker_general_sheet_id') || '';
-        const pdfShiftKey = localStorage.getItem('income_tracker_pdfshift_api_key') || '';
-        const driveFolderLink = localStorage.getItem('income_tracker_company_drive_url') || '';
+        const feltzSheetId = localStorage.getItem('income_tracker_general_sheet_id') || DEFAULT_FELTZ_SHEET_ID;
+        const pdfShiftKey = localStorage.getItem('income_tracker_pdfshift_api_key') || DEFAULT_PDFSHIFT_API_KEY;
+        const driveFolderLink = localStorage.getItem('income_tracker_company_drive_url') || DEFAULT_COMPANY_DRIVE_URL;
         
         const sellerName = localStorage.getItem('income_tracker_seller_name') || 'มงคล วงศ์สกุลยานนท์ (Feltz Studio)';
         const sellerTaxId = localStorage.getItem('income_tracker_seller_tax_id') || '3509900218949';
