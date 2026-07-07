@@ -2895,22 +2895,23 @@
       transform: translateY(1px);
     }
     #btn-stopwatch-save {
-      background: rgba(255, 75, 114, 0.1) !important;
-      color: var(--color-neon-rose) !important;
-      box-shadow: 0 4px 12px rgba(255, 75, 114, 0.15) !important;
+      background: rgba(2, 132, 199, 0.1) !important;
+      color: #0284c7 !important;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.15) !important;
     }
     #btn-stopwatch-save:hover {
-      background: var(--color-neon-rose) !important;
+      background: #0284c7 !important;
       color: var(--color-white) !important;
       transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(255, 75, 114, 0.3) !important;
+      box-shadow: 0 6px 16px rgba(2, 132, 199, 0.3) !important;
     }
     #btn-stopwatch-save:active {
       transform: translateY(1px);
     }
     #btn-stopwatch-reset {
-      background: rgba(0, 0, 0, 0.05) !important;
-      color: var(--color-text-secondary) !important;
+      background: rgba(255, 75, 114, 0.1) !important;
+      color: var(--color-neon-rose) !important;
+      box-shadow: 0 4px 12px rgba(255, 75, 114, 0.15) !important;
     }
     #btn-stopwatch-reset:hover {
       background: var(--color-neon-rose) !important;
@@ -3050,7 +3051,7 @@
             </div>
             <div class="user-info-text">
               <div class="user-role">CHZ MANAGER</div>
-              <div class="user-version">Version 2.1.7</div>
+              <div class="user-version">Version 2.1.8</div>
             </div>
           </div>
         </div>
@@ -3065,7 +3066,7 @@
             <!-- หัวข้อและปุ่มย้อนกลับสไลด์ -->
             <div class="settings-header">
               <div class="settings-header-text">
-                <h3 class="settings-title" style="display: flex; align-items: center; gap: 8px;">Google Sheets Connection <span style="font-size: 11px; background: rgba(0,0,0,0.06); color: var(--color-text-secondary); padding: 2px 8px; border-radius: 8px; font-weight: 500;">Version 2.1.7</span></h3>
+                <h3 class="settings-title" style="display: flex; align-items: center; gap: 8px;">Google Sheets Connection <span style="font-size: 11px; background: rgba(0,0,0,0.06); color: var(--color-text-secondary); padding: 2px 8px; border-radius: 8px; font-weight: 500;">Version 2.1.8</span></h3>
                 <p style="font-size: 11px; color: var(--color-text-secondary); margin-top: 4px;">ผูกแอปเข้ากับสิทธิ์ Google Sheets ของแกผ่าน API หรือ Google Apps Script</p>
               </div>
               <button class="capsule-btn btn-back-to-overview" id="settings-back-to-overview-btn" style="display: none; cursor: pointer; background: rgba(39, 168, 115, 0.1) !important; color: #27a873 !important; border: none !important;">
@@ -4194,27 +4195,27 @@
               <!-- การ์ด 1: รายรับ Feltz สะสม -->
               <div style="background: rgba(224, 242, 254, 0.65) !important; border: none !important; padding: 16px; border-radius: 16px; display: flex; flex-direction: column; gap: 4px; box-shadow: none !important;">
                 <span style="font-size: 11px; font-weight: 600; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">รายรับ Feltz สะสม</span>
-                <span id="overview-kpi-total-income" style="font-size: 18px; font-weight: 700; color: #0284c7;">0 THB</span>
+                <span id="overview-kpi-total-income" style="font-size: 18px; font-weight: 700; color: #0ea5e9;">0 THB</span>
               </div>
               <!-- การ์ด 2: รายรับ GRAB สะสม -->
               <div style="background: rgba(220, 252, 231, 0.65) !important; border: none !important; padding: 16px; border-radius: 16px; display: flex; flex-direction: column; gap: 4px; box-shadow: none !important;">
                 <span style="font-size: 11px; font-weight: 600; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">รายรับ GRAB สะสม</span>
-                <span id="overview-kpi-grab-income" style="font-size: 18px; font-weight: 700; color: #27a873;">0 THB</span>
+                <span id="overview-kpi-grab-income" style="font-size: 18px; font-weight: 700; color: #10b981;">0 THB</span>
               </div>
               <!-- การ์ด 3: กำไรสุทธิสะสม -->
               <div style="background: rgba(243, 232, 255, 0.65) !important; border: none !important; padding: 16px; border-radius: 16px; display: flex; flex-direction: column; gap: 4px; box-shadow: none !important;">
                 <span style="font-size: 11px; font-weight: 600; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">กำไรสุทธิสะสม</span>
-                <span id="overview-kpi-net-profit" style="font-size: 18px; font-weight: 700; color: #8b5cf6;">0 THB</span>
+                <span id="overview-kpi-net-profit" style="font-size: 18px; font-weight: 700; color: #a78bfa;">0 THB</span>
               </div>
               <!-- การ์ด 4: เงินเก็บสะสม 10% -->
               <div style="background: rgba(254, 243, 199, 0.65) !important; border: none !important; padding: 16px; border-radius: 16px; display: flex; flex-direction: column; gap: 4px; box-shadow: none !important;">
                 <span style="font-size: 11px; font-weight: 600; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">เงินเก็บสะสม 10%</span>
-                <span id="overview-kpi-total-savings" style="font-size: 18px; font-weight: 700; color: #d97706;">0 THB</span>
+                <span id="overview-kpi-total-savings" style="font-size: 18px; font-weight: 700; color: #f59e0b;">0 THB</span>
               </div>
               <!-- การ์ด 5: รายจ่ายสะสม -->
               <div style="background: rgba(255, 228, 230, 0.65) !important; border: none !important; padding: 16px; border-radius: 16px; display: flex; flex-direction: column; gap: 4px; box-shadow: none !important;">
                 <span style="font-size: 11px; font-weight: 600; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">รายจ่ายสะสม</span>
-                <span id="overview-kpi-total-expense" style="font-size: 18px; font-weight: 700; color: var(--color-neon-rose);">0 THB</span>
+                <span id="overview-kpi-total-expense" style="font-size: 18px; font-weight: 700; color: #f43f5e;">0 THB</span>
               </div>
             </div>
 
@@ -5126,6 +5127,9 @@
 
           const res = await response.json();
           if (res.status === 'success' && Array.isArray(res.data)) {
+            if (res.defaultColorId) localStorage.setItem('income_tracker_default_calendar_color_id', res.defaultColorId);
+            if (res.calendarColorHex) localStorage.setItem('income_tracker_calendar_color_hex', res.calendarColorHex);
+            
             res.data.forEach(newEv => {
               if (newEv && newEv.id) {
                 const idx = window.calendarEvents.findIndex(ev => ev.id === newEv.id);
@@ -8923,7 +8927,7 @@
         if (expenseEl) expenseEl.textContent = `${totalExpense.toLocaleString()} THB`;
         if (profitEl) {
           profitEl.textContent = `${netProfit.toLocaleString()} THB`;
-          profitEl.style.color = '#8b5cf6';
+          profitEl.style.color = '#a78bfa';
         }
       }
 
