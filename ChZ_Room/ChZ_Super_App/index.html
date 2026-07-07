@@ -3109,7 +3109,7 @@
             </div>
             <div class="user-info-text">
               <div class="user-role">CHZ MANAGER</div>
-              <div class="user-version">Version 2.2.4</div>
+              <div class="user-version">Version 2.2.5</div>
             </div>
           </div>
         </div>
@@ -3124,7 +3124,7 @@
             <!-- หัวข้อและปุ่มย้อนกลับสไลด์ -->
             <div class="settings-header">
               <div class="settings-header-text">
-                <h3 class="settings-title" style="display: flex; align-items: center; gap: 8px;">Google Sheets Connection <span style="font-size: 11px; background: rgba(0,0,0,0.06); color: var(--color-text-secondary); padding: 2px 8px; border-radius: 8px; font-weight: 500;">Version 2.2.4</span></h3>
+                <h3 class="settings-title" style="display: flex; align-items: center; gap: 8px;">Google Sheets Connection <span style="font-size: 11px; background: rgba(0,0,0,0.06); color: var(--color-text-secondary); padding: 2px 8px; border-radius: 8px; font-weight: 500;">Version 2.2.5</span></h3>
                 <p style="font-size: 11px; color: var(--color-text-secondary); margin-top: 4px;">ผูกแอปเข้ากับสิทธิ์ Google Sheets ของแกผ่าน API หรือ Google Apps Script</p>
               </div>
               <button class="capsule-btn btn-back-to-overview" id="settings-back-to-overview-btn" style="display: none; cursor: pointer; background: rgba(39, 168, 115, 0.1) !important; color: #27a873 !important; border: none !important;">
@@ -4727,9 +4727,13 @@
           if (window.PublicKeyCredential && (typeof PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable === 'function')) {
             const available = await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();
             if (available) {
-              setTimeout(() => {
-                authenticateBiometrics();
-              }, 400);
+              const triggerAutoAuth = async () => {
+                passcodeScreen.removeEventListener('touchstart', triggerAutoAuth);
+                passcodeScreen.removeEventListener('mousedown', triggerAutoAuth);
+                await authenticateBiometrics();
+              };
+              passcodeScreen.addEventListener('touchstart', triggerAutoAuth);
+              passcodeScreen.addEventListener('mousedown', triggerAutoAuth);
             }
           }
         }
@@ -6230,6 +6234,10 @@
       // Init Default State with system current date
       initMonth(activeYear, activeMonth);
       loadGoogleCalendarEvents(activeYear, activeMonth);
+
+      window.updateCalendarView = function() {
+        initMonth(activeYear, activeMonth, false);
+      };
     })();
 
     // 3. Sidebar Tab Interactive Swap with Parallax & Apple Curve (Q's implementation) & Workspace Sliding Page Transition
@@ -6842,6 +6850,9 @@
               }
             });
             localStorage.setItem('income_tracker_calendar_events_cache', JSON.stringify(window.calendarEvents));
+            if (typeof updateCalendarView === 'function') {
+              updateCalendarView();
+            }
             
             queueSelect.innerHTML = '<option value="">-- ไม่เชื่อมโยงคิวงาน / ทั่วไป --</option>';
             const defaultColorId = localStorage.getItem('income_tracker_default_calendar_color_id') || "";
