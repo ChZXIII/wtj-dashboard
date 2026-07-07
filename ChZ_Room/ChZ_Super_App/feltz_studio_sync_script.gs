@@ -137,6 +137,8 @@ function doPost(e) {
           month: mName,
           monthName: mName,
           income: income,
+          feltzIncome: feltzIncome,
+          grabIncome: grabTotal,
           expense: expense,
           profit: profit,
           savings: savings

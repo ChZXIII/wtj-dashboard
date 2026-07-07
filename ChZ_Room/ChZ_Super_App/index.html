@@ -2647,6 +2647,9 @@
       .overview-kpis-row > div span:last-child {
         font-size: 16px !important;
       }
+      .overview-kpis-row > div:nth-child(5) {
+        grid-column: span 2 !important;
+      }
       .overview-bottom-row {
         flex-direction: column !important;
         gap: 16px !important;
@@ -3035,7 +3038,7 @@
             </div>
             <div class="user-info-text">
               <div class="user-role">CHZ MANAGER</div>
-              <div class="user-version">Version 2.1.3</div>
+              <div class="user-version">Version 2.1.4</div>
             </div>
           </div>
         </div>
@@ -3050,7 +3053,7 @@
             <!-- หัวข้อและปุ่มย้อนกลับสไลด์ -->
             <div class="settings-header">
               <div class="settings-header-text">
-                <h3 class="settings-title" style="display: flex; align-items: center; gap: 8px;">Google Sheets Connection <span style="font-size: 11px; background: rgba(0,0,0,0.06); color: var(--color-text-secondary); padding: 2px 8px; border-radius: 8px; font-weight: 500;">Version 2.1.3</span></h3>
+                <h3 class="settings-title" style="display: flex; align-items: center; gap: 8px;">Google Sheets Connection <span style="font-size: 11px; background: rgba(0,0,0,0.06); color: var(--color-text-secondary); padding: 2px 8px; border-radius: 8px; font-weight: 500;">Version 2.1.4</span></h3>
                 <p style="font-size: 11px; color: var(--color-text-secondary); margin-top: 4px;">ผูกแอปเข้ากับสิทธิ์ Google Sheets ของแกผ่าน API หรือ Google Apps Script</p>
               </div>
               <button class="capsule-btn btn-back-to-overview" id="settings-back-to-overview-btn" style="display: none; cursor: pointer; background: rgba(39, 168, 115, 0.1) !important; color: #27a873 !important; border: none !important;">
@@ -4155,7 +4158,7 @@
           </div>
           
           <div class="fin-modal-body" style="display: flex; flex-direction: column; gap: 20px; flex: 1; min-height: 0;">
-            <div class="overview-kpis-row" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; width: 100%; box-sizing: border-box;">
+            <div class="overview-kpis-row" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; width: 100%; box-sizing: border-box;">
               <!-- การ์ด 1: รายรับสะสม -->
               <div style="background: rgba(220, 252, 231, 0.6) !important; border: none !important; padding: 16px; border-radius: 16px; display: flex; flex-direction: column; gap: 4px; box-shadow: none !important;">
                 <span style="font-size: 11px; font-weight: 600; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">รายรับสะสม</span>
@@ -4176,11 +4179,30 @@
                 <span style="font-size: 11px; font-weight: 600; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">เงินเก็บสะสม 10%</span>
                 <span id="overview-kpi-total-savings" style="font-size: 18px; font-weight: 700; color: #d97706;">0 THB</span>
               </div>
+              <!-- การ์ด 5: รายรับ Grab สะสม -->
+              <div style="background: rgba(254, 243, 199, 0.4) !important; border: none !important; padding: 16px; border-radius: 16px; display: flex; flex-direction: column; gap: 4px; box-shadow: none !important;">
+                <span style="font-size: 11px; font-weight: 600; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">รายรับ Grab สะสม</span>
+                <span id="overview-kpi-grab-income" style="font-size: 18px; font-weight: 700; color: #d97706;">0 THB</span>
+              </div>
             </div>
 
             <!-- แถวแรก: กราฟแท่ง SVG แบบความกว้างเต็ม (Full-Width 100%) -->
             <div id="overview-chart-container" style="background: rgba(230, 242, 255, 0.6) !important; border: none !important; height: 220px; padding: 16px; border-radius: 16px; margin-bottom: 16px; display: flex; flex-direction: column; gap: 8px; width: 100%; box-sizing: border-box;">
               <h4 style="font-family: var(--font-heading); font-size: 12px; font-weight: 700; color: var(--color-text-primary); text-transform: uppercase; letter-spacing: 0.5px; margin: 0;">Income vs Expense Comparison</h4>
+              <div style="display: flex; gap: 16px; font-size: 10px; font-family: var(--font-body); color: var(--color-text-secondary); margin-top: 4px;">
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <span style="display: inline-block; width: 10px; height: 10px; background-color: #27a873; border-radius: 3px;"></span>
+                  <span>รายรับ Feltz Studio</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <span style="display: inline-block; width: 10px; height: 10px; background-color: #f59e0b; border-radius: 3px;"></span>
+                  <span>รายรับ Grab Driving</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <span style="display: inline-block; width: 10px; height: 10px; background-color: var(--color-neon-rose); border-radius: 3px;"></span>
+                  <span>รายจ่ายสะสม</span>
+                </div>
+              </div>
               <div id="overview-chart-wrapper" style="width: 100%; height: 170px;"></div>
             </div>
 
@@ -4195,6 +4217,7 @@
                       <tr style="border-bottom: 1.5px solid rgba(0,0,0,0.05); color: var(--color-text-secondary); font-weight: 600;">
                         <th style="padding: 10px 8px;">เดือน</th>
                         <th style="padding: 10px 8px;">รายรับ (บาท)</th>
+                        <th style="padding: 10px 8px;">รายรับ Grab (บาท)</th>
                         <th style="padding: 10px 8px;">รายจ่าย (บาท)</th>
                         <th style="padding: 10px 8px;">กำไรสุทธิ (บาท)</th>
                         <th style="padding: 10px 8px;">เงินเก็บ 10% (บาท)</th>
@@ -8676,7 +8699,8 @@
         ];
 
         for (let m = 0; m < 12; m++) {
-          let income = 0;
+          let feltzIncome = 0;
+          let grabIncome = 0;
           let expense = 0;
 
           txList.forEach(tx => {
@@ -8684,21 +8708,28 @@
             if (d.getFullYear() === targetYear && d.getMonth() === m) {
               const amt = parseFloat(tx.amount) || 0;
               if (tx.type === 'income') {
-                income += amt;
+                if (tx.category === 'Grab Income') {
+                  grabIncome += amt;
+                } else {
+                  feltzIncome += amt;
+                }
               } else if (tx.type === 'expense') {
                 expense += amt;
               }
             }
           });
 
+          const income = feltzIncome + grabIncome;
           const profit = income - expense;
-          const savings = income * 0.1; // 10% ของรายรับ
+          const savings = feltzIncome * 0.1 + grabIncome * 0.1;
 
           monthlyData.push({
             monthIndex: m,
             monthName: monthNames[m],
             year: targetYear,
             income: income,
+            feltzIncome: feltzIncome,
+            grabIncome: grabIncome,
             expense: expense,
             profit: profit,
             savings: savings
@@ -8718,6 +8749,7 @@
         let totalExpense = 0;
         let netProfit = 0;
         let totalSavings = 0;
+        let totalGrabIncome = 0;
 
         data.forEach(m => {
           if (!m || typeof m !== 'object') return;
@@ -8725,16 +8757,19 @@
           totalExpense += parseFloat(m.expense) || 0;
           netProfit += parseFloat(m.profit) || 0;
           totalSavings += parseFloat(m.savings) || 0;
+          totalGrabIncome += parseFloat(m.grabIncome) || 0;
         });
 
         const incomeEl = document.getElementById('overview-kpi-total-income');
         const expenseEl = document.getElementById('overview-kpi-total-expense');
         const profitEl = document.getElementById('overview-kpi-net-profit');
         const savingsEl = document.getElementById('overview-kpi-total-savings');
+        const grabIncomeEl = document.getElementById('overview-kpi-grab-income');
 
         if (incomeEl) incomeEl.textContent = `${totalIncome.toLocaleString()} THB`;
         if (expenseEl) expenseEl.textContent = `${totalExpense.toLocaleString()} THB`;
         if (savingsEl) savingsEl.textContent = `${totalSavings.toLocaleString()} THB`;
+        if (grabIncomeEl) grabIncomeEl.textContent = `${totalGrabIncome.toLocaleString()} THB`;
         if (profitEl) {
           profitEl.textContent = `${netProfit.toLocaleString()} THB`;
           if (netProfit >= 0) {
@@ -8754,7 +8789,8 @@
         data.forEach(m => {
           if (!m || typeof m !== 'object') return;
 
-          const incomeVal = parseFloat(m.income) || 0;
+          const incomeVal = parseFloat(m.feltzIncome) || (parseFloat(m.income) || 0) - (parseFloat(m.grabIncome) || 0);
+          const grabVal = parseFloat(m.grabIncome) || 0;
           const expenseVal = parseFloat(m.expense) || 0;
           const profitVal = parseFloat(m.profit) || 0;
           const savingsVal = parseFloat(m.savings) || 0;
@@ -8766,12 +8802,16 @@
             ? `<span style="display: inline-block; padding: 4px 8px; border-radius: 8px; background: rgba(39, 168, 115, 0.08); color: #27a873; font-weight: 600;">+${incomeVal.toLocaleString()}</span>`
             : `<span style="color: var(--color-text-secondary); opacity: 0.5;">-</span>`;
 
+          const grabHtml = grabVal > 0 
+            ? `<span style="display: inline-block; padding: 4px 8px; border-radius: 8px; background: rgba(245, 158, 11, 0.08); color: #d97706; font-weight: 600;">+${grabVal.toLocaleString()}</span>`
+            : `<span style="color: var(--color-text-secondary); opacity: 0.5;">-</span>`;
+
           const expenseHtml = expenseVal > 0 
             ? `<span style="display: inline-block; padding: 4px 8px; border-radius: 8px; background: rgba(255, 75, 114, 0.08); color: var(--color-neon-rose); font-weight: 600;">-${expenseVal.toLocaleString()}</span>`
             : `<span style="color: var(--color-text-secondary); opacity: 0.5;">-</span>`;
 
           let profitHtml = `<span style="color: var(--color-text-secondary); opacity: 0.5;">-</span>`;
-          if (incomeVal > 0 || expenseVal > 0) {
+          if (incomeVal > 0 || grabVal > 0 || expenseVal > 0) {
             if (profitVal >= 0) {
               profitHtml = `<span style="display: inline-block; padding: 4px 8px; border-radius: 8px; background: rgba(39, 168, 115, 0.08); color: #27a873; font-weight: 600;">+${profitVal.toLocaleString()}</span>`;
             } else {
@@ -8786,6 +8826,7 @@
           tr.innerHTML = `
             <td style="padding: 10px 8px; font-weight: 600; color: var(--color-text-primary); border: none;">${m.monthName || m.month}</td>
             <td style="padding: 10px 8px; border: none;">${incomeHtml}</td>
+            <td style="padding: 10px 8px; border: none;">${grabHtml}</td>
             <td style="padding: 10px 8px; border: none;">${expenseHtml}</td>
             <td style="padding: 10px 8px; border: none;">${profitHtml}</td>
             <td style="padding: 10px 8px; border: none;">${savingsHtml}</td>
@@ -8802,7 +8843,12 @@
         const validData = data.filter(m => m && typeof m === 'object');
 
         const maxVal = validData.length > 0
-          ? Math.max(...validData.map(m => Math.max(parseFloat(m.income) || 0, parseFloat(m.expense) || 0)))
+          ? Math.max(...validData.map(m => {
+              const fInc = parseFloat(m.feltzIncome) || (parseFloat(m.income) || 0) - (parseFloat(m.grabIncome) || 0);
+              const gInc = parseFloat(m.grabIncome) || 0;
+              const exp = parseFloat(m.expense) || 0;
+              return Math.max(fInc, gInc, exp);
+            }))
           : 10000;
         const chartMax = (maxVal > 0 ? maxVal : 10000) * 1.1;
 
@@ -8829,30 +8875,42 @@
 
         let barsHtml = '';
         const groupWidth = chartWidth / 12;
-        const barWidth = 12;
-        const barGap = 4;
+        const barWidth = 8; // ปรับลดขนาดแท่งลงเล็กน้อยจาก 12 เพื่อให้ 3 แท่งวางเรียงในกลุ่มได้สวยงาม
+        const barGap = 3;
 
         validData.forEach((m, idx) => {
           const groupX = paddingLeft + idx * groupWidth;
-          const incomeVal = parseFloat(m.income) || 0;
+          
+          // รวมขนาด 3 แท่ง = (barWidth * 3) + (barGap * 2) = 30px
+          const startX = groupX + (groupWidth - 30) / 2;
+          
+          const feltzIncVal = parseFloat(m.feltzIncome) || (parseFloat(m.income) || 0) - (parseFloat(m.grabIncome) || 0);
+          const grabIncVal = parseFloat(m.grabIncome) || 0;
           const expenseVal = parseFloat(m.expense) || 0;
           
-          // Income Bar
-          const incHeight = (incomeVal / chartMax) * chartHeight;
-          const incY = paddingTop + chartHeight - incHeight;
-          const incBarX = groupX + (groupWidth - (barWidth * 2 + barGap)) / 2;
-          
-          if (incomeVal > 0) {
+          // แท่งที่ 1 (Feltz Income): x = startX, fill="#27a873"
+          const feltzHeight = (feltzIncVal / chartMax) * chartHeight;
+          const feltzY = paddingTop + chartHeight - feltzHeight;
+          if (feltzIncVal > 0) {
             barsHtml += `
-              <rect x="${incBarX}" y="${incY}" width="${barWidth}" height="${incHeight}" rx="2" fill="#27a873" opacity="0.85" />
+              <rect x="${startX}" y="${feltzY}" width="${barWidth}" height="${feltzHeight}" rx="2" fill="#27a873" opacity="0.85" />
             `;
           }
 
-          // Expense Bar
+          // แท่งที่ 2 (Grab Income): x = startX + barWidth + barGap, fill="#f59e0b"
+          const grabHeight = (grabIncVal / chartMax) * chartHeight;
+          const grabY = paddingTop + chartHeight - grabHeight;
+          const grabBarX = startX + barWidth + barGap;
+          if (grabIncVal > 0) {
+            barsHtml += `
+              <rect x="${grabBarX}" y="${grabY}" width="${barWidth}" height="${grabHeight}" rx="2" fill="#f59e0b" opacity="0.85" />
+            `;
+          }
+
+          // แท่งที่ 3 (Expense): x = startX + (barWidth + barGap) * 2, fill="var(--color-neon-rose)"
           const expHeight = (expenseVal / chartMax) * chartHeight;
           const expY = paddingTop + chartHeight - expHeight;
-          const expBarX = incBarX + barWidth + barGap;
-
+          const expBarX = startX + (barWidth + barGap) * 2;
           if (expenseVal > 0) {
             barsHtml += `
               <rect x="${expBarX}" y="${expY}" width="${barWidth}" height="${expHeight}" rx="2" fill="var(--color-neon-rose)" opacity="0.85" />
