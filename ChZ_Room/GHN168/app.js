@@ -274,6 +274,20 @@ function loadConfiguration() {
     safeStorage.setItem('ghn168_script_url', scriptUrl);
   }
   let sheetId = safeStorage.getItem('ghn168_sheet_id');
+  if (sheetId) {
+    sheetId = sheetId.trim();
+    // 1. ถ้ามีเว้นวรรคหรือวางเบิ้ลซ้ำกัน ให้ตัดเหลือเฉพาะไอดีตัวแรก
+    if (sheetId.includes(' ') || sheetId.includes('\t') || sheetId.includes('\n')) {
+      sheetId = sheetId.split(/\s+/)[0];
+    }
+    // 2. เอาขีดกลางออกหากมีสะกดเกินมา
+    sheetId = sheetId.replace(/-/g, '');
+    // 3. ตรวจจับและแปลงจากไอดีตัวที่สะกดเพี้ยน (1vlc7kx...) เป็นไอดีตั้งต้นจริง (1vIc7kx...)
+    if (sheetId.toLowerCase() === '1vlc7kxo9q_fn2mmgyayf8aly9imdprp7onqragx8y20') {
+      sheetId = '1vIc7kxO9q_FN2mmgyAYf8aly9lMdPRp7onqRaGx8y20';
+    }
+    safeStorage.setItem('ghn168_sheet_id', sheetId);
+  }
   if (!sheetId) {
     sheetId = defaultScriptConfig.sheetId;
     safeStorage.setItem('ghn168_sheet_id', sheetId);
@@ -339,8 +353,18 @@ function saveScriptSettings() {
   const match = id.match(sheetUrlRegex);
   if (match) {
     id = match[1];
-    document.getElementById('settingSheetId').value = id;
   }
+  
+  // Sanitizer & Corrector ก่อนเขียนทับความจำและบราวเซอร์
+  id = id.trim();
+  if (id.includes(' ') || id.includes('\t') || id.includes('\n')) {
+    id = id.split(/\s+/)[0];
+  }
+  id = id.replace(/-/g, '');
+  if (id.toLowerCase() === '1vlc7kxo9q_fn2mmgyayf8aly9imdprp7onqragx8y20') {
+    id = '1vIc7kxO9q_FN2mmgyAYf8aly9lMdPRp7onqRaGx8y20';
+  }
+  document.getElementById('settingSheetId').value = id;
   
   safeStorage.setItem('ghn168_script_url', url);
   safeStorage.setItem('ghn168_sheet_id', id);
