@@ -1943,19 +1943,19 @@
       margin-left: auto;
       margin-right: 28px;
       margin-top: 26px; /* Shifts clock down cleanly */
-      height: 48px; /* Matches digit height */
+      height: 60px; /* Matches digit height */
     }
 
     .flip-card-unit {
       position: relative;
-      width: 46px; /* Increased to give numbers more horizontal breathing room */
-      height: 48px;
+      width: 58px; /* Increased to give numbers more horizontal breathing room */
+      height: 60px;
       perspective: 1000px;
       background: transparent;
     }
 
     .flip-card-unit.ampm-unit {
-      width: 48px; /* Increased to prevent PM/AM from touching borders */
+      width: 60px; /* Increased to prevent PM/AM from touching borders */
     }
 
     /* 3D split-leaf card halves for digits */
@@ -1963,7 +1963,7 @@
       position: absolute;
       left: 0;
       width: 100%;
-      height: 24px; /* Exactly half of unit height */
+      height: 30px; /* Exactly half of unit height */
       overflow: hidden;
       background: #1c1b22;
       backface-visibility: hidden;
@@ -1991,11 +1991,11 @@
     /* Split-leaf text alignment logic */
     .card-part span {
       font-family: var(--font-heading);
-      font-size: 28px;
+      font-size: 38px;
       font-weight: 800;
       color: #ffffff !important;
-      height: 48px; /* Full card height */
-      line-height: 48px;
+      height: 60px; /* Full card height */
+      line-height: 60px;
       position: absolute;
       left: 0;
       width: 100%;
@@ -2008,7 +2008,7 @@
     }
 
     .card-part.bottom span {
-      top: -24px; /* Shift text up by exactly 24px to align halves perfectly */
+      top: -30px; /* Shift text up by exactly 30px to align halves perfectly */
     }
 
     /* 3D mechanical fold transitions */
@@ -2078,7 +2078,7 @@
 
     #flip-ampm .flip-card-face span {
       font-family: var(--font-heading);
-      font-size: 13px;
+      font-size: 17px;
       font-weight: 700;
       color: #ffffff !important;
       line-height: 1;
@@ -2092,7 +2092,7 @@
 
     .flip-colon {
       font-family: var(--font-heading);
-      font-size: 28px;
+      font-size: 38px;
       font-weight: 800;
       color: var(--color-text-primary);
       margin: 0 1px;
@@ -2572,6 +2572,15 @@
         box-sizing: border-box !important;
       }
       .settings-grid {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 20px !important;
+      }
+      .settings-form-group div[style*="display: flex"] input {
+        flex: 1 !important;
+        min-width: 0 !important;
+      }
+      .settings-info-card div[style*="grid-template-columns"] {
         grid-template-columns: 1fr !important;
         gap: 16px !important;
       }
@@ -2843,6 +2852,42 @@
       color: var(--color-neon-rose);
       transform: translateY(-2px);
     }
+
+    #stopwatch-controls .btn-action {
+      padding: 8px 16px !important;
+      border-radius: 12px !important;
+      font-family: var(--font-heading);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      border: none !important;
+      transition: all 0.2s ease;
+      box-shadow: none !important;
+    }
+    #btn-stopwatch-start {
+      background: rgba(39, 168, 115, 0.1) !important;
+      color: #27a873 !important;
+    }
+    #btn-stopwatch-pause {
+      background: rgba(255, 152, 0, 0.1) !important;
+      color: #ff9800 !important;
+    }
+    #btn-stopwatch-save {
+      background: var(--color-neon-rose) !important;
+      color: var(--color-white) !important;
+      box-shadow: 0 4px 12px rgba(255, 75, 114, 0.2) !important;
+    }
+    #btn-stopwatch-reset {
+      background: rgba(0, 0, 0, 0.05) !important;
+      color: var(--color-text-secondary) !important;
+    }
+    #stopwatch-controls .btn-action:hover {
+      transform: translateY(-1px);
+      opacity: 0.95;
+    }
+    #stopwatch-controls .btn-action:active {
+      transform: translateY(1px);
+    }
   </style>
 </head>
 <body>
@@ -2966,7 +3011,7 @@
             </div>
             <div class="user-info-text">
               <div class="user-role">CHZ MANAGER</div>
-              <div class="user-version">Version 2.1.0</div>
+              <div class="user-version">Version 2.1.1</div>
             </div>
           </div>
         </div>
@@ -2981,7 +3026,7 @@
             <!-- หัวข้อและปุ่มย้อนกลับสไลด์ -->
             <div class="settings-header">
               <div class="settings-header-text">
-                <h3 class="settings-title" style="display: flex; align-items: center; gap: 8px;">Google Sheets Connection <span style="font-size: 11px; background: rgba(0,0,0,0.06); color: var(--color-text-secondary); padding: 2px 8px; border-radius: 8px; font-weight: 500;">Version 2.1.0</span></h3>
+                <h3 class="settings-title" style="display: flex; align-items: center; gap: 8px;">Google Sheets Connection <span style="font-size: 11px; background: rgba(0,0,0,0.06); color: var(--color-text-secondary); padding: 2px 8px; border-radius: 8px; font-weight: 500;">Version 2.1.1</span></h3>
                 <p style="font-size: 11px; color: var(--color-text-secondary); margin-top: 4px;">ผูกแอปเข้ากับสิทธิ์ Google Sheets ของแกผ่าน API หรือ Google Apps Script</p>
               </div>
               <button class="capsule-btn btn-back-to-overview" id="settings-back-to-overview-btn" style="display: none; cursor: pointer; background: rgba(39, 168, 115, 0.1) !important; color: #27a873 !important; border: none !important;">
@@ -3209,7 +3254,6 @@
                           </div>
                         </div>
                       </div>
-                      <div class="anime-subtitle" style="font-size: 12px; color: var(--color-text-secondary); margin-top: 4px; text-align: right; margin-left: auto;">ChZ Agent Workspace</div>
                       
                       <!-- Clock/Stopwatch Mode Controls -->
                       <div class="clock-mode-controls" style="display: flex; align-items: center; gap: 8px; margin-top: 4px; justify-content: flex-end;">
