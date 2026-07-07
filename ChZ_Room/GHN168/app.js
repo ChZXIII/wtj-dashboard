@@ -304,7 +304,7 @@ function loadConfiguration() {
   const users = ['เก่ง', 'มด', 'หอม', 'พี่นิค'];
 
   users.forEach(username => {
-    const role = safeStorage.getItem('ghn_user_role_' + username) || (username === 'เก่ง' ? 'admin' : 'user');
+    const role = safeStorage.getItem('ghn_user_role_' + username) || 'admin';
     const selectEl = document.getElementById('role-select-' + username);
     if (selectEl) selectEl.value = role;
   });
@@ -350,7 +350,7 @@ function saveScriptSettings() {
   // Save User Roles
   const users = ['เก่ง', 'มด', 'หอม', 'พี่นิค'];
   users.forEach(username => {
-    let role = 'user';
+    let role = 'admin';
     if (username === 'เก่ง') {
       role = 'admin';
     } else {
@@ -7659,6 +7659,16 @@ function updatePasscodeDots() {
 }
 
 window.handlePasscodeInput = function(num) {
+  const selectedUser = document.getElementById('passcode-user-select').value;
+  if (!selectedUser) {
+    const statusEl = document.getElementById('passcode-status');
+    if (statusEl) {
+      statusEl.textContent = "กรุณาเลือกชื่อคนที่ล็อกอินก่อนป้อนรหัส";
+    }
+    triggerShakeEffect();
+    return;
+  }
+
   if (passcodeEntered.length < 6) {
     passcodeEntered += num;
     updatePasscodeDots();
@@ -7678,6 +7688,11 @@ window.handlePasscodeDelete = function() {
 
 async function processPasscode() {
   const selectedUser = document.getElementById('passcode-user-select').value;
+  if (!selectedUser) {
+    passcodeEntered = '';
+    updatePasscodeDots();
+    return;
+  }
   const pinKey = 'ghn_pin_hash_' + selectedUser;
   const storedHash = localStorage.getItem(pinKey);
   const statusEl = document.getElementById('passcode-status');
@@ -7871,6 +7886,10 @@ async function authenticateBiometrics() {
 
 window.handlePasscodeBiometrics = function() {
   const selectedUser = document.getElementById('passcode-user-select').value;
+  if (!selectedUser) {
+    alert('กรุณาเลือกผู้ใช้งานก่อนสแกนใบหน้า / นิ้วมือ');
+    return;
+  }
   const credKey = 'ghn_webauthn_cred_id_' + selectedUser;
   if (localStorage.getItem(credKey)) {
     authenticateBiometrics();
@@ -7881,14 +7900,22 @@ window.handlePasscodeBiometrics = function() {
 
 function onPasscodeUserSelectChange() {
   const selectedUser = document.getElementById('passcode-user-select').value;
-  const pinKey = 'ghn_pin_hash_' + selectedUser;
   const statusEl = document.getElementById('passcode-status');
-  const storedHash = localStorage.getItem(pinKey);
 
   passcodeEntered = '';
   tempPin = '';
   updatePasscodeDots();
   passcodeMode = 'auth';
+
+  if (!selectedUser) {
+    if (statusEl) {
+      statusEl.textContent = "กรุณาเลือกชื่อของคุณเพื่อเข้าใช้งาน";
+    }
+    return;
+  }
+
+  const pinKey = 'ghn_pin_hash_' + selectedUser;
+  const storedHash = localStorage.getItem(pinKey);
 
   if (!storedHash) {
     statusEl.textContent = "กรุณากรอกรหัสเปิดระบบ 6 หลักเพื่อเพิ่มผู้ใช้งานบนเครื่องนี้";
@@ -7931,14 +7958,22 @@ async function checkAuthOnLoad() {
   }
   
   const selectedUser = document.getElementById('passcode-user-select').value;
-  const pinKey = 'ghn_pin_hash_' + selectedUser;
   const statusEl = document.getElementById('passcode-status');
-  const storedHash = localStorage.getItem(pinKey);
   
   passcodeEntered = '';
   tempPin = '';
   updatePasscodeDots();
   passcodeMode = 'auth';
+
+  if (!selectedUser) {
+    if (statusEl) {
+      statusEl.textContent = "กรุณาเลือกชื่อของคุณเพื่อเข้าใช้งาน";
+    }
+    return;
+  }
+  
+  const pinKey = 'ghn_pin_hash_' + selectedUser;
+  const storedHash = localStorage.getItem(pinKey);
   
   if (!storedHash) {
     statusEl.textContent = "กรุณากรอกรหัสเปิดระบบ 6 หลักเพื่อเพิ่มผู้ใช้งานบนเครื่องนี้";
@@ -7960,7 +7995,7 @@ function syncSettingsUI() {
   }
 
   // Check role of the logged-in user
-  const role = localStorage.getItem('ghn_user_role_' + currentActiveUser) || (currentActiveUser === 'เก่ง' ? 'admin' : 'user');
+  const role = localStorage.getItem('ghn_user_role_' + currentActiveUser) || 'admin';
   const navSettings = document.querySelector('li.nav-item[data-view="settings"]');
   if (navSettings) {
     if (role === 'admin') {

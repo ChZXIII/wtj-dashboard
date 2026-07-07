@@ -1990,6 +1990,7 @@ textarea.form-control {
       
       <!-- User Dropdown selector -->
       <select id="passcode-user-select" class="form-control" style="font-family:'Prompt',sans-serif; text-align:center; max-width:240px; margin:0 auto 20px auto; border-radius:10px; background:rgba(255,255,255,0.08); color:#ffffff; border:1px solid rgba(255,255,255,0.15); height:auto; padding:6px 12px;" onchange="onPasscodeUserSelectChange()">
+        <option value="" disabled selected style="background:#1a1c1e; color:#888888;">กรุณาเลือกชื่อคนที่ล็อกอิน</option>
         <option value="เก่ง" style="background:#1a1c1e; color:#ffffff;">เก่ง</option>
         <option value="มด" style="background:#1a1c1e; color:#ffffff;">มด</option>
         <option value="หอม" style="background:#1a1c1e; color:#ffffff;">หอม</option>
@@ -3721,24 +3722,24 @@ textarea.form-control {
               <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 8px; align-items: center;">
                 <span style="font-size: 12px; font-weight: 600;">มด</span>
                 <select id="role-select-มด" class="form-control" style="font-size: 11px; height: auto; padding: 4px 8px;">
-                  <option value="admin">Admin</option>
-                  <option value="user" selected>User</option>
+                  <option value="admin" selected>Admin</option>
+                  <option value="user">User</option>
                 </select>
               </div>
               <!-- Hom -->
               <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 8px; align-items: center;">
                 <span style="font-size: 12px; font-weight: 600;">หอม</span>
                 <select id="role-select-หอม" class="form-control" style="font-size: 11px; height: auto; padding: 4px 8px;">
-                  <option value="admin">Admin</option>
-                  <option value="user" selected>User</option>
+                  <option value="admin" selected>Admin</option>
+                  <option value="user">User</option>
                 </select>
               </div>
               <!-- Nick -->
               <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 8px; align-items: center;">
                 <span style="font-size: 12px; font-weight: 600;">พี่นิค</span>
                 <select id="role-select-พี่นิค" class="form-control" style="font-size: 11px; height: auto; padding: 4px 8px;">
-                  <option value="admin">Admin</option>
-                  <option value="user" selected>User</option>
+                  <option value="admin" selected>Admin</option>
+                  <option value="user">User</option>
                 </select>
               </div>
             </div>
