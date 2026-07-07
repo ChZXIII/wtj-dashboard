@@ -3109,7 +3109,7 @@
             </div>
             <div class="user-info-text">
               <div class="user-role">CHZ MANAGER</div>
-              <div class="user-version">Version 2.2.7</div>
+              <div class="user-version">Version 2.2.8</div>
             </div>
           </div>
         </div>
@@ -3124,7 +3124,7 @@
             <!-- หัวข้อและปุ่มย้อนกลับสไลด์ -->
             <div class="settings-header">
               <div class="settings-header-text">
-                <h3 class="settings-title" style="display: flex; align-items: center; gap: 8px;">Google Sheets Connection <span style="font-size: 11px; background: rgba(0,0,0,0.06); color: var(--color-text-secondary); padding: 2px 8px; border-radius: 8px; font-weight: 500;">Version 2.2.7</span></h3>
+                <h3 class="settings-title" style="display: flex; align-items: center; gap: 8px;">Google Sheets Connection <span style="font-size: 11px; background: rgba(0,0,0,0.06); color: var(--color-text-secondary); padding: 2px 8px; border-radius: 8px; font-weight: 500;">Version 2.2.8</span></h3>
                 <p style="font-size: 11px; color: var(--color-text-secondary); margin-top: 4px;">ผูกแอปเข้ากับสิทธิ์ Google Sheets ของแกผ่าน API หรือ Google Apps Script</p>
               </div>
               <button class="capsule-btn btn-back-to-overview" id="settings-back-to-overview-btn" style="display: none; cursor: pointer; background: rgba(39, 168, 115, 0.1) !important; color: #27a873 !important; border: none !important;">
@@ -4508,6 +4508,16 @@
     let passcodeMode = "auth"; // "auth" | "setup" | "setup_confirm"
     let passcodeTempPin = "";
     const MASTER_PIN = '030826';
+    let activeTriggerAutoAuth = null;
+
+    function removeAutoAuthListeners() {
+      const passcodeScreen = document.getElementById('passcode-screen');
+      if (passcodeScreen && activeTriggerAutoAuth) {
+        passcodeScreen.removeEventListener('click', activeTriggerAutoAuth);
+        passcodeScreen.removeEventListener('touchstart', activeTriggerAutoAuth);
+        activeTriggerAutoAuth = null;
+      }
+    }
 
     async function hashPIN(pin) {
       const msgBuffer = new TextEncoder().encode(pin);
@@ -4593,6 +4603,7 @@
             const pinHash = await hashPIN(passcodeEntered);
             localStorage.setItem('chz_super_app_pin_hash', pinHash);
             sessionStorage.setItem('chz_super_app_authenticated', 'true');
+            removeAutoAuthListeners();
             
             if (statusMsg) {
               statusMsg.textContent = 'ตั้งรหัสผ่าน PIN สำเร็จ';
@@ -4634,6 +4645,7 @@
         const pinHash = await hashPIN(passcodeEntered);
         if (pinHash === storedPinHash) {
           sessionStorage.setItem('chz_super_app_authenticated', 'true');
+          removeAutoAuthListeners();
           const screen = document.getElementById('passcode-screen');
           if (screen) screen.style.display = 'none';
           passcodeEntered = "";
@@ -4696,6 +4708,7 @@
     async function authenticateBiometrics() {
       if (isBiometricsRunning) return false;
       isBiometricsRunning = true;
+      removeAutoAuthListeners();
       try {
         const storedCredIdJson = localStorage.getItem('chz_super_app_webauthn_cred_id');
         if (!storedCredIdJson) return false;
@@ -4748,13 +4761,21 @@
           if (window.PublicKeyCredential && (typeof PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable === 'function')) {
             const available = await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();
             if (available) {
-              const triggerAutoAuth = async () => {
-                passcodeScreen.removeEventListener('touchstart', triggerAutoAuth);
-                passcodeScreen.removeEventListener('mousedown', triggerAutoAuth);
+              removeAutoAuthListeners();
+              
+              // 1. ลองรันสแกนหน้าแบบอัตโนมัติทันที (เผื่อเปิดผ่าน PWA/Standalone Mode)
+              setTimeout(() => {
+                authenticateBiometrics();
+              }, 200);
+              
+              // 2. เผื่อเบราว์เซอร์บล็อก ยึดการสแกนอัตโนมัติด้วยการแตะจอครั้งแรก (ตรวจจับ Click เพื่อความเสถียรบน iOS Safari)
+              activeTriggerAutoAuth = async (e) => {
+                if (e.target && e.target.closest('#passcode-biometrics-btn')) return; // เลี่ยงปุ่มยิงซ้อน
+                removeAutoAuthListeners();
                 await authenticateBiometrics();
               };
-              passcodeScreen.addEventListener('touchstart', triggerAutoAuth);
-              passcodeScreen.addEventListener('mousedown', triggerAutoAuth);
+              passcodeScreen.addEventListener('click', activeTriggerAutoAuth);
+              passcodeScreen.addEventListener('touchstart', activeTriggerAutoAuth);
             }
           }
         }
