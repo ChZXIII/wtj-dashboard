@@ -3207,7 +3207,7 @@
             </div>
             <div class="user-info-text">
               <div class="user-role">CHZ MANAGER</div>
-              <div class="user-version">Version 2.4.5</div>
+              <div class="user-version">Version 2.4.6</div>
             </div>
           </div>
         </div>
@@ -3222,7 +3222,7 @@
             <!-- หัวข้อและปุ่มย้อนกลับสไลด์ -->
             <div class="settings-header">
               <div class="settings-header-text">
-                <h3 class="settings-title" style="display: flex; align-items: center; gap: 8px;">Google Sheets Connection <span style="font-size: 11px; background: rgba(0,0,0,0.06); color: var(--color-text-secondary); padding: 2px 8px; border-radius: 8px; font-weight: 500;">Version 2.4.5</span></h3>
+                <h3 class="settings-title" style="display: flex; align-items: center; gap: 8px;">Google Sheets Connection <span style="font-size: 11px; background: rgba(0,0,0,0.06); color: var(--color-text-secondary); padding: 2px 8px; border-radius: 8px; font-weight: 500;">Version 2.4.6</span></h3>
                 <p style="font-size: 11px; color: var(--color-text-secondary); margin-top: 4px;">ผูกแอปเข้ากับสิทธิ์ Google Sheets ของแกผ่าน API หรือ Google Apps Script</p>
               </div>
               <button class="capsule-btn btn-back-to-overview" id="settings-back-to-overview-btn" style="display: none; cursor: pointer; background: rgba(39, 168, 115, 0.1) !important; color: #27a873 !important; border: none !important;">
@@ -3456,7 +3456,7 @@
                       <div id="stopwatch-controls" style="display: none; align-items: center; gap: 8px; justify-content: space-between; margin-top: 6px; width: 100%;">
                         <button type="button" class="btn-action" id="btn-stopwatch-start">เริ่มงาน</button>
                         <button type="button" class="btn-action" id="btn-stopwatch-pause" style="display: none;">หยุดพัก</button>
-                        <button type="button" class="btn-action" id="btn-stopwatch-save">บันทึกเวลา</button>
+                        <button type="button" class="btn-action" id="btn-stopwatch-save" style="display: none !important;">บันทึกเวลา</button>
                         <button type="button" class="btn-action" id="btn-stopwatch-reset">รีเซ็ต</button>
                       </div>
                     </div>
@@ -3842,9 +3842,9 @@
                 </div>
               </div>
               <div class="settings-form-group">
-                <label for="grab-hours">เวลาทำงาน (ชั่วโมง:นาที)</label>
+                <label for="grab-hours">เวลาทำงาน (ชั่วโมง:นาที:วินาที)</label>
                 <div class="form-flex-row-gap-8">
-                  <input type="text" id="grab-hours" placeholder="เช่น 8:30" style="flex: 1;">
+                  <input type="text" id="grab-hours" placeholder="เช่น 08:30:00" style="flex: 1;">
                   <button type="button" class="btn-action" id="btn-pull-stopwatch">ดึงเวลา</button>
                 </div>
               </div>
@@ -7874,7 +7874,7 @@
               syncStatus: 'local'
             };
 
-            const scriptUrl = localStorage.getItem('income_tracker_gas_url') || '';
+            const scriptUrl = localStorage.getItem('income_tracker_grab_gas_url') || '';
             if (!scriptUrl) {
               newTx.syncStatus = 'local';
             } else {
@@ -7891,6 +7891,17 @@
             updateDashboardMetrics();
 
             recordGrabForm.reset();
+            
+            // Clear quick record drafts and reset quick form
+            if (typeof clearQuickGrabDrafts === 'function') {
+              clearQuickGrabDrafts();
+            }
+            const quickForm = document.getElementById('quick-record-grab-form');
+            if (quickForm) {
+              quickForm.reset();
+              const quickTip = document.getElementById('quick-grab-tip');
+              if (quickTip) quickTip.value = '0';
+            }
             
             // Hide preview elements
             const previewBattery = document.getElementById('preview-grab-battery');
@@ -7921,7 +7932,7 @@
       // Grab Quick Record Form Submit Handler
       const btnQuickGrabSubmit = document.getElementById('btn-quick-grab-submit');
       if (btnQuickGrabSubmit) {
-        btnQuickGrabSubmit.addEventListener('click', async (e) => {
+        btnQuickGrabSubmit.addEventListener('click', (e) => {
           e.preventDefault();
           
           try {
@@ -7952,67 +7963,80 @@
             const dateStr = fresh.toISOString().split('T')[0];
             const timeStr = fresh.toTimeString().split(' ')[0].substring(0, 5);
 
-            const totalAmount = amountVal + tip;
-            let remarks = 'Quick Record';
-            remarks += ` [แบต: ${battery}% | ${distance} กม. | ทิป: ${tip} THB]`;
+            const hours = Math.floor(stopwatchSeconds / 3600);
+            const minutes = Math.floor((stopwatchSeconds % 3600) / 60);
+            const seconds = stopwatchSeconds % 60;
+            const stopwatchTimeFormatted = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 
-            const newTx = {
-              id: Date.now(),
-              date: dateStr,
-              time: timeStr,
-              type: 'income',
-              category: 'Grab Income',
-              remarks: remarks,
-              amount: totalAmount,
-              grabBattery: battery,
-              grabDistance: distance,
-              grabFare: amountVal,
-              grabTip: tip,
-              grabWorkingHours: '0:00',
-              syncStatus: 'local'
-            };
+            // Fill full form elements
+            const grabDate = document.getElementById('grab-date');
+            if (grabDate) grabDate.value = dateStr;
 
-            // Visual loading feedback
-            btnQuickGrabSubmit.disabled = true;
-            btnQuickGrabSubmit.querySelector('span').textContent = 'กำลังบันทึก...';
+            const grabTime = document.getElementById('grab-time');
+            if (grabTime) grabTime.value = timeStr;
 
-            const scriptUrl = localStorage.getItem('income_tracker_gas_url') || '';
-            if (scriptUrl) {
-              const success = await sendTransactionToGAS(newTx);
-              if (success) {
-                newTx.syncStatus = 'synced';
-              } else {
-                newTx.syncStatus = 'failed';
-              }
+            const grabBattery = document.getElementById('grab-battery');
+            if (grabBattery) {
+              grabBattery.value = (battery === '-' ? '' : battery);
+              grabBattery.dispatchEvent(new Event('input'));
             }
 
-            transactions.push(newTx);
-            saveTransactions();
-            updateDashboardMetrics();
+            const grabDistance = document.getElementById('grab-distance');
+            if (grabDistance) {
+              grabDistance.value = (distance === '-' ? '' : distance);
+              grabDistance.dispatchEvent(new Event('input'));
+            }
 
-            // Reset inputs
-            document.getElementById('quick-record-grab-form').reset();
-            document.getElementById('quick-grab-tip').value = '0';
+            const grabAmount = document.getElementById('grab-amount');
+            if (grabAmount) {
+              grabAmount.value = amountInput;
+              grabAmount.dispatchEvent(new Event('input'));
+            }
+
+            const grabTip = document.getElementById('grab-tip');
+            if (grabTip) {
+              grabTip.value = tipInput;
+              grabTip.dispatchEvent(new Event('input'));
+            }
+
+            const grabHours = document.getElementById('grab-hours');
+            if (grabHours) grabHours.value = stopwatchTimeFormatted;
+
+            const grabRemarks = document.getElementById('grab-remarks');
+            if (grabRemarks) grabRemarks.value = 'Quick Record';
+
+            // Navigate to Record Transaction (Slide 2) & open tab form-record-grab
+            const workspaceTrack = document.querySelector('.workspace-pages-track');
+            if (workspaceTrack) {
+              workspaceTrack.style.transform = 'translateX(-33.3333%)';
+            }
             
-            // Live update Overview modals if active
-            if (window.cachedOverviewData) {
-              const dataToUse = calculateLocalOverviewData();
-              renderOverviewKPIs(dataToUse);
-              renderOverviewMonthlySummaryTable(dataToUse);
-              drawOverviewSvgChart(dataToUse);
+            const navItems = document.querySelectorAll('.nav-menu .nav-item');
+            navItems.forEach((nav, idx) => {
+              if (idx === 1) {
+                nav.classList.add('active');
+              } else {
+                nav.classList.remove('active');
+              }
+            });
+            
+            const viewport = document.querySelector('.workspace-viewport');
+            if (viewport) {
+              viewport.style.backgroundImage = "url('assets/hero_anime_white.jpg')";
             }
-
-            alert('บันทึกรายได้ Grab สำเร็จเรียบร้อยแล้วจ้าแก!');
+            
+            const slide2TabButtons = document.querySelectorAll('.record-income-page .segment-btn-tab');
+            slide2TabButtons.forEach(btn => {
+              if (btn.getAttribute('data-target') === 'form-record-grab') {
+                btn.click();
+              }
+            });
 
           } catch (err) {
             console.error(err);
-            alert('เกิดข้อผิดพลาดในการบันทึกจ้า: ' + err.message);
-          } finally {
-            btnQuickGrabSubmit.disabled = false;
-            btnQuickGrabSubmit.querySelector('span').textContent = 'บันทึกรายได้ Grab';
+            alert('เกิดข้อผิดพลาดในการนำเข้าข้อมูลจ้า: ' + err.message);
           }
         });
-      }
 
       // Slide 4 items CRUD & preview logic
       let exportItems = [{ desc: '', amount: 0 }]; // เริ่มด้วย 1 ช่องว่างพร้อมกรอก
@@ -10466,13 +10490,47 @@
       btnPullStopwatch.addEventListener('click', () => {
         const hours = Math.floor(stopwatchSeconds / 3600);
         const minutes = Math.floor((stopwatchSeconds % 3600) / 60);
-        const formattedTime = `${hours}:${String(minutes).padStart(2, '0')}`;
+        const seconds = stopwatchSeconds % 60;
+        const formattedTime = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
         const grabHoursInput = document.getElementById('grab-hours');
         if (grabHoursInput) {
           grabHoursInput.value = formattedTime;
         }
       });
     }
+
+    // Auto-Save Input Draft
+    const quickGrabFields = [
+      { id: 'quick-grab-battery', key: 'draft_quick_grab_battery' },
+      { id: 'quick-grab-distance', key: 'draft_quick_grab_distance' },
+      { id: 'quick-grab-amount', key: 'draft_quick_grab_amount' },
+      { id: 'quick-grab-tip', key: 'draft_quick_grab_tip' }
+    ];
+    function saveQuickGrabDrafts() {
+      quickGrabFields.forEach(field => {
+        const el = document.getElementById(field.id);
+        if (el) localStorage.setItem(field.key, el.value);
+      });
+    }
+    function loadQuickGrabDrafts() {
+      quickGrabFields.forEach(field => {
+        const el = document.getElementById(field.id);
+        if (el) {
+          const draftVal = localStorage.getItem(field.key);
+          if (draftVal !== null) el.value = draftVal;
+        }
+      });
+    }
+    function clearQuickGrabDrafts() {
+      quickGrabFields.forEach(field => {
+        localStorage.removeItem(field.key);
+      });
+    }
+
+    quickGrabFields.forEach(field => {
+      const el = document.getElementById(field.id);
+      if (el) el.addEventListener('input', saveQuickGrabDrafts);
+    });
 
     // Initialize state
     loadStopwatchState();
@@ -10482,6 +10540,7 @@
     setupGrabLivePreview('grab-distance', 'preview-grab-distance');
     setupGrabLivePreview('grab-tip', 'preview-grab-tip');
     setupGrabLivePreviewBattery('grab-battery', 'preview-grab-battery');
+    loadQuickGrabDrafts();
 
     // Initialize immediately and set interval
     updateBannerClock();

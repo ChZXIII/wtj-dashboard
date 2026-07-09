@@ -36,7 +36,7 @@ function doPost(e) {
       var distance = parseFloat(data.distance) || 0;
       var amount = parseFloat(data.amount) || 0;
       var tip = parseFloat(data.tip) || 0;
-      var battery = data.battery || '0';
+      var battery = parseFloat(data.battery) || 0;
       var workingHours = data.workingHours || '0:00';
       
       var sheetName = getMonthNameFromDateStr(date);
@@ -164,7 +164,7 @@ function beautifyGrabSheet(sheet) {
       dataRange.setFontFamily("Google Sans Code")
                .setFontSize(10)
                .setVerticalAlignment("middle")
-               .setHorizontalAlignment("center");
+               .setHorizontalAlignment("left");
       sheet.setRowHeights(2, daysInMonth, 24);
       
       var backgrounds = [];
@@ -186,8 +186,11 @@ function beautifyGrabSheet(sheet) {
       dataRange.setBackgrounds(backgrounds);
       dataRange.setBorder(true, true, true, true, true, true, "#cbd5e1", SpreadsheetApp.BorderStyle.SOLID);
       
-      // เซ็ต NumberFormat ให้คอลัมน์ 9-10 (I-J) เป็น "0.00"
-      sheet.getRange(2, 9, daysInMonth, 2).setNumberFormat("0.00");
+      // เซ็ต NumberFormat ของคอลัมน์แบตเตอรี่, เวลาทำงาน, ยอดวิ่ง, ทิป และเฉลี่ย
+      sheet.getRange(2, 5, daysInMonth, 1).setNumberFormat('0" %"');
+      sheet.getRange(2, 6, daysInMonth, 1).setNumberFormat('[hh]:mm:ss');
+      sheet.getRange(2, 3, daysInMonth, 2).setNumberFormat('#,##0.00');
+      sheet.getRange(2, 9, daysInMonth, 2).setNumberFormat('#,##0.00');
       
       // แถวหัวข้อสรุป (daysInMonth + 3)
       var summaryHeaderRow = daysInMonth + 3;
@@ -226,7 +229,7 @@ function beautifyGrabSheet(sheet) {
       dataRange.setFontFamily("Google Sans Code")
                .setFontSize(10)
                .setVerticalAlignment("middle")
-               .setHorizontalAlignment("center");
+               .setHorizontalAlignment("left");
       sheet.setRowHeights(2, lastRow - 1, 24);
       
       var backgrounds = [];
