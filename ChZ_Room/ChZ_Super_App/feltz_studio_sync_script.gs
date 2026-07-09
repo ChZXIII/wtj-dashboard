@@ -113,16 +113,15 @@ function doPost(e) {
         if (grabSpreadsheet) {
           var grabSheet = grabSpreadsheet.getSheetByName(mName);
           if (grabSheet) {
-            var grabLastRow = grabSheet.getLastRow();
-            if (grabLastRow > 1) {
-              // ดึงข้อมูลคอลัมน์ C (3) และ D (4) เริ่มตั้งแต่แถวที่ 2
-              var colCD = grabSheet.getRange(2, 3, grabLastRow - 1, 2).getValues();
-              for (var r = 0; r < colCD.length; r++) {
-                var valC = parseFloat(colCD[r][0]);
-                var valD = parseFloat(colCD[r][1]);
-                if (!isNaN(valC)) grabTotal += valC;
-                if (!isNaN(valD)) grabTotal += valD;
-              }
+            var year = new Date().getFullYear();
+            var daysInMonth = new Date(year, i + 1, 0).getDate();
+            // ดึงข้อมูลคอลัมน์ C (3) และ D (4) เริ่มตั้งแต่แถวที่ 2 เป็นจำนวน daysInMonth แถว (ป้องกันการดึงแถวรวมสรุปมาคำนวณ)
+            var colCD = grabSheet.getRange(2, 3, daysInMonth, 2).getValues();
+            for (var r = 0; r < colCD.length; r++) {
+              var valC = parseFloat(colCD[r][0]);
+              var valD = parseFloat(colCD[r][1]);
+              if (!isNaN(valC)) grabTotal += valC;
+              if (!isNaN(valD)) grabTotal += valD;
             }
           }
         }
