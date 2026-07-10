@@ -164,7 +164,7 @@ function beautifyGrabSheet(sheet) {
       dataRange.setFontFamily("Google Sans Code")
                .setFontSize(10)
                .setVerticalAlignment("middle")
-               .setHorizontalAlignment("left");
+               .setHorizontalAlignment("right");
       sheet.setRowHeights(2, daysInMonth, 24);
       
       var backgrounds = [];
@@ -229,7 +229,7 @@ function beautifyGrabSheet(sheet) {
       dataRange.setFontFamily("Google Sans Code")
                .setFontSize(10)
                .setVerticalAlignment("middle")
-               .setHorizontalAlignment("left");
+               .setHorizontalAlignment("right");
       sheet.setRowHeights(2, lastRow - 1, 24);
       
       var backgrounds = [];
