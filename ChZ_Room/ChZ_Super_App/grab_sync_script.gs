@@ -49,7 +49,7 @@ function doPost(e) {
       
       if (!grabSheet) {
         grabSheet = activeSpreadsheet.insertSheet(sheetName);
-        var headers = ["วันที่", "ระยะทาง", "ยอดวิ่ง", "ทิป", "แบตเตอรี่", "เวลาทำงาน", "", "", "บาท/Km", "บาท/hrs"];
+        var headers = ["วันที่", "ระยะทาง", "ยอดวิ่ง", "ทิป", "แบตเตอรี่", "เวลาทำงาน", "รายได้รวม", "เงินเก็บ 10%", "บาท/Km", "บาท/hrs"];
         grabSheet.appendRow(headers);
         
         var daysInMonth = new Date(year, month, 0).getDate();
@@ -59,23 +59,26 @@ function doPost(e) {
           var monthStr = (month < 10 ? '0' : '') + month;
           var dateFormatted = dayStr + '/' + monthStr + '/' + year;
           var rowNum = d + 1;
-          var formulaI = "=IF(B" + rowNum + ">0, (C" + rowNum + "+D" + rowNum + ")/B" + rowNum + ", 0)";
-          var formulaJ = "=IF(F" + rowNum + ">0, (C" + rowNum + "+D" + rowNum + ")/(F" + rowNum + "*24), 0)";
-          rowsData.push([dateFormatted, "", "", "", "", "", "", "", formulaI, formulaJ]);
+          var formulaG = "=C" + rowNum + "+D" + rowNum;
+          var formulaH = "=G" + rowNum + "*0.1";
+          var formulaI = "=IF(B" + rowNum + ">0, G" + rowNum + "/B" + rowNum + ", 0)";
+          var formulaJ = "=IF(F" + rowNum + ">0, G" + rowNum + "/(F" + rowNum + "*24), 0)";
+          rowsData.push([dateFormatted, "", "", "", "", "", formulaG, formulaH, formulaI, formulaJ]);
         }
         grabSheet.getRange(2, 1, daysInMonth, 10).setValues(rowsData);
         
         // เพิ่มแถวว่างและแถวสรุปผลท้ายเดือน
         grabSheet.getRange(daysInMonth + 2, 1, 1, 10).setValues([["", "", "", "", "", "", "", "", "", ""]]);
-        grabSheet.getRange(daysInMonth + 3, 1, 1, 10).setValues([["", "", "เฉลี่ยแบต 1% วิ่งได้", "", "", "", "ยอดรวมทั้งเดือน", "รวมระยะทาง", "เฉลี่ย บาท/Km", "เฉลี่ย บาท/ชม."]]);
+        grabSheet.getRange(daysInMonth + 3, 1, 1, 10).setValues([["", "รวมระยะทาง", "เฉลี่ยแบต 1% วิ่งได้", "", "", "", "ยอดรวมทั้งเดือน", "รวมเงินเก็บ 10%", "เฉลี่ย บาท/Km", "เฉลี่ย บาท/ชม."]]);
         
         var lastDayRow = daysInMonth + 1;
+        var formulaB = "=SUM(B2:B" + lastDayRow + ")";
         var formulaC = "=IF(SUM(E2:E" + lastDayRow + ")>0, SUM(B2:B" + lastDayRow + ")/SUM(E2:E" + lastDayRow + "), 0)";
-        var formulaG = "=SUM(C2:C" + lastDayRow + ")+SUM(D2:D" + lastDayRow + ")";
-        var formulaH = "=SUM(B2:B" + lastDayRow + ")";
-        var formulaI_summary = "=IF(SUM(B2:B" + lastDayRow + ")>0, (SUM(C2:C" + lastDayRow + ")+SUM(D2:D" + lastDayRow + "))/SUM(B2:B" + lastDayRow + "), 0)";
-        var formulaJ_summary = "=IF(SUM(F2:F" + lastDayRow + ")>0, (SUM(C2:C" + lastDayRow + ")+SUM(D2:D" + lastDayRow + "))/(SUM(F2:F" + lastDayRow + ")*24), 0)";
-        grabSheet.getRange(daysInMonth + 4, 1, 1, 10).setValues([["", "", formulaC, "", "", "", formulaG, formulaH, formulaI_summary, formulaJ_summary]]);
+        var formulaG = "=SUM(G2:G" + lastDayRow + ")";
+        var formulaH = "=SUM(H2:H" + lastDayRow + ")";
+        var formulaI_summary = "=IF(SUM(B2:B" + lastDayRow + ")>0, SUM(G2:G" + lastDayRow + ")/SUM(B2:B" + lastDayRow + "), 0)";
+        var formulaJ_summary = "=IF(SUM(F2:F" + lastDayRow + ")>0, SUM(G2:G" + lastDayRow + ")/(SUM(F2:F" + lastDayRow + ")*24), 0)";
+        grabSheet.getRange(daysInMonth + 4, 1, 1, 10).setValues([["", formulaB, formulaC, "", "", "", formulaG, formulaH, formulaI_summary, formulaJ_summary]]);
         
         beautifyGrabSheet(grabSheet);
       }
@@ -187,10 +190,10 @@ function beautifyGrabSheet(sheet) {
       dataRange.setBorder(true, true, true, true, true, true, "#cbd5e1", SpreadsheetApp.BorderStyle.SOLID);
       
       // เซ็ต NumberFormat ของคอลัมน์แบตเตอรี่, เวลาทำงาน, ยอดวิ่ง, ทิป และเฉลี่ย
+      sheet.getRange(2, 3, daysInMonth, 2).setNumberFormat("#,##0.00"); // ยอดวิ่ง, ทิป
       sheet.getRange(2, 5, daysInMonth, 1).setNumberFormat('0" %"');
       sheet.getRange(2, 6, daysInMonth, 1).setNumberFormat('[hh]:mm:ss');
-      sheet.getRange(2, 3, daysInMonth, 2).setNumberFormat('#,##0.00');
-      sheet.getRange(2, 9, daysInMonth, 2).setNumberFormat('#,##0.00');
+      sheet.getRange(2, 7, daysInMonth, 4).setNumberFormat("#,##0.00"); // รายได้รวม, เงินเก็บ 10%, บาท/Km, บาท/hrs
       
       // แถวหัวข้อสรุป (daysInMonth + 3)
       var summaryHeaderRow = daysInMonth + 3;
@@ -216,9 +219,10 @@ function beautifyGrabSheet(sheet) {
                        .setHorizontalAlignment("center");
       sheet.setRowHeight(summaryValueRow, 24);
       
-      // จัดฟอร์แมตตัวเลขในแถวสรุป: คอลัมน์ C เป็น "0.00", คอลัมน์ G, H, I, J เป็น "#,##0.00"
-      sheet.getRange(summaryValueRow, 3).setNumberFormat("0.00");
-      sheet.getRange(summaryValueRow, 7, 1, 4).setNumberFormat("#,##0.00");
+      // จัดฟอร์แมตตัวเลขในแถวสรุป
+      sheet.getRange(summaryValueRow, 2).setNumberFormat("#,##0.00"); // รวมระยะทาง
+      sheet.getRange(summaryValueRow, 3).setNumberFormat("0.00"); // เฉลี่ยแบต
+      sheet.getRange(summaryValueRow, 7, 1, 4).setNumberFormat("#,##0.00"); // ยอดรวม, รวมเงินเก็บ 10%, เฉลี่ย Km, เฉลี่ย ชม.
       
       // ใส่เส้นขอบล้อมรอบโซนสรุปด้วยสี #cbd5e1
       var summaryZone = sheet.getRange(daysInMonth + 3, 1, 2, lastCol);
@@ -286,7 +290,7 @@ function initGrabSpreadsheet(grabSpreadsheetId) {
       sheet.clear();
     }
     
-    var headers = ["วันที่", "ระยะทาง", "ยอดวิ่ง", "ทิป", "แบตเตอรี่", "เวลาทำงาน", "", "", "บาท/Km", "บาท/hrs"];
+    var headers = ["วันที่", "ระยะทาง", "ยอดวิ่ง", "ทิป", "แบตเตอรี่", "เวลาทำงาน", "รายได้รวม", "เงินเก็บ 10%", "บาท/Km", "บาท/hrs"];
     sheet.appendRow(headers);
     
     var monthIndex = i;
@@ -298,24 +302,27 @@ function initGrabSpreadsheet(grabSpreadsheetId) {
       var monthStr = ((monthIndex + 1) < 10 ? '0' : '') + (monthIndex + 1);
       var dateFormatted = dayStr + '/' + monthStr + '/' + year;
       var rowNum = d + 1;
-      var formulaI = "=IF(B" + rowNum + ">0, (C" + rowNum + "+D" + rowNum + ")/B" + rowNum + ", 0)";
-      var formulaJ = "=IF(F" + rowNum + ">0, (C" + rowNum + "+D" + rowNum + ")/(F" + rowNum + "*24), 0)";
-      rowsData.push([dateFormatted, "", "", "", "", "", "", "", formulaI, formulaJ]);
+      var formulaG = "=C" + rowNum + "+D" + rowNum;
+      var formulaH = "=G" + rowNum + "*0.1";
+      var formulaI = "=IF(B" + rowNum + ">0, G" + rowNum + "/B" + rowNum + ", 0)";
+      var formulaJ = "=IF(F" + rowNum + ">0, G" + rowNum + "/(F" + rowNum + "*24), 0)";
+      rowsData.push([dateFormatted, "", "", "", "", "", formulaG, formulaH, formulaI, formulaJ]);
     }
     
     sheet.getRange(2, 1, daysInMonth, 10).setValues(rowsData);
     
     // เพิ่มแถวว่างและแถวสรุปผลท้ายเดือน
     sheet.getRange(daysInMonth + 2, 1, 1, 10).setValues([["", "", "", "", "", "", "", "", "", ""]]);
-    sheet.getRange(daysInMonth + 3, 1, 1, 10).setValues([["", "", "เฉลี่ยแบต 1% วิ่งได้", "", "", "", "ยอดรวมทั้งเดือน", "รวมระยะทาง", "เฉลี่ย บาท/Km", "เฉลี่ย บาท/ชม."]]);
+    sheet.getRange(daysInMonth + 3, 1, 1, 10).setValues([["", "รวมระยะทาง", "เฉลี่ยแบต 1% วิ่งได้", "", "", "", "ยอดรวมทั้งเดือน", "รวมเงินเก็บ 10%", "เฉลี่ย บาท/Km", "เฉลี่ย บาท/ชม."]]);
     
     var lastDayRow = daysInMonth + 1;
+    var formulaB = "=SUM(B2:B" + lastDayRow + ")";
     var formulaC = "=IF(SUM(E2:E" + lastDayRow + ")>0, SUM(B2:B" + lastDayRow + ")/SUM(E2:E" + lastDayRow + "), 0)";
-    var formulaG = "=SUM(C2:C" + lastDayRow + ")+SUM(D2:D" + lastDayRow + ")";
-    var formulaH = "=SUM(B2:B" + lastDayRow + ")";
-    var formulaI_summary = "=IF(SUM(B2:B" + lastDayRow + ")>0, (SUM(C2:C" + lastDayRow + ")+SUM(D2:D" + lastDayRow + "))/SUM(B2:B" + lastDayRow + "), 0)";
-    var formulaJ_summary = "=IF(SUM(F2:F" + lastDayRow + ")>0, (SUM(C2:C" + lastDayRow + ")+SUM(D2:D" + lastDayRow + "))/(SUM(F2:F" + lastDayRow + ")*24), 0)";
-    sheet.getRange(daysInMonth + 4, 1, 1, 10).setValues([["", "", formulaC, "", "", "", formulaG, formulaH, formulaI_summary, formulaJ_summary]]);
+    var formulaG = "=SUM(G2:G" + lastDayRow + ")";
+    var formulaH = "=SUM(H2:H" + lastDayRow + ")";
+    var formulaI_summary = "=IF(SUM(B2:B" + lastDayRow + ")>0, SUM(G2:G" + lastDayRow + ")/SUM(B2:B" + lastDayRow + "), 0)";
+    var formulaJ_summary = "=IF(SUM(F2:F" + lastDayRow + ")>0, SUM(G2:G" + lastDayRow + ")/(SUM(F2:F" + lastDayRow + ")*24), 0)";
+    sheet.getRange(daysInMonth + 4, 1, 1, 10).setValues([["", formulaB, formulaC, "", "", "", formulaG, formulaH, formulaI_summary, formulaJ_summary]]);
     
     beautifyGrabSheet(sheet);
   }
