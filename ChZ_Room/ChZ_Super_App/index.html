@@ -9,8 +9,8 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="ChZ Super App">
-  <link rel="apple-touch-icon" href="/assets/icon-192.png?v=2.5.6">
-  <link rel="apple-touch-icon" sizes="180x180" href="/assets/icon-180.png?v=2.5.6">
+  <link rel="apple-touch-icon" href="/assets/icon-192.png?v=2.7.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/icon-180.png?v=2.7.2">
 
   <script>
     // Force unregister all active service worker caches to prevent browser hijacking
@@ -42,6 +42,19 @@
       src: url('assets/drunken_hour/drunkenhourDEMO.otf') format('opentype');
       font-weight: normal;
       font-style: normal;
+    }
+
+    #keng-capital-val {
+      color: #0ea5e9 !important;
+      font-weight: 700;
+    }
+    #mod-capital-val {
+      color: #f59e0b !important;
+      font-weight: 700;
+    }
+    #thyme-capital-val {
+      color: #10b981 !important;
+      font-weight: 700;
     }
 
     body {
@@ -3087,6 +3100,10 @@
       font-size: 22px;
       font-weight: 800;
       color: var(--color-text-primary);
+      text-shadow: 0 1px 4px rgba(255, 255, 255, 0.95), 0 0 12px rgba(255, 255, 255, 0.7) !important;
+    }
+    .assets-title, .chart-title {
+      text-shadow: 0 1px 4px rgba(255, 255, 255, 0.95), 0 0 12px rgba(255, 255, 255, 0.7) !important;
     }
     
     /* --- Brutalist Grid Layout for Cards --- */
@@ -3096,10 +3113,13 @@
       gap: 20px;
     }
     .crypto-card {
-      border: 2px solid var(--color-border-main);
+      border: 1px solid rgba(255, 255, 255, 0.4) !important;
       border-radius: var(--border-radius-card);
       padding: 20px;
-      box-shadow: var(--solid-shadow);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03), 0 1px 3px rgba(0, 0, 0, 0.01) !important;
+      background: rgba(255, 255, 255, 0.65) !important;
+      backdrop-filter: blur(20px) !important;
+      -webkit-backdrop-filter: blur(20px) !important;
       display: flex;
       flex-direction: column;
       gap: 12px;
@@ -3107,6 +3127,18 @@
     }
     .crypto-card:hover {
       transform: translateY(-2px);
+    }
+    .crypto-card.keng-card {
+      background: rgba(224, 242, 254, 0.65) !important;
+    }
+    .crypto-card.mod-card {
+      background: rgba(254, 243, 199, 0.65) !important;
+    }
+    .crypto-card.thyme-card {
+      background: rgba(220, 252, 231, 0.65) !important;
+    }
+    .crypto-card.pnl-card {
+      background: rgba(255, 255, 255, 0.65) !important;
     }
     .crypto-card-title {
       display: flex;
@@ -3135,46 +3167,76 @@
       font-weight: 700;
     }
     
-    /* --- Brutalist Table Layout --- */
-    .crypto-table-container {
-      border: 2px solid var(--color-border-main);
-      border-radius: var(--border-radius-card);
-      background-color: var(--color-white);
-      box-shadow: var(--solid-shadow);
-      overflow-x: auto;
-      flex: 1;
-    }
-    .crypto-table {
+    /* --- Premium Frosted Coin Cards Layout --- */
+    .crypto-assets-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
       width: 100%;
-      border-collapse: collapse;
-      text-align: left;
+      box-sizing: border-box;
     }
-    .crypto-table th, .crypto-table td {
-      padding: 14px 16px;
-      border-bottom: 2px solid var(--color-border-light);
+    .coin-card {
+      border: 1px solid rgba(255, 255, 255, 0.4) !important;
+      border-radius: 16px !important;
+      padding: 16px !important;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.02) !important;
+      backdrop-filter: blur(20px) !important;
+      -webkit-backdrop-filter: blur(20px) !important;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 145px;
+      height: auto;
+      box-sizing: border-box;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
-    .crypto-table th {
-      font-family: var(--font-heading);
+    .coin-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.04) !important;
+    }
+    
+    /* Pastel colors per coin */
+    .coin-card.btc-coin { background: rgba(254, 243, 199, 0.65) !important; }
+    .coin-card.mod-btc-coin { background: rgba(243, 232, 255, 0.65) !important; }
+    .coin-card.kub-coin { background: rgba(220, 252, 231, 0.65) !important; }
+    .coin-card.eth-coin { background: rgba(224, 242, 254, 0.65) !important; }
+    .coin-card.bnb-coin { background: rgba(254, 243, 199, 0.65) !important; }
+    .coin-card.sol-coin { background: rgba(245, 243, 255, 0.65) !important; }
+    .coin-card.xrp-coin { background: rgba(241, 245, 249, 0.65) !important; }
+    .coin-card.aster-coin { background: rgba(255, 228, 230, 0.65) !important; }
+    
+    .coin-info-top {
+      display: flex;
+      flex-direction: column;
+    }
+    .coin-holdings-text {
+      font-size: 15px;
       font-weight: 800;
-      font-size: 13px;
-      background-color: #f8fafc;
-      color: var(--color-text-primary);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      border-bottom: 2px solid var(--color-border-main);
+      font-family: var(--font-heading);
     }
-    .crypto-table td {
-      font-size: 13px;
-      color: var(--color-text-primary);
+    .coin-value-text {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--color-text-secondary);
     }
-    .crypto-table tr:last-child td {
-      border-bottom: none;
+    .coin-footer-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
     }
-    .crypto-coin-name {
+    .coin-logo-box {
+      width: 32px;
+      height: 32px;
+      background: #ffffff !important;
+      border-radius: 8px;
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-family: var(--font-heading);
+      justify-content: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    }
+    .coin-pnl-indicator {
+      font-size: 11px;
       font-weight: 700;
     }
     
@@ -3308,7 +3370,7 @@
             </div>
             <div class="user-info-text">
               <div class="user-role">CHZ MANAGER</div>
-              <div class="user-version">Version 2.5.6</div>
+              <div class="user-version">Version 2.7.2</div>
             </div>
           </div>
         </div>
@@ -3323,7 +3385,7 @@
             <!-- หัวข้อและปุ่มย้อนกลับสไลด์ -->
             <div class="settings-header">
               <div class="settings-header-text">
-                <h3 class="settings-title" style="display: flex; align-items: center; gap: 8px;">Google Sheets Connection <span style="font-size: 11px; background: rgba(0,0,0,0.06); color: var(--color-text-secondary); padding: 2px 8px; border-radius: 8px; font-weight: 500;">Version 2.5.6</span></h3>
+                 <h3 class="settings-title" style="display: flex; align-items: center; gap: 8px;">Google Sheets Connection <span style="font-size: 11px; background: rgba(0,0,0,0.06); color: var(--color-text-secondary); padding: 2px 8px; border-radius: 8px; font-weight: 500;">Version 2.7.2</span></h3>
                 <p style="font-size: 11px; color: var(--color-text-secondary); margin-top: 4px;">ผูกแอปเข้ากับสิทธิ์ Google Sheets ของแกผ่าน API หรือ Google Apps Script</p>
               </div>
               <button class="capsule-btn btn-back-to-overview" id="settings-back-to-overview-btn" style="display: none; cursor: pointer; background: rgba(39, 168, 115, 0.1) !important; color: #27a873 !important; border: none !important;">
@@ -3477,11 +3539,12 @@
                   </div>
                 </div>
                 <div class="hero-header-controls">
-                  <button class="capsule-btn btn-back">
+                  <button class="capsule-btn btn-back" id="btn-to-crypto-dashboard" style="cursor: pointer;">
                     <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="m15 18-6-6 6-6"/>
+                      <line x1="12" y1="1" x2="12" y2="23"></line>
+                      <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
                     </svg>
-                    <span>Back to Home</span>
+                    <span>Crypto Portfolio</span>
                   </button>
                   
                   <button class="capsule-btn" id="btn-show-qr" style="justify-content: center; font-family: var(--font-heading); font-weight: 800; border: none !important;">
@@ -4388,19 +4451,18 @@
                   </svg>
                   <span>Refresh Data</span>
                 </button>
-                <button class="capsule-btn btn-back-to-home" id="crypto-back-to-home-btn" style="cursor: pointer;">
-                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 14px; height: 14px; margin-right: 6px;">
-                    <polyline points="9 14 4 9 9 4"></polyline>
-                    <path d="M20 20v-7a4 4 0 0 0-4-4H4"></path>
+                <button class="capsule-btn btn-back-to-home" id="crypto-back-to-home-btn" style="cursor: pointer; width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; padding: 0; border-radius: 50%; min-width: 40px;">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 16px; height: 16px;">
+                    <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
                   </svg>
-                  <span>Back to Home</span>
                 </button>
               </div>
             </div>
             
             <div class="crypto-cards-grid">
               <!-- Keng Capital -->
-              <div class="crypto-card" style="background-color: var(--color-ice-blue);">
+              <div class="crypto-card keng-card">
                 <div class="crypto-card-title">
                   <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 14px; height: 14px;">
                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
@@ -4409,11 +4471,14 @@
                   <span>Keng's Capital</span>
                 </div>
                 <div class="crypto-card-value" id="keng-capital-val">0.00 THB</div>
-                <div class="crypto-card-subtitle">ทุนของฉันสะสม</div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px; font-size: 11px;">
+                  <span class="crypto-card-subtitle" style="margin: 0; color: var(--color-text-secondary); font-family: var(--font-body);">ทุนของฉันสะสม</span>
+                  <span id="keng-capital-pnl" style="font-weight: 800; font-family: var(--font-heading);"></span>
+                </div>
               </div>
               
               <!-- Mod Capital -->
-              <div class="crypto-card" style="background-color: var(--color-pastel-yellow);">
+              <div class="crypto-card mod-card">
                 <div class="crypto-card-title">
                   <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 14px; height: 14px;">
                     <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
@@ -4428,7 +4493,7 @@
               </div>
               
               <!-- Thyme Capital -->
-              <div class="crypto-card" style="background-color: var(--color-pastel-green);">
+              <div class="crypto-card thyme-card">
                 <div class="crypto-card-title">
                   <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 14px; height: 14px;">
                     <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
@@ -4443,7 +4508,7 @@
               </div>
               
               <!-- Live PnL -->
-              <div class="crypto-card" style="background-color: #ffffff;">
+              <div class="crypto-card pnl-card">
                 <div class="crypto-card-title">
                   <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 14px; height: 14px;">
                     <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
@@ -4459,24 +4524,37 @@
               </div>
             </div>
             
-            <div class="crypto-table-container">
-              <table class="crypto-table">
-                <thead>
-                  <tr>
-                    <th>Asset</th>
-                    <th>Holdings</th>
-                    <th>Avg Buy Price</th>
-                    <th>Total Cost</th>
-                    <th>Current Price</th>
-                    <th>Current Value</th>
-                    <th>PnL (THB)</th>
-                    <th>PnL (%)</th>
-                  </tr>
-                </thead>
-                <tbody id="crypto-portfolio-body">
-                  <!-- Dynamic Rows go here -->
-                </tbody>
-              </table>
+            <!-- บล็อก layout ด้านล่างของ Crypto Dashboard -->
+            <div class="crypto-bottom-layout" style="display: flex; gap: 24px; align-items: stretch; margin-top: 12px; flex-wrap: wrap; width: 100%; box-sizing: border-box;">
+              <!-- ฝั่งซ้าย (กว้าง 65%): กริดการ์ดสินทรัพย์ holdings -->
+              <div class="crypto-assets-column" style="flex: 1.8; min-width: 320px; display: flex; flex-direction: column; gap: 12px; box-sizing: border-box;">
+                <div class="assets-header-row" style="display: flex; justify-content: space-between; align-items: center;">
+                  <h4 class="assets-title" style="font-family: var(--font-heading); font-size: 16px; font-weight: 800; color: var(--color-text-primary); margin: 0;">Your Assets</h4>
+                  <div class="assets-controls-placeholder">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 16px; height: 16px; color: var(--color-text-secondary); cursor: pointer;">
+                      <path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"></path>
+                    </svg>
+                  </div>
+                </div>
+                <div class="crypto-assets-grid" id="crypto-assets-grid">
+                  <!-- เรนเดอร์การ์ดเหรียญไดนามิก -->
+                </div>
+              </div>
+              
+              <!-- ฝั่งขวา (กว้าง 35%): กล่อง Donut Chart แสดงสัดส่วนเปอร์เซ็นต์ -->
+              <div class="crypto-chart-column" style="flex: 1.2; min-width: 280px; display: flex; flex-direction: column; gap: 12px; box-sizing: border-box;">
+                <div class="chart-header-row" style="display: flex; align-items: center; height: 24px;">
+                  <h4 class="chart-title" style="font-family: var(--font-heading); font-size: 16px; font-weight: 800; color: var(--color-text-primary); margin: 0;">Portfolio Breakdown</h4>
+                </div>
+                <div class="crypto-card crypto-chart-card" style="flex: 1; display: flex; flex-direction: column; background: rgba(255, 255, 255, 0.65) !important; border: 1px solid rgba(255,255,255,0.4) !important; border-radius: 12px !important; padding: 20px !important; box-shadow: 0 8px 24px rgba(0,0,0,0.02) !important; backdrop-filter: blur(20px) !important; -webkit-backdrop-filter: blur(20px) !important; box-sizing: border-box;">
+                  <div class="chart-wrapper" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; flex: 1;">
+                    <!-- วาด Donut Chart SVG ไดนามิกตรงนี้ -->
+                    <div id="crypto-donut-chart-container" style="position: relative; width: 180px; height: 180px; display: flex; align-items: center; justify-content: center;"></div>
+                    <!-- แสดง Legend สัดส่วนเปอร์เซ็นต์ -->
+                    <div id="crypto-chart-legend" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; width: 100%; font-size: 11px; font-family: var(--font-body); margin-top: 8px; box-sizing: border-box;"></div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -6737,6 +6815,39 @@
       const btnToCrypto = document.getElementById('btn-to-crypto-dashboard');
       const cryptoBackBtn = document.getElementById('crypto-back-to-home-btn');
 
+      let cryptoBgIndex = 0;
+      const cryptoBgImages = [
+        "assets/hero_anime.jpg",
+        "assets/hero_anime_white.jpg",
+        "assets/hero_anime_purple.jpg",
+        "assets/S4.png"
+      ];
+      let cryptoBgInterval = null;
+
+      function startCryptoBgSlideshow() {
+        const viewport = document.querySelector('.workspace-viewport');
+        if (!viewport) return;
+        
+        stopCryptoBgSlideshow(); // ล้างอินเตอร์วัลเก่าเพื่อป้องกันการซ้อนทับกัน
+        
+        // โหลดรูปแรกขึ้นมาก่อน และใส่ transition สำหรับเอฟเฟกต์เฟดภาพ
+        viewport.style.backgroundImage = `url('${cryptoBgImages[cryptoBgIndex]}')`;
+        viewport.style.transition = "background-image 0.8s ease-in-out";
+        
+        // ตั้งเวลาเปลี่ยนภาพเวียนทุกๆ 6 วินาที (6000ms)
+        cryptoBgInterval = setInterval(() => {
+          cryptoBgIndex = (cryptoBgIndex + 1) % cryptoBgImages.length;
+          viewport.style.backgroundImage = `url('${cryptoBgImages[cryptoBgIndex]}')`;
+        }, 6000);
+      }
+      
+      function stopCryptoBgSlideshow() {
+        if (cryptoBgInterval) {
+          clearInterval(cryptoBgInterval);
+          cryptoBgInterval = null;
+        }
+      }
+
       if (btnToCrypto) {
         btnToCrypto.addEventListener('click', function(e) {
           e.preventDefault();
@@ -6749,7 +6860,7 @@
           navItems.forEach(nav => nav.classList.remove('active'));
           const viewport = document.querySelector('.workspace-viewport');
           if (viewport) {
-            viewport.style.backgroundImage = "url('assets/hero_anime_purple.jpg')";
+            startCryptoBgSlideshow();
           }
           if (typeof refreshCryptoPortfolio === 'function') {
             refreshCryptoPortfolio();
@@ -6769,6 +6880,7 @@
           });
           const viewport = document.querySelector('.workspace-viewport');
           if (viewport) {
+            stopCryptoBgSlideshow();
             viewport.style.backgroundImage = 'none';
           }
         });
@@ -6783,6 +6895,7 @@
 
         const viewport = document.querySelector('.workspace-viewport');
         if (viewport) {
+          stopCryptoBgSlideshow();
           viewport.style.backgroundImage = 'none';
         }
       }
@@ -6800,6 +6913,7 @@
 
         const viewport = document.querySelector('.workspace-viewport');
         if (viewport) {
+          stopCryptoBgSlideshow();
           viewport.style.backgroundImage = 'none';
         }
       }
@@ -7131,6 +7245,9 @@
       if (navItems.length) {
         navItems.forEach((item, index) => {
           item.addEventListener('click', function(e) {
+            if (typeof stopCryptoBgSlideshow === 'function') {
+              stopCryptoBgSlideshow();
+            }
             if (typeof discardUnsavedSettings === 'function') {
               discardUnsavedSettings();
             }
@@ -7164,7 +7281,7 @@
               } else if (index === 1) {
                 viewport.style.backgroundImage = "url('assets/hero_anime_white.jpg')";
               } else if (index === 2) {
-                viewport.style.backgroundImage = "url('assets/hero_anime_purple.jpg')";
+                viewport.style.backgroundImage = 'none'; // ลบรูปภาพพื้นหลังออกให้หมดเพื่อให้พื้นหลังขาวสว่างคลีนตาเหมือนหน้าแรก
               } else if (index === 3) {
                 viewport.style.backgroundImage = "url('assets/hero_anime.jpg')";
               } else if (index === 4) {
@@ -7180,6 +7297,9 @@
       if (actionBtnNavs.length) {
         actionBtnNavs.forEach(btn => {
           btn.addEventListener('click', function(e) {
+            if (typeof stopCryptoBgSlideshow === 'function') {
+              stopCryptoBgSlideshow();
+            }
             e.preventDefault();
             const targetIndex = parseInt(btn.getAttribute('data-index'));
             let translatePercent = -14.2857;
@@ -7223,7 +7343,7 @@
               } else if (navItemIndex === 1) {
                 viewport.style.backgroundImage = "url('assets/hero_anime_white.jpg')";
               } else if (navItemIndex === 2) {
-                viewport.style.backgroundImage = "url('assets/hero_anime_purple.jpg')";
+                viewport.style.backgroundImage = 'none'; // ลบรูปภาพพื้นหลังออกให้หมดเพื่อให้พื้นหลังขาวสว่างคลีนตาเหมือนหน้าแรก
               } else if (navItemIndex === 3) {
                 viewport.style.backgroundImage = "url('assets/hero_anime.jpg')";
               } else if (navItemIndex === 4) {
@@ -11513,14 +11633,14 @@
     
     // ข้อมูลเริ่มต้นสำหรับ Fallback
     const DEFAULT_CRYPTO_HOLDINGS = {
-      'BTC': { amount: 0.04500000, basePrice: 2350000.0, owner: 'Keng' },
+      'BTC': { amount: 0.04500000, basePrice: 2350000.0, owner: 'Keng', dcaCapital: 28634.46 },
       'BNB': { amount: 1.25000000, basePrice: 20500.0, owner: 'Keng' },
       'ASTER': { amount: 5400.0, basePrice: 3.50, owner: 'Keng' },
       'XRP': { amount: 850.0, basePrice: 17.80, owner: 'Keng' },
       'SOL': { amount: 3.20, basePrice: 5800.0, owner: 'Keng' },
       'ETH': { amount: 0.75000000, basePrice: 115000.0, owner: 'Keng' },
-      'Thyme_KUB': { amount: 120.0, basePrice: 85.50, owner: 'Thyme' },
-      'Mod_BTC': { amount: 0.00150000, basePrice: 2350000.0, owner: 'Mod' }
+      'Thyme_KUB': { amount: 120.0, basePrice: 85.50, owner: 'Thyme', dcaCapital: 10260.00 },
+      'Mod_BTC': { amount: 0.00150000, basePrice: 2350000.0, owner: 'Mod', dcaCapital: 3525.00 }
     };
 
     // ดึงราคาสด
@@ -11560,7 +11680,6 @@
           const allPrices = await binanceRes.json();
           const symbolsMap = {
             'BNBUSDT': 'BNB',
-            'ASTRUSDT': 'ASTER',
             'XRPUSDT': 'XRP',
             'SOLUSDT': 'SOL',
             'ETHUSDT': 'ETH'
@@ -11575,74 +11694,109 @@
         console.log('Error fetching Binance price:', e);
       }
       
+      try {
+        // 2.5 ดึงราคาสด ASTER จาก GeckoTerminal API (BSC Contract)
+        const asterRes = await fetch('https://api.geckoterminal.com/api/v2/networks/bsc/tokens/0x000Ae314E2A2172a039B26378814C252734f556A');
+        if (asterRes.ok) {
+          const asterData = await asterRes.json();
+          if (asterData.data && asterData.data.attributes && asterData.data.attributes.price_usd) {
+            prices['ASTER'] = parseFloat(asterData.data.attributes.price_usd) * 35.0; // แปลง USD เป็น THB
+          }
+        }
+      } catch (e) {
+        console.log('Error fetching ASTER price from GeckoTerminal:', e);
+      }
+      
       return prices;
     }
 
-    // ดึงข้อมูลจำนวนเหรียญและต้นทุนจาก Google Sheets
+    // Helper formats
+    function formatNumber(val) {
+      if (val === undefined || val === null || isNaN(val)) return '0.00';
+      return parseFloat(val).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+    function formatCryptoAmount(val) {
+      if (val === undefined || val === null || isNaN(val)) return '0.00';
+      return parseFloat(val).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 });
+    }
+
+    function showStatusToast(message, isSuccess) {
+      let toast = document.getElementById('crypto-status-toast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'crypto-status-toast';
+        toast.style.position = 'fixed';
+        toast.style.bottom = '24px';
+        toast.style.left = '50%';
+        toast.style.transform = 'translateX(-50%)';
+        toast.style.padding = '12px 24px';
+        toast.style.borderRadius = '12px';
+        toast.style.fontSize = '12px';
+        toast.style.fontWeight = '600';
+        toast.style.fontFamily = 'var(--font-body)';
+        toast.style.zIndex = '9999';
+        toast.style.boxShadow = '0 8px 32px rgba(0,0,0,0.1)';
+        toast.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+        document.body.appendChild(toast);
+      }
+      
+      toast.style.background = isSuccess ? 'rgba(39, 168, 115, 0.95)' : 'rgba(239, 68, 68, 0.95)';
+      toast.style.color = '#ffffff';
+      toast.innerText = message;
+      toast.style.opacity = '1';
+      toast.style.transform = 'translateX(-50%) translateY(0)';
+      
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateX(-50%) translateY(10px)';
+      }, 4000);
+    }
+    window.showStatusToast = showStatusToast;
+
+    // ดึงข้อมูลจำนวนเหรียญและต้นทุนจาก Google Sheets ผ่าน Apps Script Web App Proxy
     async function getSheetsCryptoHoldings(spreadsheetId) {
-      const holdings = JSON.parse(JSON.stringify(DEFAULT_CRYPTO_HOLDINGS)); // clone fallback
+      const holdings = JSON.parse(JSON.stringify(DEFAULT_CRYPTO_HOLDINGS));
       if (!spreadsheetId) return holdings;
       
-      const tabs = {
-        'BTC': { tab: 'BTC', coin: 'BTC' },
-        'BNB': { tab: 'BNB', coin: 'BNB' },
-        'ASTER': { tab: 'ASTER', coin: 'ASTER' },
-        'XRP': { tab: 'XRP', coin: 'XRP' },
-        'SOL': { tab: 'SOL', coin: 'SOL' },
-        'ETH': { tab: 'ETH', coin: 'ETH' },
-        'Thyme_KUB': { tab: 'Thyme', coin: 'Thyme_KUB' },
-        'Mod_BTC': { tab: 'Mod', coin: 'Mod_BTC' }
-      };
+      const scriptUrl = localStorage.getItem('income_tracker_gas_url');
+      if (!scriptUrl) {
+        console.warn("Apps Script URL not set. Using fallback crypto holdings.");
+        showStatusToast("ไม่ได้ตั้งค่า Apps Script URL (ใช้ข้อมูลพอร์ตจำลอง)", false);
+        return holdings;
+      }
       
-      for (const key of Object.keys(tabs)) {
-        const config = tabs[key];
-        try {
-          const res = await fetch(`https://docs.google.com/spreadsheets/d/${spreadsheetId}/gviz/tq?tqx=out:json&sheet=${config.tab}`);
-          if (res.ok) {
-            const text = await res.text();
-            const jsonStart = text.indexOf('{');
-            const jsonEnd = text.lastIndexOf('}');
-            const jsonString = text.substring(jsonStart, jsonEnd + 1);
-            const jsonData = JSON.parse(jsonString);
-            
-            if (jsonData && jsonData.table && jsonData.table.rows) {
-              const rows = jsonData.table.rows;
-              let found = false;
-              let cost = 0;
-              let amt = 0;
-              
-              for (let i = 0; i < rows.length; i++) {
-                const cells = rows[i].c;
-                if (!cells) continue;
-                
-                // ตรวจสอบเซลล์ในแถวว่ามีคำว่า "ราคาเฉลี่ย" หรือ "ยอดเงินที่..."
-                const hasKeyword = cells.some(cell => cell && cell.v && (String(cell.v).includes('ราคาเฉลี่ย') || String(cell.v).includes('ยอดเงินที่')));
-                
-                if (hasKeyword && i + 1 < rows.length) {
-                  const dataCells = rows[i+1].c;
-                  if (dataCells) {
-                    if (config.tab === 'Thyme' || config.tab === 'Mod') {
-                      cost = (dataCells[2] && dataCells[2].v !== null) ? parseFloat(String(dataCells[2].v).replace(/,/g, '')) : 0;
-                      amt = (dataCells[4] && dataCells[4].v !== null) ? parseFloat(String(dataCells[4].v).replace(/,/g, '')) : 0;
-                    } else {
-                      cost = (dataCells[1] && dataCells[1].v !== null) ? parseFloat(String(dataCells[1].v).replace(/,/g, '')) : 0;
-                      amt = (dataCells[3] && dataCells[3].v !== null) ? parseFloat(String(dataCells[3].v).replace(/,/g, '')) : 0;
-                    }
-                    found = true;
-                  }
-                  break;
-                }
-              }
-              
-              if (found && cost > 0 && amt > 0) {
-                holdings[key].amount = amt;
-                holdings[key].basePrice = cost / amt;
-              }
-            }
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 6000);
+        
+        const res = await fetch(scriptUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain' },
+          body: JSON.stringify({
+            type: 'fetch_crypto_holdings',
+            spreadsheetId: spreadsheetId
+          }),
+          signal: controller.signal
+        });
+        
+        clearTimeout(timeoutId);
+        
+        if (res.ok) {
+          const result = await res.json();
+          if (result.status === 'success' && result.holdings) {
+            console.log("Successfully fetched crypto holdings from Apps Script proxy:", result.holdings);
+            showStatusToast("เชื่อมต่อสำเร็จ ดึงข้อมูลพอร์ตจริงจาก Sheets แล้ว!", true);
+            return result.holdings;
+          } else {
+            console.warn("Apps Script returned error or invalid status:", result.message);
+            showStatusToast("หลังบ้านแจ้งข้อผิดพลาด: " + (result.message || "ไม่ระบุ"), false);
           }
-        } catch (e) {
-          console.log(`Failed to fetch sheet tab ${config.tab}:`, e);
+        } else {
+          showStatusToast("การเชื่อมต่อเซิร์ฟเวอร์ล้มเหลว (HTTP " + res.status + ")", false);
         }
+      } catch (e) {
+        console.error("Failed to fetch crypto holdings via Apps Script (falling back):", e);
+        showStatusToast("เชื่อมต่อคลาวด์ล้มเหลว/Timeout (ใช้ข้อมูลพอร์ตจำลอง)", false);
       }
       
       return holdings;
@@ -11657,7 +11811,9 @@
       }
       
       try {
-        const spreadsheetId = localStorage.getItem('income_tracker_crypto_sheet_id') || DEFAULT_CRYPTO_SHEET_ID;
+        const DEFAULT_CRYPTO_SHEET_ID = '1yWxTiVglJsWhVBSlB7UPu7MXGRQ_vti5IjqxWTCFJK0';
+        localStorage.setItem('income_tracker_crypto_sheet_id', DEFAULT_CRYPTO_SHEET_ID);
+        const spreadsheetId = DEFAULT_CRYPTO_SHEET_ID;
         
         // ดึงข้อมูลพร้อมกัน
         const [livePrices, holdings] = await Promise.all([
@@ -11665,69 +11821,138 @@
           getSheetsCryptoHoldings(spreadsheetId)
         ]);
         
-        let kengCapital = 0;
-        let modCapital = 0;
-        let thymeCapital = 0;
+        // ดึงทุน DCA สะสมโดยตรงจากแท็บเหรียญหลักของแต่ละคน โดยไม่บวกปนกับเหรียญอื่นมั่วซั่ว
+        const kengCapital = holdings['BTC'] && holdings['BTC'].dcaCapital !== undefined ? holdings['BTC'].dcaCapital : (holdings['BTC'] ? (holdings['BTC'].amount * holdings['BTC'].basePrice) : 28634.46);
+        const modCapital = holdings['Mod_BTC'] && holdings['Mod_BTC'].dcaCapital !== undefined ? holdings['Mod_BTC'].dcaCapital : (holdings['Mod_BTC'] ? (holdings['Mod_BTC'].amount * holdings['Mod_BTC'].basePrice) : 3525.00);
+        const thymeCapital = holdings['Thyme_KUB'] && holdings['Thyme_KUB'].dcaCapital !== undefined ? holdings['Thyme_KUB'].dcaCapital : (holdings['Thyme_KUB'] ? (holdings['Thyme_KUB'].amount * holdings['Thyme_KUB'].basePrice) : 10260.00);
         let totalCurrentValue = 0;
         let totalCost = 0;
+        let kengTotalCost = 0;
+        let kengTotalCurrentValue = 0;
         
-        const tableBody = document.getElementById('crypto-portfolio-body');
-        if (tableBody) {
-          tableBody.innerHTML = '';
+        const container = document.getElementById('crypto-assets-grid');
+        if (container) {
+          container.innerHTML = '';
         }
         
         CRYPTO_COINS.forEach(coin => {
           const data = holdings[coin];
           const livePrice = livePrices[coin] || data.basePrice;
           
-          const cost = data.amount * data.basePrice;
+          const cost = data.dcaCapital !== undefined ? data.dcaCapital : (data.amount * data.basePrice);
           const currentValue = data.amount * livePrice;
           const pnlThb = currentValue - cost;
           const pnlPct = cost > 0 ? (pnlThb / cost) * 100 : 0;
           
-          // สรุปทุนแต่ละคน
-          if (data.owner === 'Keng') kengCapital += cost;
-          else if (data.owner === 'Mod') modCapital += cost;
-          else if (data.owner === 'Thyme') thymeCapital += cost;
-          
           totalCurrentValue += currentValue;
           totalCost += cost;
           
-          if (tableBody) {
-            const tr = document.createElement('tr');
+          const isKengCoin = !['Mod_BTC', 'Thyme_KUB'].includes(coin);
+          if (isKengCoin) {
+            kengTotalCost += cost;
+            kengTotalCurrentValue += currentValue;
+          }
+          
+          let coinClass = 'eth-coin';
+          let logoSvg = '';
+          let coinLabel = coin;
+          
+          if (coin === 'BTC') {
+            coinClass = 'btc-coin';
+            logoSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2.5" style="width:16px;height:16px;"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>`;
+            coinLabel = 'BTC (ของฉัน)';
+          } else if (coin === 'Mod_BTC') {
+            coinClass = 'mod-btc-coin';
+            logoSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2.5" style="width:16px;height:16px;"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>`;
+            coinLabel = 'BTC (ของมด)';
+          } else if (coin === 'Thyme_KUB') {
+            coinClass = 'kub-coin';
+            logoSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5" style="width:16px;height:16px;"><path d="M7 21V3l10 9-10 9z"></path></svg>`;
+            coinLabel = 'KUB (ของธาม)';
+          } else if (coin === 'ETH') {
+            coinClass = 'eth-coin';
+            logoSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2" style="width:16px;height:16px;"><path d="M12 2 4 11.5l8 4.5 8-4.5zM12 22l-8-6 8 6 8-6zM12 16V2"></path></svg>`;
+            coinLabel = 'ETH';
+          } else if (coin === 'BNB') {
+            coinClass = 'bnb-coin';
+            logoSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="#eab308" stroke-width="2.5" style="width:16px;height:16px;"><path d="M12 2L4 10l8 8 8-8-8-8zM12 8l4 4-4 4-4-4 4-4z"></path></svg>`;
+            coinLabel = 'BNB';
+          } else if (coin === 'SOL') {
+            coinClass = 'sol-coin';
+            logoSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2.5" style="width:16px;height:16px;"><path d="m4 6 4-4h12M4 12l4-4h12M4 18l4-4h12"></path></svg>`;
+            coinLabel = 'SOL';
+          } else if (coin === 'XRP') {
+            coinClass = 'xrp-coin';
+            logoSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.5" style="width:16px;height:16px;"><circle cx="12" cy="12" r="9"></circle><path d="M8 12h8M12 8v8"></path></svg>`;
+            coinLabel = 'XRP';
+          } else if (coin === 'ASTER') {
+            coinClass = 'aster-coin';
+            logoSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="#ec4899" stroke-width="2" style="width:16px;height:16px;"><path d="M12 2v20M2 12h20M5.8 5.8l12.4 12.4M5.8 18.2L18.2 5.8"></path></svg>`;
+            coinLabel = 'ASTER';
+          }
+          
+          if (container) {
+            const div = document.createElement('div');
+            div.className = `coin-card ${coinClass}`;
             
-            // ชื่อเหรียญพร้อม SVG icon หรือ color dot
-            const coinLabel = coin === 'Thyme_KUB' ? 'KUB (ของธาม)' : (coin === 'Mod_BTC' ? 'BTC (ของมด)' : (coin === 'BTC' ? 'BTC (ของฉัน)' : coin));
-            const isUp = pnlThb >= 0;
-            const pnlClass = isUp ? 'crypto-pnl-up' : 'crypto-pnl-down';
-            const pnlSign = isUp ? '+' : '';
+            const pnlThbClass = pnlThb >= 0 ? 'text-success' : 'text-danger';
+            const pnlThbSign = pnlThb >= 0 ? '+' : '';
+            const pnlPctSign = pnlPct >= 0 ? '+' : '';
+            const pnlColor = pnlThb >= 0 ? '#27a873' : '#ef4444';
             
-            tr.innerHTML = `
-              <td>
-                <div class="crypto-coin-name">
-                  <span style="width: 8px; height: 8px; border-radius: 50%; background: ${coin.includes('BTC') ? '#f2a900' : (coin.includes('KUB') ? '#1fc7d4' : 'var(--color-neon-rose)')}; display: inline-block;"></span>
-                  ${coinLabel}
+            div.innerHTML = `
+              <div class="coin-card-header" style="display: flex; flex-direction: column; gap: 4px; width: 100%;">
+                <div style="display: flex; align-items: center; gap: 8px; width: 100%;">
+                  <div class="coin-icon-wrapper" style="width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                    ${logoSvg}
+                  </div>
+                  <span class="coin-amount" style="font-family: var(--font-heading); font-size: 15px; font-weight: 850; color: var(--color-text-primary);">${formatCryptoAmount(data.amount)} ${coinLabel}</span>
                 </div>
-              </td>
-              <td style="font-family: var(--font-heading); font-weight: 500;">${data.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 8 })}</td>
-              <td style="font-family: var(--font-heading); font-weight: 500;">${data.basePrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-              <td style="font-family: var(--font-heading); font-weight: 600;">${cost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-              <td style="font-family: var(--font-heading); font-weight: 500;">${livePrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-              <td style="font-family: var(--font-heading); font-weight: 600;">${currentValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-              <td style="font-family: var(--font-heading); font-weight: 700;" class="${pnlClass}">${pnlSign}${pnlThb.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-              <td style="font-family: var(--font-heading); font-weight: 700;" class="${pnlClass}">${pnlSign}${pnlPct.toFixed(2)}%</td>
+                <div class="coin-value" style="font-family: var(--font-body); font-size: 13px; font-weight: 500; color: var(--color-text-secondary); margin-top: 2px;">
+                  มูลค่าปัจจุบัน: <span style="font-weight: 700; color: var(--color-text-primary);">THB ${formatNumber(currentValue)}</span>
+                </div>
+              </div>
+              
+              <div class="coin-details-row" style="display: flex; flex-direction: column; gap: 2px; width: 100%; margin-top: 10px; padding: 8px 0; border-top: 1px dashed rgba(0,0,0,0.06); border-bottom: 1px dashed rgba(0,0,0,0.06); font-size: 11px; font-family: var(--font-body); color: var(--color-text-secondary);">
+                <div style="display: flex; justify-content: space-between;">
+                  <span>ต้นทุนสะสม:</span>
+                  <span style="font-weight: 600; color: var(--color-text-primary);">THB ${formatNumber(cost)}</span>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                  <span>ราคาตลาด:</span>
+                  <span style="font-weight: 600; color: var(--color-text-primary);">THB ${formatNumber(livePrice)}</span>
+                </div>
+              </div>
+              
+              <div class="coin-card-footer" style="display: flex; justify-content: flex-end; align-items: center; width: 100%; margin-top: 10px; padding-bottom: 4px;">
+                <span class="coin-pnl-status" style="font-family: var(--font-heading); font-size: 12px; font-weight: 800; color: ${pnlColor};">
+                  ${pnlThbSign}${formatNumber(pnlThb)} (${pnlPctSign}${pnlPct.toFixed(2)}%)
+                </span>
+              </div>
             `;
-            tableBody.appendChild(tr);
+            container.appendChild(div);
           }
         });
         
         // อัปเดตการ์ด
+        const kengPnlThb = kengTotalCurrentValue - kengTotalCost;
+        const kengPnlPct = kengTotalCost > 0 ? (kengPnlThb / kengTotalCost) * 100 : 0;
+        
         const totalPnLThb = totalCurrentValue - totalCost;
         const totalPnLPct = totalCost > 0 ? (totalPnLThb / totalCost) * 100 : 0;
         
-        document.getElementById('keng-capital-val').textContent = kengCapital.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' THB';
+        document.getElementById('keng-capital-val').textContent = kengTotalCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' THB';
         document.getElementById('mod-capital-val').textContent = modCapital.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' THB';
         document.getElementById('thyme-capital-val').textContent = thymeCapital.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' THB';
+        
+        // อัปเดต PnL ในกล่อง Keng's Capital
+        const kengPnlEl = document.getElementById('keng-capital-pnl');
+        if (kengPnlEl) {
+          const isKengUp = kengPnlThb >= 0;
+          const kengSign = isKengUp ? '+' : '';
+          kengPnlEl.style.color = isKengUp ? '#27a873' : '#ef4444';
+          kengPnlEl.textContent = `${kengSign}${kengPnlThb.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} THB (${kengSign}${kengPnlPct.toFixed(2)}%)`;
+        }
         
         document.getElementById('total-portfolio-val').textContent = totalCurrentValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' THB';
         
@@ -11749,6 +11974,8 @@
         const now = new Date();
         document.getElementById('crypto-last-updated').textContent = `Last Updated: ${now.toLocaleDateString()} ${now.toLocaleTimeString()}`;
         
+        // วาดกราฟวงกลมสัดส่วนสินทรัพย์
+        drawCryptoDonutChart(holdings, livePrices);
       } catch (e) {
         console.log('Error refreshing crypto portfolio:', e);
       } finally {
@@ -11759,6 +11986,92 @@
       }
     }
     window.refreshCryptoPortfolio = refreshCryptoPortfolio;
+
+    function drawCryptoDonutChart(holdings, livePrices) {
+      const container = document.getElementById('crypto-donut-chart-container');
+      const legend = document.getElementById('crypto-chart-legend');
+      if (!container || !legend) return;
+      
+      container.innerHTML = '';
+      legend.innerHTML = '';
+      
+      let totalValue = 0;
+      const coinValues = [];
+      
+      // คำนวณมูลค่ารวมและของแต่ละเหรียญ
+      CRYPTO_COINS.forEach(coin => {
+        const data = holdings[coin];
+        const livePrice = livePrices[coin] || data.basePrice;
+        const val = data.amount * livePrice;
+        totalValue += val;
+        
+        const label = coin === 'Thyme_KUB' ? 'KUB' : (coin === 'Mod_BTC' ? 'BTC (Mod)' : (coin === 'BTC' ? 'BTC (ฉัน)' : coin));
+        const color = coin.includes('BTC') ? '#f59e0b' : (coin.includes('KUB') ? '#10b981' : (coin.includes('ETH') ? '#8b5cf6' : (coin.includes('BNB') ? '#eab308' : (coin.includes('SOL') ? '#6366f1' : (coin.includes('XRP') ? '#3b82f6' : '#ec4899')))));
+        
+        if (val > 0) {
+          coinValues.push({ label, val, color });
+        }
+      });
+      
+      if (totalValue === 0) {
+        container.innerHTML = '<span style="font-size: 12px; color: var(--color-text-secondary);">ไม่มีข้อมูลเหรียญ</span>';
+        return;
+      }
+      
+      // วาด Donut Chart SVG (เส้นรอบวง r=60 คือ 2 * PI * 60 = 377px)
+      const r = 60;
+      const c = 377;
+      let accumulatedPercent = 0;
+      let svgContent = `<svg width="180" height="180" viewBox="0 0 180 180" style="width: 100%; height: 100%;">`;
+      
+      // ห่อหุ้มเฉพาะกลุ่มวงแหวนที่ต้องหมุน
+      svgContent += `<g style="transform: rotate(-90deg); transform-origin: 90px 90px;">`;
+      svgContent += `<circle cx="90" cy="90" r="${r}" fill="none" stroke="rgba(0,0,0,0.02)" stroke-width="14"></circle>`;
+      
+      coinValues.forEach(item => {
+        const percent = item.val / totalValue;
+        const strokeLength = percent * c;
+        const strokeOffset = c - strokeLength;
+        const dashOffset = -(accumulatedPercent * c);
+        
+        svgContent += `
+          <circle cx="90" cy="90" r="${r}" 
+            fill="none" 
+            stroke="${item.color}" 
+            stroke-width="14" 
+            stroke-dasharray="${strokeLength} ${c - strokeLength}" 
+            stroke-dashoffset="${dashOffset}"
+            stroke-linecap="round"
+            style="transition: stroke-dashoffset 0.5s ease;">
+          </circle>
+        `;
+        accumulatedPercent += percent;
+        
+        // เพิ่มลงใน Legend
+        const legendItem = document.createElement('div');
+        legendItem.style.display = 'flex';
+        legendItem.style.alignItems = 'center';
+        legendItem.style.gap = '6px';
+        legendItem.style.color = 'var(--color-text-primary)';
+        legendItem.innerHTML = `
+          <span style="width: 8px; height: 8px; border-radius: 50%; background: ${item.color}; display: inline-block; flex-shrink: 0;"></span>
+          <span style="font-weight: 600; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">${item.label}:</span>
+          <span style="color: var(--color-text-secondary); font-weight: 500; margin-left: auto;">${(percent * 100).toFixed(1)}%</span>
+        `;
+        legend.appendChild(legendItem);
+      });
+      
+      svgContent += `</g>`; // ปิดกลุ่มที่หมุน
+      
+      // วาดช่องตรงกลางและตัวหนังสือไว้นอกกลุ่มที่หมุนเพื่อให้แสดงผลแนวนอนตรงปกติ
+      svgContent += `
+        <circle cx="90" cy="90" r="48" fill="var(--color-card-bg)" style="filter: drop-shadow(0 2px 8px rgba(0,0,0,0.04));"></circle>
+        <text x="90" y="94" text-anchor="middle" font-family="var(--font-heading)" font-weight="800" font-size="11" fill="var(--color-text-secondary)">Assets</text>
+      </svg>`;
+      
+      container.innerHTML = svgContent;
+    }
+    window.drawCryptoDonutChart = drawCryptoDonutChart;
 
     // ผูก event click ให้ปุ่ม Refresh Data บนพอร์ตคริปโต
     document.addEventListener('DOMContentLoaded', () => {

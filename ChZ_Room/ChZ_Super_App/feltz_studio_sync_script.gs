@@ -1,5 +1,5 @@
 /**
- * Feltz Studio Sync Script (v1.2)
+ * Feltz Studio Sync Script (v2.6)
  * วัตถุประสงค์: ซิงค์ข้อมูลบัญชีและปฏิทินสำหรับ Feltz Super App (โครงสร้าง 7 คอลัมน์)
  * พัฒนาโดย: น้องคิว (q_developer)
  */
@@ -115,13 +115,16 @@ function doPost(e) {
           if (grabSheet) {
             var year = new Date().getFullYear();
             var daysInMonth = new Date(year, i + 1, 0).getDate();
-            // ดึงข้อมูลคอลัมน์ C (3) และ D (4) เริ่มตั้งแต่แถวที่ 2 เป็นจำนวน daysInMonth แถว (ป้องกันการดึงแถวรวมสรุปมาคำนวณ)
-            var colCD = grabSheet.getRange(2, 3, daysInMonth, 2).getValues();
-            for (var r = 0; r < colCD.length; r++) {
-              var valC = parseFloat(colCD[r][0]);
-              var valD = parseFloat(colCD[r][1]);
-              if (!isNaN(valC)) grabTotal += valC;
-              if (!isNaN(valD)) grabTotal += valD;
+            var lastRow = grabSheet.getLastRow();
+            if (lastRow > 1) {
+              var fetchRows = Math.min(daysInMonth, lastRow - 1);
+              var colCD = grabSheet.getRange(2, 3, fetchRows, 2).getValues();
+              for (var r = 0; r < colCD.length; r++) {
+                var valC = parseFloat(colCD[r][0]);
+                var valD = parseFloat(colCD[r][1]);
+                if (!isNaN(valC)) grabTotal += valC;
+                if (!isNaN(valD)) grabTotal += valD;
+              }
             }
           }
         }
@@ -150,28 +153,163 @@ function doPost(e) {
       });
     }
     
-    // 2. type === 'general'
+    // 1.5. type === 'fetch_crypto_holdings' (พาร์สดึงข้อมูลแท็บคริปโตทั้งหมดทางหลังบ้าน)
+    else if (data.type === 'fetch_crypto_holdings') {
+      var holdings = {};
+      var targets = {
+        'BTC': 'BTC',
+        'BNB': 'BNB',
+        'ASTER': 'ASTER',
+        'XRP': 'XRP',
+        'SOL': 'SOL',
+        'ETH': 'ETH',
+        'Thyme_KUB': 'Thyme',
+        'Mod_BTC': 'Mod'
+      };
+      
+      for (var key in targets) {
+        var tabName = targets[key];
+        var sheet = activeSpreadsheet.getSheetByName(tabName);
+        if (!sheet) {
+          holdings[key] = { amount: 0, basePrice: 0, dcaCapital: 0 };
+          continue;
+        }
+        
+        var lastRow = sheet.getLastRow();
+        var lastCol = sheet.getLastColumn();
+        
+        if (lastRow <= 1) {
+          holdings[key] = { amount: 0, basePrice: 0, dcaCapital: 0 };
+          continue;
+        }
+        
+        var values = sheet.getRange(1, 1, lastRow, lastCol).getValues();
+        
+        // ส่วนที่ 1: พาร์ส BTC (ของฉัน)
+        if (tabName === 'BTC') {
+          var cost = 0, amt = 0, dcaCap = 0;
+          for (var i = 0; i < values.length; i++) {
+            var row = values[i];
+            var hasDcaKeyword = false;
+            for (var c = 0; c < row.length; c++) {
+              if (row[c] && String(row[c]).indexOf('ยอดเงินที่ DCA ทั้งหมด') !== -1) {
+                hasDcaKeyword = true;
+                break;
+              }
+            }
+            if (hasDcaKeyword && i + 1 < values.length) {
+              var dataRow = values[i + 1];
+              dcaCap = parseFloat(String(dataRow[1]).replace(/,/g, '')) || 0;
+              cost = parseFloat(String(dataRow[2]).replace(/,/g, '')) || 0; // ราคาเฉลี่ย
+              amt = parseFloat(String(dataRow[3]).replace(/,/g, '')) || 0; // BTC สะสม
+              break;
+            }
+          }
+          holdings[key] = { amount: amt, basePrice: cost, dcaCapital: dcaCap };
+        }
+        
+        // ส่วนที่ 2: พาร์ส Mod และ Thyme
+        else if (tabName === 'Mod' || tabName === 'Thyme') {
+          var cost = 0, amt = 0, dcaCap = 0;
+          for (var i = 0; i < values.length; i++) {
+            var row = values[i];
+            var hasAvgKeyword = false;
+            for (var c = 0; c < row.length; c++) {
+              if (row[c] && String(row[c]).indexOf('ราคาเฉลี่ย') !== -1) {
+                hasAvgKeyword = true;
+                break;
+              }
+            }
+            if (hasAvgKeyword && i + 1 < values.length) {
+              var dataRow = values[i + 1];
+              dcaCap = parseFloat(String(dataRow[2]).replace(/,/g, '')) || 0;
+              cost = parseFloat(String(dataRow[3]).replace(/,/g, '')) || 0; // ราคาเฉลี่ยต่อเหรียญ
+              amt = parseFloat(String(dataRow[4]).replace(/,/g, '')) || 0; // เหรียญสะสม
+              break;
+            }
+          }
+          holdings[key] = { amount: amt, basePrice: cost, dcaCapital: dcaCap };
+        }
+        
+        // ส่วนที่ 3: พาร์สเหรียญทั่วไป Sum คอลัมน์ B และ D (ดัชนี 1 และ 3)
+        else {
+          var sumAmount = 0;
+          var sumCost = 0;
+          for (var r = 1; r < values.length; r++) {
+            var row = values[r];
+            if (!row || row.length < 4) continue;
+            
+            // ดักข้ามแถวสรุป
+            var isSummary = false;
+            for (var c = 0; c < row.length; c++) {
+              var cellVal = String(row[c]);
+              if (cellVal.indexOf('รวม') !== -1 || cellVal.indexOf('Total') !== -1 || 
+                  cellVal.indexOf('ผลรวม') !== -1 || cellVal.indexOf('ราคาเฉลี่ย') !== -1 || 
+                  cellVal.indexOf('เฉลี่ย') !== -1) {
+                isSummary = true;
+                break;
+              }
+            }
+            if (isSummary) break;
+            
+            var costVal = parseFloat(String(row[1]).replace(/,/g, '')) || 0;
+            var amtVal = parseFloat(String(row[3]).replace(/,/g, '')) || 0;
+            sumAmount += amtVal;
+            sumCost += costVal;
+          }
+          var avgPrice = sumAmount > 0 ? sumCost / sumAmount : 0;
+          holdings[key] = { amount: sumAmount, basePrice: avgPrice, dcaCapital: sumCost };
+        }
+      }
+      
+      return createJsonResponse({
+        "status": "success",
+        "holdings": holdings
+      });
+    }
+    
+    // 2. type === 'general' (รายรับ Feltz Studio)
     else if (data.type === 'general') {
-      var date = data.date; // format: DD/MM/YYYY
-      var time = data.time || '12:00';
-      var genDesc = data.genDesc || '';
-      var hasTax = data.hasTaxWithholding || false;
+      var date = data.date;
+      var remarks = data.genDesc || '';
       var amount = parseFloat(data.amount) || 0;
+      var hasTax = data.hasTaxWithholding || remarks.includes('หัก ณ ที่จ่าย') || remarks.includes('3%') || false;
       var calendarEventId = data.calendarEventId || '';
       
       var sheetName = getMonthNameFromDateStr(date);
-      var sheet = getOrCreateMonthSheet(activeSpreadsheet, sheetName);
+      var mainSheet = activeSpreadsheet.getSheetByName(sheetName);
+      
+      if (!mainSheet) {
+        mainSheet = activeSpreadsheet.insertSheet(sheetName);
+        var headers = ["วันที่", "รายละเอียดงาน", "รายรับ", "รายละเอียดรายจ่าย", "รายจ่าย", "หัก ณ ที่จ่าย 3%", "เก็บสะสม 10%"];
+        mainSheet.appendRow(headers);
+      }
       
       var parts = date.split('/');
       var day = parseInt(parts[0], 10);
       var targetRow = day + 1; // เขียนตรงตามวัน (แถว 2 = วันที่ 1)
       
-      // บันทึก วันที่, รายละเอียดงาน, รายรับ, หักภาษี 3% (ถ้ามี), เงินเก็บสะสม 10% (เลี่ยงการเขียนทับคอลัมน์ 4 และ 5 เพื่อรักษารายจ่ายเดิม)
-      sheet.getRange(targetRow, 1).setValue(date);
-      sheet.getRange(targetRow, 2).setValue(genDesc);
-      sheet.getRange(targetRow, 3).setValue(amount);
-      sheet.getRange(targetRow, 6).setValue(hasTax ? amount * 0.03 : 0);
-      sheet.getRange(targetRow, 7).setValue(amount * 0.10);
+      // ดึงข้อมูลปัจจุบันของแถววันที่นั้นมาตรวจสอบก่อนเขียน
+      var currentRemarks = mainSheet.getRange(targetRow, 2).getValue().toString().trim();
+      var currentAmount = parseFloat(mainSheet.getRange(targetRow, 3).getValue()) || 0;
+      var currentTax = parseFloat(mainSheet.getRange(targetRow, 6).getValue()) || 0;
+      var currentSavings = parseFloat(mainSheet.getRange(targetRow, 7).getValue()) || 0;
+      
+      var newRemarks = currentRemarks ? currentRemarks + ", " + remarks : remarks;
+      var newAmount = currentAmount + amount;
+      
+      // คำนวณยอดภาษีและเงินเก็บที่เพิ่มสะสมเฉพาะของธุรกรรมล่าสุด
+      var addedTax = hasTax ? amount * 0.03 : 0;
+      var newTax = currentTax + addedTax;
+      var newSavings = currentSavings + (amount * 0.10);
+      
+      mainSheet.getRange(targetRow, 1).setValue(date);
+      mainSheet.getRange(targetRow, 2).setValue(newRemarks);
+      mainSheet.getRange(targetRow, 3).setValue(newAmount);
+      mainSheet.getRange(targetRow, 6).setValue(newTax);
+      mainSheet.getRange(targetRow, 7).setValue(newSavings);
+      
+      beautifyGeneralSheet(mainSheet);
       
       // อัปเดตสี Google Calendar เป็นสีเขียว (10) เพื่อบอกว่าบันทึกแล้ว
       if (calendarEventId) {
@@ -185,23 +323,37 @@ function doPost(e) {
       return createJsonResponse({ "status": "success" });
     }
     
-    // 3. type === 'expense'
+    // 3. type === 'expense' (รายจ่าย Feltz Studio)
     else if (data.type === 'expense') {
-      var date = data.date; // DD/MM/YYYY
-      var expDesc = data.expDesc || '';
+      var date = data.date;
+      var remarks = data.expDesc || '';
       var amount = parseFloat(data.amount) || 0;
       
       var sheetName = getMonthNameFromDateStr(date);
-      var sheet = getOrCreateMonthSheet(activeSpreadsheet, sheetName);
+      var mainSheet = activeSpreadsheet.getSheetByName(sheetName);
+      
+      if (!mainSheet) {
+        mainSheet = activeSpreadsheet.insertSheet(sheetName);
+        var headers = ["วันที่", "รายละเอียดงาน", "รายรับ", "รายละเอียดรายจ่าย", "รายจ่าย", "หัก ณ ที่จ่าย 3%", "เก็บสะสม 10%"];
+        mainSheet.appendRow(headers);
+      }
       
       var parts = date.split('/');
       var day = parseInt(parts[0], 10);
-      var targetRow = day + 1; // เขียนตรงตามวัน (แถว 2 = วันที่ 1)
+      var targetRow = day + 1; // เขียนตรงตามวัน
       
-      // บันทึก วันที่, รายละเอียดรายจ่าย, รายจ่าย
-      sheet.getRange(targetRow, 1).setValue(date);
-      sheet.getRange(targetRow, 4).setValue(expDesc);
-      sheet.getRange(targetRow, 5).setValue(amount);
+      // ดึงข้อมูลรายจ่ายปัจจุบันของแถววันที่นั้น
+      var currentRemarks = mainSheet.getRange(targetRow, 4).getValue().toString().trim();
+      var currentAmount = parseFloat(mainSheet.getRange(targetRow, 5).getValue()) || 0;
+      
+      var newRemarks = currentRemarks ? currentRemarks + ", " + remarks : remarks;
+      var newAmount = currentAmount + amount;
+      
+      mainSheet.getRange(targetRow, 1).setValue(date);
+      mainSheet.getRange(targetRow, 4).setValue(newRemarks);
+      mainSheet.getRange(targetRow, 5).setValue(newAmount);
+      
+      beautifyGeneralSheet(mainSheet);
       
       return createJsonResponse({ "status": "success" });
     }
@@ -475,19 +627,7 @@ function getBlockLastRow(sheet, startCol, numCols) {
   return 0;
 }
 
-// Helper: Get or Create Month Sheet (7 คอลัมน์)
-function getOrCreateMonthSheet(activeSpreadsheet, sheetName) {
-  var sheet = activeSpreadsheet.getSheetByName(sheetName);
-  if (!sheet) {
-    sheet = activeSpreadsheet.insertSheet(sheetName);
-    var headers = [
-      "วันที่", "รายละเอียดงาน", "รายรับ", "รายละเอียดรายจ่าย", "รายจ่าย", "หัก ณ ที่จ่าย 3%", "เก็บสะสม 10%"
-    ];
-    sheet.appendRow(headers);
-    beautifyMonthSheet(sheet);
-  }
-  return sheet;
-}
+
 
 // Helper: Get or Create Fixed Costs Sheet
 function getOrCreateFixedCostsSheet(activeSpreadsheet) {
@@ -501,70 +641,84 @@ function getOrCreateFixedCostsSheet(activeSpreadsheet) {
   return sheet;
 }
 
-// Helper: Beautify Month Sheet (A-G เท่านั้น)
-function beautifyMonthSheet(sheet) {
-  // ยกเลิกการลบคอลัมน์หลัง Col 7 ตามคำขอ (ให้ปล่อยไว้เผื่อมีโน้ตหรือสูตรอื่น)
-
-
-  // A-C (1-3) สีส้ม (รายรับ)
-  sheet.getRange("A1:C1").setFontWeight("bold")
-                         .setBackground("#ffedd5")
-                         .setFontColor("#9a3412")
-                         .setHorizontalAlignment("center")
-                         .setVerticalAlignment("middle")
-                         .setFontSize(10)
-                         .setFontFamily("Google Sans Code");
+// Helper: Beautify Feltz Sheet (หัวตารางสีดำเทาเข้ม แยกโทนสีสลับคอลัมน์เขียว-แดง-ฟ้าออริจินัล)
+function beautifyGeneralSheet(sheet) {
+  var lastCol = sheet.getLastColumn();
+  if (lastCol === 0) return;
+  var headers = sheet.getRange(1, 1, 1, lastCol);
+  headers.setFontWeight("bold")
+         .setBackground("#1e293b")
+         .setFontColor("#ffffff")
+         .setHorizontalAlignment("center")
+         .setVerticalAlignment("middle")
+         .setFontSize(10)
+         .setFontFamily("Google Sans Code");
   
-  // D-E (4-5) สีแดง (รายจ่าย)
-  sheet.getRange("D1:E1").setFontWeight("bold")
-                         .setBackground("#fee2e2")
-                         .setFontColor("#991b1b")
-                         .setHorizontalAlignment("center")
-                         .setVerticalAlignment("middle")
-                         .setFontSize(10)
-                         .setFontFamily("Google Sans Code");
-                         
-  // F-G (6-7) สีเขียว (ภาษีและเงินออม)
-  sheet.getRange("F1:G1").setFontWeight("bold")
-                         .setBackground("#dcfce7")
-                         .setFontColor("#166534")
-                         .setHorizontalAlignment("center")
-                         .setVerticalAlignment("middle")
-                         .setFontSize(10)
-                         .setFontFamily("Google Sans Code");
-
   sheet.setRowHeight(1, 30);
   sheet.setFrozenRows(1);
   
   var lastRow = sheet.getLastRow();
   if (lastRow > 1) {
-    var dataRange = sheet.getRange(2, 1, lastRow - 1, 7);
+    var dataRange = sheet.getRange(2, 1, lastRow - 1, lastCol);
     dataRange.setFontFamily("Google Sans Code")
              .setFontSize(10)
-             .setVerticalAlignment("middle");
-             
+             .setVerticalAlignment("middle")
+             .setHorizontalAlignment("left");
     sheet.setRowHeights(2, lastRow - 1, 24);
     
-    // Batch update backgrounds to prevent rate limiting
     var backgrounds = [];
     for (var r = 2; r <= lastRow; r++) {
-      var bg = (r % 2 === 0) ? "#fafafa" : "#ffffff";
-      backgrounds.push([bg, bg, bg, bg, bg, bg, bg]);
+      var rowBg = [];
+      for (var c = 1; c <= lastCol; c++) {
+        var bg = "#ffffff"; // สีขาวค่าเริ่มต้น
+        var isEven = (r % 2 === 0);
+        
+        if (c === 1) {
+          // คอลัมน์ 1: วันที่ (เทาฟ้าสลับขาว)
+          bg = isEven ? "#f8fafc" : "#ffffff";
+        } else if (c === 2 || c === 3) {
+          // คอลัมน์ 2-3: รายรับ (เขียวอ่อนสลับขาว)
+          bg = isEven ? "#f0fdf4" : "#ffffff";
+        } else if (c === 4 || c === 5) {
+          // คอลัมน์ 4-5: รายจ่าย (ชมพูแดงอ่อนสลับขาว)
+          bg = isEven ? "#fef2f2" : "#ffffff";
+        } else if (c === 6 || c === 7) {
+          // คอลัมน์ 6-7: ภาษี/เงินเก็บ (ฟ้าอ่อนสลับขาว)
+          bg = isEven ? "#f0f9ff" : "#ffffff";
+        }
+        rowBg.push(bg);
+      }
+      backgrounds.push(rowBg);
     }
     dataRange.setBackgrounds(backgrounds);
+    dataRange.setBorder(true, true, true, true, true, true, "#cbd5e1", SpreadsheetApp.BorderStyle.SOLID);
     
-    dataRange.setBorder(true, true, true, true, true, true, "#e5e7eb", SpreadsheetApp.BorderStyle.SOLID);
+    // จัดรูปแบบตัวเลขสำหรับรายรับ (คอลัมน์ 3 - C)
+    sheet.getRange(2, 3, lastRow - 1, 1).setNumberFormat("#,##0.00");
+    // จัดรูปแบบตัวเลขสำหรับรายจ่าย, หัก ณ ที่จ่าย 3%, และเก็บสะสม 10% (คอลัมน์ 5 ถึง 7 - E, F, G)
+    sheet.getRange(2, 5, lastRow - 1, 3).setNumberFormat("#,##0.00");
   }
+  headers.setBorder(null, null, true, null, null, null, "#cbd5e1", SpreadsheetApp.BorderStyle.SOLID_MEDIUM);
   
-  sheet.getRange("A1:C1").setBorder(null, null, true, null, null, null, "#9ca3af", SpreadsheetApp.BorderStyle.SOLID_MEDIUM);
-  sheet.getRange("D1:E1").setBorder(null, null, true, null, null, null, "#9ca3af", SpreadsheetApp.BorderStyle.SOLID_MEDIUM);
-  sheet.getRange("F1:G1").setBorder(null, null, true, null, null, null, "#9ca3af", SpreadsheetApp.BorderStyle.SOLID_MEDIUM);
-  
-  sheet.autoResizeColumns(1, 7);
-  
-  for (var c = 1; c <= 7; c++) {
-    var w = sheet.getColumnWidth(c);
-    if (w < 90) sheet.setColumnWidth(c, 90);
+  var sheetName = sheet.getName();
+  if (sheetName === "ม.ค.") {
+    // ห้าม autoResize บนแม่แบบ ม.ค. ให้ปล่อยความกว้างเดิมที่ลากมือไว้ 100%
+  } else {
+    var ss = sheet.getParent();
+    var templateSheet = ss.getSheetByName("ม.ค.");
+    if (templateSheet) {
+      var templateLastCol = templateSheet.getLastColumn();
+      for (var c = 1; c <= Math.min(lastCol, templateLastCol); c++) {
+        var templateW = templateSheet.getColumnWidth(c);
+        sheet.setColumnWidth(c, templateW);
+      }
+    } else {
+      sheet.autoResizeColumns(1, lastCol);
+      for (var c = 1; c <= lastCol; c++) {
+        var w = sheet.getColumnWidth(c);
+        if (w < 90) sheet.setColumnWidth(c, 90);
+      }
+    }
   }
 }
 
@@ -852,4 +1006,6 @@ function saveBlobToFolder(blob, docType, parentFolderId) {
   }
   return file.getUrl();
 }
+
+
 
