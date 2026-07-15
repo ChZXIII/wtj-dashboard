@@ -9,8 +9,8 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="ChZ Super App">
-  <link rel="apple-touch-icon" href="/assets/icon-192.png?v=2.4.5">
-  <link rel="apple-touch-icon" sizes="180x180" href="/assets/icon-180.png?v=2.4.5">
+  <link rel="apple-touch-icon" href="/assets/icon-192.png?v=2.5.6">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/icon-180.png?v=2.5.6">
 
   <script>
     // Force unregister all active service worker caches to prevent browser hijacking
@@ -81,33 +81,6 @@
       overflow: hidden;
     }
 
-    body.dark-theme {
-      /* Dark Mode (Sunset Glow Retro Brutalist) */
-      --color-neon-rose: #ff4500; /* Sunset Orange */
-      --color-app-bg: #181a1d; /* Matte Charcoal */
-      --color-panel-bg: #202327; /* Matte Card */
-      --color-card-bg: #202327;
-      --color-skeleton-bg: #202327;
-      --color-text-primary: #ffffff;
-      --color-text-secondary: #a0aec0;
-      --color-text-muted: #4b5563;
-      --color-btn-dark-bg: #ff4500;
-      --color-border-main: #ffffff;
-      --color-border-light: #374151;
-      --solid-shadow: 4px 4px 0px #ffffff;
-    }
-
-    body.dark-theme .sidebar {
-      background-color: #202327;
-      border: none !important;
-    }
-
-    body.dark-theme .record-income-page.frosted,
-    body.dark-theme .transaction-history-page.frosted,
-    body.dark-theme .document-export-page.frosted,
-    body.dark-theme .todo-page.frosted {
-      background: rgba(32, 35, 39, 0.65) !important;
-    }
 
     * {
       box-sizing: border-box;
@@ -3217,7 +3190,7 @@
             </div>
             <div class="user-info-text">
               <div class="user-role">CHZ MANAGER</div>
-              <div class="user-version">Version 2.5.5</div>
+              <div class="user-version">Version 2.5.6</div>
             </div>
           </div>
         </div>
@@ -3232,7 +3205,7 @@
             <!-- หัวข้อและปุ่มย้อนกลับสไลด์ -->
             <div class="settings-header">
               <div class="settings-header-text">
-                <h3 class="settings-title" style="display: flex; align-items: center; gap: 8px;">Google Sheets Connection <span style="font-size: 11px; background: rgba(0,0,0,0.06); color: var(--color-text-secondary); padding: 2px 8px; border-radius: 8px; font-weight: 500;">Version 2.5.5</span></h3>
+                <h3 class="settings-title" style="display: flex; align-items: center; gap: 8px;">Google Sheets Connection <span style="font-size: 11px; background: rgba(0,0,0,0.06); color: var(--color-text-secondary); padding: 2px 8px; border-radius: 8px; font-weight: 500;">Version 2.5.6</span></h3>
                 <p style="font-size: 11px; color: var(--color-text-secondary); margin-top: 4px;">ผูกแอปเข้ากับสิทธิ์ Google Sheets ของแกผ่าน API หรือ Google Apps Script</p>
               </div>
               <button class="capsule-btn btn-back-to-overview" id="settings-back-to-overview-btn" style="display: none; cursor: pointer; background: rgba(39, 168, 115, 0.1) !important; color: #27a873 !important; border: none !important;">
@@ -3283,7 +3256,7 @@
               <div class="settings-col-right">
                 <div class="settings-form-group">
                   <label>PDFShift API Key</label>
-                  <input type="password" id="settings-pdfshift-key" name="pdfShiftKey" placeholder="เช่น api_xxxxxxxxx" value="sk_94ce6e74aaead507e8d0921c641822140e76a06d">
+                  <input type="password" id="settings-pdfshift-key" name="pdfShiftKey" placeholder="เช่น api_xxxxxxxxx" value="">
                   <span class="settings-field-tip">API Key สำหรับแปลง HTML เป็น PDF จากเว็บ PDFShift</span>
                 </div>
                 <div class="settings-form-group">
@@ -4629,13 +4602,7 @@
           margin: 0 auto;
           font-family: var(--font-body);
         }
-        
-        /* Dark Theme Support (Sunset Glow) */
-        body.dark-theme #custom-calc-keyboard {
-          background: rgba(30, 41, 59, 0.45) !important;
-          border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
-          box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.3) !important;
-        }
+
 
         /* Calc Buttons Common Style */
         .calc-btn {
@@ -4662,10 +4629,7 @@
           color: #0f172a;
           font-weight: 700;
         }
-        body.dark-theme .calc-btn-action {
-          background: rgba(255, 255, 255, 0.12) !important;
-          color: #f1f5f9 !important;
-        }
+
 
         /* Numeric Buttons */
         .calc-btn-num {
@@ -4675,12 +4639,7 @@
           border: 1px solid rgba(226, 232, 240, 0.5);
           box-shadow: 0 1px 3px rgba(0,0,0,0.02);
         }
-        body.dark-theme .calc-btn-num {
-          background: rgba(255, 255, 255, 0.06) !important;
-          color: #f1f5f9 !important;
-          border: 1px solid rgba(255, 255, 255, 0.05) !important;
-          box-shadow: 0 1px 3px rgba(0,0,0,0.2) !important;
-        }
+
 
         /* Submit Button (Neon Blue/Neon Rose in Dark theme) */
         .calc-btn-submit {
@@ -4689,11 +4648,7 @@
           font-weight: 700;
           box-shadow: 0 4px 12px rgba(255, 75, 114, 0.3);
         }
-        body.dark-theme .calc-btn-submit {
-          background: var(--color-neon-rose, #ff4500) !important;
-          color: #ffffff !important;
-          box-shadow: 0 4px 12px rgba(255, 69, 0, 0.35) !important;
-        }
+
 
         /* SVG color and size adjustments */
         .calc-btn svg {
@@ -4750,7 +4705,7 @@
     const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbylwuezISiTMzVhklcyus1gEMyTQG7OttGFSTIFyCB4yMjvpqeo20WRGp_8HIJk8Gup/exec';
     const DEFAULT_GRAB_GAS_URL = 'https://script.google.com/macros/s/AKfycbz4YHh2FO6rFjCl8iVYrQF3Z8APkE5hTWTt_gn7NgrvaIkCDf9yc5ol2MC1hFcilnA/exec';
     const DEFAULT_FELTZ_SHEET_ID = '1pfPzlhov1898x4rRDytDRxjYaiuFIfMuJPamEwLxeMU';
-    const DEFAULT_PDFSHIFT_API_KEY = 'sk_94ce6e74aaead507e8d0921c641822140e76a06d';
+    const DEFAULT_PDFSHIFT_API_KEY = '';
     const DEFAULT_COMPANY_DRIVE_URL = 'https://drive.google.com/drive/u/0/folders/1b7U4fS_3EQTPF1TTtcvrHSrSFGsamrjO';
 
     // --- Passcode & Face ID State & Logic ---
