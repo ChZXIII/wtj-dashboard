@@ -3067,6 +3067,124 @@
       border-color: rgba(255, 75, 114, 0.4) !important;
       box-shadow: 0 0 0 3px rgba(255, 75, 114, 0.1) !important;
     }
+
+    /* --- Style page controls and containers --- */
+    .crypto-dashboard-page {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      height: 100%;
+      overflow-y: auto;
+    }
+    .crypto-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .crypto-title {
+      font-family: var(--font-heading);
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--color-text-primary);
+    }
+    
+    /* --- Brutalist Grid Layout for Cards --- */
+    .crypto-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+    .crypto-card {
+      border: 2px solid var(--color-border-main);
+      border-radius: var(--border-radius-card);
+      padding: 20px;
+      box-shadow: var(--solid-shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: transform 0.2s ease;
+    }
+    .crypto-card:hover {
+      transform: translateY(-2px);
+    }
+    .crypto-card-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--color-text-primary);
+    }
+    .crypto-card-value {
+      font-family: var(--font-heading);
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--color-text-primary);
+    }
+    .crypto-card-subtitle {
+      font-size: 12px;
+      color: var(--color-text-secondary);
+      font-weight: 500;
+    }
+    .crypto-card-pnl {
+      display: flex;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    
+    /* --- Brutalist Table Layout --- */
+    .crypto-table-container {
+      border: 2px solid var(--color-border-main);
+      border-radius: var(--border-radius-card);
+      background-color: var(--color-white);
+      box-shadow: var(--solid-shadow);
+      overflow-x: auto;
+      flex: 1;
+    }
+    .crypto-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+    .crypto-table th, .crypto-table td {
+      padding: 14px 16px;
+      border-bottom: 2px solid var(--color-border-light);
+    }
+    .crypto-table th {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 13px;
+      background-color: #f8fafc;
+      color: var(--color-text-primary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 2px solid var(--color-border-main);
+    }
+    .crypto-table td {
+      font-size: 13px;
+      color: var(--color-text-primary);
+    }
+    .crypto-table tr:last-child td {
+      border-bottom: none;
+    }
+    .crypto-coin-name {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-heading);
+      font-weight: 700;
+    }
+    
+    /* --- PnL Indicators Colorizer --- */
+    .crypto-pnl-up {
+      color: #10b981 !important; /* เขียว */
+    }
+    .crypto-pnl-down {
+      color: #ef4444 !important; /* แดง */
+    }
   </style>
 </head>
 <body>
@@ -4746,7 +4864,7 @@
         }
 
 
-        /* Submit Button (Neon Blue/Neon Rose in Dark theme) */
+        /* Submit Button (Neon Rose) */
         .calc-btn-submit {
           background: var(--color-neon-rose);
           color: #ffffff;
@@ -11504,11 +11622,11 @@
                   const dataCells = rows[i+1].c;
                   if (dataCells) {
                     if (config.tab === 'Thyme' || config.tab === 'Mod') {
-                      cost = dataCells[2] ? parseFloat(String(dataCells[2].v).replace(/,/g, '')) : 0;
-                      amt = dataCells[4] ? parseFloat(String(dataCells[4].v).replace(/,/g, '')) : 0;
+                      cost = (dataCells[2] && dataCells[2].v !== null) ? parseFloat(String(dataCells[2].v).replace(/,/g, '')) : 0;
+                      amt = (dataCells[4] && dataCells[4].v !== null) ? parseFloat(String(dataCells[4].v).replace(/,/g, '')) : 0;
                     } else {
-                      cost = dataCells[1] ? parseFloat(String(dataCells[1].v).replace(/,/g, '')) : 0;
-                      amt = dataCells[3] ? parseFloat(String(dataCells[3].v).replace(/,/g, '')) : 0;
+                      cost = (dataCells[1] && dataCells[1].v !== null) ? parseFloat(String(dataCells[1].v).replace(/,/g, '')) : 0;
+                      amt = (dataCells[3] && dataCells[3].v !== null) ? parseFloat(String(dataCells[3].v).replace(/,/g, '')) : 0;
                     }
                     found = true;
                   }
