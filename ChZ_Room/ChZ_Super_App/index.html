@@ -1712,15 +1712,15 @@
 
     .workspace-pages-track {
       display: flex;
-      width: 600%;
+      width: 700%;
       height: 100%;
-      transform: translateX(-16.6667%); /* เลื่อนไปแสดงหน้า Dashboard (Slide 1) เป็นหลักเริ่มต้น */
+      transform: translateX(-14.2857%); /* เลื่อนไปแสดงหน้า Dashboard (Slide 1) เป็นหลักเริ่มต้น */
       transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
       will-change: transform;
     }
 
     .workspace-page {
-      width: 16.6667%; /* กว้าง 1 ใน 6 ของ 600% แทร็ก ซึ่งเทียบเท่า 100% ของ viewport */
+      width: 14.2857%; /* กว้าง 1 ใน 7 ของ 700% แทร็ก ซึ่งเทียบเท่า 100% ของ viewport */
       height: 100%;
       flex-shrink: 0;
     }
@@ -4255,7 +4255,112 @@
             <!-- Empty state -->
             <p id="todo-empty" style="margin:auto; text-align:center; font-family:'Inter','Prompt',sans-serif; font-size:13px; color:rgba(0,0,0,0.35); display: none;">ยังไม่มีรายการ — เพิ่มได้เลย</p>
           </div>
-
+          
+          <!-- Slide 6: Crypto Dashboard Page -->
+          <div class="workspace-page crypto-dashboard-page">
+            <div class="crypto-header">
+              <div style="display: flex; flex-direction: column;">
+                <h3 class="crypto-title">Crypto Portfolio Dashboard</h3>
+                <span style="font-size: 11px; color: var(--color-text-secondary); margin-top: 4px;" id="crypto-last-updated">Last Updated: Never</span>
+              </div>
+              <div style="display: flex; gap: 8px;">
+                <button class="capsule-btn" id="btn-refresh-crypto" style="cursor: pointer; background: var(--color-neon-rose) !important; color: white !important; border: none !important;">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 14px; height: 14px; margin-right: 6px; color: white !important;">
+                    <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+                  </svg>
+                  <span>Refresh Data</span>
+                </button>
+                <button class="capsule-btn btn-back-to-home" id="crypto-back-to-home-btn" style="cursor: pointer;">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 14px; height: 14px; margin-right: 6px;">
+                    <polyline points="9 14 4 9 9 4"></polyline>
+                    <path d="M20 20v-7a4 4 0 0 0-4-4H4"></path>
+                  </svg>
+                  <span>Back to Home</span>
+                </button>
+              </div>
+            </div>
+            
+            <div class="crypto-cards-grid">
+              <!-- Keng Capital -->
+              <div class="crypto-card" style="background-color: var(--color-ice-blue);">
+                <div class="crypto-card-title">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 14px; height: 14px;">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                  </svg>
+                  <span>Keng's Capital</span>
+                </div>
+                <div class="crypto-card-value" id="keng-capital-val">0.00 THB</div>
+                <div class="crypto-card-subtitle">ทุนของฉันสะสม</div>
+              </div>
+              
+              <!-- Mod Capital -->
+              <div class="crypto-card" style="background-color: var(--color-pastel-yellow);">
+                <div class="crypto-card-title">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 14px; height: 14px;">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                  </svg>
+                  <span>Mod's Capital</span>
+                </div>
+                <div class="crypto-card-value" id="mod-capital-val">0.00 THB</div>
+                <div class="crypto-card-subtitle">ทุนของมดสะสม</div>
+              </div>
+              
+              <!-- Thyme Capital -->
+              <div class="crypto-card" style="background-color: var(--color-pastel-green);">
+                <div class="crypto-card-title">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 14px; height: 14px;">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                  </svg>
+                  <span>Thyme's Capital</span>
+                </div>
+                <div class="crypto-card-value" id="thyme-capital-val">0.00 THB</div>
+                <div class="crypto-card-subtitle">ทุนของธามสะสม</div>
+              </div>
+              
+              <!-- Live PnL -->
+              <div class="crypto-card" style="background-color: #ffffff;">
+                <div class="crypto-card-title">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 14px; height: 14px;">
+                    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                    <polyline points="17 6 23 6 23 12"></polyline>
+                  </svg>
+                  <span>Live PnL</span>
+                </div>
+                <div class="crypto-card-value" id="total-portfolio-val">0.00 THB</div>
+                <div class="crypto-card-pnl" id="total-pnl-status">
+                  <span class="crypto-pnl-up" id="total-pnl-thb">0.00 THB</span>
+                  <span class="crypto-pnl-up" id="total-pnl-pct">(0.00%)</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="crypto-table-container">
+              <table class="crypto-table">
+                <thead>
+                  <tr>
+                    <th>Asset</th>
+                    <th>Holdings</th>
+                    <th>Avg Buy Price</th>
+                    <th>Total Cost</th>
+                    <th>Current Price</th>
+                    <th>Current Value</th>
+                    <th>PnL (THB)</th>
+                    <th>PnL (%)</th>
+                  </tr>
+                </thead>
+                <tbody id="crypto-portfolio-body">
+                  <!-- Dynamic Rows go here -->
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -4705,6 +4810,7 @@
     const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbylwuezISiTMzVhklcyus1gEMyTQG7OttGFSTIFyCB4yMjvpqeo20WRGp_8HIJk8Gup/exec';
     const DEFAULT_GRAB_GAS_URL = 'https://script.google.com/macros/s/AKfycbz4YHh2FO6rFjCl8iVYrQF3Z8APkE5hTWTt_gn7NgrvaIkCDf9yc5ol2MC1hFcilnA/exec';
     const DEFAULT_FELTZ_SHEET_ID = '1pfPzlhov1898x4rRDytDRxjYaiuFIfMuJPamEwLxeMU';
+    const DEFAULT_CRYPTO_SHEET_ID = '1yWxTiVglJsWhVBSlB7UPu7MXGRQ_vti5IjqxWTCFJK0';
     const DEFAULT_PDFSHIFT_API_KEY = '';
     const DEFAULT_COMPANY_DRIVE_URL = 'https://drive.google.com/drive/u/0/folders/1b7U4fS_3EQTPF1TTtcvrHSrSFGsamrjO';
 
@@ -6510,16 +6616,34 @@
       const profileCapsule = document.querySelector('.user-profile-capsule');
       const closeSettingsBtn = document.querySelector('.btn-close-settings');
       const saveSettingsBtn = document.querySelector('.btn-save-settings');
-      const btnBack = document.querySelector('.btn-back');
+      const btnToCrypto = document.getElementById('btn-to-crypto-dashboard');
+      const cryptoBackBtn = document.getElementById('crypto-back-to-home-btn');
 
-      if (btnBack) {
-        btnBack.addEventListener('click', function(e) {
+      if (btnToCrypto) {
+        btnToCrypto.addEventListener('click', function(e) {
           e.preventDefault();
           if (workspaceTrack) {
-            workspaceTrack.style.transform = 'translateX(-16.6667%)';
+            workspaceTrack.style.transform = 'translateX(-85.7143%)';
           }
           if (typeof discardUnsavedSettings === 'function') {
             discardUnsavedSettings();
+          }
+          navItems.forEach(nav => nav.classList.remove('active'));
+          const viewport = document.querySelector('.workspace-viewport');
+          if (viewport) {
+            viewport.style.backgroundImage = "url('assets/hero_anime_purple.jpg')";
+          }
+          if (typeof refreshCryptoPortfolio === 'function') {
+            refreshCryptoPortfolio();
+          }
+        });
+      }
+
+      if (cryptoBackBtn) {
+        cryptoBackBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          if (workspaceTrack) {
+            workspaceTrack.style.transform = 'translateX(-14.2857%)';
           }
           navItems.forEach((nav, idx) => {
             if (idx === 0) nav.classList.add('active');
@@ -6548,7 +6672,7 @@
 
       function hideSettings() {
         if (workspaceTrack) {
-          workspaceTrack.style.transform = 'translateX(-16.6667%)';
+          workspaceTrack.style.transform = 'translateX(-14.2857%)';
         }
         // Activate Tab 1 (Home)
         navItems.forEach((nav, idx) => {
@@ -6588,6 +6712,7 @@
         const grabScriptUrl = document.getElementById('settings-grab-script-url')?.value || '';
         const grabSheetId = document.getElementById('settings-grab-sheet-id')?.value || '';
         const feltzSheetId = document.getElementById('settings-feltz-sheet-id')?.value || '';
+        const cryptoSheetId = document.getElementById('settings-crypto-sheet-id')?.value || '';
         const pdfShiftKey = document.getElementById('settings-pdfshift-key')?.value || '';
         const driveFolderLink = document.getElementById('settings-drive-folder-link')?.value || '';
         
@@ -6602,6 +6727,7 @@
         localStorage.setItem('income_tracker_grab_gas_url', grabScriptUrl);
         localStorage.setItem('income_tracker_grab_sheet_id', grabSheetId);
         localStorage.setItem('income_tracker_general_sheet_id', feltzSheetId);
+        localStorage.setItem('income_tracker_crypto_sheet_id', cryptoSheetId);
         localStorage.setItem('income_tracker_pdfshift_api_key', pdfShiftKey);
         localStorage.setItem('income_tracker_company_drive_url', driveFolderLink);
         
@@ -6654,6 +6780,9 @@
         if (!localStorage.getItem('income_tracker_general_sheet_id')) {
           localStorage.setItem('income_tracker_general_sheet_id', DEFAULT_FELTZ_SHEET_ID);
         }
+        if (!localStorage.getItem('income_tracker_crypto_sheet_id')) {
+          localStorage.setItem('income_tracker_crypto_sheet_id', DEFAULT_CRYPTO_SHEET_ID);
+        }
         if (!localStorage.getItem('income_tracker_pdfshift_api_key')) {
           localStorage.setItem('income_tracker_pdfshift_api_key', DEFAULT_PDFSHIFT_API_KEY);
         }
@@ -6665,6 +6794,7 @@
         const grabScriptUrl = localStorage.getItem('income_tracker_grab_gas_url') || DEFAULT_GRAB_GAS_URL;
         const grabSheetId = localStorage.getItem('income_tracker_grab_sheet_id') || DEFAULT_GRAB_SHEET_ID;
         const feltzSheetId = localStorage.getItem('income_tracker_general_sheet_id') || DEFAULT_FELTZ_SHEET_ID;
+        const cryptoSheetId = localStorage.getItem('income_tracker_crypto_sheet_id') || DEFAULT_CRYPTO_SHEET_ID;
         const pdfShiftKey = localStorage.getItem('income_tracker_pdfshift_api_key') || DEFAULT_PDFSHIFT_API_KEY;
         const driveFolderLink = localStorage.getItem('income_tracker_company_drive_url') || DEFAULT_COMPANY_DRIVE_URL;
         
@@ -6686,6 +6816,9 @@
         }
         if (document.getElementById('settings-feltz-sheet-id')) {
           document.getElementById('settings-feltz-sheet-id').value = feltzSheetId;
+        }
+        if (document.getElementById('settings-crypto-sheet-id')) {
+          document.getElementById('settings-crypto-sheet-id').value = cryptoSheetId;
         }
         if (document.getElementById('settings-pdfshift-key')) {
           document.getElementById('settings-pdfshift-key').value = pdfShiftKey;
@@ -6891,7 +7024,7 @@
             if (rBtn) rBtn.style.display = 'none';
             if (sBtn) sBtn.style.display = 'none';
 
-            const translatePercent = -16.6667 - (index * 16.6667);
+            const translatePercent = -14.2857 - (index * 14.2857);
             if (workspaceTrack) {
               workspaceTrack.style.transform = `translateX(${translatePercent}%)`;
             }
@@ -6931,24 +7064,23 @@
           btn.addEventListener('click', function(e) {
             e.preventDefault();
             const targetIndex = parseInt(btn.getAttribute('data-index'));
-            let translatePercent = -20;
+            let translatePercent = -14.2857;
             let navItemIndex = 0;
             
             // Map data-index to correct translateX and sidebar active index:
             // Settings = 0%
-            // Dashboard = -20% (Sidebar index 0)
-            // Record Income = -40% (Sidebar index 1)
-            // Transaction History = -60% (Sidebar index 2)
-            // Export Documents = -80% (Sidebar index 3)
-            // (Note: Corrected from -60%/-80%/-100% to match actual page slots in the track)
+            // Dashboard = -14.2857% (Sidebar index 0)
+            // Record Income = -28.5714% (Sidebar index 1)
+            // Transaction History = -42.8571% (Sidebar index 2)
+            // Export Documents = -57.1429% (Sidebar index 3)
             if (targetIndex === 2) {
-              translatePercent = -33.3333;
+              translatePercent = -28.5714;
               navItemIndex = 1;
             } else if (targetIndex === 3) {
-              translatePercent = -50;
+              translatePercent = -42.8571;
               navItemIndex = 2;
             } else if (targetIndex === 4) {
-              translatePercent = -66.6667;
+              translatePercent = -57.1429;
               navItemIndex = 3;
             }
             
@@ -7697,7 +7829,7 @@
         const workspaceTrack = document.querySelector('.workspace-pages-track');
         const navItems = document.querySelectorAll('.nav-menu .nav-item');
         if (workspaceTrack) {
-          workspaceTrack.style.transform = 'translateX(-16.6667%)';
+          workspaceTrack.style.transform = 'translateX(-14.2857%)';
         }
         navItems.forEach((nav, idx) => {
           if (idx === 0) nav.classList.add('active');
@@ -8110,7 +8242,7 @@
             // Navigate to Record Transaction (Slide 2) & open tab form-record-grab
             const workspaceTrack = document.querySelector('.workspace-pages-track');
             if (workspaceTrack) {
-              workspaceTrack.style.transform = 'translateX(-33.3333%)';
+              workspaceTrack.style.transform = 'translateX(-28.5714%)';
             }
             
             const navItems = document.querySelectorAll('.nav-menu .nav-item');
@@ -10018,11 +10150,11 @@
           const rBtn = document.getElementById('record-back-to-overview-btn');
           if (rBtn) rBtn.style.display = 'flex';
 
-          // Slide to Record Income Page (page index 2, corresponds to translateX(-33.3333%))
+          // Slide to Record Income Page (page index 2, corresponds to translateX(-28.5714%))
           const workspaceTrack = document.querySelector('.workspace-pages-track');
           const navItems = document.querySelectorAll('.nav-menu .nav-item');
           if (workspaceTrack) {
-            workspaceTrack.style.transform = 'translateX(-33.3333%)';
+            workspaceTrack.style.transform = 'translateX(-28.5714%)';
           }
           navItems.forEach((nav, idx) => {
             if (idx === 1) nav.classList.add('active');
@@ -10068,7 +10200,7 @@
           const workspaceTrack = document.querySelector('.workspace-pages-track');
           const navItems = document.querySelectorAll('.nav-menu .nav-item');
           if (workspaceTrack) {
-            workspaceTrack.style.transform = 'translateX(-16.6667%)';
+            workspaceTrack.style.transform = 'translateX(-14.2857%)';
           }
           navItems.forEach((nav, idx) => {
             if (idx === 0) nav.classList.add('active');
@@ -10561,7 +10693,7 @@
         
         const workspaceTrack = document.querySelector('.workspace-pages-track');
         if (workspaceTrack) {
-          workspaceTrack.style.transform = 'translateX(-33.3333%)';
+          workspaceTrack.style.transform = 'translateX(-28.5714%)';
         }
         
         const navItems = document.querySelectorAll('.nav-menu .nav-item');
@@ -11257,6 +11389,269 @@
       } catch (e) {}
     }
 
+
+    // --- Crypto Portfolio Dashboard Module ---
+    const CRYPTO_COINS = ['BTC', 'BNB', 'ASTER', 'XRP', 'SOL', 'ETH', 'Thyme_KUB', 'Mod_BTC'];
+    
+    // ข้อมูลเริ่มต้นสำหรับ Fallback
+    const DEFAULT_CRYPTO_HOLDINGS = {
+      'BTC': { amount: 0.04500000, basePrice: 2350000.0, owner: 'Keng' },
+      'BNB': { amount: 1.25000000, basePrice: 20500.0, owner: 'Keng' },
+      'ASTER': { amount: 5400.0, basePrice: 3.50, owner: 'Keng' },
+      'XRP': { amount: 850.0, basePrice: 17.80, owner: 'Keng' },
+      'SOL': { amount: 3.20, basePrice: 5800.0, owner: 'Keng' },
+      'ETH': { amount: 0.75000000, basePrice: 115000.0, owner: 'Keng' },
+      'Thyme_KUB': { amount: 120.0, basePrice: 85.50, owner: 'Thyme' },
+      'Mod_BTC': { amount: 0.00150000, basePrice: 2350000.0, owner: 'Mod' }
+    };
+
+    // ดึงราคาสด
+    async function getLiveCryptoPrices() {
+      const prices = {
+        'BTC': 2350000.0,
+        'BNB': 20500.0,
+        'ASTER': 3.50,
+        'XRP': 17.80,
+        'SOL': 5800.0,
+        'ETH': 115000.0,
+        'Thyme_KUB': 85.50,
+        'Mod_BTC': 2350000.0
+      };
+      
+      try {
+        // 1. Bitkub ticker (KUBTHB, BTCTHB)
+        const bitkubRes = await fetch('https://api.bitkub.com/api/market/ticker');
+        if (bitkubRes.ok) {
+          const ticker = await bitkubRes.json();
+          if (ticker.THB_KUB) {
+            prices['Thyme_KUB'] = parseFloat(ticker.THB_KUB.last);
+          }
+          if (ticker.THB_BTC) {
+            prices['Mod_BTC'] = parseFloat(ticker.THB_BTC.last);
+            prices['BTC'] = parseFloat(ticker.THB_BTC.last);
+          }
+        }
+      } catch (e) {
+        console.log('Error fetching Bitkub price:', e);
+      }
+      
+      try {
+        // 2. Binance Global prices for other coins
+        const binanceRes = await fetch('https://api.binance.com/api/v3/ticker/price');
+        if (binanceRes.ok) {
+          const allPrices = await binanceRes.json();
+          const symbolsMap = {
+            'BNBUSDT': 'BNB',
+            'ASTRUSDT': 'ASTER',
+            'XRPUSDT': 'XRP',
+            'SOLUSDT': 'SOL',
+            'ETHUSDT': 'ETH'
+          };
+          allPrices.forEach(p => {
+            if (symbolsMap[p.symbol]) {
+              prices[symbolsMap[p.symbol]] = parseFloat(p.price) * 35.0; // อิง THB = 35.0
+            }
+          });
+        }
+      } catch (e) {
+        console.log('Error fetching Binance price:', e);
+      }
+      
+      return prices;
+    }
+
+    // ดึงข้อมูลจำนวนเหรียญและต้นทุนจาก Google Sheets
+    async function getSheetsCryptoHoldings(spreadsheetId) {
+      const holdings = JSON.parse(JSON.stringify(DEFAULT_CRYPTO_HOLDINGS)); // clone fallback
+      if (!spreadsheetId) return holdings;
+      
+      const tabs = {
+        'BTC': { tab: 'BTC', coin: 'BTC' },
+        'BNB': { tab: 'BNB', coin: 'BNB' },
+        'ASTER': { tab: 'ASTER', coin: 'ASTER' },
+        'XRP': { tab: 'XRP', coin: 'XRP' },
+        'SOL': { tab: 'SOL', coin: 'SOL' },
+        'ETH': { tab: 'ETH', coin: 'ETH' },
+        'Thyme_KUB': { tab: 'Thyme', coin: 'Thyme_KUB' },
+        'Mod_BTC': { tab: 'Mod', coin: 'Mod_BTC' }
+      };
+      
+      for (const key of Object.keys(tabs)) {
+        const config = tabs[key];
+        try {
+          const res = await fetch(`https://docs.google.com/spreadsheets/d/${spreadsheetId}/gviz/tq?tqx=out:json&sheet=${config.tab}`);
+          if (res.ok) {
+            const text = await res.text();
+            const jsonStart = text.indexOf('{');
+            const jsonEnd = text.lastIndexOf('}');
+            const jsonString = text.substring(jsonStart, jsonEnd + 1);
+            const jsonData = JSON.parse(jsonString);
+            
+            if (jsonData && jsonData.table && jsonData.table.rows) {
+              const rows = jsonData.table.rows;
+              let found = false;
+              let cost = 0;
+              let amt = 0;
+              
+              for (let i = 0; i < rows.length; i++) {
+                const cells = rows[i].c;
+                if (!cells) continue;
+                
+                // ตรวจสอบเซลล์ในแถวว่ามีคำว่า "ราคาเฉลี่ย" หรือ "ยอดเงินที่..."
+                const hasKeyword = cells.some(cell => cell && cell.v && (String(cell.v).includes('ราคาเฉลี่ย') || String(cell.v).includes('ยอดเงินที่')));
+                
+                if (hasKeyword && i + 1 < rows.length) {
+                  const dataCells = rows[i+1].c;
+                  if (dataCells) {
+                    if (config.tab === 'Thyme' || config.tab === 'Mod') {
+                      cost = dataCells[2] ? parseFloat(String(dataCells[2].v).replace(/,/g, '')) : 0;
+                      amt = dataCells[4] ? parseFloat(String(dataCells[4].v).replace(/,/g, '')) : 0;
+                    } else {
+                      cost = dataCells[1] ? parseFloat(String(dataCells[1].v).replace(/,/g, '')) : 0;
+                      amt = dataCells[3] ? parseFloat(String(dataCells[3].v).replace(/,/g, '')) : 0;
+                    }
+                    found = true;
+                  }
+                  break;
+                }
+              }
+              
+              if (found && cost > 0 && amt > 0) {
+                holdings[key].amount = amt;
+                holdings[key].basePrice = cost / amt;
+              }
+            }
+          }
+        } catch (e) {
+          console.log(`Failed to fetch sheet tab ${config.tab}:`, e);
+        }
+      }
+      
+      return holdings;
+    }
+
+    // ฟังก์ชันคำนวณและอัปเดต UI พอร์ตคริปโต
+    async function refreshCryptoPortfolio() {
+      const refreshBtn = document.getElementById('btn-refresh-crypto');
+      if (refreshBtn) {
+        refreshBtn.disabled = true;
+        refreshBtn.querySelector('span').textContent = 'Loading...';
+      }
+      
+      try {
+        const spreadsheetId = localStorage.getItem('income_tracker_crypto_sheet_id') || DEFAULT_CRYPTO_SHEET_ID;
+        
+        // ดึงข้อมูลพร้อมกัน
+        const [livePrices, holdings] = await Promise.all([
+          getLiveCryptoPrices(),
+          getSheetsCryptoHoldings(spreadsheetId)
+        ]);
+        
+        let kengCapital = 0;
+        let modCapital = 0;
+        let thymeCapital = 0;
+        let totalCurrentValue = 0;
+        let totalCost = 0;
+        
+        const tableBody = document.getElementById('crypto-portfolio-body');
+        if (tableBody) {
+          tableBody.innerHTML = '';
+        }
+        
+        CRYPTO_COINS.forEach(coin => {
+          const data = holdings[coin];
+          const livePrice = livePrices[coin] || data.basePrice;
+          
+          const cost = data.amount * data.basePrice;
+          const currentValue = data.amount * livePrice;
+          const pnlThb = currentValue - cost;
+          const pnlPct = cost > 0 ? (pnlThb / cost) * 100 : 0;
+          
+          // สรุปทุนแต่ละคน
+          if (data.owner === 'Keng') kengCapital += cost;
+          else if (data.owner === 'Mod') modCapital += cost;
+          else if (data.owner === 'Thyme') thymeCapital += cost;
+          
+          totalCurrentValue += currentValue;
+          totalCost += cost;
+          
+          if (tableBody) {
+            const tr = document.createElement('tr');
+            
+            // ชื่อเหรียญพร้อม SVG icon หรือ color dot
+            const coinLabel = coin === 'Thyme_KUB' ? 'KUB (ของธาม)' : (coin === 'Mod_BTC' ? 'BTC (ของมด)' : (coin === 'BTC' ? 'BTC (ของฉัน)' : coin));
+            const isUp = pnlThb >= 0;
+            const pnlClass = isUp ? 'crypto-pnl-up' : 'crypto-pnl-down';
+            const pnlSign = isUp ? '+' : '';
+            
+            tr.innerHTML = `
+              <td>
+                <div class="crypto-coin-name">
+                  <span style="width: 8px; height: 8px; border-radius: 50%; background: ${coin.includes('BTC') ? '#f2a900' : (coin.includes('KUB') ? '#1fc7d4' : 'var(--color-neon-rose)')}; display: inline-block;"></span>
+                  ${coinLabel}
+                </div>
+              </td>
+              <td style="font-family: var(--font-heading); font-weight: 500;">${data.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 8 })}</td>
+              <td style="font-family: var(--font-heading); font-weight: 500;">${data.basePrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+              <td style="font-family: var(--font-heading); font-weight: 600;">${cost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+              <td style="font-family: var(--font-heading); font-weight: 500;">${livePrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+              <td style="font-family: var(--font-heading); font-weight: 600;">${currentValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+              <td style="font-family: var(--font-heading); font-weight: 700;" class="${pnlClass}">${pnlSign}${pnlThb.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+              <td style="font-family: var(--font-heading); font-weight: 700;" class="${pnlClass}">${pnlSign}${pnlPct.toFixed(2)}%</td>
+            `;
+            tableBody.appendChild(tr);
+          }
+        });
+        
+        // อัปเดตการ์ด
+        const totalPnLThb = totalCurrentValue - totalCost;
+        const totalPnLPct = totalCost > 0 ? (totalPnLThb / totalCost) * 100 : 0;
+        
+        document.getElementById('keng-capital-val').textContent = kengCapital.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' THB';
+        document.getElementById('mod-capital-val').textContent = modCapital.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' THB';
+        document.getElementById('thyme-capital-val').textContent = thymeCapital.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' THB';
+        
+        document.getElementById('total-portfolio-val').textContent = totalCurrentValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' THB';
+        
+        const totalPnlThbEl = document.getElementById('total-pnl-thb');
+        const totalPnlPctEl = document.getElementById('total-pnl-pct');
+        
+        const isTotalUp = totalPnLThb >= 0;
+        const totalPnlSign = isTotalUp ? '+' : '';
+        
+        if (totalPnlThbEl && totalPnlPctEl) {
+          totalPnlThbEl.className = isTotalUp ? 'crypto-pnl-up' : 'crypto-pnl-down';
+          totalPnlPctEl.className = isTotalUp ? 'crypto-pnl-up' : 'crypto-pnl-down';
+          
+          totalPnlThbEl.textContent = totalPnlSign + totalPnLThb.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' THB';
+          totalPnlPctEl.textContent = `(${totalPnlSign}${totalPnLPct.toFixed(2)}%)`;
+        }
+        
+        // อัปเดตเวลาล่าสุด
+        const now = new Date();
+        document.getElementById('crypto-last-updated').textContent = `Last Updated: ${now.toLocaleDateString()} ${now.toLocaleTimeString()}`;
+        
+      } catch (e) {
+        console.log('Error refreshing crypto portfolio:', e);
+      } finally {
+        if (refreshBtn) {
+          refreshBtn.disabled = false;
+          refreshBtn.querySelector('span').textContent = 'Refresh Data';
+        }
+      }
+    }
+    window.refreshCryptoPortfolio = refreshCryptoPortfolio;
+
+    // ผูก event click ให้ปุ่ม Refresh Data บนพอร์ตคริปโต
+    document.addEventListener('DOMContentLoaded', () => {
+      const refreshBtn = document.getElementById('btn-refresh-crypto');
+      if (refreshBtn) {
+        refreshBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          refreshCryptoPortfolio();
+        });
+      }
+    });
 
   </script>
 </body>
