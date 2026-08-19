@@ -2706,7 +2706,7 @@ function syncWhtPreview() {
   document.getElementById('prevWhtTotalTax').textContent = tax > 0 ? `฿${tax.toLocaleString('th-TH', { minimumFractionDigits: 2 })}` : '-';
   document.getElementById('prevWhtNetText').textContent = thaiBahtText(gross - tax);
 
-  document.getElementById('prevWhtSigner').textContent = document.getElementById('doc_signerName').value;
+  document.getElementById('prevWhtSigner').textContent = 'ณัฐนรี วงศ์สกุลยานนท์';
 
   // Toggle company seal visibility
   const showSeal = document.getElementById('doc_showSeal').checked;
@@ -7450,8 +7450,7 @@ function populateWhtPrintPaper(doc) {
   document.getElementById('whtPrintNetText').textContent = tax > 0 ? thaiBahtText(tax) : 'ศูนย์บาทถ้วน';
 
   // Signer & signature image
-  const signerEl = document.getElementById('doc_signerName');
-  const signerName = signerEl ? signerEl.value : 'นาย มงคล วงศ์สกุลยานนท์';
+  const signerName = 'ณัฐนรี วงศ์สกุลยานนท์';
   document.getElementById('whtPrintSigner').textContent = signerName;
   
   const sigImgEl = document.getElementById('whtPrintSignatureImg');
