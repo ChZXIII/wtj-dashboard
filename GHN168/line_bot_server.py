@@ -2216,14 +2216,19 @@ async def analyze_receipt_image_with_ai(image_bytes: bytes, mime_type: str = "im
     Distinguishes between:
     - Customer Incoming Transfer Slip (โอนเข้า ธ.กรุงไทย 520-0-61960-2 / บจ. จีเอชเอ็น 168) -> "transaction_type": "income"
     - Company Expense / Vendor Bill / Tax Invoice -> "transaction_type": "expense"
+    - Non-financial images (Screenshots, spreadsheets, personal photos, memes) -> "is_financial_document": false
     """
     prompt = """คุณคือผู้ช่วยตรวจสอบใบเสร็จ ใบกำกับภาษี และสลิปโอนเงินของ บจ. จีเอชเอ็น 168 มีเดีย แอนด์ ครีเอชั่น จำกัด (GHN 168)
 โปรดอ่านและวิเคราะห์ภาพนี้อย่างละเอียด:
-1. หากเป็น "สลิปโอนเงินเข้าบริษัท" (โอนเข้า ธ.กรุงไทย เลขที่ 520-0-61960-2 หรือ ชื่อบัญชี บจ. จีเอชเอ็น 168 มีเดีย แอนด์ ครีเอชั่น หรือ GHN 168) ให้ระบุ "transaction_type": "income"
-2. หากเป็นบิลค่าใช้จ่าย ใบกำกับภาษีซื้อ หรือสลิปโอนจ่ายเงินของบริษัท ให้ระบุ "transaction_type": "expense"
+1. ตรวจสอบก่อนว่ารูปภาพเป็นเอกสารทางการเงินจริงหรือไม่ (เช่น สลิปโอนเงินของธนาคาร, ใบเสร็จรับเงิน, ใบกำกับภาษี, บิลเงินสด, ใบส่งของ/ใบแจ้งหนี้ที่มีมูลค่าเงิน):
+   - หากใช่ ให้ระบุ "is_financial_document": true, "is_valid_receipt": true
+   - หากไม่ใช่เอกสารทางการเงิน เช่น ภาพแคปหน้าจอแดชบอร์ด, ภาพตาราง Google Sheets, รูปถ่ายบุคคล, ภาพถ่ายสถานที่, มีม, ภาพแคปแชทข้อความ ให้ระบุ "is_financial_document": false, "is_valid_receipt": false เด็ดขาด!
+2. หากเป็น "สลิปโอนเงินเข้าบริษัท" (โอนเข้า ธ.กรุงไทย เลขที่ 520-0-61960-2 หรือ ชื่อบัญชี บจ. จีเอชเอ็น 168 มีเดีย แอนด์ ครีเอชั่น หรือ GHN 168) ให้ระบุ "transaction_type": "income"
+3. หากเป็นบิลค่าใช้จ่าย ใบกำกับภาษีซื้อ หรือสลิปโอนจ่ายเงินของบริษัท ให้ระบุ "transaction_type": "expense"
 
 สกัดข้อมูลให้อยู่ในรูปแบบ JSON เท่านั้น (ห้ามใส่ Markdown อื่น):
 {
+  "is_financial_document": true,
   "is_valid_receipt": true,
   "transaction_type": "income หรือ expense",
   "doc_type": "receipt หรือ expense",
@@ -2299,6 +2304,7 @@ async def analyze_receipt_image_with_ai(image_bytes: bytes, mime_type: str = "im
     now_str = datetime.now().strftime("%d/%m/%Y")
     if not parsed:
         parsed = {
+            "is_financial_document": True,
             "is_valid_receipt": True,
             "transaction_type": "expense",
             "doc_type": "expense",
@@ -2321,6 +2327,12 @@ async def analyze_receipt_image_with_ai(image_bytes: bytes, mime_type: str = "im
             "payment_method": "โอนเงิน KTB",
             "remarks": "สแกนผ่าน Vision AI (โหมดจำลอง)"
         }
+
+    # Ensure is_financial_document consistency
+    if "is_financial_document" not in parsed:
+        parsed["is_financial_document"] = bool(parsed.get("is_valid_receipt", True))
+    if not parsed.get("is_financial_document"):
+        parsed["is_valid_receipt"] = False
 
     # Ensure amount and transaction_type consistency
     if "amount" not in parsed or not parsed["amount"]:
@@ -2460,9 +2472,9 @@ CUSTOMER_SEARCH_PREFIXES = [
 ]
 
 BOT_DIRECT_TRIGGERS = [
-    "ghn", "ghn168", "เลขา", "เลขาghn", "บอท", "bot", "เฟิส", "first",
-    "@เลขาghn", "@ghn168", "@เลขาเฟิส", "@GHN168", "น้องเฟิส", "คุณเฟิส",
-    "เลขาครับ", "เลขาค่ะ", "พี่เฟิส"
+    "เฟิส", "@เฟิส", "เลขาเฟิส", "เลขา", "ghn168", "@ghn168", "เลขาghn", "first",
+    "@first", "น้องเฟิส", "คุณเฟิส", "พี่เฟิส", "บอท", "bot", "@bot", "@บอท",
+    "@เลขาghn", "@เลขาเฟิส", "@GHN168", "เลขาครับ", "เลขาค่ะ", "ghn", "@ghn"
 ]
 
 def is_casual_banter_text(text: str) -> bool:
@@ -3796,11 +3808,6 @@ async def call_gemini_agent(
     if not GEMINI_API_KEY:
         return await agentic_fallback_simulate_turn(user_message, session_id)
 
-    # Deterministic Fast-Path for explicit Customer Database Listing/Queries
-    is_cust_direct, cust_search_kw_direct = is_customer_query_request(user_message)
-    if is_cust_direct:
-        return await agentic_fallback_simulate_turn(user_message, session_id)
-
     history = get_history(session_id)
     needs_search = enable_search and is_external_search_query(user_message)
     sys_inst = system_instruction_override or SYSTEM_INSTRUCTION
@@ -4619,14 +4626,17 @@ async def combined_scheduler_background_loop():
 # ------------------------------------------------------------------------------
 def should_reply_to_event(event: Dict[str, Any]) -> Tuple[bool, str]:
     """
-    Check if the bot should reply based on chat type, active thread memory, and context awareness.
+    Check if the bot should reply based on chat type, mentions, direct triggers, and pending confirmations.
     
     Rules:
     1. 1-on-1 chats always replied (source_type == 'user').
-    2. Direct bot mentions / triggers always replied (e.g. @เลขาghn, เลขา, เฟิส, ghn168).
-    3. Active Thread Memory: within 180s of previous interaction or pending state -> reply without trigger.
-    4. Broad Semantic Work & Intent Detection: matches production/finance/calendar/client context -> reply.
-    5. Casual Banter Filter: casual talk without active thread or trigger -> quietly ignore.
+    2. Group / Room chats (source_type in ['group', 'room']):
+       - Mention check: If message has mentionees but bot is not mentioned -> SILENT (False, 'tagged other group member').
+       - Bot triggers: Native bot mention or direct trigger keywords (เฟิส, @เฟิส, เลขา, ghn168, etc.) -> REPLY (True, 'matched direct bot trigger').
+       - Pending Confirmation: If session has pending confirmation and message contains confirmation keyword -> REPLY (True, 'pending confirmation action').
+       - Image messages -> return True to evaluate Vision OCR (non-financial images will be silently dropped in process_line_events).
+       - WORK_CONTEXT_KEYWORDS and ACTIVE_THREAD_TIMEOUT_SECONDS are strictly excluded from group chats.
+       - All other group messages -> SILENT (False, 'group message without bot trigger').
     """
     source = event.get("source", {})
     source_type = source.get("type", "user")
@@ -4640,6 +4650,16 @@ def should_reply_to_event(event: Dict[str, Any]) -> Tuple[bool, str]:
     if msg_type not in ["text", "image"]:
         return False, f"unsupported message type: {msg_type}"
 
+    # 1. 1-on-1 chat: always process and reply
+    if source_type == "user":
+        if msg_type == "image":
+            return True, "1-on-1 image message for receipt OCR"
+        text = message.get("text", "").strip()
+        if not text:
+            return False, "empty text"
+        return True, "1-on-1 chat"
+
+    # 2. Group / Room chat
     if msg_type == "image":
         return True, "image message for receipt OCR"
 
@@ -4647,53 +4667,40 @@ def should_reply_to_event(event: Dict[str, Any]) -> Tuple[bool, str]:
     if not text:
         return False, "empty text"
 
-    if source_type == "user":
-        return True, "1-on-1 chat"
-
+    # 2.1 Mention Check: Native LINE Mention Object
     mentionees = message.get("mention", {}).get("mentionees", [])
-    if mentionees:
-        return True, "mentioned via LINE mention object"
+    is_bot_mentioned_native = any(m.get("isSelf") is True for m in mentionees)
+    has_other_mentionees = bool(mentionees) and not is_bot_mentioned_native
+    if has_other_mentionees:
+        # If tagged other group member (e.g. @Modchhi, @MRhommm), stay completely silent
+        return False, "tagged other group member"
 
     text_lower = text.lower()
 
-    # 1. Direct Bot Triggers (Always Reply)
+    # 2.2 Direct Bot Triggers (Native mention or name triggers)
+    if is_bot_mentioned_native:
+        return True, "matched direct bot trigger"
+
     for trigger in BOT_DIRECT_TRIGGERS:
         if trigger.lower() in text_lower:
-            return True, f"matched direct bot trigger: {trigger}"
+            return True, "matched direct bot trigger"
 
-    # 2. Check Active Thread Memory & Pending State (180s window)
+    # 2.3 Pending Confirmation Actions
     has_pending_state = (
         session_id in PENDING_DOCUMENT_ORDERS
         or session_id in PENDING_EXPENSE_CONFIRMATIONS
         or session_id in PENDING_INCOME_CONFIRMATIONS
         or session_id in PENDING_NEW_CUSTOMER_SAVING
     )
+    confirmation_keywords = [
+        "บันทึก", "ยืนยัน", "ออกใบเสร็จ", "ตกลง", "โอเค", "ยกเลิก",
+        "confirm", "save", "cancel", "เซฟ", "บันทึกลูกค้า", "เซฟลูกค้า"
+    ]
+    if has_pending_state and any(ck in text_lower for ck in confirmation_keywords):
+        return True, "pending confirmation action"
 
-    is_active_thread = False
-    now = time.time()
-    history = CONVERSATION_HISTORY.get(session_id, [])
-    if history:
-        last_msg_time = history[-1].get("timestamp", 0)
-        if now - last_msg_time <= ACTIVE_THREAD_TIMEOUT_SECONDS:  # 180 seconds
-            is_active_thread = True
-
-    # 3. Check Casual Banter Filter
-    is_casual = is_casual_banter_text(text)
-
-    # If it's pure casual banter and NOT in active thread / pending state, quietly ignore
-    if is_casual and not is_active_thread and not has_pending_state:
-        return False, "filtered casual banter"
-
-    # If it's an active thread or pending state, treat as conversational continuity
-    if has_pending_state or is_active_thread:
-        return True, "active thread within 180s"
-
-    # 4. Broad Semantic Work & Intent Detection (Natural Language Assistant)
-    for kw in WORK_CONTEXT_KEYWORDS:
-        if kw.lower() in text_lower:
-            return True, f"matched work context: {kw}"
-
-    return False, "group message without trigger"
+    # All other group messages without bot triggers: completely silent
+    return False, "group message without bot trigger"
 
 
 async def process_line_events(data: Dict[str, Any]):
@@ -4728,10 +4735,23 @@ async def process_line_events(data: Dict[str, Any]):
                 message_id = message_obj.get("id")
                 image_bytes = download_line_image_content(message_id)
                 if not image_bytes:
-                    send_line_reply(reply_token, "ขออภัยค่ะ ไม่สามารถดาวน์โหลดรูปภาพจาก LINE ได้ กรุณาส่งใหม่อีกครั้งนะคะ ✨")
+                    if source_type == "user":
+                        send_line_reply(reply_token, "ขออภัยค่ะ ไม่สามารถดาวน์โหลดรูปภาพจาก LINE ได้ กรุณาส่งใหม่อีกครั้งนะคะ ✨")
                     continue
 
                 ocr_data = await analyze_receipt_image_with_ai(image_bytes)
+                is_fin_doc = bool(ocr_data.get("is_financial_document", True) and ocr_data.get("is_valid_receipt", True))
+                if not is_fin_doc:
+                    if source_type in ["group", "room"]:
+                        logger.info("Non-financial document image received in %s chat (%s), ignoring silently.", source_type, session_id)
+                        continue
+                    else:
+                        send_line_reply(
+                            reply_token,
+                            "ขออภัยนะคะ ภาพนี้ไม่ใช่สลิปโอนเงิน ใบเสร็จรับเงิน หรือใบกำกับภาษี เลขาเฟิสจึงไม่ได้บันทึกลงระบบบัญชีค่ะ หากต้องการให้บันทึกค่าใช้จ่าย รบกวนส่งรูปบิลหรือสลิปการเงินนะคะ ✨"
+                        )
+                        continue
+
                 tx_type = ocr_data.get("transaction_type", "expense")
 
                 if tx_type == "income":

@@ -185,16 +185,21 @@ def convert_html_to_pdf_local(
         # Build headless command with robust flags
         cmd = [
             chromium_bin,
-            "--headless",
+            "--headless=new",
             "--disable-gpu",
             "--no-sandbox",
             "--disable-dev-shm-usage",
             "--disable-software-rasterizer",
             "--disable-extensions",
+            "--disable-crash-reporter",
+            "--disable-background-networking",
+            "--disable-default-apps",
+            "--disable-sync",
             "--no-first-run",
             "--no-default-browser-check",
             "--no-pdf-header-footer",
             "--print-to-pdf-no-header",
+            f"--crash-dumps-dir={temp_profile_dir}",
             f"--user-data-dir={temp_profile_dir}",
             f"--print-to-pdf={str(target_path)}",
             temp_html_path

@@ -107,8 +107,7 @@ const defaultScriptConfig = {
   vpsApiUrl: 'https://srv1913532.hstgr.cloud',
   scriptUrl: 'https://script.google.com/macros/s/AKfycbylMN5ot9w2_LfD4hgwnmTz4y7dSRLKdR-__0THDVzDivW-lUeF0YG25Hj3apCf0lWx/exec',
   sheetId: '1vIc7kxO9q_FN2mmgyAYf8aly9lMdPRp7onqRaGx8y20',
-  companyDriveUrl: 'https://drive.google.com/drive/folders/162o80GF4BPGGt-DlltxRvMFvAXxRWYOY',
-  pdfShiftApiKey: 'sk_d8cecf2bf72214f73d19e6de9520cacacb8f60ad'
+  companyDriveUrl: 'https://drive.google.com/drive/folders/162o80GF4BPGGt-DlltxRvMFvAXxRWYOY'
 };
 
 const PREDEFINED_PAYEES = {
@@ -313,11 +312,6 @@ function loadConfiguration() {
     companyDriveUrl = defaultScriptConfig.companyDriveUrl;
     safeStorage.setItem('ghn168_company_drive_url', companyDriveUrl);
   }
-  let pdfShiftApiKey = safeStorage.getItem('ghn168_pdfshift_api_key');
-  if (!pdfShiftApiKey) {
-    pdfShiftApiKey = defaultScriptConfig.pdfShiftApiKey;
-    safeStorage.setItem('ghn168_pdfshift_api_key', pdfShiftApiKey);
-  }
   let vpsApiUrl = safeStorage.getItem('ghn168_vps_api_url');
   if (!vpsApiUrl) {
     vpsApiUrl = defaultScriptConfig.vpsApiUrl;
@@ -329,10 +323,6 @@ function loadConfiguration() {
   const driveUrlInput = document.getElementById('settingCompanyDriveUrl');
   if (driveUrlInput) {
     driveUrlInput.value = companyDriveUrl;
-  }
-  const pdfShiftApiKeyInput = document.getElementById('settingPdfShiftApiKey');
-  if (pdfShiftApiKeyInput) {
-    pdfShiftApiKeyInput.value = pdfShiftApiKey;
   }
 
   // Load User Roles
@@ -366,8 +356,6 @@ function saveScriptSettings() {
   let id = document.getElementById('settingSheetId').value.trim();
   const driveUrlInput = document.getElementById('settingCompanyDriveUrl');
   const driveUrl = driveUrlInput ? driveUrlInput.value.trim() : defaultScriptConfig.companyDriveUrl;
-  const pdfShiftApiKeyInput = document.getElementById('settingPdfShiftApiKey');
-  const pdfShiftApiKey = pdfShiftApiKeyInput ? pdfShiftApiKeyInput.value.trim() : '';
   
   // Auto-extract ID if full Google Sheets URL is pasted
   const sheetUrlRegex = /\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/;
@@ -390,7 +378,6 @@ function saveScriptSettings() {
   safeStorage.setItem('ghn168_script_url', url);
   safeStorage.setItem('ghn168_sheet_id', id);
   safeStorage.setItem('ghn168_company_drive_url', driveUrl);
-  safeStorage.setItem('ghn168_pdfshift_api_key', pdfShiftApiKey);
 
   // Save User Roles
   const users = ['เก่ง', 'มด', 'หอม', 'พี่นิค'];
@@ -2107,88 +2094,38 @@ function renderPaperTable() {
   const table = document.getElementById('prevPaperTable');
   if (!table) return;
 
-  const labelColspan = 2;
   const totalColumns = 3;
 
   // 1. Build Header (3 Columns: ลำดับ | รายการ / รายละเอียด | จำนวนเงิน)
   const headerHtml = `
-    <tr>
-      <th style="width: 50px; text-align: center;">ลำดับ</th>
-      <th style="text-align: left;">รายการ / รายละเอียด (Description)</th>
-      <th style="width: 140px; text-align: right;">จำนวนเงิน</th>
-    </tr>
+    <thead>
+      <tr>
+        <th class="center" style="width: 50px;">ลำดับ</th>
+        <th>รายการ / รายละเอียด (Description)</th>
+        <th class="right" style="width: 140px;">จำนวนเงิน</th>
+      </tr>
+    </thead>
   `;
 
   // 2. Build Body
   let bodyHtml = '';
   if (docItems.length === 0) {
-    bodyHtml = `<tr><td colspan="${totalColumns}" style="text-align:center; padding: 15px; font-style:italic;">ไม่มีรายการ</td></tr>`;
+    bodyHtml = `<tbody><tr><td colspan="${totalColumns}" class="center" style="padding: 15px; font-style:italic;">ไม่มีรายการ</td></tr></tbody>`;
   } else {
-    bodyHtml = docItems.map((item, idx) => {
+    const rows = docItems.map((item, idx) => {
       const total = item.amount !== undefined ? (parseFloat(item.amount) || 0) : ((parseFloat(item.price) || 0) * (parseFloat(item.qty) || 1));
       return `
         <tr>
-          <td style="text-align:center;">${idx + 1}</td>
-          <td style="text-align:left; white-space: pre-wrap;">${escapeHtml(item.desc || '-')}</td>
-          <td style="text-align:right;">${total.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+          <td class="center mono" style="width: 50px;">${idx + 1}</td>
+          <td><strong>${escapeHtml(item.desc || '-')}</strong></td>
+          <td class="right mono" style="width: 140px;"><strong>${total.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ฿</strong></td>
         </tr>
       `;
     }).join('');
+    bodyHtml = `<tbody>${rows}</tbody>`;
   }
 
-  // 3. Build Footer
-  const vatChecked = document.getElementById('docVatCheckbox') ? document.getElementById('docVatCheckbox').checked : true;
-  const whtSelect = document.getElementById('docWhtSelect');
-  const whtRate = whtSelect ? parseInt(whtSelect.value) || 0 : 0;
-
-  const discountInput = document.getElementById('docDiscountInput');
-  const discountVal = discountInput ? (parseFloat(discountInput.value) || 0) : 0;
-  const displayDiscount = discountVal > 0 ? '' : 'none';
-
-  const discountDescInput = document.getElementById('docDiscountDesc');
-  const discountDescVal = discountDescInput ? discountDescInput.value.trim() : '';
-  const labelText = discountDescVal ? `ส่วนลด / Discount (${discountDescVal})` : 'ส่วนลด / Discount';
-
-  const displayVat = vatChecked ? '' : 'none';
-  const displayWht = whtRate > 0 ? '' : 'none';
-
-  let footerHtml = `
-    <tr class="total-row" id="prevSubtotalRow">
-      <td id="prevSubtotalLabelCell" colspan="${labelColspan}" style="text-align: right; font-size:11px; padding: 6px 12px; font-weight: 700; border: none; vertical-align: middle;">รวมเงิน / Subtotal</td>
-      <td id="prevSubtotalVal" style="text-align: right;" class="bordered">-</td>
-    </tr>
-    <tr class="total-row" id="prevDiscountRow" style="display: ${displayDiscount};">
-      <td id="prevDiscountLabelCell" colspan="${labelColspan}" style="text-align: right; font-size:11px; padding: 6px 12px; font-weight: 700; border: none; vertical-align: middle;">${labelText}</td>
-      <td id="prevDiscountVal" style="text-align: right; color:#b91c1c;" class="bordered">-฿${discountVal.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-    </tr>
-    <tr class="total-row" id="prevVatRow" style="display: ${displayVat};">
-      <td id="prevVatLabelCell" colspan="${labelColspan}" style="text-align: right; font-size:11px; padding: 6px 12px; font-weight: 700; border: none; vertical-align: middle;">ภาษีมูลค่าเพิ่ม / VAT 7%</td>
-      <td id="prevVatVal" style="text-align: right;" class="bordered">-</td>
-    </tr>
-    <tr class="total-row" id="prevWhtRow" style="display: ${displayWht};">
-      <td id="prevWhtLabelCell" colspan="${labelColspan}" style="text-align: right; font-size:11px; padding: 6px 12px; font-weight: 700; border: none; vertical-align: middle;">หัก ณ ที่จ่าย / WHT (50.ทวิ) <span id="prevWhtRateValShow">${whtRate}</span>%</td>
-      <td id="prevWhtVal" style="text-align: right; color:#b91c1c;" class="bordered">-</td>
-    </tr>
-    <tr class="total-row">
-      <td id="prevNetTotalLabelCell" colspan="${labelColspan}" style="text-align: right; font-size: 11px; font-weight: 800; vertical-align: middle; padding: 6px 12px; border: none;">
-        ยอดเงินสุทธิ / Net Total
-      </td>
-      <td id="prevGrandTotalVal" style="text-align: right; font-weight:800; border: 2px solid #000000; background-color:#f3f4f6;" class="bordered">-</td>
-    </tr>
-    <tr class="total-row" id="prevBahtTextRow">
-      <td id="prevBahtTextCell" colspan="${labelColspan + 1}" style="padding: 6px 12px; border: 1px solid #d1d5db; background: #f9fafb; font-weight: bold; text-align: left; font-size: 11px; vertical-align: middle;">
-        <div id="prevBahtTextContainer" class="doc-baht-text-container" style="font-weight: bold; text-align: left; line-height: 1.2; margin: 0; width: 100%; box-sizing: border-box; font-size: 11px;">
-          จำนวนเงินตัวอักษร: &nbsp;<span id="prevBahtTextVal" style="font-weight: bold;">ศูนย์บาทถ้วน</span>
-        </div>
-      </td>
-    </tr>
-  `;
-
-  table.innerHTML = `
-    <thead>${headerHtml}</thead>
-    <tbody>${bodyHtml}</tbody>
-    <tfoot>${footerHtml}</tfoot>
-  `;
+  table.innerHTML = `${headerHtml}${bodyHtml}`;
 }
 
 function renderDocItemsTable() {
@@ -2304,6 +2241,30 @@ window.addDeduction = addDeduction;
 window.deleteDeduction = deleteDeduction;
 window.updateDeduction = updateDeduction;
 
+function formatCompanyNameWithBranch(name, branch) {
+  let nameStr = (name || '').trim();
+  if (!nameStr || nameStr === '-') return nameStr;
+
+  // Strip existing trailing branch pattern if present to prevent duplication
+  nameStr = nameStr.replace(/\s*\((?:สำนักงานใหญ่|สาขา[^\)]*|\d{5})\)\s*$/, '').trim();
+
+  const bStr = (branch !== undefined && branch !== null ? String(branch) : '').trim();
+  if (!bStr || bStr === '00000' || bStr === 'สำนักงานใหญ่' || bStr.includes('สำนักงานใหญ่') || bStr.toLowerCase() === 'head office' || bStr.toLowerCase() === 'hq') {
+    return `${nameStr} (สำนักงานใหญ่)`;
+  }
+
+  const digits = bStr.replace(/\D/g, '');
+  if (digits && digits.length <= 5) {
+    const branchCode = digits.padStart(5, '0');
+    return `${nameStr} (สาขาที่ ${branchCode})`;
+  } else if (bStr.startsWith('สาขา')) {
+    return `${nameStr} (${bStr})`;
+  } else {
+    return `${nameStr} (สาขาที่ ${bStr})`;
+  }
+}
+window.formatCompanyNameWithBranch = formatCompanyNameWithBranch;
+
 // --- Total Calculations ---
 function calculateDocTotals() {
   renderPaperTable();
@@ -2313,8 +2274,9 @@ function calculateDocTotals() {
     subtotal += amt;
   });
 
-  const vatChecked = document.getElementById('docVatCheckbox').checked;
-  const whtRate = parseInt(document.getElementById('docWhtSelect').value) || 0;
+  const vatChecked = document.getElementById('docVatCheckbox') ? document.getElementById('docVatCheckbox').checked : true;
+  const whtSelect = document.getElementById('docWhtSelect');
+  const whtRate = whtSelect ? parseInt(whtSelect.value) || 0 : 0;
 
   const discountInput = document.getElementById('docDiscountInput');
   const discount = discountInput ? (parseFloat(discountInput.value) || 0) : 0;
@@ -2324,14 +2286,20 @@ function calculateDocTotals() {
   const wht = totalAfterDiscount * (whtRate / 100);
   const grandTotal = totalAfterDiscount + vat - wht;
 
-  // Render previews
-  document.getElementById('prevSubtotalVal').textContent = `฿${subtotal.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  // Render previews in Totals Section
+  const prevSubtotalVal = document.getElementById('prevSubtotalVal');
+  if (prevSubtotalVal) {
+    prevSubtotalVal.textContent = `${subtotal.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ฿`;
+  }
   
   const prevDiscountRow = document.getElementById('prevDiscountRow');
   if (prevDiscountRow) {
     if (discount > 0) {
       prevDiscountRow.style.display = '';
-      document.getElementById('prevDiscountVal').textContent = `-฿${discount.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+      const prevDiscountVal = document.getElementById('prevDiscountVal');
+      if (prevDiscountVal) {
+        prevDiscountVal.textContent = `-${discount.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ฿`;
+      }
     } else {
       prevDiscountRow.style.display = 'none';
     }
@@ -2347,7 +2315,10 @@ function calculateDocTotals() {
   if (prevVatRow) {
     if (vatChecked) {
       prevVatRow.style.display = '';
-      document.getElementById('prevVatVal').textContent = `฿${vat.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+      const prevVatVal = document.getElementById('prevVatVal');
+      if (prevVatVal) {
+        prevVatVal.textContent = `${vat.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ฿`;
+      }
     } else {
       prevVatRow.style.display = 'none';
     }
@@ -2357,18 +2328,29 @@ function calculateDocTotals() {
   if (prevWhtRow) {
     if (whtRate > 0) {
       prevWhtRow.style.display = '';
-      document.getElementById('prevWhtRateValShow').textContent = whtRate;
-      document.getElementById('prevWhtVal').textContent = `-฿${wht.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+      const prevWhtRateValShow = document.getElementById('prevWhtRateValShow');
+      if (prevWhtRateValShow) {
+        prevWhtRateValShow.textContent = whtRate;
+      }
+      const prevWhtVal = document.getElementById('prevWhtVal');
+      if (prevWhtVal) {
+        prevWhtVal.textContent = `-${wht.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ฿`;
+      }
     } else {
       prevWhtRow.style.display = 'none';
     }
   }
 
-  document.getElementById('prevGrandTotalVal').textContent = `฿${grandTotal.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  const prevGrandTotalVal = document.getElementById('prevGrandTotalVal');
+  if (prevGrandTotalVal) {
+    prevGrandTotalVal.textContent = `${grandTotal.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ฿`;
+  }
+
   const bahtText = thaiBahtText(grandTotal);
-  document.getElementById('prevBahtTextVal').textContent = bahtText;
-
-
+  const prevBahtTextVal = document.getElementById('prevBahtTextVal');
+  if (prevBahtTextVal) {
+    prevBahtTextVal.textContent = bahtText;
+  }
 
   // Update internal company details calculation
   let retainedAmount = 0;
@@ -2494,8 +2476,10 @@ function syncDocPreview() {
   const docTitle = currentDocType === 'quotation' ? 'ใบเสนอราคา' : (currentDocType === 'invoice' ? 'ใบวางบิล / ใบแจ้งหนี้' : 'ใบเสร็จรับเงิน / ใบกำกับภาษี');
   const docTitleEn = currentDocType === 'quotation' ? 'QUOTATION' : (currentDocType === 'invoice' ? 'INVOICE / BILLING NOTE' : 'RECEIPT / TAX INVOICE');
 
-  document.getElementById('prevDocTitleText').textContent = docTitle;
-  document.getElementById('prevDocTitleEnText').textContent = docTitleEn;
+  const prevDocTitleText = document.getElementById('prevDocTitleText');
+  if (prevDocTitleText) prevDocTitleText.textContent = docTitle;
+  const prevDocTitleEnText = document.getElementById('prevDocTitleEnText');
+  if (prevDocTitleEnText) prevDocTitleEnText.textContent = docTitleEn;
 
   // Due Date row & label logic for Quotation, Invoice, Receipt
   const dueDateRow = document.getElementById('prevDocDueDateRow');
@@ -2516,9 +2500,12 @@ function syncDocPreview() {
   }
 
   // Hide Payment Terms block on Receipt and Quotation (Only show on Invoice)
+  const prevPaymentTermGroup = document.getElementById('prevPaymentTermGroup');
   const prevPaymentTermTitle = document.getElementById('prevPaymentTermTitle');
   const prevPaymentTermVal = document.getElementById('prevPaymentTermVal');
-  if (prevPaymentTermTitle && prevPaymentTermVal) {
+  if (prevPaymentTermGroup) {
+    prevPaymentTermGroup.style.display = currentDocType === 'invoice' ? '' : 'none';
+  } else if (prevPaymentTermTitle && prevPaymentTermVal) {
     const showPaymentTerm = currentDocType === 'invoice';
     prevPaymentTermTitle.style.display = showPaymentTerm ? '' : 'none';
     prevPaymentTermVal.style.display = showPaymentTerm ? '' : 'none';
@@ -2526,15 +2513,11 @@ function syncDocPreview() {
 
   // Simple mappings
   const fields = [
-    { from: 'doc_sellerName', to: 'prevSellerName' },
     { from: 'doc_sellerNameEn', to: 'prevSellerNameEn' },
-    { from: 'doc_sellerTaxId', to: 'prevSellerTaxId' },
     { from: 'doc_sellerPhone', to: 'prevSellerPhone' },
     { from: 'doc_sellerEmail', to: 'prevSellerEmail' },
     { from: 'doc_bankDetails', to: 'prevBankDetailsVal' },
 
-    { from: 'docClientName', to: 'prevClientName' },
-    { from: 'docClientTaxId', to: 'prevClientTaxId' },
     { from: 'docClientPhone', to: 'prevClientPhone' },
     { from: 'docNumber', to: 'prevDocNoVal' },
     { from: 'docProjectName', to: 'prevProjectNameVal' },
@@ -2553,24 +2536,75 @@ function syncDocPreview() {
     }
   });
 
+  // Seller name with branch
+  const sellerNameInput = document.getElementById('doc_sellerName');
+  const sellerNameVal = sellerNameInput ? sellerNameInput.value.trim() : 'บริษัท จีเอชเอ็น 168 มีเดีย แอนด์ ครีเอชั่น จำกัด';
+  const prevSellerNameEl = document.getElementById('prevSellerName');
+  if (prevSellerNameEl) {
+    prevSellerNameEl.textContent = formatCompanyNameWithBranch(sellerNameVal, '00000');
+  }
+
+  // Client name with branch
+  const clientNameInput = document.getElementById('docClientName');
+  const clientNameVal = clientNameInput ? clientNameInput.value.trim() : '-';
+  const branchInput = document.getElementById('docClientBranch');
+  const branchVal = branchInput ? branchInput.value.trim() : '00000';
+  const prevClientNameEl = document.getElementById('prevClientName');
+  if (prevClientNameEl) {
+    prevClientNameEl.textContent = formatCompanyNameWithBranch(clientNameVal, branchVal);
+  }
+
+  // Contact Person in info card
+  const prevContactPersonVal = document.getElementById('prevContactPersonVal');
+  if (prevContactPersonVal) {
+    const ownerEl = document.getElementById('docOwner');
+    const ownerName = ownerEl ? ownerEl.value : 'ทีมงาน GHN168 Media';
+    prevContactPersonVal.textContent = ownerName === 'บริษัท' ? 'ทีมงาน GHN168 Media' : `ทีมงาน GHN168 Media (${ownerName})`;
+  }
+
   // Seller & Client address format
-  document.getElementById('prevSellerAddress').innerHTML = formatAddressForPreview(document.getElementById('doc_sellerAddress').value, true);
-  document.getElementById('prevClientAddress').innerHTML = formatAddressForPreview(document.getElementById('docClientAddress').value, true);
+  const sellerAddrEl = document.getElementById('doc_sellerAddress');
+  const prevSellerAddressEl = document.getElementById('prevSellerAddress');
+  if (prevSellerAddressEl && sellerAddrEl) {
+    prevSellerAddressEl.innerHTML = formatAddressForPreview(sellerAddrEl.value, true);
+  }
+
+  const clientAddrEl = document.getElementById('docClientAddress');
+  const prevClientAddressEl = document.getElementById('prevClientAddress');
+  if (prevClientAddressEl && clientAddrEl) {
+    prevClientAddressEl.innerHTML = formatAddressForPreview(clientAddrEl.value, true);
+  }
 
   // Date format
-  document.getElementById('prevDocDateVal').textContent = formatDate(document.getElementById('docDate').value);
-  document.getElementById('prevDocDueDateVal').textContent = formatDate(document.getElementById('docDueDate').value);
+  const docDateEl = document.getElementById('docDate');
+  const prevDocDateValEl = document.getElementById('prevDocDateVal');
+  if (prevDocDateValEl && docDateEl) {
+    prevDocDateValEl.textContent = formatDate(docDateEl.value);
+  }
 
-  // Client Tax ID visibility
+  const docDueDateEl = document.getElementById('docDueDate');
+  const prevDocDueDateValEl = document.getElementById('prevDocDueDateVal');
+  if (prevDocDueDateValEl && docDueDateEl) {
+    prevDocDueDateValEl.textContent = formatDate(docDueDateEl.value);
+  }
+
+  // Seller Tax ID (13 digits only, NO branch suffix)
+  const sellerTaxIdInput = document.getElementById('doc_sellerTaxId');
+  const prevSellerTaxIdEl = document.getElementById('prevSellerTaxId');
+  if (prevSellerTaxIdEl && sellerTaxIdInput) {
+    prevSellerTaxIdEl.textContent = sellerTaxIdInput.value.trim() || '0505566010089';
+  }
+
+  // Client Tax ID visibility (13 digits only, NO branch suffix)
   const prevClientTaxIdRow = document.getElementById('prevClientTaxIdRow');
-  const taxIdVal = document.getElementById('docClientTaxId').value;
+  const taxIdVal = document.getElementById('docClientTaxId') ? document.getElementById('docClientTaxId').value.trim() : '';
   if (prevClientTaxIdRow) {
     if (taxIdVal) {
-      prevClientTaxIdRow.style.display = 'block';
-      const branchInput = document.getElementById('docClientBranch');
-      const branchVal = (branchInput ? branchInput.value.trim() : '') || '00000';
-      const branchText = (branchVal === '00000' || branchVal === 'สำนักงานใหญ่') ? ' (สำนักงานใหญ่)' : ` (สาขาที่ ${branchVal})`;
-      document.getElementById('prevClientTaxId').textContent = taxIdVal + branchText;
+      prevClientTaxIdRow.style.display = '';
+      const prevClientTaxIdEl = document.getElementById('prevClientTaxId');
+      if (prevClientTaxIdEl) {
+        prevClientTaxIdEl.textContent = taxIdVal;
+      }
     } else {
       prevClientTaxIdRow.style.display = 'none';
     }
@@ -2581,89 +2615,52 @@ function syncDocPreview() {
   const prevSignerNameVal = document.getElementById('prevSignerNameVal');
   const prevSignerLabel = document.getElementById('prevSignerLabel');
   if (prevSignerNameVal && prevSignerLabel) {
-    const signerName = signerNameInput ? signerNameInput.value.trim() : '';
-    // Signer name is wrapped in parentheses for all standard docs (quotation, invoice, receipt)
-    prevSignerNameVal.textContent = signerName ? `( ${signerName} )` : '(           ชื่อ สกุล            )';
-    
-    if (currentDocType === 'receipt') {
-      prevSignerLabel.innerHTML = 'ผู้รับเงิน/บัญชี<br>ในนาม บริษัท จีเอชเอ็น 168 มีเดีย แอนด์ ครีเอชั่น จำกัด';
-    } else {
-      prevSignerLabel.innerHTML = 'ในนาม บริษัท จีเอชเอ็น 168 มีเดีย แอนด์ ครีเอชั่น จำกัด';
+    let signerName = signerNameInput ? signerNameInput.value.trim() : '';
+    if (!signerName) {
+      const signatureSelectVal = document.getElementById('doc_signatureSelect') ? document.getElementById('doc_signatureSelect').value : 'keng';
+      signerName = signatureSelectVal === 'hom' ? 'นาย ณัฐวัฒน์ ปวงจันทร์หอม' : 'นาย มงคล วงศ์สกุลยานนท์';
     }
-
-    const signatureImg = document.getElementById('prevSignatureImg');
-    if (signatureImg) {
-      if (currentDocType === 'receipt') {
-        signatureImg.style.bottom = '68px';
-      } else {
-        signatureImg.style.bottom = '48px';
-      }
-    }
+    prevSignerNameVal.textContent = signerName;
+    prevSignerLabel.textContent = 'กรรมการผู้มีอำนาจลงนาม / Authorized Signature';
   }
 
-  // Toggle left signature box (use visibility to preserve right signature alignment)
+  // Toggle left signature box
   const prevLeftSignBox = document.getElementById('prevLeftSignBox');
   if (prevLeftSignBox) {
     prevLeftSignBox.style.visibility = 'visible';
     prevLeftSignBox.style.display = '';
   }
 
-  // Toggle bank details and cheque rule
-  const prevBankDetailsRow = document.getElementById('prevBankDetailsRow');
-  const prevChequeRule = document.getElementById('prevChequeRule');
-  if (prevBankDetailsRow) {
-    // Only Invoice has bank details row. Quotation and Receipt hide it.
-    prevBankDetailsRow.style.display = currentDocType === 'invoice' ? '' : 'none';
-  }
-  if (prevChequeRule) {
-    if (currentDocType === 'receipt') {
-      prevChequeRule.style.display = '';
-      prevChequeRule.textContent = 'หมายเหตุ : ใบเสร็จรับเงินจะสมบูรณ์ก็ต่อเมื่อ ผู้รับเงินลงลายมือชื่อและเรียกเก็บเงินตามจำนวนเรียบร้อยแล้ว';
-    } else {
-      prevChequeRule.style.display = 'none';
-    }
-  }
-
-  // Dynamic colspan/colspans for table footer elements to prevent column alignment bugs
-  const isStandardHidden = currentDocType === 'quotation' || currentDocType === 'invoice' || currentDocType === 'receipt';
-  const labelColspan = isStandardHidden ? 2 : 5;
-  const totalColspan = isStandardHidden ? 3 : 6;
-
-  ['prevSubtotalLabelCell', 'prevVatLabelCell', 'prevWhtLabelCell', 'prevNetTotalLabelCell'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.colSpan = labelColspan;
-  });
-
-  const bahtTextCell = document.getElementById('prevBahtTextCell');
-  if (bahtTextCell) {
-    bahtTextCell.colSpan = totalColspan;
-  }
-
-  // Sync docRemarks to prevRemarksVal and toggle visibility
+  // Terms and Conditions Section sync
+  const prevTermsTitle = document.getElementById('prevTermsTitle');
+  const prevTermsContent = document.getElementById('prevTermsContent');
   const remarksVal = document.getElementById('docRemarks') ? document.getElementById('docRemarks').value.trim() : '';
-  const prevRemarksContainer = document.getElementById('prevRemarksContainer');
-  const prevRemarksVal = document.getElementById('prevRemarksVal');
-  if (prevRemarksContainer && prevRemarksVal) {
-    if (remarksVal) {
-      prevRemarksContainer.style.display = 'block';
-      prevRemarksVal.textContent = remarksVal;
+  const bankDetailsVal = document.getElementById('doc_bankDetails') ? document.getElementById('doc_bankDetails').value.trim() : 'ธนาคารกรุงไทย (KTB) เลขที่ 520-0-61960-2 (บจ. จีเอชเอ็น 168 มีเดีย แอนด์ ครีเอชั่น)';
+
+  if (prevTermsTitle && prevTermsContent) {
+    if (currentDocType === 'quotation') {
+      prevTermsTitle.textContent = 'เงื่อนไขและข้อตกลง (Terms & Conditions):';
+      prevTermsContent.innerHTML = `
+        <div>• ชำระมัดจำ 30-50% ของมูลค่าโครงการเพื่อสำรองคิวงานและยืนยันการว่าจ้าง</div>
+        <div>• กำหนดยืนราคา 30 วันนับจากวันที่ออกเอกสาร</div>
+        ${remarksVal ? `<div>• หมายเหตุ: ${escapeHtml(remarksVal)}</div>` : ''}
+        <div style="margin-top: 4px; color: #0284c7;">* บัญชีรับโอน: <strong>${escapeHtml(bankDetailsVal)}</strong></div>
+      `;
     } else {
-      prevRemarksContainer.style.display = 'none';
-      prevRemarksVal.textContent = '-';
+      prevTermsTitle.textContent = 'รายละเอียดการชำระเงิน (Payment Details):';
+      prevTermsContent.innerHTML = `
+        <div>• บัญชีธนาคาร: <strong>${escapeHtml(bankDetailsVal)}</strong></div>
+        ${remarksVal ? `<div>• หมายเหตุ: ${escapeHtml(remarksVal)}</div>` : ''}
+        <div style="margin-top: 2px; font-size: 9.5px; color: #64748b;">* ในกรณีชำระด้วยเช็ค เอกสารนี้จะสมบูรณ์เมื่อเช็คได้เรียกเก็บเงินผ่านธนาคารเรียบร้อยแล้ว</div>
+      `;
     }
   }
 
-  // Toggle fixed quotation payment terms container
-  const prevPaymentTermsQuotationContainer = document.getElementById('prevPaymentTermsQuotationContainer');
-  if (prevPaymentTermsQuotationContainer) {
-    prevPaymentTermsQuotationContainer.style.display = currentDocType === 'quotation' ? 'block' : 'none';
-  }
-
-  // Render item tables
+  // Render item tables & calculate totals
   calculateDocTotals();
 
   // Toggle company seal visibility
-  const showSeal = document.getElementById('doc_showSeal').checked;
+  const showSeal = document.getElementById('doc_showSeal') ? document.getElementById('doc_showSeal').checked : true;
   document.querySelectorAll('.company-seal-img').forEach(img => {
     img.style.display = showSeal ? 'block' : 'none';
   });
@@ -2697,13 +2694,19 @@ function syncWhtPreview() {
   document.getElementById('prevWhtDate').textContent = dateStr;
 
   // Seller config mappings
-  document.getElementById('prevWhtSellerName').textContent = document.getElementById('doc_sellerName').value;
-  document.getElementById('prevWhtSellerTaxId').textContent = document.getElementById('doc_sellerTaxId').value;
+  const sellerNameInput = document.getElementById('doc_sellerName');
+  const sellerNameVal = sellerNameInput ? sellerNameInput.value.trim() : 'บริษัท จีเอชเอ็น 168 มีเดีย แอนด์ ครีเอชั่น จำกัด';
+  document.getElementById('prevWhtSellerName').textContent = formatCompanyNameWithBranch(sellerNameVal, '00000');
+  document.getElementById('prevWhtSellerTaxId').textContent = (document.getElementById('doc_sellerTaxId') ? document.getElementById('doc_sellerTaxId').value.trim() : '') || '0505566010089';
   document.getElementById('prevWhtSellerAddress').textContent = formatAddressForPreview(document.getElementById('doc_sellerAddress').value, false);
 
   // Payee config mappings
-  document.getElementById('prevWhtPayeeName').textContent = document.getElementById('whtPayeeName').value || '-';
-  document.getElementById('prevWhtPayeeTaxId').textContent = document.getElementById('whtPayeeTaxId').value || '-';
+  const payeeNameVal = (document.getElementById('whtPayeeName') ? document.getElementById('whtPayeeName').value.trim() : '') || '-';
+  const payeeBranchVal = (document.getElementById('whtPayeeBranch') ? document.getElementById('whtPayeeBranch').value.trim() : '') || '00000';
+  document.getElementById('prevWhtPayeeName').textContent = (payeeNameVal !== '-' && (payeeBranchVal || payeeNameVal.includes('บริษัท') || payeeNameVal.includes('หจก')))
+    ? formatCompanyNameWithBranch(payeeNameVal, payeeBranchVal)
+    : payeeNameVal;
+  document.getElementById('prevWhtPayeeTaxId').textContent = (document.getElementById('whtPayeeTaxId') ? document.getElementById('whtPayeeTaxId').value.trim() : '') || '-';
   document.getElementById('prevWhtPayeeAddress').textContent = formatAddressForPreview(document.getElementById('whtPayeeAddress').value || '-', false);
 
   // Money table
@@ -5794,18 +5797,17 @@ async function handleUploadPdfToDrive(triggerBtnId = 'btnSaveAndSyncDoc') {
   }
 
   // --------------------------------------------------------------------------
-  // FALLBACK ENGINE: Google Apps Script / PDFShift HTML-to-PDF Converter
+  // FALLBACK ENGINE: Browser Base64 PDF Render -> Google Apps Script Direct Upload
   // --------------------------------------------------------------------------
   if (btn) {
     btn.innerHTML = `
       <svg class="btn-icon animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="animation: spin 1s linear infinite;">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 7.89H18" />
       </svg>
-      [Fallback Engine] กำลังอัปโหลดผ่าน Google Apps Script...
+      [Fallback Engine] กำลังเรนเดอร์และอัปโหลดผ่าน Google Apps Script...
     `;
   }
 
-  const pdfShiftApiKey = safeStorage.getItem('ghn168_pdfshift_api_key') || defaultScriptConfig.pdfShiftApiKey || '';
   const companyDriveUrl = safeStorage.getItem('ghn168_company_drive_url') || defaultScriptConfig.companyDriveUrl || '';
   const scriptUrl = safeStorage.getItem('ghn168_script_url') || defaultScriptConfig.scriptUrl;
 
@@ -5854,48 +5856,35 @@ async function handleUploadPdfToDrive(triggerBtnId = 'btnSaveAndSyncDoc') {
   }
 
   try {
-    const cssStyles = await fetchEmbeddedStyles();
-    const fontLink = `<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">`;
-    
-    const elementHtml = previewElement.outerHTML;
-    let elementHtmlFiltered = elementHtml;
-    elementHtmlFiltered = elementHtmlFiltered.replace(/--preview-scale-factor:\s*[^;"]+/g, '--preview-scale-factor: 1');
-    elementHtmlFiltered = elementHtmlFiltered.replace(/zoom:\s*[^;"]+/g, 'zoom: 1');
+    const opt = {
+      margin: 0,
+      filename: pdfName,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { 
+        scale: 2, 
+        useCORS: true, 
+        logging: false,
+        windowWidth: 800
+      },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
 
-    const fullHtml = `<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  ${fontLink}
-  <style>
-    ${cssStyles}
-    body {
-      margin: 0;
-      padding: 0;
-      background: white;
+    let pdfBase64 = '';
+    if (typeof html2pdf !== 'undefined') {
+      const dataUri = await html2pdf().set(opt).from(previewElement).outputPdf('datauristring');
+      pdfBase64 = dataUri.split(',')[1] || dataUri;
     }
-    #previewStandardDoc, #previewWhtDoc, .doc-paper, .wht-card-paper {
-      --preview-scale-factor: 1 !important;
-      zoom: 1 !important;
-      min-height: 296mm !important;
-      box-sizing: border-box !important;
+
+    if (!pdfBase64) {
+      throw new Error('ไม่สามารถเรนเดอร์ Base64 PDF ในเบราว์เซอร์ได้');
     }
-  </style>
-</head>
-<body>
-  ${elementHtmlFiltered}
-</body>
-</html>`;
 
     const payload = {
-      type: 'upload_html',
-      htmlContent: fullHtml,
+      type: 'upload_pdf_base64',
+      pdfBase64: pdfBase64,
       pdfName: pdfName,
       docType: currentDocType,
       parentFolderId: parentFolderId,
-      pdfShiftApiKey: pdfShiftApiKey,
       spreadsheetId: safeStorage.getItem('ghn168_sheet_id') || defaultScriptConfig.sheetId
     };
 
@@ -7551,17 +7540,16 @@ async function uploadExpensePvPdf(doc) {
       }
     }
   } catch (vpsErr) {
-    console.warn('VPS Primary Engine failed for PV, falling back to GAS/PDFShift:', vpsErr);
+    console.warn('VPS Primary Engine failed for PV, falling back to GAS direct Base64 upload:', vpsErr);
   }
 
   // --------------------------------------------------------------------------
-  // FALLBACK ENGINE: Google Apps Script / PDFShift HTML-to-PDF Converter
+  // FALLBACK ENGINE: Browser Base64 PDF Render -> Google Apps Script Direct Upload
   // --------------------------------------------------------------------------
-  const pdfShiftApiKey = safeStorage.getItem('ghn168_pdfshift_api_key') || defaultScriptConfig.pdfShiftApiKey || '';
   const companyDriveUrl = safeStorage.getItem('ghn168_company_drive_url') || defaultScriptConfig.companyDriveUrl || '';
   const scriptUrl = safeStorage.getItem('ghn168_script_url') || defaultScriptConfig.scriptUrl;
   
-  if (!pdfShiftApiKey || !companyDriveUrl || !scriptUrl) {
+  if (!companyDriveUrl || !scriptUrl) {
     console.warn('Skipping PV upload: API settings not configured.');
     return '';
   }
@@ -7584,8 +7572,8 @@ async function uploadExpensePvPdf(doc) {
   // 1. จำลองกรอกข้อมูลลงกระดาษ PV ชั่วคราวเพื่อดึง HTML
   document.getElementById('pvPrintNo').textContent = cleanDocNo(doc.number);
   document.getElementById('pvPrintDate').textContent = doc.date;
-  document.getElementById('pvPrintPayee').textContent = doc.name;
-  document.getElementById('pvPrintPayeeTaxId').textContent = doc.payeeTaxId || '-';
+  document.getElementById('pvPrintPayee').textContent = formatCompanyNameWithBranch(doc.name, doc.payeeBranch || '00000');
+  document.getElementById('pvPrintPayeeTaxId').textContent = (doc.payeeTaxId || '-').trim();
   document.getElementById('pvPrintDesc').textContent = `${doc.category || 'รายจ่าย'}: ${doc.desc || ''}`;
   document.getElementById('pvPrintNote').textContent = `บันทึกรายการจ่าย: ${doc.timestamp || ''}`;
   
@@ -7604,53 +7592,32 @@ async function uploadExpensePvPdf(doc) {
   if (!previewElement) return '';
 
   try {
-    const cssStyles = await fetchEmbeddedStyles();
-    const fontLink = `<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">`;
-    
+    const pdfName = `ใบสำคัญจ่าย_${cleanDocNo(doc.number)}.pdf`.replace(/[\/\?%*:|"<>\s]+/g, '_');
+    const opt = {
+      margin: 0,
+      filename: pdfName,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true, logging: false },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
+    let pdfBase64 = '';
     const originalDisplay = previewElement.style.display;
     previewElement.style.display = 'block';
-    const elementHtml = previewElement.outerHTML;
+    if (typeof html2pdf !== 'undefined') {
+      const dataUri = await html2pdf().set(opt).from(previewElement).outputPdf('datauristring');
+      pdfBase64 = dataUri.split(',')[1] || dataUri;
+    }
     previewElement.style.display = originalDisplay;
 
-    const fullHtml = `<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  ${fontLink}
-  <style>
-    ${cssStyles}
-    body {
-      margin: 0;
-      padding: 0;
-      background: white;
-    }
-    #printPvPaper {
-      display: block !important;
-      box-shadow: none !important;
-      border: none !important;
-      padding: 15mm !important;
-      margin: 0 auto !important;
-      width: 210mm !important;
-      box-sizing: border-box !important;
-    }
-  </style>
-</head>
-<body>
-  ${elementHtml}
-</body>
-</html>`;
-
-    const pdfName = `ใบสำคัญจ่าย_${cleanDocNo(doc.number)}.pdf`.replace(/[\/\?%*:|"<>\s]+/g, '_');
+    if (!pdfBase64) return '';
 
     const payload = {
-      type: 'upload_html',
-      htmlContent: fullHtml,
+      type: 'upload_pdf_base64',
+      pdfBase64: pdfBase64,
       pdfName: pdfName,
       docType: 'pv',
       parentFolderId: parentFolderId,
-      pdfShiftApiKey: pdfShiftApiKey,
       spreadsheetId: safeStorage.getItem('ghn168_sheet_id') || ''
     };
 
@@ -7694,13 +7661,18 @@ function populateWhtPrintPaper(doc) {
   const sellerTaxIdEl = document.getElementById('doc_sellerTaxId');
   const sellerAddressEl = document.getElementById('doc_sellerAddress');
   
-  document.getElementById('whtPrintSellerName').textContent = sellerNameEl ? sellerNameEl.value : 'บริษัท จีเอชเอ็น 168 มีเดีย แอนด์ ครีเอชั่น จำกัด';
-  document.getElementById('whtPrintSellerTaxId').textContent = sellerTaxIdEl ? sellerTaxIdEl.value : '0505566010089';
+  const sellerName = sellerNameEl ? sellerNameEl.value : 'บริษัท จีเอชเอ็น 168 มีเดีย แอนด์ ครีเอชั่น จำกัด';
+  document.getElementById('whtPrintSellerName').textContent = formatCompanyNameWithBranch(sellerName, '00000');
+  document.getElementById('whtPrintSellerTaxId').textContent = (sellerTaxIdEl ? sellerTaxIdEl.value.trim() : '') || '0505566010089';
   document.getElementById('whtPrintSellerAddress').textContent = sellerAddressEl ? formatAddressForPreview(sellerAddressEl.value, false) : '65/1 ถนนต้นขาม 2 ต.ท่าศาลา อ.เมือง จ.เชียงใหม่ 50000';
   
   // Payee (Customer / Worker)
-  document.getElementById('whtPrintPayeeName').textContent = doc.name || '-';
-  document.getElementById('whtPrintPayeeTaxId').textContent = doc.payeeTaxId || '-';
+  const payeeName = doc.name || '-';
+  const payeeBranch = doc.payeeBranch || doc.branch || '00000';
+  document.getElementById('whtPrintPayeeName').textContent = (payeeName !== '-' && (payeeBranch || payeeName.includes('บริษัท') || payeeName.includes('หจก')))
+    ? formatCompanyNameWithBranch(payeeName, payeeBranch)
+    : payeeName;
+  document.getElementById('whtPrintPayeeTaxId').textContent = (doc.payeeTaxId || '-').trim();
   document.getElementById('whtPrintPayeeAddress').textContent = doc.payeeAddress || '-';
   
   // Calculation
@@ -7768,17 +7740,16 @@ async function uploadExpenseWhtPdf(doc) {
       }
     }
   } catch (vpsErr) {
-    console.warn('VPS Primary Engine failed for WHT, falling back to GAS/PDFShift:', vpsErr);
+    console.warn('VPS Primary Engine failed for WHT, falling back to GAS direct Base64 upload:', vpsErr);
   }
 
   // --------------------------------------------------------------------------
-  // FALLBACK ENGINE: Google Apps Script / PDFShift HTML-to-PDF Converter
+  // FALLBACK ENGINE: Browser Base64 PDF Render -> Google Apps Script Direct Upload
   // --------------------------------------------------------------------------
-  const pdfShiftApiKey = safeStorage.getItem('ghn168_pdfshift_api_key') || defaultScriptConfig.pdfShiftApiKey || '';
   const companyDriveUrl = safeStorage.getItem('ghn168_company_drive_url') || defaultScriptConfig.companyDriveUrl || '';
   const scriptUrl = safeStorage.getItem('ghn168_script_url') || defaultScriptConfig.scriptUrl;
   
-  if (!pdfShiftApiKey || !companyDriveUrl || !scriptUrl) {
+  if (!companyDriveUrl || !scriptUrl) {
     console.warn('Skipping WHT upload: API settings not configured.');
     return '';
   }
@@ -7805,54 +7776,33 @@ async function uploadExpenseWhtPdf(doc) {
   if (!previewElement) return '';
 
   try {
-    const cssStyles = await fetchEmbeddedStyles();
-    const fontLink = `<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">`;
-    
-    const originalDisplay = previewElement.style.display;
-    previewElement.style.display = 'block';
-    const elementHtml = previewElement.outerHTML;
-    previewElement.style.display = originalDisplay;
-
-    const fullHtml = `<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  ${fontLink}
-  <style>
-    ${cssStyles}
-    body {
-      margin: 0;
-      padding: 0;
-      background: white;
-    }
-    #printWhtPaper {
-      display: block !important;
-      box-shadow: none !important;
-      border: none !important;
-      padding: 15mm !important;
-      margin: 0 auto !important;
-      width: 210mm !important;
-      box-sizing: border-box !important;
-    }
-  </style>
-</head>
-<body>
-  ${elementHtml}
-</body>
-</html>`;
-
     const cleanedDocNo = cleanDocNo(doc.number);
     const pdfName = `ใบหัก_ณ_ที่จ่าย_50_ทวิ_${cleanedDocNo}.pdf`.replace(/[\/\\?%*:|"<>\s]+/g, '_');
+    const opt = {
+      margin: 0,
+      filename: pdfName,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true, logging: false },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
+    let pdfBase64 = '';
+    const originalDisplay = previewElement.style.display;
+    previewElement.style.display = 'block';
+    if (typeof html2pdf !== 'undefined') {
+      const dataUri = await html2pdf().set(opt).from(previewElement).outputPdf('datauristring');
+      pdfBase64 = dataUri.split(',')[1] || dataUri;
+    }
+    previewElement.style.display = originalDisplay;
+
+    if (!pdfBase64) return '';
 
     const payload = {
-      type: 'upload_html',
-      htmlContent: fullHtml,
+      type: 'upload_pdf_base64',
+      pdfBase64: pdfBase64,
       pdfName: pdfName,
       docType: 'wht',
       parentFolderId: parentFolderId,
-      pdfShiftApiKey: pdfShiftApiKey,
       spreadsheetId: safeStorage.getItem('ghn168_sheet_id') || ''
     };
 

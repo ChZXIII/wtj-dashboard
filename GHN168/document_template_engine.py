@@ -21,11 +21,41 @@ import base64
 from datetime import datetime
 import os
 from pathlib import Path
+import re
 from typing import Any, Dict, List, Optional, Tuple, Union
 
 BASE_DIR = Path(__file__).resolve().parent
 ASSETS_DIR = BASE_DIR / "assets"
 SIGNATURES_DIR = BASE_DIR / "signatures"
+
+
+def format_company_name_with_branch(name: Optional[str], branch: Optional[str] = None) -> str:
+    """
+    Formats company name with branch suffix adhering to official Thai standards:
+    - If branch is '00000', 'สำนักงานใหญ่', or None/empty -> ' (สำนักงานใหญ่)' appended to company name.
+    - If branch is numeric e.g. '00001' or '1' -> ' (สาขาที่ 00001)' appended.
+    - If branch is custom text e.g. 'สาขาเชียงใหม่' -> ' (สาขาเชียงใหม่)'.
+    - Automatically strips any existing branch suffixes to avoid duplicate appending.
+    """
+    name_str = str(name or "").strip()
+    if not name_str or name_str == "-":
+        return name_str
+
+    # Strip existing trailing branch pattern if present to prevent duplication
+    cleaned_name = re.sub(r'\s*\((?:สำนักงานใหญ่|สาขา[^\)]*|\d{5})\)\s*$', '', name_str).strip()
+
+    b_str = str(branch or "").strip()
+    if not b_str or b_str in ["00000", "สำนักงานใหญ่", "Head Office", "head office", "HQ", "hq"] or "สำนักงานใหญ่" in b_str:
+        return f"{cleaned_name} (สำนักงานใหญ่)"
+
+    digits = re.sub(r'\D', '', b_str)
+    if digits and len(digits) <= 5:
+        branch_code = digits.zfill(5)
+        return f"{cleaned_name} (สาขาที่ {branch_code})"
+    elif b_str.startswith("สาขา"):
+        return f"{cleaned_name} ({b_str})"
+    else:
+        return f"{cleaned_name} (สาขาที่ {b_str})"
 
 # Default Corporate Profile for GHN 168 Media & Creation Co., Ltd.
 DEFAULT_COMPANY_INFO = {
@@ -270,7 +300,7 @@ def format_currency(val: Union[float, int, str]) -> str:
 # Core CSS Styles for Printable A4 Documents
 # ------------------------------------------------------------------------------
 BASE_DOCUMENT_CSS = """
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Prompt:wght@300;400;500;600;700;800&family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Prompt:wght@300;400;500;600;700;800&family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
 
 @page {
   size: A4 portrait;
@@ -287,18 +317,18 @@ body {
   margin: 0;
   padding: 0;
   background-color: #f3f4f6;
-  font-family: 'Outfit', 'Prompt', 'Sukhumvit Set', 'IBM Plex Sans Thai', sans-serif;
+  font-family: 'IBM Plex Sans Thai', 'Outfit', 'Inter', 'Sukhumvit Set', sans-serif;
   color: #111827;
   font-size: 12px;
   line-height: 1.45;
 }
 
 h1, h2, h3, h4, h5, h6, .doc-badge-title, .doc-badge-title-en, .company-name-th, .company-name-en, .items-table th, .totals-table, .meta-table td:last-child {
-  font-family: 'Outfit', 'Prompt', sans-serif;
+  font-family: 'IBM Plex Sans Thai', 'Outfit', 'Inter', 'Sukhumvit Set', sans-serif;
 }
 
 .mono {
-  font-family: 'Outfit', 'Prompt', 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'IBM Plex Sans Thai', monospace;
   letter-spacing: -0.2px;
 }
 
@@ -602,15 +632,15 @@ h1, h2, h3, h4, h5, h6, .doc-badge-title, .doc-badge-title-en, .company-name-th,
   justify-content: center;
   align-items: center;
   text-align: center;
-  min-height: 90px;
+  min-height: 140px;
 }
 
 .seal-watermark-center img,
 .seal-watermark {
-  width: 148px;
-  max-width: 150px;
+  width: 230px;
+  max-width: 240px;
   height: auto;
-  max-height: 120px;
+  max-height: 160px;
   opacity: 0.88;
   mix-blend-mode: multiply;
   pointer-events: none;
@@ -889,10 +919,10 @@ def _render_standard_document_html(doc_type: str, data: Dict[str, Any]) -> str:
   <div class="doc-header">
     <div class="company-info">
       {'<img src="' + logo_src + '" class="company-logo" alt="Logo">' if logo_src else ''}
-      <div class="company-name-th">{company['name_th']}</div>
+      <div class="company-name-th">{format_company_name_with_branch(company['name_th'], company.get('branch'))}</div>
       <div class="company-name-en">{company['name_en']}</div>
       <div class="company-details">
-        เลขประจำตัวผู้เสียภาษี: <span class="mono" style="font-weight:700;">{company['tax_id']}</span> ({company['branch']})<br>
+        เลขประจำตัวผู้เสียภาษี: <span class="mono" style="font-weight:700;">{company['tax_id']}</span><br>
         ที่อยู่: {company['address']}<br>
         โทรศัพท์: {company['phone']} | อีเมล: {company['email']}
       </div>
@@ -924,8 +954,8 @@ def _render_standard_document_html(doc_type: str, data: Dict[str, Any]) -> str:
     <div class="info-card">
       <div class="info-card-header">ข้อมูลลูกค้า (Customer Details)</div>
       <div class="info-card-content">
-        <strong style="font-size: 12px; color: #0f172a;">{client_name}</strong><br>
-        เลขประจำตัวผู้เสียภาษี: <span class="mono" style="font-weight: 700;">{client_tax_id}</span> ({client_branch})<br>
+        <strong style="font-size: 12px; color: #0f172a;">{format_company_name_with_branch(client_name, client_branch)}</strong><br>
+        เลขประจำตัวผู้เสียภาษี: <span class="mono" style="font-weight: 700;">{client_tax_id}</span><br>
         ที่อยู่: {client_address}<br>
         โทรศัพท์: {client_phone}
       </div>
@@ -1011,12 +1041,16 @@ def render_wht_html(data: Dict[str, Any]) -> str:
     company = {**DEFAULT_COMPANY_INFO, **data.get("company", {})}
 
     # Payer Info (GHN 168 or Custom)
-    payer_name = data.get("payer_name") or company["name_th"]
+    payer_name_raw = data.get("payer_name") or company["name_th"]
+    payer_branch = data.get("payer_branch") or company.get("branch") or "00000"
+    payer_name = format_company_name_with_branch(payer_name_raw, payer_branch)
     payer_tax_id = data.get("payer_tax_id") or company["tax_id"]
     payer_address = data.get("payer_address") or company["address"]
 
     # Payee Info (Vendor / Freelancer / Partner)
-    payee_name = data.get("payee_name") or data.get("vendor_name") or data.get("client_name") or data.get("customer_name") or "-"
+    payee_name_raw = data.get("payee_name") or data.get("vendor_name") or data.get("client_name") or data.get("customer_name") or "-"
+    payee_branch = data.get("payee_branch") or data.get("client_branch")
+    payee_name = format_company_name_with_branch(payee_name_raw, payee_branch) if (payee_branch or "บริษัท" in payee_name_raw or "หจก" in payee_name_raw) else payee_name_raw
     payee_tax_id = data.get("payee_tax_id") or data.get("id_card_no") or data.get("client_tax_id") or data.get("customer_tax_id") or "-"
     payee_address = data.get("payee_address") or data.get("client_address") or data.get("customer_address") or "-"
 

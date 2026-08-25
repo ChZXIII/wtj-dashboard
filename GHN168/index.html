@@ -786,7 +786,7 @@ textarea.form-control {
   gap: 20px;
   position: relative;
   font-size: 13px;
-  font-family: 'Prompt', 'Sukhumvit Set', 'Thonburi', sans-serif !important;
+  font-family: 'IBM Plex Sans Thai', 'Outfit', 'Inter', 'Sukhumvit Set', sans-serif !important;
   line-height: 1.4;
   margin: 0 auto;
   zoom: var(--preview-scale-factor, 1);
@@ -794,7 +794,7 @@ textarea.form-control {
 }
 
 .wht-card-paper {
-  font-family: 'Prompt', 'Sukhumvit Set', 'Thonburi', sans-serif !important;
+  font-family: 'IBM Plex Sans Thai', 'Outfit', 'Inter', 'Sukhumvit Set', sans-serif !important;
 }
 
 .doc-header-grid {
@@ -842,51 +842,72 @@ textarea.form-control {
   text-align: right;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  align-items: flex-end;
+  gap: 2px;
   width: 45%;
   flex-shrink: 0;
 }
 
-.doc-title-th {
-  font-size: 18px;
+.doc-badge-title, .doc-title-th {
+  display: inline-block;
+  background: #0f172a;
+  color: #ffffff;
+  padding: 6px 14px;
+  font-size: 15px;
   font-weight: 800;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
   white-space: nowrap;
 }
 
-.doc-title-en {
-  font-size: 12px;
-  font-weight: 600;
-  color: #4b5563;
-  margin-top: -4px;
+.doc-badge-title-en, .doc-title-en {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #475569;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
   white-space: nowrap;
 }
 
-.doc-addresses-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 40px;
-  margin-bottom: 20px;
+.doc-addresses-grid, .client-project-grid {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 16px;
 }
 
-.address-box {
+.address-box, .info-card {
+  flex: 1;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 10px 14px;
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.address-box h4 {
-  font-size: 12px;
-  color: #4b5563;
+.info-card-header, .address-box h4 {
+  font-size: 11px;
+  font-weight: 700;
+  color: #0284c7;
   text-transform: uppercase;
-  border-bottom: 1px solid #d1d5db;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+  border-bottom: 1px dashed #cbd5e1;
   padding-bottom: 4px;
-  margin-bottom: 4px;
+}
+
+.info-card-content, .address-box p, .address-box div {
+  font-size: 11px;
+  line-height: 1.45;
+  color: #1e293b;
 }
 
 .doc-info-table, .meta-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 6px;
+  margin-top: 4px;
 }
 
 .doc-info-table td, .meta-table td {
@@ -911,83 +932,135 @@ textarea.form-control {
 }
 
 /* Document Paper Items Table */
-.paper-table {
+.items-table, .paper-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 15px;
-  margin-bottom: 20px;
+  margin-bottom: 14px;
 }
 
-.paper-table th {
-  border: 1px solid #000000;
-  background-color: #f3f4f6;
-  padding: 8px;
-  font-size: 12px;
-  font-weight: 700;
-  text-align: center;
-  color: #000000;
+.items-table th, .paper-table th {
+  background: #0f172a;
+  color: #ffffff;
+  padding: 8px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  text-align: left;
+  border: 1px solid #0f172a;
 }
 
-.paper-table td {
-  border: 1px solid #000000;
-  padding: 8px;
+.items-table th.center, .paper-table th.center { text-align: center; }
+.items-table th.right, .paper-table th.right { text-align: right; }
+
+.items-table td, .paper-table td {
+  padding: 8px 10px;
+  font-size: 11px;
+  border: 1px solid #e2e8f0;
   vertical-align: top;
+  color: #1e293b;
 }
 
-.paper-table tr.total-row td {
-  border: none;
+.items-table tr:nth-child(even) td, .paper-table tr:nth-child(even) td {
+  background: #fcfdfd;
+}
+
+.items-table td.center, .paper-table td.center { text-align: center; }
+.items-table td.right, .paper-table td.right { text-align: right; }
+
+/* Totals Section */
+.totals-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.baht-text-box {
+  flex: 1;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 11.5px;
+  line-height: 1.4;
+}
+
+.baht-text-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: #166534;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.baht-text-value {
   font-weight: 700;
+  color: #15803d;
+  font-size: 12px;
 }
 
-.paper-table tr.total-row td.bordered {
-  border: 1px solid #000000;
+.totals-table {
+  width: 310px;
+  border-collapse: collapse;
 }
 
-/* Document Paper Summary */
-.doc-summary-grid {
-  display: flex;
-  justify-content: space-between;
-  margin-top: auto;
-  padding-top: 30px;
-  border-top: 1px solid #d1d5db;
+.totals-table td {
+  padding: 5px 8px;
+  font-size: 11px;
 }
 
-.doc-baht-text-container {
-  display: flex;
-  align-items: center;
-  word-break: break-all;
-  overflow-wrap: anywhere;
+.totals-table td:first-child {
+  text-align: right;
+  color: #475569;
+  font-weight: 500;
 }
 
-.doc-calculation-box {
-  width: 35%;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+.totals-table td:last-child {
+  text-align: right;
+  font-weight: 700;
+  color: #0f172a;
 }
 
-.calc-row {
-  display: flex;
-  justify-content: space-between;
-}
-
-.calc-row.grand-total {
+.totals-table tr.grand-total td {
+  background: #0f172a;
+  color: #ffffff;
+  font-size: 13px;
   font-weight: 800;
-  border-top: 2px double #000000;
-  border-bottom: 2px double #000000;
-  padding: 4px 0;
-  font-size: 14px;
+  padding: 8px 10px;
+  border-radius: 4px;
 }
 
-/* --- Signatures Section --- */
-.doc-signatures-grid {
+/* Terms & Signatures */
+.terms-box {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 10.5px;
+  color: #334155;
+  margin-bottom: 24px;
+  line-height: 1.45;
+}
+
+.terms-title {
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 4px;
+}
+
+.signatures-container, .doc-signatures-grid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   align-items: flex-end;
   gap: 20px;
-  margin-top: 40px;
-  text-align: center;
+  margin-top: 28px;
+  padding-top: 10px;
   position: relative;
+}
+
+.signature-col-empty {
+  min-height: 1px;
 }
 
 .seal-watermark-center {
@@ -995,39 +1068,16 @@ textarea.form-control {
   justify-content: center;
   align-items: center;
   text-align: center;
-  min-height: 90px;
+  min-height: 140px;
 }
 
-.signature-box {
-  display: block;
-  text-align: center;
-  position: relative;
-}
-
-.signature-line {
-  width: 80%;
-  margin: 50px auto 10px auto;
-  border-bottom: 1px solid #000000;
-}
-
-.signature-label {
-  display: block;
-  font-size: 12px;
-  color: #4b5563;
-  margin-top: 5px;
-}
-
-.signature-box strong {
-  display: block;
-  font-size: 12px;
-  margin-top: 8px;
-}
-
+.seal-watermark-center img,
+.seal-watermark,
 .company-seal-img {
-  width: 148px;
-  max-width: 150px;
+  width: 230px;
+  max-width: 240px;
   height: auto;
-  max-height: 120px;
+  max-height: 160px;
   display: block;
   margin: 0 auto;
   opacity: 0.88;
@@ -1035,6 +1085,44 @@ textarea.form-control {
   pointer-events: none;
   z-index: 2;
   transition: opacity 0.2s ease-in-out;
+}
+
+.signature-card, .signature-box {
+  width: 100%;
+  max-width: 220px;
+  margin-left: auto;
+  text-align: center;
+  position: relative;
+}
+
+.signature-img {
+  max-height: 62px;
+  width: auto;
+  display: block;
+  margin: 0 auto -10px auto;
+  mix-blend-mode: multiply;
+  position: relative;
+  z-index: 2;
+}
+
+.signature-line {
+  border-bottom: 1px dashed #64748b;
+  width: 85%;
+  margin: 12px auto 6px auto;
+}
+
+.signer-name, .signature-box strong {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #0f172a;
+  display: block;
+}
+
+.signer-title, .signature-label {
+  font-size: 9.5px;
+  color: #64748b;
+  display: block;
+  margin-top: 2px;
 }
 
 /* Document WHT Specific Layout */
@@ -1058,7 +1146,7 @@ textarea.form-control {
   font-size: 11px;
   zoom: var(--preview-scale-factor, 1);
   flex-shrink: 0;
-  font-family: 'Prompt', 'Sukhumvit Set', 'Thonburi', sans-serif !important;
+  font-family: 'IBM Plex Sans Thai', 'Outfit', 'Inter', 'Sukhumvit Set', sans-serif !important;
 }
 
 .wht-header-box {
@@ -3054,95 +3142,123 @@ textarea.form-control {
             <div id="previewStandardDoc" class="doc-paper">
               
               <!-- Header -->
-              <div class="doc-header-grid">
-                <div class="doc-logo-section">
-                  <img src="assets/logo.png" alt="GHN168" class="doc-logo-img">
-                  <strong id="prevSellerName" class="doc-logo-sub">บริษัท จีเอชเอ็น 168 มีเดีย แอนด์ ครีเอชั่น จำกัด</strong>
-                  <div id="prevSellerNameEn" class="doc-logo-sub-en">GHN 168 MEDIA & CREATION COMPANY LIMITED</div>
-                  <p style="font-size:11px; margin-top:4px;">
-                    เลขผู้เสียภาษี: <span id="prevSellerTaxId" class="mono">-</span><br>
-                    ที่อยู่: <span id="prevSellerAddress">-</span><br>
-                    โทร: <span id="prevSellerPhone">-</span> | อีเมล: <span id="prevSellerEmail">-</span>
-                  </p>
+              <div class="doc-header-grid" style="display: flex; justify-content: space-between; border-bottom: 2px solid #0f172a; padding-bottom: 14px; margin-bottom: 16px;">
+                <div class="doc-logo-section" style="flex: 1; max-width: 52%; display: flex; flex-direction: column; gap: 4px;">
+                  <img src="assets/logo.png" alt="GHN168" class="doc-logo-img" style="height: 48px; width: auto; object-fit: contain; align-self: flex-start;">
+                  <div id="prevSellerName" class="doc-logo-sub" style="font-size: 12px; font-weight: 800; color: #0f172a; margin-top: 4px;">บริษัท จีเอชเอ็น 168 มีเดีย แอนด์ ครีเอชั่น จำกัด (สำนักงานใหญ่)</div>
+                  <div id="prevSellerNameEn" class="doc-logo-sub-en" style="font-size: 9px; font-weight: 600; color: #475569; text-transform: uppercase; letter-spacing: 0.5px;">GHN 168 MEDIA & CREATION COMPANY LIMITED</div>
+                  <div class="company-details" style="font-size: 10.5px; line-height: 1.4; color: #334155; margin-top: 4px;">
+                    เลขประจำตัวผู้เสียภาษี: <span id="prevSellerTaxId" class="mono" style="font-weight: 700;">0505566010089</span><br>
+                    ที่อยู่: <span id="prevSellerAddress">65/1 ถนนต้นขาม 2 ตำบลท่าศาลา อำเภอเมือง จังหวัดเชียงใหม่ 50000</span><br>
+                    โทรศัพท์: <span id="prevSellerPhone">089-554-4355</span> | อีเมล: <span id="prevSellerEmail">ghn168media@gmail.com</span>
+                  </div>
                 </div>
                 
-                <div class="doc-meta-section doc-meta">
-                  <div id="prevDocTitleText" class="doc-title-th">ใบเสร็จรับเงิน / ใบกำกับภาษี</div>
-                  <div id="prevDocTitleEnText" class="doc-title-en">RECEIPT / TAX INVOICE</div>
+                <div class="doc-meta-section doc-meta" style="text-align: right; display: flex; flex-direction: column; align-items: flex-end; width: 45%; flex-shrink: 0;">
+                  <div id="prevDocTitleText" class="doc-badge-title">ใบเสนอราคา</div>
+                  <div id="prevDocTitleEnText" class="doc-badge-title-en">QUOTATION</div>
                   
                   <table class="doc-info-table meta-table">
                     <tr>
                       <td id="prevDocNoLabel">เลขที่เอกสาร / No:</td>
-                      <td id="prevDocNoVal" class="mono" style="font-weight: 700;">-</td>
+                      <td id="prevDocNoVal" class="mono" style="font-size: 13px; color: #0284c7; font-weight: 700;">-</td>
+                    </tr>
+                    <tr id="prevDocRefRow" style="display: none;">
+                      <td>อ้างอิงเอกสาร / Ref:</td>
+                      <td id="prevDocRefVal" class="mono" style="font-weight: 700;">-</td>
                     </tr>
                     <tr>
                       <td id="prevDocDateLabel">วันที่ / Date:</td>
-                      <td id="prevDocDateVal">-</td>
+                      <td id="prevDocDateVal" class="mono" style="font-weight: 700;">-</td>
                     </tr>
                     <tr id="prevDocDueDateRow">
-                      <td id="prevDocDueDateLabel">ครบกำหนดชำระ / Due Date:</td>
-                      <td id="prevDocDueDateVal">-</td>
+                      <td id="prevDocDueDateLabel">ยืนราคาถึงวันที่ / Valid Until:</td>
+                      <td id="prevDocDueDateVal" class="mono" style="font-weight: 700;">-</td>
                     </tr>
                   </table>
                 </div>
               </div>
 
-              <!-- Addresses -->
-              <div class="doc-addresses-grid">
-                <div class="address-box">
-                  <h4>ข้อมูลลูกค้า / Customer Details</h4>
-                  <strong id="prevClientName">-</strong>
-                  <p id="prevClientAddress" style="font-size:11px; margin-top:2px;">-</p>
-                  <p style="font-size:11px; margin-top:4px;" id="prevClientTaxIdRow">
-                    เลขประจำตัวผู้เสียภาษี: <span id="prevClientTaxId" class="mono">-</span>
-                  </p>
+              <!-- Client & Project Info Cards -->
+              <div class="client-project-grid doc-addresses-grid">
+                <div class="info-card address-box">
+                  <div class="info-card-header">ข้อมูลลูกค้า (Customer Details)</div>
+                  <div class="info-card-content">
+                    <strong id="prevClientName" style="font-size: 12px; color: #0f172a;">-</strong><br>
+                    <span id="prevClientTaxIdRow">เลขประจำตัวผู้เสียภาษี: <span id="prevClientTaxId" class="mono" style="font-weight: 700;">-</span><br></span>
+                    ที่อยู่: <span id="prevClientAddress">-</span><br>
+                    โทรศัพท์: <span id="prevClientPhone">-</span>
+                  </div>
                 </div>
-                <div class="address-box">
-                  <h4>รายละเอียดโครงการ / Project</h4>
-                  <strong id="prevProjectNameVal">-</strong>
-                  <p style="margin-top: 12px;" id="prevPaymentTermTitle">เงื่อนไขการชำระเงิน / Payment Terms:</p>
-                  <strong id="prevPaymentTermVal">-</strong>
+
+                <div class="info-card address-box">
+                  <div class="info-card-header">รายละเอียดงาน & เงื่อนไข (Project & Terms)</div>
+                  <div class="info-card-content">
+                    <strong>โครงการ:</strong> <span id="prevProjectNameVal">-</span><br>
+                    <span id="prevPaymentTermGroup"><strong id="prevPaymentTermTitle">เงื่อนไขการชำระ:</strong> <span id="prevPaymentTermVal">-</span><br></span>
+                    <strong>ผู้ติดต่อประสานงาน:</strong> <span id="prevContactPersonVal">ทีมงาน GHN168 Media</span>
+                  </div>
                 </div>
               </div>
 
               <!-- Table Items -->
-              <table class="paper-table" id="prevPaperTable">
-                <!-- Header, body, and footer are rendered dynamically in app.js -->
+              <table class="items-table paper-table" id="prevPaperTable">
+                <!-- Header and body rendered dynamically in app.js -->
               </table>
 
-              <!-- Bottom section -->
+              <!-- Totals Section -->
+              <div class="totals-section">
+                <div class="baht-text-box">
+                  <div class="baht-text-label">จำนวนเงินตัวอักษร (Thai Baht Text):</div>
+                  <div class="baht-text-value" id="prevBahtTextVal">ศูนย์บาทถ้วน</div>
+                </div>
+
+                <table class="totals-table">
+                  <tr id="prevSubtotalRow">
+                    <td id="prevSubtotalLabelCell">รวมเงิน / Subtotal</td>
+                    <td id="prevSubtotalVal" class="mono">0.00 ฿</td>
+                  </tr>
+                  <tr id="prevDiscountRow" style="display: none;">
+                    <td id="prevDiscountLabelCell">ส่วนลด / Discount</td>
+                    <td id="prevDiscountVal" class="mono" style="color: #dc2626;">-0.00 ฿</td>
+                  </tr>
+                  <tr id="prevVatRow" style="display: none;">
+                    <td id="prevVatLabelCell">ภาษีมูลค่าเพิ่ม / VAT (7%)</td>
+                    <td id="prevVatVal" class="mono">0.00 ฿</td>
+                  </tr>
+                  <tr id="prevWhtRow" style="display: none;">
+                    <td id="prevWhtLabelCell">หักภาษี ณ ที่จ่าย / WHT (<span id="prevWhtRateValShow">0</span>%)</td>
+                    <td id="prevWhtVal" class="mono" style="color: #dc2626;">-0.00 ฿</td>
+                  </tr>
+                  <tr class="grand-total">
+                    <td id="prevNetTotalLabelCell">ยอดเงินสุทธิ / Net Total</td>
+                    <td id="prevGrandTotalVal" class="mono">0.00 ฿</td>
+                  </tr>
+                </table>
+              </div>
+
               <!-- Bottom section / Remarks & Bank details -->
-              <div id="prevRemarksSection" style="margin-top: 20px; margin-bottom: 20px; font-size: 11px; line-height: 1.4; border-top: 1px dashed var(--border-color); padding-top: 12px;">
-                <div id="prevPaymentTermsQuotationContainer" style="display: none; margin-bottom: 8px;">
-                  <strong style="color: #1f2937;">เงื่อนไขการชำระเงิน / Payment Terms:</strong>
-                  <div style="margin-top: 4px; color: #4b5563; font-family: inherit; line-height: 1.5; font-size: 11px;">
-                    • ชำระเงินมัดจำ 30-50% ของมูลค่าโครงการ เพื่อสำรองคิวงานและยืนยันการว่าจ้าง<br>
-                    • ชำระส่วนที่เหลือเมื่อส่งมอบงานเสร็จสิ้นเป็นที่เรียบร้อย
-                  </div>
-                </div>
-                <div id="prevRemarksContainer" style="display: none; margin-bottom: 8px;">
-                  <strong style="color: #1f2937;">ข้อตกลงและเงื่อนไข / Terms & Conditions:</strong>
-                  <div id="prevRemarksVal" style="white-space: pre-wrap; margin-top: 4px; color: #4b5563; font-family: inherit;">-</div>
-                </div>
-                <div id="prevBankDetailsRow" style="margin-bottom: 4px;">
-                  * ข้อมูลรายละเอียดบัญชีรับโอน: <strong id="prevBankDetailsVal">-</strong>
-                </div>
-                <div id="prevChequeRule" style="color:#4b5563;">
-                  * ในกรณีชำระเงินด้วยเช็ค ใบเสร็จรับเงินนี้จะสมบูรณ์เมื่อเช็คได้เรียกเก็บเงินผ่านบัญชีธนาคารเรียบร้อยแล้ว
+              <div id="prevRemarksSection" class="terms-box">
+                <div class="terms-title" id="prevTermsTitle">เงื่อนไขและข้อตกลง (Terms & Conditions):</div>
+                <div id="prevTermsContent">
+                  <div id="prevPaymentTermsQuotationContainer">• ชำระมัดจำ 30-50% ของมูลค่าโครงการเพื่อสำรองคิวงานและยืนยันการว่าจ้าง<br>• กำหนดยืนราคา 30 วันนับจากวันที่ออกเอกสาร</div>
+                  <div id="prevRemarksContainer" style="display: none; margin-top: 2px;">• หมายเหตุ: <span id="prevRemarksVal">-</span></div>
+                  <div id="prevBankDetailsRow" style="margin-top: 4px; color: #0284c7;">* บัญชีรับโอน: <strong id="prevBankDetailsVal">-</strong></div>
+                  <div id="prevChequeRule" style="margin-top: 2px; font-size: 9.5px; color: #64748b; display: none;">* ในกรณีชำระด้วยเช็ค เอกสารนี้จะสมบูรณ์เมื่อเช็คได้เรียกเก็บเงินผ่านบัญชีธนาคารเรียบร้อยแล้ว</div>
                 </div>
               </div>
 
               <!-- Signatures -->
-              <div class="doc-signatures-grid">
-                <div id="prevLeftSignBox"></div>
-                <div class="seal-watermark-center" style="display: flex; justify-content: center; align-items: center; min-height: 140px;">
-                  <img src="assets/GHN_company_seal.png" class="company-seal-img" alt="ตราประทับบริษัท">
+              <div class="signatures-container doc-signatures-grid">
+                <div class="signature-col-empty" id="prevLeftSignBox"></div>
+                <div class="seal-watermark-center">
+                  <img src="assets/GHN_company_seal.png" class="seal-watermark company-seal-img" alt="ตราประทับบริษัท">
                 </div>
-                <div class="signature-box" style="position: relative;">
-                  <img id="prevSignatureImg" src="" style="display: none; position: absolute; max-height: 75px; width: auto; bottom: 48px; left: 50%; transform: translateX(-50%); pointer-events: none; mix-blend-mode: multiply; z-index: 5;" alt="ลายเซ็น">
-                  <div class="signature-line" style="margin-top: 45px;"></div>
-                  <strong style="font-size:12px;" id="prevSignerNameVal">-</strong>
-                  <span class="signature-label" id="prevSignerLabel">ผู้ออกเอกสาร / ผู้มีอำนาจลงนาม</span>
+                <div class="signature-card signature-box">
+                  <img id="prevSignatureImg" src="" class="signature-img" style="display: none;" alt="ลายเซ็น">
+                  <div class="signature-line"></div>
+                  <div class="signer-name" id="prevSignerNameVal">-</div>
+                  <div class="signer-title signature-label" id="prevSignerLabel">กรรมการผู้มีอำนาจลงนาม / Authorized Signature</div>
                 </div>
               </div>
 
@@ -3782,11 +3898,6 @@ textarea.form-control {
             <input type="text" id="settingCompanyDriveUrl" class="form-control mono" placeholder="https://drive.google.com/..." style="font-size: 12px; padding: 6px 10px; height: auto;">
           </div>
 
-          <div class="form-group" style="margin-bottom: 12px;">
-            <label for="settingPdfShiftApiKey" style="font-size: 11px; font-weight: 700; display: block; margin-bottom: 4px;">PDFShift API Key (สำหรับอัปโหลด PDF ขึ้น Drive)</label>
-            <input type="text" id="settingPdfShiftApiKey" class="form-control mono" placeholder="เช่น sk_a1b2c3d4..." style="font-size: 12px; padding: 6px 10px; height: auto;">
-          </div>
-
           <div style="border-top: 1px dashed var(--border-color); margin-top: 16px; padding-top: 16px; margin-bottom: 16px;">
             <h5 style="margin: 0 0 8px 0; font-size: 11px; font-weight: 700; color: var(--text-primary);">กำหนดสิทธิ์ของผู้ใช้งาน (User Roles):</h5>
             <div style="display: flex; flex-direction: column; gap: 12px;">
@@ -4412,14 +4523,14 @@ textarea.form-control {
 
   <!-- Printable Payment Voucher (PV) -->
 
-  <div id="printPvPaper" class="wht-card-paper" style="display: none; font-family: 'Prompt', 'IBM Plex Sans Thai', sans-serif; padding: 30px; background: #fff; max-width: 800px; margin: 0 auto; color: #000;">
+  <div id="printPvPaper" class="wht-card-paper" style="display: none; font-family: 'IBM Plex Sans Thai', 'Outfit', 'Inter', 'Sukhumvit Set', sans-serif; padding: 30px; background: #fff; max-width: 800px; margin: 0 auto; color: #000;">
     <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #000; padding-bottom: 12px;">
       <div>
         <img src="assets/logo.png" class="doc-logo-img" style="height: 40px; display: block; margin-bottom: 8px;">
-        <strong style="font-size: 13px; display: block; margin-bottom: 2px;">บริษัท จีเอชเอ็น 168 มีเดีย แอนด์ ครีเอชั่น จำกัด</strong>
+        <strong style="font-size: 13px; display: block; margin-bottom: 2px;">บริษัท จีเอชเอ็น 168 มีเดีย แอนด์ ครีเอชั่น จำกัด (สำนักงานใหญ่)</strong>
         <span style="font-size: 9px; color: #475569; display: block; margin-bottom: 4px;">GHN 168 MEDIA & CREATION COMPANY LIMITED</span>
         <span style="font-size: 9px; line-height: 1.3; display: block;">
-          เลขประจำตัวผู้เสียภาษี: <span class="mono" style="font-weight:700;">0105566123456</span> (สำนักงานใหญ่)<br>
+          เลขประจำตัวผู้เสียภาษี: <span class="mono" style="font-weight:700;">0505566010089</span><br>
           ที่อยู่: 65/1 ถนนต้นขาม 2 ต.ท่าศาลา อ.เมือง จ.เชียงใหม่ 50000
         </span>
       </div>
@@ -4504,7 +4615,7 @@ textarea.form-control {
   </div>
 
   <!-- Printable Withholding Tax 50 Tawi -->
-  <div id="printWhtPaper" class="wht-card-paper" style="display: none; font-family: 'Prompt', 'IBM Plex Sans Thai', sans-serif; padding: 30px; background: #fff; max-width: 800px; margin: 0 auto; color: #000;">
+  <div id="printWhtPaper" class="wht-card-paper" style="display: none; font-family: 'IBM Plex Sans Thai', 'Outfit', 'Inter', 'Sukhumvit Set', sans-serif; padding: 30px; background: #fff; max-width: 800px; margin: 0 auto; color: #000;">
     <div class="wht-header-box" style="text-align: center; font-size: 16px; font-weight: 900; border: 2px solid #000; padding: 8px; margin-bottom: 12px; letter-spacing: 0.5px;">
       หนังสือรับรองการหักภาษี ณ ที่จ่าย (50 ทวิ)
     </div>
