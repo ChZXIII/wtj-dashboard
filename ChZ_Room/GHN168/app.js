@@ -2686,47 +2686,71 @@ function syncDocPreview() {
 }
 
 function syncWhtPreview() {
-  let docNo = document.getElementById('whtDocNumber').value || '-';
+  let docNo = (document.getElementById('whtDocNumber') ? document.getElementById('whtDocNumber').value : '') || '-';
   docNo = cleanDocNo(docNo);
-  const dateStr = formatDate(document.getElementById('whtDate').value);
+  const dateStr = formatDate(document.getElementById('whtDate') ? document.getElementById('whtDate').value : '');
 
-  document.getElementById('prevWhtDocNo').textContent = docNo;
-  document.getElementById('prevWhtDate').textContent = dateStr;
+  const prevDocNoEl = document.getElementById('prevWhtDocNo');
+  if (prevDocNoEl) prevDocNoEl.textContent = docNo;
+  const prevDateEl = document.getElementById('prevWhtDate');
+  if (prevDateEl) prevDateEl.textContent = dateStr;
 
   // Seller config mappings
   const sellerNameInput = document.getElementById('doc_sellerName');
   const sellerNameVal = sellerNameInput ? sellerNameInput.value.trim() : 'บริษัท จีเอชเอ็น 168 มีเดีย แอนด์ ครีเอชั่น จำกัด';
-  document.getElementById('prevWhtSellerName').textContent = formatCompanyNameWithBranch(sellerNameVal, '00000');
-  document.getElementById('prevWhtSellerTaxId').textContent = (document.getElementById('doc_sellerTaxId') ? document.getElementById('doc_sellerTaxId').value.trim() : '') || '0505566010089';
-  document.getElementById('prevWhtSellerAddress').textContent = formatAddressForPreview(document.getElementById('doc_sellerAddress').value, false);
+  const prevSellerNameEl = document.getElementById('prevWhtSellerName');
+  if (prevSellerNameEl) prevSellerNameEl.textContent = formatCompanyNameWithBranch(sellerNameVal, '00000');
+  const prevSellerTaxIdEl = document.getElementById('prevWhtSellerTaxId');
+  if (prevSellerTaxIdEl) prevSellerTaxIdEl.textContent = (document.getElementById('doc_sellerTaxId') ? document.getElementById('doc_sellerTaxId').value.trim() : '') || '0505566010089';
+  const prevSellerAddrEl = document.getElementById('prevWhtSellerAddress');
+  if (prevSellerAddrEl) prevSellerAddrEl.textContent = formatAddressForPreview(document.getElementById('doc_sellerAddress') ? document.getElementById('doc_sellerAddress').value : '', false);
 
   // Payee config mappings
   const payeeNameVal = (document.getElementById('whtPayeeName') ? document.getElementById('whtPayeeName').value.trim() : '') || '-';
   const payeeBranchVal = (document.getElementById('whtPayeeBranch') ? document.getElementById('whtPayeeBranch').value.trim() : '') || '00000';
-  document.getElementById('prevWhtPayeeName').textContent = (payeeNameVal !== '-' && (payeeBranchVal || payeeNameVal.includes('บริษัท') || payeeNameVal.includes('หจก')))
-    ? formatCompanyNameWithBranch(payeeNameVal, payeeBranchVal)
-    : payeeNameVal;
-  document.getElementById('prevWhtPayeeTaxId').textContent = (document.getElementById('whtPayeeTaxId') ? document.getElementById('whtPayeeTaxId').value.trim() : '') || '-';
-  document.getElementById('prevWhtPayeeAddress').textContent = formatAddressForPreview(document.getElementById('whtPayeeAddress').value || '-', false);
+  const prevPayeeNameEl = document.getElementById('prevWhtPayeeName');
+  if (prevPayeeNameEl) {
+    prevPayeeNameEl.textContent = (payeeNameVal !== '-' && (payeeBranchVal || payeeNameVal.includes('บริษัท') || payeeNameVal.includes('หจก')))
+      ? formatCompanyNameWithBranch(payeeNameVal, payeeBranchVal)
+      : payeeNameVal;
+  }
+  const prevPayeeTaxIdEl = document.getElementById('prevWhtPayeeTaxId');
+  if (prevPayeeTaxIdEl) prevPayeeTaxIdEl.textContent = (document.getElementById('whtPayeeTaxId') ? document.getElementById('whtPayeeTaxId').value.trim() : '') || '-';
+  const prevPayeeAddrEl = document.getElementById('prevWhtPayeeAddress');
+  if (prevPayeeAddrEl) prevPayeeAddrEl.textContent = formatAddressForPreview(document.getElementById('whtPayeeAddress') ? document.getElementById('whtPayeeAddress').value || '-' : '-', false);
 
   // Money table
-  const gross = parseFloat(document.getElementById('whtGrossAmount').value) || 0;
-  const rate = parseInt(document.getElementById('whtRateSelect').value) || 0;
-  const tax = gross * (rate / 100);
+  const gross = parseFloat(document.getElementById('whtGrossAmount') ? document.getElementById('whtGrossAmount').value : 0) || 0;
+  const rate = parseFloat(document.getElementById('whtRateSelect') ? document.getElementById('whtRateSelect').value : 0) || 0;
+  const tax = Math.round((gross * (rate / 100)) * 100) / 100;
+  const netPaid = Math.round((gross - tax) * 100) / 100;
 
-  document.getElementById('prevWhtDescription').textContent = document.getElementById('whtDescription').value || '-';
-  document.getElementById('prevWhtRate').textContent = rate > 0 ? `${rate}%` : '-';
-  document.getElementById('prevWhtGross').textContent = gross > 0 ? `฿${gross.toLocaleString('th-TH', { minimumFractionDigits: 2 })}` : '-';
-  document.getElementById('prevWhtTax').textContent = tax > 0 ? `฿${tax.toLocaleString('th-TH', { minimumFractionDigits: 2 })}` : '-';
+  const prevDescEl = document.getElementById('prevWhtDescription');
+  if (prevDescEl) prevDescEl.textContent = (document.getElementById('whtDescription') ? document.getElementById('whtDescription').value.trim() : '') || 'ค่าบริการและงานตัดต่อผลิตสื่อ';
+  const prevRateEl = document.getElementById('prevWhtRate');
+  if (prevRateEl) prevRateEl.textContent = rate > 0 ? `${rate}%` : '-';
+  const prevGrossEl = document.getElementById('prevWhtGross');
+  if (prevGrossEl) prevGrossEl.textContent = gross > 0 ? `${gross.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : '-';
+  const prevTaxEl = document.getElementById('prevWhtTax');
+  if (prevTaxEl) prevTaxEl.textContent = tax > 0 ? `${tax.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : '-';
 
-  document.getElementById('prevWhtTotalGross').textContent = gross > 0 ? `฿${gross.toLocaleString('th-TH', { minimumFractionDigits: 2 })}` : '-';
-  document.getElementById('prevWhtTotalTax').textContent = tax > 0 ? `฿${tax.toLocaleString('th-TH', { minimumFractionDigits: 2 })}` : '-';
-  document.getElementById('prevWhtNetText').textContent = thaiBahtText(gross - tax);
+  const prevTotGrossEl = document.getElementById('prevWhtTotalGross');
+  if (prevTotGrossEl) prevTotGrossEl.textContent = gross > 0 ? `${gross.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ฿` : '-';
+  const prevTotTaxEl = document.getElementById('prevWhtTotalTax');
+  if (prevTotTaxEl) prevTotTaxEl.textContent = tax > 0 ? `${tax.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ฿` : '-';
 
-  document.getElementById('prevWhtSigner').textContent = 'ณัฐนรี วงศ์สกุลยานนท์';
+  const prevNetTextEl = document.getElementById('prevWhtNetText');
+  if (prevNetTextEl) prevNetTextEl.textContent = tax > 0 ? thaiBahtText(tax) : 'ศูนย์บาทถ้วน';
+
+  const prevNetPaidEl = document.getElementById('prevWhtNetPaid');
+  if (prevNetPaidEl) prevNetPaidEl.textContent = gross > 0 ? `${netPaid.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} บาท` : '-';
+
+  const prevSignerEl = document.getElementById('prevWhtSigner');
+  if (prevSignerEl) prevSignerEl.textContent = 'ณัฐนรี วงศ์สกุลยานนท์';
 
   // Toggle company seal visibility
-  const showSeal = document.getElementById('doc_showSeal').checked;
+  const showSealEl = document.getElementById('doc_showSeal');
+  const showSeal = showSealEl ? showSealEl.checked : true;
   document.querySelectorAll('.company-seal-img').forEach(img => {
     img.style.display = showSeal ? 'block' : 'none';
   });

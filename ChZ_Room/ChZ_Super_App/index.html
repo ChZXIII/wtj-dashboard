@@ -9,8 +9,8 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="ChZ Super App">
-  <link rel="apple-touch-icon" href="/assets/icon-192.png?v=2.7.2">
-  <link rel="apple-touch-icon" sizes="180x180" href="/assets/icon-180.png?v=2.7.2">
+  <link rel="apple-touch-icon" href="/assets/icon-192.png?v=2.7.3">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/icon-180.png?v=2.7.3">
 
   <script>
     // Force unregister all active service worker caches to prevent browser hijacking
@@ -3370,7 +3370,7 @@
             </div>
             <div class="user-info-text">
               <div class="user-role">CHZ MANAGER</div>
-              <div class="user-version">Version 2.7.2</div>
+              <div class="user-version">Version 2.7.3</div>
             </div>
           </div>
         </div>
@@ -3385,7 +3385,7 @@
             <!-- หัวข้อและปุ่มย้อนกลับสไลด์ -->
             <div class="settings-header">
               <div class="settings-header-text">
-                 <h3 class="settings-title" style="display: flex; align-items: center; gap: 8px;">Google Sheets Connection <span style="font-size: 11px; background: rgba(0,0,0,0.06); color: var(--color-text-secondary); padding: 2px 8px; border-radius: 8px; font-weight: 500;">Version 2.7.2</span></h3>
+                 <h3 class="settings-title" style="display: flex; align-items: center; gap: 8px;">Google Sheets Connection <span style="font-size: 11px; background: rgba(0,0,0,0.06); color: var(--color-text-secondary); padding: 2px 8px; border-radius: 8px; font-weight: 500;">Version 2.7.3</span></h3>
                 <p style="font-size: 11px; color: var(--color-text-secondary); margin-top: 4px;">ผูกแอปเข้ากับสิทธิ์ Google Sheets ของแกผ่าน API หรือ Google Apps Script</p>
               </div>
               <button class="capsule-btn btn-back-to-overview" id="settings-back-to-overview-btn" style="display: none; cursor: pointer; background: rgba(39, 168, 115, 0.1) !important; color: #27a873 !important; border: none !important;">
@@ -5682,7 +5682,18 @@
 
     // 2. Dynamic Calendar & Job Carousel logic
     (function() {
-      window.calendarEvents = JSON.parse(localStorage.getItem('income_tracker_calendar_events_cache')) || [];
+      const rawCache = JSON.parse(localStorage.getItem('income_tracker_calendar_events_cache')) || [];
+      const cleanEventId = (id) => String(id || '').replace(/@google\.com$/, '').split('_')[0];
+      const startupMap = new Map();
+      rawCache.forEach(ev => {
+        if (ev && ev.id) {
+          const cId = cleanEventId(ev.id);
+          if (!startupMap.has(cId) || (ev.colorId && !startupMap.get(cId).colorId)) {
+            startupMap.set(cId, ev);
+          }
+        }
+      });
+      window.calendarEvents = Array.from(startupMap.values());
       window.fetchedCalendarMonths = new Set();
 
       // Configuration for month short names
@@ -5725,17 +5736,33 @@
             if (res.defaultColorId) localStorage.setItem('income_tracker_default_calendar_color_id', res.defaultColorId);
             if (res.calendarColorHex) localStorage.setItem('income_tracker_calendar_color_hex', res.calendarColorHex);
             
+            const cleanEventId = (id) => String(id || '').replace(/@google\.com$/, '').split('_')[0];
+            
+            // กรองและอัปเดตแคช
             res.data.forEach(newEv => {
               if (newEv && newEv.id) {
-                const idx = window.calendarEvents.findIndex(ev => ev.id === newEv.id);
+                const newCleanId = cleanEventId(newEv.id);
+                const idx = window.calendarEvents.findIndex(ev => cleanEventId(ev.id) === newCleanId);
                 if (idx !== -1) {
-                  window.calendarEvents[idx] = newEv; // อัปเดตทับด้วยข้อมูลล่าสุดจาก Google Calendar
+                  window.calendarEvents[idx] = newEv; // อัปเดตทับข้อมูลเดิม
                 } else {
                   window.calendarEvents.push(newEv);
                 }
               }
             });
-
+            
+            // Deduplicate ขั้นสุดท้ายโดยใช้ cleanEventId
+            const uniqueMap = new Map();
+            window.calendarEvents.forEach(ev => {
+              if (ev && ev.id) {
+                const cId = cleanEventId(ev.id);
+                // หากมีตัวที่มี colorId ให้優先เอาตัวที่มี colorId ไว้ก่อน
+                if (!uniqueMap.has(cId) || (ev.colorId && !uniqueMap.get(cId).colorId)) {
+                  uniqueMap.set(cId, ev);
+                }
+              }
+            });
+            window.calendarEvents = Array.from(uniqueMap.values());
             localStorage.setItem('income_tracker_calendar_events_cache', JSON.stringify(window.calendarEvents));
 
             // Re-render
