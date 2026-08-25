@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+
+# Environment & Secrets
+.env
+
+# OS
+.DS_Store
+
+# Logs & Large Installers
+*.log
+ONE_CLICK_INSTALL_COMMAND.txt
+vps_installer*.sh
+install_vps.sh
+
+# Temporary Test Output
+test_output/
+*.pdf

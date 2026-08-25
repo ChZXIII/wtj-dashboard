@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GHN168 Storyboard V2 - The Thai Soap Opera (ละครหลังข่าว)</title>
+  <!-- Google Fonts: Outfit, Prompt, IBM Plex Sans Thai -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --border-dark: #0f172a;
+      --border-light: #cbd5e1;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --bg-page: #ffffff;
+      --bg-screen: #1a0b2e;
+      --accent-soap: #db2777;
+      --accent-darksoap: #be185d;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Prompt', 'IBM Plex Sans Thai', 'Outfit', sans-serif;
+      color: var(--text-main);
+      background-color: var(--bg-screen);
+      line-height: 1.4;
+      font-size: 13px;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    /* Top Action Bar (Screen view only) */
+    .action-bar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: #180928;
+      color: #ffffff;
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 20px rgba(219, 39, 119, 0.25);
+      border-bottom: 1px solid #3b0764;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .badge-v2 {
+      background-color: #db2777;
+      color: #ffffff;
+      font-family: 'Outfit', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 4px;
+      letter-spacing: 0.5px;
+    }
+
+    .brand-title {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      letter-spacing: 0.5px;
+      color: #ffffff;
+    }
+
+    .brand-subtitle {
+      font-size: 13px;
+      color: #fbcfe8;
+      border-left: 1px solid #701a75;
+      padding-left: 12px;
+    }
+
+    .btn-print {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background-color: #db2777;
+      color: #ffffff;
+      border: none;
+      padding: 9px 20px;
+      border-radius: 6px;
+      font-family: 'Prompt', sans-serif;
+      font-weight: 500;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    .btn-print:hover {
+      background-color: #be185d;
+    }
+
+    /* Document Pages Container */
+    .pages-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 30px;
+      padding: 30px 0;
+    }
+
+    /* A4 Base Page (Screen presentation) */
+    .page {
+      width: 210mm;
+      height: 297mm;
+      background: var(--bg-page);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+      border-radius: 2px;
+      padding: 12mm 14mm;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Simple Header Design */
+    .page-header {
+      border-bottom: 2px solid var(--border-dark);
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 8px;
+    }
+
+    .project-title-group {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .project-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--border-dark);
+      letter-spacing: -0.3px;
+    }
+
+    .project-subtitle {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--accent-soap);
+    }
+
+    .page-number-badge {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 11px;
+      color: var(--border-dark);
+      border: 1.5px solid var(--border-dark);
+      padding: 3px 10px;
+      border-radius: 3px;
+      letter-spacing: 0.5px;
+      background-color: #ffffff;
+    }
+
+    .header-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      border: 1px solid var(--border-dark);
+      padding: 6px 12px;
+      background-color: #fdf2f8;
+    }
+
+    .meta-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .meta-label {
+      font-family: 'Outfit', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .meta-value {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--border-dark);
+      margin-top: 1px;
+    }
+
+    /* Page 1: Storyboard 2x2 Grid */
+    .storyboard-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 12px;
+      flex-grow: 1;
+    }
+
+    .shot-card {
+      border: 1.5px solid var(--border-dark);
+      border-radius: 4px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      background-color: #ffffff;
+    }
+
+    .shot-card-header {
+      background-color: #0f172a;
+      color: #ffffff;
+      padding: 5px 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .shot-title {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0.5px;
+      color: #ffffff;
+    }
+
+    .shot-tag {
+      font-family: 'Outfit', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      background: #db2777;
+      color: #ffffff;
+      padding: 1px 6px;
+      border-radius: 2px;
+    }
+
+    .shot-image-box {
+      width: 100%;
+      height: 140px;
+      background-color: #180928;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid var(--border-dark);
+    }
+
+    .shot-image-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .shot-card-content {
+      padding: 8px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      flex-grow: 1;
+      justify-content: flex-start;
+      background-color: #ffffff;
+    }
+
+    .shot-field {
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      font-size: 10.5px;
+      line-height: 1.3;
+    }
+
+    .field-label {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 9.5px;
+      color: var(--border-dark);
+      min-width: 115px;
+      flex-shrink: 0;
+      letter-spacing: 0.3px;
+    }
+
+    .field-value {
+      color: var(--text-main);
+      font-weight: 400;
+    }
+
+    /* Page 2: Production Breakdown Table */
+    .breakdown-container {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .breakdown-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 10.5px;
+      border: 1.5px solid var(--border-dark);
+      table-layout: fixed;
+    }
+
+    .breakdown-table th {
+      background-color: #0f172a;
+      color: #ffffff;
+      font-weight: 700;
+      text-align: left;
+      padding: 6px 8px;
+      border: 1px solid #1e293b;
+      font-size: 9.5px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .breakdown-table td {
+      padding: 6px 8px;
+      border: 1px solid var(--border-dark);
+      vertical-align: top;
+      line-height: 1.35;
+      word-wrap: break-word;
+      color: var(--text-main);
+    }
+
+    .breakdown-table tr:nth-child(even) td {
+      background-color: #fdf2f8;
+    }
+
+    .cell-shot {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 11px;
+      color: var(--border-dark);
+      text-align: center;
+      background-color: #fce7f3 !important;
+      width: 10%;
+    }
+
+    .cell-shot-sub {
+      font-size: 9px;
+      font-weight: 500;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .col-loc { width: 14%; }
+    .col-cast { width: 12%; }
+    .col-props { width: 12%; }
+    .col-wardrobe { width: 11%; }
+    .col-camera { width: 14%; }
+    .col-audio { width: 13%; }
+    .col-post { width: 14%; }
+
+    .tag-mono {
+      display: inline-block;
+      font-weight: 600;
+      color: #ffffff;
+      background-color: #0f172a;
+      border: 1px solid #0f172a;
+      padding: 1px 4px;
+      border-radius: 2px;
+      font-size: 9px;
+      margin-bottom: 2px;
+    }
+
+    .tag-soap {
+      display: inline-block;
+      font-weight: 600;
+      color: #ffffff;
+      background-color: #db2777;
+      padding: 1px 4px;
+      border-radius: 2px;
+      font-size: 9px;
+      margin-bottom: 2px;
+    }
+
+    /* Page Footer */
+    .page-footer {
+      margin-top: 10px;
+      padding-top: 6px;
+      border-top: 1px solid var(--border-dark);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 9.5px;
+      color: var(--text-muted);
+    }
+
+    .footer-left {
+      font-weight: 500;
+      color: var(--border-dark);
+    }
+
+    .footer-right {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      color: var(--border-dark);
+      letter-spacing: 0.5px;
+    }
+
+    /* Print Media Engine - Strictly fit 2 pages A4 */
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 10mm;
+      }
+
+      html, body {
+        background: #ffffff;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+
+      .pages-container {
+        padding: 0;
+        gap: 0;
+        display: block;
+      }
+
+      .page {
+        width: 100%;
+        height: 275mm;
+        max-height: 275mm;
+        box-shadow: none;
+        border: none;
+        border-radius: 0;
+        padding: 0;
+        margin: 0;
+        page-break-after: always;
+        break-after: page;
+        page-break-inside: avoid;
+        break-inside: avoid;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .shot-image-box {
+        height: 130px;
+      }
+
+      .breakdown-table th {
+        background-color: #0f172a !important;
+        color: #ffffff !important;
+        -webkit-print-color-adjust: exact;
+      }
+
+      .cell-shot {
+        background-color: #fce7f3 !important;
+        -webkit-print-color-adjust: exact;
+      }
+
+      .tag-mono {
+        background-color: #0f172a !important;
+        color: #ffffff !important;
+        -webkit-print-color-adjust: exact;
+      }
+
+      .tag-soap {
+        background-color: #db2777 !important;
+        color: #ffffff !important;
+        -webkit-print-color-adjust: exact;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Action Bar (Screen view only) -->
+  <div class="action-bar no-print">
+    <div class="brand-group">
+      <span class="badge-v2">VERSION 2</span>
+      <span class="brand-title">GHN168 Commercial</span>
+      <span class="brand-subtitle">The Thai Soap Opera (ละครหลังข่าว A4 Print Sheet)</span>
+    </div>
+    <button class="btn-print" onclick="window.print()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="6 9 6 2 18 2 18 9"></polyline>
+        <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+        <rect x="6" y="14" width="12" height="8"></rect>
+      </svg>
+      พิมพ์ / บันทึก PDF (Print A4)
+    </button>
+  </div>
+
+  <div class="pages-container">
+
+    <!-- PAGE 1: STORYBOARD SHEET (2x2 GRID) -->
+    <div class="page">
+      <div>
+        <!-- Page 1 Header -->
+        <header class="page-header">
+          <div class="header-top">
+            <div class="project-title-group">
+              <h1 class="project-name">GHN168 Commercial</h1>
+              <span class="project-subtitle">— V2: The Thai Soap Opera (ละครหลังข่าว)</span>
+            </div>
+            <div class="page-number-badge">PAGE 1 OF 2</div>
+          </div>
+          <div class="header-grid">
+            <div class="meta-item">
+              <span class="meta-label">PROJECT</span>
+              <span class="meta-value">GHN168 Commercial V2</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">GENRE / STYLE</span>
+              <span class="meta-value">Thai Soap Opera / Melodrama</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">DIRECTOR</span>
+              <span class="meta-value">Keng & Team</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">DATE</span>
+              <span class="meta-value">11 AUG 2026</span>
+            </div>
+          </div>
+        </header>
+
+        <!-- Storyboard Grid 2x2 -->
+        <main class="storyboard-grid">
+
+          <!-- Shot 1 -->
+          <article class="shot-card">
+            <div class="shot-card-header">
+              <span class="shot-title">SHOT 1A | SCENE 1/1</span>
+              <span class="shot-tag">KNEEL</span>
+            </div>
+            <div class="shot-image-box">
+              <img src="./assets/v2_soap1_kneel_1786418880557.jpg" alt="V2 Soap Scene 1 Kneel">
+            </div>
+            <div class="shot-card-content">
+              <div class="shot-field">
+                <span class="field-label">CAMERA:</span>
+                <span class="field-value">Medium Wide • Low Angle • Soft Focus Glow</span>
+              </div>
+              <div class="shot-field">
+                <span class="field-label">ACTION:</span>
+                <span class="field-value">คุกเข่าลงบนพื้นออฟฟิศ ร้องไห้สะอื้นปานจะขาดใจ ยื่นโน้ตบุ๊กให้ทีมงาน งบ 0 บาท ใช้ออฟฟิศเดิม</span>
+              </div>
+              <div class="shot-field">
+                <span class="field-label">DIALOGUE/NOTES:</span>
+                <span class="field-value">"ขอร้องล่ะ... ช่วยแก้ให้ชั้นที!" (Piano Melodrama SFX)</span>
+              </div>
+              <div class="shot-field">
+                <span class="field-label">JOKE & NARRATIVE:</span>
+                <span class="field-value">คุกเข่าลงบนพื้นออฟฟิศ ร้องไห้สะอื้นปานจะขาดใจ ยื่นโน้ตบุ๊กให้ทีมงาน งบ 0 บาท ใช้ออฟฟิศเดิม</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Shot 2 -->
+          <article class="shot-card">
+            <div class="shot-card-header">
+              <span class="shot-title">SHOT 1B | SCENE 1/2</span>
+              <span class="shot-tag">CRYING</span>
+            </div>
+            <div class="shot-image-box">
+              <img src="./assets/v2_soap2_crying_1786418950035.jpg" alt="V2 Soap Scene 2 Crying">
+            </div>
+            <div class="shot-card-content">
+              <div class="shot-field">
+                <span class="field-label">CAMERA:</span>
+                <span class="field-value">Dramatic Close-up • Soft Zoom • Emotional Lighting</span>
+              </div>
+              <div class="shot-field">
+                <span class="field-label">ACTION:</span>
+                <span class="field-value">ตะโกนร้องไห้ปาดน้ำตาอ้อนวอนทีมงานอย่างบีบหัวใจ ร้องไห้สะอื้นเพราะงานดีเกินไป</span>
+              </div>
+              <div class="shot-field">
+                <span class="field-label">DIALOGUE/NOTES:</span>
+                <span class="field-value">"ทำไมต้องตัดต่อมาดีขนาดนี้ด้วย?! แล้วชั้นจะเอาหน้าที่ไหนไปกดสั่งแก้กับเจ้านาย?!" (Thunderstorm SFX)</span>
+              </div>
+              <div class="shot-field">
+                <span class="field-label">JOKE & NARRATIVE:</span>
+                <span class="field-value">ตะโกนร้องไห้ "ทำไมต้องตัดต่อมาดีขนาดนี้ด้วย?! แล้วชั้นจะเอาหน้าที่ไหนไปกดสั่งแก้กับเจ้านาย?!"</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Shot 3 -->
+          <article class="shot-card">
+            <div class="shot-card-header">
+              <span class="shot-title">SHOT 2A | SCENE 1/3</span>
+              <span class="shot-tag">SYMPATHY</span>
+            </div>
+            <div class="shot-image-box">
+              <img src="./assets/v2_soap3_sympathy_1786418963603.jpg" alt="V2 Soap Scene 3 Sympathy">
+            </div>
+            <div class="shot-card-content">
+              <div class="shot-field">
+                <span class="field-label">CAMERA:</span>
+                <span class="field-value">Medium Close-up • Warm Soft Light • Soft Diffusion</span>
+              </div>
+              <div class="shot-field">
+                <span class="field-label">ACTION:</span>
+                <span class="field-value">ทีมงานซาบซึ้งจนน้ำตาคลอ ปาดน้ำตาเห็นใจ ยื่นแฟลชไดรฟ์ดราฟต์เละให้</span>
+              </div>
+              <div class="shot-field">
+                <span class="field-label">DIALOGUE/NOTES:</span>
+                <span class="field-value">"เราเข้าใจคุณ... รับดราฟต์นี้ไปแก้ได้เลยครับ!" (Emotional String Solo)</span>
+              </div>
+              <div class="shot-field">
+                <span class="field-label">JOKE & NARRATIVE:</span>
+                <span class="field-value">ทีมงานซาบซึ้งจนน้ำตาคลอ ปาดน้ำตาเห็นใจ ยื่นแฟลชไดรฟ์ดราฟต์เละให้</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Shot 4 -->
+          <article class="shot-card">
+            <div class="shot-card-header">
+              <span class="shot-title">SHOT 2B | SCENE 1/4</span>
+              <span class="shot-tag">HAPPY TEARS</span>
+            </div>
+            <div class="shot-image-box">
+              <img src="./assets/v2_soap4_happy_tears_1786418977949.jpg" alt="V2 Soap Scene 4 Happy Tears">
+            </div>
+            <div class="shot-card-content">
+              <div class="shot-field">
+                <span class="field-label">CAMERA:</span>
+                <span class="field-value">Close-up • Warm Golden Glow • Soft Lens 85mm</span>
+              </div>
+              <div class="shot-field">
+                <span class="field-label">ACTION:</span>
+                <span class="field-value">ลูกค้าปัดน้ำตา ยิ้มกว้างกอดโน้ตบุ๊กแน่น กดสั่งแก้ตัวหนังสือทับหน้าคนอย่างตื่นเต้นตื้นตันใจ</span>
+              </div>
+              <div class="shot-field">
+                <span class="field-label">DIALOGUE/NOTES:</span>
+                <span class="field-value">"ในที่สุด... ชั้นก็ได้กดสั่งแก้แล้ว!" (Happy Ending Piano SFX)</span>
+              </div>
+              <div class="shot-field">
+                <span class="field-label">JOKE & NARRATIVE:</span>
+                <span class="field-value">ลูกค้าปัดน้ำตา ยิ้มกว้างกอดโน้ตบุ๊กแน่น กดสั่งแก้ตัวหนังสือทับหน้าคนอย่างตื่นเต้นตื้นตันใจ</span>
+              </div>
+            </div>
+          </article>
+
+        </main>
+      </div>
+
+      <!-- Page 1 Footer -->
+      <footer class="page-footer">
+        <span class="footer-left">GHN168 Commercial V2 (The Thai Soap Opera) — Storyboard Grid Sheet</span>
+        <span class="footer-right">PAGE 1 / 2</span>
+      </footer>
+    </div>
+
+
+    <!-- PAGE 2: PRODUCTION BREAKDOWN SHEET -->
+    <div class="page">
+      <div>
+        <!-- Page 2 Header -->
+        <header class="page-header">
+          <div class="header-top">
+            <div class="project-title-group">
+              <h1 class="project-name">GHN168 Commercial</h1>
+              <span class="project-subtitle">— V2 Production Breakdown (The Thai Soap Opera)</span>
+            </div>
+            <div class="page-number-badge">PAGE 2 OF 2</div>
+          </div>
+          <div class="header-grid">
+            <div class="meta-item">
+              <span class="meta-label">PROJECT</span>
+              <span class="meta-value">GHN168 Commercial V2</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">GENRE / STYLE</span>
+              <span class="meta-value">Thai Soap Opera Drama</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">LIGHTING</span>
+              <span class="meta-value">Soft Diffusion / Emotional Glow</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">DATE</span>
+              <span class="meta-value">11 AUG 2026</span>
+            </div>
+          </div>
+        </header>
+
+        <!-- Production Breakdown Table -->
+        <main class="breakdown-container">
+          <table class="breakdown-table">
+            <thead>
+              <tr>
+                <th class="cell-shot">SHOT</th>
+                <th class="col-loc">LOCATION & SET</th>
+                <th class="col-cast">CAST</th>
+                <th class="col-props">PROPS</th>
+                <th class="col-wardrobe">WARDROBE</th>
+                <th class="col-camera">CAMERA & GEAR</th>
+                <th class="col-audio">AUDIO & SFX</th>
+                <th class="col-post">POST-PRODUCTION</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              <!-- Row 1: Shot 1A -->
+              <tr>
+                <td class="cell-shot">
+                  SHOT 1A
+                  <div class="cell-shot-sub">Scene 1/1</div>
+                </td>
+                <td>
+                  <span class="tag-mono">Interior</span>
+                  <div>พื้นออฟฟิศไฟสปอตไลท์บีบอารมณ์ + ม่านหน้าต่างดราม่า</div>
+                </td>
+                <td>
+                  <strong>ลูกค้าสาวดราม่า</strong>
+                  <div style="color: #475569; font-size: 9.5px; margin-top: 2px;">เล่นใหญ่คุกเข่าอ้อนวอน ร้องไห้สะอื้น</div>
+                </td>
+                <td>
+                  - โน้ตบุ๊กทำงาน<br>
+                  - กระดาษทิชชูเป็นตั้ง<br>
+                  - งบประมาณ 0 บาท
+                </td>
+                <td>
+                  ชุดเดรสสไตล์ดราม่า / สูททางการแต่ผมกระเซิงเล็กน้อย
+                </td>
+                <td>
+                  <span class="tag-soap">Medium Wide Low</span>
+                  <div>Soft Push-in<br>Lens: 50mm f/1.4<br>Soft Diffusion Filter</div>
+                </td>
+                <td>
+                  - SFX เสียงฟ้าผ่าเปรี้ยง<br>
+                  - Piano Melodrama Solo (ซาวด์เปียโนบีบน้ำตา)<br>
+                  - เสียงสะอื้น "ขอร้องล่ะ..."
+                </td>
+                <td>
+                  - Color Grade Soft Magenta / Warm Glow<br>
+                  - Soft Vignette 20%<br>
+                  - Slow Motion 60fps ตอนคุกเข่า
+                </td>
+              </tr>
+
+              <!-- Row 2: Shot 1B -->
+              <tr>
+                <td class="cell-shot">
+                  SHOT 1B
+                  <div class="cell-shot-sub">Scene 1/2</div>
+                </td>
+                <td>
+                  <span class="tag-mono">Interior</span>
+                  <div>มุมออฟฟิศเดิม บรรยากาศเงาไฟส่องหน้าบีบหัวใจ</div>
+                </td>
+                <td>
+                  <strong>ลูกค้า + ทีมงาน 2 คน</strong>
+                  <div style="color: #475569; font-size: 9.5px; margin-top: 2px;">ลูกค้าตะโกนร้องไห้ / ทีมงานยืนตะลึงสะเทือนใจ</div>
+                </td>
+                <td>
+                  - โน้ตบุ๊กแสดงภาพวิดีโอตัดต่อสวยระดับรางวัลออสการ์
+                </td>
+                <td>
+                  ทีมงานใส่เสื้อยืด Polo สีเข้ม หน้าตาซาบซึ้ง
+                </td>
+                <td>
+                  <span class="tag-soap">Dramatic Close-up</span>
+                  <div>Soft Slow Zoom<br>Lens: 85mm f/1.2<br>Shallow Depth of Field</div>
+                </td>
+                <td>
+                  - เสียงตะโกนร้องไห้สะอื้นก้องห้อง<br>
+                  - Violin Solo บีบหัวใจพุ่งขึ้นสูง<br>
+                  - SFX เสียงหยดน้ำตาหล่น
+                </td>
+                <td>
+                  - Contrast บีบอารมณ์ดราม่า<br>
+                  - Light Leak ริมขอบจอ<br>
+                  - Cut Slow Fade
+                </td>
+              </tr>
+
+              <!-- Row 3: Shot 2A -->
+              <tr>
+                <td class="cell-shot">
+                  SHOT 2A
+                  <div class="cell-shot-sub">Scene 1/3</div>
+                </td>
+                <td>
+                  <span class="tag-mono">Interior</span>
+                  <div>โต๊ะตัดต่อไฟซอฟต์บ็อกซ์อุ่นละมุน</div>
+                </td>
+                <td>
+                  <strong>ทีมงาน 2 คน + ลูกค้า</strong>
+                  <div style="color: #475569; font-size: 9.5px; margin-top: 2px;">ทีมงานน้ำตาคลอ ปาดน้ำตาเห็นใจ / ลูกค้าคุกเข่ารอ</div>
+                </td>
+                <td>
+                  - แฟลชไดรฟ์ดราฟต์เละ (Draft 1 Puad-Huad)<br>
+                  - ทิชชูปาดน้ำตา
+                </td>
+                <td>
+                  ชุดเดิมต่อเนื่อง
+                </td>
+                <td>
+                  <span class="tag-soap">Medium Close-up</span>
+                  <div>Two-Shot Camera<br>Lens: 50mm<br>Soft Focus Glow</div>
+                </td>
+                <td>
+                  - Piano Solo ทำนองอบอุ่นคลอซาบซึ้ง<br>
+                  - เสียงยื่นแฟลชไดรฟ์ "แกร๊ก"<br>
+                  - เสียงสูดน้ำมูกซาบซึ้ง
+                </td>
+                <td>
+                  - Soft Diffusion Glow (เอฟเฟกต์ฟุ้งละมุนซาบซึ้ง)<br>
+                  - Warm Tone 3200K<br>
+                  - Text Overlay: "ความเห็นใจของทีมงาน"
+                </td>
+              </tr>
+
+              <!-- Row 4: Shot 2B -->
+              <tr>
+                <td class="cell-shot">
+                  SHOT 2B
+                  <div class="cell-shot-sub">Scene 1/4</div>
+                </td>
+                <td>
+                  <span class="tag-mono">Interior</span>
+                  <div>ออฟฟิศสว่างไสวด้วยแสงพระอาทิตย์ยามเย็นทองคำ (Golden Hour)</div>
+                </td>
+                <td>
+                  <strong>ลูกค้า + ทีมงาน 2 คน</strong>
+                  <div style="color: #475569; font-size: 9.5px; margin-top: 2px;">ลูกค้าปัดน้ำตา ยิ้มกว้างกอดคอมแน่น / ทีมงานยิ้มปลื้มปิติ</div>
+                </td>
+                <td>
+                  - โน้ตบุ๊กที่ถูกกดสั่งแก้ตัวหนังสือทับหน้าคน<br>
+                  - แฟลชไดรฟ์ดราฟต์เละ
+                </td>
+                <td>
+                  ชุดเดิมต่อเนื่อง
+                </td>
+                <td>
+                  <span class="tag-soap">Close-up Insert</span>
+                  <div>Warm Golden Glow<br>Lens: 85mm f/1.4<br>Soft Bokeh Effect</div>
+                </td>
+                <td>
+                  - Happy Ending Orchestral & Piano Fanfare<br>
+                  - เสียงหัวเราะตื้นตันใจ "ฮ่าๆๆๆ"<br>
+                  - Jingle: "GHN168"
+                </td>
+                <td>
+                  - Gold Flare Burst Effect<br>
+                  - High Key Warm Lighting<br>
+                  - Text Overlay: "GHN168 — การันตีแก้ตรงใจทุกดราฟต์!"
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
+        </main>
+      </div>
+
+      <!-- Page 2 Footer -->
+      <footer class="page-footer">
+        <span class="footer-left">GHN168 Commercial V2 (The Thai Soap Opera) — Production Breakdown Sheet</span>
+        <span class="footer-right">PAGE 2 / 2</span>
+      </footer>
+    </div>
+
+  </div>
+
+</body>
+</html>

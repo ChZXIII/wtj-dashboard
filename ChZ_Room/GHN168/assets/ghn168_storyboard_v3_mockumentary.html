@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GHN168 Storyboard V3 - Mockumentary Comedy</title>
+  <!-- Google Fonts: Outfit, Prompt, IBM Plex Sans Thai -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --border-dark: #0f172a;
+      --border-light: #cbd5e1;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --bg-page: #ffffff;
+      --bg-screen: #1e1b4b;
+      --accent-amber: #d97706;
+      --accent-darkamber: #b45309;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Prompt', 'IBM Plex Sans Thai', 'Outfit', sans-serif;
+      color: var(--text-main);
+      background-color: var(--bg-screen);
+      line-height: 1.4;
+      font-size: 13px;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    /* Top Action Bar (Screen view only) */
+    .action-bar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: #1e1b4b;
+      color: #ffffff;
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 20px rgba(217, 119, 6, 0.25);
+      border-bottom: 1px solid #312e81;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .badge-v3 {
+      background-color: #d97706;
+      color: #ffffff;
+      font-family: 'Outfit', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 4px;
+      letter-spacing: 0.5px;
+    }
+
+    .brand-title {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      letter-spacing: 0.5px;
+      color: #ffffff;
+    }
+
+    .brand-subtitle {
+      font-size: 13px;
+      color: #fde68a;
+      border-left: 1px solid #4338ca;
+      padding-left: 12px;
+    }
+
+    .btn-print {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background-color: #d97706;
+      color: #ffffff;
+      border: none;
+      padding: 9px 20px;
+      border-radius: 6px;
+      font-family: 'Prompt', sans-serif;
+      font-weight: 500;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    .btn-print:hover {
+      background-color: #b45309;
+    }
+
+    /* Document Pages Container */
+    .pages-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 30px;
+      padding: 30px 0;
+    }
+
+    /* A4 Base Page (Screen presentation) */
+    .page {
+      width: 210mm;
+      height: 297mm;
+      background: var(--bg-page);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+      border-radius: 2px;
+      padding: 12mm 14mm;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Simple Header Design */
+    .page-header {
+      border-bottom: 2px solid var(--border-dark);
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 8px;
+    }
+
+    .project-title-group {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .project-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--border-dark);
+      letter-spacing: -0.3px;
+    }
+
+    .project-subtitle {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--accent-amber);
+    }
+
+    .page-number-badge {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 11px;
+      color: var(--border-dark);
+      border: 1.5px solid var(--border-dark);
+      padding: 3px 10px;
+      border-radius: 3px;
+      letter-spacing: 0.5px;
+      background-color: #ffffff;
+    }
+
+    .header-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      border: 1px solid var(--border-dark);
+      padding: 6px 12px;
+      background-color: #fffbeb;
+    }
+
+    .meta-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .meta-label {
+      font-family: 'Outfit', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .meta-value {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--border-dark);
+      margin-top: 1px;
+    }
+
+    /* Page 1: Storyboard 2x2 Grid */
+    .storyboard-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 12px;
+      flex-grow: 1;
+    }
+
+    .shot-card {
+      border: 1.5px solid var(--border-dark);
+      border-radius: 4px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      background-color: #ffffff;
+    }
+
+    .shot-card-header {
+      background-color: #d97706;
+      color: #ffffff;
+      padding: 5px 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .shot-title {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0.5px;
+      color: #ffffff;
+    }
+
+    .shot-tag {
+      font-family: 'Outfit', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      background: #0f172a;
+      color: #fde68a;
+      padding: 1px 6px;
+      border-radius: 2px;
+    }
+
+    .shot-image-box {
+      width: 100%;
+      height: 140px;
+      background-color: #020617;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid var(--border-dark);
+    }
+
+    .shot-image-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .shot-card-content {
+      padding: 8px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      flex-grow: 1;
+      justify-content: flex-start;
+      background-color: #ffffff;
+    }
+
+    .shot-field {
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      font-size: 10.5px;
+      line-height: 1.3;
+    }
+
+    .field-label {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 9.5px;
+      color: var(--border-dark);
+      min-width: 115px;
+      flex-shrink: 0;
+      letter-spacing: 0.3px;
+    }
+
+    .field-value {
+      color: var(--text-main);
+      font-weight: 400;
+    }
+
+    /* Page 2: Production Breakdown Table */
+    .breakdown-container {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .breakdown-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 10.5px;
+      border: 1.5px solid var(--border-dark);
+      table-layout: fixed;
+    }
+
+    .breakdown-table th {
+      background-color: #d97706;
+      color: #ffffff;
+      font-weight: 700;
+      text-align: left;
+      padding: 6px 8px;
+      border: 1px solid #b45309;
+      font-size: 9.5px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .breakdown-table td {
+      padding: 6px 8px;
+      border: 1px solid var(--border-dark);
+      vertical-align: top;
+      line-height: 1.35;
+      word-wrap: break-word;
+      color: var(--text-main);
+    }
+
+    .breakdown-table tr:nth-child(even) td {
+      background-color: #fffbeb;
+    }
+
+    .cell-shot {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 11px;
+      color: var(--border-dark);
+      text-align: center;
+      background-color: #fef3c7 !important;
+      width: 10%;
+    }
+
+    .cell-shot-sub {
+      font-size: 9px;
+      font-weight: 500;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .col-loc { width: 14%; }
+    .col-cast { width: 12%; }
+    .col-props { width: 12%; }
+    .col-wardrobe { width: 11%; }
+    .col-camera { width: 14%; }
+    .col-audio { width: 13%; }
+    .col-post { width: 14%; }
+
+    .tag-mono {
+      display: inline-block;
+      font-weight: 600;
+      color: #ffffff;
+      background-color: #0f172a;
+      border: 1px solid #0f172a;
+      padding: 1px 4px;
+      border-radius: 2px;
+      font-size: 9px;
+      margin-bottom: 2px;
+    }
+
+    .tag-amber {
+      display: inline-block;
+      font-weight: 600;
+      color: #ffffff;
+      background-color: #d97706;
+      padding: 1px 4px;
+      border-radius: 2px;
+      font-size: 9px;
+      margin-bottom: 2px;
+    }
+
+    /* Page Footer */
+    .page-footer {
+      margin-top: 10px;
+      padding-top: 6px;
+      border-top: 1px solid var(--border-dark);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 9.5px;
+      color: var(--text-muted);
+    }
+
+    .footer-left {
+      font-weight: 500;
+      color: var(--border-dark);
+    }
+
+    .footer-right {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      color: var(--border-dark);
+      letter-spacing: 0.5px;
+    }
+
+    /* Print Media Engine - Strictly fit 2 pages A4 */
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 10mm;
+      }
+
+      html, body {
+        background: #ffffff;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+
+      .pages-container {
+        padding: 0;
+        gap: 0;
+        display: block;
+      }
+
+      .page {
+        width: 100%;
+        height: 275mm;
+        max-height: 275mm;
+        box-shadow: none;
+        border: none;
+        border-radius: 0;
+        padding: 0;
+        margin: 0;
+        page-break-after: always;
+        break-after: page;
+        page-break-inside: avoid;
+        break-inside: avoid;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .shot-image-box {
+        height: 130px;
+      }
+
+      .breakdown-table th {
+        background-color: #d97706 !important;
+        color: #ffffff !important;
+        -webkit-print-color-adjust: exact;
+      }
+
+      .cell-shot {
+        background-color: #fef3c7 !important;
+        -webkit-print-color-adjust: exact;
+      }
+
+      .tag-mono {
+        background-color: #0f172a !important;
+        color: #ffffff !important;
+        -webkit-print-color-adjust: exact;
+      }
+
+      .tag-amber {
+        background-color: #d97706 !important;
+        color: #ffffff !important;
+        -webkit-print-color-adjust: exact;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Action Bar (Screen view only) -->
+  <div class="action-bar no-print">
+    <div class="brand-group">
+      <span class="badge-v3">VERSION 3</span>
+      <span class="brand-title">GHN168 Commercial</span>
+      <span class="brand-subtitle">Mockumentary Comedy + Post-Credit Scene (A4 Print Sheet)</span>
+    </div>
+    <button class="btn-print" onclick="window.print()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="6 9 6 2 18 2 18 9"></polyline>
+        <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+        <rect x="6" y="14" width="12" height="8"></rect>
+      </svg>
+      พิมพ์ / บันทึก PDF (Print A4)
+    </button>
+  </div>
+
+  <div class="pages-container">
+
+    <!-- PAGE 1: STORYBOARD SHEET (2x2 GRID) -->
+    <div class="page">
+      <div>
+        <!-- Page 1 Header -->
+        <header class="page-header">
+          <div class="header-top">
+            <div class="project-title-group">
+              <h1 class="project-name">GHN168 Commercial</h1>
+              <span class="project-subtitle">— V3: Mockumentary Comedy + Post-Credit Scene</span>
+            </div>
+            <div class="page-number-badge">PAGE 1 OF 2</div>
+          </div>
+          <div class="header-grid">
+            <div class="meta-item">
+              <span class="meta-label">PROJECT</span>
+              <span class="meta-value">GHN168 Commercial V3</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">GENRE / STYLE</span>
+              <span class="meta-value">Mockumentary / Office Comedy</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">DIRECTOR</span>
+              <span class="meta-value">Keng & Team</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">DATE</span>
+              <span class="meta-value">11 AUG 2026</span>
+            </div>
+          </div>
+        </header>
+
+        <!-- Storyboard Grid 2x2 -->
+        <main class="storyboard-grid">
+
+          <!-- Shot 1 -->
+          <article class="shot-card">
+            <div class="shot-card-header">
+              <span class="shot-title">SHOT 1A | SCENE 1/1</span>
+              <span class="shot-tag">TALKING HEAD ENTRY</span>
+            </div>
+            <div class="shot-image-box">
+              <img src="./assets/simple_scene1_entry_1786388399304.jpg" alt="V3 Scene 1 Entry">
+            </div>
+            <div class="shot-card-content">
+              <div class="shot-field">
+                <span class="field-label">CAMERA:</span>
+                <span class="field-value">Wide Handheld • Quick Whip Pan to Camera</span>
+              </div>
+              <div class="shot-field">
+                <span class="field-label">ACTION:</span>
+                <span class="field-value">ลูกค้าเดินกระแทกประตูเข้าห้องประชุม ทำหน้าเครียด สลับตัดฉากสัมภาษณ์เดี่ยว หันมาพูดกับกล้องสไตล์ The Office</span>
+              </div>
+              <div class="shot-field">
+                <span class="field-label">DIALOGUE/NOTES:</span>
+                <span class="field-value">"งานมินิมอลเรียบหรูเหรอ? หึ! คนธรรมดาเขาทำกัน!"</span>
+              </div>
+              <div class="shot-field">
+                <span class="field-label">JOKE & NARRATIVE:</span>
+                <span class="field-value">สไตล์สารคดี The Office เดินถือคอมพรึ่บเข้ามา แปะกระดาษเงื่อนไขการสั่งแก้ลงบนโต๊ะ ทีมงานมองหน้ากันงงๆ</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Shot 2 -->
+          <article class="shot-card">
+            <div class="shot-card-header">
+              <span class="shot-title">SHOT 1B | SCENE 1/2</span>
+              <span class="shot-tag">TOO PERFECT REJECT</span>
+            </div>
+            <div class="shot-image-box">
+              <img src="./assets/simple_scene2_masterpiece_1786388412812.jpg" alt="V3 Scene 2 Masterpiece">
+            </div>
+            <div class="shot-card-content">
+              <div class="shot-field">
+                <span class="field-label">CAMERA:</span>
+                <span class="field-value">Medium Close-up • Snap Zoom on Face</span>
+              </div>
+              <div class="shot-field">
+                <span class="field-label">ACTION:</span>
+                <span class="field-value">ลูกค้าชี้คลิปผลงานสวยกริ๊บไร้ที่ติ "งานพรีเมียมแบบนี้ผมไม่เอา!" แอบหันมามองกล้องทำหน้ายิ้มกวนสไตล์ Sitcom</span>
+              </div>
+              <div class="shot-field">
+                <span class="field-label">DIALOGUE/NOTES:</span>
+                <span class="field-value">"สวยเกินไปจนไม่มีจุดสังเกต! สั่งแก้ด่วน!" (Record Scratch SFX)</span>
+              </div>
+              <div class="shot-field">
+                <span class="field-label">JOKE & NARRATIVE:</span>
+                <span class="field-value">ลูกค้าตะโกน "ทำมาเพอร์เฟกต์ขนาดนี้ แล้วชั้นจะเอาอะไรไปสั่งแก้?!" กล้อง Snap Zoom ไวเข้าหน้าเก่ง เก่งหันมามองกล้อง ทำหน้าแห้งใส่คนดู (Break the 4th Wall)</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Shot 3 -->
+          <article class="shot-card">
+            <div class="shot-card-header">
+              <span class="shot-title">SHOT 2A | SCENE 1/3</span>
+              <span class="shot-tag">EDIT COUNTER 1000+</span>
+            </div>
+            <div class="shot-image-box">
+              <img src="./assets/simple_scene3_bad_edit_1786388471828.jpg" alt="V3 Scene 3 Bad Edit">
+            </div>
+            <div class="shot-card-content">
+              <div class="shot-field">
+                <span class="field-label">CAMERA:</span>
+                <span class="field-value">Over-the-shoulder • Edit Counter Focus</span>
+              </div>
+              <div class="shot-field">
+                <span class="field-label">ACTION:</span>
+                <span class="field-value">ทีมงานเปิดคลิปเละให้ดู ตัวเลขนับจำนวน Edit Counter พุ่งกระฉูดทะลุ 1,000 ครั้ง! ลูกค้ายิ้มกว้างชี้สั่งแก้เพิ่ม</span>
+              </div>
+              <div class="shot-field">
+                <span class="field-label">DIALOGUE/NOTES:</span>
+                <span class="field-value">"เออ!! แบบนี้ดิ! ย้ายโลโก้ทับหน้าคน แล้วขยายให้ใหญ่เท่าตึก!"</span>
+              </div>
+              <div class="shot-field">
+                <span class="field-label">JOKE & NARRATIVE:</span>
+                <span class="field-value">ทีมงานงัดไฟล์เละออกมา ลูกค้านั่งจิ้มสั่งแก้รัวๆ พี่นิคตบปุ่มแดง ปิ๊ด! มีป้ายแทร็กกิ้งนับ EDIT COUNT: +15 ยิ่งนับเยอะ ลูกค้ายิ่งถอนหายใจผ่อนคลายสบายใจ</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Shot 4 -->
+          <article class="shot-card">
+            <div class="shot-card-header">
+              <span class="shot-title">SHOT 2B | SCENE 1/4</span>
+              <span class="shot-tag">POST-CREDIT STINGER</span>
+            </div>
+            <div class="shot-image-box">
+              <img src="./assets/simple_scene4_relieved_1786388484201.jpg" alt="V3 Scene 4 Relieved">
+            </div>
+            <div class="shot-card-content">
+              <div class="shot-field">
+                <span class="field-label">CAMERA:</span>
+                <span class="field-value">Eye Level Medium • Post-Credit Stinger Tag</span>
+              </div>
+              <div class="shot-field">
+                <span class="field-label">ACTION:</span>
+                <span class="field-value">[Post-Credit Scene] ถอยกลับไปเอาดราฟต์แรกสุด!! ลูกค้าปิดจอคอม ถอนหายใจฟิน "งานนี้แหละเพอร์เฟกต์ที่สุด!" ทีมงานยิ้มแห้ง</span>
+              </div>
+              <div class="shot-field">
+                <span class="field-label">DIALOGUE/NOTES:</span>
+                <span class="field-value">"ถอยกลับไปเอาดราฟต์แรกดีกว่า! GHN168 ยินดีให้บริการครับ!"</span>
+              </div>
+              <div class="shot-field">
+                <span class="field-label">JOKE & NARRATIVE:</span>
+                <span class="field-value">[Post-Credit Scene] จอพับปิด โลโก้ขึ้น... แล้วตัดกลับมาอีก 5 วินาทีถัดมา ลูกค้าโผล่หัวเข้ามาในประตู ยิ้มแห้งๆ บอกว่า "น้องๆ... พอกลับไปดูคลิปที่เพิ่งสั่งแก้ไปเมื่อกี้... รู้สึกว่าเวอร์ชันแรกที่พวกน้องทำมาสวยๆ มันดีกว่าว่ะ! ขอถอยกลับไปเอาเวอร์ชันแรกนะ!" ทีมงานมองกล้อง ยิ้มแห้ง ถอนหายใจฟู่พร้อมกัน</span>
+              </div>
+            </div>
+          </article>
+
+        </main>
+      </div>
+
+      <!-- Page 1 Footer -->
+      <footer class="page-footer">
+        <span class="footer-left">GHN168 Commercial V3 (Mockumentary Comedy) — Storyboard Grid Sheet</span>
+        <span class="footer-right">PAGE 1 / 2</span>
+      </footer>
+    </div>
+
+
+    <!-- PAGE 2: PRODUCTION BREAKDOWN SHEET -->
+    <div class="page">
+      <div>
+        <!-- Page 2 Header -->
+        <header class="page-header">
+          <div class="header-top">
+            <div class="project-title-group">
+              <h1 class="project-name">GHN168 Commercial</h1>
+              <span class="project-subtitle">— V3 Production Breakdown (Mockumentary Comedy)</span>
+            </div>
+            <div class="page-number-badge">PAGE 2 OF 2</div>
+          </div>
+          <div class="header-grid">
+            <div class="meta-item">
+              <span class="meta-label">PROJECT</span>
+              <span class="meta-value">GHN168 Commercial V3</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">TONE & STYLE</span>
+              <span class="meta-value">Mockumentary / Sitcom Comedy</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">LIGHTING</span>
+              <span class="meta-value">Natural Office White / High Key</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">DATE</span>
+              <span class="meta-value">11 AUG 2026</span>
+            </div>
+          </div>
+        </header>
+
+        <!-- Production Breakdown Table -->
+        <main class="breakdown-container">
+          <table class="breakdown-table">
+            <thead>
+              <tr>
+                <th class="cell-shot">SHOT</th>
+                <th class="col-loc">LOCATION & SET</th>
+                <th class="col-cast">CAST</th>
+                <th class="col-props">PROPS</th>
+                <th class="col-wardrobe">WARDROBE</th>
+                <th class="col-camera">CAMERA & GEAR</th>
+                <th class="col-audio">AUDIO & SFX</th>
+                <th class="col-post">POST-PRODUCTION</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              <!-- Row 1: Shot 1A -->
+              <tr>
+                <td class="cell-shot">
+                  SHOT 1A
+                  <div class="cell-shot-sub">Scene 1/1</div>
+                </td>
+                <td>
+                  <span class="tag-mono">Interior</span>
+                  <div>ห้องประชุมออฟฟิศเอเจนซี่ บอร์ดผนัง Post-it สั่งแก้แน่นทับซ้อน, ประตูกระจกบานใหญ่</div>
+                </td>
+                <td>
+                  <strong>ลูกค้าสายสั่งแก้</strong>
+                  <div style="color: #475569; font-size: 9.5px; margin-top: 2px;">ชุดออฟฟิศเนี้ยบ หันมาสบตากล้อง</div>
+                </td>
+                <td>
+                  - โน้ตบุ๊กทรงหรู<br>
+                  - ซองเอกสารสัญญา<br>
+                  - ถ้วยกาแฟ "World's Best Client"
+                </td>
+                <td>
+                  ชุดสูทออฟฟิศสีกรมท่า เชิ้ตขาว ปลดกระดุมคอ 1 เม็ด
+                </td>
+                <td>
+                  <span class="tag-amber">Wide Handheld</span>
+                  <div>Quick Whip Pan to Camera<br>Lens: 35mm<br>Talking Head Style</div>
+                </td>
+                <td>
+                  - SFX เปิดประตูกระแทก<br>
+                  - Awkward Silence Sound Effect<br>
+                  - Voiceover สัมภาษณ์เดี่ยว
+                </td>
+                <td>
+                  - Insert Title Card: "THE OFFICE OF REVISION"<br>
+                  - Color Neutral Office White High Key
+                </td>
+              </tr>
+
+              <!-- Row 2: Shot 1B -->
+              <tr>
+                <td class="cell-shot">
+                  SHOT 1B
+                  <div class="cell-shot-sub">Scene 1/2</div>
+                </td>
+                <td>
+                  <span class="tag-mono">Interior</span>
+                  <div>โต๊ะประชุม หน้าจอคอมพิวเตอร์แสดงคลิปสวยกริ๊บเรียบหรู</div>
+                </td>
+                <td>
+                  <strong>ลูกค้า + ทีมงาน 2 คน</strong>
+                  <div style="color: #475569; font-size: 9.5px; margin-top: 2px;">ทีมงานยืนเหวอ ยิ้มแห้งๆ / ลูกค้าแอบสบตากล้อง</div>
+                </td>
+                <td>
+                  - โน้ตบุ๊กแสดงคลิปพรีเมียม<br>
+                  - ปากกาเคมีแดงวงสั่งแก้
+                </td>
+                <td>
+                  ทีมงานใส่ชุด Smart Casual ออฟฟิศพนักงานป่วนๆ
+                </td>
+                <td>
+                  <span class="tag-amber">Snap Zoom</span>
+                  <div>Medium Close-up<br>Snap Zoom on Face<br>Lens: 50mm Handheld</div>
+                </td>
+                <td>
+                  - Sound Effect แผ่นเสียงครูด (Record Scratch)<br>
+                  - เสียงจิ๊กปาก "ชึ้ก"
+                </td>
+                <td>
+                  - Fast Cut จังหวะสบตากล้อง<br>
+                  - Zoom In Speed 200% Punch-in Effect
+                </td>
+              </tr>
+
+              <!-- Row 3: Shot 2A -->
+              <tr>
+                <td class="cell-shot">
+                  SHOT 2A
+                  <div class="cell-shot-sub">Scene 1/3</div>
+                </td>
+                <td>
+                  <span class="tag-mono">Interior</span>
+                  <div>หน้าจอคอมแสดงคลิปเละ (โลโก้ใหญ่ทับหน้า) + เครื่องกดนับ Edit Counter</div>
+                </td>
+                <td>
+                  <strong>ลูกค้า + ทีมงาน 2 คน</strong>
+                  <div style="color: #475569; font-size: 9.5px; margin-top: 2px;">ลูกค้ายิ้มกว้างชี้จอ / ทีมงานเอามือกุมขมับ</div>
+                </td>
+                <td>
+                  - เครื่องกดนับจำนวน Edit Counter (เด้ง 0999 -> 1000)<br>
+                  - Post-it แปะแป้นพิมพ์ 100 แผ่น
+                </td>
+                <td>
+                  ชุดเดิมต่อเนื่อง
+                </td>
+                <td>
+                  <span class="tag-amber">Counter Focus</span>
+                  <div>Over-the-shoulder<br>Lens: 50mm<br>Focus Edit Counter</div>
+                </td>
+                <td>
+                  - SFX ปุ่มนับตัวเลข "ตึ๊กๆๆๆ"<br>
+                  - Sitcom Rimshot Comedy SFX (ตลึงตึงโป๊ะ)
+                </td>
+                <td>
+                  - Graphic Counter Overlay: Numbers 1000+<br>
+                  - Sound Pop Effects ทุกครั้งที่สั่งแก้
+                </td>
+              </tr>
+
+              <!-- Row 4: Shot 2B -->
+              <tr>
+                <td class="cell-shot">
+                  SHOT 2B
+                  <div class="cell-shot-sub">Scene 1/4</div>
+                </td>
+                <td>
+                  <span class="tag-mono">Interior</span>
+                  <div>ห้องประชุม อบอุ่น สว่างสดใส (Warm Key Light)</div>
+                </td>
+                <td>
+                  <strong>ลูกค้า + ทีมงาน 2 คน</strong>
+                  <div style="color: #475569; font-size: 9.5px; margin-top: 2px;">ลูกค้าถอนหายใจฟิน / ทีมงานยิ้มกว้างหัวเราะแห้ง</div>
+                </td>
+                <td>
+                  - โน้ตบุ๊กพับปิดเรียบร้อย<br>
+                  - ป้ายข้อความ "POST-CREDIT SCENE: BACK TO DRAFT 1"
+                </td>
+                <td>
+                  ชุดเดิมต่อเนื่อง
+                </td>
+                <td>
+                  <span class="tag-amber">Post-Credit Tag</span>
+                  <div>Eye Level Medium<br>Lens: 50mm<br>Static Setup</div>
+                </td>
+                <td>
+                  - SFX เสียงถอนหายใจฟิน "ฮ่าห์"<br>
+                  - Comedy Funny Ukulele Jingle ปิดท้าย
+                </td>
+                <td>
+                  - Post-Credit Stinger Banner Overlay<br>
+                  - Text Overlay: "GHN168 — สุดท้ายก็เอาดราฟต์แรกอยู่ดี!"
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
+        </main>
+      </div>
+
+      <!-- Page 2 Footer -->
+      <footer class="page-footer">
+        <span class="footer-left">GHN168 Commercial V3 (Mockumentary Comedy) — Production Breakdown Sheet</span>
+        <span class="footer-right">PAGE 2 / 2</span>
+      </footer>
+    </div>
+
+  </div>
+
+</body>
+</html>

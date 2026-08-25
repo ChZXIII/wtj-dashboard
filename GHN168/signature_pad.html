@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GHN168 Digital Signature Pad</title>
+    <style>
+        /* CSS Variables for CI Sunset Glow / Retro Brutalist Themes */
+        :root {
+            /* Default Dark Theme Settings (Sunset Glow) */
+            --bg-color: #181a1d;
+            --card-bg: #202327;
+            --border-color: #ffffff;
+            --btn-primary: #ff4500;
+            --text-color: #f1f5f9;
+            --text-muted: #94a3b8;
+            --solid-shadow: 4px 4px 0px 0px var(--border-color);
+            --solid-shadow-hover: 6px 6px 0px 0px var(--border-color);
+            --solid-shadow-active: 1px 1px 0px 0px var(--border-color);
+        }
+
+        [data-theme="light"] {
+            /* Light Theme Settings */
+            --bg-color: #f1f5f9;
+            --card-bg: #ffffff;
+            --border-color: #0f172a;
+            --btn-primary: #ff4500;
+            --text-color: #0f172a;
+            --text-muted: #475569;
+        }
+
+        /* Typography & Core Reset */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Inter', 'Prompt', 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            transition: background-color 0.25s ease, color 0.25s ease;
+        }
+
+        /* Load custom fonts when online, fallback automatically to system fonts when offline */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700&family=Prompt:wght@400;500;600;700&family=Share+Tech+Mono&display=swap');
+
+        /* Headings & Text Styling */
+        h1, h2, h3, h4 {
+            font-family: 'Outfit', 'Prompt', 'IBM Plex Sans Thai', sans-serif;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .mono {
+            font-family: 'Share Tech Mono', 'Courier New', monospace;
+        }
+
+        /* Wrapper & Layout */
+        .app-container {
+            width: 100%;
+            max-width: 820px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Top Header Control Area */
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 10px;
+        }
+
+        .brand-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-logo {
+            background-color: var(--btn-primary);
+            color: #ffffff;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 1.4rem;
+            padding: 6px 14px;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            box-shadow: 3px 3px 0px 0px var(--border-color);
+        }
+
+        .brand-title {
+            font-size: 1.15rem;
+            opacity: 0.95;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-sub {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: -2px;
+        }
+
+        /* Main Brutalist Card */
+        .main-card {
+            background-color: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: var(--solid-shadow);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        /* Tool Bar Grid Layout */
+        .tool-bar {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 16px;
+            align-items: end;
+        }
+
+        .tool-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .tool-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .control-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+        }
+
+        /* Styling buttons in Brutalist Design */
+        .brutal-btn {
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            box-shadow: 3px 3px 0px 0px var(--border-color);
+            transition: all 0.1s ease;
+            user-select: none;
+            outline: none;
+        }
+
+        .brutal-btn:hover {
+            transform: translate(-1px, -1px);
+            box-shadow: 4px 4px 0px 0px var(--border-color);
+        }
+
+        .brutal-btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 1px 1px 0px 0px var(--border-color);
+        }
+
+        .brutal-btn.active {
+            background-color: var(--text-color);
+            color: var(--card-bg);
+        }
+
+        .brutal-btn.btn-accent {
+            background-color: var(--btn-primary);
+            color: #ffffff;
+        }
+
+        /* Color Selection Buttons */
+        .color-picker-wrapper {
+            display: flex;
+            gap: 6px;
+        }
+
+        .color-picker {
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            cursor: pointer;
+            box-shadow: 2px 2px 0px 0px var(--border-color);
+            transition: all 0.1s ease;
+            position: relative;
+        }
+
+        .color-picker:hover {
+            transform: translate(-1px, -1px);
+            box-shadow: 3px 3px 0px 0px var(--border-color);
+        }
+
+        .color-picker:active {
+            transform: translate(1px, 1px);
+            box-shadow: 1px 1px 0px 0px var(--border-color);
+        }
+
+        .color-picker.active::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #ffffff;
+            border: 1px solid rgba(0, 0, 0, 0.5);
+        }
+
+        /* Slider Control */
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background-color: #faf8f5; /* สีสว่างกระดาษเพื่อให้กลืนกับสไลเดอร์ */
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 6px 12px;
+            min-height: 38px;
+            color: #0f172a; /* ข้อความบนสีครีมกระดาษเป็นสีเข้มเสมอ */
+        }
+
+        .slider-container input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 90px;
+            background: #cbd5e1;
+            height: 4px;
+            border-radius: 2px;
+            outline: none;
+        }
+
+        .slider-container input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--btn-primary);
+            border: 2px solid var(--border-color);
+            cursor: pointer;
+            box-shadow: 1px 1px 0px 0px var(--border-color);
+        }
+
+        /* Canvas Wrapper & Placement (Fixed Dimensions for Layout Stability) */
+        .canvas-area {
+            position: relative;
+            width: 100%;
+            max-width: 650px;
+            height: 320px;
+            margin: 0 auto;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: #faf8f5; /* ครีมกระดาษสว่างคงที่ */
+            touch-action: none; /* ป้องกัน scroll บนมือถือ */
+        }
+
+        #signature-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            cursor: crosshair;
+            z-index: 2;
+        }
+
+        /* Background Guides on Canvas (Always visible on fixed light background) */
+        .canvas-placeholder-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            z-index: 1;
+            user-select: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .canvas-placeholder-layer.hidden {
+            opacity: 0;
+        }
+
+        .canvas-guide-line {
+            width: 80%;
+            border-bottom: 2px dashed rgba(15, 23, 42, 0.12); /* สีประเข้มสำหรับพื้นหลังกระดาษ */
+            margin-top: 15px;
+            position: relative;
+        }
+
+        .canvas-guide-text {
+            color: rgba(15, 23, 42, 0.4); /* ข้อความเข้มพอดีสายตาบนพื้นสว่าง */
+            font-size: 1rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            text-align: center;
+        }
+
+        /* Operation Panel (Footer of Card) */
+        .bottom-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            border-top: 2px dashed rgba(15, 23, 42, 0.1);
+            padding-top: 20px;
+        }
+
+        .filename-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .brutal-input {
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            outline: none;
+            min-width: 160px;
+            box-shadow: 2px 2px 0px 0px var(--border-color);
+            transition: all 0.1s ease;
+        }
+
+        .brutal-input:focus {
+            transform: translate(-1px, -1px);
+            box-shadow: 3px 3px 0px 0px var(--border-color);
+        }
+
+        /* Theme Selector Switch */
+        .theme-switch-btn {
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            border-radius: 8px;
+        }
+
+        /* System Footer info */
+        .system-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            padding: 0 10px;
+        }
+
+        .system-footer a {
+            color: var(--btn-primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .system-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* ----------------------------------------------------
+           CSS Responsive & Mobile Layout Optimization
+           ---------------------------------------------------- */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .main-card {
+                padding: 16px;
+                gap: 16px;
+            }
+
+            .tool-bar {
+                grid-template-columns: 1fr;
+                gap: 16px;
+                align-items: stretch;
+            }
+
+            .control-row {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .tool-group {
+                width: 100%;
+            }
+
+            .color-picker-wrapper {
+                justify-content: space-between;
+                width: 100%;
+            }
+
+            .slider-container {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .slider-container input[type="range"] {
+                flex-grow: 1;
+                width: auto;
+            }
+
+            .canvas-area {
+                height: 260px; /* ลดความสูงลงเล็กน้อยเพื่อให้พอกับจอมือถือแนวตั้ง */
+            }
+
+            .bottom-actions {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+                padding-top: 16px;
+            }
+
+            .filename-group {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .brutal-input {
+                flex-grow: 1;
+            }
+
+            /* ปุ่มทั้งหมดใน bottom actions ของมือถือเรียงเป็นคอลัมน์ยืดเต็มจอ */
+            .bottom-actions .control-row {
+                flex-direction: column;
+                align-items: stretch;
+                width: 100%;
+                gap: 8px;
+            }
+
+            .bottom-actions .control-row button {
+                width: 100%;
+            }
+
+            .bottom-actions .control-row:last-child {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    
+    <!-- Header -->
+    <header class="app-header">
+        <div class="brand-section">
+            <div class="brand-logo">GHN</div>
+            <div class="brand-title">
+                <span>ลายเซ็นดิจิตอล</span>
+                <span class="brand-sub">GHN168 MEDIA SIGNATURE</span>
+            </div>
+        </div>
+        <button id="theme-toggle" class="brutal-btn theme-switch-btn" title="สลับธีม มืด/สว่าง">
+            <!-- Sun Icon (shown in dark theme) -->
+            <svg id="sun-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="4"></circle>
+                <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+            </svg>
+            <!-- Moon Icon (shown in light theme) -->
+            <svg id="moon-icon" style="display: none;" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+            </svg>
+        </button>
+    </header>
+
+    <!-- Main Working Card -->
+    <main class="main-card">
+        
+        <!-- Controls Bar -->
+        <div class="tool-bar">
+            <!-- Left Side: Color, Brush Size & Opacity controls -->
+            <div class="control-row" style="gap: 20px; flex-grow: 1;">
+                <div class="tool-group">
+                    <span class="tool-label">สีปากกา (Ink Color)</span>
+                    <div class="color-picker-wrapper">
+                        <!-- Navy/Blue -->
+                        <div class="color-picker active" style="background-color: #002fbe;" data-color="#002fbe" title="สีกรมท่าเอกสาร"></div>
+                        <!-- Black -->
+                        <div class="color-picker" style="background-color: #0f172a;" data-color="#0f172a" title="สีดำเข้ม"></div>
+                        <!-- Red -->
+                        <div class="color-picker" style="background-color: #dc2626;" data-color="#dc2626" title="สีแดงเข้ม"></div>
+                        <!-- Sunset Orange -->
+                        <div class="color-picker" style="background-color: #ff4500;" data-color="#ff4500" title="สีส้มซันเซ็ต"></div>
+                    </div>
+                </div>
+
+                <div class="tool-group">
+                    <span class="tool-label">ขนาดปากกา (Size)</span>
+                    <div class="slider-container">
+                        <input type="range" id="brush-size" min="1" max="20" value="4">
+                        <span id="brush-size-val" class="mono" style="min-width: 28px; font-weight: bold;">4px</span>
+                    </div>
+                </div>
+
+                <div class="tool-group">
+                    <span class="tool-label">ความทึบ (Opacity)</span>
+                    <div class="slider-container">
+                        <input type="range" id="brush-opacity" min="0.1" max="1.0" step="0.05" value="1.0">
+                        <span id="brush-opacity-val" class="mono" style="min-width: 35px; font-weight: bold;">100%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side: Mode Switch Pen vs Eraser -->
+            <div class="tool-group" style="align-self: end;">
+                <span class="tool-label">โหมดใช้งาน (Mode)</span>
+                <div class="control-row">
+                    <button id="mode-pen" class="brutal-btn active" title="ปากกา">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 20h9"></path>
+                            <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"></path>
+                        </svg>
+                        ปากกา
+                    </button>
+                    <button id="mode-eraser" class="brutal-btn" title="ยางลบ">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m7 21-4.3-4.3c-1-1-1-2.5 0-3.4l9.6-9.6c1-1 2.5-1 3.4 0l5.6 5.6c1 1 1 2.5 0 3.4L13 21Z"></path>
+                            <path d="M22 21H7"></path>
+                            <path d="m5 11 9 9"></path>
+                        </svg>
+                        ยางลบ
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Canvas Painting Area -->
+        <div class="canvas-area">
+            <!-- Hint Background layer -->
+            <div id="canvas-hint" class="canvas-placeholder-layer">
+                <span class="canvas-guide-text">เขียนลายเซ็นดิจิตอลตรงนี้</span>
+                <div class="canvas-guide-line"></div>
+                <span class="canvas-guide-text" style="font-size: 0.75rem; margin-top: 10px; opacity: 0.6;">(Touch / Mouse Supported)</span>
+            </div>
+            
+            <!-- Fixed resolution for drawing stability (650x320 scaled to 2x Retina = 1300x640) -->
+            <canvas id="signature-canvas" width="1300" height="640"></canvas>
+        </div>
+
+        <!-- Bottom Actions (Undo, Clear, Download) -->
+        <div class="bottom-actions">
+            <!-- Left Side: History Undo / Clear -->
+            <div class="control-row">
+                <button id="btn-undo" class="brutal-btn" title="ย้อนกลับการลากเส้นล่าสุด" disabled>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 7v6h6"></path>
+                        <path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"></path>
+                    </svg>
+                    ย้อนกลับ (Undo)
+                </button>
+                <button id="btn-clear" class="brutal-btn" title="ล้างกระดานวาดเขียนทั้งหมด">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 6h18"></path>
+                        <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                        <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                    </svg>
+                    ล้างกระดาน
+                </button>
+            </div>
+
+            <!-- Right Side: Filename and Export Buttons -->
+            <div class="control-row" style="margin-left: auto;">
+                <div class="filename-group">
+                    <span class="tool-label" style="margin-right: 2px;">ชื่อไฟล์:</span>
+                    <input type="text" id="file-name" class="brutal-input" value="sig_keng" placeholder="ชื่อไฟล์ปลายทาง">
+                </div>
+                
+                <button id="btn-save-transparent" class="brutal-btn btn-accent" title="บันทึกภาพพื้นหลังโปร่งแสงสำหรับซ้อนเอกสาร">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    เซฟแบบโปร่งแสง
+                </button>
+
+                <button id="btn-save-white" class="brutal-btn" title="บันทึกภาพถมพื้นหลังสีขาว">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    เซฟพื้นขาว
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer Area -->
+    <footer class="system-footer">
+        <div>สิทธิ์ของบริษัท จีเอชเอ็น 168 มีเดีย แอนด์ ครีเอชั่น จำกัด</div>
+        <div>โค้ดระบบคลีนเป็นมิตรโดย <a href="#" onclick="return false;">น้องคิว Coder Studio</a> ⚡</div>
+    </footer>
+
+</div>
+
+<script>
+    // ----------------------------------------------------
+    // 1. ระบบดักจับและยกเว้น Script error ปลอมจาก Browser Extensions
+    // ----------------------------------------------------
+    window.onerror = function (message, source, lineno, colno, error) {
+        if (message && (message.indexOf('Script error') > -1 || lineno === 0)) {
+            return true; // Ignore errors caused by local browser extensions
+        }
+        console.warn('Caught local error:', message, 'at line:', lineno);
+        return false;
+    };
+
+    // ----------------------------------------------------
+    // 2. ตัวแปรและอ้างอิง DOM Elements
+    // ----------------------------------------------------
+    const canvas = document.getElementById('signature-canvas');
+    const ctx = canvas.getContext('2d');
+    const canvasHint = document.getElementById('canvas-hint');
+    
+    // Sliders
+    const brushSizeSlider = document.getElementById('brush-size');
+    const brushSizeVal = document.getElementById('brush-size-val');
+    const brushOpacitySlider = document.getElementById('brush-opacity');
+    const brushOpacityVal = document.getElementById('brush-opacity-val');
+    
+    // Tools & Modes
+    const btnPen = document.getElementById('mode-pen');
+    const btnEraser = document.getElementById('mode-eraser');
+    const colorPickers = document.querySelectorAll('.color-picker');
+    
+    // Actions
+    const btnUndo = document.getElementById('btn-undo');
+    const btnClear = document.getElementById('btn-clear');
+    const btnSaveTransparent = document.getElementById('btn-save-transparent');
+    const btnSaveWhite = document.getElementById('btn-save-white');
+    const fileNameInput = document.getElementById('file-name');
+    
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const sunIcon = document.getElementById('sun-icon');
+    const moonIcon = document.getElementById('moon-icon');
+
+    // State Variables
+    let isDrawing = false;
+    let lastX = 0;
+    let lastY = 0;
+    let brushColor = '#002fbe'; // Default to Navy Blue
+    let brushSize = 4;
+    let brushOpacity = 1.0;
+    let isEraser = false;
+    
+    // Designed Logical Size of Canvas coordinates
+    const designWidth = 650;
+    const designHeight = 320;
+    
+    // Undo History Stack (stores data URLs of canvas state)
+    let historyStack = [];
+    const maxHistory = 30;
+
+    // ----------------------------------------------------
+    // 3. ฟังก์ชันเริ่มระบบและวาด (Canvas Logic)
+    // ----------------------------------------------------
+    function initCanvas() {
+        // Physical resolution size is pre-set on canvas attributes (1300x640)
+        // We set 2x scaling transform matrix so coordinates from design bounds (650x320) work perfectly
+        ctx.scale(2, 2);
+        
+        // Apply brush properties
+        updateBrushSettings();
+        
+        // Push initial empty state to stack
+        saveState();
+    }
+
+    function updateBrushSettings() {
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        
+        if (isEraser) {
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.strokeStyle = 'rgba(0,0,0,1)';
+            ctx.lineWidth = brushSize * 2.5; // Eraser slightly larger
+            ctx.globalAlpha = 1.0; // Eraser always deletes 100% opacity
+        } else {
+            ctx.globalCompositeOperation = 'source-over';
+            ctx.strokeStyle = brushColor;
+            ctx.lineWidth = brushSize;
+            ctx.globalAlpha = brushOpacity;
+        }
+    }
+
+    // ----------------------------------------------------
+    // 4. Pointer Events & Multi-device Coordinate Math
+    // ----------------------------------------------------
+    function getPointerPos(e) {
+        const rect = canvas.getBoundingClientRect();
+        
+        // Calculate dynamic scaling ratios between design dimensions and real CSS layouts
+        const scaleX = designWidth / rect.width;
+        const scaleY = designHeight / rect.height;
+        
+        return {
+            x: (e.clientX - rect.left) * scaleX,
+            y: (e.clientY - rect.top) * scaleY
+        };
+    }
+
+    canvas.addEventListener('pointerdown', (e) => {
+        e.preventDefault();
+        isDrawing = true;
+        
+        const pos = getPointerPos(e);
+        lastX = pos.x;
+        lastY = pos.y;
+        
+        // Hide overlay guide when drawing starts
+        canvasHint.classList.add('hidden');
+        
+        // Draw a tiny dot on down to support point clicks
+        ctx.beginPath();
+        ctx.moveTo(lastX, lastY);
+        ctx.lineTo(lastX, lastY);
+        ctx.stroke();
+    });
+
+    canvas.addEventListener('pointermove', (e) => {
+        if (!isDrawing) return;
+        e.preventDefault();
+        
+        const pos = getPointerPos(e);
+        
+        ctx.beginPath();
+        ctx.moveTo(lastX, lastY);
+        ctx.lineTo(pos.x, pos.y);
+        ctx.stroke();
+        
+        lastX = pos.x;
+        lastY = pos.y;
+    });
+
+    canvas.addEventListener('pointerup', () => {
+        if (isDrawing) {
+            isDrawing = false;
+            saveState();
+        }
+    });
+
+    canvas.addEventListener('pointercancel', () => {
+        if (isDrawing) {
+            isDrawing = false;
+            saveState();
+        }
+    });
+
+    // ----------------------------------------------------
+    // 5. Operations: Undo & Clear Logics
+    // ----------------------------------------------------
+    function saveState() {
+        if (historyStack.length >= maxHistory) {
+            historyStack.shift(); // Remove oldest state
+        }
+        historyStack.push(canvas.toDataURL());
+        updateUndoButton();
+    }
+
+    function updateUndoButton() {
+        btnUndo.disabled = (historyStack.length <= 1);
+    }
+
+    btnUndo.addEventListener('click', () => {
+        if (historyStack.length > 1) {
+            historyStack.pop(); // Remove current state
+            const previousStateURL = historyStack[historyStack.length - 1];
+            
+            const img = new Image();
+            img.src = previousStateURL;
+            img.onload = () => {
+                // Clear using logical scale size
+                ctx.clearRect(0, 0, designWidth, designHeight);
+                
+                // Store current brush global Alpha & GCO
+                const origAlpha = ctx.globalAlpha;
+                const origGCO = ctx.globalCompositeOperation;
+                
+                // Reset context temporarily to draw image without overlay transparency
+                ctx.globalAlpha = 1.0;
+                ctx.globalCompositeOperation = 'source-over';
+                
+                ctx.drawImage(img, 0, 0, designWidth, designHeight);
+                
+                // Restore settings
+                ctx.globalAlpha = origAlpha;
+                ctx.globalCompositeOperation = origGCO;
+            };
+        }
+        
+        if (historyStack.length <= 1) {
+            canvasHint.classList.remove('hidden');
+        }
+        
+        updateUndoButton();
+    });
+
+    btnClear.addEventListener('click', () => {
+        ctx.clearRect(0, 0, designWidth, designHeight);
+        
+        // Reset state stack
+        historyStack = [];
+        saveState();
+        
+        // Show guide placeholder text again
+        canvasHint.classList.remove('hidden');
+    });
+
+    // ----------------------------------------------------
+    // 6. Brush Controls & Event Handlers
+    // ----------------------------------------------------
+    // Slider Size changes
+    brushSizeSlider.addEventListener('input', (e) => {
+        brushSize = parseInt(e.target.value);
+        brushSizeVal.textContent = brushSize + 'px';
+        updateBrushSettings();
+    });
+
+    // Slider Opacity changes
+    brushOpacitySlider.addEventListener('input', (e) => {
+        brushOpacity = parseFloat(e.target.value);
+        brushOpacityVal.textContent = Math.round(brushOpacity * 100) + '%';
+        updateBrushSettings();
+    });
+
+    // Selecting Colors
+    colorPickers.forEach(picker => {
+        picker.addEventListener('click', (e) => {
+            // Remove active style from all pickers
+            colorPickers.forEach(p => p.classList.remove('active'));
+            
+            // Activate selected picker
+            e.currentTarget.classList.add('active');
+            
+            // Switch mode to Pen automatically
+            isEraser = false;
+            btnEraser.classList.remove('active');
+            btnPen.classList.add('active');
+            
+            brushColor = e.currentTarget.getAttribute('data-color');
+            updateBrushSettings();
+        });
+    });
+
+    // Toggle Modes (Pen / Eraser)
+    btnPen.addEventListener('click', () => {
+        isEraser = false;
+        btnEraser.classList.remove('active');
+        btnPen.classList.add('active');
+        updateBrushSettings();
+    });
+
+    btnEraser.addEventListener('click', () => {
+        isEraser = true;
+        btnPen.classList.remove('active');
+        btnEraser.classList.add('active');
+        updateBrushSettings();
+    });
+
+    // ----------------------------------------------------
+    // 7. Image Export Features (Transparent / White Background)
+    // ----------------------------------------------------
+    function triggerDownload(dataUrl, suffix) {
+        let name = fileNameInput.value.trim() || 'sig_keng';
+        // Sanitize file name from special characters
+        name = name.replace(/[^a-zA-Z0-9_\u0E00-\u0E7F-]/g, '');
+        
+        const link = document.createElement('a');
+        link.download = `${name}${suffix}.png`;
+        link.href = dataUrl;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+    // Export transparent PNG directly from canvas
+    btnSaveTransparent.addEventListener('click', () => {
+        const dataURL = canvas.toDataURL('image/png');
+        triggerDownload(dataURL, '_transparent');
+    });
+
+    // Export with a solid white background (using offscreen memory canvas)
+    btnSaveWhite.addEventListener('click', () => {
+        const offscreenCanvas = document.createElement('canvas');
+        offscreenCanvas.width = canvas.width;
+        offscreenCanvas.height = canvas.height;
+        const offCtx = offscreenCanvas.getContext('2d');
+        
+        // Draw solid white background
+        offCtx.fillStyle = '#ffffff';
+        offCtx.fillRect(0, 0, offscreenCanvas.width, offscreenCanvas.height);
+        
+        // Draw main canvas graphics on top
+        offCtx.drawImage(canvas, 0, 0);
+        
+        const dataURL = offscreenCanvas.toDataURL('image/png');
+        triggerDownload(dataURL, '_white');
+    });
+
+    // ----------------------------------------------------
+    // 8. Theme Switcher Logic (Solid Shadow Sync)
+    // ----------------------------------------------------
+    function setTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('ghn-sig-theme', theme);
+        
+        if (theme === 'light') {
+            sunIcon.style.display = 'none';
+            moonIcon.style.display = 'block';
+        } else {
+            sunIcon.style.display = 'block';
+            moonIcon.style.display = 'none';
+        }
+    }
+
+    themeToggle.addEventListener('click', () => {
+        const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+        const nextTheme = (currentTheme === 'dark') ? 'light' : 'dark';
+        setTheme(nextTheme);
+    });
+
+    // Initialize Theme and Canvas on Load
+    window.addEventListener('DOMContentLoaded', () => {
+        // Load theme preference or fall back to system preference
+        const savedTheme = localStorage.getItem('ghn-sig-theme');
+        if (savedTheme) {
+            setTheme(savedTheme);
+        } else {
+            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            setTheme(systemPrefersDark ? 'dark' : 'light');
+        }
+        
+        initCanvas();
+    });
+</script>
+</body>
+</html>

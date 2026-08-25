@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GHN168 Storyboard Master Hub - 3 Versions Commercial</title>
+  <!-- Google Fonts: Outfit, Prompt, IBM Plex Sans Thai -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0f172a;
+      --bg-card: #1e293b;
+      --border-color: #334155;
+      --text-light: #f8fafc;
+      --text-muted: #94a3b8;
+      --v1-color: #ef4444;
+      --v2-color: #db2777;
+      --v3-color: #f59e0b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Prompt', 'IBM Plex Sans Thai', 'Outfit', sans-serif;
+      background-color: #090d16;
+      color: var(--text-light);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Master Top Header */
+    .master-header {
+      background: var(--bg-dark);
+      border-bottom: 1px solid var(--border-color);
+      padding: 16px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .master-brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .master-logo-icon {
+      width: 36px;
+      height: 36px;
+      background: #2563eb;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+    }
+
+    .master-title-group h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: #ffffff;
+    }
+
+    .master-title-group p {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* Tab Controls */
+    .master-tabs {
+      display: flex;
+      background-color: #020617;
+      padding: 4px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      gap: 4px;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-family: 'Prompt', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .tab-btn.active {
+      color: #ffffff;
+      background: var(--bg-card);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .tab-btn.active[data-target="v1"] {
+      border-bottom: 2px solid var(--v1-color);
+    }
+    .tab-btn.active[data-target="v2"] {
+      border-bottom: 2px solid var(--v2-color);
+    }
+    .tab-btn.active[data-target="v3"] {
+      border-bottom: 2px solid var(--v3-color);
+    }
+
+    /* Toolbar for active preview */
+    .preview-toolbar {
+      background: #020617;
+      border-bottom: 1px solid var(--border-color);
+      padding: 10px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .toolbar-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .status-badge {
+      font-family: 'Outfit', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 4px;
+      letter-spacing: 0.5px;
+    }
+
+    .badge-v1 { background: #b91c1c; color: #ffffff; }
+    .badge-v2 { background: #db2777; color: #ffffff; }
+    .badge-v3 { background: #d97706; color: #ffffff; }
+
+    .toolbar-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #ffffff;
+    }
+
+    .toolbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-card);
+      color: #ffffff;
+      border: 1px solid var(--border-color);
+      padding: 7px 14px;
+      border-radius: 6px;
+      font-family: 'Prompt', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    .btn-action:hover {
+      background: #334155;
+    }
+
+    .btn-action-primary {
+      background: #2563eb;
+      border-color: #2563eb;
+    }
+
+    .btn-action-primary:hover {
+      background: #1d4ed8;
+    }
+
+    /* Main Display Area */
+    .main-viewport {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    /* Overview Hub Grid */
+    .overview-container {
+      padding: 32px 28px;
+      max-width: 1300px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .overview-hero {
+      margin-bottom: 28px;
+      text-align: center;
+    }
+
+    .overview-hero h2 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 6px;
+    }
+
+    .overview-hero p {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .versions-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .version-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .version-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    .version-card-header {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .version-card-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .version-card-preview {
+      width: 100%;
+      height: 180px;
+      background: #000;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .version-card-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .version-card-body {
+      padding: 16px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .version-desc {
+      font-size: 13px;
+      color: #cbd5e1;
+      line-height: 1.5;
+    }
+
+    .specs-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      background: #0f172a;
+      padding: 10px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+    }
+
+    .spec-item {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .spec-key {
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .spec-val {
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    .version-card-actions {
+      padding: 14px 16px;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      gap: 10px;
+      background: #0f172a;
+    }
+
+    .version-card-actions .btn-action {
+      flex: 1;
+      justify-content: center;
+    }
+
+    /* Iframe Frame View */
+    .iframe-container {
+      width: 100%;
+      height: calc(100vh - 125px);
+      border: none;
+      background: #0b0f19;
+      display: none;
+    }
+
+    .iframe-container.active {
+      display: block;
+    }
+
+    /* Print Hide Rules */
+    @media print {
+      .master-header, .preview-toolbar, .overview-container {
+        display: none !important;
+      }
+      .iframe-container {
+        display: block !important;
+        height: 100% !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Master Top Header -->
+  <header class="master-header">
+    <div class="master-brand">
+      <div class="master-logo-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect>
+          <line x1="7" y1="2" x2="7" y2="22"></line>
+          <line x1="17" y1="2" x2="17" y2="22"></line>
+          <line x1="2" y1="12" x2="22" y2="12"></line>
+          <line x1="2" y1="7" x2="7" y2="7"></line>
+          <line x1="2" y1="17" x2="7" y2="17"></line>
+          <line x1="17" y1="17" x2="22" y2="17"></line>
+          <line x1="17" y1="7" x2="22" y2="7"></line>
+        </svg>
+      </div>
+      <div class="master-title-group">
+        <h1>GHN168 Commercial Master Hub</h1>
+        <p>ศูนย์รวมไฟล์พิมพ์ A4 สตอรี่บอร์ดและแผ่นเบรกลงรายละเอียดการถ่ายทำ 3 เวอร์ชัน</p>
+      </div>
+    </div>
+
+    <nav class="master-tabs">
+      <button class="tab-btn active" data-target="overview" onclick="switchTab('overview')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7"></rect>
+          <rect x="14" y="3" width="7" height="7"></rect>
+          <rect x="14" y="14" width="7" height="7"></rect>
+          <rect x="3" y="14" width="7" height="7"></rect>
+        </svg>
+        Overview (ศูนย์รวม)
+      </button>
+      <button class="tab-btn" data-target="v1" onclick="switchTab('v1')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+        </svg>
+        V1: Action-Thriller
+      </button>
+      <button class="tab-btn" data-target="v2" onclick="switchTab('v2')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+          <path d="M2 17l10 5 10-5"></path>
+          <path d="M2 12l10 5 10-5"></path>
+        </svg>
+        V2: The Thai Soap Opera
+      </button>
+      <button class="tab-btn" data-target="v3" onclick="switchTab('v3')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polygon points="10 8 16 12 10 16 10 8"></polygon>
+        </svg>
+        V3: Mockumentary Comedy
+      </button>
+    </nav>
+  </header>
+
+  <!-- Toolbar (visible when previewing specific version) -->
+  <div id="preview-toolbar" class="preview-toolbar" style="display: none;">
+    <div class="toolbar-info">
+      <span id="active-badge" class="status-badge badge-v1">VERSION 1</span>
+      <span id="active-title" class="toolbar-title">Action-Thriller Hollywood Style</span>
+    </div>
+    <div class="toolbar-actions">
+      <button class="btn-action" onclick="openActiveNewTab()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+          <polyline points="15 3 21 3 21 9"></polyline>
+          <line x1="10" y1="14" x2="21" y2="3"></line>
+        </svg>
+        เปิดในแท็บใหม่ (Open Standalone)
+      </button>
+      <button class="btn-action btn-action-primary" onclick="printActiveIframe()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 6 2 18 2 18 9"></polyline>
+          <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+          <rect x="6" y="14" width="12" height="8"></rect>
+        </svg>
+        สั่งพิมพ์ A4 / Save PDF
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Viewport Area -->
+  <main class="main-viewport">
+
+    <!-- OVERVIEW VIEW -->
+    <div id="overview-view" class="overview-container">
+      <div class="overview-hero">
+        <h2>สตอรี่บอร์ด & แผ่นเบรกลงรายละเอียดการถ่ายทำ GHN168 (3 เวอร์ชัน)</h2>
+        <p>เลือกรบชมพรีวิวแบบเต็มหน้ากระดาษ หรือคลิกสั่งพิมพ์ไฟล์ A4 พอดี 2 หน้ากระดาษแยกตามเวอร์ชัน</p>
+      </div>
+
+      <div class="versions-grid">
+
+        <!-- Card 1: Action-Thriller -->
+        <article class="version-card">
+          <div class="version-card-header">
+            <span class="version-card-title">Version 1: Action-Thriller</span>
+            <span class="status-badge badge-v1">ACTION</span>
+          </div>
+          <div class="version-card-preview">
+            <img src="./assets/v1_scene1_entry_1786417192944.jpg" alt="V1 Preview">
+          </div>
+          <div class="version-card-body">
+            <p class="version-desc">
+              สไตล์หนังระทึกขวัญฮอลลีวูด ควันสโมกฟุ้ง ประตูเปิดปั้ง! Dolly Zoom ซูมหน้าเหวอสุดระทึก ชี้งานเนี้ยบเกินไปจนไม่มีมิติ ก่อนหักมุม Twist เสียบแฟลชไดรฟ์ทองคำ DRAFT 1 PUAD-HUAD
+            </p>
+            <div class="specs-list">
+              <div class="spec-item">
+                <span class="spec-key">SHOT 1A:</span>
+                <span class="spec-val">ถือคอมเข้ามาข่มขวัญดั่งคดีฆาตกรรม</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-key">SHOT 1B:</span>
+                <span class="spec-val">ด่างานเนี้ยบเกิน "คิดจะฆ่ากันรึไง?!"</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-key">SHOT 2A:</span>
+                <span class="spec-val">เฉลยอึดอัดเพราะไม่ได้กดสั่งแก้</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-key">SHOT 2B:</span>
+                <span class="spec-val">เสียบ Gold USB DRAFT 1 PUAD-HUAD</span>
+              </div>
+            </div>
+          </div>
+          <div class="version-card-actions">
+            <button class="btn-action" onclick="switchTab('v1')">ดูพรีวิว</button>
+            <button class="btn-action btn-action-primary" onclick="openAndPrint('ghn168_storyboard_v1_thriller.html')">พิมพ์ A4</button>
+          </div>
+        </article>
+
+        <!-- Card 2: The Thai Soap Opera -->
+        <article class="version-card">
+          <div class="version-card-header">
+            <span class="version-card-title">Version 2: The Thai Soap Opera</span>
+            <span class="status-badge badge-v2">SOAP OPERA</span>
+          </div>
+          <div class="version-card-preview">
+            <img src="./assets/v2_soap1_kneel_1786418880557.jpg" alt="V2 Preview">
+          </div>
+          <div class="version-card-body">
+            <p class="version-desc">
+              สไตล์ดราม่าละครหลังข่าว คุกเข่าลงบนพื้นออฟฟิศ ร้องไห้สะอื้นปานจะขาดใจ ยื่นโน้ตบุ๊กอ้อนวอนขอสั่งแก้ ทีมงานซาบซึ้งจนน้ำตาคลอยื่นแฟลชไดรฟ์ดราฟต์เละให้ ปัดน้ำตายิ้มกว้างกอดคอมแน่นสมใจ
+            </p>
+            <div class="specs-list">
+              <div class="spec-item">
+                <span class="spec-key">SHOT 1A:</span>
+                <span class="spec-val">คุกเข่าลงบนพื้นออฟฟิศ ร้องไห้สะอื้น</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-key">SHOT 1B:</span>
+                <span class="spec-val">ตะโกนร้องไห้ "ทำไมต้องตัดมาดีขนาดนี้?!"</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-key">SHOT 2A:</span>
+                <span class="spec-val">ทีมงานซาบซึ้งยื่นแฟลชไดรฟ์ดราฟต์เละให้</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-key">SHOT 2B:</span>
+                <span class="spec-val">ปัดน้ำตายิ้มกว้างกอดคอม สั่งแก้ทับหน้าคน</span>
+              </div>
+            </div>
+          </div>
+          <div class="version-card-actions">
+            <button class="btn-action" onclick="switchTab('v2')">ดูพรีวิว</button>
+            <button class="btn-action btn-action-primary" onclick="openAndPrint('ghn168_storyboard_v2_soapopera.html')">พิมพ์ A4</button>
+          </div>
+        </article>
+
+        <!-- Card 3: Mockumentary Comedy -->
+        <article class="version-card">
+          <div class="version-card-header">
+            <span class="version-card-title">Version 3: Mockumentary</span>
+            <span class="status-badge badge-v3">COMEDY</span>
+          </div>
+          <div class="version-card-preview">
+            <img src="./assets/simple_scene1_entry_1786388399304.jpg" alt="V3 Preview">
+          </div>
+          <div class="version-card-body">
+            <p class="version-desc">
+              สไตล์ตลกสัมภาษณ์หันมองกล้อง (The Office Style) ชี้คลิปสวยกริ๊บแต่ไม่ชอบ สั่งแก้รัวๆ จน Edit Counter พุ่งทะลุ 1,000 ครั้ง พร้อมฉากแถมท้ายเครดิตถอยกลับไปเอาดราฟต์แรก!
+            </p>
+            <div class="specs-list">
+              <div class="spec-item">
+                <span class="spec-key">SHOT 1A:</span>
+                <span class="spec-val">สไตล์ The Office แปะเงื่อนไขลงโต๊ะ</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-key">SHOT 1B:</span>
+                <span class="spec-val">Snap Zoom หน้าเก่งหันมองกล้อง</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-key">SHOT 2A:</span>
+                <span class="spec-val">ตบปุ่มนับ EDIT COUNT: +15</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-key">SHOT 2B:</span>
+                <span class="spec-val">Post-Credit ถอยกลับไปเอาดราฟต์แรก</span>
+              </div>
+            </div>
+          </div>
+          <div class="version-card-actions">
+            <button class="btn-action" onclick="switchTab('v3')">ดูพรีวิว</button>
+            <button class="btn-action btn-action-primary" onclick="openAndPrint('ghn168_storyboard_v3_mockumentary.html')">พิมพ์ A4</button>
+          </div>
+        </article>
+
+      </div>
+    </div>
+
+    <!-- PREVIEW IFRAME VIEW -->
+    <iframe id="preview-iframe" class="iframe-container" src=""></iframe>
+
+  </main>
+
+  <script>
+    const versionConfig = {
+      v1: {
+        title: "Version 1: Action-Thriller Hollywood Style",
+        file: "ghn168_storyboard_v1_thriller.html",
+        badgeText: "VERSION 1",
+        badgeClass: "badge-v1"
+      },
+      v2: {
+        title: "Version 2: The Thai Soap Opera (ดราม่าละครหลังข่าว คุกเข่าอ้อนวอน)",
+        file: "ghn168_storyboard_v2_soapopera.html",
+        badgeText: "VERSION 2",
+        badgeClass: "badge-v2"
+      },
+      v3: {
+        title: "Version 3: Mockumentary Comedy + Post-Credit Scene",
+        file: "ghn168_storyboard_v3_mockumentary.html",
+        badgeText: "VERSION 3",
+        badgeClass: "badge-v3"
+      }
+    };
+
+    let currentTarget = "overview";
+
+    function switchTab(target) {
+      currentTarget = target;
+
+      // Update active tab buttons
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        if (btn.getAttribute('data-target') === target) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+
+      const overviewView = document.getElementById('overview-view');
+      const iframe = document.getElementById('preview-iframe');
+      const toolbar = document.getElementById('preview-toolbar');
+
+      if (target === 'overview') {
+        overviewView.style.display = 'block';
+        iframe.classList.remove('active');
+        iframe.src = '';
+        toolbar.style.display = 'none';
+      } else {
+        overviewView.style.display = 'none';
+        iframe.classList.add('active');
+        const config = versionConfig[target];
+        if (iframe.src !== config.file) {
+          iframe.src = config.file;
+        }
+
+        // Update toolbar info
+        document.getElementById('active-title').innerText = config.title;
+        const badge = document.getElementById('active-badge');
+        badge.innerText = config.badgeText;
+        badge.className = `status-badge ${config.badgeClass}`;
+        toolbar.style.display = 'flex';
+      }
+    }
+
+    function printActiveIframe() {
+      const iframe = document.getElementById('preview-iframe');
+      if (iframe && iframe.contentWindow) {
+        iframe.contentWindow.focus();
+        iframe.contentWindow.print();
+      }
+    }
+
+    function openActiveNewTab() {
+      if (currentTarget && versionConfig[currentTarget]) {
+        window.open(versionConfig[currentTarget].file, '_blank');
+      }
+    }
+
+    function openAndPrint(filePath) {
+      const win = window.open(filePath, '_blank');
+      if (win) {
+        win.onload = function() {
+          win.print();
+        };
+      }
+    }
+  </script>
+</body>
+</html>
