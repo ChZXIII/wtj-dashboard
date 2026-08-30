@@ -3,11 +3,19 @@
 GHN168 Advanced Features Test Script
 """
 
+import os
+import sys
+from pathlib import Path
+
+# Ensure workspace root is on sys.path
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
 import base64
 import hashlib
 import hmac
 import json
 import time
+from unittest.mock import MagicMock, patch
 import requests
 
 try:
@@ -17,6 +25,41 @@ try:
     USE_TEST_CLIENT = True
 except Exception:
     USE_TEST_CLIENT = False
+
+# Setup Mock Protection for requests.post to avoid any production pollution
+if USE_TEST_CLIENT:
+    _patcher = patch("requests.post")
+    _mock_post = _patcher.start()
+
+    def _mock_post_handler(url, json=None, **kwargs):
+        mock_res = MagicMock()
+        mock_res.status_code = 200
+        payload = json or {}
+        req_type = payload.get("type", "")
+        if req_type == "read":
+            sheet_name = payload.get("sheetName")
+            from ghn168_sync_service import get_simulated_sheet_data
+            mock_data = get_simulated_sheet_data(sheet_name)
+            mock_res.json.return_value = {
+                "status": "success",
+                "values": mock_data.get("values", [])
+            }
+        elif req_type in ["sync", "overwrite"]:
+            mock_res.json.return_value = {
+                "status": "success",
+                "message": f"Mocked safe {req_type} to Google Sheets"
+            }
+        elif req_type in ["upload_html", "upload_pdf_base64", "upload_pdf", "upload_only"]:
+            mock_res.json.return_value = {
+                "status": "success",
+                "pdfUrl": "https://drive.google.com/mock_all_features_doc.pdf",
+                "message": "Mocked upload success"
+            }
+        else:
+            mock_res.json.return_value = {"status": "success", "message": "Mocked generic response"}
+        return mock_res
+
+    _mock_post.side_effect = _mock_post_handler
 
 BASE_URL = "http://127.0.0.1:8000"
 CHANNEL_SECRET = "ecdaa1e4e2d9d58dfce70db8070df072"
@@ -123,9 +166,13 @@ def test_multi_turn_session():
 
 
 if __name__ == "__main__":
-    test_group_chat_no_trigger()
-    test_group_chat_with_trigger()
-    test_multi_turn_session()
-    print("==================================================")
-    print("🎉 ALL ADVANCED FEATURES VERIFIED SUCCESSFULLY! 🎉")
-    print("==================================================")
+    try:
+        test_group_chat_no_trigger()
+        test_group_chat_with_trigger()
+        test_multi_turn_session()
+        print("==================================================")
+        print("🎉 ALL ADVANCED FEATURES VERIFIED SUCCESSFULLY! 🎉")
+        print("==================================================")
+    finally:
+        if USE_TEST_CLIENT:
+            _patcher.stop()

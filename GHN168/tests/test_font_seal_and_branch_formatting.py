@@ -14,6 +14,9 @@ import sys
 import unittest
 from pathlib import Path
 
+# Ensure project root is on sys.path
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
 from document_template_engine import (
     format_company_name_with_branch,
     render_document_html,
@@ -28,7 +31,7 @@ class TestDocumentStylingAndFormatting(unittest.TestCase):
     """Test suite for document typography, seal sizing, and branch/tax formatting."""
 
     def setUp(self):
-        self.base_dir = Path(__file__).parent
+        self.base_dir = Path(__file__).resolve().parent.parent
         self.index_html_path = self.base_dir / "index.html"
         self.app_js_path = self.base_dir / "app.js"
         self.doc_engine_path = self.base_dir / "document_template_engine.py"

@@ -1,3 +1,10 @@
+import os
+import sys
+from pathlib import Path
+
+# Ensure workspace root is on sys.path
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
 import base64
 import hashlib
 import hmac
@@ -5,6 +12,7 @@ import json
 import os
 import sys
 import time
+from unittest.mock import MagicMock, patch
 import requests
 
 # Use FastAPI TestClient for standalone execution, fallback to requests if needed
@@ -15,6 +23,41 @@ try:
     USE_TEST_CLIENT = True
 except Exception:
     USE_TEST_CLIENT = False
+
+# Setup Mock Protection for requests.post to avoid any production pollution
+if USE_TEST_CLIENT:
+    _patcher = patch("requests.post")
+    _mock_post = _patcher.start()
+
+    def _mock_post_handler(url, json=None, **kwargs):
+        mock_res = MagicMock()
+        mock_res.status_code = 200
+        payload = json or {}
+        req_type = payload.get("type", "")
+        if req_type == "read":
+            sheet_name = payload.get("sheetName")
+            from ghn168_sync_service import get_simulated_sheet_data
+            mock_data = get_simulated_sheet_data(sheet_name)
+            mock_res.json.return_value = {
+                "status": "success",
+                "values": mock_data.get("values", [])
+            }
+        elif req_type in ["sync", "overwrite"]:
+            mock_res.json.return_value = {
+                "status": "success",
+                "message": f"Mocked safe {req_type} to Google Sheets"
+            }
+        elif req_type in ["upload_html", "upload_pdf_base64", "upload_pdf", "upload_only"]:
+            mock_res.json.return_value = {
+                "status": "success",
+                "pdfUrl": "https://drive.google.com/mock_line_bot_doc.pdf",
+                "message": "Mocked upload success"
+            }
+        else:
+            mock_res.json.return_value = {"status": "success", "message": "Mocked generic response"}
+        return mock_res
+
+    _mock_post.side_effect = _mock_post_handler
 
 BASE_URL = "http://127.0.0.1:8000"
 CHANNEL_SECRET = os.getenv("LINE_CHANNEL_SECRET", "ecdaa1e4e2d9d58dfce70db8070df072")
@@ -229,17 +272,21 @@ def test_customer_database_intent_and_separation():
     print("✅ Customer database query & strict partner separation test passed!\n")
 
 if __name__ == "__main__":
-    test_health()
-    test_ghn168_corporate_chat()
-    test_strict_multi_turn_document_verification()
-    test_privacy_boundary()
-    test_customer_database_intent_and_separation()
-    test_pronoun_and_member_addressing()
-    test_external_client_addressing()
-    test_webhook_invalid_sig()
-    test_webhook_valid_sig()
-    print("==========================================")
-    print("🎉 ALL GHN168 ASSISTANT TESTS PASSED!")
-    print("==========================================")
+    try:
+        test_health()
+        test_ghn168_corporate_chat()
+        test_strict_multi_turn_document_verification()
+        test_privacy_boundary()
+        test_customer_database_intent_and_separation()
+        test_pronoun_and_member_addressing()
+        test_external_client_addressing()
+        test_webhook_invalid_sig()
+        test_webhook_valid_sig()
+        print("==========================================")
+        print("🎉 ALL GHN168 ASSISTANT TESTS PASSED!")
+        print("==========================================")
+    finally:
+        if USE_TEST_CLIENT:
+            _patcher.stop()
 
 

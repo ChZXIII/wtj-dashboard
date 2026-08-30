@@ -13,6 +13,14 @@ Test Coverage:
 ================================================================================
 """
 
+import os
+import sys
+from pathlib import Path
+
+# Ensure workspace root is on sys.path
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
+import json
 import sys
 import unittest
 from unittest.mock import MagicMock, patch
@@ -28,6 +36,9 @@ from ghn168_sync_service import (
 )
 from line_bot_server import (
     app,
+    GEMINI_AGENT_TOOL_DECLARATIONS,
+    execute_agent_tool,
+    is_save_customer_request,
     PENDING_DOCUMENT_ORDERS,
     PENDING_NEW_CUSTOMER_SAVING,
     merge_document_order_data,
@@ -582,6 +593,71 @@ class TestSmartCustomerDatabase(unittest.TestCase):
         self.assertIn("นาย มงคล วงศ์สกุลยานนท์", rendered_html)
         self.assertIn("19,260.00", rendered_html)
         print("✅ Test 15 Passed: Conversational one-shot issuing with full data rendering verified 100%.")
+
+    def test_16_agent_tool_save_customer_to_database(self):
+        """Verify executing backend execute_agent_tool for 'save_customer_to_database'."""
+        customer_args = {
+            "customer_name": "บริษัท ดอยคำ มีเดีย กรุ๊ป จำกัด",
+            "tax_id": "0505567889999",
+            "branch": "00000",
+            "address": "99 หมู่ 2 ต.สุเทพ อ.เมือง จ.เชียงใหม่ 50200",
+            "phone": "089-123-4567",
+            "email": "doikham.media@gmail.com",
+            "contact_person": "คุณสุรชัย",
+            "remarks": "ลูกค้าประจำงานโปรดักชั่น"
+        }
+        res_data, flex_card = execute_agent_tool("save_customer_to_database", customer_args, "session_cust_test_16")
+
+        self.assertEqual(res_data.get("status"), "success")
+        self.assertEqual(res_data.get("customer_name"), "บริษัท ดอยคำ มีเดีย กรุ๊ป จำกัด")
+        self.assertEqual(res_data.get("tax_id"), "0505567889999")
+        self.assertEqual(res_data.get("branch"), "00000")
+        self.assertEqual(res_data.get("phone"), "089-123-4567")
+        self.assertTrue(str(res_data.get("customer_id", "")).startswith("CUST-"))
+
+        # Verify LINE Flex Message Card
+        self.assertIsNotNone(flex_card)
+        self.assertEqual(flex_card["type"], "flex")
+        self.assertIn("GHN168 CUSTOMER DATABASE", json.dumps(flex_card, ensure_ascii=False))
+        self.assertIn("บริษัท ดอยคำ มีเดีย กรุ๊ป จำกัด", json.dumps(flex_card, ensure_ascii=False))
+        self.assertIn("0505567889999", json.dumps(flex_card, ensure_ascii=False))
+        print("✅ Test 16 Passed: Agent Tool 'save_customer_to_database' execution & Flex card verified 100%.")
+
+    def test_17_save_customer_declaration_and_schema(self):
+        """Verify save_customer_to_database tool declaration in GEMINI_AGENT_TOOL_DECLARATIONS."""
+        decl = next((d for d in GEMINI_AGENT_TOOL_DECLARATIONS if d["name"] == "save_customer_to_database"), None)
+        self.assertIsNotNone(decl, "Tool 'save_customer_to_database' MUST be declared in GEMINI_AGENT_TOOL_DECLARATIONS")
+        self.assertIn("customer_name", decl["parameters"]["properties"])
+        self.assertIn("tax_id", decl["parameters"]["properties"])
+        self.assertIn("branch", decl["parameters"]["properties"])
+        self.assertIn("address", decl["parameters"]["properties"])
+        self.assertIn("phone", decl["parameters"]["properties"])
+        self.assertIn("customer_name", decl["parameters"]["required"])
+        print("✅ Test 17 Passed: Tool Declaration 'save_customer_to_database' schema verified 100%.")
+
+    def test_18_direct_chat_save_customer_command(self):
+        """Verify natural language chat command for saving a customer."""
+        session_id = "test_chat_save_cust_18"
+        msg = "บันทึกข้อมูลลูกค้า บริษัท สยามมีเดีย จำกัด เลขผู้เสียภาษี 0505567009999 ที่อยู่ เชียงใหม่ โทร 0812345678"
+        
+        is_save, cust_dict = is_save_customer_request(msg)
+        self.assertTrue(is_save)
+        self.assertIsNotNone(cust_dict)
+        self.assertIn("บริษัท สยามมีเดีย จำกัด", cust_dict["customer_name"])
+        self.assertEqual(cust_dict["tax_id"], "0505567009999")
+        self.assertEqual(cust_dict["phone"], "0812345678")
+
+        payload = {
+            "session_id": session_id,
+            "message": msg
+        }
+        res = self.client.post("/api/test_chat", json=payload)
+        self.assertEqual(res.status_code, 200)
+        data = res.json()
+        reply_text = data.get("reply", "")
+        self.assertIn("บันทึกข้อมูลลูกค้า", reply_text)
+        self.assertIn("บริษัท สยามมีเดีย จำกัด", reply_text)
+        print("✅ Test 18 Passed: Direct Chat save customer command & execution verified 100%.")
 
 
 if __name__ == "__main__":

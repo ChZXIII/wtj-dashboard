@@ -7,14 +7,86 @@ Author: Q (น้องคิว - Lead Backend Developer, ChZ Agent Corp)
 ================================================================================
 """
 
+import os
+import sys
 import unittest
+from datetime import datetime
 from unittest.mock import patch, MagicMock
 
-from sync_receipt_re2608_001 import (
-    RECEIPT_RE2608_001_DATA,
-    build_receipt_row,
-    sync_receipt_re2608_001,
+# Ensure workspace is on sys.path
+WORKSPACE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if WORKSPACE_DIR not in sys.path:
+    sys.path.insert(0, WORKSPACE_DIR)
+
+import ghn168_sync_service
+from ghn168_sync_service import (
+    format_tax_id_for_sheet,
+    format_branch_for_sheet,
 )
+
+RECEIPT_RE2608_001_DATA = {
+    "doc_type": "receipt",
+    "doc_no": "RE2608-001",
+    "doc_date": "04/08/2026",
+    "ref_invoice_no": "-",
+    "client_name": "บริษัท ไอเด็กซ์ ไมซ์ จำกัด",
+    "client_tax_id": "0505555007201",
+    "client_address": "500/60 หมู่ที่ 2 ตำบลแม่เหียะ อำเภอเมืองเชียงใหม่ จังหวัดเชียงใหม่ 50100",
+    "client_branch": "00000",
+    "project_name": "Tasty singapore (ถ่ายทำวิดีโอ 3 คิว, ตัดต่อ 1 คลิป, เช่า GoPro 2 คิว, ชุดไฟ+ไมค์ไวเลส)",
+    "pre_vat": 41000.0,
+    "vat_amount": 2870.0,
+    "gross_amount": 43870.0,
+    "wht_rate": 3.0,
+    "wht_amount": 1230.0,
+    "net_total": 42640.0,
+    "receiving_bank": "KTB",
+    "payment_status": "ชำระเงินแล้ว",
+    "actual_payment_date": "04/08/2026",
+    "profit_share": "บริษัท (กองกลาง 100%)",
+    "pdf_url": "https://drive.google.com/file/d/ghn168_receipt_re2608_001_idex/view",
+    "recorded_by": "เลขาเฟิส (GHN168)",
+    "remarks": "-",
+    "discount": 0.0,
+    "discount_desc": "-",
+}
+
+
+def build_receipt_row(doc_data, record_date=None):
+    rec_date = record_date or datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+    return [
+        rec_date,
+        doc_data.get("doc_date", "-"),
+        doc_data.get("doc_no", "-"),
+        doc_data.get("ref_invoice_no", "-"),
+        doc_data.get("client_name", "-"),
+        format_tax_id_for_sheet(doc_data.get("client_tax_id", "")),
+        doc_data.get("client_address", "-"),
+        format_branch_for_sheet(doc_data.get("client_branch", "")),
+        doc_data.get("project_name", "-"),
+        float(doc_data.get("pre_vat", 0.0)),
+        float(doc_data.get("vat_amount", 0.0)),
+        float(doc_data.get("gross_amount", 0.0)),
+        float(doc_data.get("wht_rate", 0.0)),
+        float(doc_data.get("wht_amount", 0.0)),
+        float(doc_data.get("net_total", 0.0)),
+        doc_data.get("receiving_bank", "KTB"),
+        doc_data.get("payment_status", "ชำระเงินแล้ว"),
+        doc_data.get("actual_payment_date", "-"),
+        doc_data.get("profit_share", "บริษัท (กองกลาง 100%)"),
+        doc_data.get("pdf_url", "-"),
+        doc_data.get("recorded_by", "เลขาเฟิส (GHN168)"),
+        doc_data.get("remarks", "-"),
+        float(doc_data.get("discount", 0.0)),
+        doc_data.get("discount_desc", "-"),
+    ]
+
+
+def sync_receipt_re2608_001(doc_data=None):
+    data = doc_data or RECEIPT_RE2608_001_DATA
+    row = build_receipt_row(data)
+    res = ghn168_sync_service.sync_document_to_sheets("รายรับ", values=row)
+    return {"row_data": row, "sync_result": res}
 
 
 class TestSyncReceiptRE2608_001(unittest.TestCase):
@@ -104,7 +176,7 @@ class TestSyncReceiptRE2608_001(unittest.TestCase):
         expected_net = round(gross - wht_amt, 2)
         self.assertEqual(net, expected_net)
 
-    @patch("sync_receipt_re2608_001.sync_document_to_sheets")
+    @patch("ghn168_sync_service.sync_document_to_sheets")
     def test_sync_receipt_function_calls_sheets_service(self, mock_sync):
         """Verify sync_receipt_re2608_001 correctly calls sync_document_to_sheets with 'รายรับ'."""
         mock_sync.return_value = {"status": "success", "message": "Record synced successfully"}

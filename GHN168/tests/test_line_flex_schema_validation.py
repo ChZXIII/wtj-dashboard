@@ -3,6 +3,13 @@ Unit Tests for LINE Messaging API Flex Message Schema Validation & Unified Docum
 Author: น้องคิว (Q) - Senior Backend Developer (GHN168)
 """
 
+import os
+import sys
+from pathlib import Path
+
+# Ensure workspace root is on sys.path
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
 import unittest
 from unittest.mock import patch, MagicMock
 from typing import Dict, Any

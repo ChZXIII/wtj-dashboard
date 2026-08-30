@@ -23,9 +23,9 @@ from unittest.mock import patch, MagicMock
 from fastapi.testclient import TestClient
 
 # Ensure workspace is on sys.path
-CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
-if CURRENT_DIR not in sys.path:
-    sys.path.insert(0, CURRENT_DIR)
+WORKSPACE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if WORKSPACE_DIR not in sys.path:
+    sys.path.insert(0, WORKSPACE_DIR)
 
 from line_bot_server import (
     app,
@@ -59,6 +59,64 @@ class TestAgenticSecretary(unittest.TestCase):
         PENDING_DOCUMENT_ORDERS.clear()
         PENDING_NEW_CUSTOMER_SAVING.clear()
 
+        # Patch requests.post to ensure 100% Zero Production Pollution
+        self.patcher = patch("requests.post")
+        self.mock_post = self.patcher.start()
+
+        def mock_requests_post_handler(url, json=None, **kwargs):
+            mock_res = MagicMock()
+            mock_res.status_code = 200
+            payload = json or {}
+            req_type = payload.get("type", "")
+
+            if req_type == "read":
+                sheet_name = payload.get("sheetName")
+                from ghn168_sync_service import get_simulated_sheet_data
+                mock_data = get_simulated_sheet_data(sheet_name)
+                mock_res.json.return_value = {
+                    "status": "success",
+                    "values": mock_data.get("values", [])
+                }
+            elif req_type in ["sync", "overwrite"]:
+                mock_res.json.return_value = {
+                    "status": "success",
+                    "message": f"Mocked safe {req_type} to Google Sheets"
+                }
+            elif req_type in ["upload_html", "upload_pdf_base64", "upload_pdf", "upload_only"]:
+                mock_res.json.return_value = {
+                    "status": "success",
+                    "pdfUrl": "https://drive.google.com/mock_test_agentic_doc.pdf",
+                    "message": "Mocked upload success"
+                }
+            elif req_type == "create_calendar_event":
+                mock_res.json.return_value = {
+                    "status": "success",
+                    "eventId": "evt_test_agent_123",
+                    "title": payload.get("title", ""),
+                    "startTime": payload.get("startDate", ""),
+                    "endTime": payload.get("endDate", ""),
+                    "calendarName": "GHN168 Media Official Calendar",
+                    "message": "สร้างคิวงานสำเร็จ"
+                }
+            elif req_type == "get_calendar_events":
+                from ghn168_sync_service import get_simulated_calendar_events
+                sim_cal = get_simulated_calendar_events(target_date=payload.get("targetDate"))
+                mock_res.json.return_value = {
+                    "status": "success",
+                    "total_events": len(sim_cal.get("events", [])),
+                    "totalEvents": len(sim_cal.get("events", [])),
+                    "events": sim_cal.get("events", [])
+                }
+            else:
+                mock_res.json.return_value = {"status": "success", "message": "Mocked generic response"}
+
+            return mock_res
+
+        self.mock_post.side_effect = mock_requests_post_handler
+
+    def tearDown(self):
+        self.patcher.stop()
+
     # --------------------------------------------------------------------------
     # 1. Tool Declarations Schema Verification
     # --------------------------------------------------------------------------
@@ -69,6 +127,7 @@ class TestAgenticSecretary(unittest.TestCase):
             "convert_document_pipeline",
             "create_financial_document",
             "search_customer_database",
+            "save_customer_to_database",
             "manage_calendar_schedule",
             "get_accounting_insights"
         }
@@ -81,7 +140,7 @@ class TestAgenticSecretary(unittest.TestCase):
             self.assertIn("parameters", decl)
             self.assertEqual(decl["parameters"]["type"], "OBJECT")
             self.assertIn("properties", decl["parameters"])
-        print("✅ Test 1 Passed: 6 Gemini Tool Declarations Schema verified 100%.")
+        print("✅ Test 1 Passed: 7 Gemini Tool Declarations Schema verified 100%.")
 
     # --------------------------------------------------------------------------
     # 2. search_sheet_documents Backend & Tool Execution

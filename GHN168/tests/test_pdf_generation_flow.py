@@ -12,6 +12,13 @@ Comprehensive End-to-End Tests for:
 ================================================================================
 """
 
+import os
+import sys
+from pathlib import Path
+
+# Ensure workspace root is on sys.path
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
 import json
 import os
 from pathlib import Path
@@ -237,6 +244,23 @@ class TestDocumentTemplateEngine(unittest.TestCase):
         self.assertNotIn("ผู้สั่งซื้อ / ตกลงว่าจ้าง", html)
         self.assertNotIn("ผู้รับบริการ / ผู้จ่ายเงิน", html)
         self.assertIn("seal-watermark-center", html)
+        # Verify Payment details box is completely removed from Receipt
+        self.assertNotIn("รายละเอียดการชำระเงิน (Payment Details):", html)
+        self.assertNotIn("รายละเอียดการชำระเงิน", html)
+        self.assertNotIn("ในกรณีชำระด้วยเช็ค", html)
+
+    def test_render_receipt_html_with_remarks(self):
+        html = render_receipt_html({
+            "doc_no": "RE-202608-002",
+            "client_name": "บริษัท เชียงใหม่ ครีเอทีฟ จำกัด",
+            "items": self.sample_items,
+            "remarks": "ชำระเงินครบถ้วนเรียบร้อยแล้ว",
+            "is_vat": True
+        })
+        self.assertNotIn("รายละเอียดการชำระเงิน", html)
+        self.assertNotIn("Payment Details", html)
+        self.assertIn("หมายเหตุ (Remarks):", html)
+        self.assertIn("ชำระเงินครบถ้วนเรียบร้อยแล้ว", html)
 
     def test_render_wht_html(self):
         html = render_wht_html({

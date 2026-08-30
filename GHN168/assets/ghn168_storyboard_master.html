@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GHN168 Storyboard Master Hub - 3 Versions Commercial</title>
-  <!-- Google Fonts: Outfit, Prompt, IBM Plex Sans Thai -->
+  <title>GHN168 Storyboard Master Hub - 3 Versions Commercial & Production Screenplay</title>
+  <!-- Google Fonts: Courier Prime, Outfit, Prompt, IBM Plex Sans Thai -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg-dark: #0f172a;
@@ -18,6 +18,8 @@
       --v1-color: #ef4444;
       --v2-color: #db2777;
       --v3-color: #f59e0b;
+      --accent-blue: #2563eb;
+      --gold-accent: #fbbf24;
     }
 
     * {
@@ -44,6 +46,9 @@
       justify-content: space-between;
       align-items: center;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
 
     .master-brand {
@@ -53,14 +58,15 @@
     }
 
     .master-logo-icon {
-      width: 36px;
-      height: 36px;
-      background: #2563eb;
+      width: 38px;
+      height: 38px;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
       border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
       color: #ffffff;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
     }
 
     .master-title-group h1 {
@@ -113,6 +119,9 @@
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     }
 
+    .tab-btn.active[data-target="overview"] {
+      border-bottom: 2px solid var(--accent-blue);
+    }
     .tab-btn.active[data-target="v1"] {
       border-bottom: 2px solid var(--v1-color);
     }
@@ -205,21 +214,23 @@
     /* Overview Hub Grid */
     .overview-container {
       padding: 32px 28px;
-      max-width: 1300px;
+      max-width: 1320px;
       margin: 0 auto;
       width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 36px;
     }
 
     .overview-hero {
-      margin-bottom: 28px;
       text-align: center;
     }
 
     .overview-hero h2 {
-      font-size: 24px;
+      font-size: 26px;
       font-weight: 700;
       color: #ffffff;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
 
     .overview-hero p {
@@ -328,6 +339,317 @@
       justify-content: center;
     }
 
+    /* =========================================================
+       SCREENPLAY & DIALOGUE SECTION (OFFICIAL PRODUCTION SCRIPT)
+       ========================================================= */
+    .screenplay-section {
+      background: #0b1120;
+      border: 1px solid #1e293b;
+      border-radius: 12px;
+      padding: 28px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .screenplay-header-box {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 16px;
+      border-bottom: 1px solid #1e293b;
+      padding-bottom: 20px;
+    }
+
+    .sp-title-area h3 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sp-title-area p {
+      font-size: 13.5px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Character Cast Lineup */
+    .screenplay-cast-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .cast-card {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .cast-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cast-avatar {
+      font-size: 18px;
+    }
+
+    .cast-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .cast-role {
+      font-size: 11px;
+      color: #38bdf8;
+      font-weight: 600;
+    }
+
+    .cast-motto {
+      font-size: 11.5px;
+      color: #94a3b8;
+      font-style: italic;
+      margin-top: 2px;
+      line-height: 1.35;
+    }
+
+    /* Screenplay Nav Tabs */
+    .sp-version-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      background: #020617;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid #1e293b;
+      margin-bottom: 20px;
+    }
+
+    .sp-tab-group {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .sp-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      color: #94a3b8;
+      padding: 7px 14px;
+      border-radius: 6px;
+      font-family: 'Prompt', sans-serif;
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .sp-btn:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .sp-btn.active {
+      color: #ffffff;
+      background: #1e293b;
+      border-color: #334155;
+    }
+
+    .sp-btn.active[data-sp="v1"] { border-left: 3px solid var(--v1-color); }
+    .sp-btn.active[data-sp="v2"] { border-left: 3px solid var(--v2-color); }
+    .sp-btn.active[data-sp="v3"] { border-left: 3px solid var(--v3-color); }
+
+    .sp-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Screenplay Paper Container (Courier Prime Standard) */
+    .screenplay-paper {
+      background: #020617;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 32px 36px;
+      font-family: 'Courier Prime', 'IBM Plex Sans Thai', monospace;
+      color: #e2e8f0;
+      line-height: 1.65;
+      font-size: 14px;
+      box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.6);
+      position: relative;
+    }
+
+    .screenplay-paper.font-thai {
+      font-family: 'IBM Plex Sans Thai', 'Prompt', sans-serif;
+    }
+
+    .sp-doc-header {
+      border-bottom: 2px dashed #334155;
+      padding-bottom: 16px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .sp-doc-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: 0.5px;
+    }
+
+    .sp-doc-logline {
+      font-size: 12.5px;
+      color: #38bdf8;
+      margin-top: 6px;
+      line-height: 1.45;
+    }
+
+    .sp-scene-block {
+      margin-bottom: 28px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid #1e293b;
+    }
+
+    .sp-scene-block:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .sp-slugline {
+      font-weight: 700;
+      font-size: 15px;
+      color: #fbbf24;
+      background: rgba(251, 191, 36, 0.1);
+      padding: 6px 12px;
+      border-radius: 4px;
+      border-left: 3px solid #fbbf24;
+      margin-bottom: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .sp-cues-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .cue-pill {
+      font-size: 11.5px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .cue-sfx { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+    .cue-music { background: rgba(217, 119, 6, 0.15); color: #fbbf24; border: 1px solid rgba(217, 119, 6, 0.3); }
+    .cue-camera { background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); }
+    .cue-light { background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
+
+    .sp-action {
+      margin-bottom: 16px;
+      color: #cbd5e1;
+      text-align: justify;
+    }
+
+    .sp-dialogue-group {
+      margin: 14px 0 14px 10%;
+      max-width: 80%;
+    }
+
+    .sp-character {
+      font-weight: 700;
+      color: #ffffff;
+      text-align: center;
+      letter-spacing: 0.5px;
+      font-size: 14px;
+      text-transform: uppercase;
+    }
+
+    .sp-character .char-tag {
+      font-size: 10px;
+      font-weight: 600;
+      color: #94a3b8;
+      margin-left: 4px;
+    }
+
+    .sp-parenthetical {
+      text-align: center;
+      color: #94a3b8;
+      font-style: italic;
+      font-size: 12.5px;
+      margin: 2px 0 4px 0;
+    }
+
+    .sp-dialogue-text {
+      color: #f1f5f9;
+      font-size: 14px;
+      line-height: 1.6;
+      background: rgba(30, 41, 59, 0.4);
+      padding: 8px 14px;
+      border-radius: 6px;
+      border-left: 2px solid #3b82f6;
+      margin-top: 4px;
+    }
+
+    .sp-postcredit-box {
+      background: rgba(245, 158, 11, 0.08);
+      border: 1px dashed #f59e0b;
+      padding: 16px;
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+
+    .sp-postcredit-title {
+      font-weight: 700;
+      color: #fbbf24;
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+
+    /* Toast notification */
+    .toast-msg {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #10b981;
+      color: #ffffff;
+      padding: 10px 18px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 13px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      display: none;
+      z-index: 9999;
+      align-items: center;
+      gap: 8px;
+    }
+
     /* Iframe Frame View */
     .iframe-container {
       width: 100%;
@@ -343,12 +665,23 @@
 
     /* Print Hide Rules */
     @media print {
-      .master-header, .preview-toolbar, .overview-container {
+      .master-header, .preview-toolbar, .overview-hero, .versions-grid, .sp-version-nav, .sp-controls {
         display: none !important;
       }
-      .iframe-container {
-        display: block !important;
-        height: 100% !important;
+      .screenplay-section, .screenplay-paper {
+        background: #ffffff !important;
+        color: #000000 !important;
+        border: none !important;
+        box-shadow: none !important;
+      }
+      .sp-dialogue-text {
+        background: none !important;
+        color: #000000 !important;
+        border-left: 2px solid #000000 !important;
+      }
+      .sp-slugline {
+        background: #f1f5f9 !important;
+        color: #000000 !important;
       }
     }
   </style>
@@ -372,7 +705,7 @@
       </div>
       <div class="master-title-group">
         <h1>GHN168 Commercial Master Hub</h1>
-        <p>ศูนย์รวมไฟล์พิมพ์ A4 สตอรี่บอร์ดและแผ่นเบรกลงรายละเอียดการถ่ายทำ 3 เวอร์ชัน</p>
+        <p>ศูนย์รวมสตอรี่บอร์ด A4, แผ่นเบรกโปรดักชั่น และบทพูดสคริปต์การแสดงฉบับเต็ม 3 เวอร์ชัน</p>
       </div>
     </div>
 
@@ -384,7 +717,7 @@
           <rect x="14" y="14" width="7" height="7"></rect>
           <rect x="3" y="14" width="7" height="7"></rect>
         </svg>
-        Overview (ศูนย์รวม)
+        Overview & Script (ศูนย์รวม)
       </button>
       <button class="tab-btn" data-target="v1" onclick="switchTab('v1')">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -446,6 +779,7 @@
         <p>เลือกรบชมพรีวิวแบบเต็มหน้ากระดาษ หรือคลิกสั่งพิมพ์ไฟล์ A4 พอดี 2 หน้ากระดาษแยกตามเวอร์ชัน</p>
       </div>
 
+      <!-- 3 Storyboard Cards Grid -->
       <div class="versions-grid">
 
         <!-- Card 1: Action-Thriller -->
@@ -455,7 +789,7 @@
             <span class="status-badge badge-v1">ACTION</span>
           </div>
           <div class="version-card-preview">
-            <img src="./assets/v1_scene1_entry_1786417192944.jpg" alt="V1 Preview">
+            <img src="./v1_scene1_entry_1786417192944.jpg" alt="V1 Preview">
           </div>
           <div class="version-card-body">
             <p class="version-desc">
@@ -493,7 +827,7 @@
             <span class="status-badge badge-v2">SOAP OPERA</span>
           </div>
           <div class="version-card-preview">
-            <img src="./assets/v2_soap1_kneel_1786418880557.jpg" alt="V2 Preview">
+            <img src="./v2_soap1_kneel_1786418880557.jpg" alt="V2 Preview">
           </div>
           <div class="version-card-body">
             <p class="version-desc">
@@ -531,7 +865,7 @@
             <span class="status-badge badge-v3">COMEDY</span>
           </div>
           <div class="version-card-preview">
-            <img src="./assets/simple_scene1_entry_1786388399304.jpg" alt="V3 Preview">
+            <img src="./simple_scene1_entry_1786388399304.jpg" alt="V3 Preview">
           </div>
           <div class="version-card-body">
             <p class="version-desc">
@@ -563,12 +897,629 @@
         </article>
 
       </div>
+
+      <!-- =========================================================
+           SCREENPLAY & DIALOGUE SECTION (OFFICIAL PRODUCTION SCRIPT)
+           ========================================================= -->
+      <section class="screenplay-section" id="screenplay-section">
+        <div class="screenplay-header-box">
+          <div class="sp-title-area">
+            <h3>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+                <polyline points="10 9 9 9 8 9"></polyline>
+              </svg>
+              บทพูดและสคริปต์การแสดงฉบับสมบูรณ์ (Official Production Screenplay)
+            </h3>
+            <p>ฟอร์แมตมาตรฐานบทละครและภาพยนตร์โฆษณา (Slugline, Action, Character, Parenthetical, Dialogue, SFX/Music Cue)</p>
+          </div>
+        </div>
+
+        <!-- Cast & Characters Header -->
+        <div class="screenplay-cast-bar">
+          <div class="cast-card">
+            <div class="cast-header">
+              <span class="cast-avatar">👑</span>
+              <div>
+                <div class="cast-name">THE CLIENT (ลูกค้า)</div>
+                <div class="cast-role">พระเอกผู้มีปมในใจ</div>
+              </div>
+            </div>
+            <div class="cast-motto">"คนจ่ายเงินถ้าไม่ได้สั่งแก้ แล้วชีวิตจะมีคุณค่าอะไร!"</div>
+          </div>
+
+          <div class="cast-card">
+            <div class="cast-header">
+              <span class="cast-avatar">🎬</span>
+              <div>
+                <div class="cast-name">KENG (พี่เก่ง)</div>
+                <div class="cast-role">ผู้กำกับ & หัวหน้าทีม</div>
+              </div>
+            </div>
+            <div class="cast-motto">สุขุม มืออาชีพ ผ่านสมรภูมิสั่งแก้มานับร้อยดราฟต์</div>
+          </div>
+
+          <div class="cast-card">
+            <div class="cast-header">
+              <span class="cast-avatar">💻</span>
+              <div>
+                <div class="cast-name">NICK (พี่นิค)</div>
+                <div class="cast-role">เอดิเตอร์ปุ่มแดง</div>
+              </div>
+            </div>
+            <div class="cast-motto">ผู้ถือ Shortcut ปุ่มแดงและเซฟลับ DRAFT 1 PUAD-HUAD</div>
+          </div>
+
+          <div class="cast-card">
+            <div class="cast-header">
+              <span class="cast-avatar">📷</span>
+              <div>
+                <div class="cast-name">HOM (พี่หอม)</div>
+                <div class="cast-role">ผู้กำกับภาพ / ตากล้อง</div>
+              </div>
+            </div>
+            <div class="cast-motto">อารมณ์ร่วมสูง อินเนอร์ทะลุจอ จัดเฟรมเป๊ะทุกช็อต</div>
+          </div>
+
+          <div class="cast-card">
+            <div class="cast-header">
+              <span class="cast-avatar">💼</span>
+              <div>
+                <div class="cast-name">MOD (บอสมด)</div>
+                <div class="cast-role">โปรดิวเซอร์ฝ่ายการเงิน</div>
+              </div>
+            </div>
+            <div class="cast-motto">สุขุม ดูแลบัญชีและใบเสนอราคา อนุมัติการแก้งาน</div>
+          </div>
+        </div>
+
+        <!-- Screenplay Version Nav Switcher -->
+        <div class="sp-version-nav">
+          <div class="sp-tab-group">
+            <button class="sp-btn active" data-sp="v1" onclick="switchScreenplay('v1')">
+              💥 V1: Action-Thriller (Inception Style)
+            </button>
+            <button class="sp-btn" data-sp="v2" onclick="switchScreenplay('v2')">
+              🎭 V2: The Thai Soap Opera (ละครดราม่าหลังข่าว)
+            </button>
+            <button class="sp-btn" data-sp="v3" onclick="switchScreenplay('v3')">
+              📹 V3: Mockumentary Comedy (The Office Style + Post-Credit)
+            </button>
+          </div>
+
+          <div class="sp-controls">
+            <button class="btn-action" onclick="toggleScreenplayFont()">
+              🔤 สลับแบบฟอนต์ (Courier / Thai)
+            </button>
+            <button class="btn-action" onclick="copyCurrentScreenplay()">
+              📋 คัดลอกบทพูดเวอร์ชันนี้
+            </button>
+            <button class="btn-action btn-action-primary" onclick="printScreenplay()">
+              🖨️ พิมพ์บท A4
+            </button>
+          </div>
+        </div>
+
+        <!-- ==========================================
+             SCREENPLAY CONTENT CONTAINER
+             ========================================== -->
+        <div id="screenplay-paper" class="screenplay-paper">
+
+          <!-- ----------------------------------------
+               SCRIPT 1: ACTION-THRILLER
+               ---------------------------------------- -->
+          <div id="sp-content-v1">
+            <div class="sp-doc-header">
+              <div>
+                <div class="sp-doc-title">GHN168 COMMERCIAL — VERSION 1: ACTION-THRILLER (HOLYWOOD INCEPTION STYLE)</div>
+                <div class="sp-doc-logline">LOGLINE: ลูกค้าสายโหดบุกประชิดห้องตัดต่อ ตวาดใส่ทีมงานเพราะตัดงานมา "เนี้ยบเกินไปจนไม่มีจุดให้สั่งแก้" จนกระทั่งทีมงัดไฟล์ลับ DRAFT 1 PUAD-HUAD ออกมาเซฟชีวิต!</div>
+              </div>
+              <span class="status-badge badge-v1">RUN TIME: 45 SEC</span>
+            </div>
+
+            <!-- Scene 1A -->
+            <div class="sp-scene-block">
+              <div class="sp-slugline">
+                <span>SCENE 1A: INT. PRODUCTION WAR ROOM - NIGHT [SHOT 1A]</span>
+              </div>
+              <div class="sp-cues-bar">
+                <span class="cue-pill cue-light">💡 LIGHTING: Teal & Orange High Contrast, Drifting Smoke</span>
+                <span class="cue-pill cue-camera">🎥 CAMERA: Wide Shot • Slow Push-in • Anamorphic 35mm</span>
+                <span class="cue-pill cue-sfx">🔊 SFX: Door Slam BANG! + Sub-bass Riser (40Hz)</span>
+              </div>
+              <div class="sp-action">
+                ควันสโมกฟุ้งกระจายเต็มพื้นห้องตัดต่อ แสงไฟนีออนกระพริบไหว ประตูเหล็กบานคู่ถูกกระแทกเปิดออกอย่างแรง! THE CLIENT (ลูกค้า) ในชุดสูทดำ สวมแว่นกันแดดทรงเรโทร ก้าวเท้าเข้ามาด้วยสีหน้าตึงเครียด แววตาดุดันราวกับเจ้าพ่อมาเฟีย สองมือหิ้ว Tactical Rugged Laptop เกราะหนา เขาเดินตรงดิ่งมาที่โต๊ะประชุมกลางห้อง แล้ววางโน้ตบุ๊กลงบนโต๊ะกระจกดำดัง สนั่น!
+              </div>
+
+              <div class="sp-dialogue-group">
+                <div class="sp-character">THE CLIENT <span class="char-tag">(ลูกค้า)</span></div>
+                <div class="sp-parenthetical">(เสียงต่ำ เยือกเย็น กัดฟันพูด จ้องหน้าทีมงานทีละคน)</div>
+                <div class="sp-dialogue-text">"พวกคุณ... รู้ตัวไหมว่าทำอะไรลงไป?"</div>
+              </div>
+
+              <div class="sp-dialogue-group">
+                <div class="sp-character">KENG <span class="char-tag">(พี่เก่ง)</span></div>
+                <div class="sp-parenthetical">(ยืนนิ่ง สุขุม มือแตะขอบโต๊ะอย่างสุขุม)</div>
+                <div class="sp-dialogue-text">"ไฟล์มาสเตอร์ 4K เกรดสีฮอลลีวูด ส่งเข้าเซิร์ฟเวอร์เรียบร้อยแล้วครับคุณลูกค้า มีอะไรผิดพลาดเหรอครับ?"</div>
+              </div>
+
+              <div class="sp-dialogue-group">
+                <div class="sp-character">THE CLIENT <span class="char-tag">(ลูกค้า)</span></div>
+                <div class="sp-parenthetical">(แววตาวาวโรจน์ กระแทกนิ้วชี้ไปที่โน้ตบุ๊ก)</div>
+                <div class="sp-dialogue-text">"เปิดไฟล์นี้เดี๋ยวนี้... ก่อนที่ความอดทนของผมจะหมดลง!"</div>
+              </div>
+
+              <div class="sp-action">
+                NICK (พี่นิค) กลืนน้ำลายเอื้อมมือไปกด Spacebar บนคีย์บอร์ดเรืองแสง เปิดไฟล์วิดีโอบนจอโฮโลแกรมยักษ์กลางห้อง
+              </div>
+            </div>
+
+            <!-- Scene 1B -->
+            <div class="sp-scene-block">
+              <div class="sp-slugline">
+                <span>SCENE 1B: INT. PRODUCTION WAR ROOM - CONTINUOUS [SHOT 1B]</span>
+              </div>
+              <div class="sp-cues-bar">
+                <span class="cue-pill cue-camera">🎥 CAMERA: Extreme Close-up • Dolly Zoom (Vertigo Effect)</span>
+                <span class="cue-pill cue-sfx">🔊 SFX: Inception Brass BRAAM! + Orchestral Climax</span>
+              </div>
+              <div class="sp-action">
+                ภาพวิดีโอบนจอเล่นขึ้นอย่างวิจิตรงดงาม แสงสี เสียงมิกซ์ระดับ 7.1 คมกริบไร้ที่ติ ทันใดนั้น THE CLIENT ตบโต๊ะปั้ง! ยื่นหน้าเข้าไปประชิดจอ ดวงตาเบิกกว้างด้วยความคลุ้มคลั่ง
+              </div>
+
+              <div class="sp-dialogue-group">
+                <div class="sp-character">THE CLIENT <span class="char-tag">(ลูกค้า)</span></div>
+                <div class="sp-parenthetical">(ตะโกนลั่นห้องจนควันกระจาย Dolly Zoom ซูมหน้าเหวอสุดขีด)</div>
+                <div class="sp-dialogue-text">"ดู!! ดูสิ่งที่พวกคุณทำ!! งานเนียนไป!! เนี้ยบเกินไปจนไม่มีมิติ!! โทนภาพไร้รอยต่อ เสียงมิกซ์เพอร์เฟกต์ คัตติ้งระดับชิงออสการ์!!"</div>
+              </div>
+
+              <div class="sp-dialogue-group">
+                <div class="sp-character">HOM <span class="char-tag">(พี่หอม)</span></div>
+                <div class="sp-parenthetical">(เหงื่อแตกพลั่ก มือสั่นจับขาตั้งกล้อง)</div>
+                <div class="sp-dialogue-text">"อ้าว... งานสวยขนาดนั้น มันไม่ดีตรงไหนเหรอครับบอส?!"</div>
+              </div>
+
+              <div class="sp-dialogue-group">
+                <div class="sp-character">THE CLIENT <span class="char-tag">(ลูกค้า)</span></div>
+                <div class="sp-parenthetical">(หันขวับมาจ้องหน้าพี่หอม แววตาเดือดดาล)</div>
+                <div class="sp-dialogue-text">"ไม่ดีตรงไหนงั้นเหรอ?! ทำงานแบบนี้คิดจะฆ่ากันให้ตายรึไงวะ?! งานสวยกริ๊บขนาดนี้... ชั้นจะเอาหน้าไปสู้บอร์ดบริหารได้ยังไง!!"</div>
+              </div>
+
+              <div class="sp-dialogue-group">
+                <div class="sp-character">MOD <span class="char-tag">(บอสมด)</span></div>
+                <div class="sp-parenthetical">(ยืนเปิดแฟ้มงบประมาณ นิ่งสงบแต่เริ่มหยิบทิชชู่)</div>
+                <div class="sp-dialogue-text">"ใจเย็นๆ ก่อนนะคะ ทางเราเช็กงบและสเปกตามบรีฟเป๊ะทุกจุดเลยนะคะ..."</div>
+              </div>
+            </div>
+
+            <!-- Scene 2A -->
+            <div class="sp-scene-block">
+              <div class="sp-slugline">
+                <span>SCENE 2A: INT. PRODUCTION WAR ROOM - MOMENTS LATER [SHOT 2A]</span>
+              </div>
+              <div class="sp-cues-bar">
+                <span class="cue-pill cue-camera">🎥 CAMERA: Low Angle • Medium Shot (Twist Reveal)</span>
+                <span class="cue-pill cue-sfx">🔊 SFX: Record Scratch + Sudden Silence + Bass Drop</span>
+                <span class="cue-pill cue-light">💡 LIGHTING: Spotlight Flickers to Warm Light</span>
+              </div>
+              <div class="sp-action">
+                ความเงียบเข้าปกคลุมชั่วขณะ THE CLIENT ทรุดตัวลงนั่งบนเก้าอี้หนังสีดำ ถอดแว่นกันแดดออก เผยให้เห็นขอบตาที่อ่อนล้า เขาถอนหายใจยาวเหยียด แล้วกุมขมับพูดด้วยน้ำเสียงสั่นเครือ
+              </div>
+
+              <div class="sp-dialogue-group">
+                <div class="sp-character">THE CLIENT <span class="char-tag">(ลูกค้า)</span></div>
+                <div class="sp-parenthetical">(น้ำเสียงตัดพ้อ บีบคั้นหัวใจ)</div>
+                <div class="sp-dialogue-text">"งานเพอร์เฟกต์ขนาดนี้... แล้วชั้นจะเอาตรงไหนไปกดสั่งแก้?! พวกคุณไม่เข้าใจหัวอกคนจ่ายเงินเลยเหรอ... คนจ่ายเงินอย่างชั้น ถ้าไม่ได้กดสั่งแก้ดราฟต์งาน... แล้วชีวิตชั้นจะมีคุณค่าอะไรวะ!!"</div>
+              </div>
+
+              <div class="sp-action">
+                พี่เก่ง, พี่นิค, พี่หอม, บอสมด มองหน้ากัน แล้วค่อยๆ คลายรอยยิ้มอย่างเข้าใจ
+              </div>
+
+              <div class="sp-dialogue-group">
+                <div class="sp-character">KENG <span class="char-tag">(พี่เก่ง)</span></div>
+                <div class="sp-parenthetical">(ยิ้มมุมปากอย่างเหนือชั้น ส่งสัญญาณมือ)</div>
+                <div class="sp-dialogue-text">"นิค... รหัสลับ โอเมก้า วัน วัน หก แปด. ปลดล็อกเซฟโซน."</div>
+              </div>
+
+              <div class="sp-dialogue-group">
+                <div class="sp-character">NICK <span class="char-tag">(พี่นิค)</span></div>
+                <div class="sp-parenthetical">(ยิ้มอย่างมั่นใจ กดคีย์บอร์ดชอร์ตคัตดังกึกๆ)</div>
+                <div class="sp-dialogue-text">"รับทราบครับพี่เก่ง... กำลังเปิดไฟล์ลับระดับตำนาน: DRAFT_1_PUAD-HUAD.mov!"</div>
+              </div>
+
+              <div class="sp-action">
+                [SFX: High-Voltage Power Surge / Hologram Glitch] หน้าจอโฮโลแกรมเปลี่ยนเป็นคลิปดราฟต์แรกสุด: ตัวหนังสือสีเหลืองนีออนตัวเท่าบ้านลอยทับหน้าพระเอก, สีหน้าตัวละครอมเขียว, โลโก้หมุนควง 360 องศาแบบไม่มีเหตุผล! THE CLIENT ลุกพรวดขึ้นมา ดวงตาเป็นประกายสะใจ รอยยิ้มแห่งความสุขผุดขึ้นบนใบหน้า
+              </div>
+
+              <div class="sp-dialogue-group">
+                <div class="sp-character">THE CLIENT <span class="char-tag">(ลูกค้า)</span></div>
+                <div class="sp-parenthetical">(ชี้จอด้วยความปีติยินดี ตบโต๊ะสนั่น)</div>
+                <div class="sp-dialogue-text">"นี่ไง!! DRAFT 1 PUAD-HUAD!! แบบนี้สิถึงมีวิญญาณศิลปิน! มีจุดให้แก้เป็นร้อยจุด! ชีวิตผมมีความหมายแล้ว!!"</div>
+              </div>
+            </div>
+
+            <!-- Scene 2B -->
+            <div class="sp-scene-block">
+              <div class="sp-slugline">
+                <span>SCENE 2B: INT. PRODUCTION WAR ROOM - NIGHT [SHOT 2B]</span>
+              </div>
+              <div class="sp-cues-bar">
+                <span class="cue-pill cue-camera">🎥 CAMERA: Close-up Insert • Warm Lighting • Lens 85mm</span>
+                <span class="cue-pill cue-music">🎵 MUSIC: Epic Heroic Brass Fanfare</span>
+                <span class="cue-pill cue-sfx">🔊 SFX: USB Insert Chime + Satisfied Sigh "Ahhh..."</span>
+              </div>
+              <div class="sp-action">
+                บรรยากาศในห้องเปลี่ยนเป็นความอบอุ่นและเปี่ยมด้วยเกียรติยศ พี่นิคเปิดกล่องเซฟ หยิบ แฟลชไดรฟ์ทองคำแท้ (GOLD USB) สลักคำว่า "GHN168 DRAFT 1 PUAD-HUAD" ยื่นส่งให้ลูกค้าด้วยสองมืออย่างสมเกียรติ
+              </div>
+
+              <div class="sp-dialogue-group">
+                <div class="sp-character">NICK <span class="char-tag">(พี่นิค)</span></div>
+                <div class="sp-parenthetical">(ค้อมศีรษะอย่างสุภาพ)</div>
+                <div class="sp-dialogue-text">"ไฟล์ดราฟต์ปวดหัวพร้อมให้คุณลูกค้ากดสั่งแก้ได้ไม่จำกัดจำนวนครั้งแล้วครับ!"</div>
+              </div>
+
+              <div class="sp-dialogue-group">
+                <div class="sp-character">THE CLIENT <span class="char-tag">(ลูกค้า)</span></div>
+                <div class="sp-parenthetical">(รับแฟลชไดรฟ์มาเสียบเข้าโน้ตบุ๊ก รอยยิ้มอิ่มเอมใจ)</div>
+                <div class="sp-dialogue-text">"ดีมาก! ข้อแรก: ย้ายตัวหนังสือทั้งหมดมาทับดั้งจมูกพระเอก! ข้อสอง: ปรับโลโก้ให้กระพริบไฟฉุกเฉินตลอดคลิป! เซฟไฟล์ส่งบอร์ดได้!"</div>
+              </div>
+
+              <div class="sp-dialogue-group">
+                <div class="sp-character">MOD <span class="char-tag">(บอสมด)</span></div>
+                <div class="sp-parenthetical">(ปิดแฟ้ม ยิ้มรับเงินอย่างสง่างาม)</div>
+                <div class="sp-dialogue-text">"อนุมัติใบเสนอราคาดราฟต์แก้เรียบร้อยค่ะ!"</div>
+              </div>
+
+              <div class="sp-action">
+                ทีมงาน GHN168 ทุกคนยืนตรง โค้งคำนับอย่างพร้อมเพรียง แสงสีทองสาดส่องดั่งภาพชัยชนะในภาพยนตร์
+              </div>
+
+              <div class="sp-dialogue-group">
+                <div class="sp-character">VOICEOVER / END CARD <span class="char-tag">(V.O.)</span></div>
+                <div class="sp-dialogue-text">"GHN168 — การันตีแก้ตรงใจทุกดราฟต์ ไม่ว่าคุณอยากแก้อะไร เราพร้อมแก้ให้จนกว่าคุณจะสบายใจ!"</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ----------------------------------------
+               SCRIPT 2: THE THAI SOAP OPERA
+               ---------------------------------------- -->
+          <div id="sp-content-v2" style="display: none;">
+            <div class="sp-doc-header">
+              <div>
+                <div class="sp-doc-title">GHN168 COMMERCIAL — VERSION 2: THE THAI SOAP OPERA (ละครดราม่าหลังข่าว)</div>
+                <div class="sp-doc-logline">LOGLINE: ลูกค้าผู้ตรอมใจคุกเข่าหลั่งน้ำตากลางออฟฟิศ ร้องไห้ฟูมฟายเพราะทีมงานส่งงานดีเลิศจนไม่มีข้ออ้างไปคุยกับเจ้านาย ทีมงานเห็นใจจึงมอบดราฟต์เละสุดพังพินาศให้ไปสั่งแก้จนยิ้มทั้งน้ำตา</div>
+              </div>
+              <span class="status-badge badge-v2">RUN TIME: 45 SEC</span>
+            </div>
+
+            <!-- Scene 1A -->
+            <div class="sp-scene-block">
+              <div class="sp-slugline">
+                <span>SCENE 1A: INT. GHN168 OFFICE - DAY [SHOT 1A]</span>
+              </div>
+              <div class="sp-cues-bar">
+                <span class="cue-pill cue-light">💡 LIGHTING: Soft Diffusion, Overexposed Warm Melodrama Glow</span>
+                <span class="cue-pill cue-camera">🎥 CAMERA: Medium Wide • Low Angle • Slow Tracking</span>
+                <span class="cue-pill cue-music">🎵 MUSIC: Dramatic Thai Soap Opera Piano & Weeping Violin</span>
+              </div>
+              <div class="sp-action">
+                ประตูกระจกออฟฟิศเปิดออก THE CLIENT ในชุดทำงานภูมิฐาน ก้าวเข้ามาได้เพียงสองก้าว ขาทั้งสองข้างก็ทรุดฮวบลงกับพื้นกระเบื้อง! เขายกสองมือประคองโน้ตบุ๊กชูขึ้นเหนือหัว น้ำตาไหลอาบสองแก้ม ร้องไห้สะอึกสะอื้นปานจะขาดใจ
+              </div>
+
+              <div class="sp-dialogue-group">
+                <div class="sp-character">THE CLIENT <span class="char-tag">(ลูกค้า)</span></div>
+                <div class="sp-parenthetical">(เสียงสั่นเครือ สะอื้นไห้ตัวโยน คุกเข่าลงกับพื้น)</div>
+                <div class="sp-dialogue-text">"ฮือ... ฮือออ... ได้โปรดเถอะคุณเก่ง... คุณนิค... เมตตาคนอย่างชั้นด้วยเถอะ!"</div>
+              </div>
+
+              <div class="sp-dialogue-group">
+                <div class="sp-character">HOM <span class="char-tag">(พี่หอม)</span></div>
+                <div class="sp-parenthetical">(ตกใจ เอามือทาบอก ตาโต)</div>
+                <div class="sp-dialogue-text">"คุณพระช่วย! คุณลูกค้าเป็นอะไรไปคะ?! มีใครทำร้ายจิตใจคุณมา?!"</div>
+              </div>
+
+              <div class="sp-dialogue-group">
+                <div class="sp-character">MOD <span class="char-tag">(บอสมด)</span></div>
+                <div class="sp-parenthetical">(รีบหยิบกล่องทิชชู่ส่งให้)</div>
+                <div class="sp-dialogue-text">"ใจเย็นๆ นะคะ ดื่มน้ำอุ่นก่อนค่ะคุณลูกค้า เกิดอะไรขึ้นคะ?"</div>
+              </div>
+
+              <div class="sp-dialogue-group">
+                <div class="sp-character">KENG <span class="char-tag">(พี่เก่ง)</span></div>
+                <div class="sp-parenthetical">(รีบทรุดตัวลงไปช่วยพยุง)</div>
+                <div class="sp-dialogue-text">"ลุกขึ้นก่อนครับคุณลูกค้า! วิดีโอโฆษณาที่เราส่งไปรอบบ่าย มีปัญหาอะไรตรงไหนเหรอครับ?!"</div>
+              </div>
+            </div>
+
+            <!-- Scene 1B -->
+            <div class="sp-scene-block">
+              <div class="sp-slugline">
+                <span>SCENE 1B: INT. GHN168 OFFICE - CONTINUOUS [SHOT 1B]</span>
+              </div>
+              <div class="sp-cues-bar">
+                <span class="cue-pill cue-camera">🎥 CAMERA: Dramatic Close-up • Soft Zoom • Emotional Lighting</span>
+                <span class="cue-pill cue-sfx">🔊 SFX: Thunderstorm Crack (เปรี้ยง!) + Dramatic Cello</span>
+              </div>
+              <div class="sp-action">
+                THE CLIENT สะบัดตัวไม่ยอมลุก เงยหน้าขึ้นมองทุกคนด้วยแววตาตัดพ้อที่เต็มไปด้วยความเจ็บปวดรวดร้าว
+              </div>
+
+              <div class="sp-dialogue-group">
+                <div class="sp-character">THE CLIENT <span class="char-tag">(ลูกค้า)</span></div>
+                <div class="sp-parenthetical">(ตะโกนร้องไห้โฮ ฟูมฟายสุดเสียง น้ำตานองหน้า)</div>
+                <div class="sp-dialogue-text">"ทำไม... ทำไมพวกคุณต้องใจร้ายใจดำขนาดนี้ด้วย?! ทำไมต้องตัดต่อออกมาดีขนาดนี้ด้วยฮะ?! ทั้งภาพ ทั้งสี ทั้งเสียง มันสมบูรณ์แบบจนเจ้านายชั้นหาจุดติไม่ได้เลยสักจุดเดียว!!"</div>
+              </div>
+
+              <div class="sp-dialogue-group">
+                <div class="sp-character">NICK <span class="char-tag">(พี่นิค)</span></div>
+                <div class="sp-parenthetical">(ทำหน้างง กระพริบตาปริบๆ)</div>
+                <div class="sp-dialogue-text">"เอ่อ... งานดีไร้ที่ติ มันควรจะเป็นเรื่องน่ายินดีไม่ใช่เหรอครับ?"</div>
+              </div>
+
+              <div class="sp-dialogue-group">
+                <div class="sp-character">THE CLIENT <span class="char-tag">(ลูกค้า)</span></div>
+                <div class="sp-parenthetical">(ปาดน้ำตา สะอื้นจนตัวสั่น)</div>
+                <div class="sp-dialogue-text">"น่ายินดีกับผีน่ะสิ!! ถ้างานมันดีจนไม่มีอะไรให้แก้... แล้วชั้นจะเอาหน้าที่ไหนไปของบแก้กับผู้บริหาร?! ชั้นจะเอาความดีความชอบมาจากไหนว่าชั้นตรวจงานละเอียด?! พวกคุณตัดงานดีแบบนี้... กะจะบีบให้ชั้นตกงานใช่ไหมคุณเก่ง!! ฮือๆๆๆ!"</div>
+              </div>
+            </div>
+
+            <!-- Scene 2A -->
+            <div class="sp-scene-block">
+              <div class="sp-slugline">
+                <span>SCENE 2A: INT. GHN168 OFFICE - MOMENTS LATER [SHOT 2A]</span>
+              </div>
+              <div class="sp-cues-bar">
+                <span class="cue-pill cue-camera">🎥 CAMERA: Medium Close-up • Soft Diffusion</span>
+                <span class="cue-pill cue-music">🎵 MUSIC: Heartwarming Emotional String Solo</span>
+                <span class="cue-pill cue-light">💡 LIGHTING: Golden Ray of Sunlight Piercing Through Window</span>
+              </div>
+              <div class="sp-action">
+                คำตัดพ้อของลูกค้าสะท้อนก้องในหัวใจของทีมงาน พี่เก่งยืนนิ่ง น้ำตาคลอเบ้าด้วยความซาบซึ้งและเห็นอกเห็นใจ พี่หอมกับบอสมดยกผ้าเช็ดหน้าขึ้นซับหัวตา
+              </div>
+
+              <div class="sp-dialogue-group">
+                <div class="sp-character">KENG <span class="char-tag">(พี่เก่ง)</span></div>
+                <div class="sp-parenthetical">(น้ำเสียงนุ่มนวล เปี่ยมด้วยความเข้าใจ น้ำตาคลอเบ้า)</div>
+                <div class="sp-dialogue-text">"พวกเราขอโทษครับคุณลูกค้า... พวกเรามัวแต่หลงระเริงกับความเพอร์เฟกต์ จนลืมหัวอกของคนเป็นลูกค้าไปสนิท... นิค! จงนำ 'สิ่งนั้น' ออกมา!"</div>
+              </div>
+
+              <div class="sp-dialogue-group">
+                <div class="sp-character">NICK <span class="char-tag">(พี่นิค)</span></div>
+                <div class="sp-parenthetical">(พยักหน้าทั้งน้ำตา เปิดลิ้นชักหยิบกล่องกำมะหยี่สีแดงสด)</div>
+                <div class="sp-dialogue-text">"นี่ครับคุณลูกค้า... ดราฟต์ที่ 1 ที่เราแอบทำเละไว้... ซับไตเติลภาษาต่างดาว ฟอนต์สีม่วงแสดทับกลางหน้าอก และเสียงพากย์ดีเลย์ 3 วินาที!"</div>
+              </div>
+
+              <div class="sp-action">
+                พี่นิคยื่นแฟลชไดรฟ์ให้ลูกค้าด้วยสองมือประคองอย่างทะนุถนอม
+              </div>
+
+              <div class="sp-dialogue-group">
+                <div class="sp-character">THE CLIENT <span class="char-tag">(ลูกค้า)</span></div>
+                <div class="sp-parenthetical">(หยุดร้องไห้ ตาโตเป็นประกาย มองแฟลชไดรฟ์ดั่งสมบัติล้ำค่า)</div>
+                <div class="sp-dialogue-text">"นี่มัน... ดราฟต์เละในตำนานจริงๆ เหรอคุณนิค?!"</div>
+              </div>
+            </div>
+
+            <!-- Scene 2B -->
+            <div class="sp-scene-block">
+              <div class="sp-slugline">
+                <span>SCENE 2B: INT. GHN168 OFFICE - CONTINUOUS [SHOT 2B]</span>
+              </div>
+              <div class="sp-cues-bar">
+                <span class="cue-pill cue-camera">🎥 CAMERA: Close-up • Warm Golden Glow • Soft Lens 85mm</span>
+                <span class="cue-pill cue-music">🎵 MUSIC: Uplifting Triumphant Piano Melody</span>
+              </div>
+              <div class="sp-action">
+                THE CLIENT รีบคว้าแฟลชไดรฟ์ เสียบเข้าโน้ตบุ๊กทันที หน้าจอแสดงภาพคลิปสุดพังพินาศ เขากดแป้นพิมพ์อย่างรัวเร็ว มีความสุขและตื่นเต้นที่สุดในชีวิต
+              </div>
+
+              <div class="sp-dialogue-group">
+                <div class="sp-character">THE CLIENT <span class="char-tag">(ลูกค้า)</span></div>
+                <div class="sp-parenthetical">(ยิ้มกว้างทั้งคราบน้ำตา กอดโน้ตบุ๊กแน่นแนบอก)</div>
+                <div class="sp-dialogue-text">"สั่งแก้จุดที่ 1: แก้ฟอนต์! สั่งแก้จุดที่ 2: ขยับซ้าย 1 พิกเซล! สั่งแก้จุดที่ 3: เอาสีสดขึ้น 500%! ฮ่าๆๆๆ! ในที่สุด... ชาตินี้ชั้นก็ได้กดสั่งแก้สมใจแล้ว!! ขอบคุณพวกคุณจริงๆ นะ!"</div>
+              </div>
+
+              <div class="sp-dialogue-group">
+                <div class="sp-character">MOD <span class="char-tag">(บอสมด)</span></div>
+                <div class="sp-parenthetical">(ยิ้มหวาน ปั๊มตราประทับลงใบส่งมอบงาน)</div>
+                <div class="sp-dialogue-text">"ยินดีให้บริการเสมอค่ะคุณลูกค้า คราวหน้าอยากได้งานเละเบอร์ไหน สั่งได้ตลอด 24 ชั่วโมงเลยนะคะ!"</div>
+              </div>
+
+              <div class="sp-action">
+                THE CLIENT กอดคอพี่เก่งและพี่นิคด้วยความปีติยินดี แสงตะวันยามเย็นส่องประกายแห่งความหวัง
+              </div>
+
+              <div class="sp-dialogue-group">
+                <div class="sp-character">VOICEOVER / END CARD <span class="char-tag">(V.O.)</span></div>
+                <div class="sp-dialogue-text">"GHN168 — เข้าใจทุกหยาดน้ำตา พร้อมส่งดราฟต์ให้คุณสั่งแก้จนอิ่มใจ การันตีความสุขของลูกค้าทุกคน!"</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ----------------------------------------
+               SCRIPT 3: MOCKUMENTARY COMEDY
+               ---------------------------------------- -->
+          <div id="sp-content-v3" style="display: none;">
+            <div class="sp-doc-header">
+              <div>
+                <div class="sp-doc-title">GHN168 COMMERCIAL — VERSION 3: MOCKUMENTARY COMEDY (THE OFFICE STYLE + POST-CREDIT)</div>
+                <div class="sp-doc-logline">LOGLINE: รายการตามติดชีวิตออฟฟิศสไตล์สารคดีตลกร้าย ลูกค้าบ่นกับกล้องว่าเกลียดงานมินิมอล ทีมงานจึงงัดระบบ Edit Counter ปรับแก้ตามสั่งทะลุ 1,000 ครั้งจนลูกค้าฟินสุดขีด แต่พอจบงานกลับมี Post-Credit ขอถอยกลับไปเอาดราฟต์แรก!</div>
+              </div>
+              <span class="status-badge badge-v3">RUN TIME: 50 SEC</span>
+            </div>
+
+            <!-- Scene 1A -->
+            <div class="sp-scene-block">
+              <div class="sp-slugline">
+                <span>SCENE 1A: INT. GHN168 CONFERENCE ROOM - DAY [SHOT 1A]</span>
+              </div>
+              <div class="sp-cues-bar">
+                <span class="cue-pill cue-camera">🎥 CAMERA: Wide Handheld • Quick Whip Pan to Camera</span>
+                <span class="cue-pill cue-sfx">🔊 SFX: Awkward Office Ambient Noise • Coffee Slurp</span>
+              </div>
+              <div class="sp-action">
+                กล้องสั่นไหวเล็กน้อยตามสไตล์สารคดี THE CLIENT เดินสะพายกระเป๋าเข้ามาในห้องประชุม แปะกระดาษแผ่นยักษ์ที่เขียนว่า "กฎเหล็ก 10 ข้อ: งานต้องมีที่ให้กูแก้!" ลงบนโต๊ะประชุมดัง ป้าบ!
+              </div>
+
+              <div class="sp-dialogue-group">
+                <div class="sp-character">[TALKING HEAD INTERVIEW] — THE CLIENT <span class="char-tag">(ลูกค้า)</span></div>
+                <div class="sp-parenthetical">(นั่งหน้าฉากขาว หันมาสบตากล้องตรงๆ พูดด้วยสีหน้าจริงจังเกินเหตุ)</div>
+                <div class="sp-dialogue-text">"คุณรู้ไหมว่าอะไรคือโรคระบาดที่ร้ายแรงที่สุดของวงการตัดต่อยุคนี้? ...ความมินิมอลครับ! ภาพคลีนๆ เหรอ? เสียงเพราะๆ เหรอ? ทรานซิชันเนียนตาเหรอ? หึ! คนธรรมดาไร้รสนิยมเขาทำกัน! คนอย่างผม... จ่ายเงินมาเป็นหมื่นเป็นแสน เพื่อมานั่งมองงานสวยแล้วปรบมือเหรอ? ไม่ครับ! ผมจ่ายเงินมาเพื่อ 'สั่งแก้' โว้ย!"</div>
+              </div>
+            </div>
+
+            <!-- Scene 1B -->
+            <div class="sp-scene-block">
+              <div class="sp-slugline">
+                <span>SCENE 1B: INT. GHN168 CONFERENCE ROOM - CONTINUOUS [SHOT 1B]</span>
+              </div>
+              <div class="sp-cues-bar">
+                <span class="cue-pill cue-camera">🎥 CAMERA: Snap Zoom onto Keng's Deadpan Face</span>
+                <span class="cue-pill cue-sfx">🔊 SFX: Record Scratch SKRRRT!</span>
+              </div>
+              <div class="sp-action">
+                THE CLIENT ชี้ไปที่จอมอนิเตอร์ของพี่เก่ง ซึ่งกำลังเล่นผลงานวิดีโอ 3D สุดอลังการระดับอินเตอร์
+              </div>
+
+              <div class="sp-dialogue-group">
+                <div class="sp-character">THE CLIENT <span class="char-tag">(ลูกค้า)</span></div>
+                <div class="sp-parenthetical">(ทำหน้าหงุดหงิด ชี้นิ้วรัวๆ แอบหันมาสบตากล้องสไตล์ Sitcom)</div>
+                <div class="sp-dialogue-text">"เนี่ยดูสิ! แสงก็เป๊ะ มุมกล้องก็กริ๊บ พระเอกหล่อ นางเอกเป๊ะ ไม่มีอะไรเบี้ยวเลยสักมิลเดียว! ทำงานแบบนี้ผมไม่เอา! สวยเกินไปจนไม่มีจุดสังเกต สั่งแก้ด่วน!"</div>
+              </div>
+
+              <div class="sp-action">
+                กล้อง SNAP ZOOM ขวับไปที่หน้า KENG (พี่เก่ง) ทันที พี่เก่งหยุดหายใจไปสองวินาที แล้วค่อยๆ หันสายตามาสบตากับตากล้องตรงๆ (Break the 4th Wall) ทำหน้าตายแบบ The Office
+              </div>
+
+              <div class="sp-dialogue-group">
+                <div class="sp-character">[TALKING HEAD INTERVIEW] — KENG <span class="char-tag">(พี่เก่ง)</span></div>
+                <div class="sp-parenthetical">(พี่เก่งกอดอก ถอนหายใจยาว)</div>
+                <div class="sp-dialogue-text">"พวกเราทีมงาน 5 ชีวิต นั่งอดหลับอดนอนเรนเดอร์งานชิ้นนี้ 72 ชั่วโมงติดต่อกัน... เพื่อให้ลูกค้าเดินเข้ามาบอกว่า 'ช่วยเปลี่ยนท้องฟ้าจากสีฟ้าสดใส ให้กลายเป็นสีชมพูช็อกกี้พิ้งก์นีออนหน่อยได้ไหม'... ครับ วงการนี้ต้องการคนเข้มแข็งครับ"</div>
+              </div>
+            </div>
+
+            <!-- Scene 2A -->
+            <div class="sp-scene-block">
+              <div class="sp-slugline">
+                <span>SCENE 2A: INT. GHN168 EDITING SUITE - MOMENTS LATER [SHOT 2A]</span>
+              </div>
+              <div class="sp-cues-bar">
+                <span class="cue-pill cue-camera">🎥 CAMERA: Over-the-shoulder • Edit Counter Graphic Focus</span>
+                <span class="cue-pill cue-sfx">🔊 SFX: Arcade Beep Sound Effect (Ding! Ding! Ding!)</span>
+              </div>
+              <div class="sp-action">
+                พี่นิคนั่งประจำการหน้าโต๊ะตัดต่อ 3 จอ THE CLIENT นั่งประกบข้างๆ ชี้นิ้วสั่งยิกๆ อย่างเมามัน
+              </div>
+
+              <div class="sp-dialogue-group">
+                <div class="sp-character">THE CLIENT <span class="char-tag">(ลูกค้า)</span></div>
+                <div class="sp-parenthetical">(ชี้นิ้วสั่งรัวๆ)</div>
+                <div class="sp-dialogue-text">"เอาล่ะ! ย้ายโลโก้จากมุมขวาบน มาแปะทับปากพระเอกตอนพูด!"</div>
+              </div>
+
+              <div class="sp-action">
+                NICK กดปุ่มแดงบนโต๊ะ — [SFX: BEEP! -> GRAPHIC: EDIT COUNT: +1]
+              </div>
+
+              <div class="sp-dialogue-group">
+                <div class="sp-character">THE CLIENT <span class="char-tag">(ลูกค้า)</span></div>
+                <div class="sp-dialogue-text">"ขยายฟอนต์คำว่า 'โปรโมชั่น' ให้ใหญ่คับจอ 80% แล้วใส่ประกายวิ้งๆ 8 ทิศทาง!"</div>
+              </div>
+
+              <div class="sp-action">
+                NICK ตบปุ่มแดงอีกครั้ง — [SFX: BEEP! -> GRAPHIC: EDIT COUNT: +50]
+              </div>
+
+              <div class="sp-dialogue-group">
+                <div class="sp-character">THE CLIENT <span class="char-tag">(ลูกค้า)</span></div>
+                <div class="sp-parenthetical">(เริ่มเครื่องติด เต้นส่ายหัวอย่างสะใจ)</div>
+                <div class="sp-dialogue-text">"เปลี่ยนเสียงพากย์เป็นเสียงการ์ตูนชิปมังก์! ใส่ซาวด์เอฟเฟกต์แตรลมสามช่า! รัวเข้ามาเลยน้อง!"</div>
+              </div>
+
+              <div class="sp-action">
+                NICK กดปุ่มแดงรัวๆ ปิ๊ดๆๆๆๆ — [SFX: Rapid Beeping -> GRAPHIC: EDIT COUNT: +500... +999... +1,000!! MAX LEVEL!]
+              </div>
+
+              <div class="sp-dialogue-group">
+                <div class="sp-character">THE CLIENT <span class="char-tag">(ลูกค้า)</span></div>
+                <div class="sp-parenthetical">(เอนหลังพิงเก้าอี้ ถอนหายใจยาวอย่างผ่อนคลายที่สุดในรอบปี)</div>
+                <div class="sp-dialogue-text">"อาห์... ฟิน... สบายใจแล้ว... ในที่สุดคลิปนี้ก็เป็นผลงานของผม 100% สักที!"</div>
+              </div>
+            </div>
+
+            <!-- Scene 2B -->
+            <div class="sp-scene-block">
+              <div class="sp-slugline">
+                <span>SCENE 2B: INT. GHN168 CONFERENCE ROOM - EVENING [SHOT 2B]</span>
+              </div>
+              <div class="sp-cues-bar">
+                <span class="cue-pill cue-camera">🎥 CAMERA: Eye Level Medium • Sitcom Tag</span>
+                <span class="cue-pill cue-music">🎵 MUSIC: Sitcom Ending Theme Jingle</span>
+              </div>
+              <div class="sp-action">
+                THE CLIENT จับมือกับพี่เก่ง บอสมด และพี่นิคอย่างอบอุ่น
+              </div>
+
+              <div class="sp-dialogue-group">
+                <div class="sp-character">THE CLIENT <span class="char-tag">(ลูกค้า)</span></div>
+                <div class="sp-dialogue-text">"ขอบคุณมากนะพวกคุณ GHN168 นี่คือบริษัทตัดต่อที่ดีที่สุดในสามโลก แก้งานได้สะใจผมจริงๆ!"</div>
+              </div>
+
+              <div class="sp-dialogue-group">
+                <div class="sp-character">VOICEOVER <span class="char-tag">(V.O.)</span></div>
+                <div class="sp-dialogue-text">"GHN168 — ยินดีแก้งานให้คุณไม่อั้น ไม่จำกัดดราฟต์ เพื่อความสุขทางใจของลูกค้าทุกคน!"</div>
+              </div>
+
+              <!-- Post-Credit Scene Box -->
+              <div class="sp-postcredit-box">
+                <div class="sp-postcredit-title">🎬 [POST-CREDIT SCENE] (ฉากแถมท้ายเครดิตสุดคลาสสิก)</div>
+                <div class="sp-slugline">INT. GHN168 CONFERENCE ROOM - 5 MINUTES LATER</div>
+                <div class="sp-action">
+                  5 วินาทีหลังจากเพลงจบและจอดำ... กล้องตัดกลับมาที่ห้องประชุม พี่เก่ง พี่นิค พี่หอม บอสมด กำลังเก็บของใส่กระเป๋าเตรียมกลับบ้าน ทันใดนั้น... ประตูห้องค่อยๆ แง้มเปิดออกช้าๆ [SFX: Door Creaking] THE CLIENT โผล่หน้าเข้ามา ยิ้มแห้งๆ ยกมือเกาหัวแกรกๆ
+                </div>
+
+                <div class="sp-dialogue-group">
+                  <div class="sp-character">THE CLIENT <span class="char-tag">(ลูกค้า)</span></div>
+                  <div class="sp-parenthetical">(น้ำเสียงตะกุกตะกัก เขินๆ เกาหัว)</div>
+                  <div class="sp-dialogue-text">"เอ่อ... พี่เก่งครับ... น้องนิค... คือพอกลับไปดูคลิปที่เพิ่งสั่งแก้ตัวหนังสือทับหน้าคนไปเมื่อกี้... รู้สึกว่าไอ้ดราฟต์แรกสุดที่พวกพี่ทำมาสวยๆ คลีนๆ มันดูผู้ดีและน่าเชื่อถือกว่าเยอะเลยว่ะครับ... ขอถอยกลับไปเอา 'ดราฟต์แรกสุด' เลยได้ไหมครับ?"</div>
+                </div>
+
+                <div class="sp-action">
+                  [CAMERA: QUICK PANIC SNAP ZOOM INTO ALL 4 TEAM MEMBERS' FACES] พี่เก่ง, พี่นิค, พี่หอม, บอสมด หยุดชะงักพร้อมกัน ค่อยๆ หันหน้ามามองกล้องพร้อมกัน (Break the 4th Wall) ทุกคนทำหน้าแห้งสนิท ไร้ความรู้สึก แล้วถอนหายใจฟู่ออกมาพร้อมกันโดยมิได้นัดหมาย
+                </div>
+
+                <div class="sp-dialogue-group">
+                  <div class="sp-character">ALL TEAM MEMBERS <span class="char-tag">(ทุกคนในทีม)</span></div>
+                  <div class="sp-parenthetical">(มองกล้อง สบตาคนดู ถอนหายใจพร้อมกัน)</div>
+                  <div class="sp-dialogue-text">"...ฮู่วววววว์!"</div>
+                </div>
+
+                <div class="sp-action">
+                  [SFX: SITCOM CANNED APPLAUSE & LAUGHTER + BASS SLAP] [FADE TO BLACK]
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
     </div>
 
     <!-- PREVIEW IFRAME VIEW -->
     <iframe id="preview-iframe" class="iframe-container" src=""></iframe>
 
   </main>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast-msg">
+    <span>✅ คัดลอกบทภาพยนตร์ฉบับเต็มเรียบร้อยแล้ว!</span>
+  </div>
 
   <script>
     const versionConfig = {
@@ -593,6 +1544,7 @@
     };
 
     let currentTarget = "overview";
+    let currentSpVersion = "v1";
 
     function switchTab(target) {
       currentTarget = target;
@@ -611,7 +1563,7 @@
       const toolbar = document.getElementById('preview-toolbar');
 
       if (target === 'overview') {
-        overviewView.style.display = 'block';
+        overviewView.style.display = 'flex';
         iframe.classList.remove('active');
         iframe.src = '';
         toolbar.style.display = 'none';
@@ -630,6 +1582,52 @@
         badge.className = `status-badge ${config.badgeClass}`;
         toolbar.style.display = 'flex';
       }
+    }
+
+    function switchScreenplay(ver) {
+      currentSpVersion = ver;
+
+      document.querySelectorAll('.sp-btn').forEach(btn => {
+        if (btn.getAttribute('data-sp') === ver) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+
+      document.getElementById('sp-content-v1').style.display = (ver === 'v1') ? 'block' : 'none';
+      document.getElementById('sp-content-v2').style.display = (ver === 'v2') ? 'block' : 'none';
+      document.getElementById('sp-content-v3').style.display = (ver === 'v3') ? 'block' : 'none';
+    }
+
+    function toggleScreenplayFont() {
+      const paper = document.getElementById('screenplay-paper');
+      paper.classList.toggle('font-thai');
+    }
+
+    function copyCurrentScreenplay() {
+      const activeContentEl = document.getElementById(`sp-content-${currentSpVersion}`);
+      if (!activeContentEl) return;
+
+      const text = activeContentEl.innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        showToast("✅ คัดลอกบทภาพยนตร์ " + currentSpVersion.toUpperCase() + " เรียบร้อยแล้ว!");
+      }).catch(err => {
+        console.error("Copy failed", err);
+      });
+    }
+
+    function printScreenplay() {
+      window.print();
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.querySelector('span').innerText = msg;
+      toast.style.display = 'flex';
+      setTimeout(() => {
+        toast.style.display = 'none';
+      }, 2500);
     }
 
     function printActiveIframe() {

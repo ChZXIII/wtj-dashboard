@@ -17,7 +17,7 @@ class TestWhtLivePreviewAndVersioning(unittest.TestCase):
     """Test suite for 50 Tawi live preview layout, sync logic, and cache bump."""
 
     def setUp(self):
-        self.base_dir = Path(__file__).parent
+        self.base_dir = Path(__file__).resolve().parent.parent
         self.index_html_path = self.base_dir / "index.html"
         self.app_js_path = self.base_dir / "app.js"
         self.sw_js_path = self.base_dir / "sw.js"

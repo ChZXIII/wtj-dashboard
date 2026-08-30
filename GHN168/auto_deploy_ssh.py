@@ -190,24 +190,17 @@ def main():
         "ghn168_sync_service.py",
         "google_sheets_sync_script.gs",
         "line_bot_server.py",
-        "clean_and_overwrite_customer_sheet.py",
-        "setup_customer_tab.py",
-        "test_calendar_and_upgrades.py",
-        "test_customer_database.py",
-        "test_document_lifecycle.py",
-        "test_partner_financial_engine.py",
-        "test_full_option_features.py",
-        "test_pdf_generation_flow.py",
-        "test_line_bot.py",
-        "test_human_like_secretary.py",
-        "test_agentic_secretary.py",
-        "test_all_features.py",
-        "test_line_flex_schema_validation.py"
+        "manifest.json",
+        "signature_pad.html",
+        "sw.js",
+        "start_line_bot.sh"
     ]
     log("STEP 2", "Uploading updated core Python modules to /opt/ghn168_bot/...")
     try:
         for fname in files_to_sync:
             lpath = os.path.join(SCRIPT_DIR, fname)
+            if not os.path.isfile(lpath):
+                continue
             rpath = f"{REMOTE_APP_DIR}/{fname}"
             log("STEP 2", f"Uploading {fname} -> {rpath}...")
             upload_file_scp(lpath, rpath, timeout=60)
@@ -215,14 +208,36 @@ def main():
 
         # Create assets folder on remote and upload key images
         run_ssh_command(f"mkdir -p {REMOTE_APP_DIR}/assets", timeout=10)
-        asset_files = ["logo.png", "GHN_company_seal.png", "ghn_app_icon.png"]
-        for afile in asset_files:
-            l_asset = os.path.join(SCRIPT_DIR, "assets", afile)
-            if os.path.isfile(l_asset):
-                r_asset = f"{REMOTE_APP_DIR}/assets/{afile}"
-                log("STEP 2", f"Uploading asset {afile} -> {r_asset}...")
-                upload_file_scp(l_asset, r_asset, timeout=30)
-                log("STEP 2", f"✅ Asset {afile} uploaded.")
+        assets_dir = os.path.join(SCRIPT_DIR, "assets")
+        if os.path.isdir(assets_dir):
+            for afile in os.listdir(assets_dir):
+                if afile.endswith((".png", ".jpg", ".jpeg", ".svg", ".webp", ".js", ".html")):
+                    l_asset = os.path.join(assets_dir, afile)
+                    r_asset = f"{REMOTE_APP_DIR}/assets/{afile}"
+                    upload_file_scp(l_asset, r_asset, timeout=30)
+            log("STEP 2", "✅ Assets uploaded.")
+
+        # Create signatures folder on remote and upload signatures
+        run_ssh_command(f"mkdir -p {REMOTE_APP_DIR}/signatures", timeout=10)
+        sig_dir = os.path.join(SCRIPT_DIR, "signatures")
+        if os.path.isdir(sig_dir):
+            for sfile in os.listdir(sig_dir):
+                if sfile.endswith((".png", ".jpg", ".jpeg")):
+                    l_sig = os.path.join(sig_dir, sfile)
+                    r_sig = f"{REMOTE_APP_DIR}/signatures/{sfile}"
+                    upload_file_scp(l_sig, r_sig, timeout=30)
+            log("STEP 2", "✅ Signatures uploaded.")
+
+        # Create tests folder on remote and upload all test suites
+        run_ssh_command(f"mkdir -p {REMOTE_APP_DIR}/tests", timeout=10)
+        tests_dir = os.path.join(SCRIPT_DIR, "tests")
+        if os.path.isdir(tests_dir):
+            for tfile in os.listdir(tests_dir):
+                if tfile.endswith(".py"):
+                    l_t = os.path.join(tests_dir, tfile)
+                    r_t = f"{REMOTE_APP_DIR}/tests/{tfile}"
+                    upload_file_scp(l_t, r_t, timeout=30)
+            log("STEP 2", "✅ Tests uploaded.")
 
         # Verify files on remote
         check_remote = run_ssh_command(f"ls -lh {REMOTE_APP_DIR}", timeout=15)
@@ -236,23 +251,11 @@ def main():
         sys.exit(1)
 
     # -------------------------------------------------------------------------
-    # Step 2.5: Run Clean and Overwrite Customer Tab on Production Google Sheets
-    # -------------------------------------------------------------------------
-    log("STEP 2.5", "Executing clean_and_overwrite_customer_sheet.py to clean Google Sheets tab 'ข้อมูลลูกค้า'...")
-    try:
-        clean_out = run_ssh_command("cd /opt/ghn168_bot && /opt/ghn168_bot/venv/bin/python3 clean_and_overwrite_customer_sheet.py", timeout=45)
-        log("STEP 2.5", f"Clean Sheet Result:\n{clean_out.strip()}")
-        results["steps"]["customer_sheet_clean"] = {"status": "success", "output": clean_out.strip()}
-    except Exception as e:
-        log("STEP 2.5", f"Clean sheet encountered an error: {e}")
-        results["steps"]["customer_sheet_clean"] = {"status": "failed", "error": str(e)}
-
-    # -------------------------------------------------------------------------
     # Step 2.6: Run Full Test Suites on VPS
     # -------------------------------------------------------------------------
-    log("STEP 2.6", "Executing schema validation and lifecycle test suites on VPS...")
+    log("STEP 2.6", "Executing full test discovery suite on VPS...")
     try:
-        test_out = run_ssh_command("cd /opt/ghn168_bot && /opt/ghn168_bot/venv/bin/python3 -m unittest test_line_flex_schema_validation.py test_document_lifecycle.py", timeout=30)
+        test_out = run_ssh_command("cd /opt/ghn168_bot && /opt/ghn168_bot/venv/bin/python3 -m unittest discover -s tests -p 'test_*.py'", timeout=60)
         log("STEP 2.6", f"VPS Test Suite Output:\n{test_out.strip()}")
         results["steps"]["vps_test_suite"] = {"status": "success", "output": test_out.strip()}
     except Exception as e:
@@ -340,6 +343,15 @@ def main():
     except Exception as e:
         log("VERIFY", f"Remote tests encountered an issue: {e}")
         results["steps"]["remote_tests"] = {"error": str(e)}
+
+    # 4.7 Journalctl Logs Check
+    try:
+        journal_out = run_ssh_command("journalctl -u ghn168-bot -n 25 --no-pager", timeout=15)
+        log("VERIFY", f"Journalctl logs (recent 25 lines):\n{journal_out.strip()}")
+        results["steps"]["journalctl_logs"] = {"output": journal_out.strip(), "status": "success"}
+    except Exception as e:
+        log("VERIFY", f"Failed to read journalctl logs: {e}")
+        results["steps"]["journalctl_logs"] = {"error": str(e)}
 
     # -------------------------------------------------------------------------
     # Step 5: Summary Report

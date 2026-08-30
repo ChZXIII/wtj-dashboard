@@ -12,6 +12,13 @@ Tests the 3 dimensions of Partner Financial Management:
 ================================================================================
 """
 
+import os
+import sys
+from pathlib import Path
+
+# Ensure workspace root is on sys.path
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
 import unittest
 from fastapi.testclient import TestClient
 
@@ -25,6 +32,8 @@ from line_bot_server import (
     build_partner_all_in_one_financial_flex_message
 )
 
+from unittest.mock import MagicMock, patch
+
 client = TestClient(app)
 
 
@@ -32,7 +41,39 @@ class TestPartnerFinancialEngine(unittest.TestCase):
     """Unit and Integration tests for the 3-Pillar Partner Financial Engine."""
 
     def setUp(self):
+        # Patch requests.post to ensure 100% Zero Production Pollution
+        self.patcher = patch("requests.post")
+        self.mock_post = self.patcher.start()
+
+        def mock_requests_post_handler(url, json=None, **kwargs):
+            mock_res = MagicMock()
+            mock_res.status_code = 200
+            payload = json or {}
+            req_type = payload.get("type", "")
+
+            if req_type == "read":
+                sheet_name = payload.get("sheetName")
+                from ghn168_sync_service import get_simulated_sheet_data
+                mock_data = get_simulated_sheet_data(sheet_name)
+                mock_res.json.return_value = {
+                    "status": "success",
+                    "values": mock_data.get("values", [])
+                }
+            elif req_type in ["sync", "overwrite"]:
+                mock_res.json.return_value = {
+                    "status": "success",
+                    "message": f"Mocked safe {req_type} to Google Sheets"
+                }
+            else:
+                mock_res.json.return_value = {"status": "success", "message": "Mocked generic response"}
+
+            return mock_res
+
+        self.mock_post.side_effect = mock_requests_post_handler
         self.breakdown = get_partner_financial_breakdown()
+
+    def tearDown(self):
+        self.patcher.stop()
 
     def test_breakdown_status_and_structure(self):
         """Test overall structure of 3-pillar breakdown response."""

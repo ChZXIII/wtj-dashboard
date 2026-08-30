@@ -889,7 +889,7 @@ def _render_standard_document_html(doc_type: str, data: Dict[str, Any]) -> str:
           <div style="margin-top: 4px; color: #0284c7;">* บัญชีรับโอน: {company['bank_name']} เลขที่ <strong>{company['bank_account_no']}</strong> ({company['bank_account_name']})</div>
         </div>
         """
-    elif doc_type in ["invoice", "receipt"]:
+    elif doc_type == "invoice":
         terms_html = f"""
         <div class="terms-box">
           <div class="terms-title">รายละเอียดการชำระเงิน (Payment Details):</div>
@@ -899,6 +899,16 @@ def _render_standard_document_html(doc_type: str, data: Dict[str, Any]) -> str:
           <div style="margin-top: 2px; font-size: 9.5px; color: #64748b;">* ในกรณีชำระด้วยเช็ค เอกสารนี้จะสมบูรณ์เมื่อเช็คได้เรียกเก็บเงินผ่านธนาคารเรียบร้อยแล้ว</div>
         </div>
         """
+    elif doc_type == "receipt":
+        if remarks:
+            terms_html = f"""
+        <div class="terms-box">
+          <div class="terms-title">หมายเหตุ (Remarks):</div>
+          <div>• {remarks}</div>
+        </div>
+        """
+        else:
+            terms_html = ""
 
     # Full HTML assembly
     html = f"""<!DOCTYPE html>
@@ -1187,6 +1197,10 @@ def render_document_html(doc_type: str, data: Dict[str, Any]) -> str:
         return render_wht_html(data)
     else:
         raise ValueError(f"Unsupported document type: '{doc_type}'. Expected 'quotation', 'invoice', 'receipt', or 'wht'.")
+
+
+# Convenience alias for document HTML generation
+generate_html_document = render_document_html
 
 
 if __name__ == "__main__":

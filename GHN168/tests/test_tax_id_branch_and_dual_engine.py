@@ -6,8 +6,15 @@ GHN168 - Unit Tests for Tax ID, Branch Code Formatting, Deduplication & Dual-Eng
 Author: Q (Lead Backend Developer, ChZ Agent Corp)
 """
 
+import os
+import sys
 import unittest
 from datetime import datetime
+
+# Ensure workspace is on sys.path
+WORKSPACE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if WORKSPACE_DIR not in sys.path:
+    sys.path.insert(0, WORKSPACE_DIR)
 
 from ghn168_sync_service import (
     format_google_sheets_text,
@@ -15,10 +22,6 @@ from ghn168_sync_service import (
     format_branch_for_sheet,
     build_sheet_row_data,
     save_new_customer
-)
-from repair_sheet_tax_ids_and_duplicates import (
-    format_tax_id as repair_format_tax_id,
-    format_branch as repair_format_branch
 )
 
 
@@ -31,9 +34,6 @@ class TestTaxIdAndBranchFormatting(unittest.TestCase):
         res = format_tax_id_for_sheet(tax_12)
         self.assertEqual(res, "'0505555007201")
         self.assertEqual(len(res.lstrip("'")), 13)
-
-        repair_res = repair_format_tax_id(tax_12)
-        self.assertEqual(repair_res, "'0505555007201")
 
     def test_tax_id_13_digits_preserves_and_prefixes_quote(self):
         # Normal 13-digit Thai Tax ID
@@ -138,8 +138,44 @@ class TestBuildSheetRowData(unittest.TestCase):
         self.assertEqual(row[6], "'00000")          # Payee Branch
 
 
+from unittest.mock import MagicMock, patch
+
+
 class TestCustomerSaveFormatting(unittest.TestCase):
     """Test customer auto-save formatting."""
+
+    def setUp(self):
+        self.patcher = patch("requests.post")
+        self.mock_post = self.patcher.start()
+
+        def mock_requests_post_handler(url, json=None, **kwargs):
+            mock_res = MagicMock()
+            mock_res.status_code = 200
+            payload = json or {}
+            req_type = payload.get("type", "")
+
+            if req_type == "read":
+                sheet_name = payload.get("sheetName")
+                from ghn168_sync_service import get_simulated_sheet_data
+                mock_data = get_simulated_sheet_data(sheet_name)
+                mock_res.json.return_value = {
+                    "status": "success",
+                    "values": mock_data.get("values", [])
+                }
+            elif req_type in ["sync", "overwrite"]:
+                mock_res.json.return_value = {
+                    "status": "success",
+                    "message": f"Mocked safe {req_type} to Google Sheets"
+                }
+            else:
+                mock_res.json.return_value = {"status": "success", "message": "Mocked generic response"}
+
+            return mock_res
+
+        self.mock_post.side_effect = mock_requests_post_handler
+
+    def tearDown(self):
+        self.patcher.stop()
 
     def test_save_new_customer_tax_and_branch(self):
         new_cust = {

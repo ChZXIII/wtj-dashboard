@@ -12,8 +12,16 @@ Tests end-to-end document conversion:
 ================================================================================
 """
 
+import os
+import sys
+from pathlib import Path
+
+# Ensure workspace root is on sys.path
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
 import unittest
 from datetime import datetime
+from unittest.mock import MagicMock, patch
 from fastapi.testclient import TestClient
 
 from ghn168_sync_service import (
@@ -21,7 +29,8 @@ from ghn168_sync_service import (
     find_document_by_no,
     read_sheet_data,
     normalize_doc_type,
-    generate_and_sync_document
+    generate_and_sync_document,
+    get_simulated_sheet_data,
 )
 from line_bot_server import (
     app,
@@ -34,6 +43,45 @@ client = TestClient(app)
 
 class TestDocumentLifecyclePipeline(unittest.TestCase):
     """Unit and Integration tests for Document Lifecycle conversions."""
+
+    def setUp(self):
+        # Patch requests.post to ensure 100% Zero Production Pollution
+        self.patcher = patch("requests.post")
+        self.mock_post = self.patcher.start()
+
+        def mock_requests_post_handler(url, json=None, **kwargs):
+            mock_res = MagicMock()
+            mock_res.status_code = 200
+            payload = json or {}
+            req_type = payload.get("type", "")
+
+            if req_type == "read":
+                sheet_name = payload.get("sheetName")
+                mock_data = get_simulated_sheet_data(sheet_name)
+                mock_res.json.return_value = {
+                    "status": "success",
+                    "values": mock_data.get("values", [])
+                }
+            elif req_type in ["sync", "overwrite"]:
+                mock_res.json.return_value = {
+                    "status": "success",
+                    "message": f"Mocked safe {req_type} to Google Sheets"
+                }
+            elif req_type in ["upload_html", "upload_pdf_base64", "upload_pdf", "upload_only"]:
+                mock_res.json.return_value = {
+                    "status": "success",
+                    "pdfUrl": "https://drive.google.com/mock_test_lifecycle_doc.pdf",
+                    "message": "Mocked upload success"
+                }
+            else:
+                mock_res.json.return_value = {"status": "success", "message": "Mocked generic response"}
+
+            return mock_res
+
+        self.mock_post.side_effect = mock_requests_post_handler
+
+    def tearDown(self):
+        self.patcher.stop()
 
     def test_find_document_by_no_quotation(self):
         """Test finding an existing Quotation."""

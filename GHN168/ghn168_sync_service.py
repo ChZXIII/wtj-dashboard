@@ -64,7 +64,8 @@ else:
 
 # Defaults and Constants
 GAS_SCRIPT_URL = os.getenv("GAS_SCRIPT_URL", "").strip()
-GHN168_SHEET_ID = os.getenv("GHN168_SHEET_ID", "").strip()
+GHN168_SHEET_ID = os.getenv("GHN168_SHEET_ID", "1vIc7kxO9q_FN2mmgyAYf8aly9lMdPRp7onqRaGx8y20").strip()
+SPREADSHEET_ID = GHN168_SHEET_ID or "1vIc7kxO9q_FN2mmgyAYf8aly9lMdPRp7onqRaGx8y20"
 COMPANY_DRIVE_FOLDER_ID = os.getenv("COMPANY_DRIVE_FOLDER_ID", "").strip()
 PDFSHIFT_API_KEY = os.getenv("PDFSHIFT_API_KEY", "").strip()
 
@@ -800,6 +801,7 @@ def get_calendar_events(
     start_date: Optional[Union[str, datetime]] = None,
     end_date: Optional[Union[str, datetime]] = None,
     target_date: Optional[str] = None,
+    spreadsheet_id: Optional[str] = None,
     script_url: Optional[str] = None,
     timeout: int = 25
 ) -> Dict[str, Any]:
@@ -830,6 +832,7 @@ def get_calendar_events(
         }
     """
     target_url = script_url or GAS_SCRIPT_URL
+    target_sheet_id = spreadsheet_id or SPREADSHEET_ID or GHN168_SHEET_ID
 
     if not target_url:
         logger.info("GAS_SCRIPT_URL is not configured for calendar. Returning simulated events.")
@@ -840,7 +843,8 @@ def get_calendar_events(
     end_iso = end_date.isoformat() if isinstance(end_date, datetime) else (str(end_date) if end_date else None)
 
     payload: Dict[str, Any] = {
-        "type": "get_calendar_events"
+        "type": "get_calendar_events",
+        "spreadsheetId": target_sheet_id
     }
     if start_iso:
         payload["startDate"] = start_iso
@@ -880,6 +884,7 @@ def create_calendar_event(
     location: str = "",
     description: str = "",
     is_all_day: bool = True,
+    spreadsheet_id: Optional[str] = None,
     script_url: Optional[str] = None,
     timeout: int = 25
 ) -> Dict[str, Any]:
@@ -888,6 +893,7 @@ def create_calendar_event(
     If GAS_SCRIPT_URL is not set or network fails, returns a high-fidelity simulation response.
     """
     target_url = script_url or GAS_SCRIPT_URL
+    target_sheet_id = spreadsheet_id or SPREADSHEET_ID or GHN168_SHEET_ID
     start_str = start_date.isoformat() if isinstance(start_date, datetime) else str(start_date)
     end_str = end_date.isoformat() if isinstance(end_date, datetime) else (str(end_date) if end_date else start_str)
 
@@ -907,6 +913,7 @@ def create_calendar_event(
 
     payload = {
         "type": "create_calendar_event",
+        "spreadsheetId": target_sheet_id,
         "title": title,
         "startDate": start_str,
         "endDate": end_str,

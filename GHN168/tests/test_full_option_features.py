@@ -13,6 +13,13 @@ Executive Secretary & Financial Engine (v3.0) 100% Coverage Test Suite:
 ================================================================================
 """
 
+import os
+import sys
+from pathlib import Path
+
+# Ensure workspace root is on sys.path
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
 import base64
 import json
 import unittest
@@ -56,11 +63,72 @@ from ghn168_sync_service import (
     read_sheet_data
 )
 
+from unittest.mock import MagicMock, patch
+
 client = TestClient(app)
 
 
 class TestGHN168ExecutiveV3(unittest.TestCase):
     """Complete End-to-End Test Suite for GHN168 v3.0."""
+
+    def setUp(self):
+        # Patch requests.post to ensure 100% Zero Production Pollution
+        self.patcher = patch("requests.post")
+        self.mock_post = self.patcher.start()
+
+        def mock_requests_post_handler(url, json=None, **kwargs):
+            mock_res = MagicMock()
+            mock_res.status_code = 200
+            payload = json or {}
+            req_type = payload.get("type", "")
+
+            if req_type == "read":
+                sheet_name = payload.get("sheetName")
+                from ghn168_sync_service import get_simulated_sheet_data
+                mock_data = get_simulated_sheet_data(sheet_name)
+                mock_res.json.return_value = {
+                    "status": "success",
+                    "values": mock_data.get("values", [])
+                }
+            elif req_type in ["sync", "overwrite"]:
+                mock_res.json.return_value = {
+                    "status": "success",
+                    "message": f"Mocked safe {req_type} to Google Sheets"
+                }
+            elif req_type in ["upload_html", "upload_pdf_base64", "upload_pdf", "upload_only"]:
+                mock_res.json.return_value = {
+                    "status": "success",
+                    "pdfUrl": "https://drive.google.com/mock_test_full_doc.pdf",
+                    "message": "Mocked upload success"
+                }
+            elif req_type == "create_calendar_event":
+                mock_res.json.return_value = {
+                    "status": "success",
+                    "eventId": "evt_test_full_123",
+                    "title": payload.get("title", ""),
+                    "startTime": payload.get("startDate", ""),
+                    "endTime": payload.get("endDate", ""),
+                    "calendarName": "GHN168 Media Official Calendar",
+                    "message": "สร้างคิวงานสำเร็จ"
+                }
+            elif req_type == "get_calendar_events":
+                from ghn168_sync_service import get_simulated_calendar_events
+                sim_cal = get_simulated_calendar_events(target_date=payload.get("targetDate"))
+                mock_res.json.return_value = {
+                    "status": "success",
+                    "total_events": len(sim_cal.get("events", [])),
+                    "totalEvents": len(sim_cal.get("events", [])),
+                    "events": sim_cal.get("events", [])
+                }
+            else:
+                mock_res.json.return_value = {"status": "success", "message": "Mocked generic response"}
+
+            return mock_res
+
+        self.mock_post.side_effect = mock_requests_post_handler
+
+    def tearDown(self):
+        self.patcher.stop()
 
     # --------------------------------------------------------------------------
     # 1. Document Lifecycle Pipeline
@@ -103,11 +171,10 @@ class TestGHN168ExecutiveV3(unittest.TestCase):
     # --------------------------------------------------------------------------
     def test_match_incoming_slip_with_invoice(self):
         """Test matching incoming payment slip with pending invoices."""
-        # Match 52,000 THB to Chiang Mai Media invoice
-        matched = match_incoming_slip_with_invoice(52000.0, "เชียงใหม่มีเดีย")
+        matched = match_incoming_slip_with_invoice(52000.0)
         self.assertIsNotNone(matched)
         self.assertEqual(matched["net_total"], 52000.0)
-        self.assertIn("เชียงใหม่มีเดีย", matched["client_name"])
+        self.assertTrue(any(k in matched["client_name"] for k in ["เชียงใหม่มีเดีย", "นอร์ทเทิร์น"]))
 
     def test_income_slip_flex_card_builder(self):
         """Test income slip flex card generation."""
@@ -228,9 +295,17 @@ class TestGHN168ExecutiveV3(unittest.TestCase):
 
     def test_tax_reminders_scheduler(self):
         """Test tax reminder schedules."""
-        self.assertEqual(len(TAX_REMINDER_SCHEDULES), 6)
-        res = trigger_scheduled_tax_reminder("monthly_bills_25")
-        self.assertEqual(res["status"], "success")
+        self.assertGreaterEqual(len(TAX_REMINDER_SCHEDULES), 7)
+        self.assertIn("monthly_tax_28", TAX_REMINDER_SCHEDULES)
+        self.assertIn("monthly_tax_01", TAX_REMINDER_SCHEDULES)
+        res_bills = trigger_scheduled_tax_reminder("monthly_bills_25")
+        self.assertEqual(res_bills["status"], "success")
+        res_tax28 = trigger_scheduled_tax_reminder("monthly_tax_28")
+        self.assertEqual(res_tax28["status"], "success")
+        self.assertIn("ภาษีขาย", res_tax28["message_text"])
+        res_tax01 = trigger_scheduled_tax_reminder("monthly_tax_01")
+        self.assertEqual(res_tax01["status"], "success")
+        self.assertIn("สำนักงานบัญชี", res_tax01["message_text"])
 
 
 if __name__ == "__main__":

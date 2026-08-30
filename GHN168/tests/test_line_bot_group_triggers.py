@@ -4,6 +4,13 @@ Tests the strict separation of Group vs 1-on-1 behavior, mention filtering,
 pending confirmation actions, and non-financial image rejection.
 """
 
+import os
+import sys
+from pathlib import Path
+
+# Ensure workspace root is on sys.path
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
 import asyncio
 import json
 import unittest

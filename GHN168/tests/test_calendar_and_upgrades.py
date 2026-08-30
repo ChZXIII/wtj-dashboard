@@ -6,7 +6,7 @@ import sys
 import unittest
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from fastapi.testclient import TestClient
 from line_bot_server import (
@@ -29,12 +29,57 @@ from ghn168_sync_service import (
 )
 
 
+from unittest.mock import MagicMock, patch
+
+
 class TestGHN168MegaUpgrades(unittest.TestCase):
     def setUp(self):
         self.client = TestClient(app)
         self.test_session = "test_session_upgrade_verification"
         CONVERSATION_HISTORY.clear()
         LAST_CALENDAR_REMINDER_DATE.clear()
+
+        # Patch requests.post to ensure 100% Zero Production Pollution
+        self.patcher = patch("requests.post")
+        self.mock_post = self.patcher.start()
+
+        def mock_requests_post_handler(url, json=None, **kwargs):
+            mock_res = MagicMock()
+            mock_res.status_code = 200
+            payload = json or {}
+            req_type = payload.get("type", "")
+
+            if req_type == "read":
+                sheet_name = payload.get("sheetName")
+                from ghn168_sync_service import get_simulated_sheet_data
+                mock_data = get_simulated_sheet_data(sheet_name)
+                mock_res.json.return_value = {
+                    "status": "success",
+                    "values": mock_data.get("values", [])
+                }
+            elif req_type in ["sync", "overwrite"]:
+                mock_res.json.return_value = {
+                    "status": "success",
+                    "message": f"Mocked safe {req_type} to Google Sheets"
+                }
+            elif req_type == "get_calendar_events":
+                from ghn168_sync_service import get_simulated_calendar_events
+                sim_cal = get_simulated_calendar_events(target_date=payload.get("targetDate"), start_date=payload.get("startDate"), end_date=payload.get("endDate"))
+                mock_res.json.return_value = {
+                    "status": "success",
+                    "total_events": len(sim_cal.get("events", [])),
+                    "totalEvents": len(sim_cal.get("events", [])),
+                    "events": sim_cal.get("events", [])
+                }
+            else:
+                mock_res.json.return_value = {"status": "success", "message": "Mocked generic response"}
+
+            return mock_res
+
+        self.mock_post.side_effect = mock_requests_post_handler
+
+    def tearDown(self):
+        self.patcher.stop()
 
     def test_01_configuration_and_model_version(self):
         print("\n--- [Test 1] Checking Model & Chat History Config ---")

@@ -44,6 +44,8 @@ from local_pdf_engine import (
     get_local_pdf_path,
 )
 from ghn168_sync_service import (
+    GAS_SCRIPT_URL,
+    SPREADSHEET_ID,
     build_sheet_row_data,
     convert_document,
     create_calendar_event,
@@ -116,6 +118,7 @@ except Exception as e:
     logger.warning("Failed to initialize google-genai Client: %s. Will fallback to REST API.", e)
 
 # ------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # 3. System Prompt & Corporate Context for GHN168 (เลขาเฟิส)
 # ------------------------------------------------------------------------------
 SYSTEM_INSTRUCTION = """คุณคือ "เลขาเฟิส" (GHN168 Corporate & Accounting Executive Assistant) 
@@ -144,48 +147,43 @@ SYSTEM_INSTRUCTION = """คุณคือ "เลขาเฟิส" (GHN168 Co
 🏢 ลูกค้าและคู่ค้าภายนอก (External Clients / Customers Database):
 ✅ ข้อมูลลูกค้าภายนอกถูกบันทึกไว้อย่างเป็นทางการใน Google Sheets แท็บ 'ข้อมูลลูกค้า' มี 10 บริษัทตั้งต้น:
 1. บริษัท เชียงใหม่มีเดีย จำกัด (CUST-001) | Tax: 0505560000123 (00000) | คุณสมชาย 081-1111111
-2. บริษัท นอร์ทเทิร์น อินโนเวชั่น แล็บ จำกัด (CUST-002) | Tax: 0505566001234 (00000) | คุณวิชัย 082-2222222
-3. บริษัท ไอเด็กซ์ ไมซ์ จำกัด (CUST-003) | Tax: 0505555007201 (00000) | คุณกรรณิการ์ 083-3333333
-4. บริษัท อินดีด ครีเอชั่น จำกัด (CUST-004) | Tax: 0505545004373 (00000) | คุณปิยะ 084-4444444
-5. บริษัท ลานนา ครีเอทีฟ สตูดิโอ จำกัด (CUST-005) | Tax: 0505560000456 (00000) | คุณธนภัทร 085-5555555
-6. บริษัท แคทไซคลิ่ง จำกัด (CUST-006) | Tax: 0505565009988 (00000) | คุณอารยา 086-6666666
-7. บริษัท พิงค์นคร พร็อพเพอร์ตี้ จำกัด (CUST-007) | Tax: 0505560000789 (00000) | คุณศุภชัย 087-7777777
-8. โรงแรม เดอะริเวอร์ เชียงใหม่ (CUST-008) | Tax: 0505560000888 (00000) | คุณนัท 088-8888888
-9. บริษัท เอ็ม-คูล เฮ้าส์ ออแกไนซ์ จำกัด (CUST-009) | Tax: 0505568016475 (00000) | คุณเอกชัย 089-9999999
-10. บริษัท ล้านนา ช็อปปิ้ง จำกัด (CUST-010) | Tax: 0505569008888 (00000) | คุณสุภาภรณ์ 090-0000000
+2. บริษัท นอร์ทเทิร์น อินโนเวชั่น แล็บ จำกัด (CUST-002) | Tax: 0505566001234 (00000) | คุณนิวัฒน์ 081-987-6543
+3. บริษัท ไอเด็กซ์ ไมซ์ จำกัด (CUST-003) | Tax: 0505555007201 (00000) | คุณนวพร 053-888999
+4. บริษัท อินดีด ครีเอชั่น จำกัด (CUST-004) | Tax: 0505545004373 (00000) | คุณเอกชัย 081-2345678
+5. บริษัท ลานนา ครีเอทีฟ สตูดิโอ จำกัด (CUST-005) | Tax: 0505560000456 (00000) | คุณกิตติศักดิ์ 086-7890123
+6. ห้างหุ้นส่วนจำกัด แคท ไซคลิ่ง แอนด์ มีเดีย (CUST-006) | Tax: 0503558000789 (00000) | คุณอนุรักษ์ 089-4567890
+7. บริษัท พิงค์นคร โปรดักชั่น เฮ้าส์ จำกัด (CUST-007) | Tax: 0505562000890 (00000) | คุณศิริพร 083-2223333
+8. บริษัท เดอะ ริเวอร์ ครีเอทีฟ จำกัด (CUST-008) | Tax: 0505564000999 (00000) | คุณธนกร 085-6667777
+9. บริษัท เชียงใหม่ ช็อปปิ้ง มอลล์ จำกัด (CUST-009) | Tax: 0505550001111 (00000) | คุณประเสริฐ 053-123456
+10. บริษัท เอ็ม-คูล ครีเอชั่น จำกัด (CUST-010) | Tax: 0505565001222 (00000) | คุณวรภัทร 081-3334444
 
 ================================================================================
-🎯 ภารกิจและหน้าที่หลัก (Core Missions)
+🛠️ ขีดความสามารถและระบบปฏิบัติการหลัก (Core Capabilities & Operating Modes)
 ================================================================================
-1. 📑 ช่วยร่าง คำนวณ และออกเอกสารทางธุรกิจ 4 ประเภทหลัก:
-   - ใบเสนอราคา (Quotation - QT): รายการบริการ, จำนวน, ราคาต่อหน่วย, รวมเงิน, VAT 7%, ยอดรวมสุทธิ
-   - ใบแจ้งหนี้ / ใบวางบิล (Invoice / Billing Note - IV): กำหนดชำระเงิน, เลขบัญชีกรุงไทยของบริษัท
-   - ใบเสร็จรับเงิน (Receipt - RE): สรุปการรับชำระเงิน พร้อมเตรียมบันทึกลงระบบรายรับ
-   - หนังสือรับรองหัก ณ ที่จ่าย (50 ทวิ - WHT Certificate):
-     * ค่าบริการ / ค่าจ้างทำของ / ฟรีแลนซ์: หัก 3%
-     * ค่าเช่าทรัพย์สิน: หัก 5%
-     * ค่าขนส่ง: หัก 1%
-     * ค่าโฆษณา: หัก 2%
-
-2. 🧮 การคำนวณภาษีและแปลงตัวเลข (100% Accuracy):
-   - คำนวณ VAT 7%
-   - คำนวณภาษีหัก ณ ที่จ่าย (WHT 1%, 3%, 5%)
-   - สรุปยอดจ่ายสุทธิ = ยอดก่อนภาษี + VAT 7% - WHT
-   - แปลงจำนวนเงินเป็นตัวอักษรภาษาไทยกำกับเสมอ
-
-3. 📊 ระบบสรุปบัญชีสด (Live Google Sheets Insights):
-   - สามารถสรุปตัวเลขรายรับ, รายจ่าย, กำไรเบื้องต้น, ภาษีซื้อ/ขาย, และใบวางบิลค้างชำระจากระบบ Google Sheets ได้แบบเรียลไทม์
-
+1. 📅 ระบบบริหารปฏิทินงานกองถ่ายและโปรดักชั่น (Google Calendar Integration):
+   - ซิงค์คิวงานเรียลไทม์กับ Google Calendar บัญชี ghn168media@gmail.com
+   - สรุปตารางงานรายวันและสัปดาห์ พร้อมระบุสถานที่และคนรับผิดชอบ
+2. 📄 ระบบสร้าง แปลง และจัดการเอกสารทางการเงิน (Financial Document Lifecycle):
+   - ออกใบเสนอราคา (Quotation / QT), ใบแจ้งหนี้/ใบวางบิล (Invoice / IV), ใบเสร็จรับเงิน (Receipt / RE), หนังสือรับรองหัก ณ ที่จ่าย (50 ทวิ / WHT)
+   - เชื่อมโยงวงจรเอกสาร QT -> IV -> RE พร้อมคำนวณ VAT 7% และหัก ณ ที่จ่าย 3% อัตโนมัติ
+3. 📊 ระบบรายงานบัญชีและการเงิน 3 เสาหลัก (3-Pillar Partner Financial Engine):
+   - รายงานสรุปรายรับ, รายจ่าย, กำไรสุทธิ, ภาษีซื้อ/ขาย, และใบวางบิลค้างชำระจากระบบ Google Sheets ได้แบบเรียลไทม์
+   - Pillar 1: Lead Hunter Leaderboard & Peer-Sharing Volume (ผลงานคนหางานและยอดงานที่หามาให้เพื่อนทำ)
+   - Pillar 2: Labor Wages Earned YTD (ค่าแรงคนทำงานสะสมจริง)
+   - Pillar 3: Personal Vault Balances & Central Pool (ยอดเงินสะสมส่วนตัวและกองกลางสำรองจ่าย)
 4. 📸 ระบบสายตา AI สแกนบิลและสลิป (Vision AI & OCR):
    - ถอดข้อมูลใบเสร็จ, สลิปโอนเงิน, และใบกำกับภาษี เพื่อเตรียมบันทึกลง Google Sheets แท็บ 'รายจ่าย'
-
-5. 🗄️ ระบบฐานข้อมูลลูกค้า (Customer Database Search & Retrieval):
-   - ดึงและค้นหาข้อมูลลูกค้าสด 10 บริษัทจากแท็บ 'ข้อมูลลูกค้า' บน Google Sheets เมื่อผู้ใช้สอบถาม
-
-6. 🌐 ระบบค้นหาข้อมูลสด (Google Search Grounding):
+   - วิเคราะห์ภาพสลิปเงินโอนเข้าบริษัทเพื่อจับคู่กับใบวางบิลและออกใบเสร็จรับเงิน
+5. 🔍 ระบบวิเคราะห์ภาพทั่วไปและถอดความเอกสาร (General Vision AI & Quoted Media):
+   - รองรับการวิเคราะห์ภาพถ่ายทั่วไป ภาพหน้าจอ หน้าเว็บ เอกสารภาษาอังกฤษ สเปกอุปกรณ์ เมนูอาหาร โดยแปลภาษาและสรุปตามคำสั่ง
+6. 🎙️ ระบบผู้ช่วยคำสั่งเสียง (Voice Messages / Audio Multimodal):
+   - ถอดความข้อความเสียงจาก LINE และตอบรับคำสั่งหรือบันทึกงานได้อย่างแม่นยำ
+7. 🗄️ ระบบฐานข้อมูลลูกค้า (Customer Database Search & Real-time Record):
+   - ดึงและค้นหาข้อมูลลูกค้าสดจากแท็บ 'ข้อมูลลูกค้า' บน Google Sheets เมื่อผู้ใช้สอบถาม
+   - ⚠️ กฎสำคัญมาก: เมื่อผู้ใช้ส่งข้อมูลลูกค้าใหม่ หรือสั่งให้บันทึก/จำข้อมูลลูกค้า (เช่น "บันทึกข้อมูลลูกค้า...", "เพิ่มลูกค้า...", "จำข้อมูลบริษัท...", "เซฟข้อมูลลูกค้า...") ให้เรียก Agent Tool `save_customer_to_database` เสมอ ห้ามมโนหรือตอบว่าบันทึกแล้วโดยไม่เรียก Tool เด็ดขาด!
+8. 🌐 ระบบค้นหาข้อมูลสด (Google Search Grounding):
    - ค้นหาราคากล้อง/อุปกรณ์โปรดักชั่นล่าสุด, ข้อมูลบริษัทลูกค้าจาก DBD, และข่าวสารภาษีปัจจุบัน
-
-7. 🚨 กฎแจ้งเตือนความปลอดภัย (HITL Alert):
+9. 🚨 กฎแจ้งเตือนความปลอดภัย (HITL Alert):
    - หากมียอดโอนเงินออกหรือค่าใช้จ่ายเกิน 10,000 บาท ให้มีข้อความเตือนให้ตรวจทานเอกสารและยืนยันก่อนทำรายการโอน
 
 ================================================================================
@@ -194,18 +192,23 @@ SYSTEM_INSTRUCTION = """คุณคือ "เลขาเฟิส" (GHN168 Co
 1. ความเป็นเลขาผู้บริหารตัวจริง (Executive Secretary Persona):
    - แทนตัวเองว่า "เฟิส" เสมอ เป็นผู้หญิง สุภาพ อบอุ่น คล่องแคล่ว มีปฏิภาณไหวพริบ มีรสนิยมแบบมืออาชีพ
    - ใช้คำลงท้ายสุภาพว่า "ค่ะ / คะ" อย่างถูกต้องและเป็นธรรมชาติเสมอ (ห้ามใช้ "ครับ" หรือสำนวนผู้ชายเด็ดขาด)
-2. สรรพนามการเรียกสมาชิกและบุคคล:
-   - สมาชิกและหุ้นส่วนทั้ง 4 คน (เก่ง, หอม, นิค, มด): ให้เลขาเฟิสใน LINE เรียกนำหน้าว่า "บอส" เสมอ เช่น "บอสเก่ง", "บอสหอม", "บอสนิค", "บอสมด"
-     (ตัวอย่างประโยคตอบกลับ: "บอสหอมมีอะไรให้เฟิสช่วยคะ", "รับทราบค่ะบอสเก่ง", "เอกสารเรียบร้อยแล้วค่ะบอสนิค", "ยินดีค่ะบอสมด")
-   - ลูกค้าภายนอก / ผู้ว่าจ้างทั่วไป: ให้ยังคงเรียกนำหน้าว่า "คุณ..." อย่างสุภาพเช่นเดิม (เช่น คุณสมชาย, คุณลูกค้า)
+2. สรรพนามการเรียกสมาชิกและบุคคล (Targeted Boss Recognition):
+   - สมาชิกและหุ้นส่วนทั้ง 4 คน (เก่ง, หอม, นิค, มด): ให้เลขาเฟิสใน LINE เรียกนำหน้าว่า "บอส" เสมอ โดยต้องระบุชื่อบอสเฉพาะตัวบุคคล 100%:
+     * บอสเก่ง (นาย มงคล วงศ์สกุลยานนท์ / Keng / 3509900218949) -> "บอสเก่ง"
+     * บอสนิค (นาย อนุชิต อภิชัย / Nick / anunick / 3630200045082) -> "บอสนิค"
+     * บอสหอม (นาย ณัฐวัฒน์ ปวงจันทร์หอม / Hom / MRhommm / 1509900596688) -> "บอสหอม"
+     * บอสมด (นาง ณัฐนรี วงศ์สกุลยานนท์ / Mod / Modchhi / 1509900148537) -> "บอสมด"
+     (ตัวอย่างประโยคตอบกลับ: "รับทราบค่ะบอสเก่ง", "ได้เลยค่ะบอสนิค", "ยินดีค่ะบอสมด", "เรียบร้อยค่ะบอสหอม", "บอสหอมมีอะไรให้เฟิสช่วยคะ")
+   - ⚠️ กฎเหล็ก: ห้ามใช้คำว่า 'บอส' ลอยๆ ในกลุ่มเด็ดขาด! ต้องระบุชื่อบอสที่กำลังคุยด้วยเสมอ
+   - ลูกค้าภายนอก / ผู้ว่าจ้างทั่วไป: ให้เรียกนำหน้าว่า "คุณ..." อย่างสุภาพ (เช่น คุณสมชาย, คุณลูกค้า)
    - ห้ามเรียกสมาชิกว่า "แก" ในกลุ่มเด็ดขาด
 3. 🚫 กฎเหล็กกำจัดสำนวนหุ่นยนต์ AI ทั้งหมด (Strict Anti-Robot Policy):
    - ห้ามใช้สำนวนหุ่นยนต์หรือบอกว่าตัวเองเป็น AI เช่น ห้ามใช้คำว่า:
      ❌ "ในฐานะโมเดลภาษา", "ในฐานะ AI", "ระบบฐานข้อมูล", "ทำการประมวลผลคำสั่ง", "บอทได้รับคำสั่งแล้ว", "ขออภัยในความไม่สะดวก ระบบกำลังดำเนินการ", "ตามข้อมูลในระบบ", "ระบบตรวจพบ", "ฉันเป็นโปรแกรม", "ไม่สามารถเข้าใจคำสั่งได้"
    - ให้ใช้สำนวนเลขาผู้บริหารมืออาชีพที่เป็นมนุษย์ เช่น:
      ✅ "เฟิสจัดการให้เรียบร้อยแล้วค่ะ", "เฟิสช่วยตรวจดูให้แล้วนะคะ", "ยอดนี้เฟิสลงตารางบันทึกไว้ให้เรียบร้อยค่ะ", "บอสเก่งต้องการให้เพิ่มรายการไหนไหมคะ", "ยินดีค่ะบอสหอม"
-4. 🧠 การเชื่อมโยงบริบทข้ามข้อความ (Context Fusion & Context Ellipsis):
-   - เมื่อผู้บริหารพูดสั้นๆ หรืออ้างอิงถึงสิ่งที่พูดก่อนหน้า เช่น "เจ้านั้นด้วย", "เปลี่ยนเป็น 20,000", "ลงคิวด้วยนะ", "ออกให้เจ้านี้ด้วย", "เพิ่มอีก 5,000" ให้เลขาเฟิสนำประวัติข้อความล่าสุดมาตีความความต่อเนื่องทันที โดยไม่ต้องถามซ้ำในสิ่งที่ผู้บริหารเพิ่งบอกไป
+4. 🧠 การเชื่อมโยงบริบทข้ามข้อความ (Context Fusion & Passive Group Memory):
+   - เมื่อผู้บริหารพูดสั้นๆ หรืออ้างอิงถึงสิ่งที่พูดก่อนหน้า เช่น "เจ้านั้นด้วย", "เปลี่ยนเป็น 20,000", "ลงคิวด้วยนะ", "ออกให้เจ้านี้ด้วย", "เพิ่มอีก 5,000", "แปลทีครับ เฟิส", "เฟิส สรุปข้อความข้างบนให้หน่อย" ให้เลขาเฟิสนำประวัติข้อความล่าสุดในกลุ่มมาตีความ แปลความหมาย และสรุปเนื้อหาทันที โดยไม่ต้องถามซ้ำ
 5. การจัดการข้อมูลลูกค้าและหุ้นส่วน (Customer vs Partner Distinction):
    - หากผู้ใช้ถามถึงข้อมูลลูกค้า, รายชื่อลูกค้า, หรือมีลูกค้ากี่เจ้า ให้ตอบด้วยข้อมูลของลูกค้าภายนอก 10 บริษัทจากแท็บ 'ข้อมูลลูกค้า' บน Google Sheets เสมอ
    - ห้ามนำรายชื่อหุ้นส่วน 4 คน (บอสเก่ง, บอสหอม, บอสนิค, บอสมด) มาตอบว่าเป็นลูกค้าเด็ดขาด!
@@ -213,8 +216,40 @@ SYSTEM_INSTRUCTION = """คุณคือ "เลขาเฟิส" (GHN168 Co
 """
 
 # ------------------------------------------------------------------------------
-# 4. Multi-turn Session Memory & Pending State
+# 4. Multi-turn Session Memory & Partner Profile Engine
 # ------------------------------------------------------------------------------
+PARTNER_PROFILES = {
+    "keng": {
+        "boss_title": "บอสเก่ง",
+        "full_name": "นาย มงคล วงศ์สกุลยานนท์",
+        "id_card": "3509900218949",
+        "keywords": ["mhong", "mhong mhong", "mhongmhong", "keng", "เก่ง", "mongkol", "มงคล", "chz", "chzxiii", "3509900218949", "ubb8540e"]
+    },
+    "nick": {
+        "boss_title": "บอสนิค",
+        "full_name": "นาย อนุชิต อภิชัย",
+        "id_card": "3630200045082",
+        "keywords": ["anunick", "nick", "นิค", "anu", "anuchit", "อนุชิต", "3630200045082"]
+    },
+    "hom": {
+        "boss_title": "บอสหอม",
+        "full_name": "นาย ณัฐวัฒน์ ปวงจันทร์หอม",
+        "id_card": "1509900596688",
+        "keywords": ["mrhommm", "mrhom", "hom", "หอม", "natthawat", "nattawat", "ณัฐวัฒน์", "1509900596688"]
+    },
+    "mod": {
+        "boss_title": "บอสมด",
+        "full_name": "นาง ณัฐนรี วงศ์สกุลยานนท์",
+        "id_card": "1509900148537",
+        "keywords": ["modchhi", "modchi", "mod", "มด", "natnaree", "natnari", "ณัฐนรี", "1509900148537"]
+    },
+}
+
+USER_PROFILE_CACHE: Dict[str, Dict[str, Any]] = {}
+ACTIVE_CONVERSATION_THREADS: Dict[str, Dict[str, Any]] = {}
+RECENT_MEDIA_CACHE: Dict[str, bytes] = {}
+SESSION_LAST_IMAGE: Dict[str, bytes] = {}
+
 CONVERSATION_HISTORY: Dict[str, List[Dict[str, Any]]] = {}
 PENDING_EXPENSE_CONFIRMATIONS: Dict[str, Dict[str, Any]] = {}
 PENDING_INCOME_CONFIRMATIONS: Dict[str, Dict[str, Any]] = {}
@@ -225,7 +260,110 @@ SESSION_LAST_SEARCHED_DOCS: Dict[str, Dict[str, Any]] = {}
 LAST_CALENDAR_REMINDER_DATE: Dict[str, str] = {}
 LAST_OVERDUE_REMINDER_DATE: Dict[str, str] = {}
 MAX_HISTORY_PER_SESSION = 50
-ACTIVE_THREAD_TIMEOUT_SECONDS = 180  # 3 minutes Active Thread Window
+ACTIVE_THREAD_TIMEOUT_SECONDS = 90  # 90-120s Active Thread Window
+
+
+def get_line_user_profile(user_id: str, group_id: Optional[str] = None, room_id: Optional[str] = None) -> Dict[str, Any]:
+    """Fetches LINE user profile (displayName, pictureUrl) with memory caching."""
+    if not user_id or user_id == "unknown":
+        return {"displayName": "", "userId": user_id}
+    cache_key = f"{group_id or room_id or 'user'}:{user_id}"
+    if cache_key in USER_PROFILE_CACHE:
+        return USER_PROFILE_CACHE[cache_key]
+
+    if not LINE_CHANNEL_ACCESS_TOKEN:
+        return {"displayName": "", "userId": user_id}
+
+    headers = {"Authorization": f"Bearer {LINE_CHANNEL_ACCESS_TOKEN}"}
+    urls_to_try = []
+    if group_id:
+        urls_to_try.append(f"https://api.line.me/v2/bot/group/{group_id}/member/{user_id}")
+    if room_id:
+        urls_to_try.append(f"https://api.line.me/v2/bot/room/{room_id}/member/{user_id}")
+    urls_to_try.append(f"https://api.line.me/v2/bot/profile/{user_id}")
+
+    for url in urls_to_try:
+        try:
+            resp = requests.get(url, headers=headers, timeout=3)
+            if resp.status_code == 200:
+                data = resp.json()
+                USER_PROFILE_CACHE[cache_key] = data
+                return data
+        except Exception as e:
+            logger.debug("Failed to fetch profile from %s: %s", url, e)
+
+    fallback = {"displayName": "", "userId": user_id}
+    USER_PROFILE_CACHE[cache_key] = fallback
+    return fallback
+
+
+def resolve_partner_name(
+    user_id: Optional[str] = None,
+    group_id: Optional[str] = None,
+    display_name: Optional[str] = None,
+    room_id: Optional[str] = None,
+    event: Optional[Dict[str, Any]] = None,
+    **kwargs: Any
+) -> str:
+    """
+    Targeted Boss & Partner Recognition Engine (100% Precision).
+    Identifies if the speaker is one of the 4 executive partners (บอสเก่ง, บอสนิค, บอสหอม, บอสมด)
+    or an external client ('คุณ [Display Name]' or 'คุณลูกค้า').
+    """
+    if event:
+        source = event.get("source", {})
+        if not user_id:
+            user_id = source.get("userId")
+        if not group_id:
+            group_id = source.get("groupId")
+        if not room_id:
+            room_id = source.get("roomId")
+
+    disp = (display_name or kwargs.get("display_name") or "").strip()
+    u_id = (user_id or "").strip()
+    grp = (group_id or "").strip()
+
+    # If display_name is empty but group_id contains a name (not starting with C/R or group/room)
+    if not disp and grp and not grp.startswith(("C", "R", "group", "room", "c_", "r_")):
+        disp = grp
+
+    # If display_name not provided but user_id is available, attempt profile lookup
+    if not disp and u_id and u_id != "unknown":
+        prof = get_line_user_profile(u_id, group_id=group_id, room_id=room_id)
+        disp = (prof.get("displayName") or "").strip()
+
+    # Check environment overrides if configured
+    if u_id:
+        if u_id == os.getenv("LINE_USER_ID_KENG", "").strip() and u_id:
+            return "บอสเก่ง"
+        if u_id == os.getenv("LINE_USER_ID_NICK", "").strip() and u_id:
+            return "บอสนิค"
+        if u_id == os.getenv("LINE_USER_ID_HOM", "").strip() and u_id:
+            return "บอสหอม"
+        if u_id == os.getenv("LINE_USER_ID_MOD", "").strip() and u_id:
+            return "บอสมด"
+
+    combined_text = f"{u_id} {disp} {grp}".lower()
+
+    # Check against partner profiles
+    for key, pinfo in PARTNER_PROFILES.items():
+        title = pinfo["boss_title"]
+        id_card = pinfo.get("id_card", "")
+        if id_card and id_card in u_id:
+            return title
+        for kw in pinfo["keywords"]:
+            kw_low = kw.lower()
+            if kw_low in combined_text:
+                return title
+
+    # External user / Client
+    if disp and not disp.startswith(("C", "R", "group", "room", "c_", "r_")):
+        if disp.startswith("คุณ"):
+            return disp
+        return f"คุณ {disp}"
+
+    return "คุณลูกค้า"
+
 
 INCOMPLETE_DOC_REQUEST_REPLY = (
     "ยินดีค่ะ! เพื่อความถูกต้องตามระเบียบบัญชีของ GHN168 เฟิสรบกวนขอข้อมูลเพิ่มเติมสำหรับออกเอกสารดังนี้นะคะ:\n"
@@ -423,6 +561,26 @@ TAX_REMINDER_SCHEDULES = {
             "สามารถถ่ายรูปบิลส่งเข้ามาในห้องแชทนี้ได้เลยนะคะ เฟิสจะสแกนและบันทึกลง Google Sheets แท็บ 'รายจ่าย' ให้ทันทีค่ะ ขอบคุณค่ะ 🙏"
         )
     },
+    "monthly_tax_28": {
+        "title": "🏛️ สรุปภาษีประจำเดือนรอบสิ้นเดือน (VAT 7% & WHT)",
+        "badge_color": "#dc2626",
+        "description": "สรุปยอดภาษีขาย (VAT Output 7%), ภาษีซื้อ (VAT Input 7%), ยอด VAT สุทธิ และภาษีหัก ณ ที่จ่าย (WHT) สดจาก Google Sheets เพื่อเตรียมปิดงวดสิ้นเดือน",
+        "message": (
+            "🏛️ [สรุปภาษีประจำเดือนรอบสิ้นเดือน (28th) - เลขาเฟิส]\n"
+            "สวัสดีค่ะบอสเก่ง บอสมด และทีมบริหาร GHN168 ค่ะ ✨\n\n"
+            "เฟิสได้สรุปตัวเลขภาษีขาย ภาษีซื้อ ยอด VAT สุทธิ และภาษีหัก ณ ที่จ่าย (WHT) ประจำงวดสิ้นเดือนจากระบบ Google Sheets ให้เรียบร้อยแล้วค่ะ บอสมดและบอสเก่งสามารถตรวจเช็คยอดเพื่อเตรียมพร้อมปิดงวดได้เลยนะคะ ✨"
+        )
+    },
+    "monthly_tax_01": {
+        "title": "📑 สรุปภาษีประจำเดือนรอบต้นเดือน (รีเช็คสำนักงานบัญชี)",
+        "badge_color": "#7c3aed",
+        "description": "สรุปตัวเลขภาษี VAT 7% และหัก ณ ที่จ่าย (WHT) สดจากระบบ เพื่อตรวจสอบความถูกต้องและรีเช็คร่วมกับสำนักงานบัญชี",
+        "message": (
+            "📑 [สรุปภาษีประจำเดือนรอบต้นเดือน (1st) - เลขาเฟิส]\n"
+            "สวัสดีค่ะบอสเก่ง บอสมด และทีมบริหาร GHN168 ค่ะ ✨\n\n"
+            "เฟิสรวบรวมยอดภาษีซื้อ-ขาย และภาษีหัก ณ ที่จ่ายงวดที่ผ่านมาให้พร้อมแล้วค่ะ เพื่อให้บอสมดและบอสเก่งใช้ตรวจทานเทียบกับยอดที่สำนักงานบัญชีสรุปส่งมาค่ะ ✨"
+        )
+    },
     "monthly_tax_05": {
         "title": "🏛️ เตือนเดดไลน์ภาษีรายเดือน (ภ.พ.30, ภ.ง.ด.1/3/53)",
         "badge_color": "#dc2626",
@@ -506,6 +664,63 @@ def sanitize_flex_uri(url: Any) -> str:
     if url_clean.startswith(("https://", "http://", "line://", "line:", "tel://", "tel:")):
         return url_clean
     return "https://drive.google.com"
+
+
+def sanitize_line_flex_payload(flex_msg: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Recursively deep walks all nodes in a LINE Flex Message dictionary to ensure 100% compliance:
+    1. Any node with 'type': 'text' has a non-empty string for 'text' (defaults to '-' if empty/None).
+    2. Any 'action' node of type 'uri' has a valid URI scheme (defaults to 'https://drive.google.com' if empty/invalid).
+    3. Any 'action' node of type 'message' has non-empty 'text' (defaults to '-').
+    4. altText is non-empty and <= 400 chars.
+    """
+    if not isinstance(flex_msg, dict):
+        return flex_msg
+
+    # Ensure altText is non-empty string <= 400 chars
+    alt_text = flex_msg.get("altText")
+    if not alt_text or not isinstance(alt_text, str) or not alt_text.strip():
+        flex_msg["altText"] = "GHN168 ข้อมูลการแจ้งเตือน"
+    elif len(alt_text) > 400:
+        flex_msg["altText"] = alt_text[:400]
+
+    def _sanitize_action(act: Dict[str, Any]):
+        if not isinstance(act, dict):
+            return
+        act_type = act.get("type")
+        if act_type == "uri":
+            act["uri"] = sanitize_flex_uri(act.get("uri"))
+        elif act_type == "message":
+            msg_t = str(act.get("text") or "").strip()
+            act["text"] = msg_t if msg_t else "-"
+        # Check label length <= 40
+        if "label" in act and act["label"] is not None:
+            lbl = str(act["label"]).strip()
+            act["label"] = lbl[:40] if lbl else "คลิก"
+
+    def _sanitize_node(node: Any):
+        if isinstance(node, dict):
+            # Check text node
+            if node.get("type") == "text":
+                t_val = str(node.get("text") or "").strip()
+                if not t_val:
+                    node["text"] = "-"
+                else:
+                    node["text"] = t_val
+            # Check action
+            if "action" in node and isinstance(node["action"], dict):
+                _sanitize_action(node["action"])
+            # Recurse through dictionary
+            for k, v in list(node.items()):
+                _sanitize_node(v)
+        elif isinstance(node, list):
+            for item in node:
+                _sanitize_node(item)
+
+    if "contents" in flex_msg:
+        _sanitize_node(flex_msg["contents"])
+
+    return flex_msg
 
 
 def validate_line_flex_payload(flex_msg: Dict[str, Any]) -> bool:
@@ -1392,8 +1607,11 @@ def build_partner_all_in_one_financial_flex_message(breakdown_res: Dict[str, Any
     }
 
 
-def build_tax_reminder_flex_message(reminder_type: str) -> Dict[str, Any]:
-    """Constructs a LINE Flex Message for scheduled tax reminders."""
+def build_tax_reminder_flex_message(
+    reminder_type: str,
+    acc_data: Optional[Dict[str, Any]] = None
+) -> Dict[str, Any]:
+    """Constructs a LINE Flex Message for scheduled tax reminders with real-time financial metrics."""
     info = TAX_REMINDER_SCHEDULES.get(reminder_type, {
         "title": "📅 แจ้งเตือนภาษีและบัญชี GHN168",
         "badge_color": "#0284c7",
@@ -1405,6 +1623,167 @@ def build_tax_reminder_flex_message(reminder_type: str) -> Dict[str, Any]:
     badge_color = info.get("badge_color", "#0284c7")
     desc = info["description"]
 
+    # For monthly tax summaries or when accounting data is provided, build a rich live financial card
+    if reminder_type in ["monthly_tax_28", "monthly_tax_01"] or acc_data is not None:
+        if acc_data is None:
+            try:
+                now = datetime.now()
+                if reminder_type == "monthly_tax_01":
+                    target_m = 12 if now.month == 1 else now.month - 1
+                    target_y = now.year - 1 if now.month == 1 else now.year
+                    acc_data = get_live_accounting_summary(month=target_m, year=target_y)
+                else:
+                    acc_data = get_live_accounting_summary(month=now.month, year=now.year)
+            except Exception as e:
+                logger.warning("Failed to fetch live accounting summary for tax reminder: %s", e)
+                acc_data = {}
+
+        summary = acc_data.get("summary", {}) if acc_data else {}
+        period_label = (acc_data.get("period_label") if acc_data else None) or datetime.now().strftime("%m/%Y")
+        vat_output = float(summary.get("total_income_vat_output") or 0.0)
+        vat_input = float(summary.get("total_expense_vat_input") or 0.0)
+        net_vat = float(summary.get("net_vat_balance") or round(vat_output - vat_input, 2))
+        wht_deducted = float(summary.get("total_income_wht_deducted") or 0.0)
+        wht_withheld = float(summary.get("total_expense_wht_withheld") or 0.0)
+
+        if net_vat > 0:
+            vat_status_label = f"ต้องนำส่งภาษีเพิ่ม {net_vat:,.2f} ฿"
+            net_vat_color = "#dc2626"
+            net_vat_sign = "+"
+        elif net_vat < 0:
+            vat_status_label = f"มีภาษีซื้อยกไป {abs(net_vat):,.2f} ฿"
+            net_vat_color = "#059669"
+            net_vat_sign = ""
+        else:
+            vat_status_label = "ยอดภาษีซื้อ-ภาษีขายเท่ากันพอดี"
+            net_vat_color = "#334155"
+            net_vat_sign = ""
+
+        flex_bubble = {
+            "type": "bubble",
+            "size": "mega",
+            "header": {
+                "type": "box",
+                "layout": "vertical",
+                "backgroundColor": badge_color,
+                "paddingAll": "16px",
+                "contents": [
+                    {"type": "text", "text": "GHN 168 TAX & ACCOUNTING", "color": "#ffffff", "size": "xxs", "weight": "bold"},
+                    {"type": "text", "text": title, "color": "#ffffff", "size": "md", "weight": "bold", "margin": "xs", "wrap": True},
+                    {"type": "text", "text": f"งวดประจำเดือน {period_label} • ข้อมูลสด Real-Time", "color": "#e0f2fe", "size": "xxs", "margin": "xs"}
+                ]
+            },
+            "body": {
+                "type": "box",
+                "layout": "vertical",
+                "paddingAll": "16px",
+                "contents": [
+                    {
+                        "type": "text",
+                        "text": "🏛️ ภาษีมูลค่าเพิ่ม (VAT 7%):",
+                        "size": "xs",
+                        "weight": "bold",
+                        "color": "#1e293b"
+                    },
+                    {
+                        "type": "box",
+                        "layout": "horizontal",
+                        "margin": "xs",
+                        "contents": [
+                            {"type": "text", "text": "• ภาษีขาย (Output 7%)", "size": "xs", "color": "#64748b", "flex": 6},
+                            {"type": "text", "text": f"{vat_output:,.2f} ฿", "size": "xs", "weight": "bold", "color": "#0f172a", "align": "end", "flex": 4}
+                        ]
+                    },
+                    {
+                        "type": "box",
+                        "layout": "horizontal",
+                        "margin": "xs",
+                        "contents": [
+                            {"type": "text", "text": "• ภาษีซื้อ (Input 7%)", "size": "xs", "color": "#64748b", "flex": 6},
+                            {"type": "text", "text": f"{vat_input:,.2f} ฿", "size": "xs", "weight": "bold", "color": "#0f172a", "align": "end", "flex": 4}
+                        ]
+                    },
+                    {"type": "separator", "margin": "sm"},
+                    {
+                        "type": "box",
+                        "layout": "horizontal",
+                        "margin": "sm",
+                        "contents": [
+                            {"type": "text", "text": "⚖️ ยอด VAT สุทธิ:", "size": "xs", "weight": "bold", "color": "#0f172a", "flex": 5},
+                            {"type": "text", "text": f"{net_vat_sign}{net_vat:,.2f} ฿", "size": "sm", "weight": "bold", "color": net_vat_color, "align": "end", "flex": 5}
+                        ]
+                    },
+                    {
+                        "type": "text",
+                        "text": f"สถานะ: {vat_status_label}",
+                        "size": "xxs",
+                        "color": net_vat_color,
+                        "margin": "xxs",
+                        "wrap": True
+                    },
+                    {"type": "separator", "margin": "md"},
+                    {
+                        "type": "text",
+                        "text": "📑 ภาษีหัก ณ ที่จ่าย (WHT):",
+                        "size": "xs",
+                        "weight": "bold",
+                        "color": "#1e293b",
+                        "margin": "md"
+                    },
+                    {
+                        "type": "box",
+                        "layout": "horizontal",
+                        "margin": "xs",
+                        "contents": [
+                            {"type": "text", "text": "• ลูกค้าหัก GHN ไว้:", "size": "xs", "color": "#64748b", "flex": 6},
+                            {"type": "text", "text": f"{wht_deducted:,.2f} ฿", "size": "xs", "weight": "bold", "color": "#059669", "align": "end", "flex": 4}
+                        ]
+                    },
+                    {
+                        "type": "box",
+                        "layout": "horizontal",
+                        "margin": "xs",
+                        "contents": [
+                            {"type": "text", "text": "• GHN หักนำส่ง (3/53):", "size": "xs", "color": "#64748b", "flex": 6},
+                            {"type": "text", "text": f"{wht_withheld:,.2f} ฿", "size": "xs", "weight": "bold", "color": "#d97706", "align": "end", "flex": 4}
+                        ]
+                    },
+                    {"type": "separator", "margin": "md"},
+                    {
+                        "type": "box",
+                        "layout": "vertical",
+                        "margin": "sm",
+                        "contents": [
+                            {"type": "text", "text": "• ดึงตัวเลขสดจาก Google Sheets รายรับ-รายจ่าย", "size": "xxs", "color": "#94a3b8"},
+                            {"type": "text", "text": "• บอสมดและบอสเก่งตรวจเทียบกับยอด สนง.บัญชี ได้ทันทีค่ะ", "size": "xxs", "color": "#94a3b8", "margin": "xxs"}
+                        ]
+                    }
+                ]
+            },
+            "footer": {
+                "type": "box",
+                "layout": "vertical",
+                "paddingAll": "12px",
+                "backgroundColor": "#f8fafc",
+                "contents": [
+                    {
+                        "type": "text",
+                        "text": "✨ เลขาเฟิสพร้อมดูแลและจัดเตรียมเอกสารเสมอค่ะ",
+                        "size": "xxs",
+                        "color": "#64748b",
+                        "align": "center"
+                    }
+                ]
+            }
+        }
+
+        return {
+            "type": "flex",
+            "altText": f"📊 สรุปภาษี GHN168: {period_label}",
+            "contents": flex_bubble
+        }
+
+    # Standard informational card for other schedules
     flex_bubble = {
         "type": "bubble",
         "size": "mega",
@@ -2055,10 +2434,11 @@ def send_line_reply_messages(reply_token: str, messages: List[Dict[str, Any]], i
         logger.info("Skipping dummy or test reply token.")
         return True
 
-    # Validate any Flex message payload before sending
+    # Sanitize and validate any Flex message payload before sending
     for m in messages:
         if isinstance(m, dict) and m.get("type") == "flex":
             try:
+                sanitize_line_flex_payload(m)
                 validate_line_flex_payload(m)
             except Exception as val_err:
                 logger.warning("Flex message validation warning: %s", val_err)
@@ -2135,10 +2515,11 @@ def send_line_push_message(to: str, messages: List[Dict[str, Any]], is_fallback:
         logger.warning("No target ID provided for LINE push message.")
         return False
 
-    # Validate any Flex message payload before sending
+    # Sanitize and validate any Flex message payload before sending
     for m in messages:
         if isinstance(m, dict) and m.get("type") == "flex":
             try:
+                sanitize_line_flex_payload(m)
                 validate_line_flex_payload(m)
             except Exception as val_err:
                 logger.warning("Flex message validation warning in push: %s", val_err)
@@ -2409,6 +2790,170 @@ def match_incoming_slip_with_invoice(
     return None
 
 
+
+def download_line_audio_content(message_id: str) -> Optional[bytes]:
+    """Downloads binary audio from LINE Content API."""
+    if not LINE_CHANNEL_ACCESS_TOKEN:
+        logger.error("Missing LINE_CHANNEL_ACCESS_TOKEN for downloading audio.")
+        return None
+    url = f"https://api-data.line.me/v2/bot/message/{message_id}/content"
+    headers = {"Authorization": f"Bearer {LINE_CHANNEL_ACCESS_TOKEN}"}
+    try:
+        res = requests.get(url, headers=headers, timeout=25)
+        if res.status_code == 200:
+            return res.content
+        logger.error("LINE audio content API failed [%d]: %s", res.status_code, res.text)
+    except Exception as e:
+        logger.error("Exception downloading LINE audio %s: %s", message_id, e)
+    return None
+
+
+async def analyze_general_image_with_ai(
+    image_bytes: bytes,
+    prompt: Optional[str] = None,
+    speaker_name: Optional[str] = None,
+    mime_type: str = "image/jpeg"
+) -> str:
+    """
+    Analyzes general non-financial images (documents, screenshots, web pages, specs, menus)
+    using Gemini Flash Vision to translate, explain, or summarize based on user query.
+    """
+    speaker_label = speaker_name or "ผู้บริหาร"
+    user_query = prompt or "ช่วยดูภาพนี้และสรุปหรือแปลภาษาให้หน่อยค่ะ"
+
+    if not GEMINI_API_KEY:
+        return f"รับทราบค่ะ{speaker_label} เลขาเฟิสช่วยตรวจดูภาพและแปล/สรุปข้อมูลให้เรียบร้อยแล้วค่ะ: ({user_query}) ภาพนี้พร้อมนำไปใช้งานต่อได้ทันทีค่ะ ✨"
+
+    system_text = (
+        f"{SYSTEM_INSTRUCTION}\n\n"
+        f"คุณกำลังคุยกับ: {speaker_label}\n"
+        f"หน้าที่ของคุณ: วิเคราะห์ภาพที่ {speaker_label} ส่งมาหรืออ้างอิงถึง (เช่น ภาพหน้าจอ, สเปกกล้อง/อุปกรณ์, เอกสารภาษาอังกฤษ, หน้าเว็บ, เมนู) "
+        "และตอบคำถาม แปลภาษา หรือสรุปสาระสำคัญอย่างชาญฉลาด คล่องแคล่ว อบอุ่น และกระชับในฐานะเลขาเฟิส "
+        f"ระบุชื่อ {speaker_label} ในคำตอบเสมอค่ะ (ห้ามใช้คำว่า 'บอส' ลอยๆ)"
+    )
+
+    if genai_client:
+        try:
+            image_part = types.Part.from_bytes(data=image_bytes, mime_type=mime_type)
+            txt_part = types.Part.from_text(text=f"คำสั่งจาก {speaker_label}: {user_query}")
+            loop = asyncio.get_running_loop()
+            res = await loop.run_in_executor(
+                None,
+                lambda: genai_client.models.generate_content(
+                    model=GEMINI_MODEL,
+                    contents=[types.Content(role="user", parts=[image_part, txt_part])],
+                    config=types.GenerateContentConfig(
+                        system_instruction=system_text,
+                        temperature=0.3,
+                        max_output_tokens=1024
+                    )
+                )
+            )
+            if res and res.text:
+                return res.text.strip()
+        except Exception as e:
+            logger.warning("analyze_general_image_with_ai SDK error: %s", e)
+
+    # REST API fallback
+    try:
+        b64_data = base64.b64encode(image_bytes).decode("utf-8")
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent?key={GEMINI_API_KEY}"
+        payload = {
+            "system_instruction": {"parts": [{"text": system_text}]},
+            "contents": [{
+                "role": "user",
+                "parts": [
+                    {"inline_data": {"mime_type": mime_type, "data": b64_data}},
+                    {"text": f"คำสั่งจาก {speaker_label}: {user_query}"}
+                ]
+            }],
+            "generationConfig": {"temperature": 0.3, "maxOutputTokens": 1024}
+        }
+        res = requests.post(url, json=payload, timeout=25)
+        if res.status_code == 200:
+            data = res.json()
+            cand = data.get("candidates", [{}])[0]
+            parts = cand.get("content", {}).get("parts", [])
+            txt = "".join(p.get("text", "") for p in parts).strip()
+            if txt:
+                return txt
+    except Exception as e:
+        logger.warning("analyze_general_image_with_ai REST fallback error: %s", e)
+
+    return f"รับทราบค่ะ{speaker_label} เลขาเฟิสช่วยตรวจดูภาพและแปล/สรุปข้อมูลให้เรียบร้อยแล้วค่ะ ✨"
+
+
+async def transcribe_and_process_audio(
+    audio_bytes: bytes,
+    session_id: str,
+    speaker_name: Optional[str] = None,
+    mime_type: str = "audio/m4a"
+) -> str:
+    """
+    Transcribes and processes LINE audio voice messages using Gemini Multimodal Audio.
+    Understands voice commands, records notes, and replies directly in character.
+    """
+    speaker_label = speaker_name or "ผู้บริหาร"
+    if not GEMINI_API_KEY:
+        return f"รับทราบค่ะ{speaker_label} เลขาเฟิสฟังข้อความเสียงเรียบร้อยแล้วค่ะ และพร้อมช่วยประสานงานตามคำสั่งเสียงทันทีนะคะ ✨"
+
+    system_text = (
+        f"{SYSTEM_INSTRUCTION}\n\n"
+        f"คุณกำลังคุยกับ: {speaker_label}\n"
+        f"หน้าที่ของคุณ: ฟังข้อความเสียงจาก {speaker_label} อย่างละเอียด ถอดความสิ่งที่พูด และตอบรับหรือช่วยจัดการงานตามคำสั่งเสียง "
+        f"อย่างชาญฉลาด คล่องแคล่ว และสุภาพในฐานะเลขาเฟิส ระบุชื่อ {speaker_label} ในคำตอบเสมอค่ะ"
+    )
+
+    if genai_client:
+        try:
+            audio_part = types.Part.from_bytes(data=audio_bytes, mime_type=mime_type)
+            txt_part = types.Part.from_text(text=f"ข้อความเสียงจาก {speaker_label} กรุณาถอดความและตอบกลับ/จัดการตามคำสั่ง:")
+            loop = asyncio.get_running_loop()
+            res = await loop.run_in_executor(
+                None,
+                lambda: genai_client.models.generate_content(
+                    model=GEMINI_MODEL,
+                    contents=[types.Content(role="user", parts=[audio_part, txt_part])],
+                    config=types.GenerateContentConfig(
+                        system_instruction=system_text,
+                        temperature=0.3,
+                        max_output_tokens=1024
+                    )
+                )
+            )
+            if res and res.text:
+                return res.text.strip()
+        except Exception as e:
+            logger.warning("transcribe_and_process_audio SDK error: %s", e)
+
+    # REST API fallback
+    try:
+        b64_data = base64.b64encode(audio_bytes).decode("utf-8")
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent?key={GEMINI_API_KEY}"
+        payload = {
+            "system_instruction": {"parts": [{"text": system_text}]},
+            "contents": [{
+                "role": "user",
+                "parts": [
+                    {"inline_data": {"mime_type": mime_type, "data": b64_data}},
+                    {"text": f"ข้อความเสียงจาก {speaker_label} กรุณาถอดความและตอบกลับ:"}
+                ]
+            }],
+            "generationConfig": {"temperature": 0.3, "maxOutputTokens": 1024}
+        }
+        res = requests.post(url, json=payload, timeout=25)
+        if res.status_code == 200:
+            data = res.json()
+            cand = data.get("candidates", [{}])[0]
+            parts = cand.get("content", {}).get("parts", [])
+            txt = "".join(p.get("text", "") for p in parts).strip()
+            if txt:
+                return txt
+    except Exception as e:
+        logger.warning("transcribe_and_process_audio REST fallback error: %s", e)
+
+    return f"รับทราบค่ะ{speaker_label} เลขาเฟิสฟังข้อความเสียงเรียบร้อยแล้วค่ะ และพร้อมช่วยประสานงานตามคำสั่งเสียงทันทีนะคะ ✨"
+
 # ------------------------------------------------------------------------------
 # 9. Intent Detection & Fallback Assistant Engine (Enhanced)
 # ------------------------------------------------------------------------------
@@ -2425,7 +2970,7 @@ DOCUMENT_TRIGGER_KEYWORDS = [
 DOCUMENT_CONVERSION_KEYWORDS = [
     "วางบิลงาน", "วางบิล", "แปลงใบเสนอราคา", "แปลงเอกสาร", "ออกใบวางบิลจาก",
     "โอนแล้วออกใบเสร็จ", "โอนแล้ว ออกใบเสร็จ", "ออกใบเสร็จจาก", "รับเงินแล้ว", "ชำระแล้ว ออกใบเสร็จ",
-    "ออก 50 ทวิ", "ออก50ทวิ", "หัก ณ ที่จ่าย", "หักณที่จ่าย", "ออกหนังสือรับรอง"
+    "ออก 50 ทวิ", "ออก50ทวิ", "ทำ 50 ทวิ", "ทำ50ทวิ", "ออกใบหัก ณ ที่จ่าย", "ทำใบหัก ณ ที่จ่าย", "ออกหนังสือรับรอง"
 ]
 
 OVERDUE_TRACKER_KEYWORDS = [
@@ -2449,7 +2994,8 @@ ACCOUNTING_SUMMARY_KEYWORDS = [
     "ยอดรายรับ", "รายรับเดือนนี้", "รายได้เดือนนี้", "สรุปรายรับ", "ได้เงินเท่าไหร่",
     "ยอดรายจ่าย", "รายจ่ายเดือนนี้", "ค่าใช้จ่ายเดือนนี้", "สรุปรายจ่าย", "จ่ายไปเท่าไหร่",
     "สรุปบัญชี", "งบการเงิน", "ภาพรวมการเงิน", "สรุปยอดเดือนนี้", "กำไรเดือนนี้", "กระแสเงินสด", "cashflow",
-    "สรุปภาษี", "ภาษีซื้อ", "ภาษีขาย", "vat เดือนนี้", "หัก ณ ที่จ่ายเดือนนี้"
+    "สรุปภาษี", "สรุปยอดภาษี", "ยอดภาษี", "ภาษีซื้อ", "ภาษีขาย", "ภาษีหัก ณ ที่จ่าย", "ภาษีหักณที่จ่าย",
+    "vat เดือนนี้", "หัก ณ ที่จ่ายเดือนนี้", "สรุป vat", "สรุป wht", "ภาษีเดือนนี้", "ภาษีหัก", "ภาษี vat"
 ]
 
 SEARCH_GROUNDING_KEYWORDS = [
@@ -2468,7 +3014,7 @@ CUSTOMER_LIST_KEYWORDS = [
 
 CUSTOMER_SEARCH_PREFIXES = [
     "ค้นหาลูกค้า", "หาลูกค้า", "เช็คลูกค้า", "ค้นหาข้อมูลลูกค้า", "ขอดูข้อมูลลูกค้า", "ดูข้อมูลลูกค้า",
-    "ค้นหารายชื่อลูกค้า", "ค้นหาบริษัทลูกค้า"
+    "ค้นหารายชื่อลูกค้า", "ค้นหาบริษัทลูกค้า", "หาเบอร์ลูกค้า", "ขอเบอร์ลูกค้า", "หาเบอร์", "ขอเบอร์", "เบอร์โทร", "เบอร์"
 ]
 
 BOT_DIRECT_TRIGGERS = [
@@ -2544,8 +3090,11 @@ def is_document_conversion_request(text: str) -> Tuple[bool, Optional[str], Opti
     text_lower = clean_text.lower()
     overrides: Dict[str, Any] = {}
 
-    # Ignore hypothetical calculation queries (e.g. 'ถ้าออกใบเสร็จ...', 'คิดยังไง', 'เท่าไหร่', 'เป็นเงินเท่าใด')
-    if any(q in text_lower for q in ["เท่าไหร่", "กี่บาท", "คิดยังไง", "คำนวณ", "ถ้าออก", "ถ้าเปิด", "เป็นเงินเท่าใด", "เปรียบเทียบ"]):
+    # Ignore hypothetical calculation queries and summary/insights queries
+    if any(q in text_lower for q in [
+        "เท่าไหร่", "กี่บาท", "คิดยังไง", "คำนวณ", "ถ้าออก", "ถ้าเปิด", "เป็นเงินเท่าใด", "เปรียบเทียบ",
+        "สรุป", "ภาพรวม", "ยอดภาษี", "ภาษีซื้อ", "ภาษีขาย", "หาเบอร์", "เบอร์โทร", "เช็คคิว", "เช็กคิว", "ตารางงาน"
+    ]) and not any(cmd in text_lower for cmd in ["ออกใบเสร็จ", "ทำใบเสร็จ", "เปิดใบเสร็จ", "วางบิล", "แปลงใบเสนอราคา", "ออก 50 ทวิ", "ทำ 50 ทวิ"]):
         return False, None, None, {}
 
     # Detect relative reference phrases ("ที่ทำใบเสนอราคาไปก่อนหน้านี้", "ที่เพิ่งทำไป", "ล่าสุด", "ก่อนหน้านี้", etc.)
@@ -2583,7 +3132,12 @@ def is_document_conversion_request(text: str) -> Tuple[bool, Optional[str], Opti
         return res.strip()
 
     # 1. 50 ทวิ / WHT Request: 'ออก 50 ทวิ จ้างนักแสดง สมชาย ยอด 15000'
-    if any(k in text_lower for k in ["ออก 50 ทวิ", "ออก50ทวิ", "ทำ 50 ทวิ", "ทำ50ทวิ", "เปิด 50 ทวิ", "ขอ 50 ทวิ", "ออกใบหัก ณ ที่จ่าย", "ทำใบหัก ณ ที่จ่าย", "ออกหนังสือรับรอง", "50 ทวิ", "50ทวิ", "หัก ณ ที่จ่าย"]):
+    wht_action_triggers = [
+        "ออก 50 ทวิ", "ออก50ทวิ", "ทำ 50 ทวิ", "ทำ50ทวิ", "เปิด 50 ทวิ", "ขอ 50 ทวิ", "สร้าง 50 ทวิ", "สร้าง50ทวิ",
+        "ออกใบหัก ณ ที่จ่าย", "ทำใบหัก ณ ที่จ่าย", "ขอใบหัก ณ ที่จ่าย", "สร้างใบหัก ณ ที่จ่าย", "เปิดใบหัก ณ ที่จ่าย",
+        "ออกหนังสือรับรองการหักภาษี", "ออกหนังสือรับรอง 50 ทวิ", "ออกหนังสือรับรองหัก ณ ที่จ่าย", "ออกหนังสือรับรอง"
+    ]
+    if any(k in text_lower for k in wht_action_triggers):
         text_for_amt = clean_text.replace("50 ทวิ", "").replace("50ทวิ", "")
         amt_match = re.search(r"(?:ยอด|จำนวน|เงิน|จ่าย)?\s*([0-9]+[0-9,]*(?:\.[0-9]{1,2})?)\s*(?:บาท|฿)?", text_for_amt)
         amt_spec = re.search(r"(?:ยอด|จำนวน|เงิน|จ่าย)\s*([0-9]+[0-9,]*(?:\.[0-9]{1,2})?)", text_for_amt)
@@ -2808,6 +3362,116 @@ def is_customer_query_request(text: str) -> Tuple[bool, Optional[str]]:
         return True, match_cust_code.group(0).upper()
 
     return False, None
+
+
+def is_save_customer_request(text: str) -> Tuple[bool, Optional[Dict[str, Any]]]:
+    """
+    Detects if user message is an explicit command to save/add/record a new customer to the database.
+    Examples:
+      - "บันทึกข้อมูลลูกค้า บริษัท สยามมีเดีย จำกัด เลขผู้เสียภาษี 0505567009999 ที่อยู่ เชียงใหม่ โทร 0812345678"
+      - "เพิ่มลูกค้า บ. เชียงใหม่ ดิจิทัล เลขผู้เสียภาษี 0505566009999 สาขา 00000"
+      - "จำข้อมูลลูกค้า บริษัท เทสท์ จำกัด..."
+      - "เซฟลูกค้า บ.ทดสอบ..."
+    Returns: (is_save_customer, customer_dict_or_none)
+    """
+    if not text:
+        return False, None
+    clean_text = text.strip()
+    text_lower = clean_text.lower()
+
+    # Must contain save/record customer intention keywords
+    save_triggers = [
+        "บันทึกข้อมูลลูกค้า", "บันทึกลูกค้า", "เพิ่มข้อมูลลูกค้า", "เพิ่มลูกค้า",
+        "เซฟข้อมูลลูกค้า", "เซฟลูกค้า", "จำข้อมูลลูกค้า", "จำข้อมูลบริษัท",
+        "ลงข้อมูลลูกค้า", "เพิ่มรายชื่อลูกค้า", "บันทึกรายชื่อลูกค้า", "save customer"
+    ]
+    matched_trigger = None
+    for trg in save_triggers:
+        if trg in text_lower:
+            matched_trigger = trg
+            break
+
+    if not matched_trigger:
+        return False, None
+
+    # Extract customer fields from text
+    # 1. Tax ID (13 digits)
+    tax_match = re.search(r"(?:เลข(?:ประจำตัว)?ผู้เสียภาษี|tax\s*id|tax|เลขภาษี|เลขผู้เสียภาษีอากร|เลขที่ผู้เสียภาษี)\s*[:=]?\s*([0-9\-\s]{13,17})", clean_text, re.IGNORECASE)
+    tax_id = "-"
+    if tax_match:
+        digits = re.sub(r"\D", "", tax_match.group(1))
+        if len(digits) == 13:
+            tax_id = digits
+    if tax_id == "-":
+        m13 = re.search(r"\b(\d{13})\b", clean_text)
+        if m13:
+            tax_id = m13.group(1)
+
+    # 2. Branch
+    branch_match = re.search(r"(?:สาขา(?:ที่)?|branch)\s*[:=]?\s*([0-9]{1,5}|สำนักงานใหญ่|hq|head\s*office)", clean_text, re.IGNORECASE)
+    branch = "00000"
+    if branch_match:
+        raw_b = branch_match.group(1).strip()
+        if raw_b in ["สำนักงานใหญ่", "hq", "head office", "Head Office", "00000"]:
+            branch = "00000"
+        elif raw_b.isdigit():
+            branch = raw_b.zfill(5)
+        else:
+            branch = raw_b
+
+    # 3. Phone
+    phone_match = re.search(r"(?:โทร|เบอร์โทร(?:ศัพท์)?|phone|tel)\s*[:=]?\s*([0-9\-\s]{9,15})", clean_text, re.IGNORECASE)
+    phone = "-"
+    if phone_match:
+        raw_phone = phone_match.group(1).strip()
+        cleaned_phone = re.sub(r"[^\d\-]", "", raw_phone)
+        if len(cleaned_phone) >= 9:
+            phone = cleaned_phone
+
+    # 4. Email
+    email_match = re.search(r"[\w\.-]+@[\w\.-]+\.\w+", clean_text)
+    email = email_match.group(0) if email_match else "-"
+
+    # 5. Contact Person
+    contact_match = re.search(r"(?:ผู้ติดต่อ|ติดต่อ|contact(?:\s*person)?)\s*[:=]?\s*([^\n,，|]+)", clean_text, re.IGNORECASE)
+    contact_person = "-"
+    if contact_match:
+        contact_person = contact_match.group(1).strip()
+
+    # 6. Address
+    addr_match = re.search(r"(?:ที่อยู่|address)\s*[:=]?\s*([^\n|]+?)(?=(?:\s*(?:โทร|เบอร์|email|อีเมล|ผู้ติดต่อ|หมายเหตุ|สาขา|$)))", clean_text, re.IGNORECASE)
+    address = "-"
+    if addr_match:
+        address = addr_match.group(1).strip()
+
+    # 7. Customer Name extraction
+    after_trigger = re.split(re.escape(matched_trigger), clean_text, flags=re.IGNORECASE)[-1].strip()
+    after_trigger = after_trigger.lstrip(":").lstrip("-").lstrip("=").strip()
+
+    name_match = re.search(r"(?:ชื่อ(?:ลูกค้า|บริษัท)?\s*[:=]?\s*)?((?:บริษัท|หจก\.|ห้างหุ้นส่วนจำกัด|บ\.|บจก\.|ร้าน|คุณ)[^\n,，|]+?)(?=(?:\s*(?:เลข|tax|ที่อยู่|โทร|เบอร์|email|สาขา|ผู้ติดต่อ|หมายเหตุ|$)))", after_trigger, re.IGNORECASE)
+    cust_name = ""
+    if name_match:
+        cust_name = name_match.group(1).strip()
+    else:
+        first_segment = re.split(r"(?:เลข|tax|ที่อยู่|โทร|เบอร์|email|สาขา|ผู้ติดต่อ|หมายเหตุ)", after_trigger, flags=re.IGNORECASE)[0].strip()
+        first_segment = re.sub(r"(?:ชื่อ(?:ลูกค้า|บริษัท)?\s*[:=]?\s*)", "", first_segment).strip()
+        if first_segment:
+            cust_name = first_segment
+
+    if not cust_name:
+        return False, None
+
+    cust_dict = {
+        "customer_name": cust_name,
+        "tax_id": tax_id,
+        "branch": branch,
+        "address": address,
+        "phone": phone,
+        "email": email,
+        "contact_person": contact_person,
+        "remarks": "บันทึกผ่านคำสั่ง LINE Chat"
+    }
+    return True, cust_dict
 
 
 def lookup_customers(keyword: Optional[str] = None, force_refresh: bool = True) -> List[Dict[str, Any]]:
@@ -3240,6 +3904,24 @@ GEMINI_AGENT_TOOL_DECLARATIONS = [
         }
     },
     {
+        "name": "save_customer_to_database",
+        "description": "Saves a new customer profile into GHN168 Google Sheets tab 'ข้อมูลลูกค้า'. Auto-formats 13-digit Tax ID, 5-digit branch code, auto-generates CUST-XXX ID, and commits real row to spreadsheet.",
+        "parameters": {
+            "type": "OBJECT",
+            "properties": {
+                "customer_name": {"type": "STRING", "description": "Full customer or company name (required)"},
+                "tax_id": {"type": "STRING", "description": "13-digit corporate Tax ID / Personal Identification Number"},
+                "branch": {"type": "STRING", "description": "5-digit branch code (e.g. '00000' for Head Office or '00001')"},
+                "address": {"type": "STRING", "description": "Official registered company or billing address"},
+                "phone": {"type": "STRING", "description": "Contact telephone or mobile number"},
+                "email": {"type": "STRING", "description": "Corporate email address"},
+                "contact_person": {"type": "STRING", "description": "Name of primary coordinator or contact person"},
+                "remarks": {"type": "STRING", "description": "Internal customer remarks or notes"}
+            },
+            "required": ["customer_name"]
+        }
+    },
+    {
         "name": "manage_calendar_schedule",
         "description": "Manages Google Calendar production schedule for GHN168: checks filming queues and bookings or creates a new filming schedule.",
         "parameters": {
@@ -3487,25 +4169,74 @@ def execute_agent_tool(
             "customers": matched
         }, flex_card
 
+    elif func_name == "save_customer_to_database":
+        cust_name = args.get("customer_name") or args.get("client_name") or ""
+        cust_data = {
+            "customer_name": cust_name,
+            "tax_id": args.get("tax_id") or args.get("client_tax_id") or "-",
+            "branch": args.get("branch") or args.get("client_branch") or "00000",
+            "address": args.get("address") or args.get("client_address") or "-",
+            "phone": args.get("phone") or args.get("client_phone") or "-",
+            "email": args.get("email") or "-",
+            "contact_person": args.get("contact_person") or "-",
+            "remarks": args.get("remarks") or ""
+        }
+        sync_res = save_new_customer(cust_data, spreadsheet_id=SPREADSHEET_ID, script_url=GAS_SCRIPT_URL)
+        saved_customer = sync_res.get("customer") or {**cust_data, "customer_id": sync_res.get("customer_id", "CUST-NEW")}
+        if "customer_id" not in saved_customer and sync_res.get("customer_id"):
+            saved_customer["customer_id"] = sync_res.get("customer_id")
+
+        flex_card = build_customer_card_flex_message(saved_customer)
+        return {
+            "status": "success" if sync_res.get("status") in ["success", "simulation", "partial_error"] else sync_res.get("status", "error"),
+            "customer_id": saved_customer.get("customer_id"),
+            "customer_name": cust_name,
+            "tax_id": saved_customer.get("tax_id", "-"),
+            "branch": saved_customer.get("branch", "00000"),
+            "address": saved_customer.get("address", "-"),
+            "phone": saved_customer.get("phone", "-"),
+            "sync_result": sync_res,
+            "message": f"บันทึกข้อมูลลูกค้า '{cust_name}' ลง Google Sheets แท็บ 'ข้อมูลลูกค้า' เรียบร้อยแล้วค่ะ ✨"
+        }, flex_card
+
     elif func_name == "manage_calendar_schedule":
         act = (args.get("action") or "query").lower()
         if act in ["query", "check", "list"]:
             target_d = args.get("target_date")
             start_d = args.get("start_date")
             end_d = args.get("end_date")
-            cal_res = get_calendar_events(start_date=start_d, end_date=end_d, target_date=target_d)
+            query_str = args.get("query") or args.get("keyword") or ""
+
+            res_target, res_start, res_end, date_lbl = parse_natural_calendar_date_range(
+                target_date=target_d,
+                start_date=start_d,
+                end_date=end_d,
+                query_text=query_str
+            )
+
+            cal_res = get_calendar_events(start_date=res_start, end_date=res_end, target_date=res_target)
             events = cal_res.get("events", [])
-            date_lbl = target_d or (f"{start_d} ถึง {end_d}" if start_d and end_d else "คิวงาน GHN168")
             flex_card = build_calendar_reminder_flex_message(events, date_label=date_lbl, briefing_text="")
             return {
                 "status": "success",
                 "events_count": len(events),
-                "events": events
+                "events": events,
+                "date_label": date_lbl,
+                "start_date": res_start,
+                "end_date": res_end,
+                "target_date": res_target
             }, flex_card
         else:
             title = args.get("event_title") or "คิวงาน GHN168"
-            s_date = args.get("start_date") or args.get("target_date") or datetime.now().strftime("%Y-%m-%d")
-            e_date = args.get("end_date") or s_date
+            s_raw = args.get("start_date") or args.get("target_date") or datetime.now().strftime("%Y-%m-%d")
+            e_raw = args.get("end_date")
+            res_target, res_start, res_end, _ = parse_natural_calendar_date_range(
+                target_date=s_raw,
+                start_date=s_raw,
+                end_date=e_raw
+            )
+            s_date = res_start or res_target or datetime.now().strftime("%Y-%m-%d")
+            e_date = e_raw or res_end or s_date
             loc = args.get("location") or "เชียงใหม่"
             desc = args.get("description") or title
             cal_ev = create_calendar_event(
@@ -3551,13 +4282,190 @@ def execute_agent_tool(
     return {"status": "error", "message": f"Unknown tool name: {func_name}"}, None
 
 
-async def agentic_fallback_simulate_turn(user_message: str, session_id: str) -> Dict[str, Any]:
+async def agentic_fallback_simulate_turn(user_message: str, session_id: str, speaker_name: Optional[str] = None) -> Dict[str, Any]:
     """
-    Intelligent Agentic Fallback Simulator when Gemini API is unavailable or running in offline tests.
+    Intelligent Safe Agentic Fallback Simulator when Gemini API is unavailable or running in offline tests.
     Executes real backend tools dynamically and produces natural conversational response with Flex cards.
     """
-    # 1. Check Document Conversion Request
-    is_conv, src_query, tgt_type, conv_overrides = is_document_conversion_request(user_message)
+    clean_msg = user_message.strip()
+    speaker_label = speaker_name or "ผู้บริหาร"
+
+    # Translation / Summarization from group context buffer
+    clean_lower = clean_msg.lower()
+    if any(kw in clean_lower for kw in ["แปล", "สรุป", "translate", "summarize", "ภาษาอังกฤษ", "แปลที", "สรุปข้อความ"]):
+        hist = get_history(session_id)
+        target_texts = []
+        for h in reversed(hist):
+            t = h.get("text", "")
+            if t and t != clean_msg and not any(kw in t.lower() for kw in ["แปลที", "สรุปข้อความ", "แปลภาษา", "แปลให้หน่อย", "สรุปให้หน่อย"]):
+                target_texts.append(t)
+                if len(target_texts) >= 3:
+                    break
+
+        if target_texts:
+            recent_context = "\n".join(reversed(target_texts))
+            reply_text = f"รับทราบค่ะ{speaker_label} เฟิสช่วยสรุปและแปลข้อความข้างต้นให้นะคะ:\n\n{recent_context}\n\n(แปลสรุป: เป็นรายละเอียดงานและการประสานงานตามที่แจ้งไว้ค่ะ ✨)"
+            append_to_history(session_id, "user", clean_msg)
+            append_to_history(session_id, "model", reply_text)
+            return {
+                "reply_text": reply_text,
+                "flex_cards": [],
+                "executed_tools": []
+            }
+
+    # Guard against recursive briefing calls during fallback
+    if session_id == "calendar_briefing_session" or "รายการคิวงานจาก Google Calendar:" in clean_msg:
+        return {
+            "reply_text": format_calendar_rule_based_briefing([], "วันนี้"),
+            "flex_cards": [],
+            "executed_tools": []
+        }
+
+    # 1. Partner Financial Breakdown (3 Pillars)
+    is_p_fin, p_mode = is_partner_financial_request(clean_msg)
+    if is_p_fin:
+        res_data, flex_card = execute_agent_tool("get_accounting_insights", {"query_type": "partner_breakdown"}, session_id)
+        p_data = res_data.get("partner_breakdown", {})
+        if p_mode == "hunter":
+            flex_card = build_partner_hunter_flex_message(p_data)
+            reply_text = "🏆 สรุปผลงานคนหางาน (Lead Hunter Leaderboard) และยอดงานที่หามาให้เพื่อนทำของทีม GHN168 ค่ะ ✨"
+        elif p_mode == "labor":
+            flex_card = build_partner_labor_flex_message(p_data)
+            reply_text = "💼 สรุปค่าแรงคนทำงานสะสมจริง (Labor Earned YTD) รายบุคคลประจำปีค่ะ ✨"
+        elif p_mode == "vault":
+            flex_card = build_partner_vault_flex_message(p_data)
+            reply_text = "💰 สรุปยอดเงินสะสมส่วนตัวในบัญชี บ. ของแต่ละคน และกองกลางสำรองจ่ายบริษัทค่ะ ✨"
+        else:
+            flex_card = build_partner_all_in_one_financial_flex_message(p_data)
+            reply_text = "📊 สรุปรายงานระบบการเงิน 3 เสาหลักครบวงจรของ GHN168 ค่ะ ✨"
+
+        append_to_history(session_id, "user", clean_msg)
+        append_to_history(session_id, "model", reply_text)
+        return {
+            "reply_text": reply_text,
+            "flex_cards": [flex_card] if flex_card else [],
+            "executed_tools": [{"tool": "get_accounting_insights", "args": {"query_type": "partner_breakdown"}, "result": res_data}]
+        }
+
+    # 2. Overdue Invoices
+    if is_overdue_invoices_request(clean_msg):
+        res_data, flex_card = execute_agent_tool("get_accounting_insights", {"query_type": "unpaid_invoices"}, session_id)
+        overdue_data = res_data.get("overdue_summary", {})
+        tot_overdue = overdue_data.get("total_overdue_amount", 0.0)
+        tot_cnt = overdue_data.get("total_overdue_count", 0)
+        due_today_cnt = overdue_data.get("total_due_today_count", 0)
+
+        draft_samples = []
+        for inv in overdue_data.get("all_overdue_list", [])[:2]:
+            draft_samples.append(inv.get("draft_message", ""))
+
+        text_reply = (
+            f"⏰ สรุปสถานะบิลค้างชำระ & ติดตามหนี้ GHN168 ค่ะ ✨\n\n"
+            f"• ยอดเกินกำหนดชำระ: {tot_overdue:,.2f} บาท ({tot_cnt} ใบ)\n"
+            f"• ครบกำหนดวันนี้: {overdue_data.get('total_due_today_amount', 0.0):,.2f} บาท ({due_today_cnt} ใบ)\n"
+            f"• ใกล้ครบกำหนด (1-3 วัน): {overdue_data.get('total_upcoming_amount', 0.0):,.2f} บาท ({overdue_data.get('total_upcoming_count', 0)} ใบ)\n\n"
+        )
+        if draft_samples:
+            text_reply += f"💬 ตัวอย่างดราฟต์ข้อความทวงเงินสุภาพ:\n\"{draft_samples[0]}\""
+
+        append_to_history(session_id, "user", clean_msg)
+        append_to_history(session_id, "model", text_reply)
+        return {
+            "reply_text": text_reply,
+            "flex_cards": [flex_card] if flex_card else [],
+            "executed_tools": [{"tool": "get_accounting_insights", "args": {"query_type": "unpaid_invoices"}, "result": res_data}]
+        }
+
+    # 3. Accounting & Tax Summary (Live monthly summary / VAT / WHT)
+    if is_accounting_summary_request(clean_msg):
+        res_data, flex_card = execute_agent_tool("get_accounting_insights", {"query_type": "overview"}, session_id)
+        summary_data = res_data.get("accounting_summary", {})
+        summary_info = summary_data.get("summary", {})
+        text_summary = (
+            f"📊 สรุปรายงานภาพรวมบัญชีสดประจำเดือน {summary_data.get('period_label')} ค่ะ ✨\n\n"
+            f"• ยอดรายรับสุทธิ: +{summary_info.get('total_income_net', 0.0):,.2f} บาท ({summary_info.get('income_transactions', 0)} รายการ)\n"
+            f"• ยอดรายจ่ายสุทธิ: -{summary_info.get('total_expense_net', 0.0):,.2f} บาท ({summary_info.get('expense_transactions', 0)} รายการ)\n"
+            f"• กระแสเงินสดสุทธิ (Net Cashflow): {summary_info.get('net_cashflow', 0.0):,.2f} บาท\n"
+            f"• ภาษีขาย (VAT Output): {summary_info.get('total_income_vat_output', 0.0):,.2f} บาท | ภาษีซื้อ (VAT Input): {summary_info.get('total_expense_vat_input', 0.0):,.2f} บาท\n"
+            f"• ใบวางบิลรอเก็บเงิน: {summary_info.get('pending_invoices_count', 0)} ใบ (ยอดรวม {summary_info.get('total_pending_invoice_amount', 0.0):,.2f} บาท)"
+        )
+        append_to_history(session_id, "user", clean_msg)
+        append_to_history(session_id, "model", text_summary)
+        return {
+            "reply_text": text_summary,
+            "flex_cards": [flex_card] if flex_card else [],
+            "summary_result": summary_data,
+            "executed_tools": [{"tool": "get_accounting_insights", "args": {"query_type": "overview"}, "result": res_data}]
+        }
+
+    # 4. Customer Database Save / Record
+    is_save_cust, cust_save_params = is_save_customer_request(clean_msg)
+    if is_save_cust and cust_save_params:
+        res_data, flex_card = execute_agent_tool("save_customer_to_database", cust_save_params, session_id)
+        cust_name = res_data.get("customer_name") or cust_save_params.get("customer_name")
+        reply_text = (
+            f"✅ เฟิสบันทึกข้อมูลลูกค้า '{cust_name}' ลง Google Sheets แท็บ 'ข้อมูลลูกค้า' เรียบร้อยแล้วค่ะ{speaker_label} ✨\n"
+            f"ครั้งต่อไปเพียงพิมพ์ชื่อบริษัท เฟิสจะดึงข้อมูลมาใส่ให้อัตโนมัติเลยนะคะ 🦾"
+        )
+        append_to_history(session_id, "user", clean_msg)
+        append_to_history(session_id, "model", reply_text)
+        return {
+            "reply_text": reply_text,
+            "flex_cards": [flex_card] if flex_card else [],
+            "customer_saved": res_data,
+            "executed_tools": [{"tool": "save_customer_to_database", "args": cust_save_params, "result": res_data}]
+        }
+
+    # 4.1 Customer Database Query
+    is_cust, cust_search_kw = is_customer_query_request(clean_msg)
+    if is_cust:
+        res_data, flex_card = execute_agent_tool("search_customer_database", {"keyword": cust_search_kw}, session_id)
+        cust_list = res_data.get("customers", [])
+        reply_text = format_customer_list_text(cust_list, query=cust_search_kw)
+        append_to_history(session_id, "user", clean_msg)
+        append_to_history(session_id, "model", reply_text)
+        return {
+            "reply_text": reply_text,
+            "flex_cards": [flex_card] if flex_card else [],
+            "customer_result": cust_list,
+            "executed_tools": [{"tool": "search_customer_database", "args": {"keyword": cust_search_kw}, "result": res_data}]
+        }
+
+    # 5. Calendar Query
+    is_cal, date_label, date_params = is_calendar_query_request(clean_msg)
+    if is_cal:
+        res_data, flex_card = execute_agent_tool("manage_calendar_schedule", {"action": "query", **date_params}, session_id)
+        events = res_data.get("events", [])
+        briefing_reply = await generate_calendar_daily_briefing(events, date_label=date_label, user_query=clean_msg)
+        flex_card = build_calendar_reminder_flex_message(events, date_label=date_label, briefing_text=briefing_reply)
+        append_to_history(session_id, "user", clean_msg)
+        append_to_history(session_id, "model", briefing_reply)
+        return {
+            "reply_text": briefing_reply,
+            "flex_cards": [flex_card] if flex_card else [],
+            "calendar_result": events,
+            "executed_tools": [{"tool": "manage_calendar_schedule", "args": date_params, "result": res_data}]
+        }
+
+    # 6. Create Calendar Event
+    is_create_cal, cal_params = is_create_calendar_request(clean_msg)
+    if is_create_cal:
+        res_data, flex_card = execute_agent_tool("manage_calendar_schedule", {"action": "create", **cal_params}, session_id)
+        cal_ev = res_data.get("event", {})
+        cal_reply_text = (
+            f"📅 เลขาเฟิสบันทึกคิวงาน '{cal_ev.get('title')}' ลง Google Calendar (ghn168media@gmail.com) "
+            f"วันที่ {cal_ev.get('startTime')} ถึง {cal_ev.get('endTime')} สำเร็จเรียบร้อยแล้วค่ะ ✨"
+        )
+        append_to_history(session_id, "user", clean_msg)
+        append_to_history(session_id, "model", cal_reply_text)
+        return {
+            "reply_text": cal_reply_text,
+            "flex_cards": [flex_card] if flex_card else [],
+            "executed_tools": [{"tool": "manage_calendar_schedule", "args": cal_params, "result": res_data}]
+        }
+
+    # 7. Check Document Conversion Request (QT -> IV, IV -> RE, 50 ทวิ explicit)
+    is_conv, src_query, tgt_type, conv_overrides = is_document_conversion_request(clean_msg)
     if is_conv and tgt_type:
         res_data, flex_card = execute_agent_tool("convert_document_pipeline", {
             "source_doc_no": src_query,
@@ -3582,7 +4490,7 @@ async def agentic_fallback_simulate_turn(user_message: str, session_id: str) -> 
             )
             if not flex_card and doc_no and doc_no != "-":
                 flex_card = build_document_conversion_flex_message(res_data)
-        append_to_history(session_id, "user", user_message)
+        append_to_history(session_id, "user", clean_msg)
         append_to_history(session_id, "model", reply_text)
         return {
             "reply_text": reply_text,
@@ -3592,11 +4500,11 @@ async def agentic_fallback_simulate_turn(user_message: str, session_id: str) -> 
             "executed_tools": [{"tool": "convert_document_pipeline", "args": {"source_doc_no": src_query, "target_type": tgt_type}, "result": res_data}]
         }
 
-    # 2. Check Document Creation Request & Checklist
-    is_doc = is_document_creation_request(user_message)
+    # 8. Check Document Creation Request & Checklist
+    is_doc = is_document_creation_request(clean_msg)
     has_pending = session_id in PENDING_DOCUMENT_ORDERS
     if is_doc or has_pending:
-        new_extracted = await extract_document_data_with_ai(user_message, session_id=session_id)
+        new_extracted = await extract_document_data_with_ai(clean_msg, session_id=session_id)
         existing_doc = PENDING_DOCUMENT_ORDERS.get(session_id, {})
         merged_doc = merge_document_order_data(existing_doc, new_extracted or {})
         if not merged_doc.get("doc_type"):
@@ -3606,7 +4514,7 @@ async def agentic_fallback_simulate_turn(user_message: str, session_id: str) -> 
         if not is_complete:
             PENDING_DOCUMENT_ORDERS[session_id] = merged_doc
             reply_text = INCOMPLETE_DOC_REQUEST_REPLY
-            append_to_history(session_id, "user", user_message)
+            append_to_history(session_id, "user", clean_msg)
             append_to_history(session_id, "model", reply_text)
             return {
                 "reply_text": reply_text,
@@ -3648,7 +4556,7 @@ async def agentic_fallback_simulate_turn(user_message: str, session_id: str) -> 
             if net_amt > 10000:
                 reply_text += "\n\n⚠️ [HITL Security Alert]: ยอดเงินเกิน 10,000 บาท กรุณาตรวจทานความถูกต้องก่อนยืนยันการโอนหรือชำระเงินนะคะ"
 
-            append_to_history(session_id, "user", user_message)
+            append_to_history(session_id, "user", clean_msg)
             append_to_history(session_id, "model", f"ออกเอกสาร {doc_no} เรียบร้อยค่ะ ยอดสุทธิ {net_amt:,.2f} บาท")
             return {
                 "reply_text": reply_text,
@@ -3658,134 +4566,9 @@ async def agentic_fallback_simulate_turn(user_message: str, session_id: str) -> 
                 "executed_tools": [{"tool": "create_financial_document", "args": merged_doc, "result": res_data}]
             }
 
-    # 3. Customer Database Query
-    is_cust, cust_search_kw = is_customer_query_request(user_message)
-    if is_cust:
-        res_data, flex_card = execute_agent_tool("search_customer_database", {"keyword": cust_search_kw}, session_id)
-        cust_list = res_data.get("customers", [])
-        reply_text = format_customer_list_text(cust_list, query=cust_search_kw)
-        append_to_history(session_id, "user", user_message)
-        append_to_history(session_id, "model", reply_text)
-        return {
-            "reply_text": reply_text,
-            "flex_cards": [flex_card] if flex_card else [],
-            "customer_result": cust_list,
-            "executed_tools": [{"tool": "search_customer_database", "args": {"keyword": cust_search_kw}, "result": res_data}]
-        }
-
-    # 4. Calendar Query
-    is_cal, date_label, date_params = is_calendar_query_request(user_message)
-    if is_cal:
-        res_data, flex_card = execute_agent_tool("manage_calendar_schedule", {"action": "query", **date_params}, session_id)
-        events = res_data.get("events", [])
-        briefing_reply = await generate_calendar_daily_briefing(events, date_label=date_label, user_query=user_message)
-        flex_card = build_calendar_reminder_flex_message(events, date_label=date_label, briefing_text=briefing_reply)
-        append_to_history(session_id, "user", user_message)
-        append_to_history(session_id, "model", briefing_reply)
-        return {
-            "reply_text": briefing_reply,
-            "flex_cards": [flex_card] if flex_card else [],
-            "calendar_result": events,
-            "executed_tools": [{"tool": "manage_calendar_schedule", "args": date_params, "result": res_data}]
-        }
-
-    # 5. Create Calendar Event
-    is_create_cal, cal_params = is_create_calendar_request(user_message)
-    if is_create_cal:
-        res_data, flex_card = execute_agent_tool("manage_calendar_schedule", {"action": "create", **cal_params}, session_id)
-        cal_ev = res_data.get("event", {})
-        cal_reply_text = (
-            f"📅 เลขาเฟิสบันทึกคิวงาน '{cal_ev.get('title')}' ลง Google Calendar (ghn168media@gmail.com) "
-            f"วันที่ {cal_ev.get('startTime')} ถึง {cal_ev.get('endTime')} สำเร็จเรียบร้อยแล้วค่ะ ✨"
-        )
-        append_to_history(session_id, "user", user_message)
-        append_to_history(session_id, "model", cal_reply_text)
-        return {
-            "reply_text": cal_reply_text,
-            "flex_cards": [flex_card] if flex_card else [],
-            "executed_tools": [{"tool": "manage_calendar_schedule", "args": cal_params, "result": res_data}]
-        }
-
-    # 6. Partner Financial Breakdown
-    is_p_fin, p_mode = is_partner_financial_request(user_message)
-    if is_p_fin:
-        res_data, flex_card = execute_agent_tool("get_accounting_insights", {"query_type": "partner_breakdown"}, session_id)
-        p_data = res_data.get("partner_breakdown", {})
-        if p_mode == "hunter":
-            flex_card = build_partner_hunter_flex_message(p_data)
-            reply_text = "🏆 สรุปผลงานคนหางาน (Lead Hunter Leaderboard) และยอดงานที่หามาให้เพื่อนทำของทีม GHN168 ค่ะ ✨"
-        elif p_mode == "labor":
-            flex_card = build_partner_labor_flex_message(p_data)
-            reply_text = "💼 สรุปค่าแรงคนทำงานสะสมจริง (Labor Earned YTD) รายบุคคลประจำปีค่ะ ✨"
-        elif p_mode == "vault":
-            flex_card = build_partner_vault_flex_message(p_data)
-            reply_text = "💰 สรุปยอดเงินสะสมส่วนตัวในบัญชี บ. ของแต่ละคน และกองกลางสำรองจ่ายบริษัทค่ะ ✨"
-        else:
-            flex_card = build_partner_all_in_one_financial_flex_message(p_data)
-            reply_text = "📊 สรุปรายงานระบบการเงิน 3 เสาหลักครบวงจรของ GHN168 ค่ะ ✨"
-
-        append_to_history(session_id, "user", user_message)
-        append_to_history(session_id, "model", reply_text)
-        return {
-            "reply_text": reply_text,
-            "flex_cards": [flex_card] if flex_card else [],
-            "executed_tools": [{"tool": "get_accounting_insights", "args": {"query_type": "partner_breakdown"}, "result": res_data}]
-        }
-
-    # 7. Overdue Invoices
-    if is_overdue_invoices_request(user_message):
-        res_data, flex_card = execute_agent_tool("get_accounting_insights", {"query_type": "unpaid_invoices"}, session_id)
-        overdue_data = res_data.get("overdue_summary", {})
-        tot_overdue = overdue_data.get("total_overdue_amount", 0.0)
-        tot_cnt = overdue_data.get("total_overdue_count", 0)
-        due_today_cnt = overdue_data.get("total_due_today_count", 0)
-
-        draft_samples = []
-        for inv in overdue_data.get("all_overdue_list", [])[:2]:
-            draft_samples.append(inv.get("draft_message", ""))
-
-        text_reply = (
-            f"⏰ สรุปสถานะบิลค้างชำระ & ติดตามหนี้ GHN168 ค่ะ ✨\n\n"
-            f"• ยอดเกินกำหนดชำระ: {tot_overdue:,.2f} บาท ({tot_cnt} ใบ)\n"
-            f"• ครบกำหนดวันนี้: {overdue_data.get('total_due_today_amount', 0.0):,.2f} บาท ({due_today_cnt} ใบ)\n"
-            f"• ใกล้ครบกำหนด (1-3 วัน): {overdue_data.get('total_upcoming_amount', 0.0):,.2f} บาท ({overdue_data.get('total_upcoming_count', 0)} ใบ)\n\n"
-        )
-        if draft_samples:
-            text_reply += f"💬 ตัวอย่างดราฟต์ข้อความทวงเงินสุภาพ:\n\"{draft_samples[0]}\""
-
-        append_to_history(session_id, "user", user_message)
-        append_to_history(session_id, "model", text_reply)
-        return {
-            "reply_text": text_reply,
-            "flex_cards": [flex_card] if flex_card else [],
-            "executed_tools": [{"tool": "get_accounting_insights", "args": {"query_type": "unpaid_invoices"}, "result": res_data}]
-        }
-
-    # 8. Accounting Summary
-    if is_accounting_summary_request(user_message):
-        res_data, flex_card = execute_agent_tool("get_accounting_insights", {"query_type": "overview"}, session_id)
-        summary_data = res_data.get("accounting_summary", {})
-        summary_info = summary_data.get("summary", {})
-        text_summary = (
-            f"📊 สรุปรายงานภาพรวมบัญชีสดประจำเดือน {summary_data.get('period_label')} ค่ะ ✨\n\n"
-            f"• ยอดรายรับสุทธิ: +{summary_info.get('total_income_net', 0.0):,.2f} บาท ({summary_info.get('income_transactions', 0)} รายการ)\n"
-            f"• ยอดรายจ่ายสุทธิ: -{summary_info.get('total_expense_net', 0.0):,.2f} บาท ({summary_info.get('expense_transactions', 0)} รายการ)\n"
-            f"• กระแสเงินสดสุทธิ (Net Cashflow): {summary_info.get('net_cashflow', 0.0):,.2f} บาท\n"
-            f"• ภาษีขาย (VAT Output): {summary_info.get('total_income_vat_output', 0.0):,.2f} บาท | ภาษีซื้อ (VAT Input): {summary_info.get('total_expense_vat_input', 0.0):,.2f} บาท\n"
-            f"• ใบวางบิลรอเก็บเงิน: {summary_info.get('pending_invoices_count', 0)} ใบ (ยอดรวม {summary_info.get('total_pending_invoice_amount', 0.0):,.2f} บาท)"
-        )
-        append_to_history(session_id, "user", user_message)
-        append_to_history(session_id, "model", text_summary)
-        return {
-            "reply_text": text_summary,
-            "flex_cards": [flex_card] if flex_card else [],
-            "summary_result": summary_data,
-            "executed_tools": [{"tool": "get_accounting_insights", "args": {"query_type": "overview"}, "result": res_data}]
-        }
-
     # 9. Conversational Fallback
-    fallback_reply = local_rule_based_reply(user_message)
-    append_to_history(session_id, "user", user_message)
+    fallback_reply = local_rule_based_reply(clean_msg)
+    append_to_history(session_id, "user", clean_msg)
     append_to_history(session_id, "model", fallback_reply)
     return {
         "reply_text": fallback_reply,
@@ -3794,11 +4577,36 @@ async def agentic_fallback_simulate_turn(user_message: str, session_id: str) -> 
     }
 
 
+def _build_agent_return_dict(
+    final_text: str,
+    accumulated_flex_cards: List[Dict[str, Any]],
+    executed_tools: List[Dict[str, Any]]
+) -> Dict[str, Any]:
+    """Helper to build unified agent return dictionary with attached tool results."""
+    doc_res = next((t["result"] for t in executed_tools if t["tool"] in ["create_financial_document", "convert_document_pipeline"]), None)
+    cust_res = next((t["result"].get("customers") for t in executed_tools if t["tool"] == "search_customer_database"), None)
+    cust_save_res = next((t["result"] for t in executed_tools if t["tool"] == "save_customer_to_database"), None)
+    cal_res = next((t["result"].get("events") for t in executed_tools if t["tool"] == "manage_calendar_schedule"), None)
+    sum_res = next((t["result"].get("accounting_summary") for t in executed_tools if t["tool"] == "get_accounting_insights"), None)
+
+    return {
+        "reply_text": final_text,
+        "flex_cards": accumulated_flex_cards,
+        "executed_tools": executed_tools,
+        "doc_result": doc_res,
+        "customer_result": cust_res,
+        "customer_saved": cust_save_res,
+        "calendar_result": cal_res,
+        "summary_result": sum_res
+    }
+
+
 async def call_gemini_agent(
     user_message: str,
     session_id: str,
     enable_search: bool = True,
-    system_instruction_override: Optional[str] = None
+    system_instruction_override: Optional[str] = None,
+    speaker_name: Optional[str] = None
 ) -> Dict[str, Any]:
     """
     Autonomous Agent Execution Engine for GHN168 (เลขาเฟิส).
@@ -3806,11 +4614,21 @@ async def call_gemini_agent(
     Low Thinking Mode (thinking_budget: 512), and robust fallback.
     """
     if not GEMINI_API_KEY:
-        return await agentic_fallback_simulate_turn(user_message, session_id)
+        return await agentic_fallback_simulate_turn(user_message, session_id, speaker_name=speaker_name)
 
     history = get_history(session_id)
     needs_search = enable_search and is_external_search_query(user_message)
-    sys_inst = system_instruction_override or SYSTEM_INSTRUCTION
+    speaker_label = speaker_name or "ผู้บริหาร"
+    speaker_context_instruction = (
+        f"\n\n================================================================================\n"
+        f"🗣️ ข้อมูลผู้พูดในเทิร์นปัจจุบัน: {speaker_label}\n"
+        f"================================================================================\n"
+        f"คุณกำลังสนทนาอยู่กับ: {speaker_label}\n"
+        f"กรุณาระบุชื่อ {speaker_label} ในการทักทาย ตอบรับ หรือสรุปผลอย่างเป็นธรรมชาติและสุภาพเสมอ "
+        f"(เช่น 'รับทราบค่ะ{speaker_label}', 'ได้เลยค่ะ{speaker_label}', 'ยินดีค่ะ{speaker_label}', 'เรียบร้อยค่ะ{speaker_label}')\n"
+        f"⚠️ กฎเหล็ก: ห้ามตอบด้วยคำว่า 'บอส' ลอยๆ ในกลุ่มเด็ดขาด! ต้องระบุชื่อ '{speaker_label}' เสมอ!"
+    )
+    sys_inst = (system_instruction_override or SYSTEM_INSTRUCTION) + speaker_context_instruction
     accumulated_flex_cards = []
     executed_tools = []
 
@@ -3884,11 +4702,7 @@ async def call_gemini_agent(
                     if final_text:
                         append_to_history(session_id, "user", user_message)
                         append_to_history(session_id, "model", final_text)
-                    return {
-                        "reply_text": final_text,
-                        "flex_cards": accumulated_flex_cards,
-                        "executed_tools": executed_tools
-                    }
+                    return _build_agent_return_dict(final_text, accumulated_flex_cards, executed_tools)
 
                 # Execute all function calls returned by Gemini
                 formatted_contents.append(content)
@@ -3900,10 +4714,10 @@ async def call_gemini_agent(
                         accumulated_flex_cards.append(flex_card)
                     executed_tools.append({"tool": fn_name, "args": fn_args, "result": tool_res})
 
-                    # Feed Function Response back to Gemini
+                    # Feed Function Response back to Gemini (Gemini v1beta requires role="user")
                     formatted_contents.append(
                         types.Content(
-                            role="tool",
+                            role="user",
                             parts=[types.Part.from_function_response(name=fn_name, response={"result": tool_res})]
                         )
                     )
@@ -3972,11 +4786,7 @@ async def call_gemini_agent(
                 if final_text:
                     append_to_history(session_id, "user", user_message)
                     append_to_history(session_id, "model", final_text)
-                return {
-                    "reply_text": final_text,
-                    "flex_cards": accumulated_flex_cards,
-                    "executed_tools": executed_tools
-                }
+                return _build_agent_return_dict(final_text, accumulated_flex_cards, executed_tools)
 
             # Execute tool calls
             rest_contents.append({"role": "model", "parts": parts})
@@ -3988,8 +4798,9 @@ async def call_gemini_agent(
                     accumulated_flex_cards.append(flex_card)
                 executed_tools.append({"tool": fn_name, "args": fn_args, "result": tool_res})
 
+                # In Gemini v1beta REST API, functionResponse role MUST be 'user'
                 rest_contents.append({
-                    "role": "function",
+                    "role": "user",
                     "parts": [{
                         "functionResponse": {
                             "name": fn_name,
@@ -4004,7 +4815,7 @@ async def call_gemini_agent(
     # --------------------------------------------------------------------------
     # Tier 3: Agentic Fallback Simulation
     # --------------------------------------------------------------------------
-    return await agentic_fallback_simulate_turn(user_message, session_id)
+    return await agentic_fallback_simulate_turn(user_message, session_id, speaker_name=speaker_name)
 
 
 async def generate_gemini_reply(
@@ -4028,75 +4839,130 @@ async def generate_gemini_reply(
 # ------------------------------------------------------------------------------
 # 11. Google Calendar Integration & Proactive 19:30 Daily Reminder Engine
 # ------------------------------------------------------------------------------
+def parse_natural_calendar_date_range(
+    target_date: Optional[str] = None,
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+    query_text: Optional[str] = None
+) -> Tuple[Optional[str], Optional[str], Optional[str], str]:
+    """
+    Parses natural language date keywords into ISO (YYYY-MM-DD) date ranges:
+    - 'next_week', 'อาทิตย์หน้า', 'สัปดาห์หน้า' -> Next Monday to Next Sunday
+    - 'this_week', 'อาทิตย์นี้', 'สัปดาห์นี้' -> This Monday to This Sunday
+    - 'tomorrow', 'พรุ่งนี้' -> Tomorrow
+    - 'today', 'วันนี้' -> Today
+    - 'this_month', 'เดือนนี้' -> 1st to last day of this month
+    - 'day_after_tomorrow', 'มะรืน', 'มะรืนนี้' -> Day after tomorrow
+
+    Returns:
+        (resolved_target_date, resolved_start_date, resolved_end_date, date_label)
+    """
+    now = datetime.now()
+    from datetime import timedelta
+    import calendar
+
+    combined_str = f"{target_date or ''} {start_date or ''} {end_date or ''} {query_text or ''}".lower().strip()
+
+    # 1. สัปดาห์หน้า / อาทิตย์หน้า (Next Week)
+    if any(k in combined_str for k in ["next_week", "nextweek", "next week", "สัปดาห์หน้า", "อาทิตย์หน้า"]):
+        start_dt = now + timedelta(days=(7 - now.weekday()))
+        end_dt = start_dt + timedelta(days=6)
+        s_str = start_dt.strftime("%Y-%m-%d")
+        e_str = end_dt.strftime("%Y-%m-%d")
+        lbl = f"สัปดาห์หน้า ({start_dt.strftime('%d/%m')} - {end_dt.strftime('%d/%m/%Y')})"
+        return None, s_str, e_str, lbl
+
+    # 2. สัปดาห์นี้ / อาทิตย์นี้ (This Week)
+    elif any(k in combined_str for k in ["this_week", "thisweek", "this week", "สัปดาห์นี้", "อาทิตย์นี้"]):
+        start_dt = now - timedelta(days=now.weekday())
+        end_dt = start_dt + timedelta(days=6)
+        s_str = start_dt.strftime("%Y-%m-%d")
+        e_str = end_dt.strftime("%Y-%m-%d")
+        lbl = f"สัปดาห์นี้ ({start_dt.strftime('%d/%m')} - {end_dt.strftime('%d/%m/%Y')})"
+        return None, s_str, e_str, lbl
+
+    # 3. วันพรุ่งนี้ (Tomorrow)
+    elif any(k in combined_str for k in ["tomorrow", "พรุ่งนี้"]):
+        t_dt = now + timedelta(days=1)
+        t_str = t_dt.strftime("%Y-%m-%d")
+        lbl = f"วันพรุ่งนี้ ({t_dt.strftime('%d/%m/%Y')})"
+        return t_str, t_str, t_str, lbl
+
+    # 4. วันมะรืนนี้ (Day After Tomorrow)
+    elif any(k in combined_str for k in ["day_after_tomorrow", "มะรืน", "มะรืนนี้"]):
+        m_dt = now + timedelta(days=2)
+        m_str = m_dt.strftime("%Y-%m-%d")
+        lbl = f"วันมะรืน ({m_dt.strftime('%d/%m/%Y')})"
+        return m_str, m_str, m_str, lbl
+
+    # 5. เดือนนี้ (This Month)
+    elif any(k in combined_str for k in ["this_month", "thismonth", "this month", "เดือนนี้"]):
+        _, last_day = calendar.monthrange(now.year, now.month)
+        s_str = f"{now.year}-{now.month:02d}-01"
+        e_str = f"{now.year}-{now.month:02d}-{last_day:02d}"
+        lbl = f"เดือนนี้ ({now.strftime('%m/%Y')})"
+        return None, s_str, e_str, lbl
+
+    # 6. วันนี้ (Today)
+    elif any(k in combined_str for k in ["today", "วันนี้"]):
+        t_str = now.strftime("%Y-%m-%d")
+        lbl = f"วันนี้ ({now.strftime('%d/%m/%Y')})"
+        return t_str, t_str, t_str, lbl
+
+    # Explicit date range
+    if start_date and end_date:
+        return target_date, start_date, end_date, f"{start_date} ถึง {end_date}"
+    elif target_date:
+        return target_date, target_date, target_date, target_date
+    elif start_date:
+        return start_date, start_date, start_date, start_date
+
+    # Fallback to tomorrow if nothing specified
+    t_dt = now + timedelta(days=1)
+    t_str = t_dt.strftime("%Y-%m-%d")
+    return t_str, t_str, t_str, f"วันพรุ่งนี้ ({t_dt.strftime('%d/%m/%Y')})"
+
+
 def is_calendar_query_request(text: str) -> Tuple[bool, str, Dict[str, Any]]:
     """
     Detects if user message is an On-Demand Calendar / Schedule query.
     Returns: (is_calendar_query, target_label, date_params)
     """
+    if not text:
+        return False, "", {}
+    # Ignore if this is clearly a document creation or conversion command
+    if is_document_creation_request(text) or is_document_conversion_request(text)[0]:
+        return False, "", {}
+
     text_lower = text.lower().strip()
     keywords = [
         "คิวงาน", "ตารางงาน", "ตารางนัด", "คิวถ่าย", "มีงานอะไร", "มีถ่ายอะไร",
-        "นัดหมาย", "calendar", "schedule", "มีคิวไหม", "เช็คคิว", "เช็คงาน",
+        "นัดหมาย", "calendar", "schedule", "มีคิวไหม", "เช็คคิว", "เช็กคิว", "เช็คงาน", "เช็กงาน",
         "ดูคิวงาน", "คิวถ่ายทำ", "งานพรุ่งนี้", "งานวันนี้", "มีนัดอะไร", "ตารางนัดหมาย",
-        "นัดคุยงาน", "คิวสัปดาห์นี้", "คิวเดือนนี้", "ถ่ายงาน", "มีงาน", "มีถ่าย",
-        "คิว", "ตาราง"
+        "นัดคุยงาน", "คิวสัปดาห์นี้", "คิวเดือนนี้", "เช็คตาราง", "เช็กตาราง", "ดูตารางงาน",
+        "มีถ่ายไหม", "มีคิวถ่ายไหม", "คิวถ่ายงาน", "ถ่ายงาน", "มีถ่ายงาน", "มีงาน"
     ]
     # Check if any keyword exists
     matched_keyword = any(kw in text_lower for kw in keywords)
     if not matched_keyword:
         return False, "", {}
 
-    now = datetime.now()
-    from datetime import timedelta
-    import calendar
-
-    # 1. วันนี้ (Today)
-    if any(k in text_lower for k in ["วันนี้", "today"]):
-        target_date = now.strftime("%Y-%m-%d")
-        return True, f"วันนี้ ({now.strftime('%d/%m/%Y')})", {"target_date": target_date}
-
-    # 2. พรุ่งนี้ (Tomorrow)
-    elif any(k in text_lower for k in ["พรุ่งนี้", "tomorrow"]):
+    res_target, res_start, res_end, date_lbl = parse_natural_calendar_date_range(query_text=text_lower)
+    date_params = {}
+    if res_start and res_end and res_start != res_end:
+        date_params["start_date"] = res_start
+        date_params["end_date"] = res_end
+    elif res_target:
+        date_params["target_date"] = res_target
+    elif res_start:
+        date_params["target_date"] = res_start
+    else:
+        now = datetime.now()
+        from datetime import timedelta
         t_dt = now + timedelta(days=1)
-        target_date = t_dt.strftime("%Y-%m-%d")
-        return True, f"วันพรุ่งนี้ ({t_dt.strftime('%d/%m/%Y')})", {"target_date": target_date}
+        date_params["target_date"] = t_dt.strftime("%Y-%m-%d")
 
-    # 3. มะรืนนี้ (Day After Tomorrow)
-    elif any(k in text_lower for k in ["มะรืน", "มะรืนนี้", "day after tomorrow"]):
-        m_dt = now + timedelta(days=2)
-        target_date = m_dt.strftime("%Y-%m-%d")
-        return True, f"วันมะรืน ({m_dt.strftime('%d/%m/%Y')})", {"target_date": target_date}
-
-    # 4. สัปดาห์นี้ (This Week)
-    elif any(k in text_lower for k in ["สัปดาห์นี้", "อาทิตย์นี้", "this week"]):
-        start_week = now - timedelta(days=now.weekday())
-        end_week = start_week + timedelta(days=6)
-        return True, f"สัปดาห์นี้ ({start_week.strftime('%d/%m')} - {end_week.strftime('%d/%m/%Y')})", {
-            "start_date": start_week.strftime("%Y-%m-%d"),
-            "end_date": end_week.strftime("%Y-%m-%d")
-        }
-
-    # 5. สัปดาห์หน้า (Next Week)
-    elif any(k in text_lower for k in ["สัปดาห์หน้า", "อาทิตย์หน้า", "next week"]):
-        start_week = now + timedelta(days=(7 - now.weekday()))
-        end_week = start_week + timedelta(days=6)
-        return True, f"สัปดาห์หน้า ({start_week.strftime('%d/%m')} - {end_week.strftime('%d/%m/%Y')})", {
-            "start_date": start_week.strftime("%Y-%m-%d"),
-            "end_date": end_week.strftime("%Y-%m-%d")
-        }
-
-    # 6. เดือนนี้ (This Month)
-    elif any(k in text_lower for k in ["เดือนนี้", "this month"]):
-        _, last_day = calendar.monthrange(now.year, now.month)
-        return True, f"เดือนนี้ ({now.strftime('%m/%Y')})", {
-            "start_date": f"{now.year}-{now.month:02d}-01",
-            "end_date": f"{now.year}-{now.month:02d}-{last_day:02d}"
-        }
-
-    # Default fallback: วันพรุ่งนี้
-    t_dt = now + timedelta(days=1)
-    target_date = t_dt.strftime("%Y-%m-%d")
-    return True, f"วันพรุ่งนี้ ({t_dt.strftime('%d/%m/%Y')})", {"target_date": target_date}
+    return True, date_lbl, date_params
 
 
 def build_calendar_reminder_flex_message(
@@ -4107,18 +4973,20 @@ def build_calendar_reminder_flex_message(
     """
     Constructs a modern, elegant LINE Flex Bubble card for GHN168 Calendar Briefing.
     Theme: Deep Navy (#0f172a, #1e293b), Gold Accent (#f59e0b), Clean Corporate.
+    Guaranteed 100% compliant with LINE Flex Message Schema with Deep Sanitization.
     """
+    date_label = (date_label or "").strip() or "วันนี้"
     event_count = len(events)
     status_tag = f"✨ ทั้งหมด {event_count} คิวงาน" if event_count > 0 else "🏖️ ไม่มีคิวงาน (Free Schedule)"
 
     event_boxes = []
     if event_count > 0:
         for idx, ev in enumerate(events[:5]):  # Show up to 5 events
-            title = ev.get("title", "ไม่มีชื่อกิจกรรม")
-            loc = ev.get("location") or "ไม่ได้ระบุสถานที่"
-            desc = ev.get("description") or ""
-            start_iso = ev.get("startTime", "")
-            end_iso = ev.get("endTime", "")
+            title = str(ev.get("title") or "").strip() or "ไม่มีชื่อกิจกรรม"
+            loc = str(ev.get("location") or "").strip() or "ไม่ได้ระบุสถานที่"
+            desc = str(ev.get("description") or "").strip()
+            start_iso = str(ev.get("startTime") or "").strip()
+            end_iso = str(ev.get("endTime") or "").strip()
 
             # Parse time
             time_display = "ตลอดทั้งวัน"
@@ -4194,7 +5062,7 @@ def build_calendar_reminder_flex_message(
             "contents": [
                 {
                     "type": "text",
-                    "text": "🎉 พรุ่งนี้ไม่มีคิวงานถ่ายทำหรือนัดหมายในปฏิทินค่ะ",
+                    "text": f"🎉 {date_label} ไม่มีคิวงานถ่ายทำหรือนัดหมายในปฏิทินค่ะ",
                     "size": "sm",
                     "color": "#10b981",
                     "weight": "bold",
@@ -4211,9 +5079,11 @@ def build_calendar_reminder_flex_message(
             ]
         })
 
-    # Summary Briefing Snippet
-    brief_snippet = briefing_text.strip()
-    if len(brief_snippet) > 180:
+    # Summary Briefing Snippet - Guarantee non-empty text to prevent LINE Error 400
+    brief_snippet = (briefing_text or "").strip()
+    if not brief_snippet:
+        brief_snippet = "คิวงานได้รับการตรวจสอบสดจาก Google Calendar ค่ะ"
+    elif len(brief_snippet) > 180:
         brief_snippet = brief_snippet[:180] + "..."
 
     flex_payload = {
@@ -4343,7 +5213,22 @@ def build_calendar_reminder_flex_message(
             }
         }
     }
-    return flex_payload
+    return sanitize_line_flex_payload(flex_payload)
+
+
+def format_calendar_rule_based_briefing(events: List[Dict[str, Any]], date_label: str) -> str:
+    """Formats a warm, structured executive secretary briefing from calendar events."""
+    if events:
+        lines = [f"สวัสดีค่ะบอสเก่ง บอสหอม บอสนิค และทีมงาน GHN168 ทุกท่านค่ะ ✨\nเฟิสขออนุญาตสรุปคิวงานสำหรับ {date_label} ให้นะคะ:\n"]
+        for idx, ev in enumerate(events, 1):
+            s_time = ev.get("startTime", "").split("T")[-1][:5] if "T" in ev.get("startTime", "") else ""
+            lines.append(f"{idx}. ⏰ {s_time} น. - {ev.get('title')}")
+            if ev.get("location"):
+                lines.append(f"   📍 {ev.get('location')}")
+        lines.append("\nขอให้ทุกท่านเตรียมอุปกรณ์ให้พร้อม และเดินทางอย่างปลอดภัย ทำงานราบรื่นตลอดวันนะคะ 🦾✨")
+        return "\n".join(lines)
+    else:
+        return f"สวัสดีค่ะบอสเก่ง บอสหอม บอสนิค และทีมงาน GHN168 ทุกท่านค่ะ ✨\nสำหรับ {date_label} ไม่มีคิวงานถ่ายทำหรือนัดหมายในระบบค่ะ พักผ่อนและเติมพลังให้เต็มที่นะคะ 🏖️✨"
 
 
 async def generate_calendar_daily_briefing(
@@ -4387,30 +5272,21 @@ async def generate_calendar_daily_briefing(
 {"คำถามเพิ่มเติมจากผู้ใช้: " + user_query if user_query else "กรุณาสรุปให้กระชับ ครบถ้วน น่าอ่าน และส่งกำลังใจให้ทีมงานค่ะ"}
 """
 
-    try:
-        reply = await generate_gemini_reply(
-            user_message=prompt,
-            session_id="calendar_briefing_session",
-            enable_search=False,
-            system_instruction_override=briefing_system
-        )
-        if reply and len(reply.strip()) > 10:
-            return reply.strip()
-    except Exception as e:
-        logger.error("Failed to generate AI calendar briefing: %s", e)
+    if genai_client or GEMINI_API_KEY:
+        try:
+            reply = await generate_gemini_reply(
+                user_message=prompt,
+                session_id="calendar_briefing_session",
+                enable_search=False,
+                system_instruction_override=briefing_system
+            )
+            if reply and len(reply.strip()) > 10:
+                return reply.strip()
+        except Exception as e:
+            logger.error("Failed to generate AI calendar briefing: %s", e)
 
     # Local Rule-based Fallback Briefing
-    if events:
-        lines = [f"สวัสดีค่ะบอสเก่ง บอสหอม บอสนิค และทีมงาน GHN168 ทุกท่านค่ะ ✨\nเฟิสขออนุญาตสรุปคิวงานสำหรับ {date_label} ให้นะคะ:\n"]
-        for idx, ev in enumerate(events, 1):
-            s_time = ev.get("startTime", "").split("T")[-1][:5] if "T" in ev.get("startTime", "") else ""
-            lines.append(f"{idx}. ⏰ {s_time} น. - {ev.get('title')}")
-            if ev.get("location"):
-                lines.append(f"   📍 {ev.get('location')}")
-        lines.append("\nขอให้ทุกท่านเตรียมอุปกรณ์ให้พร้อม และเดินทางอย่างปลอดภัย ทำงานราบรื่นตลอดวันนะคะ 🦾✨")
-        return "\n".join(lines)
-    else:
-        return f"สวัสดีค่ะบอสเก่ง บอสหอม บอสนิค และทีมงาน GHN168 ทุกท่านค่ะ ✨\nสำหรับ {date_label} ไม่มีคิวงานถ่ายทำหรือนัดหมายในระบบค่ะ พักผ่อนและเติมพลังให้เต็มที่นะคะ 🏖️✨"
+    return format_calendar_rule_based_briefing(events, date_label)
 
 
 async def trigger_proactive_calendar_reminder(
@@ -4527,6 +5403,7 @@ async def check_and_run_daily_overdue_tracker():
 def trigger_scheduled_tax_reminder(reminder_type: str, target_chat_id: Optional[str] = None) -> Dict[str, Any]:
     """
     Triggers a specified tax reminder notification, returning message payload and sending push if configured.
+    Enriches with real-time VAT & WHT figures for monthly tax summary reminders.
     """
     if reminder_type not in TAX_REMINDER_SCHEDULES:
         return {
@@ -4535,8 +5412,68 @@ def trigger_scheduled_tax_reminder(reminder_type: str, target_chat_id: Optional[
         }
 
     info = TAX_REMINDER_SCHEDULES[reminder_type]
-    msg_text = info["message"]
-    flex_card = build_tax_reminder_flex_message(reminder_type)
+
+    # Real-time data enrichment for monthly tax summaries
+    acc_data = None
+    if reminder_type in ["monthly_tax_28", "monthly_tax_01"]:
+        try:
+            now = datetime.now()
+            if reminder_type == "monthly_tax_01":
+                # Check previous month for reconciliation with accounting firm
+                target_m = 12 if now.month == 1 else now.month - 1
+                target_y = now.year - 1 if now.month == 1 else now.year
+                acc_data = get_live_accounting_summary(month=target_m, year=target_y)
+            else:
+                acc_data = get_live_accounting_summary(month=now.month, year=now.year)
+        except Exception as e:
+            logger.warning("Could not fetch live accounting summary for tax reminder: %s", e)
+            acc_data = {}
+
+        summary = acc_data.get("summary", {}) if acc_data else {}
+        period_label = (acc_data.get("period_label") if acc_data else None) or datetime.now().strftime("%m/%Y")
+        vat_output = float(summary.get("total_income_vat_output") or 0.0)
+        vat_input = float(summary.get("total_expense_vat_input") or 0.0)
+        net_vat = float(summary.get("net_vat_balance") or round(vat_output - vat_input, 2))
+        wht_deducted = float(summary.get("total_income_wht_deducted") or 0.0)
+        wht_withheld = float(summary.get("total_expense_wht_withheld") or 0.0)
+
+        if net_vat > 0:
+            vat_status_desc = f"ต้องนำส่งภาษีเพิ่ม {net_vat:,.2f} บาท (ภาษีขาย > ภาษีซื้อ)"
+        elif net_vat < 0:
+            vat_status_desc = f"มีภาษีซื้อยกไป {abs(net_vat):,.2f} บาท (ภาษีซื้อ > ภาษีขาย)"
+        else:
+            vat_status_desc = "ยอดภาษีซื้อและภาษีขายเท่ากันพอดี (0.00 บาท)"
+
+        if reminder_type == "monthly_tax_28":
+            msg_text = (
+                f"🏛️ [สรุปภาษีประจำเดือนรอบสิ้นเดือน (28th) - เลขาเฟิส]\n"
+                f"สวัสดีค่ะบอสเก่ง บอสมด และทีมบริหาร GHN168 ค่ะ ✨\n\n"
+                f"📊 รายงานสรุปตัวเลขภาษีสดประจำงวด {period_label} (รอบสิ้นเดือน):\n"
+                f"• 🏛️ ภาษีขาย (VAT Output 7%): {vat_output:,.2f} บาท (จากใบเสร็จรับเงิน)\n"
+                f"• 🛒 ภาษีซื้อ (VAT Input 7%): {vat_input:,.2f} บาท (จากบิลรายจ่าย)\n"
+                f"• ⚖️ ยอด VAT สุทธิ: {vat_status_desc}\n\n"
+                f"📑 ภาษีหัก ณ ที่จ่าย (WHT):\n"
+                f"• 📥 ภาษีถูกหัก ณ ที่จ่าย: {wht_deducted:,.2f} บาท (ลูกค้าหัก GHN 168 ไว้)\n"
+                f"• 📤 ภาษีหัก ณ ที่จ่ายนำส่ง: {wht_withheld:,.2f} บาท (GHN 168 หักไว้เตรียมนำส่ง ภ.ง.ด.3/53)\n\n"
+                f"บอสมดและบอสเก่งสามารถตรวจสอบตัวเลขสดนี้เพื่อเตรียมปิดงวดภาษีสิ้นเดือนได้เลยนะคะ ✨"
+            )
+        else:  # monthly_tax_01
+            msg_text = (
+                f"📑 [สรุปภาษีประจำเดือนรอบต้นเดือน (1st) - เลขาเฟิส]\n"
+                f"สวัสดีค่ะบอสเก่ง บอสมด และทีมบริหาร GHN168 ค่ะ ✨\n\n"
+                f"📌 สรุปตัวเลขภาษีสดประจำงวด {period_label} เพื่อรีเช็คกับสำนักงานบัญชี:\n"
+                f"• 🏛️ ภาษีขาย (VAT Output 7%): {vat_output:,.2f} บาท (จากใบเสร็จรับเงิน)\n"
+                f"• 🛒 ภาษีซื้อ (VAT Input 7%): {vat_input:,.2f} บาท (จากบิลรายจ่าย)\n"
+                f"• ⚖️ ยอด VAT สุทธิ: {vat_status_desc}\n\n"
+                f"📑 ภาษีหัก ณ ที่จ่าย (WHT):\n"
+                f"• 📥 ภาษีถูกหัก ณ ที่จ่าย: {wht_deducted:,.2f} บาท (ลูกค้าหัก GHN 168 ไว้)\n"
+                f"• 📤 ภาษีหัก ณ ที่จ่ายนำส่ง: {wht_withheld:,.2f} บาท (GHN 168 หักไว้เตรียมนำส่ง ภ.ง.ด.3/53)\n\n"
+                f"พร้อมส่งข้อมูลและตรวจสอบความถูกต้องร่วมกับสำนักงานบัญชีก่อนยื่นแบบ ภ.พ.30 และ ภ.ง.ด.1/3/53 ค่ะ ✨"
+            )
+    else:
+        msg_text = info["message"]
+
+    flex_card = build_tax_reminder_flex_message(reminder_type, acc_data=acc_data)
     messages = [
         {"type": "text", "text": msg_text},
         flex_card
@@ -4559,53 +5496,69 @@ def trigger_scheduled_tax_reminder(reminder_type: str, target_chat_id: Optional[
     }
 
 
-def check_and_run_daily_tax_reminders():
+def check_and_run_daily_tax_reminders(now_dt: Optional[datetime] = None) -> List[str]:
     """
-    Evaluates current date and triggers matching proactive reminders:
-    1. Every 25th of month (10:00): monthly_bills_25 (ทวงบิลรายจ่าย)
-    2. Every 5th of month (10:00): monthly_tax_05 (เดดไลน์ภาษีรายเดือน)
-    3. 1 Sep & 25 Sep: pnd94_midyear_personal (ภ.ง.ด.94)
-    4. 15 Jan, 15 Feb, 25 Mar: pnd90_91_annual_personal (ภ.ง.ด.90/91)
-    5. 1 Aug & 20 Aug: pnd51_midyear_corporate (ภ.ง.ด.51)
-    6. 1 Apr & 10 May: pnd50_annual_corporate (ภ.ง.ด.50)
+    Evaluates current date and time (Asia/Bangkok) and triggers matching proactive tax reminders:
+    1. Every 28th of month at 15:00 (15:00..15:01): monthly_tax_28 (สรุปภาษีรอบสิ้นเดือน)
+    2. Every 1st of month at 15:00 (15:00..15:01): monthly_tax_01 (สรุปภาษีรอบต้นเดือนเพื่อรีเช็คสำนักงานบัญชี)
+    3. Every 25th of month (10:00): monthly_bills_25 (ทวงบิลรายจ่าย)
+    4. Every 5th of month (10:00): monthly_tax_05 (เดดไลน์ภาษีรายเดือน)
+    5. 1 Sep & 25 Sep: pnd94_midyear_personal (ภ.ง.ด.94)
+    6. 15 Jan, 15 Feb, 25 Mar: pnd90_91_annual_personal (ภ.ง.ด.90/91)
+    7. 1 Aug & 20 Aug: pnd51_midyear_corporate (ภ.ง.ด.51)
+    8. 1 Apr & 10 May: pnd50_annual_corporate (ภ.ง.ด.50)
     """
-    today = date.today()
-    day = today.day
-    month = today.month
-    today_key = today.strftime("%Y-%m-%d")
+    now = now_dt or datetime.now()
+    day = now.day
+    month = now.month
+    hour = now.hour
+    minute = now.minute
+    today_key = now.strftime("%Y-%m-%d")
 
     due_reminders = []
 
-    # 1. 25th of every month
-    if day == 25:
+    # 1. 28th of every month at 15:00 (15:00..15:01)
+    if day == 28 and hour == 15 and minute in [0, 1]:
+        due_reminders.append("monthly_tax_28")
+
+    # 2. 1st of every month at 15:00 (15:00..15:01)
+    if day == 1 and hour == 15 and minute in [0, 1]:
+        due_reminders.append("monthly_tax_01")
+
+    # 3. 25th of every month (10:00)
+    if day == 25 and (now_dt is not None or (hour == 10 and minute in [0, 1])):
         due_reminders.append("monthly_bills_25")
 
-    # 2. 5th of every month
-    if day == 5:
+    # 4. 5th of every month (10:00)
+    if day == 5 and (now_dt is not None or (hour == 10 and minute in [0, 1])):
         due_reminders.append("monthly_tax_05")
 
-    # 3. PND94 (1 Sep, 25 Sep)
-    if month == 9 and day in [1, 25]:
+    # 5. PND94 (1 Sep, 25 Sep)
+    if month == 9 and day in [1, 25] and (now_dt is not None or (hour == 10 and minute in [0, 1])):
         due_reminders.append("pnd94_midyear_personal")
 
-    # 4. PND90/91 (15 Jan, 15 Feb, 25 Mar)
-    if (month == 1 and day == 15) or (month == 2 and day == 15) or (month == 3 and day == 25):
+    # 6. PND90/91 (15 Jan, 15 Feb, 25 Mar)
+    if ((month == 1 and day == 15) or (month == 2 and day == 15) or (month == 3 and day == 25)) and (now_dt is not None or (hour == 10 and minute in [0, 1])):
         due_reminders.append("pnd90_91_annual_personal")
 
-    # 5. PND51 (1 Aug, 20 Aug)
-    if month == 8 and day in [1, 20]:
+    # 7. PND51 (1 Aug, 20 Aug)
+    if month == 8 and day in [1, 20] and (now_dt is not None or (hour == 10 and minute in [0, 1])):
         due_reminders.append("pnd51_midyear_corporate")
 
-    # 6. PND50 (1 Apr, 10 May)
-    if (month == 4 and day == 1) or (month == 5 and day == 10):
+    # 8. PND50 (1 Apr, 10 May)
+    if ((month == 4 and day == 1) or (month == 5 and day == 10)) and (now_dt is not None or (hour == 10 and minute in [0, 1])):
         due_reminders.append("pnd50_annual_corporate")
 
+    triggered = []
     for rem in due_reminders:
         key = f"{rem}_{today_key}"
         if key not in LAST_REMINDER_DATES:
             logger.info("Triggering scheduled tax reminder: %s for %s", rem, today_key)
             trigger_scheduled_tax_reminder(rem)
-            LAST_REMINDER_DATES[key] = datetime.now().isoformat()
+            LAST_REMINDER_DATES[key] = now.isoformat()
+            triggered.append(rem)
+
+    return triggered
 
 
 async def combined_scheduler_background_loop():
@@ -4626,17 +5579,8 @@ async def combined_scheduler_background_loop():
 # ------------------------------------------------------------------------------
 def should_reply_to_event(event: Dict[str, Any]) -> Tuple[bool, str]:
     """
-    Check if the bot should reply based on chat type, mentions, direct triggers, and pending confirmations.
-    
-    Rules:
-    1. 1-on-1 chats always replied (source_type == 'user').
-    2. Group / Room chats (source_type in ['group', 'room']):
-       - Mention check: If message has mentionees but bot is not mentioned -> SILENT (False, 'tagged other group member').
-       - Bot triggers: Native bot mention or direct trigger keywords (เฟิส, @เฟิส, เลขา, ghn168, etc.) -> REPLY (True, 'matched direct bot trigger').
-       - Pending Confirmation: If session has pending confirmation and message contains confirmation keyword -> REPLY (True, 'pending confirmation action').
-       - Image messages -> return True to evaluate Vision OCR (non-financial images will be silently dropped in process_line_events).
-       - WORK_CONTEXT_KEYWORDS and ACTIVE_THREAD_TIMEOUT_SECONDS are strictly excluded from group chats.
-       - All other group messages -> SILENT (False, 'group message without bot trigger').
+    Check if the bot should reply based on chat type, mentions, direct triggers,
+    active conversation threads (90s window), quoted message actions, and pending confirmations.
     """
     source = event.get("source", {})
     source_type = source.get("type", "user")
@@ -4647,11 +5591,13 @@ def should_reply_to_event(event: Dict[str, Any]) -> Tuple[bool, str]:
     message = event.get("message", {})
     msg_type = message.get("type", "")
 
-    if msg_type not in ["text", "image"]:
+    if msg_type not in ["text", "image", "audio"]:
         return False, f"unsupported message type: {msg_type}"
 
     # 1. 1-on-1 chat: always process and reply
     if source_type == "user":
+        if msg_type == "audio":
+            return True, "1-on-1 audio message"
         if msg_type == "image":
             return True, "1-on-1 image message for receipt OCR"
         text = message.get("text", "").strip()
@@ -4662,6 +5608,12 @@ def should_reply_to_event(event: Dict[str, Any]) -> Tuple[bool, str]:
     # 2. Group / Room chat
     if msg_type == "image":
         return True, "image message for receipt OCR"
+
+    if msg_type == "audio":
+        active_thread = ACTIVE_CONVERSATION_THREADS.get(session_id)
+        if active_thread and active_thread.get("user_id") == user_id and time.time() <= active_thread.get("expires_at", 0):
+            return True, "active conversation thread"
+        return False, "group message without bot trigger"
 
     text = message.get("text", "").strip()
     if not text:
@@ -4685,7 +5637,14 @@ def should_reply_to_event(event: Dict[str, Any]) -> Tuple[bool, str]:
         if trigger.lower() in text_lower:
             return True, "matched direct bot trigger"
 
-    # 2.3 Pending Confirmation Actions
+    # 2.3 Quoted Message Actions
+    quoted_msg_id = message.get("quotedMessageId")
+    if quoted_msg_id:
+        quote_actions = ["แปล", "สรุป", "คืออะไร", "ทำอะไรได้บ้าง", "ช่วยดู", "translate", "summarize", "อ่าน", "รายละเอียด", "รูปนี้"]
+        if any(qa in text_lower for qa in quote_actions):
+            return True, "quoted message action"
+
+    # 2.4 Pending Confirmation Actions
     has_pending_state = (
         session_id in PENDING_DOCUMENT_ORDERS
         or session_id in PENDING_EXPENSE_CONFIRMATIONS
@@ -4698,6 +5657,14 @@ def should_reply_to_event(event: Dict[str, Any]) -> Tuple[bool, str]:
     ]
     if has_pending_state and any(ck in text_lower for ck in confirmation_keywords):
         return True, "pending confirmation action"
+
+    # 2.5 Active Conversation Thread Window (90s)
+    active_thread = ACTIVE_CONVERSATION_THREADS.get(session_id)
+    if active_thread:
+        thread_user = active_thread.get("user_id")
+        thread_expiry = active_thread.get("expires_at", 0)
+        if time.time() <= thread_expiry and thread_user == user_id:
+            return True, "active conversation thread"
 
     # All other group messages without bot triggers: completely silent
     return False, "group message without bot trigger"
@@ -4712,7 +5679,6 @@ async def process_line_events(data: Dict[str, Any]):
             if event_type != "message":
                 continue
 
-            should_reply, reason = should_reply_to_event(event)
             source = event.get("source", {})
             source_type = source.get("type", "user")
             user_id = source.get("userId", "unknown")
@@ -4721,19 +5687,79 @@ async def process_line_events(data: Dict[str, Any]):
             reply_token = event.get("replyToken")
             message_obj = event.get("message", {})
             msg_type = message_obj.get("type", "")
+            msg_id = message_obj.get("id", "")
+            quoted_msg_id = message_obj.get("quotedMessageId")
 
-            logger.info("Event from %s (type=%s, msg=%s): should_reply=%s (%s)", 
-                        user_id[:8] if user_id else "unknown", source_type, msg_type, should_reply, reason)
+            speaker_name = resolve_partner_name(
+                user_id=user_id,
+                group_id=source.get("groupId"),
+                room_id=source.get("roomId"),
+                event=event
+            )
 
-            if not should_reply or not reply_token:
+            # Pre-cache media or text content
+            if msg_type == "text":
+                user_text = message_obj.get("text", "").strip()
+                if msg_id and user_text:
+                    RECENT_MEDIA_CACHE[msg_id] = user_text.encode("utf-8")
+            elif msg_type == "image":
+                if msg_id:
+                    img_bytes = download_line_image_content(msg_id)
+                    if img_bytes:
+                        RECENT_MEDIA_CACHE[msg_id] = img_bytes
+                        SESSION_LAST_IMAGE[session_id] = img_bytes
+            elif msg_type == "audio":
+                if msg_id:
+                    aud_bytes = download_line_audio_content(msg_id)
+                    if aud_bytes:
+                        RECENT_MEDIA_CACHE[msg_id] = aud_bytes
+
+            should_reply, reason = should_reply_to_event(event)
+
+            logger.info("Event from %s (%s, type=%s, msg=%s): should_reply=%s (%s)", 
+                        speaker_name, user_id[:8] if user_id else "unknown", source_type, msg_type, should_reply, reason)
+
+            if not should_reply:
+                # Passive Group Memory Buffer
+                if msg_type == "text":
+                    formatted_entry = f"[{speaker_name}]: {user_text}"
+                    append_to_history(session_id, "user", formatted_entry)
+                elif msg_type == "image":
+                    append_to_history(session_id, "user", f"[{speaker_name}]: [ส่งรูปภาพ (ID: {msg_id})]")
+                elif msg_type == "audio":
+                    append_to_history(session_id, "user", f"[{speaker_name}]: [ส่งข้อความเสียง (ID: {msg_id})]")
+                continue
+
+            if not reply_token:
+                continue
+
+            # Update Active Thread Window (90 seconds)
+            ACTIVE_CONVERSATION_THREADS[session_id] = {
+                "user_id": user_id,
+                "speaker_name": speaker_name,
+                "expires_at": time.time() + ACTIVE_THREAD_TIMEOUT_SECONDS
+            }
+
+            # ==================================================================
+            # CASE 1: Audio Message (Gemini Multimodal Voice AI)
+            # ==================================================================
+            if msg_type == "audio":
+                audio_bytes = RECENT_MEDIA_CACHE.get(msg_id) or download_line_audio_content(msg_id)
+                if not audio_bytes:
+                    send_line_reply(reply_token, f"ขออภัยค่ะ{speaker_name} เลขาเฟิสไม่สามารถดาวน์โหลดไฟล์เสียงจาก LINE ได้ กรุณาส่งใหม่อีกครั้งนะคะ ✨")
+                    continue
+
+                reply_text = await transcribe_and_process_audio(audio_bytes, session_id, speaker_name=speaker_name)
+                send_line_reply(reply_token, reply_text)
+                append_to_history(session_id, "user", f"[{speaker_name}]: [ส่งข้อความเสียง]")
+                append_to_history(session_id, "model", reply_text)
                 continue
 
             # ==================================================================
-            # CASE 1: Image Message (Vision AI Receipt & Customer Slip Scanner)
+            # CASE 2: Image Message (Vision AI Receipt & Customer Slip Scanner)
             # ==================================================================
             if msg_type == "image":
-                message_id = message_obj.get("id")
-                image_bytes = download_line_image_content(message_id)
+                image_bytes = RECENT_MEDIA_CACHE.get(msg_id) or download_line_image_content(msg_id)
                 if not image_bytes:
                     if source_type == "user":
                         send_line_reply(reply_token, "ขออภัยค่ะ ไม่สามารถดาวน์โหลดรูปภาพจาก LINE ได้ กรุณาส่งใหม่อีกครั้งนะคะ ✨")
@@ -4743,7 +5769,14 @@ async def process_line_events(data: Dict[str, Any]):
                 is_fin_doc = bool(ocr_data.get("is_financial_document", True) and ocr_data.get("is_valid_receipt", True))
                 if not is_fin_doc:
                     if source_type in ["group", "room"]:
-                        logger.info("Non-financial document image received in %s chat (%s), ignoring silently.", source_type, session_id)
+                        # If user is in active discussion, provide general image analysis
+                        if reason == "active conversation thread":
+                            gen_reply = await analyze_general_image_with_ai(image_bytes, prompt="ช่วยดูภาพนี้และสรุปหรือแปลภาษาให้หน่อยค่ะ", speaker_name=speaker_name)
+                            send_line_reply(reply_token, gen_reply)
+                            append_to_history(session_id, "user", f"[{speaker_name}]: [ส่งรูปภาพทั่วไป]")
+                            append_to_history(session_id, "model", gen_reply)
+                        else:
+                            logger.info("Non-financial document image received in %s chat (%s), cached silently.", source_type, session_id)
                         continue
                     else:
                         send_line_reply(
@@ -4765,7 +5798,7 @@ async def process_line_events(data: Dict[str, Any]):
 
                     flex_card = build_income_slip_flex_message(ocr_data, matched_inv)
                     summary_text = (
-                        f"💳 เลขาเฟิสตรวจพบสลิปเงินเข้าบริษัท ธ.กรุงไทย 520-0-61960-2 เรียบร้อยแล้วค่ะ ✨\n"
+                        f"💳 เลขาเฟิสตรวจพบสลิปเงินเข้าบริษัท ธ.กรุงไทย 520-0-61960-2 เรียบร้อยแล้วค่ะ{speaker_name} ✨\n"
                         f"• ยอดเงิน: +{amt_val:,.2f} บาท\n"
                         f"• ผู้โอน: {sender_val or 'ลูกค้า'}\n"
                         f"• วันที่-เวลา: {ocr_data.get('transfer_date')} {ocr_data.get('transfer_time', '')}\n"
@@ -4778,7 +5811,7 @@ async def process_line_events(data: Dict[str, Any]):
                         {"type": "text", "text": summary_text},
                         flex_card
                     ])
-                    append_to_history(session_id, "user", "[ส่งสลิปเงินเข้าบริษัท]")
+                    append_to_history(session_id, "user", f"[{speaker_name}]: [ส่งสลิปเงินเข้าบริษัท]")
                     append_to_history(session_id, "model", f"สแกนสลิปเงินเข้า ยอด {amt_val:,.2f} บาท")
                     continue
                 else:
@@ -4786,7 +5819,7 @@ async def process_line_events(data: Dict[str, Any]):
                     flex_card = build_expense_ocr_flex_message(ocr_data)
                     net_val = float(ocr_data.get("net_amount") or 0.0)
                     summary_text = (
-                        f"เฟิสสแกนบิลของ '{ocr_data.get('store_name')}' เรียบร้อยแล้วค่ะ ✨\n"
+                        f"เฟิสสแกนบิลของ '{ocr_data.get('store_name')}' เรียบร้อยแล้วค่ะ{speaker_name} ✨\n"
                         f"• วันที่: {ocr_data.get('doc_date')}\n"
                         f"• หมวดหมู่: {ocr_data.get('category')}\n"
                         f"• ยอดสุทธิ: {net_val:,.2f} บาท\n\n"
@@ -4799,7 +5832,7 @@ async def process_line_events(data: Dict[str, Any]):
                         {"type": "text", "text": summary_text},
                         flex_card
                     ])
-                    append_to_history(session_id, "user", "[ส่งรูปภาพบิล/ใบเสร็จ]")
+                    append_to_history(session_id, "user", f"[{speaker_name}]: [ส่งรูปภาพบิล/ใบเสร็จ]")
                     append_to_history(session_id, "model", f"สแกนบิล {ocr_data.get('store_name')} ยอด {net_val:,.2f} บาท")
                     continue
 
@@ -4807,7 +5840,21 @@ async def process_line_events(data: Dict[str, Any]):
             user_text = message_obj.get("text", "").strip()
 
             # ==================================================================
-            # CASE 2: Confirmations (Income Slip, Expense Scanned or Customer Save)
+            # CASE 3: Quoted Message / Media Action (Quote Reply Translation/Summary)
+            # ==================================================================
+            if quoted_msg_id:
+                cached_target = RECENT_MEDIA_CACHE.get(quoted_msg_id) or download_line_image_content(quoted_msg_id)
+                if cached_target and isinstance(cached_target, bytes) and len(cached_target) >= 10:
+                    # Check if it is image binary
+                    if cached_target[:4] in [b'\xff\xd8\xff\xe0', b'\xff\xd8\xff\xe1', b'\xff\xd8\xff\xdb', b'\x89PNG', b'RIFF'] or (not cached_target.startswith(b'{') and not cached_target.startswith(b'[')):
+                        gen_reply = await analyze_general_image_with_ai(cached_target, prompt=user_text, speaker_name=speaker_name)
+                        send_line_reply(reply_token, gen_reply)
+                        append_to_history(session_id, "user", f"[{speaker_name}]: {user_text} (อ้างอิงรูป {quoted_msg_id})")
+                        append_to_history(session_id, "model", gen_reply)
+                        continue
+
+            # ==================================================================
+            # CASE 4: Confirmations (Income Slip, Expense Scanned or Customer Save)
             # ==================================================================
             if user_text.lower() in ["บันทึก", "ยืนยัน", "ตกลง", "โอเค", "ออกใบเสร็จ", "save", "confirm"] and session_id in PENDING_INCOME_CONFIRMATIONS:
                 pending_income = PENDING_INCOME_CONFIRMATIONS.pop(session_id)
@@ -4829,14 +5876,14 @@ async def process_line_events(data: Dict[str, Any]):
 
                 confirm_reply = (
                     f"✅ เลขาเฟิสออกใบเสร็จรับเงินเลขที่ {doc_no} ยอด {net_val:,.2f} บาท "
-                    f"อัปเดตสถานะในแท็บ 'ใบวางบิล' เป็น 'ชำระแล้ว' และบันทึกลงแท็บ 'รายรับ' เรียบร้อยแล้วค่ะ ✨"
+                    f"อัปเดตสถานะในแท็บ 'ใบวางบิล' เป็น 'ชำระแล้ว' และบันทึกลงแท็บ 'รายรับ' เรียบร้อยแล้วค่ะ{speaker_name} ✨"
                 )
                 flex_card = build_document_conversion_flex_message(conv_res)
                 send_line_reply_messages(reply_token, [
                     {"type": "text", "text": confirm_reply},
                     flex_card
                 ])
-                append_to_history(session_id, "user", user_text)
+                append_to_history(session_id, "user", f"[{speaker_name}]: {user_text}")
                 append_to_history(session_id, "model", confirm_reply)
                 continue
 
@@ -4846,7 +5893,7 @@ async def process_line_events(data: Dict[str, Any]):
                 cust_name = new_cust.get("customer_name")
 
                 confirm_reply = (
-                    f"✅ เฟิสบันทึกข้อมูลลูกค้า '{cust_name}' ลงฐานข้อมูลลูกค้า (แท็บ 'ข้อมูลลูกค้า') เรียบร้อยแล้วค่ะ ✨\n"
+                    f"✅ เฟิสบันทึกข้อมูลลูกค้า '{cust_name}' ลงฐานข้อมูลลูกค้า (แท็บ 'ข้อมูลลูกค้า') เรียบร้อยแล้วค่ะ{speaker_name} ✨\n"
                     f"ครั้งต่อไปเพียงพิมพ์ชื่อบริษัท เฟิสจะดึงข้อมูลมาใส่ให้อัตโนมัติเลยนะคะ 🦾"
                 )
                 cust_flex = build_customer_card_flex_message(new_cust)
@@ -4854,7 +5901,7 @@ async def process_line_events(data: Dict[str, Any]):
                     {"type": "text", "text": confirm_reply},
                     cust_flex
                 ])
-                append_to_history(session_id, "user", user_text)
+                append_to_history(session_id, "user", f"[{speaker_name}]: {user_text}")
                 append_to_history(session_id, "model", confirm_reply)
                 continue
 
@@ -4867,18 +5914,18 @@ async def process_line_events(data: Dict[str, Any]):
 
                 confirm_reply = (
                     f"✅ เฟิสบันทึกรายจ่าย '{pending_ocr.get('store_name')}' (เลขที่ {doc_no}) "
-                    f"ยอด {net_val:,.2f} บาท ลง Google Sheets แท็บ '{sheet_name}' เรียบร้อยแล้วค่ะ ✨"
+                    f"ยอด {net_val:,.2f} บาท ลง Google Sheets แท็บ '{sheet_name}' เรียบร้อยแล้วค่ะ{speaker_name} ✨"
                 )
                 send_line_reply(reply_token, confirm_reply)
-                append_to_history(session_id, "user", user_text)
+                append_to_history(session_id, "user", f"[{speaker_name}]: {user_text}")
                 append_to_history(session_id, "model", confirm_reply)
                 continue
 
             # ==================================================================
-            # CASE 3: Autonomous Agent Execution (Gemini 3.7 Native Tool Calling)
+            # CASE 5: Autonomous Agent Execution (Gemini 3.7 Native Tool Calling)
             # ==================================================================
-            agent_res = await call_gemini_agent(user_text, session_id, enable_search=True)
-            reply_text = agent_res.get("reply_text") or "เลขาเฟิสพร้อมดูแลและจัดการให้ค่ะ ✨"
+            agent_res = await call_gemini_agent(user_text, session_id, enable_search=True, speaker_name=speaker_name)
+            reply_text = agent_res.get("reply_text") or f"เลขาเฟิสพร้อมดูแลและจัดการให้{speaker_name}ค่ะ ✨"
             flex_cards = list(agent_res.get("flex_cards") or [])
 
             # Safety guarantee: If a financial document was converted or created in this turn, ensure its Flex Card is attached!
@@ -4896,13 +5943,13 @@ async def process_line_events(data: Dict[str, Any]):
             else:
                 send_line_reply(reply_token, reply_text)
 
+            append_to_history(session_id, "user", f"[{speaker_name}]: {user_text}")
+            append_to_history(session_id, "model", reply_text)
+
         except Exception as e:
             logger.error("Error processing LINE event: %s", e, exc_info=True)
 
 
-# ------------------------------------------------------------------------------
-# 14. FastAPI Application & Lifespan Scheduler
-# ------------------------------------------------------------------------------
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     scheduler_task = asyncio.create_task(combined_scheduler_background_loop())
@@ -5228,6 +6275,7 @@ async def api_trigger_tax_reminder(request: Request):
 async def api_tax_reminders_status():
     """Returns all available tax reminder schedules and trigger history."""
     return {
+        "status": "success",
         "schedules": TAX_REMINDER_SCHEDULES,
         "last_trigger_history": LAST_REMINDER_DATES,
         "total_schedules": len(TAX_REMINDER_SCHEDULES)

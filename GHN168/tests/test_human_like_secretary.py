@@ -16,6 +16,13 @@ Tests:
 
 import os
 import sys
+from pathlib import Path
+
+# Ensure workspace root is on sys.path
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
+import os
+import sys
 import time
 import unittest
 from datetime import datetime
@@ -35,6 +42,8 @@ from line_bot_server import (
     get_history
 )
 
+from unittest.mock import MagicMock, patch
+
 try:
     from fastapi.testclient import TestClient
     client = TestClient(app)
@@ -53,6 +62,45 @@ class TestHumanLikeExecutiveSecretary(unittest.TestCase):
         PENDING_INCOME_CONFIRMATIONS.clear()
         PENDING_NEW_CUSTOMER_SAVING.clear()
 
+        # Patch requests.post to ensure 100% Zero Production Pollution
+        self.patcher = patch("requests.post")
+        self.mock_post = self.patcher.start()
+
+        def mock_requests_post_handler(url, json=None, **kwargs):
+            mock_res = MagicMock()
+            mock_res.status_code = 200
+            payload = json or {}
+            req_type = payload.get("type", "")
+
+            if req_type == "read":
+                sheet_name = payload.get("sheetName")
+                from ghn168_sync_service import get_simulated_sheet_data
+                mock_data = get_simulated_sheet_data(sheet_name)
+                mock_res.json.return_value = {
+                    "status": "success",
+                    "values": mock_data.get("values", [])
+                }
+            elif req_type in ["sync", "overwrite"]:
+                mock_res.json.return_value = {
+                    "status": "success",
+                    "message": f"Mocked safe {req_type} to Google Sheets"
+                }
+            elif req_type in ["upload_html", "upload_pdf_base64", "upload_pdf", "upload_only"]:
+                mock_res.json.return_value = {
+                    "status": "success",
+                    "pdfUrl": "https://drive.google.com/mock_human_like_doc.pdf",
+                    "message": "Mocked upload success"
+                }
+            else:
+                mock_res.json.return_value = {"status": "success", "message": "Mocked generic response"}
+
+            return mock_res
+
+        self.mock_post.side_effect = mock_requests_post_handler
+
+    def tearDown(self):
+        self.patcher.stop()
+
     def test_01_health_check_features(self):
         """Verify new human-like secretary features in /health endpoint."""
         if not USE_TEST_CLIENT:
@@ -67,67 +115,57 @@ class TestHumanLikeExecutiveSecretary(unittest.TestCase):
         self.assertTrue(features.get("context_ellipsis_support"))
         print("\n✅ Test 1: Health check feature verification passed!")
 
-    def test_02_active_thread_continuity_within_180s(self):
-        """Verify active thread memory replies within 180s even without bot triggers."""
-        group_session = "C_group_active_thread_test_001"
+    def test_02_one_on_one_conversation_continuity(self):
+        """Verify 1-on-1 conversation continuity always replies."""
+        user_session = "U_boss_keng_1on1"
         
-        # Step 1: Initial event that activates conversation history
-        append_to_history(group_session, "user", "ออกใบเสนอราคาให้ บ.เชียงใหม่มีเดีย")
-        append_to_history(group_session, "model", "ยินดีค่ะบอสเก่ง ยอดเท่าไหร่คะ")
+        # Step 1: Initial event in 1-on-1 chat
+        append_to_history(user_session, "user", "ออกใบเสนอราคาให้ บ.เชียงใหม่มีเดีย")
+        append_to_history(user_session, "model", "ยินดีค่ะบอสเก่ง ยอดเท่าไหร่คะ")
 
-        # Step 2: Follow-up message within 180 seconds WITHOUT any bot trigger or @mention
+        # Step 2: Follow-up message in 1-on-1 chat
         followup_event = {
             "type": "message",
-            "source": {"type": "group", "groupId": group_session, "userId": "U_boss_keng"},
+            "source": {"type": "user", "userId": user_session},
             "message": {"type": "text", "text": "เปลี่ยนเป็น 25000 นะ"}
         }
         
         should_reply, reason = should_reply_to_event(followup_event)
-        self.assertTrue(should_reply, f"Should reply within active thread window: {reason}")
-        self.assertIn("active thread", reason)
-        print("✅ Test 2.1: Active thread continuation within 180s passed!")
+        self.assertTrue(should_reply, f"Should reply in 1-on-1 chat: {reason}")
+        self.assertEqual(reason, "1-on-1 chat")
+        print("✅ Test 2: 1-on-1 conversation continuity passed!")
 
-        # Step 3: Message AFTER 180 seconds expired (e.g. 250s ago) with no work keyword
-        CONVERSATION_HISTORY[group_session][-1]["timestamp"] = time.time() - 250
-        expired_event = {
-            "type": "message",
-            "source": {"type": "group", "groupId": group_session, "userId": "U_boss_keng"},
-            "message": {"type": "text", "text": "วันนี้อากาศดีจังเลย"}
-        }
-        should_reply_exp, reason_exp = should_reply_to_event(expired_event)
-        self.assertFalse(should_reply_exp, f"Should NOT reply after active thread expired: {reason_exp}")
-        print("✅ Test 2.2: Idle thread after 180s properly ignored!")
-
-    def test_03_pending_state_continuity(self):
-        """Verify bot replies to confirmations or parameter updates during pending state."""
+    def test_03_pending_confirmation_continuity(self):
+        """Verify bot replies to explicit confirmations during pending state in groups."""
         group_session = "C_group_pending_test_002"
         
-        # Setup pending document order state
-        PENDING_DOCUMENT_ORDERS[group_session] = {
-            "client_name": "บริษัท เชียงใหม่มีเดีย จำกัด",
-            "doc_type": "quotation"
+        # Setup pending expense confirmation state
+        PENDING_EXPENSE_CONFIRMATIONS[group_session] = {
+            "store_name": "7-Eleven",
+            "net_amount": 350.0
         }
 
         pending_event = {
             "type": "message",
             "source": {"type": "group", "groupId": group_session, "userId": "U_boss_keng"},
-            "message": {"type": "text", "text": "ยอด 30,000 บาท"}
+            "message": {"type": "text", "text": "บันทึก"}
         }
         should_reply, reason = should_reply_to_event(pending_event)
-        self.assertTrue(should_reply, f"Should reply when session has pending state: {reason}")
-        print("✅ Test 3: Pending state continuity passed!")
+        self.assertTrue(should_reply, f"Should reply when session has pending confirmation: {reason}")
+        self.assertEqual(reason, "pending confirmation action")
+        print("✅ Test 3: Pending confirmation continuity passed!")
 
-    def test_04_broad_semantic_work_detection_without_triggers(self):
-        """Verify bot detects broad production and financial context in groups without name/tag."""
+    def test_04_group_direct_bot_triggers_detection(self):
+        """Verify bot detects direct bot triggers and mentions in groups."""
         work_messages = [
-            "พรุ่งนี้มีคิวถ่ายที่ไหนบ้าง",
-            "ช่วยเช็กยอดภาษีซื้อเดือนนี้หน่อย",
-            "มีงานอะไรต้องส่งสัปดาห์นี้",
-            "ตามบิลค้างชำระของเชียงใหม่มีเดียที",
-            "วางบิลยอด 50,000 บาท",
-            "ออกเอกสาร 50 ทวิ ค่าจ้างตัดต่อ 15,000",
-            "เช็คคิวงานวันพรุ่งนี้ให้หน่อย",
-            "สลิปเงินเข้าแล้วนะ"
+            "เฟิส พรุ่งนี้มีคิวถ่ายที่ไหนบ้าง",
+            "เลขา ช่วยเช็กยอดภาษีซื้อเดือนนี้หน่อย",
+            "@เฟิส มีงานอะไรต้องส่งสัปดาห์นี้",
+            "เลขาเฟิส ตามบิลค้างชำระของเชียงใหม่มีเดียที",
+            "พี่เฟิส วางบิลยอด 50,000 บาท",
+            "น้องเฟิส ออกเอกสาร 50 ทวิ ค่าจ้างตัดต่อ 15,000",
+            "ghn168 เช็คคิวงานวันพรุ่งนี้ให้หน่อย",
+            "first สลิปเงินเข้าแล้วนะ"
         ]
 
         for msg in work_messages:
@@ -137,12 +175,13 @@ class TestHumanLikeExecutiveSecretary(unittest.TestCase):
                 "message": {"type": "text", "text": msg}
             }
             should_reply, reason = should_reply_to_event(event)
-            self.assertTrue(should_reply, f"Should detect work context for '{msg}': {reason}")
-        print("✅ Test 4: Broad semantic work context detection without triggers passed!")
+            self.assertTrue(should_reply, f"Should detect bot trigger for '{msg}': {reason}")
+            self.assertEqual(reason, "matched direct bot trigger")
+        print("✅ Test 4: Group direct bot trigger detection passed!")
 
-    def test_05_casual_banter_filtered_when_idle(self):
-        """Verify casual chat in group is quietly ignored when not in active thread."""
-        casual_messages = [
+    def test_05_casual_banter_and_work_talk_without_trigger_filtered_in_groups(self):
+        """Verify casual chat and work talk without trigger in group is quietly ignored."""
+        silent_messages = [
             "55555555555",
             "เที่ยงนี้กินข้าวไหนดี",
             "หิวข้าวมาก",
@@ -150,19 +189,21 @@ class TestHumanLikeExecutiveSecretary(unittest.TestCase):
             "ง่วงมาก นอนละ",
             "ไปไหนกันดี",
             "ฮ่าๆๆๆๆ",
-            "ฝันดีทุกคน"
+            "ฝันดีทุกคน",
+            "พรุ่งนี้มีคิวถ่ายที่ไหนบ้าง",
+            "ค่าไฟ 1500"
         ]
 
-        for msg in casual_messages:
+        for msg in silent_messages:
             event = {
                 "type": "message",
                 "source": {"type": "group", "groupId": "C_idle_group_test", "userId": "U_user_002"},
                 "message": {"type": "text", "text": msg}
             }
             should_reply, reason = should_reply_to_event(event)
-            self.assertFalse(should_reply, f"Casual banter '{msg}' should be filtered: {reason}")
-            self.assertIn("casual banter", reason)
-        print("✅ Test 5: Casual banter filtering passed!")
+            self.assertFalse(should_reply, f"Message '{msg}' in group without trigger should be filtered: {reason}")
+            self.assertEqual(reason, "group message without bot trigger")
+        print("✅ Test 5: Group silent filtering without bot triggers passed!")
 
     def test_06_ultra_human_persona_and_anti_robot_language(self):
         """Verify prompt and SYSTEM_INSTRUCTION strictly adhere to human secretary rules."""
