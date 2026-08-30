@@ -189,6 +189,8 @@ def main():
         "document_template_engine.py",
         "ghn168_sync_service.py",
         "google_sheets_sync_script.gs",
+        "cleanup_receipt_duplicates.py",
+        "recover_income_tab.py",
         "line_bot_server.py",
         "manifest.json",
         "signature_pad.html",

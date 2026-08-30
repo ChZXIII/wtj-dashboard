@@ -766,6 +766,10 @@ function doPost(e) {
           var custTax = String(row[2] || "").replace(/[^0-9]/g, "");
           var custName = normalizeCompanyName(row[1]);
           key = custTax || custName;
+        } else if (sheetName === "รายรับ") {
+          var docKey = normalizeDocNo(row[2]) || normalizeDocNo(row[3]);
+          var descKey = normalizeItemDesc(row[8]);
+          key = docKey ? (docKey + "___" + descKey) : ("ROW_" + r);
         } else {
           key = normalizeDocNo(row[2]) || normalizeDocNo(row[3]) || ("ROW_" + r);
         }
@@ -855,6 +859,15 @@ function normalizeCompanyName(name) {
   }
   str = str.replace(/\s+/g, "").replace(/[.\-_,\(\)\[\]]/g, "");
   return str;
+}
+
+/**
+ * Normalizes item description for composite key comparison in itemized rows
+ * e.g. "  1. ช่างภาพวิดีโอ 2 กล้อง (YC KCC)  " -> "1. ช่างภาพวิดีโอ 2 กล้อง (yc kcc)"
+ */
+function normalizeItemDesc(desc) {
+  if (!desc) return "";
+  return String(desc).trim().toLowerCase().replace(/\s+/g, " ");
 }
 
 /**
@@ -1016,18 +1029,19 @@ function upsertRowInSheet(sheet, sheetName, rowValues) {
         }
       }
     } else if (sheetName === "รายรับ") {
-      var targetDocNo = normalizeDocNo(rowValues[2]);
-      var targetRefInv = normalizeDocNo(rowValues[3]);
-      for (var r = 0; r < existingRows.length; r++) {
-        var existDocNo = normalizeDocNo(existingRows[r][2]);
-        var existRefInv = normalizeDocNo(existingRows[r][3]);
-        
-        var isDocMatch = (targetDocNo && existDocNo && existDocNo === targetDocNo);
-        var isRefMatch = (targetRefInv && existRefInv && existRefInv === targetRefInv && (!targetDocNo || targetDocNo === existDocNo));
-        
-        if (isDocMatch || isRefMatch) {
-          rowToUpdate = r + 2;
-          break;
+      var targetDocNo = normalizeDocNo(rowValues[2]) || normalizeDocNo(rowValues[3]);
+      var targetDesc = normalizeItemDesc(rowValues[8]);
+      if (targetDocNo) {
+        var targetKey = targetDocNo + "___" + targetDesc;
+        for (var r = 0; r < existingRows.length; r++) {
+          var existDocNo = normalizeDocNo(existingRows[r][2]) || normalizeDocNo(existingRows[r][3]);
+          var existDesc = normalizeItemDesc(existingRows[r][8]);
+          var existKey = existDocNo + "___" + existDesc;
+          
+          if (existDocNo && existKey === targetKey) {
+            rowToUpdate = r + 2;
+            break;
+          }
         }
       }
     } else if (sheetName === "รายจ่าย") {

@@ -4571,7 +4571,7 @@ def execute_agent_tool(
             clean_d = {k: v for k, v in d.items() if k != "raw_row"}
             clean_docs.append(clean_d)
 
-        if len(clean_docs) == 1:
+        if clean_docs:
             SESSION_LAST_SEARCHED_DOCS[session_id] = clean_docs[0]
 
         return {
@@ -5219,6 +5219,10 @@ def _build_agent_return_dict(
     sum_res = next((t["result"].get("accounting_summary") for t in executed_tools if t["tool"] == "get_accounting_insights"), None)
     tax_res = next((t["result"].get("tax_report") for t in executed_tools if t["tool"] == "get_tax_filing_report"), None)
     cpa_res = next((t["result"].get("cpa_audit_package") for t in executed_tools if t["tool"] == "prepare_cpa_audit_package"), None)
+
+    if doc_res and doc_res.get("totals", {}).get("net_total", 0) > 10000:
+        if "HITL Security Alert" not in final_text:
+            final_text += "\n\n⚠️ [HITL Security Alert]: ยอดเงินเกิน 10,000 บาท กรุณาตรวจทานความถูกต้องก่อนยืนยันการโอนหรือชำระเงินนะคะ"
 
     return {
         "reply_text": final_text,

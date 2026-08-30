@@ -22,6 +22,8 @@ from ghn168_sync_service import (
     normalize_doc_no,
     normalize_doc_type,
     normalize_company_name,
+    normalize_item_desc,
+    get_income_composite_key,
     find_document_by_no,
     search_sheet_documents,
     sync_document_to_sheets,
@@ -31,6 +33,10 @@ from ghn168_sync_service import (
     QUOTATION_HEADERS,
     INVOICE_HEADERS,
     CUSTOMER_HEADERS,
+)
+from recover_income_tab import (
+    RECOVERED_INCOME_ROWS,
+    calculate_hom_savings,
 )
 from cleanup_receipt_duplicates import (
     deduplicate_income_rows,
@@ -224,6 +230,68 @@ class TestNormalizedDocNoAndUpsertGuard(unittest.TestCase):
             payload2 = mock_post.call_args[1]["json"]
             self.assertEqual(len(payload2["rows"]), 2)
 
+    def test_normalize_item_desc_and_composite_key(self):
+        """Verify normalization of item descriptions and composite key creation."""
+        self.assertEqual(normalize_item_desc("  1. ช่างภาพวิดีโอ 2 กล้อง (YC KCC)  "), "1. ช่างภาพวิดีโอ 2 กล้อง (yc kcc)")
+        self.assertEqual(normalize_item_desc("2. ชุดไฟ+ไมค์ไวเลท (YC KCC)"), "2. ชุดไฟ+ไมค์ไวเลท (yc kcc)")
+        self.assertEqual(normalize_item_desc(""), "")
+        self.assertEqual(normalize_item_desc(None), "")
+
+        # Composite Key formatting
+        key1 = get_income_composite_key("หอม-RE2606-003", "1. ช่างภาพวิดีโอ 2 กล้อง (YC KCC)")
+        key2 = get_income_composite_key("หอม-RE2606-003", "2. ชุดไฟ+ไมค์ไวเลท (YC KCC)")
+        key3 = get_income_composite_key("RE2606-003", "1. ช่างภาพวิดีโอ 2 กล้อง (YC KCC)")
+
+        self.assertEqual(key1, "RE2606-003___1. ช่างภาพวิดีโอ 2 กล้อง (yc kcc)")
+        self.assertEqual(key2, "RE2606-003___2. ชุดไฟ+ไมค์ไวเลท (yc kcc)")
+        # Normalized docNo matches pure code with same description
+        self.assertEqual(key1, key3)
+        # Different descriptions under same docNo have distinct composite keys
+        self.assertNotEqual(key1, key2)
+
+    def test_multi_item_receipt_rows_preservation(self):
+        """
+        Verify that multi-item receipt rows sharing the same docNo (e.g. หอม-RE2606-003)
+        with different descriptions are all preserved and NOT collapsed into a single row.
+        """
+        raw_rows = [
+            ["28/06/2026", "28/06/2026", "หอม-RE2606-003", "-", "ไอเด็กซ์", "-", "-", "00000", "1. ช่างภาพวิดีโอ 2 กล้อง (YC KCC)", 14000.0, 980.0, 14980.0, 3.0, 420.0, 14560.0, "เงินโอน", "ชำระเงินแล้ว", "28/06/2026", "คนทำงาน: หอม | หัก บ.: หอม ฿1000.00", "-", "หอม", "-", 0.0, "-"],
+            ["28/06/2026", "28/06/2026", "หอม-RE2606-003", "-", "ไอเด็กซ์", "-", "-", "00000", "2. ชุดไฟ+ไมค์ไวเลท (YC KCC)", 2000.0, 140.0, 2140.0, 3.0, 60.0, 2080.0, "เงินโอน", "ชำระเงินแล้ว", "28/06/2026", "คนทำงาน: หอม | หัก บ.: หอม ฿1000.00", "-", "หอม", "-", 0.0, "-"],
+            ["28/06/2026", "28/06/2026", "หอม-RE2606-003", "-", "ไอเด็กซ์", "-", "-", "00000", "3. ตัดต่อ 1 ตัว (YC KCC)", 4000.0, 280.0, 4280.0, 3.0, 120.0, 4160.0, "เงินโอน", "ชำระเงินแล้ว", "28/06/2026", "คนทำงาน: หอม | หัก บ.: หอม ฿1000.00", "-", "หอม", "-", 0.0, "-"],
+            ["28/06/2026", "28/06/2026", "หอม-RE2606-003", "-", "ไอเด็กซ์", "-", "-", "00000", "4. ช่างภาพนิ่ง 2 กล้อง (YC KCC)", 14000.0, 980.0, 14980.0, 3.0, 420.0, 14560.0, "เงินโอน", "ชำระเงินแล้ว", "28/06/2026", "คนทำงาน: หอม | หัก บ.: หอม ฿1000.00", "-", "หอม", "-", 0.0, "-"],
+            # Duplicate of item 1
+            ["28/06/2026", "28/06/2026", "RE2606-003", "-", "ไอเด็กซ์", "-", "-", "00000", "1. ช่างภาพวิดีโอ 2 กล้อง (YC KCC)", 14000.0, 980.0, 14980.0, 3.0, 420.0, 14560.0, "เงินโอน", "ชำระเงินแล้ว", "28/06/2026", "คนทำงาน: หอม | หัก บ.: หอม ฿1000.00", "-", "หอม", "-", 0.0, "-"]
+        ]
+
+        cleaned_rows, dup_count = deduplicate_income_rows(raw_rows)
+        # Should deduplicate only the duplicate of item 1, keeping exactly 4 itemized rows
+        self.assertEqual(dup_count, 1)
+        self.assertEqual(len(cleaned_rows), 4)
+
+        item_descs = [r[8] for r in cleaned_rows]
+        self.assertIn("1. ช่างภาพวิดีโอ 2 กล้อง (YC KCC)", item_descs)
+        self.assertIn("2. ชุดไฟ+ไมค์ไวเลท (YC KCC)", item_descs)
+        self.assertIn("3. ตัดต่อ 1 ตัว (YC KCC)", item_descs)
+        self.assertIn("4. ช่างภาพนิ่ง 2 กล้อง (YC KCC)", item_descs)
+
+    def test_recovered_income_dataset_and_hom_savings_calculation(self):
+        """
+        Verify that RECOVERED_INCOME_ROWS contains all 12 multi-item rows,
+        and Hom's total accumulated savings equals exactly 12,000 THB.
+        """
+        self.assertEqual(len(RECOVERED_INCOME_ROWS), 12)
+
+        # Hom's savings calculation
+        savings_info = calculate_hom_savings(RECOVERED_INCOME_ROWS)
+        self.assertEqual(savings_info["total_hom_savings"], 12000.0)
+
+        # Verify breakdown has 7 contribution entries for Hom (4 items in RE2606-003, 2 in RE2607-001, 1 in RE2608-587)
+        self.assertEqual(len(savings_info["breakdown"]), 7)
+        breakdown_amounts = [b["amount"] for b in savings_info["breakdown"]]
+        # 1000, 1000, 1000, 1000, 2000, 1000, 5000 = 12000
+        self.assertEqual(sum(breakdown_amounts), 12000.0)
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
+

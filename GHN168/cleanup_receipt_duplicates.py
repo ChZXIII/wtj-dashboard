@@ -45,6 +45,8 @@ from ghn168_sync_service import (
     read_sheet_data,
     overwrite_sheet_data,
     normalize_doc_no,
+    normalize_item_desc,
+    get_income_composite_key,
     format_tax_id_for_sheet,
     format_branch_for_sheet,
 )
@@ -135,9 +137,8 @@ def build_merged_toy_row(existing_rows: List[List[Any]]) -> List[Any]:
 
 def deduplicate_income_rows(raw_rows: List[List[Any]]) -> Tuple[List[List[Any]], int]:
     """
-    Scans a list of income rows, normalizes document numbers,
-    merges duplicates of 'ทอย-RE2608-587' into a single complete record,
-    and returns (cleaned_rows, duplicate_count).
+    Scans a list of income rows, creates Composite Key (docNo + description) for multi-item receipts,
+    merges exact duplicates, and preserves distinct itemized rows.
     """
     seen_map: Dict[str, int] = {}
     cleaned_rows: List[List[Any]] = []
@@ -151,16 +152,18 @@ def deduplicate_income_rows(raw_rows: List[List[Any]]) -> Tuple[List[List[Any]],
 
         raw_doc_no = str(row[2] if len(row) > 2 else "").strip()
         norm_no = normalize_doc_no(raw_doc_no)
+        desc = str(row[8] if len(row) > 8 else "").strip()
+        comp_key = get_income_composite_key(raw_doc_no, desc)
 
-        if not norm_no:
+        if not comp_key:
             # Row without doc number, keep as-is
             cleaned_rows.append(row)
             continue
 
-        if norm_no in seen_map:
+        if comp_key in seen_map:
             dup_count += 1
-            existing_idx = seen_map[norm_no]
-            logger.info("Found duplicate for doc '%s' (normalized '%s') at row %d.", raw_doc_no, norm_no, idx + 2)
+            existing_idx = seen_map[comp_key]
+            logger.info("Found duplicate for doc '%s' (comp_key '%s') at row %d.", raw_doc_no, comp_key, idx + 2)
 
             # If this is our target document, merge into the single canonical version
             if norm_no == target_norm:
@@ -174,7 +177,7 @@ def deduplicate_income_rows(raw_rows: List[List[Any]]) -> Tuple[List[List[Any]],
                     elif cleaned_rows[existing_idx][col_i] in ["", "-", None] and row[col_i] not in ["", "-", None]:
                         cleaned_rows[existing_idx][col_i] = row[col_i]
         else:
-            seen_map[norm_no] = len(cleaned_rows)
+            seen_map[comp_key] = len(cleaned_rows)
             if norm_no == target_norm:
                 # Apply canonical structure
                 canonical = build_merged_toy_row([row])

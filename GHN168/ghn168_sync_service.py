@@ -249,6 +249,30 @@ def normalize_doc_no(doc_no: str) -> str:
     return cleaned.strip().upper().replace(' ', '-') if cleaned else val
 
 
+def normalize_item_desc(desc: Any) -> str:
+    """
+    Normalizes item description for composite key comparison in multi-item receipt rows.
+    E.g.
+    '  1. ช่างภาพวิดีโอ 2 กล้อง (YC KCC)  ' -> '1. ช่างภาพวิดีโอ 2 กล้อง (yc kcc)'
+    """
+    if not desc:
+        return ""
+    return re.sub(r"\s+", " ", str(desc).strip().lower())
+
+
+def get_income_composite_key(doc_no: Any, description: Any = "") -> str:
+    """
+    Constructs a composite unique key for rows in tab 'รายรับ':
+    normalize_doc_no(doc_no) + '___' + normalize_item_desc(description)
+    """
+    norm_doc = normalize_doc_no(str(doc_no or ""))
+    norm_desc = normalize_item_desc(description)
+    if not norm_doc:
+        return ""
+    return f"{norm_doc}___{norm_desc}"
+
+
+
 def upload_document_pdf(
     pdf_path_or_bytes: Union[str, Path, bytes],
     pdf_name: str,
@@ -597,27 +621,8 @@ def get_simulated_sheet_data(sheet_name: str) -> Dict[str, Any]:
     cur_month = f"{datetime.now().month:02d}"
 
     if sheet_name == "รายรับ":
-        values = [
-            [
-                f"{cur_year}-{cur_month}-05 10:00:00", f"05/{cur_month}/{cur_year}", f"RE-{cur_year}{cur_month}-001", f"IV-{cur_year}{cur_month}-001",
-                "บริษัท เชียงใหม่มีเดีย จำกัด", "0505560000123", "123 ถ.ห้วยแก้ว ต.สุเทพ อ.เมือง จ.เชียงใหม่", "00000",
-                "ผลิตคลิปวิดีโอโปรโมทสินค้า 2 ตอน", 50000.0, 3500.0, 53500.0, 3.0, 1500.0, 52000.0,
-                "KTB", "ชำระเงินแล้ว", f"05/{cur_month}/{cur_year}", "บริษัท (กองกลาง 100%)", "https://drive.google.com/re001", "เลขาเฟิส", ""
-            ],
-            [
-                f"{cur_year}-{cur_month}-12 14:30:00", f"12/{cur_month}/{cur_year}", f"RE-{cur_year}{cur_month}-002", f"IV-{cur_year}{cur_month}-002",
-                "บริษัท ลานนา ครีเอทีฟ สตูดิโอ จำกัด", "0505560000456", "88 ถ.นิมมานเหมินท์ ต.สุเทพ อ.เมือง จ.เชียงใหม่", "00000",
-                "บริการตัดต่อและเกรดสีภาพยนตร์สั้น", 30000.0, 2100.0, 32100.0, 3.0, 900.0, 31200.0,
-                "KTB", "ชำระเงินแล้ว", f"12/{cur_month}/{cur_year}", "บริษัท (กองกลาง 100%)", "https://drive.google.com/re002", "เลขาเฟิส", ""
-            ],
-            [
-                f"{cur_year}-{cur_month}-18 16:00:00", f"18/{cur_month}/{cur_year}", f"RE-{cur_year}{cur_month}-003", f"IV-{cur_year}{cur_month}-003",
-                "คุณสมชาย ใจดี (ร้านกาแฟโมเดิร์น)", "-", "45 ถ.ช้างคลาน อ.เมือง จ.เชียงใหม่", "00000",
-                "ถ่ายภาพนิ่งเมนูอาหารและเครื่องดื่ม", 15000.0, 1050.0, 16050.0, 0.0, 0.0, 16050.0,
-                "KTB", "ชำระเงินแล้ว", f"18/{cur_month}/{cur_year}", "บริษัท (กองกลาง 100%)", "https://drive.google.com/re003", "เลขาเฟิส", ""
-            ]
-        ]
-        return {"status": "success", "values": values, "is_mock": True}
+        from recover_income_tab import RECOVERED_INCOME_ROWS
+        return {"status": "success", "values": [list(r) for r in RECOVERED_INCOME_ROWS], "is_mock": True}
 
     elif sheet_name == "รายจ่าย":
         values = [

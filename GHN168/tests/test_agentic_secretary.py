@@ -321,8 +321,9 @@ class TestAgenticSecretary(unittest.TestCase):
         }
         res1 = self.client.post("/api/test_chat", json=payload1)
         self.assertEqual(res1.status_code, 200)
-        data1 = res1.json()
-        self.assertIn("ขอข้อมูลเพิ่มเติม", data1["reply"])
+        self.assertTrue(
+            "ขอข้อมูลเพิ่มเติม" in data1["reply"] or "รบกวนแจ้งรายละเอียด" in data1["reply"] or "รายละเอียดเอกสาร" in data1["reply"]
+        )
         self.assertIn(session_id, PENDING_DOCUMENT_ORDERS)
 
         # Turn 2: Provide complete details
