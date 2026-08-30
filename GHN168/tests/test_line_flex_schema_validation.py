@@ -32,6 +32,8 @@ from line_bot_server import (
     build_accounting_summary_flex_message,
     build_customer_card_flex_message,
     build_customer_list_flex_message,
+    build_tax_filing_flex_message,
+    build_cpa_audit_pack_flex_message,
     send_line_reply_messages,
     send_line_push_message
 )
@@ -428,6 +430,18 @@ class TestLineFlexSchemaValidation(unittest.TestCase):
         self.assertTrue(validate_line_flex_payload(flex_card))
         self.assertEqual(flex_card["contents"]["header"]["backgroundColor"], "#4f46e5")
         self.assertIn("IV-202608-155", flex_card["contents"]["header"]["contents"][2]["text"])
+
+    def test_tax_filing_and_cpa_audit_flex_schemas(self):
+        """Test build_tax_filing_flex_message and build_cpa_audit_pack_flex_message conform to LINE schema."""
+        from ghn168_sync_service import get_tax_filing_report, get_cpa_audit_package
+
+        tax_res = get_tax_filing_report(month=8, year=2026)
+        tax_flex = build_tax_filing_flex_message(tax_res, tax_type="all")
+        self.assertTrue(validate_line_flex_payload(tax_flex))
+
+        cpa_res = get_cpa_audit_package(year=2026)
+        cpa_flex = build_cpa_audit_pack_flex_message(cpa_res)
+        self.assertTrue(validate_line_flex_payload(cpa_flex))
 
 
 if __name__ == "__main__":

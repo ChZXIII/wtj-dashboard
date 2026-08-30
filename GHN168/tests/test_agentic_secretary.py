@@ -129,7 +129,9 @@ class TestAgenticSecretary(unittest.TestCase):
             "search_customer_database",
             "save_customer_to_database",
             "manage_calendar_schedule",
-            "get_accounting_insights"
+            "get_accounting_insights",
+            "get_tax_filing_report",
+            "prepare_cpa_audit_package"
         }
         declared_names = {t["name"] for t in GEMINI_AGENT_TOOL_DECLARATIONS}
         self.assertEqual(declared_names, expected_tools)
