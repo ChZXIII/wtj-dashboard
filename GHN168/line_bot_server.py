@@ -58,6 +58,7 @@ from ghn168_sync_service import (
     get_partner_financial_breakdown,
     get_simulated_calendar_events,
     normalize_company_name,
+    normalize_doc_no,
     normalize_doc_type,
     parse_sheet_document_row,
     read_sheet_data,

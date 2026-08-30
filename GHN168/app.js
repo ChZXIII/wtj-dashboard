@@ -915,58 +915,69 @@ function setupEventListeners() {
   }
 
   const btnSaveQuickClient = document.getElementById('btnSaveQuickClient');
+  let isSavingQuickClient = false;
   if (btnSaveQuickClient) {
     btnSaveQuickClient.addEventListener('click', () => {
-      const nameEl = document.getElementById('docClientName');
-      const taxIdEl = document.getElementById('docClientTaxId');
-      const branchEl = document.getElementById('docClientBranch');
-      const phoneEl = document.getElementById('docClientPhone');
-      const addressEl = document.getElementById('docClientAddress');
-
-      const name = nameEl ? nameEl.value.trim() : '';
-      const taxId = taxIdEl ? taxIdEl.value.trim() : '';
-      const branch = branchEl ? branchEl.value.trim() : '';
-      const phone = phoneEl ? phoneEl.value.trim() : '';
-      const address = addressEl ? addressEl.value.trim() : '';
-
-      if (!name || !taxId) {
-        alert('กรุณากรอกชื่อลูกค้าและเลขประจำตัวผู้เสียภาษีก่อนบันทึก');
-        return;
-      }
-
-      let customClients = [];
+      if (isSavingQuickClient) return;
+      isSavingQuickClient = true;
+      btnSaveQuickClient.disabled = true;
       try {
-        const raw = safeStorage.getItem('ghn168_custom_clients');
-        if (raw) {
-          customClients = JSON.parse(raw);
+        const nameEl = document.getElementById('docClientName');
+        const taxIdEl = document.getElementById('docClientTaxId');
+        const branchEl = document.getElementById('docClientBranch');
+        const phoneEl = document.getElementById('docClientPhone');
+        const addressEl = document.getElementById('docClientAddress');
+
+        const name = nameEl ? nameEl.value.trim() : '';
+        const taxId = taxIdEl ? taxIdEl.value.trim() : '';
+        const branch = branchEl ? branchEl.value.trim() : '';
+        const phone = phoneEl ? phoneEl.value.trim() : '';
+        const address = addressEl ? addressEl.value.trim() : '';
+
+        if (!name || !taxId) {
+          alert('กรุณากรอกชื่อลูกค้าและเลขประจำตัวผู้เสียภาษีก่อนบันทึก');
+          return;
         }
-      } catch (e) {
-        console.error('Error reading custom clients:', e);
+
+        let customClients = [];
+        try {
+          const raw = safeStorage.getItem('ghn168_custom_clients');
+          if (raw) {
+            customClients = JSON.parse(raw);
+          }
+        } catch (e) {
+          console.error('Error reading custom clients:', e);
+        }
+
+        const existingInCustomIdx = customClients.findIndex(c => c.taxId === taxId);
+        const existsInDefaults = DEFAULT_CLIENTS.some(c => c.taxId === taxId);
+
+        const clientObj = { name, taxId, branch, phone, address };
+
+        if (existingInCustomIdx !== -1) {
+          customClients[existingInCustomIdx] = clientObj;
+          alert(`อัปเดตข้อมูลของ ${name} เรียบร้อยแล้ว!`);
+        } else if (existsInDefaults) {
+          customClients.push(clientObj);
+          alert(`อัปเดตข้อมูลของ ${name} เรียบร้อยแล้ว!`);
+        } else {
+          customClients.push(clientObj);
+          alert(`บันทึกข้อมูลลูกค้าใหม่เรียบร้อยแล้ว!`);
+        }
+
+        try {
+          safeStorage.setItem('ghn168_custom_clients', JSON.stringify(customClients));
+        } catch (e) {
+          console.error('Error saving custom clients:', e);
+        }
+
+        renderQuickClientsDropdown(taxId);
+      } finally {
+        setTimeout(() => {
+          isSavingQuickClient = false;
+          btnSaveQuickClient.disabled = false;
+        }, 500);
       }
-
-      const existingInCustomIdx = customClients.findIndex(c => c.taxId === taxId);
-      const existsInDefaults = DEFAULT_CLIENTS.some(c => c.taxId === taxId);
-
-      const clientObj = { name, taxId, branch, phone, address };
-
-      if (existingInCustomIdx !== -1) {
-        customClients[existingInCustomIdx] = clientObj;
-        alert(`อัปเดตข้อมูลของ ${name} เรียบร้อยแล้ว!`);
-      } else if (existsInDefaults) {
-        customClients.push(clientObj);
-        alert(`อัปเดตข้อมูลของ ${name} เรียบร้อยแล้ว!`);
-      } else {
-        customClients.push(clientObj);
-        alert(`บันทึกข้อมูลลูกค้าใหม่เรียบร้อยแล้ว!`);
-      }
-
-      try {
-        safeStorage.setItem('ghn168_custom_clients', JSON.stringify(customClients));
-      } catch (e) {
-        console.error('Error saving custom clients:', e);
-      }
-
-      renderQuickClientsDropdown(taxId);
     });
   }
 
@@ -1166,10 +1177,23 @@ function setupEventListeners() {
     }
   });
 
-  // Create New Doc Button
+  // Create New Doc Button with Debounce Guard
   const btnCreateNewDoc = document.getElementById('btnCreateNewDoc');
+  let isCreatingNewDoc = false;
   if (btnCreateNewDoc) {
-    btnCreateNewDoc.addEventListener('click', createNewDocument);
+    btnCreateNewDoc.addEventListener('click', () => {
+      if (isCreatingNewDoc) return;
+      isCreatingNewDoc = true;
+      btnCreateNewDoc.disabled = true;
+      try {
+        createNewDocument();
+      } finally {
+        setTimeout(() => {
+          isCreatingNewDoc = false;
+          btnCreateNewDoc.disabled = false;
+        }, 500);
+      }
+    });
   }
 
   // (Removed event-based document title switching to favor real-time document title synchronization)
@@ -1430,29 +1454,48 @@ function setupEventListeners() {
     addDocModal.classList.remove('active');
   });
 
-  // Sync Data Button
-  document.getElementById('btnSaveAndSyncDoc').addEventListener('click', async () => {
-    // 1. สั่งบันทึกและซิงค์ Sheets
-    const success = await processDocumentSync();
-    if (!success) return; // ติด Validation หรือข้อผิดพลาด ไม่ทำงานต่อ
-    
-    // 2. ถ้าติ๊กอัปโหลดขึ้น Drive ให้สั่งอัปโหลด PDF
-    const chk = document.getElementById('chkUploadToDrive');
-    if (chk && chk.checked) {
-      await handleUploadPdfToDrive('btnSaveAndSyncDoc');
-    }
-    
-    // 3. สั่งโหลดไฟล์ PDF / เปิดหน้าต่าง Print Preview (เฉพาะกรณีไม่ได้ติ๊กอัปโหลดขึ้น Drive)
-    if (!(chk && chk.checked)) {
-      const isMobileOrTablet = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
-                              (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-      if (isMobileOrTablet) {
-        exportPdfClientSide();
-      } else {
-        window.print();
+  // Sync Data Button with Button Lock / Debounce Guard
+  const btnSaveAndSyncDoc = document.getElementById('btnSaveAndSyncDoc');
+  let isSyncingDoc = false;
+  if (btnSaveAndSyncDoc) {
+    btnSaveAndSyncDoc.addEventListener('click', async () => {
+      if (isSyncingDoc) return;
+      isSyncingDoc = true;
+      btnSaveAndSyncDoc.disabled = true;
+      const originalText = btnSaveAndSyncDoc.innerHTML;
+      btnSaveAndSyncDoc.textContent = 'กำลังประมวลผลและซิงค์...';
+      
+      try {
+        // 1. สั่งบันทึกและซิงค์ Sheets
+        const success = await processDocumentSync();
+        if (!success) return; // ติด Validation หรือข้อผิดพลาด ไม่ทำงานต่อ
+        
+        // 2. ถ้าติ๊กอัปโหลดขึ้น Drive ให้สั่งอัปโหลด PDF
+        const chk = document.getElementById('chkUploadToDrive');
+        if (chk && chk.checked) {
+          await handleUploadPdfToDrive('btnSaveAndSyncDoc');
+        }
+        
+        // 3. สั่งโหลดไฟล์ PDF / เปิดหน้าต่าง Print Preview (เฉพาะกรณีไม่ได้ติ๊กอัปโหลดขึ้น Drive)
+        if (!(chk && chk.checked)) {
+          const isMobileOrTablet = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+                                  (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+          if (isMobileOrTablet) {
+            exportPdfClientSide();
+          } else {
+            window.print();
+          }
+        }
+      } catch (err) {
+        console.error('Error during save and sync:', err);
+        alert('เกิดข้อผิดพลาดในการบันทึกและซิงค์ข้อมูล: ' + (err.message || err));
+      } finally {
+        isSyncingDoc = false;
+        btnSaveAndSyncDoc.disabled = false;
+        btnSaveAndSyncDoc.innerHTML = originalText;
       }
-    }
-  });
+    });
+  }
 
   // Sync Document Hub Button
   const btnSyncDocHub = document.getElementById('btnSyncDocHub');
@@ -2785,16 +2828,16 @@ function formatDate(dateStr) {
 
 function cleanDocNo(val) {
   if (!val || val === '-') return val;
-  const parts = val.split('-');
-  if (parts.length > 1) {
-    for (let i = 1; i < parts.length; i++) {
-      const part = parts[i].toUpperCase();
-      if (part.startsWith('QT') || part.startsWith('IV') || part.startsWith('RE') || part.startsWith('WHT') || part.startsWith('PV')) {
-        return parts.slice(i).join('-');
-      }
-    }
+  const str = String(val).trim();
+  const match = str.match(/(?:QT|IV|RE|EXP|PV|WHT|50BIS|BILL)[\w\-]+/i);
+  if (match) {
+    return match[0].toUpperCase().replace(/\s+/g, '-');
   }
-  return val;
+  const cleaned = str.replace(/^[\[\(].*?[\]\)]\s*[-_]?\s*/i, '')
+                     .replace(/^[^\w\s]+[-_]?\s*/i, '')
+                     .replace(/\s+/g, '')
+                     .toUpperCase();
+  return cleaned;
 }
 
 function formatAddressForPreview(text, isHtml = false) {

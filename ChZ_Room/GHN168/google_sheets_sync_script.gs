@@ -480,7 +480,7 @@ function doPost(e) {
     var activeSpreadsheet = SpreadsheetApp.openById(spreadsheetId);
     
     // ----------------------------------------------------
-    // CASE 1: ซิงค์แถวข้อมูลลงแท็บใดๆ แบบ Generic
+    // CASE 1: ซิงค์แถวข้อมูลลงแท็บใดๆ แบบ In-place Upsert Guard & Smart Merge
     // ----------------------------------------------------
     if (data.type === "sync") {
       var sheetName = data.sheetName;
@@ -499,86 +499,47 @@ function doPost(e) {
         })).setMimeType(ContentService.MimeType.JSON);
       }
       
-      // บันทึกหลายแถวพร้อมกัน (กรณี Split Items ในรายรับ)
+      // บันทึกหลายแถวพร้อมกัน (กรณี Split Items ในรายรับ หรือ Batch Sync)
       if (data.rows && Array.isArray(data.rows) && data.rows.length > 0) {
-        var numRows = data.rows.length;
-        var numCols = data.rows[0].length;
-        sheet.getRange(sheet.getLastRow() + 1, 1, numRows, numCols).setValues(data.rows);
+        var updatedCount = 0;
+        var insertedCount = 0;
+        for (var i = 0; i < data.rows.length; i++) {
+          var res = upsertRowInSheet(sheet, sheetName, data.rows[i]);
+          if (res.updated) {
+            updatedCount++;
+          } else {
+            insertedCount++;
+          }
+        }
         beautifySheet(sheet, sheetName);
         
         return ContentService.createTextOutput(JSON.stringify({
           "status": "success",
-          "message": "ซิงค์ข้อมูล " + numRows + " แถว ลงแท็บ '" + sheetName + "' เรียบร้อยแล้วแก!"
+          "message": "ซิงค์ข้อมูล " + data.rows.length + " แถว ลงแท็บ '" + sheetName + "' เรียบร้อยแล้วแก! (อัปเดตแถวเดิม: " + updatedCount + " แถว | เพิ่มแถวใหม่: " + insertedCount + " แถว)",
+          "updatedCount": updatedCount,
+          "insertedCount": insertedCount
         })).setMimeType(ContentService.MimeType.JSON);
       } 
-      // บันทึกแถวเดี่ยว
+      // บันทึกแถวเดี่ยว (Single Row Sync with Normalized Upsert Guard)
       else if (data.values && Array.isArray(data.values) && data.values.length > 0) {
-        var docNo = data.values[2]; // index 2 is column 3 (Document No)
-        var updated = false;
-        
-        if ((sheetName === "ใบเสนอราคา" || sheetName === "ใบวางบิล") && docNo) {
-          var lastRow = sheet.getLastRow();
-          if (lastRow > 1) {
-            var docNumbers = sheet.getRange(2, 3, lastRow - 1, 1).getValues();
-            for (var r = 0; r < docNumbers.length; r++) {
-              if (docNumbers[r][0] === docNo) {
-                // Found duplicate document number, update this row
-                var rowToUpdate = r + 2; // 2-indexed row number in sheet
-                sheet.getRange(rowToUpdate, 1, 1, data.values.length).setValues([data.values]);
-                updated = true;
-                break;
-              }
-            }
-          }
-        } else if (sheetName === "ข้อมูลลูกค้า") {
-          var custName = (data.values[1] || "").toString().trim().toLowerCase();
-          var custTaxId = (data.values[2] || "").toString().trim().replace(/[^0-9]/g, "");
-          var lastRow = sheet.getLastRow();
-          if (lastRow > 1) {
-            var existingRows = sheet.getRange(2, 1, lastRow - 1, Math.min(sheet.getLastColumn(), 10)).getValues();
-            for (var r = 0; r < existingRows.length; r++) {
-              var existName = (existingRows[r][1] || "").toString().trim().toLowerCase();
-              var existTax = (existingRows[r][2] || "").toString().trim().replace(/[^0-9]/g, "");
-              var isNameMatch = (custName && existName && (custName === existName || existName.indexOf(custName) !== -1 || custName.indexOf(existName) !== -1));
-              var isTaxMatch = (custTaxId && existTax && custTaxId.length >= 10 && custTaxId === existTax);
-              if (isNameMatch || isTaxMatch) {
-                // Preserve existing Customer ID if incoming is empty/dash
-                if (!data.values[0] || data.values[0] === "-" || data.values[0] === "") {
-                  data.values[0] = existingRows[r][0];
-                }
-                var rowToUpdate = r + 2;
-                sheet.getRange(rowToUpdate, 1, 1, data.values.length).setValues([data.values]);
-                updated = true;
-                break;
-              }
-            }
-          }
-          if (!updated) {
-            if (!data.values[0] || data.values[0] === "-" || data.values[0] === "") {
-              var count = (lastRow <= 1) ? 1 : lastRow;
-              data.values[0] = "CUST-" + ("000" + count).slice(-3);
-            }
-          }
-        }
-        
-        if (!updated) {
-          sheet.appendRow(data.values);
-        }
-        
+        var res = upsertRowInSheet(sheet, sheetName, data.values);
         beautifySheet(sheet, sheetName);
         
         var successMsg = "ซิงค์บันทึกข้อมูลลงแท็บ '" + sheetName + "' เรียบร้อยแล้วแก!";
-        if (updated) {
+        if (res.updated) {
           if (sheetName === "ข้อมูลลูกค้า") {
-            successMsg = "อัปเดตข้อมูลลูกค้า '" + (data.values[1] || "") + "' ในแท็บ 'ข้อมูลลูกค้า' เรียบร้อยแล้วแก!";
+            successMsg = "อัปเดตข้อมูลลูกค้า '" + (data.values[1] || "") + "' ในแท็บ 'ข้อมูลลูกค้า' เรียบร้อยแล้วแก! (แถว " + res.rowNum + ")";
           } else {
-            successMsg = "อัปเดตข้อมูลเอกสารเลขที่ '" + docNo + "' ในแท็บ '" + sheetName + "' เรียบร้อยแล้วแก!";
+            var displayDocNo = data.values[2] || data.values[3] || "";
+            successMsg = "อัปเดตข้อมูลเอกสารเลขที่ '" + displayDocNo + "' ในแท็บ '" + sheetName + "' เรียบร้อยแล้วแก! (แถว " + res.rowNum + ")";
           }
         }
         
         return ContentService.createTextOutput(JSON.stringify({
           "status": "success",
-          "message": successMsg
+          "message": successMsg,
+          "updated": res.updated,
+          "rowNum": res.rowNum
         })).setMimeType(ContentService.MimeType.JSON);
       } 
       else {
@@ -769,6 +730,76 @@ function doPost(e) {
       }
     }
     
+    // ----------------------------------------------------
+    // CASE 6: จัดระเบียบเคลียร์ข้อมูลแถวซ้ำในแท็บ (Deduplicate Tab In-Place Guard)
+    // ----------------------------------------------------
+    else if (data.type === "deduplicate") {
+      var sheetName = data.sheetName || "รายรับ";
+      var sheet = activeSpreadsheet.getSheetByName(sheetName);
+      if (!sheet) {
+        return ContentService.createTextOutput(JSON.stringify({
+          "status": "error",
+          "message": "ไม่พบแท็บชีต '" + sheetName + "' นะแก!"
+        })).setMimeType(ContentService.MimeType.JSON);
+      }
+      
+      var lastRow = sheet.getLastRow();
+      var lastCol = sheet.getLastColumn();
+      if (lastRow <= 1 || lastCol === 0) {
+        return ContentService.createTextOutput(JSON.stringify({
+          "status": "success",
+          "message": "แท็บ '" + sheetName + "' ไม่มีข้อมูลแถวให้ตรวจสอบ",
+          "removedCount": 0,
+          "remainingRows": 0
+        })).setMimeType(ContentService.MimeType.JSON);
+      }
+      
+      var rawRows = sheet.getRange(2, 1, lastRow - 1, lastCol).getValues();
+      var uniqueMap = {};
+      var cleanRows = [];
+      var removedCount = 0;
+      
+      for (var r = 0; r < rawRows.length; r++) {
+        var row = rawRows[r];
+        var key = "";
+        if (sheetName === "ข้อมูลลูกค้า") {
+          var custTax = String(row[2] || "").replace(/[^0-9]/g, "");
+          var custName = normalizeCompanyName(row[1]);
+          key = custTax || custName;
+        } else {
+          key = normalizeDocNo(row[2]) || normalizeDocNo(row[3]) || ("ROW_" + r);
+        }
+        
+        if (key && uniqueMap[key] !== undefined) {
+          // Merge duplicate row into previous unique row
+          var prevIdx = uniqueMap[key];
+          cleanRows[prevIdx] = smartMergeRow(cleanRows[prevIdx], row, sheetName);
+          removedCount++;
+        } else {
+          if (key) {
+            uniqueMap[key] = cleanRows.length;
+          }
+          cleanRows.push(row);
+        }
+      }
+      
+      if (removedCount > 0) {
+        // Safe overwrite without sheet.clear()
+        sheet.getRange(2, 1, cleanRows.length, cleanRows[0].length).setValues(cleanRows);
+        if (lastRow > cleanRows.length + 1) {
+          sheet.getRange(cleanRows.length + 2, 1, lastRow - (cleanRows.length + 1), lastCol).clearContent();
+        }
+        beautifySheet(sheet, sheetName);
+      }
+      
+      return ContentService.createTextOutput(JSON.stringify({
+        "status": "success",
+        "message": "จัดระเบียบเคลียร์ข้อมูลแถวซ้ำในแท็บ '" + sheetName + "' สำเร็จแล้วแก! (รวมข้อมูลที่ซ้ำ " + removedCount + " แถว | เหลือแถวข้อมูลจริง " + cleanRows.length + " แถว)",
+        "removedCount": removedCount,
+        "remainingRows": cleanRows.length
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+    
     // INVALID TYPE
     else {
       return ContentService.createTextOutput(JSON.stringify({
@@ -785,6 +816,285 @@ function doPost(e) {
   } finally {
     lock.releaseLock();
   }
+}
+
+/**
+ * Normalizes document numbers for robust comparison across different naming conventions
+ * e.g. "ทอย-RE2608-587" -> "RE2608-587"
+ *      "RE2608-587"     -> "RE2608-587"
+ *      "[ทอย]-RE2608-587" -> "RE2608-587"
+ *      "หอม-IV2608-001" -> "IV2608-001"
+ *      "EXP2608-001"    -> "EXP2608-001"
+ */
+function normalizeDocNo(rawDocNo) {
+  if (!rawDocNo) return "";
+  var str = String(rawDocNo).trim();
+  var match = str.match(/(?:QT|IV|RE|EXP|PV|WHT|50BIS|BILL)[\w\-]+/i);
+  if (match) {
+    return match[0].toUpperCase().replace(/[\s_]+/g, "-");
+  }
+  var cleaned = str.replace(/^[\[\(].*?[\]\)]\s*[-_]?\s*/i, "")
+                   .replace(/^[^\w\s]+[-_]?\s*/i, "")
+                   .replace(/\s+/g, "")
+                   .toUpperCase();
+  return cleaned;
+}
+
+/**
+ * Normalizes company / customer name for comparison
+ */
+function normalizeCompanyName(name) {
+  if (!name) return "";
+  var str = String(name).trim().toLowerCase();
+  var prefixes = [
+    "บริษัทจำกัด", "บริษัท", "บจก.", "บจก", "ห้างหุ้นส่วนจำกัด", "หจก.", "หจก",
+    "หสน.", "หสน", "ร้าน", "คณะบุคคล", "co., ltd.", "co.,ltd.", "company limited", "inc."
+  ];
+  for (var i = 0; i < prefixes.length; i++) {
+    str = str.split(prefixes[i]).join("");
+  }
+  str = str.replace(/\s+/g, "").replace(/[.\-_,\(\)\[\]]/g, "");
+  return str;
+}
+
+/**
+ * Smart Field Merging to combine incoming row data with existing row data
+ * without overwriting important existing details (like custom recorder or remarks)
+ * and properly updating Drive links and financial totals.
+ */
+function smartMergeRow(existingRow, newRow, sheetName) {
+  var merged = existingRow.slice();
+  var maxLen = Math.max(existingRow.length, newRow.length);
+  while (merged.length < maxLen) merged.push("-");
+  
+  for (var i = 0; i < newRow.length; i++) {
+    var newVal = newRow[i];
+    var oldVal = (i < existingRow.length) ? existingRow[i] : "";
+    
+    // If incoming is empty or dash, keep existing value if it is valid
+    if (newVal === undefined || newVal === null || newVal === "" || newVal === "-") {
+      if (oldVal !== undefined && oldVal !== null && oldVal !== "" && oldVal !== "-") {
+        merged[i] = oldVal;
+        continue;
+      }
+    }
+    
+    if (sheetName === "รายรับ") {
+      // Column 20 (Index 19): Google Drive PDF Link
+      if (i === 19) {
+        var newStr = String(newVal || "");
+        var oldStr = String(oldVal || "");
+        if (newStr.indexOf("http") !== -1 || newStr.indexOf("drive.google.com") !== -1) {
+          merged[i] = newVal;
+        } else if (oldStr.indexOf("http") !== -1 || oldStr.indexOf("drive.google.com") !== -1) {
+          merged[i] = oldVal;
+        } else {
+          merged[i] = newVal || oldVal;
+        }
+        continue;
+      }
+      // Column 21 (Index 20): Recorded By (ผู้บันทึกรายการ)
+      if (i === 20) {
+        var newRec = String(newVal || "").trim();
+        var oldRec = String(oldVal || "").trim();
+        if (oldRec && oldRec !== "-" && (!newRec || newRec === "-" || newRec === "เลขาเฟิส (GHN168)" || newRec === "ระบบ")) {
+          merged[i] = oldRec;
+        } else if (newRec && newRec !== "-") {
+          merged[i] = newRec;
+        }
+        continue;
+      }
+      // Column 22 (Index 21): Remarks (หมายเหตุ)
+      if (i === 21) {
+        var newRem = String(newVal || "").trim();
+        var oldRem = String(oldVal || "").trim();
+        if (oldRem && oldRem !== "-" && (!newRem || newRem === "-")) {
+          merged[i] = oldRem;
+        } else if (newRem && newRem !== "-" && (!oldRem || oldRem === "-")) {
+          merged[i] = newRem;
+        } else if (newRem && oldRem && newRem !== oldRem && newRem !== "-" && oldRem !== "-") {
+          if (oldRem.indexOf(newRem) !== -1) {
+            merged[i] = oldRem;
+          } else if (newRem.indexOf(oldRem) !== -1) {
+            merged[i] = newRem;
+          } else {
+            merged[i] = oldRem + " | " + newRem;
+          }
+        }
+        continue;
+      }
+      // Column 19 (Index 18): Profit Share (สัดส่วนผู้รับผลประโยชน์)
+      if (i === 18) {
+        var newPs = String(newVal || "").trim();
+        var oldPs = String(oldVal || "").trim();
+        if (newPs && newPs !== "-") {
+          merged[i] = newPs;
+        } else if (oldPs && oldPs !== "-") {
+          merged[i] = oldPs;
+        }
+        continue;
+      }
+    }
+    
+    if (sheetName === "รายจ่าย") {
+      // Column 21 (Index 20): Google Drive PDF Link
+      if (i === 20) {
+        var newStr = String(newVal || "");
+        var oldStr = String(oldVal || "");
+        if (newStr.indexOf("http") !== -1 || newStr.indexOf("drive.google.com") !== -1) {
+          merged[i] = newVal;
+        } else if (oldStr.indexOf("http") !== -1 || oldStr.indexOf("drive.google.com") !== -1) {
+          merged[i] = oldVal;
+        } else {
+          merged[i] = newVal || oldVal;
+        }
+        continue;
+      }
+      // Column 24 (Index 23): Remarks
+      if (i === 23) {
+        var newRem = String(newVal || "").trim();
+        var oldRem = String(oldVal || "").trim();
+        if (oldRem && oldRem !== "-" && (!newRem || newRem === "-")) {
+          merged[i] = oldRem;
+        } else if (newRem && newRem !== "-" && (!oldRem || oldRem === "-")) {
+          merged[i] = newRem;
+        } else if (newRem && oldRem && newRem !== oldRem && newRem !== "-" && oldRem !== "-") {
+          if (oldRem.indexOf(newRem) !== -1) {
+            merged[i] = oldRem;
+          } else if (newRem.indexOf(oldRem) !== -1) {
+            merged[i] = newRem;
+          } else {
+            merged[i] = oldRem + " | " + newRem;
+          }
+        }
+        continue;
+      }
+      // Column 25 (Index 24): Staff Payee / Employee
+      if (i === 24) {
+        var newPayee = String(newVal || "").trim();
+        var oldPayee = String(oldVal || "").trim();
+        if (newPayee && newPayee !== "-") {
+          merged[i] = newPayee;
+        } else if (oldPayee && oldPayee !== "-") {
+          merged[i] = oldPayee;
+        }
+        continue;
+      }
+    }
+    
+    // Default rule: use newVal if valid, else keep oldVal
+    if (newVal !== undefined && newVal !== null && newVal !== "" && newVal !== "-") {
+      merged[i] = newVal;
+    } else {
+      merged[i] = oldVal;
+    }
+  }
+  return merged;
+}
+
+/**
+ * In-place Upsert Guard function across all tabs
+ */
+function upsertRowInSheet(sheet, sheetName, rowValues) {
+  var lastRow = sheet.getLastRow();
+  var updated = false;
+  var rowToUpdate = -1;
+  
+  if (lastRow > 1 && rowValues && rowValues.length > 0) {
+    var numCols = Math.min(sheet.getLastColumn(), 25);
+    var existingRows = sheet.getRange(2, 1, lastRow - 1, numCols).getValues();
+    
+    if (sheetName === "ใบเสนอราคา" || sheetName === "ใบวางบิล") {
+      var targetDocNo = normalizeDocNo(rowValues[2]);
+      if (targetDocNo) {
+        for (var r = 0; r < existingRows.length; r++) {
+          var existDocNo = normalizeDocNo(existingRows[r][2]);
+          if (existDocNo && existDocNo === targetDocNo) {
+            rowToUpdate = r + 2;
+            break;
+          }
+        }
+      }
+    } else if (sheetName === "รายรับ") {
+      var targetDocNo = normalizeDocNo(rowValues[2]);
+      var targetRefInv = normalizeDocNo(rowValues[3]);
+      for (var r = 0; r < existingRows.length; r++) {
+        var existDocNo = normalizeDocNo(existingRows[r][2]);
+        var existRefInv = normalizeDocNo(existingRows[r][3]);
+        
+        var isDocMatch = (targetDocNo && existDocNo && existDocNo === targetDocNo);
+        var isRefMatch = (targetRefInv && existRefInv && existRefInv === targetRefInv && (!targetDocNo || targetDocNo === existDocNo));
+        
+        if (isDocMatch || isRefMatch) {
+          rowToUpdate = r + 2;
+          break;
+        }
+      }
+    } else if (sheetName === "รายจ่าย") {
+      var targetDocNo = normalizeDocNo(rowValues[2]);
+      var targetSupplier = normalizeCompanyName(rowValues[3]);
+      var targetDate = String(rowValues[1] || "").trim();
+      
+      if (targetDocNo) {
+        for (var r = 0; r < existingRows.length; r++) {
+          var existDocNo = normalizeDocNo(existingRows[r][2]);
+          if (existDocNo && existDocNo === targetDocNo) {
+            rowToUpdate = r + 2;
+            break;
+          }
+        }
+      }
+      // Secondary match for non-standard supplier bills
+      if (rowToUpdate === -1 && targetSupplier && targetDate) {
+        for (var r = 0; r < existingRows.length; r++) {
+          var existSupplier = normalizeCompanyName(existingRows[r][3]);
+          var existDate = String(existingRows[r][1] || "").trim();
+          var existDocNo = normalizeDocNo(existingRows[r][2]);
+          if (existSupplier === targetSupplier && existDate === targetDate && (!targetDocNo || !existDocNo || existDocNo === targetDocNo)) {
+            rowToUpdate = r + 2;
+            break;
+          }
+        }
+      }
+    } else if (sheetName === "ข้อมูลลูกค้า") {
+      var custName = normalizeCompanyName(rowValues[1]);
+      var custTaxId = String(rowValues[2] || "").replace(/[^0-9]/g, "");
+      
+      for (var r = 0; r < existingRows.length; r++) {
+        var existName = normalizeCompanyName(existingRows[r][1]);
+        var existTax = String(existingRows[r][2] || "").replace(/[^0-9]/g, "");
+        var isTaxMatch = (custTaxId && existTax && custTaxId.length >= 10 && custTaxId === existTax);
+        var isNameMatch = (custName && existName && (custName === existName || existName.indexOf(custName) !== -1 || custName.indexOf(existName) !== -1));
+        
+        if (isTaxMatch || isNameMatch) {
+          rowToUpdate = r + 2;
+          // Preserve existing Customer ID if incoming is empty/dash
+          if (!rowValues[0] || rowValues[0] === "-" || rowValues[0] === "") {
+            rowValues[0] = existingRows[r][0];
+          }
+          break;
+        }
+      }
+    }
+  }
+  
+  if (rowToUpdate !== -1) {
+    var existingRow = sheet.getRange(rowToUpdate, 1, 1, Math.max(sheet.getLastColumn(), rowValues.length)).getValues()[0];
+    var mergedRow = smartMergeRow(existingRow, rowValues, sheetName);
+    sheet.getRange(rowToUpdate, 1, 1, mergedRow.length).setValues([mergedRow]);
+    updated = true;
+  } else {
+    // New entry
+    if (sheetName === "ข้อมูลลูกค้า") {
+      if (!rowValues[0] || rowValues[0] === "-" || rowValues[0] === "") {
+        var count = (lastRow <= 1) ? 1 : lastRow;
+        rowValues[0] = "CUST-" + ("000" + count).slice(-3);
+      }
+    }
+    sheet.appendRow(rowValues);
+  }
+  
+  return { updated: updated, rowNum: rowToUpdate !== -1 ? rowToUpdate : sheet.getLastRow() };
 }
 
 /**

@@ -86,6 +86,128 @@ DOC_TYPE_SHEET_NAME = {
     "expense": "รายจ่าย",
 }
 
+INCOME_HEADERS = [
+    "วันที่บันทึก (Record Date)",
+    "วันที่ตามใบเสร็จ/ใบกำกับภาษี (Tax Invoice Date)",
+    "เลขที่ใบกำกับภาษี / ใบเสร็จรับเงิน (Receipt / Tax Invoice No.)",
+    "เลขที่ใบวางบิล (Invoice No.)",
+    "ชื่อลูกค้า (Customer Name)",
+    "เลขประจำตัวผู้เสียภาษีลูกค้า (Customer Tax ID)",
+    "ที่อยู่ลูกค้า (Customer Address)",
+    "รหัสสาขาลูกค้า (Customer Branch)",
+    "รายละเอียดงาน / โครงการ (Description / Project)",
+    "ยอดก่อนภาษีมูลค่าเพิ่ม (Pre-VAT Amount)",
+    "ภาษีมูลค่าเพิ่ม 7% (VAT 7%)",
+    "ยอดรวมภาษีมูลค่าเพิ่ม (Gross Amount)",
+    "ภาษีถูกหัก ณ ที่จ่าย % (WHT Rate %)",
+    "ยอดภาษีถูกหัก ณ ที่จ่าย (WHT Amount)",
+    "ยอดเงินที่ได้รับจริง (Net Received)",
+    "บัญชีธนาคารที่รับเงิน (Receiving Bank)",
+    "สถานะการชำระเงิน (Payment Status)",
+    "วันที่ได้รับเงินจริง (Actual Payment Date)",
+    "สัดส่วนผู้รับผลประโยชน์ (Profit Share Distribution)",
+    "ลิงก์เอกสาร Google Drive (PDF Link)",
+    "ผู้บันทึกรายการ (Recorded By)",
+    "หมายเหตุ (Remarks)",
+    "ส่วนลด (Discount)",
+    "รายละเอียดส่วนลด (Discount Description)"
+]
+
+EXPENSE_HEADERS = [
+    "วันที่บันทึก (Record Date)",
+    "วันที่ตามใบเสร็จ/ใบกำกับภาษี (Tax Invoice Date)",
+    "เลขที่ใบกำกับภาษี / ใบเสร็จรับเงิน (Supplier Invoice No.)",
+    "ชื่อผู้ให้บริการ / คู่ค้า (Supplier Name)",
+    "เลขประจำตัวผู้เสียภาษีคู่ค้า (Supplier Tax ID)",
+    "ที่อยู่คู่ค้า (Supplier Address)",
+    "รหัสสาขาคู่ค้า (Supplier Branch)",
+    "หมวดหมู่ค่าใช้จ่าย (Expense Category)",
+    "รายละเอียดค่าใช้จ่าย (Description)",
+    "ยอดก่อนภาษีมูลค่าเพิ่ม (Pre-VAT Amount)",
+    "ภาษีมูลค่าเพิ่ม 7% (VAT 7%)",
+    "ยอดรวมภาษีมูลค่าเพิ่ม (Gross Amount)",
+    "อัตราภาษีหัก ณ ที่จ่าย % (WHT Rate %)",
+    "ยอดหักภาษี ณ ที่จ่าย (WHT Amount)",
+    "ประเภทยื่นภาษีหัก ณ ที่จ่าย (WHT Form Type)",
+    "ยอดจ่ายเงินสุทธิ (Net Paid)",
+    "ช่องทางการชำระเงิน (Payment Method)",
+    "สถานะการชำระเงิน (Payment Status)",
+    "วันที่จ่ายเงินจริง (Actual Paid Date)",
+    "เลขที่ใบรับรองหัก ณ ที่จ่าย (50 Bis No.)",
+    "ลิงก์เอกสาร Google Drive (PDF Link)",
+    "สถานะการยื่นภาษี (Tax Filing Status)",
+    "โครงการที่ผูก (Project Link)",
+    "หมายเหตุ (Remarks)",
+    "ผู้เบิกค่าแรง / พนักงาน (Staff Payee / Employee)"
+]
+
+QUOTATION_HEADERS = [
+    "วันที่บันทึก (Record Date)",
+    "วันที่เอกสาร (Date)",
+    "เลขที่เอกสาร (Document No)",
+    "ชื่อลูกค้า (Client Name)",
+    "เลขประจำตัวผู้เสียภาษี (Client Tax ID)",
+    "ที่อยู่ลูกค้า (Client Address)",
+    "รหัสสาขา (Client Branch)",
+    "เบอร์โทรติดต่อ (Client Phone)",
+    "รายละเอียดโครงการ (Project Name)",
+    "ยอดก่อนภาษีมูลค่าเพิ่ม (Pre-VAT Amount)",
+    "ภาษีมูลค่าเพิ่ม 7% (VAT Amount)",
+    "ยอดภาษีหัก ณ ที่จ่าย (WHT Amount)",
+    "ยอดรวมสุทธิ (Net Amount)",
+    "ภาษีถูกหัก ณ ที่จ่าย % (WHT Rate %)",
+    "ชื่อผู้ลงนาม (Signer Name)",
+    "ผู้ลงนาม (Signatory Select)",
+    "แสดงตราประทับ (Show Company Seal)",
+    "แสดงลายเซ็น (Show Document Signature)",
+    "ข้อมูลรายการสินค้าและราคา JSON (Items JSON)",
+    "วันเวลาที่อัปเดตล่าสุด (Last Updated)",
+    "หมายเหตุ (Remarks)",
+    "ส่วนลด (Discount)",
+    "รายละเอียดส่วนลด (Discount Description)"
+]
+
+INVOICE_HEADERS = [
+    "วันที่บันทึก (Record Date)",
+    "วันที่เอกสาร (Date)",
+    "เลขที่เอกสาร (Document No)",
+    "ชื่อลูกค้า (Client Name)",
+    "เลขประจำตัวผู้เสียภาษี (Client Tax ID)",
+    "ที่อยู่ลูกค้า (Client Address)",
+    "รหัสสาขา (Client Branch)",
+    "เบอร์โทรติดต่อ (Client Phone)",
+    "รายละเอียดโครงการ (Project Name)",
+    "ยอดก่อนภาษีมูลค่าเพิ่ม (Pre-VAT Amount)",
+    "ภาษีมูลค่าเพิ่ม 7% (VAT Amount)",
+    "ยอดภาษีหัก ณ ที่จ่าย (WHT Amount)",
+    "ยอดรวมสุทธิ (Net Amount)",
+    "ภาษีถูกหัก ณ ที่จ่าย % (WHT Rate %)",
+    "ชื่อผู้ลงนาม (Signer Name)",
+    "ผู้ลงนาม (Signatory Select)",
+    "แสดงตราประทับ (Show Company Seal)",
+    "แสดงลายเซ็น (Show Document Signature)",
+    "ข้อมูลรายการสินค้าและราคา JSON (Items JSON)",
+    "วันเวลาที่อัปเดตล่าสุด (Last Updated)",
+    "เงื่อนไขการชำระเงิน (Payment Terms)",
+    "วันครบกำหนด (Due Date)",
+    "หมายเหตุ (Remarks)",
+    "ส่วนลด (Discount)",
+    "รายละเอียดส่วนลด (Discount Description)"
+]
+
+CUSTOMER_HEADERS = [
+    "รหัสลูกค้า (Customer ID)",
+    "ชื่อบริษัท / ลูกค้า (Customer Name)",
+    "เลขประจำตัวผู้เสียภาษี (Tax ID)",
+    "รหัสสาขา (Branch Code)",
+    "ที่อยู่จดทะเบียน (Address)",
+    "เบอร์โทรศัพท์ (Phone)",
+    "อีเมล (Email)",
+    "ผู้ติดต่อ (Contact Person)",
+    "วันที่บันทึก (Created Date)",
+    "หมายเหตุ (Remarks)"
+]
+
 
 def normalize_doc_type(doc_type: str) -> str:
     """Normalize input doc type string to standard key."""
@@ -101,6 +223,30 @@ def normalize_doc_type(doc_type: str) -> str:
     elif dt in ["expense", "รายจ่าย"]:
         return "expense"
     return dt
+
+
+def normalize_doc_no(doc_no: str) -> str:
+    """
+    Normalizes document numbers for robust comparison across different naming conventions.
+    E.g.
+    'ทอย-RE2608-587' -> 'RE2608-587'
+    '[ทอย]-RE2608-587' -> 'RE2608-587'
+    'RE2608-587' -> 'RE2608-587'
+    'หอม - IV2608-001' -> 'IV2608-001'
+    'QT2608-001' -> 'QT2608-001'
+    'EXP2608-001' -> 'EXP2608-001'
+    """
+    if not doc_no:
+        return ""
+    val = str(doc_no).strip()
+    if val == "-" or val == "":
+        return val
+    match = re.search(r'(?:QT|IV|RE|EXP|PV|WHT|50BIS|BILL)[\w\-]+', val, re.IGNORECASE)
+    if match:
+        return match.group(0).upper().replace(' ', '-')
+    cleaned = re.sub(r'^[\[\(].*?[\]\)]\s*[-_]?\s*', '', val, flags=re.IGNORECASE)
+    cleaned = re.sub(r'^[^\w\s]+[-_]?\s*', '', cleaned)
+    return cleaned.strip().upper().replace(' ', '-') if cleaned else val
 
 
 def upload_document_pdf(
@@ -1775,7 +1921,13 @@ def search_sheet_documents(
                 doc_rem = doc.get("remarks", "").lower()
 
                 q_matched = False
-                if raw_query == doc_no_str or (clean_query_num and clean_query_num == clean_doc_no):
+                norm_q_doc = normalize_doc_no(raw_query)
+                norm_d_doc = normalize_doc_no(doc.get("doc_no"))
+                norm_r_doc = normalize_doc_no(doc.get("ref_doc_no"))
+
+                if norm_q_doc and (norm_q_doc == norm_d_doc or (norm_r_doc and norm_q_doc == norm_r_doc)):
+                    q_matched = True
+                elif raw_query == doc_no_str or (clean_query_num and clean_query_num == clean_doc_no):
                     q_matched = True
                 elif raw_query in doc_no_str or doc_no_str in raw_query:
                     q_matched = True
@@ -1851,16 +2003,24 @@ def find_document_by_no(
             if doc.get("doc_no") or doc.get("client_name"):
                 all_scanned_docs.append(doc)
 
-    # Pass 1: Exact doc_no or ref_doc_no match
+    norm_query_doc = normalize_doc_no(query)
+
+    # Pass 1: Exact or Normalized doc_no or ref_doc_no match
     for doc in all_scanned_docs:
         d_no = str(doc.get("doc_no") or "").strip().lower()
         clean_d_no = re.sub(r"[^0-9a-z]", "", d_no)
+        norm_d_no = normalize_doc_no(doc.get("doc_no"))
         r_ref = str(doc.get("ref_doc_no") or "").strip().lower()
         clean_r_ref = re.sub(r"[^0-9a-z]", "", r_ref)
+        norm_r_ref = normalize_doc_no(doc.get("ref_doc_no"))
 
         if query == d_no or (clean_query_num and clean_query_num == clean_d_no):
             return doc
+        if norm_query_doc and norm_d_no and norm_query_doc == norm_d_no:
+            return doc
         if r_ref and (query == r_ref or (clean_query_num and clean_query_num == clean_r_ref)):
+            return doc
+        if norm_query_doc and norm_r_ref and norm_query_doc == norm_r_ref:
             return doc
 
     # Pass 2: Company name match (normalized or exact substring)
