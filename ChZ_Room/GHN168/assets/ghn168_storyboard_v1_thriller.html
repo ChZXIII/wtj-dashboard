@@ -386,6 +386,137 @@
       margin-bottom: 2px;
     }
 
+    /* Page 3: Screenplay & Dialogue Sheet */
+    .screenplay-sheet {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      flex-grow: 1;
+      justify-content: space-between;
+    }
+
+    .script-card {
+      border: 1.5px solid var(--border-dark);
+      border-radius: 4px;
+      background: #ffffff;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .script-card-header {
+      background-color: #0f172a;
+      color: #ffffff;
+      padding: 4px 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .script-shot-title {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: 0.5px;
+      color: #ffffff;
+    }
+
+    .script-cues {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .cue-tag {
+      font-size: 8.5px;
+      font-weight: 600;
+      padding: 1px 5px;
+      border-radius: 2px;
+      letter-spacing: 0.2px;
+    }
+
+    .cue-tag-sfx {
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fca5a5;
+    }
+
+    .cue-tag-music {
+      background: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fcd34d;
+    }
+
+    .cue-tag-cam {
+      background: #e0f2fe;
+      color: #0369a1;
+      border: 1px solid #7dd3fc;
+    }
+
+    .cue-tag-light {
+      background: #f3e8ff;
+      color: #7e22ce;
+      border: 1px solid #d8b4fe;
+    }
+
+    .script-card-body {
+      padding: 6px 9px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      background: #ffffff;
+    }
+
+    .script-action-box {
+      font-size: 9.5px;
+      color: #334155;
+      background: #f8fafc;
+      border-left: 3px solid var(--accent-thriller);
+      padding: 3px 6px;
+      border-radius: 0 3px 3px 0;
+      line-height: 1.3;
+    }
+
+    .script-dialogue-list {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .script-dialogue-row {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      font-size: 10px;
+      line-height: 1.35;
+    }
+
+    .char-speaker {
+      font-family: 'Outfit', 'Prompt', sans-serif;
+      font-weight: 700;
+      font-size: 9.5px;
+      color: var(--border-dark);
+      background: #f1f5f9;
+      padding: 1px 5px;
+      border-radius: 3px;
+      border: 1px solid #cbd5e1;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .char-parenthetical {
+      font-size: 9px;
+      color: #64748b;
+      font-style: italic;
+    }
+
+    .char-spoken {
+      font-size: 10.5px;
+      font-weight: 500;
+      color: #0f172a;
+    }
+
     /* Page Footer */
     .page-footer {
       margin-top: 10px;
@@ -410,7 +541,7 @@
       letter-spacing: 0.5px;
     }
 
-    /* Print Media Engine - Strictly fit 2 pages A4 */
+    /* Print Media Engine - Strictly fit 3 pages A4 */
     @media print {
       @page {
         size: A4 portrait;
@@ -478,6 +609,41 @@
         color: #ffffff !important;
         -webkit-print-color-adjust: exact;
       }
+
+      .script-card-header {
+        background-color: #0f172a !important;
+        color: #ffffff !important;
+        -webkit-print-color-adjust: exact;
+      }
+
+      .script-action-box {
+        background: #f8fafc !important;
+        -webkit-print-color-adjust: exact;
+      }
+
+      .cue-tag-sfx {
+        background: #fee2e2 !important;
+        color: #991b1b !important;
+        -webkit-print-color-adjust: exact;
+      }
+
+      .cue-tag-music {
+        background: #fef3c7 !important;
+        color: #92400e !important;
+        -webkit-print-color-adjust: exact;
+      }
+
+      .cue-tag-cam {
+        background: #e0f2fe !important;
+        color: #0369a1 !important;
+        -webkit-print-color-adjust: exact;
+      }
+
+      .cue-tag-light {
+        background: #f3e8ff !important;
+        color: #7e22ce !important;
+        -webkit-print-color-adjust: exact;
+      }
     }
   </style>
 </head>
@@ -512,7 +678,7 @@
               <h1 class="project-name">GHN168 Commercial</h1>
               <span class="project-subtitle">— V1: Action-Thriller Hollywood Style</span>
             </div>
-            <div class="page-number-badge">PAGE 1 OF 2</div>
+            <div class="page-number-badge">PAGE 1 OF 3</div>
           </div>
           <div class="header-grid">
             <div class="meta-item">
@@ -544,7 +710,7 @@
               <span class="shot-tag">ENTRY</span>
             </div>
             <div class="shot-image-box">
-              <img src="./assets/v1_scene1_entry_1786417192944.jpg" alt="V1 Scene 1 Entry">
+              <img src="./v1_scene1_entry_1786417192944.jpg" alt="V1 Scene 1 Entry">
             </div>
             <div class="shot-card-content">
               <div class="shot-field">
@@ -553,15 +719,15 @@
               </div>
               <div class="shot-field">
                 <span class="field-label">ACTION:</span>
-                <span class="field-value">ควันสโมกฟุ้งกระจาย ประตูบานใหญ่ง้างเปิดปั้ง! ลูกค้าทรงมาเฟียเดินหน้าตึงเข้ามาดั่งสายลับ วางโน้ตบุ๊กเสียงดังสนั่นออฟฟิศ</span>
+                <span class="field-value">ควันสโมกฟุ้งกระจาย ประตูบานใหญ่ง้างเปิดปั้ง! ลูกค้าทรงมาเฟียเดินหน้าตึงเข้ามาดั่งสายลับ วางโน้ตบุ๊ก Tactical Laptop เสียงดังสนั่นออฟฟิศ</span>
               </div>
               <div class="shot-field">
                 <span class="field-label">DIALOGUE/NOTES:</span>
-                <span class="field-value">"เปิดไฟล์นี้เดี๋ยวนี้!" (Inception Sub-bass Riser SFX)</span>
+                <span class="field-value"><strong>ลูกค้า:</strong> "พวกคุณ... รู้ตัวไหมว่าทำอะไรลงไป? เปิดไฟล์เดี๋ยวนี้!" / <strong>พี่เก่ง:</strong> "ไฟล์มาสเตอร์ 4K เรียบร้อยแล้วครับ" [SFX: Door BANG! + Sub-bass 40Hz]</span>
               </div>
               <div class="shot-field">
                 <span class="field-label">JOKE & NARRATIVE:</span>
-                <span class="field-value">เดินเข้ามาเหมือนบอสใหญ่ในหนังระทึกขวัญ ควันสโมกฟุ้ง กระแทกคอมดังปั้ง! สปอตไลต์ส่องหน้าทำหน้าตึงข่มขวัญทีมงาน ราวกับมีคดีฆาตกรรม แต่จริงๆ ถือคอมมาเปิดงาน</span>
+                <span class="field-value">เดินเข้ามาเหมือนบอสใหญ่ในหนังระทึกขวัญ ควันสโมกฟุ้ง กระแทกคอมดังปั้ง! สปอตไลต์ส่องหน้าทำหน้าตึงข่มขวัญทีมงาน ราวกับมีคดีฆาตกรรม แต่จริงๆ ถือคอมมาเปิดตรวจงาน</span>
               </div>
             </div>
           </article>
@@ -573,7 +739,7 @@
               <span class="shot-tag">SHOUT</span>
             </div>
             <div class="shot-image-box">
-              <img src="./assets/v1_scene2_shout_1786417209872.jpg" alt="V1 Scene 2 Shout">
+              <img src="./v1_scene2_shout_1786417209872.jpg" alt="V1 Scene 2 Shout">
             </div>
             <div class="shot-card-content">
               <div class="shot-field">
@@ -586,7 +752,7 @@
               </div>
               <div class="shot-field">
                 <span class="field-label">DIALOGUE/NOTES:</span>
-                <span class="field-value">"ดู!! งานเนียนไป!! เนี้ยบเกินไปจนไม่มีมิติ!!" (Brass Braam SFX)</span>
+                <span class="field-value"><strong>ลูกค้า:</strong> "ดู!! งานเนียนไป!! เนี้ยบเกินไปจนไม่มีมิติ! คิดจะฆ่ากันรึไง?!" / <strong>พี่หอม:</strong> "งานสวยขนาดนั้น ไม่ดีตรงไหนครับ?!" [SFX: Brass BRAAM!]</span>
               </div>
               <div class="shot-field">
                 <span class="field-label">JOKE & NARRATIVE:</span>
@@ -602,7 +768,7 @@
               <span class="shot-tag">TWIST</span>
             </div>
             <div class="shot-image-box">
-              <img src="./assets/v1_scene3_twist_1786417439377.jpg" alt="V1 Scene 3 Twist">
+              <img src="./v1_scene3_twist_1786417439377.jpg" alt="V1 Scene 3 Twist">
             </div>
             <div class="shot-card-content">
               <div class="shot-field">
@@ -615,7 +781,7 @@
               </div>
               <div class="shot-field">
                 <span class="field-label">DIALOGUE/NOTES:</span>
-                <span class="field-value">"นี่ไง! DRAFT 1 PUAD-HUAD! แบบนี้สิถึงมีวิญญาณศิลปิน!"</span>
+                <span class="field-value"><strong>ลูกค้า:</strong> "คนจ่ายเงินถ้าไม่ได้สั่งแก้ แล้วชีวิตจะมีคุณค่าอะไร!" / <strong>พี่เก่ง:</strong> "นิค... รหัสลับ Omega 1168 ปลดล็อกเซฟโซน!" / <strong>ลูกค้า:</strong> "นี่ไง! DRAFT 1 PUAD-HUAD!"</span>
               </div>
               <div class="shot-field">
                 <span class="field-label">JOKE & NARRATIVE:</span>
@@ -631,7 +797,7 @@
               <span class="shot-tag">GOLD USB</span>
             </div>
             <div class="shot-image-box">
-              <img src="./assets/v1_scene4_gold_usb_1786417452557.jpg" alt="V1 Scene 4 Gold USB">
+              <img src="./v1_scene4_gold_usb_1786417452557.jpg" alt="V1 Scene 4 Gold USB">
             </div>
             <div class="shot-card-content">
               <div class="shot-field">
@@ -644,7 +810,7 @@
               </div>
               <div class="shot-field">
                 <span class="field-label">DIALOGUE/NOTES:</span>
-                <span class="field-value">"จบงาน! GHN168 การันตีแก้ตรงใจทุกดราฟต์!"</span>
+                <span class="field-value"><strong>พี่นิค:</strong> "พร้อมให้สั่งแก้ไม่อั้นครับ" / <strong>ลูกค้า:</strong> "ย้ายฟอนต์ทับดั้งจมูกพระเอก เซฟส่งบอร์ดได้!" / <strong>VO:</strong> "GHN168 การันตีแก้ตรงใจทุกดราฟต์!"</span>
               </div>
               <div class="shot-field">
                 <span class="field-label">JOKE & NARRATIVE:</span>
@@ -659,7 +825,7 @@
       <!-- Page 1 Footer -->
       <footer class="page-footer">
         <span class="footer-left">GHN168 Commercial V1 (Action-Thriller) — Storyboard Grid Sheet</span>
-        <span class="footer-right">PAGE 1 / 2</span>
+        <span class="footer-right">PAGE 1 / 3</span>
       </footer>
     </div>
 
@@ -674,7 +840,7 @@
               <h1 class="project-name">GHN168 Commercial</h1>
               <span class="project-subtitle">— V1 Production Breakdown (Action-Thriller)</span>
             </div>
-            <div class="page-number-badge">PAGE 2 OF 2</div>
+            <div class="page-number-badge">PAGE 2 OF 3</div>
           </div>
           <div class="header-grid">
             <div class="meta-item">
@@ -866,7 +1032,192 @@
       <!-- Page 2 Footer -->
       <footer class="page-footer">
         <span class="footer-left">GHN168 Commercial V1 (Action-Thriller) — Production Breakdown Sheet</span>
-        <span class="footer-right">PAGE 2 / 2</span>
+        <span class="footer-right">PAGE 2 / 3</span>
+      </footer>
+    </div>
+
+
+    <!-- PAGE 3: PRODUCTION SCREENPLAY & ACTOR DIALOGUE SHEET -->
+    <div class="page">
+      <div>
+        <!-- Page 3 Header -->
+        <header class="page-header">
+          <div class="header-top">
+            <div class="project-title-group">
+              <h1 class="project-name">GHN168 Commercial</h1>
+              <span class="project-subtitle">— Production Screenplay & Actor Dialogue Sheet</span>
+            </div>
+            <div class="page-number-badge">PAGE 3 OF 3</div>
+          </div>
+          <div class="header-grid">
+            <div class="meta-item">
+              <span class="meta-label">PROJECT</span>
+              <span class="meta-value">GHN168 Commercial V1</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">GENRE / STYLE</span>
+              <span class="meta-value">Action-Thriller / Hollywood</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">CAST / CHARACTERS</span>
+              <span class="meta-value">Client, Keng, Nick, Hom, Mod</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">DATE</span>
+              <span class="meta-value">11 AUG 2026</span>
+            </div>
+          </div>
+        </header>
+
+        <!-- Screenplay & Dialogue Sheet -->
+        <main class="screenplay-sheet">
+
+          <!-- Shot 1A Card -->
+          <article class="script-card">
+            <div class="script-card-header">
+              <span class="script-shot-title">SHOT 1A | SCENE 1/1 — ENTRY & CONFRONTATION</span>
+              <div class="script-cues">
+                <span class="cue-tag cue-tag-cam">CAM: Wide Push-in 35mm</span>
+                <span class="cue-tag cue-tag-sfx">SFX: Door Slam BANG! + Sub-bass 40Hz</span>
+                <span class="cue-tag cue-tag-light">LIGHT: Teal & Orange Smoke</span>
+              </div>
+            </div>
+            <div class="script-card-body">
+              <div class="script-action-box">
+                <strong>ACTION & DIRECTION:</strong> ควันสโมกฟุ้งกระจาย ประตูเหล็กง้างเปิดปั้ง! THE CLIENT (ลูกค้า) ในชุดสูทดำแว่นกันแดดเรโทร เดินหน้าตึงเข้ามาดั่งสายลับ วาง Tactical Laptop ลงบนโต๊ะกระจกดำดังสนั่นห้อง!
+              </div>
+              <div class="script-dialogue-list">
+                <div class="script-dialogue-row">
+                  <span class="char-speaker">THE CLIENT (ลูกค้า)</span>
+                  <span class="char-parenthetical">(เสียงต่ำ เยือกเย็น กัดฟันพูด จ้องหน้าทีมงานทีละคน):</span>
+                  <span class="char-spoken">"พวกคุณ... รู้ตัวไหมว่าทำอะไรลงไป? เปิดไฟล์เดี๋ยวนี้... ก่อนที่ความอดทนของผมจะหมดลง!"</span>
+                </div>
+                <div class="script-dialogue-row">
+                  <span class="char-speaker">KENG (พี่เก่ง)</span>
+                  <span class="char-parenthetical">(ยืนนิ่ง สุขุม มือแตะขอบโต๊ะ):</span>
+                  <span class="char-spoken">"ไฟล์มาสเตอร์ 4K เกรดสีฮอลลีวูด ส่งเข้าเซิร์ฟเวอร์เรียบร้อยแล้วครับคุณลูกค้า มีอะไรผิดพลาดเหรอครับ?"</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Shot 1B Card -->
+          <article class="script-card">
+            <div class="script-card-header">
+              <span class="script-shot-title">SHOT 1B | SCENE 1/2 — SHOUT & TOO PERFECT REJECT</span>
+              <div class="script-cues">
+                <span class="cue-tag cue-tag-cam">CAM: Extreme Close-up • Dolly Zoom</span>
+                <span class="cue-tag cue-tag-sfx">SFX: Inception Brass BRAAM!</span>
+              </div>
+            </div>
+            <div class="script-card-body">
+              <div class="script-action-box">
+                <strong>ACTION & DIRECTION:</strong> วิดีโอบนจอโฮโลแกรมเล่นภาพ 4K สุดอลังการ THE CLIENT ตบโต๊ะปั้ง ยื่นหน้าประชิดจอ ตะโกนด่าลั่นห้องด้วยความคลุ้มคลั่ง กล้อง Dolly Zoom ซูมหน้าทีมงานเหวอตาค้างเหงื่อตก
+              </div>
+              <div class="script-dialogue-list">
+                <div class="script-dialogue-row">
+                  <span class="char-speaker">THE CLIENT (ลูกค้า)</span>
+                  <span class="char-parenthetical">(ตะโกนลั่นห้องจนควันกระจาย Dolly Zoom ซูมหน้าเหวอสุดขีด):</span>
+                  <span class="char-spoken">"ดู!! ดูสิ่งที่พวกคุณทำ!! งานเนียนไป!! เนี้ยบเกินไปจนไม่มีมิติ!! โทนภาพไร้รอยต่อ เสียงมิกซ์เพอร์เฟกต์ คัตติ้งระดับชิงออสการ์!! คิดจะฆ่ากันให้ตายรึไงวะ?!"</span>
+                </div>
+                <div class="script-dialogue-row">
+                  <span class="char-speaker">HOM (พี่หอม)</span>
+                  <span class="char-parenthetical">(เหงื่อแตกพลั่ก มือสั่นจับขาตั้งกล้อง):</span>
+                  <span class="char-spoken">"อ้าว... งานสวยขนาดนั้น มันไม่ดีตรงไหนเหรอครับบอส?!"</span>
+                </div>
+                <div class="script-dialogue-row">
+                  <span class="char-speaker">MOD (บอสมด)</span>
+                  <span class="char-parenthetical">(เปิดแฟ้ม นิ่งสงบ):</span>
+                  <span class="char-spoken">"ใจเย็นๆ ก่อนนะคะ ทางเราเช็กงบและสเปกตามบรีฟเป๊ะทุกจุดเลยนะคะ..."</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Shot 2A Card -->
+          <article class="script-card">
+            <div class="script-card-header">
+              <span class="script-shot-title">SHOT 2A | SCENE 1/3 — THE TWIST & SECRET DRAFT 1</span>
+              <div class="script-cues">
+                <span class="cue-tag cue-tag-cam">CAM: Low Angle • Medium Shot</span>
+                <span class="cue-tag cue-tag-sfx">SFX: Record Scratch + Bass Drop</span>
+                <span class="cue-tag cue-tag-light">LIGHT: Warm Spotlight</span>
+              </div>
+            </div>
+            <div class="script-card-body">
+              <div class="script-action-box">
+                <strong>ACTION & DIRECTION:</strong> ห้องเงียบสงัด THE CLIENT ทรุดนั่งกุมขมับตัดพ้ออย่างเจ็บปวด ก่อนที่พี่เก่งจะสั่งปลดล็อกไฟล์ลับ DRAFT 1 PUAD-HUAD บนจอโฮโลแกรม ลูกค้ายิ้มสะใจ ตาเป็นประกาย
+              </div>
+              <div class="script-dialogue-list">
+                <div class="script-dialogue-row">
+                  <span class="char-speaker">THE CLIENT (ลูกค้า)</span>
+                  <span class="char-parenthetical">(น้ำเสียงตัดพ้อ บีบคั้นหัวใจ):</span>
+                  <span class="char-spoken">"งานเพอร์เฟกต์ขนาดนี้ แล้วชั้นจะเอาตรงไหนไปกดสั่งแก้?! คนจ่ายเงินอย่างชั้น ถ้าไม่ได้กดสั่งแก้ดราฟต์งาน... แล้วชีวิตชั้นจะมีคุณค่าอะไรวะ!!"</span>
+                </div>
+                <div class="script-dialogue-row">
+                  <span class="char-speaker">KENG (พี่เก่ง)</span>
+                  <span class="char-parenthetical">(ยิ้มมุมปากอย่างเหนือชั้น):</span>
+                  <span class="char-spoken">"นิค... รหัสลับ โอเมก้า วัน วัน หก แปด. ปลดล็อกเซฟโซน."</span>
+                </div>
+                <div class="script-dialogue-row">
+                  <span class="char-speaker">NICK (พี่นิค)</span>
+                  <span class="char-parenthetical">(กดคีย์บอร์ดเรืองแสง):</span>
+                  <span class="char-spoken">"รับทราบครับพี่เก่ง... กำลังเปิดไฟล์ลับระดับตำนาน: DRAFT_1_PUAD-HUAD.mov!"</span>
+                </div>
+                <div class="script-dialogue-row">
+                  <span class="char-speaker">THE CLIENT (ลูกค้า)</span>
+                  <span class="char-parenthetical">(ลุกพรวด ตาเป็นประกาย ชี้จอสะใจ):</span>
+                  <span class="char-spoken">"นี่ไง!! DRAFT 1 PUAD-HUAD!! แบบนี้สิถึงมีวิญญาณศิลปิน! มีจุดให้แก้เป็นร้อยจุด! ชีวิตผมมีความหมายแล้ว!!"</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Shot 2B Card -->
+          <article class="script-card">
+            <div class="script-card-header">
+              <span class="script-shot-title">SHOT 2B | SCENE 1/4 — GOLD USB & TRIUMPH</span>
+              <div class="script-cues">
+                <span class="cue-tag cue-tag-cam">CAM: Close-up Insert 85mm</span>
+                <span class="cue-tag cue-tag-sfx">SFX: USB Click + Sigh "Ahhh..."</span>
+                <span class="cue-tag cue-tag-music">MUSIC: Epic Heroic Brass Fanfare</span>
+              </div>
+            </div>
+            <div class="script-card-body">
+              <div class="script-action-box">
+                <strong>ACTION & DIRECTION:</strong> พี่นิคเปิดเซฟมอบแฟลชไดรฟ์ทองคำแท้ (GOLD USB) สลักรหัส DRAFT 1 PUAD-HUAD ลูกค้าเสียบเข้าโน้ตบุ๊กยิ้มฟิน ทีมงาน GHN168 โค้งคำนับอย่างสมเกียรติ แสงทองสาดส่องดั่งภาพชัยชนะ
+              </div>
+              <div class="script-dialogue-list">
+                <div class="script-dialogue-row">
+                  <span class="char-speaker">NICK (พี่นิค)</span>
+                  <span class="char-parenthetical">(ค้อมศีรษะอย่างสุภาพ):</span>
+                  <span class="char-spoken">"ไฟล์ดราฟต์ปวดหัวพร้อมให้คุณลูกค้ากดสั่งแก้ได้ไม่จำกัดจำนวนครั้งแล้วครับ!"</span>
+                </div>
+                <div class="script-dialogue-row">
+                  <span class="char-speaker">THE CLIENT (ลูกค้า)</span>
+                  <span class="char-parenthetical">(รับแฟลชไดรฟ์มาเสียบ รอยยิ้มอิ่มเอมใจ):</span>
+                  <span class="char-spoken">"ดีมาก! ข้อแรก: ย้ายตัวหนังสือทั้งหมดมาทับดั้งจมูกพระเอก! ข้อสอง: ปรับโลโก้ให้กระพริบไฟฉุกเฉินตลอดคลิป! เซฟไฟล์ส่งบอร์ดได้!"</span>
+                </div>
+                <div class="script-dialogue-row">
+                  <span class="char-speaker">MOD (บอสมด)</span>
+                  <span class="char-parenthetical">(ปิดแฟ้ม ยิ้มรับเงินอย่างสง่างาม):</span>
+                  <span class="char-spoken">"อนุมัติใบเสนอราคาดราฟต์แก้เรียบร้อยค่ะ!"</span>
+                </div>
+                <div class="script-dialogue-row">
+                  <span class="char-speaker">VOICEOVER (V.O.)</span>
+                  <span class="char-spoken"><strong>"GHN168 — การันตีแก้ตรงใจทุกดราฟต์ ไม่ว่าคุณอยากแก้อะไร เราพร้อมแก้ให้จนกว่าคุณจะสบายใจ!"</strong></span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+        </main>
+      </div>
+
+      <!-- Page 3 Footer -->
+      <footer class="page-footer">
+        <span class="footer-left">GHN168 Commercial V1 (Action-Thriller) — Production Screenplay & Dialogue Sheet</span>
+        <span class="footer-right">PAGE 3 / 3</span>
       </footer>
     </div>
 

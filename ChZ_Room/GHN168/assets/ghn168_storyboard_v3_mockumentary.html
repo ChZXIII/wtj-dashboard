@@ -386,6 +386,154 @@
       margin-bottom: 2px;
     }
 
+    /* Page 3: Screenplay & Dialogue Sheet */
+    .screenplay-sheet {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      flex-grow: 1;
+      justify-content: space-between;
+    }
+
+    .script-card {
+      border: 1.5px solid var(--border-dark);
+      border-radius: 4px;
+      background: #ffffff;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .script-card-header {
+      background-color: #0f172a;
+      color: #ffffff;
+      padding: 4px 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .script-shot-title {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: 0.5px;
+      color: #ffffff;
+    }
+
+    .script-cues {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .cue-tag {
+      font-size: 8.5px;
+      font-weight: 600;
+      padding: 1px 5px;
+      border-radius: 2px;
+      letter-spacing: 0.2px;
+    }
+
+    .cue-tag-sfx {
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fca5a5;
+    }
+
+    .cue-tag-music {
+      background: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fcd34d;
+    }
+
+    .cue-tag-cam {
+      background: #e0f2fe;
+      color: #0369a1;
+      border: 1px solid #7dd3fc;
+    }
+
+    .cue-tag-amber {
+      background: #fef3c7;
+      color: #b45309;
+      border: 1px solid #fde68a;
+    }
+
+    .script-card-body {
+      padding: 6px 9px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      background: #ffffff;
+    }
+
+    .script-action-box {
+      font-size: 9.5px;
+      color: #334155;
+      background: #fffbeb;
+      border-left: 3px solid var(--accent-amber);
+      padding: 3px 6px;
+      border-radius: 0 3px 3px 0;
+      line-height: 1.3;
+    }
+
+    .script-dialogue-list {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .script-dialogue-row {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      font-size: 10px;
+      line-height: 1.35;
+    }
+
+    .char-speaker {
+      font-family: 'Outfit', 'Prompt', sans-serif;
+      font-weight: 700;
+      font-size: 9.5px;
+      color: var(--border-dark);
+      background: #fef3c7;
+      padding: 1px 5px;
+      border-radius: 3px;
+      border: 1px solid #fde68a;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .char-parenthetical {
+      font-size: 9px;
+      color: #64748b;
+      font-style: italic;
+    }
+
+    .char-spoken {
+      font-size: 10.5px;
+      font-weight: 500;
+      color: #0f172a;
+    }
+
+    .postcredit-script-box {
+      background: #fffbeb;
+      border: 1px dashed #d97706;
+      border-radius: 3px;
+      padding: 4px 6px;
+      margin-top: 2px;
+    }
+
+    .postcredit-tag {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 9.5px;
+      color: #b45309;
+      margin-bottom: 2px;
+      display: inline-block;
+    }
+
     /* Page Footer */
     .page-footer {
       margin-top: 10px;
@@ -410,7 +558,7 @@
       letter-spacing: 0.5px;
     }
 
-    /* Print Media Engine - Strictly fit 2 pages A4 */
+    /* Print Media Engine - Strictly fit 3 pages A4 */
     @media print {
       @page {
         size: A4 portrait;
@@ -478,6 +626,41 @@
         color: #ffffff !important;
         -webkit-print-color-adjust: exact;
       }
+
+      .script-card-header {
+        background-color: #0f172a !important;
+        color: #ffffff !important;
+        -webkit-print-color-adjust: exact;
+      }
+
+      .script-action-box {
+        background: #fffbeb !important;
+        -webkit-print-color-adjust: exact;
+      }
+
+      .cue-tag-sfx {
+        background: #fee2e2 !important;
+        color: #991b1b !important;
+        -webkit-print-color-adjust: exact;
+      }
+
+      .cue-tag-music {
+        background: #fef3c7 !important;
+        color: #92400e !important;
+        -webkit-print-color-adjust: exact;
+      }
+
+      .cue-tag-cam {
+        background: #e0f2fe !important;
+        color: #0369a1 !important;
+        -webkit-print-color-adjust: exact;
+      }
+
+      .cue-tag-amber {
+        background: #fef3c7 !important;
+        color: #b45309 !important;
+        -webkit-print-color-adjust: exact;
+      }
     }
   </style>
 </head>
@@ -512,7 +695,7 @@
               <h1 class="project-name">GHN168 Commercial</h1>
               <span class="project-subtitle">— V3: Mockumentary Comedy + Post-Credit Scene</span>
             </div>
-            <div class="page-number-badge">PAGE 1 OF 2</div>
+            <div class="page-number-badge">PAGE 1 OF 3</div>
           </div>
           <div class="header-grid">
             <div class="meta-item">
@@ -544,7 +727,7 @@
               <span class="shot-tag">TALKING HEAD ENTRY</span>
             </div>
             <div class="shot-image-box">
-              <img src="./assets/simple_scene1_entry_1786388399304.jpg" alt="V3 Scene 1 Entry">
+              <img src="./simple_scene1_entry_1786388399304.jpg" alt="V3 Scene 1 Entry">
             </div>
             <div class="shot-card-content">
               <div class="shot-field">
@@ -553,15 +736,15 @@
               </div>
               <div class="shot-field">
                 <span class="field-label">ACTION:</span>
-                <span class="field-value">ลูกค้าเดินกระแทกประตูเข้าห้องประชุม ทำหน้าเครียด สลับตัดฉากสัมภาษณ์เดี่ยว หันมาพูดกับกล้องสไตล์ The Office</span>
+                <span class="field-value">ลูกค้าเดินกระแทกประตูเข้าห้องประชุม แปะกฎเหล็ก 10 ข้อลงบนโต๊ะ สลับตัดสัมภาษณ์เดี่ยวหันมาสบตากล้องตรงๆ</span>
               </div>
               <div class="shot-field">
                 <span class="field-label">DIALOGUE/NOTES:</span>
-                <span class="field-value">"งานมินิมอลเรียบหรูเหรอ? หึ! คนธรรมดาเขาทำกัน!"</span>
+                <span class="field-value"><strong>[TALKING HEAD] ลูกค้า:</strong> "งานมินิมอลเหรอ? หึ! คนธรรมดาเขาทำกัน! คนอย่างผม จ่ายเงินมาเพื่อสั่งแก้โว้ย!" [SFX: Coffee Slurp]</span>
               </div>
               <div class="shot-field">
                 <span class="field-label">JOKE & NARRATIVE:</span>
-                <span class="field-value">สไตล์สารคดี The Office เดินถือคอมพรึ่บเข้ามา แปะกระดาษเงื่อนไขการสั่งแก้ลงบนโต๊ะ ทีมงานมองหน้ากันงงๆ</span>
+                <span class="field-value">สไตล์สารคดี The Office เดินถือคอมพรึ่บเข้ามา แปะกระดาษเงื่อนไข "งานต้องมีที่ให้กูแก้!" สลับสัมภาษณ์เดี่ยวจวกแนวคิดงานมินิมอลอย่างเผ็ดร้อน</span>
               </div>
             </div>
           </article>
@@ -573,7 +756,7 @@
               <span class="shot-tag">TOO PERFECT REJECT</span>
             </div>
             <div class="shot-image-box">
-              <img src="./assets/simple_scene2_masterpiece_1786388412812.jpg" alt="V3 Scene 2 Masterpiece">
+              <img src="./simple_scene2_masterpiece_1786388412812.jpg" alt="V3 Scene 2 Masterpiece">
             </div>
             <div class="shot-card-content">
               <div class="shot-field">
@@ -582,15 +765,15 @@
               </div>
               <div class="shot-field">
                 <span class="field-label">ACTION:</span>
-                <span class="field-value">ลูกค้าชี้คลิปผลงานสวยกริ๊บไร้ที่ติ "งานพรีเมียมแบบนี้ผมไม่เอา!" แอบหันมามองกล้องทำหน้ายิ้มกวนสไตล์ Sitcom</span>
+                <span class="field-value">ลูกค้าชี้คลิปผลงาน 3D สวยกริ๊บไร้ที่ติ "งานพรีเมียมแบบนี้ผมไม่เอา!" กล้อง Snap Zoom ขวับเข้าหน้าเก่ง เก่งหันมามองกล้องทำหน้าตาย</span>
               </div>
               <div class="shot-field">
                 <span class="field-label">DIALOGUE/NOTES:</span>
-                <span class="field-value">"สวยเกินไปจนไม่มีจุดสังเกต! สั่งแก้ด่วน!" (Record Scratch SFX)</span>
+                <span class="field-value"><strong>ลูกค้า:</strong> "สวยเกินไปจนไม่มีจุดสังเกต! สั่งแก้ด่วน!" / <strong>[TALKING HEAD] พี่เก่ง:</strong> "เราอดนอน 72 ชม. เพื่อให้เขาบอกว่าขอสีชมพูช็อกกี้พิ้งก์..." [SFX: Record Scratch]</span>
               </div>
               <div class="shot-field">
                 <span class="field-label">JOKE & NARRATIVE:</span>
-                <span class="field-value">ลูกค้าตะโกน "ทำมาเพอร์เฟกต์ขนาดนี้ แล้วชั้นจะเอาอะไรไปสั่งแก้?!" กล้อง Snap Zoom ไวเข้าหน้าเก่ง เก่งหันมามองกล้อง ทำหน้าแห้งใส่คนดู (Break the 4th Wall)</span>
+                <span class="field-value">ลูกค้าชี้คลิปบ่นว่าสวยเกินไป กล้อง Snap Zoom หน้าเก่ง เก่งสบตากล้อง (Break the 4th Wall) แล้วตัดไปสัมภาษณ์เดี่ยวยอมรับชะตากรรมคนทำงานตัดต่อ</span>
               </div>
             </div>
           </article>
@@ -602,7 +785,7 @@
               <span class="shot-tag">EDIT COUNTER 1000+</span>
             </div>
             <div class="shot-image-box">
-              <img src="./assets/simple_scene3_bad_edit_1786388471828.jpg" alt="V3 Scene 3 Bad Edit">
+              <img src="./simple_scene3_bad_edit_1786388471828.jpg" alt="V3 Scene 3 Bad Edit">
             </div>
             <div class="shot-card-content">
               <div class="shot-field">
@@ -615,11 +798,11 @@
               </div>
               <div class="shot-field">
                 <span class="field-label">DIALOGUE/NOTES:</span>
-                <span class="field-value">"เออ!! แบบนี้ดิ! ย้ายโลโก้ทับหน้าคน แล้วขยายให้ใหญ่เท่าตึก!"</span>
+                <span class="field-value"><strong>ลูกค้า:</strong> "ย้ายโลโก้มาแปะปากพระเอก! ใส่เสียงชิปมังก์!" / <strong>พี่นิค:</strong> (ตบปุ่มแดงรัวๆ ปิ๊ดๆๆๆ) [SFX: EDIT COUNT +1000! MAX LEVEL]</span>
               </div>
               <div class="shot-field">
                 <span class="field-label">JOKE & NARRATIVE:</span>
-                <span class="field-value">ทีมงานงัดไฟล์เละออกมา ลูกค้านั่งจิ้มสั่งแก้รัวๆ พี่นิคตบปุ่มแดง ปิ๊ด! มีป้ายแทร็กกิ้งนับ EDIT COUNT: +15 ยิ่งนับเยอะ ลูกค้ายิ่งถอนหายใจผ่อนคลายสบายใจ</span>
+                <span class="field-value">ทีมงานงัดไฟล์เละออกมา ลูกค้านั่งจิ้มสั่งแก้รัวๆ พี่นิคตบปุ่มแดง ปิ๊ด! มีป้ายแทร็กกิ้งนับ EDIT COUNT พุ่งทะลุ 1,000 ครั้ง ลูกค้าถอนหายใจฟิน สบายใจสุดๆ</span>
               </div>
             </div>
           </article>
@@ -631,7 +814,7 @@
               <span class="shot-tag">POST-CREDIT STINGER</span>
             </div>
             <div class="shot-image-box">
-              <img src="./assets/simple_scene4_relieved_1786388484201.jpg" alt="V3 Scene 4 Relieved">
+              <img src="./simple_scene4_relieved_1786388484201.jpg" alt="V3 Scene 4 Relieved">
             </div>
             <div class="shot-card-content">
               <div class="shot-field">
@@ -640,15 +823,15 @@
               </div>
               <div class="shot-field">
                 <span class="field-label">ACTION:</span>
-                <span class="field-value">[Post-Credit Scene] ถอยกลับไปเอาดราฟต์แรกสุด!! ลูกค้าปิดจอคอม ถอนหายใจฟิน "งานนี้แหละเพอร์เฟกต์ที่สุด!" ทีมงานยิ้มแห้ง</span>
+                <span class="field-value">[Post-Credit Scene] ถอยกลับไปเอาดราฟต์แรกสุด!! ลูกค้าโผล่หัวเข้ามาหลังจบงาน ยิ้มแห้งขอเอาดราฟต์แรก ทีมงานหันมองกล้องถอนหายใจพร้อมกัน</span>
               </div>
               <div class="shot-field">
                 <span class="field-label">DIALOGUE/NOTES:</span>
-                <span class="field-value">"ถอยกลับไปเอาดราฟต์แรกดีกว่า! GHN168 ยินดีให้บริการครับ!"</span>
+                <span class="field-value"><strong>[POST-CREDIT] ลูกค้า:</strong> "พี่เก่ง... พอไปดูคลิปที่สั่งแก้ รู้สึกดราฟต์แรกสวยๆ ดีกว่าว่ะ ขอถอยกลับไปเอาดราฟต์แรกนะ!" / <strong>ทีมงาน:</strong> "...ฮู่ววววว์!"</span>
               </div>
               <div class="shot-field">
                 <span class="field-label">JOKE & NARRATIVE:</span>
-                <span class="field-value">[Post-Credit Scene] จอพับปิด โลโก้ขึ้น... แล้วตัดกลับมาอีก 5 วินาทีถัดมา ลูกค้าโผล่หัวเข้ามาในประตู ยิ้มแห้งๆ บอกว่า "น้องๆ... พอกลับไปดูคลิปที่เพิ่งสั่งแก้ไปเมื่อกี้... รู้สึกว่าเวอร์ชันแรกที่พวกน้องทำมาสวยๆ มันดีกว่าว่ะ! ขอถอยกลับไปเอาเวอร์ชันแรกนะ!" ทีมงานมองกล้อง ยิ้มแห้ง ถอนหายใจฟู่พร้อมกัน</span>
+                <span class="field-value">[Post-Credit Scene] จบงานแล้ว 5 วินาทีต่อมา ลูกค้าโผล่หัวมาขอถอยกลับไปเอาดราฟต์แรกสุดที่สวยกริ๊บ ทีมงาน 4 คนหันมามองกล้องทำหน้าแห้ง ถอนหายใจพร้อมกัน</span>
               </div>
             </div>
           </article>
@@ -659,7 +842,7 @@
       <!-- Page 1 Footer -->
       <footer class="page-footer">
         <span class="footer-left">GHN168 Commercial V3 (Mockumentary Comedy) — Storyboard Grid Sheet</span>
-        <span class="footer-right">PAGE 1 / 2</span>
+        <span class="footer-right">PAGE 1 / 3</span>
       </footer>
     </div>
 
@@ -674,7 +857,7 @@
               <h1 class="project-name">GHN168 Commercial</h1>
               <span class="project-subtitle">— V3 Production Breakdown (Mockumentary Comedy)</span>
             </div>
-            <div class="page-number-badge">PAGE 2 OF 2</div>
+            <div class="page-number-badge">PAGE 2 OF 3</div>
           </div>
           <div class="header-grid">
             <div class="meta-item">
@@ -863,7 +1046,179 @@
       <!-- Page 2 Footer -->
       <footer class="page-footer">
         <span class="footer-left">GHN168 Commercial V3 (Mockumentary Comedy) — Production Breakdown Sheet</span>
-        <span class="footer-right">PAGE 2 / 2</span>
+        <span class="footer-right">PAGE 2 / 3</span>
+      </footer>
+    </div>
+
+
+    <!-- PAGE 3: PRODUCTION SCREENPLAY & ACTOR DIALOGUE SHEET -->
+    <div class="page">
+      <div>
+        <!-- Page 3 Header -->
+        <header class="page-header">
+          <div class="header-top">
+            <div class="project-title-group">
+              <h1 class="project-name">GHN168 Commercial</h1>
+              <span class="project-subtitle">— Production Screenplay & Actor Dialogue Sheet</span>
+            </div>
+            <div class="page-number-badge">PAGE 3 OF 3</div>
+          </div>
+          <div class="header-grid">
+            <div class="meta-item">
+              <span class="meta-label">PROJECT</span>
+              <span class="meta-value">GHN168 Commercial V3</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">GENRE / STYLE</span>
+              <span class="meta-value">Mockumentary / Office Comedy</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">CAST / CHARACTERS</span>
+              <span class="meta-value">Client, Keng, Nick, Hom, Mod</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">DATE</span>
+              <span class="meta-value">11 AUG 2026</span>
+            </div>
+          </div>
+        </header>
+
+        <!-- Screenplay & Dialogue Sheet -->
+        <main class="screenplay-sheet">
+
+          <!-- Shot 1A Card -->
+          <article class="script-card">
+            <div class="script-card-header">
+              <span class="script-shot-title">SHOT 1A | SCENE 1/1 — TALKING HEAD & RULE OF TEN REVISIONS</span>
+              <div class="script-cues">
+                <span class="cue-tag cue-tag-cam">CAM: Wide Handheld • Whip Pan</span>
+                <span class="cue-tag cue-tag-sfx">SFX: Coffee Slurp + Office Noise</span>
+              </div>
+            </div>
+            <div class="script-card-body">
+              <div class="script-action-box">
+                <strong>ACTION & DIRECTION:</strong> กล้องสั่นไหวเล็กน้อยสไตล์สารคดี THE CLIENT เดินสะพายกระเป๋าเข้ามา แปะกระดาษ "กฎเหล็ก 10 ข้อ: งานต้องมีที่ให้กูแก้!" ลงบนโต๊ะประชุมดัง ป้าบ! สลับตัดภาพสัมภาษณ์เดี่ยวหน้าฉากขาว
+              </div>
+              <div class="script-dialogue-list">
+                <div class="script-dialogue-row">
+                  <span class="char-speaker">[TALKING HEAD] THE CLIENT</span>
+                  <span class="char-parenthetical">(นั่งหน้าฉาก สบตากล้องตรงๆ พูดด้วยสีหน้าจริงจังเกินเหตุ):</span>
+                  <span class="char-spoken">"คุณรู้ไหมว่าอะไรคือโรคระบาดร้ายแรงที่สุดของวงการตัดต่อ? ...ความมินิมอลครับ! ภาพคลีนๆ เหรอ? เสียงเพราะๆ เหรอ? คนอย่างผม... จ่ายเงินมาเพื่อ 'สั่งแก้' โว้ย!"</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Shot 1B Card -->
+          <article class="script-card">
+            <div class="script-card-header">
+              <span class="script-shot-title">SHOT 1B | SCENE 1/2 — REJECTING PERFECTION & 4TH WALL DEADPAN</span>
+              <div class="script-cues">
+                <span class="cue-tag cue-tag-cam">CAM: Snap Zoom on Face</span>
+                <span class="cue-tag cue-tag-sfx">SFX: Record Scratch SKRRRT!</span>
+              </div>
+            </div>
+            <div class="script-card-body">
+              <div class="script-action-box">
+                <strong>ACTION & DIRECTION:</strong> THE CLIENT ชี้จอมอนิเตอร์ผลงาน 3D สวยอลังการ บ่นหงุดหงิด กล้อง Snap Zoom ขวับเข้าหน้าพี่เก่ง พี่เก่งหันสายตาสบตากล้องตรงๆ (Break the 4th Wall) ทำหน้าตายแบบ The Office
+              </div>
+              <div class="script-dialogue-list">
+                <div class="script-dialogue-row">
+                  <span class="char-speaker">THE CLIENT (ลูกค้า)</span>
+                  <span class="char-parenthetical">(ทำหน้าหงุดหงิด ชี้นิ้วรัวๆ แอบสบตากล้อง):</span>
+                  <span class="char-spoken">"เนี่ยดูสิ! แสงก็เป๊ะ มุมกล้องก็กริ๊บ ไม่มีอะไรเบี้ยวเลยสักมิลเดียว! ทำงานแบบนี้ผมไม่เอา! สวยเกินไปจนไม่มีจุดสังเกต สั่งแก้ด่วน!"</span>
+                </div>
+                <div class="script-dialogue-row">
+                  <span class="char-speaker">[TALKING HEAD] KENG (พี่เก่ง)</span>
+                  <span class="char-parenthetical">(กอดอก ถอนหายใจยาว):</span>
+                  <span class="char-spoken">"พวกเราทีมงาน 5 ชีวิต อดหลับอดนอนเรนเดอร์งาน 72 ชม. เพื่อให้เขาบอกว่า 'ช่วยเปลี่ยนท้องฟ้าให้เป็นสีชมพูช็อกกี้พิ้งก์นีออนหน่อย'... ครับ วงการนี้ต้องการคนเข้มแข็งครับ"</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Shot 2A Card -->
+          <article class="script-card">
+            <div class="script-card-header">
+              <span class="script-shot-title">SHOT 2A | SCENE 1/3 — EDIT COUNTER 1000+ MAX LEVEL</span>
+              <div class="script-cues">
+                <span class="cue-tag cue-tag-cam">CAM: Over-the-shoulder Focus</span>
+                <span class="cue-tag cue-tag-sfx">SFX: Arcade Beep + Ding Ding!</span>
+                <span class="cue-tag cue-tag-amber">GRAPHIC: EDIT COUNT: 1,000+</span>
+              </div>
+            </div>
+            <div class="script-card-body">
+              <div class="script-action-box">
+                <strong>ACTION & DIRECTION:</strong> พี่นิคนั่งประจำการหน้าโต๊ะตัดต่อ 3 จอ THE CLIENT นั่งประกบข้างชี้นิ้วสั่งยิกๆ พี่นิคตบปุ่มแดงรัวๆ ปิ๊ดๆๆๆ ป้ายแทร็กกิ้งนับ EDIT COUNT พุ่งทะลุ 1,000 ครั้ง MAX LEVEL!
+              </div>
+              <div class="script-dialogue-list">
+                <div class="script-dialogue-row">
+                  <span class="char-speaker">THE CLIENT (ลูกค้า)</span>
+                  <span class="char-parenthetical">(ชี้นิ้วสั่งรัวๆ เต้นส่ายหัวอย่างสะใจ):</span>
+                  <span class="char-spoken">"ย้ายโลโก้มาแปะทับปากพระเอก! ขยายฟอนต์คำว่า 'โปรโมชั่น' ใหญ่ 80% ใส่ประกายวิ้งๆ 8 ทิศทาง! เปลี่ยนเสียงพากย์เป็นชิปมังก์! ใส่แตรลมสามช่า!"</span>
+                </div>
+                <div class="script-dialogue-row">
+                  <span class="char-speaker">NICK (พี่นิค)</span>
+                  <span class="char-parenthetical">(ตบปุ่มแดงรัวๆ ปิ๊ดๆๆๆ):</span>
+                  <span class="char-spoken">"[SFX: BEEP! -> GRAPHIC: EDIT COUNT: +1,000! MAX LEVEL!]"</span>
+                </div>
+                <div class="script-dialogue-row">
+                  <span class="char-speaker">THE CLIENT (ลูกค้า)</span>
+                  <span class="char-parenthetical">(เอนหลังพิงเก้าอี้ ถอนหายใจยาวอย่างผ่อนคลายที่สุด):</span>
+                  <span class="char-spoken">"อาห์... ฟิน... สบายใจแล้ว... ในที่สุดคลิปนี้ก็เป็นผลงานของผม 100% สักที!"</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Shot 2B & Post-Credit Card -->
+          <article class="script-card">
+            <div class="script-card-header">
+              <span class="script-shot-title">SHOT 2B | SCENE 1/4 & POST-CREDIT — BACK TO DRAFT 1</span>
+              <div class="script-cues">
+                <span class="cue-tag cue-tag-cam">CAM: Eye Level • Panic Snap Zoom</span>
+                <span class="cue-tag cue-tag-music">MUSIC: Sitcom Ending Jingle</span>
+                <span class="cue-tag cue-tag-sfx">SFX: Door Creak + Team Sigh</span>
+              </div>
+            </div>
+            <div class="script-card-body">
+              <div class="script-action-box">
+                <strong>ACTION & DIRECTION:</strong> THE CLIENT จับมือขอบคุณทีมงานอย่างอบอุ่น ก่อนที่ฉากตัดเข้า Post-Credit Scene 5 วินาทีต่อมา ลูกค้าโผล่หน้ามาขอถอยกลับไปเอาดราฟต์แรกสุด ทีมงาน 4 คนหันมองกล้องพร้อมกัน!
+              </div>
+              <div class="script-dialogue-list">
+                <div class="script-dialogue-row">
+                  <span class="char-speaker">THE CLIENT (ลูกค้า)</span>
+                  <span class="char-spoken">"ขอบคุณมากนะพวกคุณ GHN168 นี่คือบริษัทตัดต่อที่ดีที่สุดในสามโลก แก้งานได้สะใจผมจริงๆ!"</span>
+                </div>
+                <!-- Post-Credit Scene Sub-Box -->
+                <div class="postcredit-script-box">
+                  <span class="postcredit-tag">🎬 [POST-CREDIT SCENE] (5 MINUTES LATER)</span>
+                  <div class="script-dialogue-row">
+                    <span class="char-speaker">THE CLIENT (ลูกค้า)</span>
+                    <span class="char-parenthetical">(แง้มประตูเข้ามา เขินๆ เกาหัว):</span>
+                    <span class="char-spoken">"เอ่อ... พี่เก่งครับ... น้องนิค... พอไปดูคลิปที่สั่งแก้ไปเมื่อกี้... รู้สึกว่าดราฟต์แรกสุดที่พวกพี่ทำมาสวยๆ คลีนๆ มันดูผู้ดีกว่าเยอะเลยว่ะครับ... <strong>ขอถอยกลับไปเอา 'ดราฟต์แรกสุด' เลยได้ไหมครับ?</strong>"</span>
+                  </div>
+                  <div class="script-dialogue-row" style="margin-top: 2px;">
+                    <span class="char-speaker">ALL TEAM MEMBERS</span>
+                    <span class="char-parenthetical">(หันมองกล้อง Break the 4th Wall ถอนหายใจพร้อมกัน):</span>
+                    <span class="char-spoken"><strong>"...ฮู่ววววว์!"</strong></span>
+                  </div>
+                </div>
+                <div class="script-dialogue-row">
+                  <span class="char-speaker">VOICEOVER (V.O.)</span>
+                  <span class="char-spoken"><strong>"GHN168 — ยินดีแก้งานให้คุณไม่อั้น ไม่จำกัดดราฟต์ เพื่อความสุขทางใจของลูกค้าทุกคน!"</strong></span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+        </main>
+      </div>
+
+      <!-- Page 3 Footer -->
+      <footer class="page-footer">
+        <span class="footer-left">GHN168 Commercial V3 (Mockumentary Comedy) — Production Screenplay & Dialogue Sheet</span>
+        <span class="footer-right">PAGE 3 / 3</span>
       </footer>
     </div>
 

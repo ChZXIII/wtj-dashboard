@@ -327,7 +327,7 @@ class TestGhn168SyncService(unittest.TestCase):
         self.assertEqual(res["pdfUrl"], "https://drive.google.com/mock_flow_test.pdf")
 
     def test_upload_document_pdf_file(self):
-        temp_pdf = Path("test_upload_temp.pdf")
+        temp_pdf = Path(__file__).parent / "test_upload_temp.pdf"
         temp_pdf.write_bytes(b"%PDF-1.4 temp file test content")
         try:
             res = upload_document_pdf(

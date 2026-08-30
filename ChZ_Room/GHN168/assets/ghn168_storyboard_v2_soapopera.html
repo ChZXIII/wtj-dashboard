@@ -386,6 +386,137 @@
       margin-bottom: 2px;
     }
 
+    /* Page 3: Screenplay & Dialogue Sheet */
+    .screenplay-sheet {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      flex-grow: 1;
+      justify-content: space-between;
+    }
+
+    .script-card {
+      border: 1.5px solid var(--border-dark);
+      border-radius: 4px;
+      background: #ffffff;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .script-card-header {
+      background-color: #0f172a;
+      color: #ffffff;
+      padding: 4px 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .script-shot-title {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: 0.5px;
+      color: #ffffff;
+    }
+
+    .script-cues {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .cue-tag {
+      font-size: 8.5px;
+      font-weight: 600;
+      padding: 1px 5px;
+      border-radius: 2px;
+      letter-spacing: 0.2px;
+    }
+
+    .cue-tag-sfx {
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fca5a5;
+    }
+
+    .cue-tag-music {
+      background: #fce7f3;
+      color: #be185d;
+      border: 1px solid #fbcfe8;
+    }
+
+    .cue-tag-cam {
+      background: #e0f2fe;
+      color: #0369a1;
+      border: 1px solid #7dd3fc;
+    }
+
+    .cue-tag-light {
+      background: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fcd34d;
+    }
+
+    .script-card-body {
+      padding: 6px 9px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      background: #ffffff;
+    }
+
+    .script-action-box {
+      font-size: 9.5px;
+      color: #334155;
+      background: #fdf2f8;
+      border-left: 3px solid var(--accent-soap);
+      padding: 3px 6px;
+      border-radius: 0 3px 3px 0;
+      line-height: 1.3;
+    }
+
+    .script-dialogue-list {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .script-dialogue-row {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      font-size: 10px;
+      line-height: 1.35;
+    }
+
+    .char-speaker {
+      font-family: 'Outfit', 'Prompt', sans-serif;
+      font-weight: 700;
+      font-size: 9.5px;
+      color: var(--border-dark);
+      background: #fdf2f8;
+      padding: 1px 5px;
+      border-radius: 3px;
+      border: 1px solid #fbcfe8;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .char-parenthetical {
+      font-size: 9px;
+      color: #64748b;
+      font-style: italic;
+    }
+
+    .char-spoken {
+      font-size: 10.5px;
+      font-weight: 500;
+      color: #0f172a;
+    }
+
     /* Page Footer */
     .page-footer {
       margin-top: 10px;
@@ -410,7 +541,7 @@
       letter-spacing: 0.5px;
     }
 
-    /* Print Media Engine - Strictly fit 2 pages A4 */
+    /* Print Media Engine - Strictly fit 3 pages A4 */
     @media print {
       @page {
         size: A4 portrait;
@@ -478,6 +609,41 @@
         color: #ffffff !important;
         -webkit-print-color-adjust: exact;
       }
+
+      .script-card-header {
+        background-color: #0f172a !important;
+        color: #ffffff !important;
+        -webkit-print-color-adjust: exact;
+      }
+
+      .script-action-box {
+        background: #fdf2f8 !important;
+        -webkit-print-color-adjust: exact;
+      }
+
+      .cue-tag-sfx {
+        background: #fee2e2 !important;
+        color: #991b1b !important;
+        -webkit-print-color-adjust: exact;
+      }
+
+      .cue-tag-music {
+        background: #fce7f3 !important;
+        color: #be185d !important;
+        -webkit-print-color-adjust: exact;
+      }
+
+      .cue-tag-cam {
+        background: #e0f2fe !important;
+        color: #0369a1 !important;
+        -webkit-print-color-adjust: exact;
+      }
+
+      .cue-tag-light {
+        background: #fef3c7 !important;
+        color: #92400e !important;
+        -webkit-print-color-adjust: exact;
+      }
     }
   </style>
 </head>
@@ -512,7 +678,7 @@
               <h1 class="project-name">GHN168 Commercial</h1>
               <span class="project-subtitle">— V2: The Thai Soap Opera (ละครหลังข่าว)</span>
             </div>
-            <div class="page-number-badge">PAGE 1 OF 2</div>
+            <div class="page-number-badge">PAGE 1 OF 3</div>
           </div>
           <div class="header-grid">
             <div class="meta-item">
@@ -544,7 +710,7 @@
               <span class="shot-tag">KNEEL</span>
             </div>
             <div class="shot-image-box">
-              <img src="./assets/v2_soap1_kneel_1786418880557.jpg" alt="V2 Soap Scene 1 Kneel">
+              <img src="./v2_soap1_kneel_1786418880557.jpg" alt="V2 Soap Scene 1 Kneel">
             </div>
             <div class="shot-card-content">
               <div class="shot-field">
@@ -553,15 +719,15 @@
               </div>
               <div class="shot-field">
                 <span class="field-label">ACTION:</span>
-                <span class="field-value">คุกเข่าลงบนพื้นออฟฟิศ ร้องไห้สะอื้นปานจะขาดใจ ยื่นโน้ตบุ๊กให้ทีมงาน งบ 0 บาท ใช้ออฟฟิศเดิม</span>
+                <span class="field-value">คุกเข่าลงบนพื้นออฟฟิศ ร้องไห้สะอื้นปานจะขาดใจ ชูสองมือประคองโน้ตบุ๊กเหนือหัว อ้อนวอนทีมงานอย่างบีบหัวใจ</span>
               </div>
               <div class="shot-field">
                 <span class="field-label">DIALOGUE/NOTES:</span>
-                <span class="field-value">"ขอร้องล่ะ... ช่วยแก้ให้ชั้นที!" (Piano Melodrama SFX)</span>
+                <span class="field-value"><strong>ลูกค้า:</strong> "ฮือ... เมตตาคนอย่างชั้นด้วยเถอะคุณเก่ง!" / <strong>พี่หอม:</strong> "คุณพระช่วย! เป็นอะไรไปคะ?!" / <strong>พี่เก่ง:</strong> "ลุกขึ้นก่อนครับ!" [MUSIC: Soap Melodrama Piano]</span>
               </div>
               <div class="shot-field">
                 <span class="field-label">JOKE & NARRATIVE:</span>
-                <span class="field-value">คุกเข่าลงบนพื้นออฟฟิศ ร้องไห้สะอื้นปานจะขาดใจ ยื่นโน้ตบุ๊กให้ทีมงาน งบ 0 บาท ใช้ออฟฟิศเดิม</span>
+                <span class="field-value">เปิดประตูเข้ามาแล้วทรุดตัวคุกเข่าลงบนพื้นออฟฟิศ ร้องไห้สะอื้นปานจะขาดใจ ยื่นโน้ตบุ๊กชูขึ้นเหนือหัว นึกว่าเกิดเรื่องร้ายแรงระดับชาติ แต่จริงๆ แล้วมาร้องไห้อ้อนวอนขอสั่งแก้ดราฟต์</span>
               </div>
             </div>
           </article>
@@ -573,7 +739,7 @@
               <span class="shot-tag">CRYING</span>
             </div>
             <div class="shot-image-box">
-              <img src="./assets/v2_soap2_crying_1786418950035.jpg" alt="V2 Soap Scene 2 Crying">
+              <img src="./v2_soap2_crying_1786418950035.jpg" alt="V2 Soap Scene 2 Crying">
             </div>
             <div class="shot-card-content">
               <div class="shot-field">
@@ -582,15 +748,15 @@
               </div>
               <div class="shot-field">
                 <span class="field-label">ACTION:</span>
-                <span class="field-value">ตะโกนร้องไห้ปาดน้ำตาอ้อนวอนทีมงานอย่างบีบหัวใจ ร้องไห้สะอื้นเพราะงานดีเกินไป</span>
+                <span class="field-value">ตะโกนร้องไห้ปาดน้ำตาอ้อนวอนทีมงานอย่างบีบหัวใจ ร้องไห้ฟูมฟายตัดพ้อว่าทีมงานตัดงานดีเกินไปจนไม่มีจุดให้แก้</span>
               </div>
               <div class="shot-field">
                 <span class="field-label">DIALOGUE/NOTES:</span>
-                <span class="field-value">"ทำไมต้องตัดต่อมาดีขนาดนี้ด้วย?! แล้วชั้นจะเอาหน้าที่ไหนไปกดสั่งแก้กับเจ้านาย?!" (Thunderstorm SFX)</span>
+                <span class="field-value"><strong>ลูกค้า:</strong> "ทำไมต้องตัดมาดีขนาดนี้ด้วย?! แล้วชั้นจะเอาหน้าที่ไหนไปของบแก้กับเจ้านาย?!" / <strong>พี่นิค:</strong> "งานดีมันไม่ดีเหรอครับ?" [SFX: Thunderstorm เปรี้ยง!]</span>
               </div>
               <div class="shot-field">
                 <span class="field-label">JOKE & NARRATIVE:</span>
-                <span class="field-value">ตะโกนร้องไห้ "ทำไมต้องตัดต่อมาดีขนาดนี้ด้วย?! แล้วชั้นจะเอาหน้าที่ไหนไปกดสั่งแก้กับเจ้านาย?!"</span>
+                <span class="field-value">ตะโกนร้องไห้ "ทำไมต้องตัดต่อมาดีขนาดนี้ด้วย?! ทั้งภาพทั้งเสียงสมบูรณ์แบบจนเจ้านายหาจุดติไม่ได้ แล้วชั้นจะเอาหน้าที่ไหนไปสั่งแก้?!" ฟ้าผ่าเปรี้ยงดั่งละครหลังข่าว</span>
               </div>
             </div>
           </article>
@@ -602,7 +768,7 @@
               <span class="shot-tag">SYMPATHY</span>
             </div>
             <div class="shot-image-box">
-              <img src="./assets/v2_soap3_sympathy_1786418963603.jpg" alt="V2 Soap Scene 3 Sympathy">
+              <img src="./v2_soap3_sympathy_1786418963603.jpg" alt="V2 Soap Scene 3 Sympathy">
             </div>
             <div class="shot-card-content">
               <div class="shot-field">
@@ -611,15 +777,15 @@
               </div>
               <div class="shot-field">
                 <span class="field-label">ACTION:</span>
-                <span class="field-value">ทีมงานซาบซึ้งจนน้ำตาคลอ ปาดน้ำตาเห็นใจ ยื่นแฟลชไดรฟ์ดราฟต์เละให้</span>
+                <span class="field-value">ทีมงานซาบซึ้งจนน้ำตาคลอ ปาดน้ำตาเห็นอกเห็นใจ ยื่นแฟลชไดรฟ์ดราฟต์เละในกล่องกำมะหยี่สีแดงให้ลูกค้า</span>
               </div>
               <div class="shot-field">
                 <span class="field-label">DIALOGUE/NOTES:</span>
-                <span class="field-value">"เราเข้าใจคุณ... รับดราฟต์นี้ไปแก้ได้เลยครับ!" (Emotional String Solo)</span>
+                <span class="field-value"><strong>พี่เก่ง:</strong> "เราขอโทษครับที่เผลอทำเพอร์เฟกต์เกินไป... นิค! นำสิ่งนั้นออกมา!" / <strong>พี่นิค:</strong> "รับดราฟต์ที่ 1 สุดเละนี้ไปแก้ได้เลยครับ!" [MUSIC: String Solo]</span>
               </div>
               <div class="shot-field">
                 <span class="field-label">JOKE & NARRATIVE:</span>
-                <span class="field-value">ทีมงานซาบซึ้งจนน้ำตาคลอ ปาดน้ำตาเห็นใจ ยื่นแฟลชไดรฟ์ดราฟต์เละให้</span>
+                <span class="field-value">ทีมงานซาบซึ้งจนน้ำตาคลอเบ้า เข้าใจหัวอกคนเป็นลูกค้า พี่นิคเปิดกล่องกำมะหยี่ยื่นแฟลชไดรฟ์ดราฟต์เละ ฟอนต์ม่วงแสดทับอกให้ด้วยความทะนุถนอม ลูกค้าหยุดร้องไห้ทันที</span>
               </div>
             </div>
           </article>
@@ -631,7 +797,7 @@
               <span class="shot-tag">HAPPY TEARS</span>
             </div>
             <div class="shot-image-box">
-              <img src="./assets/v2_soap4_happy_tears_1786418977949.jpg" alt="V2 Soap Scene 4 Happy Tears">
+              <img src="./v2_soap4_happy_tears_1786418977949.jpg" alt="V2 Soap Scene 4 Happy Tears">
             </div>
             <div class="shot-card-content">
               <div class="shot-field">
@@ -644,11 +810,11 @@
               </div>
               <div class="shot-field">
                 <span class="field-label">DIALOGUE/NOTES:</span>
-                <span class="field-value">"ในที่สุด... ชั้นก็ได้กดสั่งแก้แล้ว!" (Happy Ending Piano SFX)</span>
+                <span class="field-value"><strong>ลูกค้า:</strong> "ในที่สุด... ชาตินี้ชั้นก็ได้กดสั่งแก้แล้ว!" / <strong>บอสมด:</strong> "ยินดีให้บริการเสมอค่ะ!" / <strong>VO:</strong> "GHN168 เข้าใจทุกหยาดน้ำตา พร้อมส่งดราฟต์ให้คุณสั่งแก้จนอิ่มใจ"</span>
               </div>
               <div class="shot-field">
                 <span class="field-label">JOKE & NARRATIVE:</span>
-                <span class="field-value">ลูกค้าปัดน้ำตา ยิ้มกว้างกอดโน้ตบุ๊กแน่น กดสั่งแก้ตัวหนังสือทับหน้าคนอย่างตื่นเต้นตื้นตันใจ</span>
+                <span class="field-value">ลูกค้าปาดน้ำตา ยิ้มกว้างทั้งคราบน้ำตากอดโน้ตบุ๊กแน่น รัวแป้นพิมพ์สั่งแก้ขยับ 1 พิกเซลและเร่งสี 500% อย่างมีความสุขที่สุดในชีวิต ทีมงานกอดคอยินดี</span>
               </div>
             </div>
           </article>
@@ -659,7 +825,7 @@
       <!-- Page 1 Footer -->
       <footer class="page-footer">
         <span class="footer-left">GHN168 Commercial V2 (The Thai Soap Opera) — Storyboard Grid Sheet</span>
-        <span class="footer-right">PAGE 1 / 2</span>
+        <span class="footer-right">PAGE 1 / 3</span>
       </footer>
     </div>
 
@@ -674,7 +840,7 @@
               <h1 class="project-name">GHN168 Commercial</h1>
               <span class="project-subtitle">— V2 Production Breakdown (The Thai Soap Opera)</span>
             </div>
-            <div class="page-number-badge">PAGE 2 OF 2</div>
+            <div class="page-number-badge">PAGE 2 OF 3</div>
           </div>
           <div class="header-grid">
             <div class="meta-item">
@@ -869,7 +1035,193 @@
       <!-- Page 2 Footer -->
       <footer class="page-footer">
         <span class="footer-left">GHN168 Commercial V2 (The Thai Soap Opera) — Production Breakdown Sheet</span>
-        <span class="footer-right">PAGE 2 / 2</span>
+        <span class="footer-right">PAGE 2 / 3</span>
+      </footer>
+    </div>
+
+
+    <!-- PAGE 3: PRODUCTION SCREENPLAY & ACTOR DIALOGUE SHEET -->
+    <div class="page">
+      <div>
+        <!-- Page 3 Header -->
+        <header class="page-header">
+          <div class="header-top">
+            <div class="project-title-group">
+              <h1 class="project-name">GHN168 Commercial</h1>
+              <span class="project-subtitle">— Production Screenplay & Actor Dialogue Sheet</span>
+            </div>
+            <div class="page-number-badge">PAGE 3 OF 3</div>
+          </div>
+          <div class="header-grid">
+            <div class="meta-item">
+              <span class="meta-label">PROJECT</span>
+              <span class="meta-value">GHN168 Commercial V2</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">GENRE / STYLE</span>
+              <span class="meta-value">Thai Soap Opera Drama</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">CAST / CHARACTERS</span>
+              <span class="meta-value">Client, Hom, Mod, Keng, Nick</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">DATE</span>
+              <span class="meta-value">11 AUG 2026</span>
+            </div>
+          </div>
+        </header>
+
+        <!-- Screenplay & Dialogue Sheet -->
+        <main class="screenplay-sheet">
+
+          <!-- Shot 1A Card -->
+          <article class="script-card">
+            <div class="script-card-header">
+              <span class="script-shot-title">SHOT 1A | SCENE 1/1 — KNEEL & BEGGING FOR MERCY</span>
+              <div class="script-cues">
+                <span class="cue-tag cue-tag-cam">CAM: Medium Wide Low Angle</span>
+                <span class="cue-tag cue-tag-music">MUSIC: Soap Melodrama Piano & Violin</span>
+                <span class="cue-tag cue-tag-light">LIGHT: Soft Diffusion Melodrama Glow</span>
+              </div>
+            </div>
+            <div class="script-card-body">
+              <div class="script-action-box">
+                <strong>ACTION & DIRECTION:</strong> ประตูกระจกเปิดออก THE CLIENT ในชุดทำงานภูมิฐาน ทรุดฮวบลงคุกเข่ากับพื้นกระเบื้อง ยกสองมือประคองโน้ตบุ๊กชูขึ้นเหนือหัว น้ำตาไหลอาบสองแก้ม ร้องไห้สะอึกสะอื้นปานจะขาดใจ!
+              </div>
+              <div class="script-dialogue-list">
+                <div class="script-dialogue-row">
+                  <span class="char-speaker">THE CLIENT (ลูกค้า)</span>
+                  <span class="char-parenthetical">(เสียงสั่นเครือ สะอื้นไห้ตัวโยน คุกเข่าลงกับพื้น):</span>
+                  <span class="char-spoken">"ฮือ... ฮือออ... ได้โปรดเถอะคุณเก่ง... คุณนิค... เมตตาคนอย่างชั้นด้วยเถอะ!"</span>
+                </div>
+                <div class="script-dialogue-row">
+                  <span class="char-speaker">HOM (พี่หอม)</span>
+                  <span class="char-parenthetical">(ตกใจ เอามือทาบอก ตาโต):</span>
+                  <span class="char-spoken">"คุณพระช่วย! คุณลูกค้าเป็นอะไรไปคะ?! มีใครทำร้ายจิตใจคุณมา?!"</span>
+                </div>
+                <div class="script-dialogue-row">
+                  <span class="char-speaker">MOD (บอสมด)</span>
+                  <span class="char-parenthetical">(รีบหยิบกล่องทิชชู่ส่งให้):</span>
+                  <span class="char-spoken">"ใจเย็นๆ นะคะ ดื่มน้ำอุ่นก่อนค่ะคุณลูกค้า เกิดอะไรขึ้นคะ?"</span>
+                </div>
+                <div class="script-dialogue-row">
+                  <span class="char-speaker">KENG (พี่เก่ง)</span>
+                  <span class="char-parenthetical">(รีบทรุดตัวลงไปช่วยพยุง):</span>
+                  <span class="char-spoken">"ลุกขึ้นก่อนครับคุณลูกค้า! วิดีโอโฆษณาที่เราส่งไปรอบบ่าย มีปัญหาอะไรตรงไหนเหรอครับ?!"</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Shot 1B Card -->
+          <article class="script-card">
+            <div class="script-card-header">
+              <span class="script-shot-title">SHOT 1B | SCENE 1/2 — TEARS OF DESPAIR & TOO PERFECT RANT</span>
+              <div class="script-cues">
+                <span class="cue-tag cue-tag-cam">CAM: Dramatic Close-up • Soft Zoom</span>
+                <span class="cue-tag cue-tag-sfx">SFX: Thunderstorm Crack (เปรี้ยง!)</span>
+                <span class="cue-tag cue-tag-music">MUSIC: Dramatic Cello Solo</span>
+              </div>
+            </div>
+            <div class="script-card-body">
+              <div class="script-action-box">
+                <strong>ACTION & DIRECTION:</strong> THE CLIENT สะบัดตัวไม่ยอมลุก เงยหน้ามองทุกคนด้วยแววตาตัดพ้อรวดร้าว ตะโกนร้องไห้โฮฟูมฟายสุดเสียง ฟ้าผ่าเปรี้ยงดั่งละครหลังข่าว
+              </div>
+              <div class="script-dialogue-list">
+                <div class="script-dialogue-row">
+                  <span class="char-speaker">THE CLIENT (ลูกค้า)</span>
+                  <span class="char-parenthetical">(ตะโกนร้องไห้โฮ ฟูมฟายสุดเสียง น้ำตานองหน้า):</span>
+                  <span class="char-spoken">"ทำไม... ทำไมพวกคุณต้องใจร้ายใจดำขนาดนี้ด้วย?! ทำไมต้องตัดต่อออกมาดีขนาดนี้ด้วยฮะ?! ทั้งภาพ ทั้งสี ทั้งเสียง มันสมบูรณ์แบบจนเจ้านายชั้นหาจุดติไม่ได้เลยสักจุดเดียว!!"</span>
+                </div>
+                <div class="script-dialogue-row">
+                  <span class="char-speaker">NICK (พี่นิค)</span>
+                  <span class="char-parenthetical">(ทำหน้างง กระพริบตาปริบๆ):</span>
+                  <span class="char-spoken">"เอ่อ... งานดีไร้ที่ติ มันควรจะเป็นเรื่องน่ายินดีไม่ใช่เหรอครับ?"</span>
+                </div>
+                <div class="script-dialogue-row">
+                  <span class="char-speaker">THE CLIENT (ลูกค้า)</span>
+                  <span class="char-parenthetical">(ปาดน้ำตา สะอื้นจนตัวสั่น):</span>
+                  <span class="char-spoken">"น่ายินดีกับผีน่ะสิ!! ถ้างานมันดีจนไม่มีอะไรให้แก้... แล้วชั้นจะเอาหน้าที่ไหนไปของบแก้กับผู้บริหาร?! กะจะบีบให้ชั้นตกงานใช่ไหมคุณเก่ง!! ฮือๆๆๆ!"</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Shot 2A Card -->
+          <article class="script-card">
+            <div class="script-card-header">
+              <span class="script-shot-title">SHOT 2A | SCENE 1/3 — SYMPATHY & THE FLAWED MASTERPIECE</span>
+              <div class="script-cues">
+                <span class="cue-tag cue-tag-cam">CAM: Medium Close-up Two-Shot</span>
+                <span class="cue-tag cue-tag-music">MUSIC: Emotional String Solo</span>
+                <span class="cue-tag cue-tag-light">LIGHT: Golden Ray Sunlight</span>
+              </div>
+            </div>
+            <div class="script-card-body">
+              <div class="script-action-box">
+                <strong>ACTION & DIRECTION:</strong> พี่เก่งและทีมงานยืนนิ่ง น้ำตาคลอเบ้าด้วยความซาบซึ้งและเห็นอกเห็นใจ พี่นิคเปิดลิ้นชักหยิบกล่องกำมะหยี่สีแดง บรรจุแฟลชไดรฟ์ดราฟต์เละในตำนานส่งมอบให้อย่างทะนุถนอม
+              </div>
+              <div class="script-dialogue-list">
+                <div class="script-dialogue-row">
+                  <span class="char-speaker">KENG (พี่เก่ง)</span>
+                  <span class="char-parenthetical">(น้ำเสียงนุ่มนวล ซาบซึ้ง น้ำตาคลอเบ้า):</span>
+                  <span class="char-spoken">"พวกเราขอโทษครับคุณลูกค้า... พวกเรามัวแต่หลงระเริงกับความเพอร์เฟกต์ จนลืมหัวอกของคนเป็นลูกค้าไปสนิท... นิค! จงนำ 'สิ่งนั้น' ออกมา!"</span>
+                </div>
+                <div class="script-dialogue-row">
+                  <span class="char-speaker">NICK (พี่นิค)</span>
+                  <span class="char-parenthetical">(พยักหน้าทั้งน้ำตา ยื่นกล่องกำมะหยี่):</span>
+                  <span class="char-spoken">"นี่ครับคุณลูกค้า... ดราฟต์ที่ 1 ที่เราแอบทำเละไว้... ซับไตเติลภาษาต่างดาว ฟอนต์สีม่วงแสดทับกลางหน้าอก และเสียงพากย์ดีเลย์ 3 วินาที!"</span>
+                </div>
+                <div class="script-dialogue-row">
+                  <span class="char-speaker">THE CLIENT (ลูกค้า)</span>
+                  <span class="char-parenthetical">(หยุดร้องไห้ ตาโตเป็นประกาย มองกล่องดั่งสมบัติ):</span>
+                  <span class="char-spoken">"นี่มัน... ดราฟต์เละในตำนานจริงๆ เหรอคุณนิค?!"</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Shot 2B Card -->
+          <article class="script-card">
+            <div class="script-card-header">
+              <span class="script-shot-title">SHOT 2B | SCENE 1/4 — HAPPY TEARS & JOY OF REVISION</span>
+              <div class="script-cues">
+                <span class="cue-tag cue-tag-cam">CAM: Close-up Warm Golden Glow 85mm</span>
+                <span class="cue-tag cue-tag-music">MUSIC: Uplifting Triumphant Piano</span>
+                <span class="cue-tag cue-tag-sfx">SFX: Gold Flare Burst</span>
+              </div>
+            </div>
+            <div class="script-card-body">
+              <div class="script-action-box">
+                <strong>ACTION & DIRECTION:</strong> THE CLIENT เสียบแฟลชไดรฟ์เข้าโน้ตบุ๊ก รัวแป้นพิมพ์สั่งแก้ขยับ 1 พิกเซลและเร่งสี 500% กอดโน้ตบุ๊กแน่น ร้องไห้ยิ้มกว้างอย่างมีความสุขที่สุดในชีวิต
+              </div>
+              <div class="script-dialogue-list">
+                <div class="script-dialogue-row">
+                  <span class="char-speaker">THE CLIENT (ลูกค้า)</span>
+                  <span class="char-parenthetical">(ยิ้มกว้างทั้งคราบน้ำตา กอดโน้ตบุ๊กแน่นแนบอก):</span>
+                  <span class="char-spoken">"สั่งแก้จุดที่ 1: แก้ฟอนต์! สั่งแก้จุดที่ 2: ขยับซ้าย 1 พิกเซล! สั่งแก้จุดที่ 3: เอาสีสดขึ้น 500%! ฮ่าๆๆๆ! ในที่สุด... ชาตินี้ชั้นก็ได้กดสั่งแก้สมใจแล้ว!! ขอบคุณพวกคุณจริงๆ นะ!"</span>
+                </div>
+                <div class="script-dialogue-row">
+                  <span class="char-speaker">MOD (บอสมด)</span>
+                  <span class="char-parenthetical">(ยิ้มหวาน ปั๊มตราประทับลงใบส่งมอบงาน):</span>
+                  <span class="char-spoken">"ยินดีให้บริการเสมอค่ะคุณลูกค้า คราวหน้าอยากได้งานเละเบอร์ไหน สั่งได้ตลอด 24 ชั่วโมงเลยนะคะ!"</span>
+                </div>
+                <div class="script-dialogue-row">
+                  <span class="char-speaker">VOICEOVER (V.O.)</span>
+                  <span class="char-spoken"><strong>"GHN168 — เข้าใจทุกหยาดน้ำตา พร้อมส่งดราฟต์ให้คุณสั่งแก้จนอิ่มใจ การันตีความสุขของลูกค้าทุกคน!"</strong></span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+        </main>
+      </div>
+
+      <!-- Page 3 Footer -->
+      <footer class="page-footer">
+        <span class="footer-left">GHN168 Commercial V2 (The Thai Soap Opera) — Production Screenplay & Dialogue Sheet</span>
+        <span class="footer-right">PAGE 3 / 3</span>
       </footer>
     </div>
 

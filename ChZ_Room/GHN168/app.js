@@ -2632,6 +2632,7 @@ function syncDocPreview() {
   }
 
   // Terms and Conditions Section sync
+  const prevRemarksSection = document.getElementById('prevRemarksSection');
   const prevTermsTitle = document.getElementById('prevTermsTitle');
   const prevTermsContent = document.getElementById('prevTermsContent');
   const remarksVal = document.getElementById('docRemarks') ? document.getElementById('docRemarks').value.trim() : '';
@@ -2639,6 +2640,7 @@ function syncDocPreview() {
 
   if (prevTermsTitle && prevTermsContent) {
     if (currentDocType === 'quotation') {
+      if (prevRemarksSection) prevRemarksSection.style.display = 'block';
       prevTermsTitle.textContent = 'เงื่อนไขและข้อตกลง (Terms & Conditions):';
       prevTermsContent.innerHTML = `
         <div>• ชำระมัดจำ 30-50% ของมูลค่าโครงการเพื่อสำรองคิวงานและยืนยันการว่าจ้าง</div>
@@ -2646,13 +2648,27 @@ function syncDocPreview() {
         ${remarksVal ? `<div>• หมายเหตุ: ${escapeHtml(remarksVal)}</div>` : ''}
         <div style="margin-top: 4px; color: #0284c7;">* บัญชีรับโอน: <strong>${escapeHtml(bankDetailsVal)}</strong></div>
       `;
-    } else {
+    } else if (currentDocType === 'invoice') {
+      if (prevRemarksSection) prevRemarksSection.style.display = 'block';
       prevTermsTitle.textContent = 'รายละเอียดการชำระเงิน (Payment Details):';
       prevTermsContent.innerHTML = `
         <div>• บัญชีธนาคาร: <strong>${escapeHtml(bankDetailsVal)}</strong></div>
         ${remarksVal ? `<div>• หมายเหตุ: ${escapeHtml(remarksVal)}</div>` : ''}
         <div style="margin-top: 2px; font-size: 9.5px; color: #64748b;">* ในกรณีชำระด้วยเช็ค เอกสารนี้จะสมบูรณ์เมื่อเช็คได้เรียกเก็บเงินผ่านธนาคารเรียบร้อยแล้ว</div>
       `;
+    } else if (currentDocType === 'receipt') {
+      // ตัดกล่อง "รายละเอียดการชำระเงิน (Payment Details)" ทิ้งโดยสิ้นเชิง
+      if (remarksVal) {
+        if (prevRemarksSection) prevRemarksSection.style.display = 'block';
+        prevTermsTitle.textContent = 'หมายเหตุ (Remarks):';
+        prevTermsContent.innerHTML = `<div>• ${escapeHtml(remarksVal)}</div>`;
+      } else {
+        if (prevRemarksSection) prevRemarksSection.style.display = 'none';
+        prevTermsTitle.textContent = '';
+        prevTermsContent.innerHTML = '';
+      }
+    } else {
+      if (prevRemarksSection) prevRemarksSection.style.display = 'none';
     }
   }
 
