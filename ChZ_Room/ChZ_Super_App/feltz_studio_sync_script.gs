@@ -520,7 +520,7 @@ function doPost(e) {
     
     else if (data.type === 'upload_html') {
       var htmlContent = data.htmlContent;
-      var pdfName = data.pdfName;
+      var pdfName = data.pdfName || "document.pdf";
       var docType = data.docType;
       var parentFolderId = data.parentFolderId;
       var pdfShiftApiKey = data.pdfShiftApiKey;
@@ -539,22 +539,37 @@ function doPost(e) {
         });
       }
       
-      if (!pdfShiftApiKey) {
+      var pdfBlob = null;
+      var convertError = "";
+      
+      if (pdfShiftApiKey) {
+        var convertResult = convertHtmlToPdfWithPdfShift(htmlContent, pdfShiftApiKey, pdfName);
+        if (convertResult.success) {
+          pdfBlob = convertResult.blob;
+        } else {
+          convertError = convertResult.error;
+          Logger.log("PDFShift failed: " + convertError + " - Falling back to Google Drive HTML-to-PDF conversion.");
+        }
+      }
+      
+      // Fallback: หากไม่มี PDFShift API Key หรือ PDFShift ล้มเหลว ให้ใช้ Google Drive Built-in HTML-to-PDF converter
+      if (!pdfBlob) {
+        try {
+          var tempHtmlBlob = Utilities.newBlob(htmlContent, 'text/html', (pdfName ? pdfName.replace(/\.pdf$/i, '') : 'document') + '.html');
+          pdfBlob = tempHtmlBlob.getAs('application/pdf');
+          pdfBlob.setName(pdfName || "document.pdf");
+        } catch (fallbackErr) {
+          Logger.log("Built-in fallback HTML-to-PDF error: " + fallbackErr.toString());
+        }
+      }
+      
+      if (!pdfBlob) {
         return createJsonResponse({
           "status": "error",
-          "message": "ไม่พบ PDFShift API Key ในข้อมูลที่ส่งเข้ามานะแก!"
+          "message": "การแปลง HTML เป็น PDF ล้มเหลวทั้ง PDFShift และ Built-in fallback: " + (convertError || "ไม่ทราบสาเหตุ")
         });
       }
       
-      var convertResult = convertHtmlToPdfWithPdfShift(htmlContent, pdfShiftApiKey, pdfName);
-      if (!convertResult.success) {
-        return createJsonResponse({
-          "status": "error",
-          "message": "การแปลง HTML เป็น PDF ด้วย PDFShift API ล้มเหลวนะแก! รายละเอียด: " + convertResult.error
-        });
-      }
-      
-      var pdfBlob = convertResult.blob;
       var pdfUrl = saveBlobToFolder(pdfBlob, docType, parentFolderId);
       if (!pdfUrl) {
         return createJsonResponse({
@@ -565,7 +580,7 @@ function doPost(e) {
       
       return createJsonResponse({
         "status": "success",
-        "message": "อัปโหลดไฟล์ PDF (ผ่าน PDFShift) ขึ้น Google Drive เรียบร้อยแล้วแก!",
+        "message": "อัปโหลดไฟล์ PDF ขึ้น Google Drive เรียบร้อยแล้วแก!",
         "pdfUrl": pdfUrl
       });
     }
@@ -944,7 +959,7 @@ function convertHtmlToPdfWithPdfShift(htmlContent, apiKey, filename) {
     source: htmlContent,
     sandbox: false,
     delay: 3000,
-    use_print_media: true
+    media: "print"
   };
   
   var options = {
