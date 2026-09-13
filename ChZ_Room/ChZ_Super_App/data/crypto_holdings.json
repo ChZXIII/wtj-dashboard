@@ -1,0 +1,235 @@
+{
+  "status": "success",
+  "last_synced_at": "2026-09-13T22:15:05.705074+07:00",
+  "last_synced_str": "13/09/2026 22:15:05",
+  "totals": {
+    "totalCurrentValue": 77327.83,
+    "totalCost": 79572.49,
+    "totalPnL": -2244.66,
+    "totalPnLPct": -2.82,
+    "kengCapital": 62247.73,
+    "kengCurrentValue": 61800.76,
+    "kengPnL": -446.97,
+    "kengPnLPct": -0.72,
+    "modCapital": 10196.76,
+    "modCurrentValue": 10848.51,
+    "thymeCapital": 7128.0,
+    "thymeCurrentValue": 4678.56
+  },
+  "holdings": {
+    "BTC": {
+      "amount": 0.01625785,
+      "basePrice": 2458778.78,
+      "dcaCapital": 39974.46,
+      "owner": "Keng",
+      "label": "BTC (ของฉัน)"
+    },
+    "Mod_BTC": {
+      "amount": 0.00425102,
+      "basePrice": 2398665.39,
+      "dcaCapital": 10196.76,
+      "owner": "Mod",
+      "label": "BTC (ของมด)"
+    },
+    "Thyme_KUB": {
+      "amount": 235.69576513,
+      "basePrice": 30.24,
+      "dcaCapital": 7128.0,
+      "owner": "Thyme",
+      "label": "KUB (ของธาม)"
+    },
+    "BNB": {
+      "amount": 0.44735841,
+      "basePrice": 27949.26,
+      "dcaCapital": 12503.34,
+      "owner": "Keng",
+      "label": "BNB"
+    },
+    "ASTER": {
+      "amount": 177.68684455,
+      "basePrice": 29.1524,
+      "dcaCapital": 5180.0,
+      "owner": "Keng",
+      "label": "ASTER"
+    },
+    "XRP": {
+      "amount": 32.10367458,
+      "basePrice": 62.2982,
+      "dcaCapital": 2000.0,
+      "owner": "Keng",
+      "label": "XRP"
+    },
+    "SOL": {
+      "amount": 0.47805147,
+      "basePrice": 2712.7748,
+      "dcaCapital": 1296.85,
+      "owner": "Keng",
+      "label": "SOL"
+    },
+    "ETH": {
+      "amount": 0.01780566,
+      "basePrice": 72621.85,
+      "dcaCapital": 1293.08,
+      "owner": "Keng",
+      "label": "ETH"
+    }
+  },
+  "assets": [
+    {
+      "coin": "BTC",
+      "label": "BTC (ของฉัน)",
+      "owner": "Keng",
+      "amount": 0.01625785,
+      "basePrice": 2458778.78,
+      "livePrice": 2551978.99,
+      "cost": 39974.46,
+      "currentValue": 41489.69,
+      "pnlThb": 1515.23,
+      "pnlPct": 3.79
+    },
+    {
+      "coin": "Mod_BTC",
+      "label": "BTC (ของมด)",
+      "owner": "Mod",
+      "amount": 0.00425102,
+      "basePrice": 2398665.39,
+      "livePrice": 2551978.99,
+      "cost": 10196.76,
+      "currentValue": 10848.51,
+      "pnlThb": 651.75,
+      "pnlPct": 6.39
+    },
+    {
+      "coin": "Thyme_KUB",
+      "label": "KUB (ของธาม)",
+      "owner": "Thyme",
+      "amount": 235.69576513,
+      "basePrice": 30.24,
+      "livePrice": 19.85,
+      "cost": 7128.0,
+      "currentValue": 4678.56,
+      "pnlThb": -2449.44,
+      "pnlPct": -34.36
+    },
+    {
+      "coin": "BNB",
+      "label": "BNB",
+      "owner": "Keng",
+      "amount": 0.44735841,
+      "basePrice": 27949.26,
+      "livePrice": 25118.45,
+      "cost": 12503.34,
+      "currentValue": 11236.95,
+      "pnlThb": -1266.39,
+      "pnlPct": -10.13
+    },
+    {
+      "coin": "ASTER",
+      "label": "ASTER",
+      "owner": "Keng",
+      "amount": 177.68684455,
+      "basePrice": 29.15,
+      "livePrice": 24.37,
+      "cost": 5180.0,
+      "currentValue": 4330.4,
+      "pnlThb": -849.6,
+      "pnlPct": -16.4
+    },
+    {
+      "coin": "XRP",
+      "label": "XRP",
+      "owner": "Keng",
+      "amount": 32.10367458,
+      "basePrice": 62.3,
+      "livePrice": 47.15,
+      "cost": 2000.0,
+      "currentValue": 1513.75,
+      "pnlThb": -486.25,
+      "pnlPct": -24.31
+    },
+    {
+      "coin": "SOL",
+      "label": "SOL",
+      "owner": "Keng",
+      "amount": 0.47805147,
+      "basePrice": 2712.77,
+      "livePrice": 3512.95,
+      "cost": 1296.85,
+      "currentValue": 1679.37,
+      "pnlThb": 382.52,
+      "pnlPct": 29.5
+    },
+    {
+      "coin": "ETH",
+      "label": "ETH",
+      "owner": "Keng",
+      "amount": 0.01780566,
+      "basePrice": 72621.85,
+      "livePrice": 87084.2,
+      "cost": 1293.08,
+      "currentValue": 1550.59,
+      "pnlThb": 257.51,
+      "pnlPct": 19.91
+    }
+  ],
+  "breakdown": [
+    {
+      "coin": "BTC",
+      "label": "BTC (ของฉัน)",
+      "percentage": 53.65,
+      "value": 41489.69
+    },
+    {
+      "coin": "Mod_BTC",
+      "label": "BTC (ของมด)",
+      "percentage": 14.03,
+      "value": 10848.51
+    },
+    {
+      "coin": "Thyme_KUB",
+      "label": "KUB (ของธาม)",
+      "percentage": 6.05,
+      "value": 4678.56
+    },
+    {
+      "coin": "BNB",
+      "label": "BNB",
+      "percentage": 14.53,
+      "value": 11236.95
+    },
+    {
+      "coin": "ASTER",
+      "label": "ASTER",
+      "percentage": 5.6,
+      "value": 4330.4
+    },
+    {
+      "coin": "XRP",
+      "label": "XRP",
+      "percentage": 1.96,
+      "value": 1513.75
+    },
+    {
+      "coin": "SOL",
+      "label": "SOL",
+      "percentage": 2.17,
+      "value": 1679.37
+    },
+    {
+      "coin": "ETH",
+      "label": "ETH",
+      "percentage": 2.01,
+      "value": 1550.59
+    }
+  ],
+  "livePrices": {
+    "BTC": 2551978.99,
+    "BNB": 25118.449999999997,
+    "ASTER": 24.370971324,
+    "XRP": 47.152,
+    "SOL": 3512.9500000000003,
+    "ETH": 87084.2,
+    "Thyme_KUB": 19.85,
+    "Mod_BTC": 2551978.99
+  }
+}

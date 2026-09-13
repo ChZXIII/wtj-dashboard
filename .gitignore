@@ -20,6 +20,7 @@ knowledge_base/
 *.wav
 *.mp3
 *.sqlite3
+*.bak
 pdf_extracted_text.txt
 nam_first_ideas.txt
 history_data.js

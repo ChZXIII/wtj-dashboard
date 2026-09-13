@@ -1,0 +1,229 @@
+{
+  "status": "success",
+  "updated_at": "2026-09-13T11:06:31.996084+07:00",
+  "count": 27,
+  "sync_range": {
+    "past_days": 90,
+    "future_days": 180,
+    "time_min": "2026-06-15T04:06:31.501235+00:00",
+    "time_max": "2027-03-12T04:06:31.501235+00:00"
+  },
+  "data": [
+    {
+      "id": "2fhlcapsmt9os957d2g26ro4v4_20260615",
+      "title": "Happy birthday!",
+      "description": "",
+      "startTime": "2026-06-15T00:00:00+07:00",
+      "endTime": "2026-06-16T00:00:00+07:00",
+      "colorId": ""
+    },
+    {
+      "id": "16ch4adtna4blaf99k6t99ckrn",
+      "title": "Event Dinner Idext",
+      "description": "",
+      "startTime": "2026-06-17T16:00:00+07:00",
+      "endTime": "2026-06-17T21:00:00+07:00",
+      "colorId": "2"
+    },
+    {
+      "id": "5g2h9c3tm6tgm6h171p413n9h9",
+      "title": "KTGB",
+      "description": "",
+      "startTime": "2026-06-20T08:30:00+07:00",
+      "endTime": "2026-06-20T17:00:00+07:00",
+      "colorId": "2"
+    },
+    {
+      "id": "39ketv58ivgqqkod8a6folhu5k",
+      "title": "Idext ขอนแก่น",
+      "description": "",
+      "startTime": "2026-06-23T00:00:00+07:00",
+      "endTime": "2026-06-25T00:00:00+07:00",
+      "colorId": "2"
+    },
+    {
+      "id": "voqi62p0dk0mo0jl4g687fare4",
+      "title": "งานวิ่งปาม",
+      "description": "",
+      "startTime": "2026-06-23T13:00:00+07:00",
+      "endTime": "2026-06-23T20:00:00+07:00",
+      "colorId": "2"
+    },
+    {
+      "id": "ep78du95h9uooipkvfu18a9sbg",
+      "title": "Event โปเต้",
+      "description": "",
+      "startTime": "2026-06-26T16:30:00+07:00",
+      "endTime": "2026-06-26T22:00:00+07:00",
+      "colorId": "2"
+    },
+    {
+      "id": "70g6u08ip4etu6e14dg2rvc170",
+      "title": "PNS 200",
+      "description": "",
+      "startTime": "2026-06-28T00:00:00+07:00",
+      "endTime": "2026-06-29T00:00:00+07:00",
+      "colorId": "2"
+    },
+    {
+      "id": "5dgls79nrkivr297mgl79qb24c",
+      "title": "AOT",
+      "description": "",
+      "startTime": "2026-07-03T23:00:00+07:00",
+      "endTime": "2026-07-04T03:00:00+07:00",
+      "colorId": "2"
+    },
+    {
+      "id": "uahksequ8kplt3tjbggi8ta0ck",
+      "title": "สถาพรถ่ายโปรไฟล์",
+      "description": "",
+      "startTime": "2026-07-06T00:00:00+07:00",
+      "endTime": "2026-07-07T00:00:00+07:00",
+      "colorId": "10"
+    },
+    {
+      "id": "e31gs9k1m8ufhfdpinbmudk1ag",
+      "title": "Ai cnx party",
+      "description": "https://ainews.in.th/ai-party-2026/?fbclid=IwZnRzaAS0WxtwZG9mA2ZkaWQWUJ3iLojqia3c1avf_8bxc4IeDeOOCGV4dG4DYWVtAjExAHNydGMGYXBwX2lkCjY2Mjg1NjgzNzkAAR63VMA6Aw9XQOM_nsHuOAcRKwnFLL6ZLomxV_Y2v-cxT-yG-NNUGlUg9PEupw_aem_H2L1EHrcse-6VtUKj4bDlQ",
+      "startTime": "2026-07-18T00:00:00+07:00",
+      "endTime": "2026-07-19T00:00:00+07:00",
+      "colorId": "9"
+    },
+    {
+      "id": "ksnd4k6l1fmqk48rj5h7ub2up4",
+      "title": "ทำไฟบ้าน",
+      "description": "",
+      "startTime": "2026-07-25T00:00:00+07:00",
+      "endTime": "2026-07-26T00:00:00+07:00",
+      "colorId": "9"
+    },
+    {
+      "id": "a6i2tno9vllmfi74bonssvbrb8",
+      "title": "AOT",
+      "description": "",
+      "startTime": "2026-08-03T00:00:00+07:00",
+      "endTime": "2026-08-05T00:00:00+07:00",
+      "colorId": "2"
+    },
+    {
+      "id": "kf3ajvmbj4ehh200br4rr67bls",
+      "title": "แน่ Event",
+      "description": "",
+      "startTime": "2026-08-06T00:00:00+07:00",
+      "endTime": "2026-08-07T00:00:00+07:00",
+      "colorId": "10"
+    },
+    {
+      "id": "rklj4decm689sc96lrru9q1nvk",
+      "title": "เอ็ม Studio",
+      "description": "",
+      "startTime": "2026-08-07T12:00:00+07:00",
+      "endTime": "2026-08-07T17:00:00+07:00",
+      "colorId": "10"
+    },
+    {
+      "id": "al5oc33iosm1m965ap1nsd7u7c",
+      "title": "ร้านปาม",
+      "description": "",
+      "startTime": "2026-08-16T05:00:00+07:00",
+      "endTime": "2026-08-16T09:00:00+07:00",
+      "colorId": "2"
+    },
+    {
+      "id": "tqa7k7s79lvbh2v2t1790b37sg",
+      "title": "พี่เปิ้ล event",
+      "description": "",
+      "startTime": "2026-08-21T00:00:00+07:00",
+      "endTime": "2026-08-24T00:00:00+07:00",
+      "colorId": "2"
+    },
+    {
+      "id": "7u80hqq5ffl0lvnl917jaeu3ec",
+      "title": "ถ่ายชุด 55 granfondo",
+      "description": "",
+      "startTime": "2026-08-23T10:00:00+07:00",
+      "endTime": "2026-08-23T13:00:00+07:00",
+      "colorId": "2"
+    },
+    {
+      "id": "1h2b0ar3r1d4pm6lgmsp9aqdso",
+      "title": "ถ่ายบ้าน มัดจำแล้ว 1,500",
+      "description": "",
+      "startTime": "2026-08-24T13:00:00+07:00",
+      "endTime": "2026-08-24T18:00:00+07:00",
+      "colorId": "2"
+    },
+    {
+      "id": "f8tth3r366l15ck9r305945jcs",
+      "title": "🎬 ดูหนัง Spider-Man: Brand New Day (EN/TH)",
+      "description": "รอบบ่าย 14:50 น. Soundtrack ENG / ซับไทย (นัดหมายส่วนตัว 🔵 สีฟ้า)",
+      "startTime": "2026-08-25T14:50:00+07:00",
+      "endTime": "2026-08-25T17:20:00+07:00",
+      "colorId": "9"
+    },
+    {
+      "id": "aluj4ni40tl1ukkt97t5b12gm8",
+      "title": "งานออกบูธ PR",
+      "description": "พิกัดแผนที่: https://maps.app.goo.gl/VNGtXzKLjoGa7war7?g_st=il",
+      "startTime": "2026-08-26T17:00:00+07:00",
+      "endTime": "2026-08-26T20:00:00+07:00",
+      "colorId": "10"
+    },
+    {
+      "id": "4o0jojt5q5iec93egm7phrltfs",
+      "title": "เรียนคอร์ส AI",
+      "description": "คอร์สเรียน AI (นัดหมายส่วนตัว)",
+      "startTime": "2026-08-28T10:00:00+07:00",
+      "endTime": "2026-08-28T12:00:00+07:00",
+      "colorId": "7"
+    },
+    {
+      "id": "65614ujc18eo9eutc4s3uldje0",
+      "title": "ไปรับน้องธามที่โรงเรียน",
+      "description": "",
+      "startTime": "2026-08-29T10:00:00+07:00",
+      "endTime": "2026-08-29T11:00:00+07:00",
+      "colorId": "7"
+    },
+    {
+      "id": "o5k0ve11bu3e7heoiu3cu5alck",
+      "title": "จัดการเรื่อง .html ไปใช้ .site แทน",
+      "description": "จัดการเรื่อง .html ไปใช้ .site แทน",
+      "startTime": "2026-08-30T14:00:00+07:00",
+      "endTime": "2026-08-30T15:00:00+07:00",
+      "colorId": "7"
+    },
+    {
+      "id": "mulhhvagnsmmm1ajait3dk051g",
+      "title": "งานถ่ายภาพ (ลูกค้าคอนเฟิร์ม)",
+      "description": "งานถ่ายภาพลูกค้า คอนเฟิร์มเรียบร้อย (Tomato Red 🔴)",
+      "startTime": "2026-09-01T13:00:00+07:00",
+      "endTime": "2026-09-01T17:00:00+07:00",
+      "colorId": "2"
+    },
+    {
+      "id": "d8j888f7dho6dj34r2s5s2qml0",
+      "title": "คิวงาน สนามบินเชียงใหม่",
+      "description": "",
+      "startTime": "2026-09-09T08:30:00+07:00",
+      "endTime": "2026-09-09T12:00:00+07:00",
+      "colorId": "11"
+    },
+    {
+      "id": "ms12ni9ibp25u3r9v4mtjueprg",
+      "title": "ถ่ายภาพ Run to Paradise นิมมาน",
+      "description": "คิวงานถ่ายภาพลูกค้า คอนเฟิร์มเรียบร้อย (Tomato Red 🔴)",
+      "startTime": "2026-09-12T05:30:00+07:00",
+      "endTime": "2026-09-12T10:00:00+07:00",
+      "colorId": "2"
+    },
+    {
+      "id": "bt9493srd4tcrmbsftvcsktb4o",
+      "title": "Event พี่เปิ้ล",
+      "description": "งานถ่ายภาพ Event พี่เปิ้ล ที่บุญถาวร",
+      "startTime": "2026-11-21T09:00:00+07:00",
+      "endTime": "2026-11-21T22:00:00+07:00",
+      "colorId": "11"
+    }
+  ]
+}

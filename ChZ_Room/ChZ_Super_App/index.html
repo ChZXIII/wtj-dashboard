@@ -14705,27 +14705,27 @@
     
     // ข้อมูลเริ่มต้นสำหรับ Fallback
     const DEFAULT_CRYPTO_HOLDINGS = {
-      'BTC': { amount: 0.04500000, basePrice: 2350000.0, owner: 'Keng', dcaCapital: 28634.46 },
-      'BNB': { amount: 1.25000000, basePrice: 20500.0, owner: 'Keng' },
-      'ASTER': { amount: 5400.0, basePrice: 3.50, owner: 'Keng' },
-      'XRP': { amount: 850.0, basePrice: 17.80, owner: 'Keng' },
-      'SOL': { amount: 3.20, basePrice: 5800.0, owner: 'Keng' },
-      'ETH': { amount: 0.75000000, basePrice: 115000.0, owner: 'Keng' },
-      'Thyme_KUB': { amount: 120.0, basePrice: 85.50, owner: 'Thyme', dcaCapital: 10260.00 },
-      'Mod_BTC': { amount: 0.00150000, basePrice: 2350000.0, owner: 'Mod', dcaCapital: 3525.00 }
+      'BTC': { amount: 0.01625785, basePrice: 2458778.78, owner: 'Keng', dcaCapital: 39974.46, label: 'BTC (ของฉัน)' },
+      'Mod_BTC': { amount: 0.00425102, basePrice: 2398665.39, owner: 'Mod', dcaCapital: 10196.76, label: 'BTC (ของมด)' },
+      'Thyme_KUB': { amount: 235.69576513, basePrice: 30.24, owner: 'Thyme', dcaCapital: 7128.00, label: 'KUB (ของธาม)' },
+      'BNB': { amount: 0.44735841, basePrice: 27949.26, owner: 'Keng', dcaCapital: 12503.34, label: 'BNB' },
+      'ASTER': { amount: 177.68684455, basePrice: 29.1524, owner: 'Keng', dcaCapital: 5180.00, label: 'ASTER' },
+      'XRP': { amount: 32.10367458, basePrice: 62.2982, owner: 'Keng', dcaCapital: 2000.00, label: 'XRP' },
+      'SOL': { amount: 0.47805147, basePrice: 2712.7748, owner: 'Keng', dcaCapital: 1296.85, label: 'SOL' },
+      'ETH': { amount: 0.01780566, basePrice: 72621.85, owner: 'Keng', dcaCapital: 1293.08, label: 'ETH' }
     };
 
     // ดึงราคาสด
     async function getLiveCryptoPrices() {
       const prices = {
-        'BTC': 2350000.0,
-        'BNB': 20500.0,
-        'ASTER': 3.50,
-        'XRP': 17.80,
-        'SOL': 5800.0,
-        'ETH': 115000.0,
-        'Thyme_KUB': 85.50,
-        'Mod_BTC': 2350000.0
+        'BTC': 2551377.62,
+        'BNB': 25270.35,
+        'ASTER': 24.23,
+        'XRP': 47.47,
+        'SOL': 3523.45,
+        'ETH': 88042.50,
+        'Thyme_KUB': 19.98,
+        'Mod_BTC': 2551377.62
       };
       
       try {
@@ -14831,7 +14831,8 @@
     async function fetchFastCryptoCache() {
       const urls = [
         FAST_CRYPTO_CACHE_URL + '?t=' + Date.now(),
-        'data/crypto_holdings.json?t=' + Date.now()
+        'data/crypto_holdings.json?t=' + Date.now(),
+        './data/crypto_holdings.json?t=' + Date.now()
       ];
       for (const url of urls) {
         try {
@@ -14849,6 +14850,10 @@
         } catch (err) {
           console.warn('Fast crypto cache fetch failed for:', url, err.message || err);
         }
+      }
+      console.warn('Fast crypto cache fetch failed for all sources. Using emergency fallback.');
+      if (typeof calculateEmergencyCryptoData === 'function') {
+        return calculateEmergencyCryptoData();
       }
       return null;
     }
@@ -14920,11 +14925,118 @@
       };
     }
 
+    // Helper: คำนวณยอดและสร้างข้อมูลพอร์ตสำรองฉุกเฉินจาก DEFAULT_CRYPTO_HOLDINGS เสมอ
+    function calculateEmergencyCryptoData(customHoldings, customPrices) {
+      const h = customHoldings || DEFAULT_CRYPTO_HOLDINGS;
+      const p = customPrices || {
+        'BTC': 2551377.62,
+        'Mod_BTC': 2551377.62,
+        'Thyme_KUB': 19.98,
+        'BNB': 25270.35,
+        'ASTER': 24.23,
+        'XRP': 47.47,
+        'SOL': 3523.45,
+        'ETH': 88042.50
+      };
+
+      let totalCost = 0;
+      let totalCurrentValue = 0;
+      let kengCapital = 0;
+      let kengCurrentValue = 0;
+      let modCapital = 0;
+      let modCurrentValue = 0;
+      let thymeCapital = 0;
+      let thymeCurrentValue = 0;
+
+      const assets = [];
+      const breakdown = [];
+
+      for (const [coin, item] of Object.entries(h)) {
+        const amount = Number(item.amount) || 0;
+        const basePrice = Number(item.basePrice) || 0;
+        const livePrice = Number(p[coin]) || basePrice;
+        const cost = (item.dcaCapital !== undefined && item.dcaCapital !== null) ? Number(item.dcaCapital) : (amount * basePrice);
+        const currentValue = amount * livePrice;
+        const pnlThb = currentValue - cost;
+        const pnlPct = cost > 0 ? (pnlThb / cost) * 100 : 0;
+        const meta = getCoinMetadata(coin);
+        const label = item.label || meta.defaultLabel;
+        const owner = item.owner || 'Keng';
+
+        totalCost += cost;
+        totalCurrentValue += currentValue;
+
+        if (owner === 'Mod') {
+          modCapital += cost;
+          modCurrentValue += currentValue;
+        } else if (owner === 'Thyme') {
+          thymeCapital += cost;
+          thymeCurrentValue += currentValue;
+        } else {
+          kengCapital += cost;
+          kengCurrentValue += currentValue;
+        }
+
+        assets.push({
+          coin,
+          label,
+          owner,
+          amount,
+          basePrice,
+          livePrice,
+          cost: parseFloat(cost.toFixed(2)),
+          currentValue: parseFloat(currentValue.toFixed(2)),
+          pnlThb: parseFloat(pnlThb.toFixed(2)),
+          pnlPct: parseFloat(pnlPct.toFixed(2))
+        });
+      }
+
+      const totalPnL = totalCurrentValue - totalCost;
+      const totalPnLPct = totalCost > 0 ? (totalPnL / totalCost) * 100 : 0;
+      const kengPnL = kengCurrentValue - kengCapital;
+      const kengPnLPct = kengCapital > 0 ? (kengPnL / kengCapital) * 100 : 0;
+
+      for (const a of assets) {
+        const pct = totalCurrentValue > 0 ? (a.currentValue / totalCurrentValue) * 100 : 0;
+        breakdown.push({
+          coin: a.coin,
+          label: a.label,
+          percentage: parseFloat(pct.toFixed(2)),
+          value: parseFloat(a.currentValue.toFixed(2))
+        });
+      }
+
+      return {
+        status: 'success',
+        is_fallback: true,
+        last_synced_str: new Date().toLocaleString('th-TH') + ' (Emergency Fallback)',
+        totals: {
+          totalCurrentValue: parseFloat(totalCurrentValue.toFixed(2)),
+          totalCost: parseFloat(totalCost.toFixed(2)),
+          totalPnL: parseFloat(totalPnL.toFixed(2)),
+          totalPnLPct: parseFloat(totalPnLPct.toFixed(2)),
+          kengCapital: parseFloat(kengCapital.toFixed(2)),
+          kengCurrentValue: parseFloat(kengCurrentValue.toFixed(2)),
+          kengPnL: parseFloat(kengPnL.toFixed(2)),
+          kengPnLPct: parseFloat(kengPnLPct.toFixed(2)),
+          modCapital: parseFloat(modCapital.toFixed(2)),
+          modCurrentValue: parseFloat(modCurrentValue.toFixed(2)),
+          thymeCapital: parseFloat(thymeCapital.toFixed(2)),
+          thymeCurrentValue: parseFloat(thymeCurrentValue.toFixed(2))
+        },
+        holdings: h,
+        assets,
+        breakdown,
+        livePrices: p
+      };
+    }
+    window.calculateEmergencyCryptoData = calculateEmergencyCryptoData;
+
     // ดึงข้อมูลจำนวนเหรียญและต้นทุนจาก Fast VPS Cache (พร้อม fallback ในเครื่อง หรือ Google Sheets Proxy)
     async function getSheetsCryptoHoldings(spreadsheetId) {
       try {
         const cacheData = await fetchFastCryptoCache();
-        if (cacheData) {
+        if (cacheData && !cacheData.is_fallback) {
           if (typeof showStatusToast === 'function') {
             showStatusToast("ดึงข้อมูลพอร์ตจริงจาก Fast VPS Cache สำเร็จ!", true);
           }
@@ -15010,6 +15122,18 @@
           if (fallbackData && fallbackData.totals) {
             res = fallbackData;
           }
+        }
+
+        // เมื่อทั้ง VPS และ local cache ไม่พร้อม ให้มี Emergency Fallback คำนวณยอดและเรนเดอร์ UI จาก DEFAULT_CRYPTO_HOLDINGS เสมอ ห้ามปล่อยให้ค้าง 0.00 THB หรือ Assets ว่างเปล่า
+        if (!res || !res.totals || !Array.isArray(res.assets) || res.assets.length === 0) {
+          console.warn('VPS and local cache not ready. Using emergency fallback from DEFAULT_CRYPTO_HOLDINGS');
+          let livePrices = null;
+          try {
+            livePrices = await getLiveCryptoPrices();
+          } catch (pe) {
+            console.warn('Could not fetch live crypto prices for fallback:', pe);
+          }
+          res = calculateEmergencyCryptoData(DEFAULT_CRYPTO_HOLDINGS, livePrices);
         }
         
         if (res && res.totals) {
@@ -15106,18 +15230,33 @@
           }
 
           if (typeof showStatusToast === 'function') {
-            showStatusToast("อัปเดตข้อมูลพอร์ตคริปโตสำเร็จ", true);
-          }
-        } else {
-          console.warn("Unable to load crypto cache.");
-          if (typeof showStatusToast === 'function') {
-            showStatusToast("ไม่สามารถโหลดพอร์ตคริปโตได้", false);
+            if (res.is_fallback) {
+              showStatusToast("แสดงผลข้อมูลพอร์ตสำรองฉุกเฉิน (Emergency Fallback)", true);
+            } else {
+              showStatusToast("อัปเดตข้อมูลพอร์ตคริปโตสำเร็จ", true);
+            }
           }
         }
       } catch (e) {
         console.error('Error refreshing crypto portfolio:', e);
+        try {
+          const emergencyData = calculateEmergencyCryptoData();
+          if (emergencyData && emergencyData.totals) {
+            const totals = emergencyData.totals;
+            const kengCap = document.getElementById('crypto-keng-capital') || document.getElementById('keng-capital-val');
+            if (kengCap) kengCap.textContent = formatNumber(totals.kengCapital) + ' THB';
+            const modCap = document.getElementById('crypto-mod-capital') || document.getElementById('mod-capital-val');
+            if (modCap) modCap.textContent = formatNumber(totals.modCapital) + ' THB';
+            const thymeCap = document.getElementById('crypto-thyme-capital') || document.getElementById('thyme-capital-val');
+            if (thymeCap) thymeCap.textContent = formatNumber(totals.thymeCapital) + ' THB';
+            const livePnl = document.getElementById('crypto-live-pnl') || document.getElementById('total-portfolio-val');
+            if (livePnl) livePnl.textContent = formatNumber(totals.totalCurrentValue) + ' THB';
+          }
+        } catch (innerErr) {
+          console.error('Emergency fallback rendering error:', innerErr);
+        }
         if (typeof showStatusToast === 'function') {
-          showStatusToast("เกิดข้อผิดพลาดในการโหลดพอร์ตคริปโต", false);
+          showStatusToast("แสดงผลข้อมูลพอร์ตสำรองฉุกเฉิน (Emergency Fallback)", false);
         }
       } finally {
         if (refreshBtn) {
