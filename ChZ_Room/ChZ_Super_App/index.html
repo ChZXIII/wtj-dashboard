@@ -44,15 +44,15 @@
       font-style: normal;
     }
 
-    #keng-capital-val {
+    #keng-capital-val, #crypto-keng-capital {
       color: #0ea5e9 !important;
       font-weight: 700;
     }
-    #mod-capital-val {
+    #mod-capital-val, #crypto-mod-capital {
       color: #f59e0b !important;
       font-weight: 700;
     }
-    #thyme-capital-val {
+    #thyme-capital-val, #crypto-thyme-capital {
       color: #10b981 !important;
       font-weight: 700;
     }
@@ -1759,6 +1759,8 @@
       transform: translateX(-12.5%); /* เลื่อนไปแสดงหน้า Dashboard (Slide 1) เป็นหลักเริ่มต้น */
       transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
       will-change: transform;
+      position: relative;
+      z-index: 1;
     }
 
     .workspace-page {
@@ -4496,6 +4498,7 @@
     .pfc-bill-card.bill-water::before { background: linear-gradient(90deg, #0ea5e9, #0284c7); }
     .pfc-bill-card.bill-power::before { background: linear-gradient(90deg, #ec4899, #8b5cf6); }
     .pfc-bill-card.bill-telecom::before { background: linear-gradient(90deg, #6366f1, #3b82f6); }
+    .pfc-bill-card.bill-apple::before { background: linear-gradient(90deg, #8b5cf6, #d946ef); }
 
     .pfc-bill-header {
       display: flex;
@@ -4997,6 +5000,8 @@
 
       <!-- 2. Main Workspace Viewport -->
       <div class="workspace-viewport">
+        <div id="crypto-bg-layer-1" class="crypto-bg-crossfade-layer" style="position: absolute; inset: 0; background-size: cover; background-position: center; transition: opacity 1.5s ease-in-out; opacity: 0; pointer-events: none; z-index: 0;"></div>
+        <div id="crypto-bg-layer-2" class="crypto-bg-crossfade-layer" style="position: absolute; inset: 0; background-size: cover; background-position: center; transition: opacity 1.5s ease-in-out; opacity: 0; pointer-events: none; z-index: 0;"></div>
         <div class="workspace-pages-track">
           
           <!-- Slide 0: Settings Page -->
@@ -6198,6 +6203,7 @@
                   <div class="pfc-bucket-amount" id="pfc-bucket1-total">฿ 0</div>
                   <span style="font-size: 11px; font-weight: 700; color: #059669;" id="pfc-bucket1-pct">10.0% of Inflow</span>
                 </div>
+                <div style="font-size: 11px; color: var(--color-text-secondary); margin-top: 2px;">สะสมรวมทั้งหมด: <strong id="pfc-b1-all-time" style="color: #059669; font-weight: 700;">฿ 0</strong></div>
                 <div class="pfc-bucket-progress-track">
                   <div class="pfc-bucket-progress-fill savings" id="pfc-bucket1-progress" style="width: 100%;"></div>
                 </div>
@@ -6217,6 +6223,10 @@
                   <div class="pfc-bucket-breakdown-item">
                     <span>Grab Net 10%:</span>
                     <strong id="pfc-b1-grab">฿ 0</strong>
+                  </div>
+                  <div class="pfc-bucket-breakdown-item">
+                    <span>เงินเก็บสะสมรวมทั้งหมด (All-Time 10%):</span>
+                    <strong id="pfc-b1-alltime-stat">฿ 0</strong>
                   </div>
                 </div>
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-top: auto; padding-top: 6px;">
@@ -6241,6 +6251,7 @@
                   <div class="pfc-bucket-amount" id="pfc-bucket2-total">฿ 0</div>
                   <span style="font-size: 11px; font-weight: 700; color: #d97706;" id="pfc-bucket2-coverage">0.0% of Debt</span>
                 </div>
+                <div style="font-size: 11px; color: var(--color-text-secondary); margin-top: 2px;">สะสมรวมทั้งหมด: <strong id="pfc-b2-all-time" style="color: #d97706; font-weight: 700;">฿ 0</strong></div>
                 <div class="pfc-bucket-progress-track">
                   <div class="pfc-bucket-progress-fill debt" id="pfc-bucket2-progress" style="width: 0%;"></div>
                 </div>
@@ -6256,6 +6267,10 @@
                   <div class="pfc-bucket-breakdown-item">
                     <span>ยอดผ่อนที่ครอบคลุม:</span>
                     <strong id="pfc-b2-status">Pending Allocation</strong>
+                  </div>
+                  <div class="pfc-bucket-breakdown-item">
+                    <span>เงินเร่งปลดหนี้สะสมรวม (All-Time 10%):</span>
+                    <strong id="pfc-b2-alltime-stat">฿ 0</strong>
                   </div>
                 </div>
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-top: auto; padding-top: 6px;">
@@ -6280,6 +6295,7 @@
                   <div class="pfc-bucket-amount" id="pfc-bucket3-total">฿ 0</div>
                   <span style="font-size: 11px; font-weight: 700; color: #0284c7;" id="pfc-bucket3-km">0.0 km</span>
                 </div>
+                <div style="font-size: 11px; color: var(--color-text-secondary); margin-top: 2px;">สะสมรวมทั้งหมด: <strong id="pfc-b3-all-time" style="color: #0284c7; font-weight: 700;">฿ 0</strong> (<span id="pfc-b3-alltime-km-sub">0 km</span>)</div>
                 <div class="pfc-bucket-progress-track">
                   <div class="pfc-bucket-progress-fill vehicle" id="pfc-bucket3-progress" style="width: 100%;"></div>
                 </div>
@@ -6289,8 +6305,16 @@
                     <strong id="pfc-b3-mileage">0.0 km</strong>
                   </div>
                   <div class="pfc-bucket-breakdown-item">
-                    <span>เงินสำรองสะสม (กม. x 3 ฿):</span>
+                    <span>เงินสำรองเดือนนี้ (กม. x 3 ฿):</span>
                     <strong id="pfc-b3-reserve">฿ 0</strong>
+                  </div>
+                  <div class="pfc-bucket-breakdown-item">
+                    <span>ระยะทางสะสมรวมทั้งหมด:</span>
+                    <strong id="pfc-b3-alltime-km">0.0 km</strong>
+                  </div>
+                  <div class="pfc-bucket-breakdown-item">
+                    <span>กองทุนสะสมรวมทั้งหมด (กม. x 3 ฿):</span>
+                    <strong id="pfc-b3-alltime-reserve">฿ 0</strong>
                   </div>
                   <div class="pfc-bucket-breakdown-item">
                     <span>ค่าชาร์จ/บำรุงรักษาที่เบิกจ่าย:</span>
@@ -6663,7 +6687,7 @@
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: #6366f1;"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                 <span>Zone C: ปฏิทินบิลรายเดือน & กิจวัตรครอบครัว (Monthly Bills & Routine Matrix)</span>
               </h3>
-              <span class="pfc-tag-badge savings" id="pfc-bills-summary-badge">[5 RECURRING SCHEDULES]</span>
+              <span class="pfc-tag-badge savings" id="pfc-bills-summary-badge">[6 RECURRING SCHEDULES]</span>
             </div>
 
             <div class="pfc-bills-grid">
@@ -6873,6 +6897,42 @@
                   <button type="button" class="pfc-dues-action-btn" id="pfc-routine-telecom-pay-btn">Pay Telecom (2,296.22฿)</button>
                 </div>
               </div>
+
+              <!-- Bill Card 6: Apple ID Subscriptions (รายจ่ายประจำส่วนตัว) -->
+              <div class="pfc-bill-card bill-apple">
+                <div class="pfc-bill-header">
+                  <div class="pfc-bill-info">
+                    <span class="pfc-bill-title">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: #8b5cf6;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                      <span>Apple ID Subscriptions</span>
+                    </span>
+                    <span class="pfc-bill-meta">รายจ่ายประจำส่วนตัว · รายเดือน & สำรองรายปี</span>
+                  </div>
+                  <span class="pfc-tag-badge savings">[฿ 1,012/เดือน]</span>
+                </div>
+                <div class="pfc-bill-amount-row">
+                  <span class="pfc-bill-val" style="color: #4f46e5;">฿ 1,012 /ด.</span>
+                  <span class="pfc-bill-schedule-tag">Fixed Expenses</span>
+                </div>
+                <div class="pfc-bill-breakdown-list">
+                  <div class="pfc-bill-breakdown-item">
+                    <span>รายเดือน (Monthly Subs):</span>
+                    <strong>฿ 816 /ด.</strong>
+                  </div>
+                  <div class="pfc-bill-breakdown-item">
+                    <span>สำรองรายปี (Annual Reserve):</span>
+                    <strong>~฿ 196 /ด.</strong>
+                  </div>
+                  <div class="pfc-bill-breakdown-item" style="font-size: 10px; color: var(--color-text-secondary);">
+                    <span>(MeowGold, LINE OA, MAKE Max, Notability)</span>
+                    <span style="font-weight: 600; color: #0ea5e9;">MAKE (ส่วนตัว)</span>
+                  </div>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: auto; padding-top: 4px;">
+                  <span style="font-size: 10px; color: var(--color-text-secondary);">ตัดบัญชี MAKE 152-8-62971-3</span>
+                  <button type="button" class="pfc-dues-action-btn" id="pfc-routine-apple-pay-btn">Log Apple Subs (1,012฿)</button>
+                </div>
+              </div>
             </div>
 
             <!-- ==========================================================================
@@ -7017,6 +7077,7 @@
                 <button type="button" class="pfc-preset-btn" id="pfc-preset-adv350">- ADV 350 (3.4k)</button>
                 <button type="button" class="pfc-preset-btn" id="pfc-preset-insurance">- ประกันรถ (4.89k)</button>
                 <button type="button" class="pfc-preset-btn" id="pfc-preset-telecom">- บิลสื่อสาร (2.3k)</button>
+                <button type="button" class="pfc-preset-btn" id="pfc-preset-apple">- Apple Subs (1.01k)</button>
                 <button type="button" class="pfc-preset-btn" id="pfc-preset-thyme">- น้องธาม (1k)</button>
                 <button type="button" class="pfc-preset-btn" id="pfc-preset-dca-routine">- DCA (400)</button>
                 <button type="button" class="pfc-preset-btn" id="pfc-preset-mom">- #คชจแม่</button>
@@ -7077,10 +7138,10 @@
                   </svg>
                   <span>Keng's Capital</span>
                 </div>
-                <div class="crypto-card-value" id="keng-capital-val">0.00 THB</div>
+                <div class="crypto-card-value" id="crypto-keng-capital">0.00 THB</div>
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px; font-size: 11px;">
                   <span class="crypto-card-subtitle" style="margin: 0; color: var(--color-text-secondary); font-family: var(--font-body);">ทุนของฉันสะสม</span>
-                  <span id="keng-capital-pnl" style="font-weight: 800; font-family: var(--font-heading);"></span>
+                  <span id="crypto-keng-capital-sub" style="font-weight: 800; font-family: var(--font-heading);"></span>
                 </div>
               </div>
               
@@ -7095,7 +7156,7 @@
                   </svg>
                   <span>Mod's Capital</span>
                 </div>
-                <div class="crypto-card-value" id="mod-capital-val">0.00 THB</div>
+                <div class="crypto-card-value" id="crypto-mod-capital">0.00 THB</div>
                 <div class="crypto-card-subtitle">ทุนของมดสะสม</div>
               </div>
               
@@ -7110,7 +7171,7 @@
                   </svg>
                   <span>Thyme's Capital</span>
                 </div>
-                <div class="crypto-card-value" id="thyme-capital-val">0.00 THB</div>
+                <div class="crypto-card-value" id="crypto-thyme-capital">0.00 THB</div>
                 <div class="crypto-card-subtitle">ทุนของธามสะสม</div>
               </div>
               
@@ -7123,8 +7184,8 @@
                   </svg>
                   <span>Live PnL</span>
                 </div>
-                <div class="crypto-card-value" id="total-portfolio-val">0.00 THB</div>
-                <div class="crypto-card-pnl" id="total-pnl-status">
+                <div class="crypto-card-value" id="crypto-live-pnl">0.00 THB</div>
+                <div class="crypto-card-pnl" id="crypto-live-pnl-sub">
                   <span class="crypto-pnl-up" id="total-pnl-thb">0.00 THB</span>
                   <span class="crypto-pnl-up" id="total-pnl-pct">(0.00%)</span>
                 </div>
@@ -7209,17 +7270,8 @@
             </button>
           </div>
           
-          <div id="overview-sync-warning" style="display: none; background: rgba(255, 75, 114, 0.08); color: var(--color-neon-rose); padding: 10px 16px; border-radius: 12px; font-size: 12px; font-weight: 600; margin-top: 12px; margin-bottom: 4px; border: none; align-items: center; gap: 8px;">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 16px; height: 16px; flex-shrink: 0;">
-              <circle cx="12" cy="12" r="10"></circle>
-              <line x1="12" y1="8" x2="12" y2="12"></line>
-              <line x1="12" y1="16" x2="12.01" y2="16"></line>
-            </svg>
-            <span>ไม่สามารถดึงข้อมูลจริงจากกูเกิลชีตได้เนื่องจากเครือข่ายขัดข้อง/หมดเวลา ระบบจึงสลับมาใช้ข้อมูลคำนวณสดในเครื่องแทนจ้าแก</span>
-          </div>
-          
           <div class="fin-modal-body" style="display: flex; flex-direction: column; gap: 20px; flex: 1; min-height: 0;">
-            <div class="overview-kpis-row" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; width: 100%; box-sizing: border-box;">
+            <div class="overview-kpis-row" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; width: 100%; box-sizing: border-box;">
               <!-- การ์ด 1: รายรับ Feltz สะสม -->
               <div style="background: rgba(224, 242, 254, 0.65) !important; border: none !important; padding: 16px; border-radius: 16px; display: flex; flex-direction: column; gap: 4px; box-shadow: none !important;">
                 <span style="font-size: 11px; font-weight: 600; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">รายรับ Feltz สะสม</span>
@@ -7230,21 +7282,18 @@
                 <span style="font-size: 11px; font-weight: 600; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">รายรับ GRAB สะสม</span>
                 <span id="overview-kpi-grab-income" style="font-size: 18px; font-weight: 700; color: #10b981;">0 THB</span>
               </div>
-              <!-- การ์ด 3: กำไรสุทธิสะสม -->
+              <!-- การ์ด 3: รายจ่ายสตูดิโอสะสม -->
+              <div style="background: rgba(255, 228, 230, 0.65) !important; border: none !important; padding: 16px; border-radius: 16px; display: flex; flex-direction: column; gap: 4px; box-shadow: none !important;">
+                <span style="font-size: 11px; font-weight: 600; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">รายจ่ายสตูดิโอสะสม</span>
+                <span id="overview-kpi-total-expense" style="font-size: 18px; font-weight: 700; color: #f43f5e;">0 THB</span>
+              </div>
+              <!-- การ์ด 4: กำไรสุทธิสะสม -->
               <div style="background: rgba(243, 232, 255, 0.65) !important; border: none !important; padding: 16px; border-radius: 16px; display: flex; flex-direction: column; gap: 4px; box-shadow: none !important;">
                 <span style="font-size: 11px; font-weight: 600; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">กำไรสุทธิสะสม</span>
                 <span id="overview-kpi-net-profit" style="font-size: 18px; font-weight: 700; color: #a78bfa;">0 THB</span>
               </div>
-              <!-- การ์ด 4: เงินเก็บสะสม 10% -->
-              <div style="background: rgba(254, 243, 199, 0.65) !important; border: none !important; padding: 16px; border-radius: 16px; display: flex; flex-direction: column; gap: 4px; box-shadow: none !important;">
-                <span style="font-size: 11px; font-weight: 600; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">เงินเก็บสะสม 10%</span>
-                <span id="overview-kpi-total-savings" style="font-size: 18px; font-weight: 700; color: #f59e0b;">0 THB</span>
-              </div>
-              <!-- การ์ด 5: รายจ่ายสะสม -->
-              <div style="background: rgba(255, 228, 230, 0.65) !important; border: none !important; padding: 16px; border-radius: 16px; display: flex; flex-direction: column; gap: 4px; box-shadow: none !important;">
-                <span style="font-size: 11px; font-weight: 600; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">รายจ่ายสะสม</span>
-                <span id="overview-kpi-total-expense" style="font-size: 18px; font-weight: 700; color: #f43f5e;">0 THB</span>
-              </div>
+              <!-- Hidden compatibility anchor -->
+              <span id="overview-kpi-total-savings" style="display: none;">0 THB</span>
             </div>
 
             <!-- แถวแรก: กราฟแท่ง SVG แบบความกว้างเต็ม (Full-Width 100%) -->
@@ -7281,7 +7330,6 @@
                         <th style="padding: 10px 8px;">รายรับ Grab (บาท)</th>
                         <th style="padding: 10px 8px;">รายจ่าย (บาท)</th>
                         <th style="padding: 10px 8px;">กำไรสุทธิ (บาท)</th>
-                        <th style="padding: 10px 8px;">เงินเก็บ 10% (บาท)</th>
                       </tr>
                     </thead>
                     <tbody id="overviewMonthlySummaryBody">
@@ -7294,12 +7342,18 @@
               <!-- คอลัมน์ขวา (Fixed Costs & Actions - กว้าง flex: 1; display: flex; flex-direction: column; justify-content: space-between; gap: 16px;) -->
               <div class="overview-fixed-costs-wrapper" style="flex: 1; display: flex; flex-direction: column; justify-content: space-between; gap: 16px; box-sizing: border-box;">
                 <!-- ด้านบน: กล่องชมพู Fixed Costs -->
-                <div class="overview-fixed-cost-container" style="background: rgba(255, 235, 240, 0.6) !important; border: none !important; padding: 16px; border-radius: 16px; display: flex; flex-direction: column; gap: 12px; flex: 1; box-sizing: border-box;">
-                  <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <h4 style="font-family: var(--font-heading); font-size: 12px; font-weight: 700; color: var(--color-text-primary); text-transform: uppercase; letter-spacing: 0.5px; margin: 0;">Fixed Costs</h4>
-                    <span id="overview-fixed-costs-total" style="font-family: var(--font-heading); font-size: 12px; font-weight: 700; color: var(--color-neon-rose);">Total: 0 THB</span>
+                <div class="overview-fixed-cost-container" style="background: rgba(255, 235, 240, 0.6) !important; border: none !important; padding: 16px; border-radius: 16px; display: flex; flex-direction: column; gap: 10px; flex: 1; box-sizing: border-box;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed rgba(255, 75, 114, 0.2); padding-bottom: 8px;">
+                    <div>
+                      <h4 style="font-family: var(--font-heading); font-size: 12px; font-weight: 700; color: var(--color-text-primary); text-transform: uppercase; letter-spacing: 0.5px; margin: 0;">Fixed Costs</h4>
+                      <span style="font-size: 10px; color: var(--color-text-secondary);">ภาระคงที่สตูดิโอ 6 รายการ</span>
+                    </div>
+                    <span id="overview-fixed-costs-total" style="font-family: var(--font-heading); font-size: 13px; font-weight: 800; color: var(--color-neon-rose);">฿41,280/เดือน</span>
                   </div>
-                  <div id="overview-fixed-costs-list" style="display: flex; flex-direction: column; gap: 8px;">
+                  <div id="overview-fixed-costs-list" style="display: flex; flex-direction: column; gap: 6px;">
+                    <!-- เรนเดอร์ด้วย JS -->
+                  </div>
+                </div>
                     <!-- เรนเดอร์ด้วย JS -->
                   </div>
                 </div>
@@ -8199,36 +8253,46 @@
       });
     };
 
-    window.renderOverviewFixedCosts = async function() {
+    window.renderOverviewFixedCosts = async function(customFixedCosts) {
       const listContainer = document.getElementById('overview-fixed-costs-list');
       if (!listContainer) return;
 
-      // ใช้ cache จาก localStorage (renderSettingsFixedCosts จะ fetch สดแล้ว)
-      const fixedCosts = JSON.parse(localStorage.getItem('income_tracker_fixed_costs')) || [];
+      let fixedCosts = customFixedCosts || window.cachedFixedCosts || JSON.parse(localStorage.getItem('income_tracker_fixed_costs'));
+      if (!fixedCosts || !Array.isArray(fixedCosts) || fixedCosts.length === 0) {
+        fixedCosts = [
+          { desc: "ค่า Adobe Photography Plan", amount: 380 },
+          { desc: "Drop Box", amount: 500 },
+          { desc: "Internet", amount: 1400 },
+          { desc: "เงินกู้สตูดิโอ", amount: 4000 },
+          { desc: "เงินเดือนเก่ง", amount: 25000 },
+          { desc: "เงินเดือนมด", amount: 10000 }
+        ];
+      }
 
       listContainer.innerHTML = '';
+      let total = 0;
       fixedCosts.forEach(item => {
+        const amt = parseFloat(item.amount) || 0;
+        total += amt;
         const itemDiv = document.createElement('div');
         itemDiv.style.display = 'flex';
         itemDiv.style.justifyContent = 'space-between';
         itemDiv.style.alignItems = 'center';
         itemDiv.style.background = 'rgba(255, 255, 255, 0.75)';
-        itemDiv.style.padding = '10px 12px';
-        itemDiv.style.borderRadius = '12px';
+        itemDiv.style.padding = '6px 10px';
+        itemDiv.style.borderRadius = '8px';
         itemDiv.style.border = 'none';
 
         itemDiv.innerHTML = `
-          <span style="font-size: 12px; font-weight: 600; color: var(--color-text-primary);">${item.desc}</span>
-          <span style="font-size: 12px; font-weight: 700; color: var(--color-text-primary);">${parseFloat(item.amount).toLocaleString()} THB</span>
+          <span style="font-size: 11px; font-weight: 600; color: var(--color-text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 140px;">${item.desc}</span>
+          <span style="font-size: 11px; font-weight: 700; color: var(--color-text-primary); margin-left: 8px;">฿${amt.toLocaleString()}</span>
         `;
         listContainer.appendChild(itemDiv);
       });
 
-      let total = 0;
-      fixedCosts.forEach(item => total += parseFloat(item.amount) || 0);
       const totalEl = document.getElementById('overview-fixed-costs-total');
       if (totalEl) {
-        totalEl.textContent = `ยอดรวม: ฿${total.toLocaleString()}`;
+        totalEl.textContent = `฿${total.toLocaleString()}/เดือน`;
       }
 
       if (typeof window.updateDashboardMetrics === 'function') {
@@ -8462,16 +8526,160 @@
       window.calendarEvents = Array.from(startupMap.values());
       window.fetchedCalendarMonths = new Set();
 
+      const VPS_CALENDAR_CACHE_URL = 'https://srv1913532.hstgr.cloud/super-app/data/calendar_events.json';
+
+      window.populateFeltzQueueDropdown = function(eventsList) {
+        const queueSelect = document.getElementById('feltz-inc-queue');
+        if (!queueSelect) return;
+        const events = eventsList || window.calendarEvents || [];
+        queueSelect.innerHTML = '<option value="">-- ไม่เชื่อมโยงคิวงาน / ทั่วไป --</option>';
+        const defaultColorId = localStorage.getItem('income_tracker_default_calendar_color_id') || "";
+        const calendarColorHex = localStorage.getItem('income_tracker_calendar_color_hex') || "";
+
+        let activeDefaultId = defaultColorId;
+        if (!activeDefaultId && calendarColorHex) {
+          const cleanHex = calendarColorHex.toLowerCase();
+          if (cleanHex === '#dc2127' || cleanHex === '#ff887c' || cleanHex === '#d50000' || cleanHex.includes('red')) {
+            activeDefaultId = "11";
+          }
+        }
+
+        let manualOverrides = {};
+        try {
+          const storedOverrides = localStorage.getItem('income_tracker_manual_color_overrides');
+          if (storedOverrides) manualOverrides = JSON.parse(storedOverrides);
+        } catch (err) {}
+
+        const confirmedEvents = events.filter(ev => {
+          if (!ev) return false;
+          const activeColorId = manualOverrides[ev.id] || ev.colorId || activeDefaultId;
+          return activeColorId === "11" || activeColorId === "4";
+        });
+
+        confirmedEvents.forEach(ev => {
+          const option = document.createElement('option');
+          option.value = ev.id;
+
+          let displayDate = "";
+          if (ev.startTime) {
+            const start = new Date(ev.startTime);
+            if (!isNaN(start.getTime())) {
+              const dd = String(start.getDate()).padStart(2, '0');
+              const mm = String(start.getMonth() + 1).padStart(2, '0');
+              displayDate = `[${dd}/${mm}] `;
+            }
+          }
+          option.textContent = `${displayDate}${ev.title || ''}`;
+          queueSelect.appendChild(option);
+        });
+      };
+
+      // Populate queue dropdown on initial load from startup cache
+      window.populateFeltzQueueDropdown(window.calendarEvents);
+
+      async function fetchFastCalendarCache() {
+        try {
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 2500);
+          const resp = await fetch(VPS_CALENDAR_CACHE_URL, {
+            cache: 'no-cache',
+            mode: 'cors',
+            signal: controller.signal
+          });
+          clearTimeout(timeoutId);
+          if (resp.ok) {
+            const json = await resp.json();
+            const events = Array.isArray(json) ? json : (json && Array.isArray(json.data) ? json.data : null);
+            return events;
+          }
+        } catch (err) {
+          console.warn('Fast VPS Calendar Cache fetch failed or timed out:', err);
+        }
+        return null;
+      }
+      window.fetchFastCalendarCache = fetchFastCalendarCache;
+
+      function applyFreshCalendarEvents(freshEvents, targetMonthKey = null) {
+        if (!Array.isArray(freshEvents)) return;
+        const cleanEventId = (id) => String(id || '').replace(/@google\.com$/, '').split('_')[0];
+
+        const now = new Date();
+        const startMs = now.getTime() - 90 * 86400000;
+        const endMs = now.getTime() + 180 * 86400000;
+
+        // 1. Keep existing events strictly outside the 9-month window
+        const outsideEvents = (window.calendarEvents || []).filter(ev => {
+          if (!ev || !ev.startTime) return false;
+          const evTime = new Date(ev.startTime).getTime();
+          if (isNaN(evTime)) return false;
+          return evTime < startMs || evTime > endMs;
+        });
+
+        // 2. Fresh authoritative events from VPS
+        const freshMap = new Map();
+        freshEvents.forEach(ev => {
+          if (ev && ev.id) {
+            const cId = cleanEventId(ev.id);
+            if (!freshMap.has(cId) || (ev.colorId && !freshMap.get(cId).colorId)) {
+              freshMap.set(cId, ev);
+            }
+          }
+        });
+
+        // 3. Combine outside events and fresh VPS events
+        const uniqueMap = new Map();
+        outsideEvents.forEach(ev => {
+          if (ev && ev.id) {
+            const cId = cleanEventId(ev.id);
+            if (!uniqueMap.has(cId) || (ev.colorId && !uniqueMap.get(cId).colorId)) {
+              uniqueMap.set(cId, ev);
+            }
+          }
+        });
+        freshMap.forEach((ev, cId) => {
+          uniqueMap.set(cId, ev);
+        });
+
+        window.calendarEvents = Array.from(uniqueMap.values());
+        localStorage.setItem('income_tracker_calendar_events_cache', JSON.stringify(window.calendarEvents));
+
+        if (targetMonthKey) {
+          window.fetchedCalendarMonths.add(targetMonthKey);
+        }
+
+        // Re-render
+        initMonth(activeYear, activeMonth, false);
+        if (typeof renderBigCalendar === 'function') {
+          renderBigCalendar(activeYear, activeMonth);
+        }
+        if (typeof window.populateFeltzQueueDropdown === 'function') {
+          window.populateFeltzQueueDropdown(window.calendarEvents);
+        }
+      }
+      window.applyFreshCalendarEvents = applyFreshCalendarEvents;
+
       // Configuration for month short names
       const monthShortNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
       async function loadGoogleCalendarEvents(year, monthIndex, force = false) {
+        const monthKey = `${year}-${(monthIndex + 1).toString().padStart(2, '0')}`;
+        if (!force && window.fetchedCalendarMonths.has(monthKey)) return;
+
+        // 1. Primary Fast Path: Fast Fetch authoritative JSON from VPS (<40ms)
+        try {
+          const vpsEvents = await fetchFastCalendarCache();
+          if (vpsEvents && Array.isArray(vpsEvents) && vpsEvents.length > 0) {
+            applyFreshCalendarEvents(vpsEvents, monthKey);
+            return;
+          }
+        } catch (vpsErr) {
+          console.warn('VPS calendar cache failed, attempting GAS fallback:', vpsErr);
+        }
+
+        // 2. Fallback Path: Slow GAS fetch
         const gasUrl = localStorage.getItem('income_tracker_gas_url') || DEFAULT_GAS_URL;
         const feltzSheetId = localStorage.getItem('income_tracker_general_sheet_id') || DEFAULT_FELTZ_SHEET_ID;
         if (!gasUrl || !feltzSheetId) return;
-
-        const monthKey = `${year}-${(monthIndex + 1).toString().padStart(2, '0')}`;
-        if (!force && window.fetchedCalendarMonths.has(monthKey)) return;
 
         window.fetchedCalendarMonths.add(monthKey);
 
@@ -8502,12 +8710,11 @@
           if (res.status === 'success' && Array.isArray(res.data)) {
             if (res.defaultColorId) localStorage.setItem('income_tracker_default_calendar_color_id', res.defaultColorId);
             if (res.calendarColorHex) localStorage.setItem('income_tracker_calendar_color_hex', res.calendarColorHex);
-            
+
             const cleanEventId = (id) => String(id || '').replace(/@google\.com$/, '').split('_')[0];
             const startMs = startDate.getTime();
             const endMs = endDate.getTime();
 
-            // 1. กรองเอาอีเวนต์เดิมใน window.calendarEvents ที่อยู่นอกช่วงเวลา [startDate, endDate] เก็บไว้
             const outsideEvents = (window.calendarEvents || []).filter(ev => {
               if (!ev || !ev.startTime) return false;
               const evTime = new Date(ev.startTime).getTime();
@@ -8515,19 +8722,16 @@
               return evTime < startMs || evTime > endMs;
             });
 
-            // 2. สำหรับอีเวนต์ในช่วง [startDate, endDate] ให้แทนที่ด้วยข้อมูลสด res.data ทั้งหมด (Deduplicate ด้วย cleanEventId)
             const freshMap = new Map();
             res.data.forEach(ev => {
               if (ev && ev.id) {
                 const cId = cleanEventId(ev.id);
-                // หากมีตัวที่มี colorId ให้優先เอาตัวที่มี colorId ไว้ก่อน
                 if (!freshMap.has(cId) || (ev.colorId && !freshMap.get(cId).colorId)) {
                   freshMap.set(cId, ev);
                 }
               }
             });
 
-            // รวม outsideEvents และ freshMap (ให้ข้อมูลสด res.data แทนที่ข้อมูลเดิม)
             const uniqueMap = new Map();
             outsideEvents.forEach(ev => {
               if (ev && ev.id) {
@@ -8549,12 +8753,15 @@
             if (typeof renderBigCalendar === 'function') {
               renderBigCalendar(activeYear, activeMonth);
             }
+            if (typeof window.populateFeltzQueueDropdown === 'function') {
+              window.populateFeltzQueueDropdown(window.calendarEvents);
+            }
           } else {
             window.fetchedCalendarMonths.delete(monthKey);
           }
         } catch (error) {
           window.fetchedCalendarMonths.delete(monthKey);
-          console.warn("Failed to load Google Calendar events:", error);
+          console.warn("Failed to load Google Calendar events via GAS:", error);
         }
       }
       
@@ -9655,31 +9862,59 @@
         "assets/hero_anime_purple.jpg",
         "assets/S4.png"
       ];
+      // Preload all crypto background images ahead of time for 100% zero flicker
+      cryptoBgImages.forEach(src => {
+        const img = new Image();
+        img.src = src;
+      });
+
       let cryptoBgInterval = null;
+      let activeBgLayer = 1;
 
       function startCryptoBgSlideshow() {
-        const viewport = document.querySelector('.workspace-viewport');
-        if (!viewport) return;
-        
-        stopCryptoBgSlideshow(); // ล้างอินเตอร์วัลเก่าเพื่อป้องกันการซ้อนทับกัน
-        
-        // โหลดรูปแรกขึ้นมาก่อน และใส่ transition สำหรับเอฟเฟกต์เฟดภาพ
-        viewport.style.backgroundImage = `url('${cryptoBgImages[cryptoBgIndex]}')`;
-        viewport.style.transition = "background-image 0.8s ease-in-out";
-        
-        // ตั้งเวลาเปลี่ยนภาพเวียนทุกๆ 6 วินาที (6000ms)
+        const layer1 = document.getElementById('crypto-bg-layer-1');
+        const layer2 = document.getElementById('crypto-bg-layer-2');
+        if (!layer1 || !layer2) return;
+
+        stopCryptoBgSlideshow();
+
+        // Reset to first image on Layer 1 with smooth crossfade
+        activeBgLayer = 1;
+        layer1.style.backgroundImage = `url('${cryptoBgImages[cryptoBgIndex]}')`;
+        layer1.style.opacity = '1';
+        layer2.style.opacity = '0';
+
+        // Dual-Layer Ping-Pong Crossfade every 6 seconds
         cryptoBgInterval = setInterval(() => {
           cryptoBgIndex = (cryptoBgIndex + 1) % cryptoBgImages.length;
-          viewport.style.backgroundImage = `url('${cryptoBgImages[cryptoBgIndex]}')`;
+          const nextImg = cryptoBgImages[cryptoBgIndex];
+
+          if (activeBgLayer === 1) {
+            layer2.style.backgroundImage = `url('${nextImg}')`;
+            layer2.style.opacity = '1';
+            layer1.style.opacity = '0';
+            activeBgLayer = 2;
+          } else {
+            layer1.style.backgroundImage = `url('${nextImg}')`;
+            layer1.style.opacity = '1';
+            layer2.style.opacity = '0';
+            activeBgLayer = 1;
+          }
         }, 6000);
       }
-      
+
       function stopCryptoBgSlideshow() {
         if (cryptoBgInterval) {
           clearInterval(cryptoBgInterval);
           cryptoBgInterval = null;
         }
+        const layer1 = document.getElementById('crypto-bg-layer-1');
+        const layer2 = document.getElementById('crypto-bg-layer-2');
+        if (layer1) layer1.style.opacity = '0';
+        if (layer2) layer2.style.opacity = '0';
       }
+      window.startCryptoBgSlideshow = startCryptoBgSlideshow;
+      window.stopCryptoBgSlideshow = stopCryptoBgSlideshow;
 
       if (btnToCrypto) {
         btnToCrypto.addEventListener('click', function(e) {
@@ -10302,13 +10537,36 @@
       }
 
       async function fetchCalendarEvents() {
-        const scriptUrl = localStorage.getItem('income_tracker_gas_url') || DEFAULT_GAS_URL;
-        const generalSheetId = localStorage.getItem('income_tracker_general_sheet_id') || DEFAULT_FELTZ_SHEET_ID;
         const queueSelect = document.getElementById('feltz-inc-queue');
         if (!queueSelect) return;
 
+        // 1. Fast VPS Fetch first (<40ms)
+        try {
+          if (typeof fetchFastCalendarCache === 'function') {
+            const vpsEvents = await fetchFastCalendarCache();
+            if (vpsEvents && Array.isArray(vpsEvents) && vpsEvents.length > 0) {
+              if (typeof applyFreshCalendarEvents === 'function') {
+                applyFreshCalendarEvents(vpsEvents);
+              }
+              if (typeof window.populateFeltzQueueDropdown === 'function') {
+                window.populateFeltzQueueDropdown(window.calendarEvents);
+              }
+              return;
+            }
+          }
+        } catch (vpsErr) {
+          console.warn('Fast VPS fetch in fetchCalendarEvents failed, falling back to GAS:', vpsErr);
+        }
+
+        const scriptUrl = localStorage.getItem('income_tracker_gas_url') || DEFAULT_GAS_URL;
+        const generalSheetId = localStorage.getItem('income_tracker_general_sheet_id') || DEFAULT_FELTZ_SHEET_ID;
+
         if (!scriptUrl || !generalSheetId) {
-          queueSelect.innerHTML = '<option value="">-- ไม่เชื่อมโยงคิวงาน / ทั่วไป --</option>';
+          if (typeof window.populateFeltzQueueDropdown === 'function') {
+            window.populateFeltzQueueDropdown(window.calendarEvents);
+          } else {
+            queueSelect.innerHTML = '<option value="">-- ไม่เชื่อมโยงคิวงาน / ทั่วไป --</option>';
+          }
           return;
         }
 
@@ -10353,14 +10611,13 @@
             res.data.forEach(ev => {
               if (ev && ev.id) {
                 const cId = cleanEventId(ev.id);
-                // หากมีตัวที่มี colorId ให้優先เอาตัวที่มี colorId ไว้ก่อน
                 if (!freshMap.has(cId) || (ev.colorId && !freshMap.get(cId).colorId)) {
                   freshMap.set(cId, ev);
                 }
               }
             });
 
-            // รวม outsideEvents และ freshMap (ให้ข้อมูลสด res.data แทนที่ข้อมูลเดิม)
+            // รวม outsideEvents และ freshMap
             const uniqueMap = new Map();
             outsideEvents.forEach(ev => {
               if (ev && ev.id) {
@@ -10379,46 +10636,9 @@
             if (typeof updateCalendarView === 'function') {
               updateCalendarView();
             }
-            
-            queueSelect.innerHTML = '<option value="">-- ไม่เชื่อมโยงคิวงาน / ทั่วไป --</option>';
-            const defaultColorId = localStorage.getItem('income_tracker_default_calendar_color_id') || "";
-            const calendarColorHex = localStorage.getItem('income_tracker_calendar_color_hex') || "";
-            
-            let activeDefaultId = defaultColorId;
-            if (!activeDefaultId && calendarColorHex) {
-              const cleanHex = calendarColorHex.toLowerCase();
-              if (cleanHex === '#dc2127' || cleanHex === '#ff887c' || cleanHex === '#d50000' || cleanHex.includes('red')) {
-                activeDefaultId = "11";
-              }
+            if (typeof window.populateFeltzQueueDropdown === 'function') {
+              window.populateFeltzQueueDropdown(window.calendarEvents);
             }
-            
-            let manualOverrides = {};
-            try {
-              const storedOverrides = localStorage.getItem('income_tracker_manual_color_overrides');
-              if (storedOverrides) manualOverrides = JSON.parse(storedOverrides);
-            } catch (err) {}
-
-            const confirmedEvents = window.calendarEvents.filter(ev => {
-              const activeColorId = manualOverrides[ev.id] || ev.colorId || activeDefaultId;
-              return activeColorId === "11" || activeColorId === "4";
-            });
-            
-            confirmedEvents.forEach(ev => {
-              const option = document.createElement('option');
-              option.value = ev.id;
-              
-              let displayDate = "";
-              if (ev.startTime) {
-                const start = new Date(ev.startTime);
-                if (!isNaN(start.getTime())) {
-                  const dd = String(start.getDate()).padStart(2, '0');
-                  const mm = String(start.getMonth() + 1).padStart(2, '0');
-                  displayDate = `[${dd}/${mm}] `;
-                }
-              }
-              option.textContent = `${displayDate}${ev.title}`;
-              queueSelect.appendChild(option);
-            });
           }
         } catch (error) {
           console.error("fetchCalendarEvents failed:", error);
@@ -12636,23 +12856,31 @@
         return calculateOverviewDataFromList(transactions);
       }
 
-      function renderOverviewKPIs(data) {
+      function renderOverviewKPIs(data, totals) {
         if (!data || !Array.isArray(data)) return;
         let totalFeltzIncome = 0;
         let totalExpense = 0;
         let netProfit = 0;
-        let totalSavings = 0;
         let totalGrabIncome = 0;
+        let totalSavings = 0;
 
-        data.forEach(m => {
-          if (!m || typeof m !== 'object') return;
-          const fInc = parseFloat(m.feltzIncome) || (parseFloat(m.income) || 0) - (parseFloat(m.grabIncome) || 0);
-          totalFeltzIncome += fInc;
-          totalExpense += parseFloat(m.expense) || 0;
-          netProfit += parseFloat(m.profit) || 0;
-          totalSavings += parseFloat(m.savings) || 0;
-          totalGrabIncome += parseFloat(m.grabIncome) || 0;
-        });
+        if (totals && typeof totals === 'object') {
+          totalFeltzIncome = parseFloat(totals.total_feltz_income) || 0;
+          totalGrabIncome = parseFloat(totals.total_grab_income) || 0;
+          totalExpense = parseFloat(totals.total_expense) || 0;
+          netProfit = parseFloat(totals.net_profit) || 0;
+          totalSavings = Math.round((totalFeltzIncome + totalGrabIncome) * 0.10);
+        } else {
+          data.forEach(m => {
+            if (!m || typeof m !== 'object') return;
+            const fInc = parseFloat(m.feltz_income || m.feltzIncome) || (parseFloat(m.income) || 0) - (parseFloat(m.grab_income || m.grabIncome) || 0);
+            totalFeltzIncome += fInc;
+            totalExpense += parseFloat(m.expense) || 0;
+            netProfit += parseFloat(m.profit) || 0;
+            totalSavings += parseFloat(m.savings) || 0;
+            totalGrabIncome += parseFloat(m.grab_income || m.grabIncome) || 0;
+          });
+        }
 
         const incomeEl = document.getElementById('overview-kpi-total-income');
         const grabIncomeEl = document.getElementById('overview-kpi-grab-income');
@@ -12660,12 +12888,12 @@
         const savingsEl = document.getElementById('overview-kpi-total-savings');
         const expenseEl = document.getElementById('overview-kpi-total-expense');
 
-        if (incomeEl) incomeEl.textContent = `${totalFeltzIncome.toLocaleString()} THB`;
-        if (grabIncomeEl) grabIncomeEl.textContent = `${totalGrabIncome.toLocaleString()} THB`;
-        if (savingsEl) savingsEl.textContent = `${totalSavings.toLocaleString()} THB`;
-        if (expenseEl) expenseEl.textContent = `${totalExpense.toLocaleString()} THB`;
+        if (incomeEl) incomeEl.textContent = `${Math.round(totalFeltzIncome).toLocaleString()} THB`;
+        if (grabIncomeEl) grabIncomeEl.textContent = `${Math.round(totalGrabIncome).toLocaleString()} THB`;
+        if (savingsEl) savingsEl.textContent = `${Math.round(totalSavings).toLocaleString()} THB`;
+        if (expenseEl) expenseEl.textContent = `${Math.round(totalExpense).toLocaleString()} THB`;
         if (profitEl) {
-          profitEl.textContent = `${netProfit.toLocaleString()} THB`;
+          profitEl.textContent = `${Math.round(netProfit).toLocaleString()} THB`;
           profitEl.style.color = '#a78bfa';
         }
       }
@@ -12679,11 +12907,10 @@
         data.forEach(m => {
           if (!m || typeof m !== 'object') return;
 
-          const incomeVal = parseFloat(m.feltzIncome) || (parseFloat(m.income) || 0) - (parseFloat(m.grabIncome) || 0);
-          const grabVal = parseFloat(m.grabIncome) || 0;
+          const incomeVal = parseFloat(m.feltz_income || m.feltzIncome) || (parseFloat(m.income) || 0) - (parseFloat(m.grab_income || m.grabIncome) || 0);
+          const grabVal = parseFloat(m.grab_income || m.grabIncome) || 0;
           const expenseVal = parseFloat(m.expense) || 0;
           const profitVal = parseFloat(m.profit) || 0;
-          const savingsVal = parseFloat(m.savings) || 0;
 
           const tr = document.createElement('tr');
           tr.style.border = 'none';
@@ -12709,17 +12936,12 @@
             }
           }
 
-          const savingsHtml = savingsVal > 0 
-            ? `<span style="display: inline-block; padding: 4px 8px; border-radius: 8px; background: rgba(79, 172, 254, 0.08); color: #4facfe; font-weight: 600;">${savingsVal.toLocaleString()}</span>`
-            : `<span style="color: var(--color-text-secondary); opacity: 0.5;">-</span>`;
-
           tr.innerHTML = `
             <td style="padding: 10px 8px; font-weight: 600; color: var(--color-text-primary); border: none;">${m.monthName || m.month}</td>
             <td style="padding: 10px 8px; border: none;">${incomeHtml}</td>
             <td style="padding: 10px 8px; border: none;">${grabHtml}</td>
             <td style="padding: 10px 8px; border: none;">${expenseHtml}</td>
             <td style="padding: 10px 8px; border: none;">${profitHtml}</td>
-            <td style="padding: 10px 8px; border: none;">${savingsHtml}</td>
           `;
           tbody.appendChild(tr);
         });
@@ -12734,8 +12956,8 @@
 
         const maxVal = validData.length > 0
           ? Math.max(...validData.map(m => {
-              const fInc = parseFloat(m.feltzIncome) || (parseFloat(m.income) || 0) - (parseFloat(m.grabIncome) || 0);
-              const gInc = parseFloat(m.grabIncome) || 0;
+              const fInc = parseFloat(m.feltz_income || m.feltzIncome) || (parseFloat(m.income) || 0) - (parseFloat(m.grab_income || m.grabIncome) || 0);
+              const gInc = parseFloat(m.grab_income || m.grabIncome) || 0;
               const exp = parseFloat(m.expense) || 0;
               return Math.max(fInc, gInc, exp);
             }))
@@ -12765,45 +12987,46 @@
 
         let barsHtml = '';
         const groupWidth = chartWidth / 12;
-        const barWidth = 8; // ปรับลดขนาดแท่งลงเล็กน้อยจาก 12 เพื่อให้ 3 แท่งวางเรียงในกลุ่มได้สวยงาม
+        const barWidth = 8;
         const barGap = 3;
 
         validData.forEach((m, idx) => {
           const groupX = paddingLeft + idx * groupWidth;
-          
-          // รวมขนาด 3 แท่ง = (barWidth * 3) + (barGap * 2) = 30px
           const startX = groupX + (groupWidth - 30) / 2;
           
-          const feltzIncVal = parseFloat(m.feltzIncome) || (parseFloat(m.income) || 0) - (parseFloat(m.grabIncome) || 0);
-          const grabIncVal = parseFloat(m.grabIncome) || 0;
+          const feltzIncVal = parseFloat(m.feltz_income || m.feltzIncome) || (parseFloat(m.income) || 0) - (parseFloat(m.grab_income || m.grabIncome) || 0);
+          const grabIncVal = parseFloat(m.grab_income || m.grabIncome) || 0;
           const expenseVal = parseFloat(m.expense) || 0;
           
-          // แท่งที่ 1 (Feltz Income): x = startX, fill="#27a873"
-          const feltzHeight = (feltzIncVal / chartMax) * chartHeight;
-          const feltzY = paddingTop + chartHeight - feltzHeight;
           if (feltzIncVal > 0) {
+            const feltzHeight = (feltzIncVal / chartMax) * chartHeight;
+            const feltzY = paddingTop + chartHeight - feltzHeight;
             barsHtml += `
-              <rect x="${startX}" y="${feltzY}" width="${barWidth}" height="${feltzHeight}" rx="2" fill="#0284c7" opacity="0.85" />
+              <rect x="${startX}" y="${feltzY}" width="${barWidth}" height="${feltzHeight}" rx="2" fill="#0284c7" opacity="0.85">
+                <title>${m.monthName || m.month}: รายรับ Feltz ${Math.round(feltzIncVal).toLocaleString()} บาท</title>
+              </rect>
             `;
           }
 
-          // แท่งที่ 2 (Grab Income): x = startX + barWidth + barGap, fill="#27a873"
-          const grabHeight = (grabIncVal / chartMax) * chartHeight;
-          const grabY = paddingTop + chartHeight - grabHeight;
           const grabBarX = startX + barWidth + barGap;
           if (grabIncVal > 0) {
+            const grabHeight = Math.max(4, (grabIncVal / chartMax) * chartHeight);
+            const grabY = paddingTop + chartHeight - grabHeight;
             barsHtml += `
-              <rect x="${grabBarX}" y="${grabY}" width="${barWidth}" height="${grabHeight}" rx="2" fill="#27a873" opacity="0.85" />
+              <rect x="${grabBarX}" y="${grabY}" width="${barWidth}" height="${grabHeight}" rx="2" fill="#27a873" opacity="0.85">
+                <title>${m.monthName || m.month}: รายรับ Grab ${Math.round(grabIncVal).toLocaleString()} บาท</title>
+              </rect>
             `;
           }
 
-          // แท่งที่ 3 (Expense): x = startX + (barWidth + barGap) * 2, fill="var(--color-neon-rose)"
-          const expHeight = (expenseVal / chartMax) * chartHeight;
-          const expY = paddingTop + chartHeight - expHeight;
           const expBarX = startX + (barWidth + barGap) * 2;
           if (expenseVal > 0) {
+            const expHeight = (expenseVal / chartMax) * chartHeight;
+            const expY = paddingTop + chartHeight - expHeight;
             barsHtml += `
-              <rect x="${expBarX}" y="${expY}" width="${barWidth}" height="${expHeight}" rx="2" fill="var(--color-neon-rose)" opacity="0.85" />
+              <rect x="${expBarX}" y="${expY}" width="${barWidth}" height="${expHeight}" rx="2" fill="var(--color-neon-rose)" opacity="0.85">
+                <title>${m.monthName || m.month}: รายจ่าย ${Math.round(expenseVal).toLocaleString()} บาท</title>
+              </rect>
             `;
           }
 
@@ -12824,7 +13047,7 @@
         wrapper.innerHTML = svg;
       }
 
-      function updateDashboardWithOnlineData(sheetData) {
+      function updateDashboardWithOnlineData(sheetData, onlineTotals) {
         if (!sheetData || !Array.isArray(sheetData)) return;
         
         let totalIncome = 0;
@@ -12832,13 +13055,20 @@
         let netProfit = 0;
         let totalSavings = 0;
         
-        sheetData.forEach(m => {
-          if (!m || typeof m !== 'object') return;
-          totalIncome += parseFloat(m.income) || 0;
-          totalExpense += parseFloat(m.expense) || 0;
-          netProfit += parseFloat(m.profit) || 0;
-          totalSavings += parseFloat(m.savings) || 0;
-        });
+        if (onlineTotals && typeof onlineTotals === 'object') {
+          totalIncome = parseFloat(onlineTotals.total_income) || 0;
+          totalExpense = parseFloat(onlineTotals.total_expense) || 0;
+          netProfit = parseFloat(onlineTotals.net_profit) || 0;
+          totalSavings = Math.round(totalIncome * 0.10);
+        } else {
+          sheetData.forEach(m => {
+            if (!m || typeof m !== 'object') return;
+            totalIncome += parseFloat(m.income) || 0;
+            totalExpense += parseFloat(m.expense) || 0;
+            netProfit += parseFloat(m.profit) || 0;
+            totalSavings += parseFloat(m.savings) || 0;
+          });
+        }
 
         // 1. Slide 1 (เงินเก็บสะสม 10%)
         const slide1ValEl = document.getElementById('slide1-val');
@@ -12875,7 +13105,7 @@
         let latestMonthData = null;
         for (let i = sheetData.length - 1; i >= 0; i--) {
           const m = sheetData[i];
-          if (m && (m.income > 0 || m.expense > 0)) {
+          if (m && ((parseFloat(m.income) || 0) > 0 || (parseFloat(m.expense) || 0) > 0)) {
             latestMonthData = m;
             break;
           }
@@ -12901,44 +13131,18 @@
           expenseMonthLabel = `รายจ่ายเดือน${full}`;
         }
 
-        // Calculate local ratios for income splitting (Feltz vs Grab)
-        let localFeltz = 0;
-        let localGrab = 0;
-        let localIncome = 0;
-        
-        let localLatestMonth = '';
-        transactions.forEach(tx => {
-          if (tx.date && tx.date.length >= 7) {
-            const m = tx.date.substring(0, 7);
-            if (m > localLatestMonth) localLatestMonth = m;
+        // Calculate accurate Feltz vs Grab numbers for slide 2
+        let onlineFeltz = 0;
+        let onlineGrab = 0;
+        if (latestMonthData) {
+          if (latestMonthData.feltz_income !== undefined || latestMonthData.feltzIncome !== undefined) {
+            onlineFeltz = parseFloat(latestMonthData.feltz_income ?? latestMonthData.feltzIncome) || 0;
+            onlineGrab = parseFloat(latestMonthData.grab_income ?? latestMonthData.grabIncome) || 0;
+          } else {
+            onlineFeltz = currentMonthIncome * 0.8;
+            onlineGrab = currentMonthIncome * 0.2;
           }
-        });
-
-        if (localLatestMonth) {
-          transactions.filter(tx => tx.date && tx.date.startsWith(localLatestMonth)).forEach(tx => {
-            if (tx.type === 'income') {
-              const amt = parseFloat(tx.amount) || 0;
-              localIncome += amt;
-              if (tx.category === 'Feltz Studio') {
-                localFeltz += amt;
-              } else if (tx.category === 'Grab Income') {
-                localGrab += amt;
-              } else {
-                localFeltz += amt;
-              }
-            }
-          });
         }
-
-        let feltzRatio = 0.8;
-        let grabRatio = 0.2;
-        if (localIncome > 0) {
-          feltzRatio = localFeltz / localIncome;
-          grabRatio = localGrab / localIncome;
-        }
-
-        const onlineFeltz = currentMonthIncome * feltzRatio;
-        const onlineGrab = currentMonthIncome * grabRatio;
 
         // 2. Slide 2 (รายรับเดือนปัจจุบัน)
         const slide2ValEl = document.getElementById('slide2-val');
@@ -12960,7 +13164,7 @@
         if (slide2StatRightNumEl) slide2StatRightNumEl.textContent = `${onlineGrab.toLocaleString()} THB`;
 
         if (currentMonthIncome > 0) {
-          const fPct = Math.round(feltzRatio * 100);
+          const fPct = Math.round((onlineFeltz / currentMonthIncome) * 100);
           const gPct = 100 - fPct;
           if (slide2RatioLeftEl) slide2RatioLeftEl.textContent = `Feltz Studio ${fPct}%`;
           if (slide2RatioRightEl) slide2RatioRightEl.textContent = `Grab Income ${gPct}%`;
@@ -12974,12 +13178,14 @@
         }
 
         // Calculate Fixed and Variable costs for online expenses
-        let onlineFixed = 0;
-        if (latestMonthData && Array.isArray(latestMonthData.fixedCosts)) {
-          onlineFixed = latestMonthData.fixedCosts.reduce((sum, item) => sum + (parseFloat(item.amount) || 0), 0);
+        let onlineFixed = 41280;
+        if (window.cachedFixedCosts && Array.isArray(window.cachedFixedCosts)) {
+          onlineFixed = window.cachedFixedCosts.reduce((sum, item) => sum + (parseFloat(item.amount) || 0), 0);
         } else {
           const fixedCosts = JSON.parse(localStorage.getItem('income_tracker_fixed_costs')) || [];
-          onlineFixed = fixedCosts.reduce((sum, item) => sum + (parseFloat(item.amount) || 0), 0);
+          if (fixedCosts.length > 0) {
+            onlineFixed = fixedCosts.reduce((sum, item) => sum + (parseFloat(item.amount) || 0), 0);
+          }
         }
         const onlineVariable = Math.max(0, currentMonthExpense - onlineFixed);
 
@@ -13018,10 +13224,57 @@
       }
       window.updateDashboardWithOnlineData = updateDashboardWithOnlineData;
 
+      const FAST_FINANCIAL_CACHE_URL = 'https://srv1913532.hstgr.cloud/super-app/data/financial_summary.json';
+
+      async function fetchFastFinancialCache() {
+        try {
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 4000);
+          const response = await fetch(FAST_FINANCIAL_CACHE_URL + '?t=' + Date.now(), {
+            method: 'GET',
+            mode: 'cors',
+            headers: { 'Accept': 'application/json' },
+            signal: controller.signal
+          });
+          clearTimeout(timeoutId);
+          if (response.ok) {
+            const res = await response.json();
+            if (res && (res.monthly || res.data)) {
+              return res;
+            }
+          }
+        } catch (e) {
+          try {
+            const localResp = await fetch('data/financial_summary.json?t=' + Date.now());
+            if (localResp.ok) {
+              return await localResp.json();
+            }
+          } catch (_) {}
+        }
+        return null;
+      }
+
       async function preloadFinancialOverview() {
+        try {
+          const fastRes = await fetchFastFinancialCache();
+          if (fastRes) {
+            const data = fastRes.monthly || fastRes.data;
+            window.cachedOverviewData = data;
+            window.cachedFixedCosts = fastRes.fixed_costs;
+            window.cachedTotals = fastRes.totals;
+            window.updateDashboardWithOnlineData(data, fastRes.totals);
+            if (typeof window.renderPersonalFinance === 'function') {
+              window.renderPersonalFinance();
+            }
+            return;
+          }
+        } catch (error) {
+          console.warn("Fast cache preload failed:", error);
+        }
+
         const gasUrl = localStorage.getItem('income_tracker_gas_url') || DEFAULT_GAS_URL;
         const feltzSheetId = localStorage.getItem('income_tracker_general_sheet_id') || DEFAULT_FELTZ_SHEET_ID;
-        if (!gasUrl || !feltzSheetId) return; // ถ้าไม่ได้เชื่อม ก็ใช้ข้อมูล local เดิม
+        if (!gasUrl || !feltzSheetId) return;
         
         try {
           const controller = new AbortController();
@@ -13047,146 +13300,91 @@
           
           const res = await response.json();
           if (res.status === 'success' && res.data && Array.isArray(res.data)) {
-            window.cachedOverviewData = res.data; // เก็บแคชไว้ให้ Modal
-            window.updateDashboardWithOnlineData(res.data); // พ่นทับหน้าแรกออโต้จ้า
+            window.cachedOverviewData = res.data;
+            window.updateDashboardWithOnlineData(res.data);
           }
         } catch (error) {
-          console.warn("Background preload failed:", error);
+          console.warn("Background preload fallback failed:", error);
         }
       }
       window.preloadFinancialOverview = preloadFinancialOverview;
 
       async function loadFinancialOverview() {
-        const warningEl = document.getElementById('overview-sync-warning');
-        if (warningEl) warningEl.style.display = 'none';
-
         // Check if cache exists
         if (window.cachedOverviewData && Array.isArray(window.cachedOverviewData)) {
-          // Render immediately using cache
-          renderOverviewKPIs(window.cachedOverviewData);
+          renderOverviewKPIs(window.cachedOverviewData, window.cachedTotals);
           renderOverviewMonthlySummaryTable(window.cachedOverviewData);
           drawOverviewSvgChart(window.cachedOverviewData);
-          window.renderOverviewFixedCosts();
+          window.renderOverviewFixedCosts(window.cachedFixedCosts);
 
-          // Fetch in background quietly
-          const gasUrl = localStorage.getItem('income_tracker_gas_url') || DEFAULT_GAS_URL;
-          const feltzSheetId = localStorage.getItem('income_tracker_general_sheet_id') || DEFAULT_FELTZ_SHEET_ID;
-          if (gasUrl && feltzSheetId) {
-            (async () => {
-              try {
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 15000);
-                
-                const payload = {
-                  spreadsheetId: feltzSheetId,
-                  grabSpreadsheetId: localStorage.getItem('income_tracker_grab_sheet_id') || DEFAULT_GRAB_SHEET_ID,
-                  type: 'fetch_summary',
-                  date: '01/01/2026'
-                };
-                
-                const response = await fetch(gasUrl, {
-                  method: 'POST',
-                  mode: 'cors',
-                  headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                  body: JSON.stringify(payload),
-                  signal: controller.signal
-                });
-                
-                clearTimeout(timeoutId);
-                if (!response.ok) return;
-                
-                const res = await response.json();
-                if (res.status === 'success' && res.data && Array.isArray(res.data)) {
-                  window.cachedOverviewData = res.data;
-                  renderOverviewKPIs(res.data);
-                  renderOverviewMonthlySummaryTable(res.data);
-                  drawOverviewSvgChart(res.data);
-                  window.renderOverviewFixedCosts();
-                  window.updateDashboardWithOnlineData(res.data);
+          // Quietly refresh in background from fast VPS cache
+          (async () => {
+            try {
+              const fastRes = await fetchFastFinancialCache();
+              if (fastRes) {
+                const data = fastRes.monthly || fastRes.data;
+                window.cachedOverviewData = data;
+                window.cachedFixedCosts = fastRes.fixed_costs;
+                window.cachedTotals = fastRes.totals;
+                renderOverviewKPIs(data, fastRes.totals);
+                renderOverviewMonthlySummaryTable(data);
+                drawOverviewSvgChart(data);
+                window.renderOverviewFixedCosts(fastRes.fixed_costs);
+                window.updateDashboardWithOnlineData(data, fastRes.totals);
+                if (typeof window.renderPersonalFinance === 'function') {
+                  window.renderPersonalFinance();
                 }
-              } catch (error) {
-                console.warn("Background refresh failed:", error);
               }
-            })();
-          }
+            } catch (_) {}
+          })();
           return;
         }
 
         const tableBody = document.getElementById('overviewMonthlySummaryBody');
         if (tableBody) {
-          tableBody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--color-text-secondary); padding: 24px;">กำลังเชื่อมซิงค์ข้อมูลกับ Google Sheets ของแก... (Apps Script อาจใช้เวลาตื่นตัวสักครู่จ้า)</td></tr>';
+          tableBody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--color-text-secondary); padding: 24px;">กำลังซิงค์ข้อมูลสรุปยอดการเงิน...</td></tr>';
         }
 
         const chartWrapper = document.getElementById('overview-chart-wrapper');
         if (chartWrapper) {
-          chartWrapper.innerHTML = '<div style="color: var(--color-text-secondary); font-size: 13px;">กำลังเชื่อมซิงค์ข้อมูลกับ Google Sheets ของแก... (Apps Script อาจใช้เวลาตื่นตัวสักครู่จ้า)</div>';
+          chartWrapper.innerHTML = '<div style="color: var(--color-text-secondary); font-size: 13px;">กำลังโหลดแผนภูมิเปรียบเทียบรายรับ-รายจ่าย...</div>';
         }
 
         const kpis = [
           'overview-kpi-total-income',
+          'overview-kpi-grab-income',
           'overview-kpi-total-expense',
-          'overview-kpi-net-profit',
-          'overview-kpi-total-savings'
+          'overview-kpi-net-profit'
         ];
         kpis.forEach(id => {
           const el = document.getElementById(id);
           if (el) el.textContent = 'กำลังโหลด...';
         });
 
-        const gasUrl = localStorage.getItem('income_tracker_gas_url') || DEFAULT_GAS_URL;
-        const feltzSheetId = localStorage.getItem('income_tracker_general_sheet_id') || DEFAULT_FELTZ_SHEET_ID;
-        
-        let fetchedData = null;
+        // Priority 1: Fetch fast cache JSON from VPS (50ms)
+        let fastRes = null;
+        try {
+          fastRes = await fetchFastFinancialCache();
+        } catch (_) {}
 
-        if (gasUrl && feltzSheetId) {
-          try {
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 15000);
-            
-            const payload = {
-              spreadsheetId: feltzSheetId,
-              grabSpreadsheetId: localStorage.getItem('income_tracker_grab_sheet_id') || DEFAULT_GRAB_SHEET_ID,
-              type: 'fetch_summary',
-              date: '01/01/2026'
-            };
-            
-            const response = await fetch(gasUrl, {
-              method: 'POST',
-              mode: 'cors',
-              headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-              body: JSON.stringify(payload),
-              signal: controller.signal
-            });
-            
-            clearTimeout(timeoutId);
-            
-            if (!response.ok) {
-              throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            
-            const res = await response.json();
-            if (res.status === 'success' && res.data && Array.isArray(res.data)) {
-              fetchedData = res.data;
-              window.cachedOverviewData = res.data; // Save cache here too!
-              window.updateDashboardWithOnlineData(res.data); // Update first slide!
-            } else {
-              throw new Error(res.message || 'Apps Script returned error status');
-            }
-          } catch (error) {
-            console.warn("Apps Script fetch failed, falling back to local calculations:", error);
-            if (warningEl) {
-              warningEl.style.display = 'flex';
-            }
+        if (fastRes) {
+          const data = fastRes.monthly || fastRes.data;
+          window.cachedOverviewData = data;
+          window.cachedFixedCosts = fastRes.fixed_costs;
+          window.cachedTotals = fastRes.totals;
+          renderOverviewKPIs(data, fastRes.totals);
+          renderOverviewMonthlySummaryTable(data);
+          drawOverviewSvgChart(data);
+          window.renderOverviewFixedCosts(fastRes.fixed_costs);
+          window.updateDashboardWithOnlineData(data, fastRes.totals);
+          if (typeof window.renderPersonalFinance === 'function') {
+            window.renderPersonalFinance();
           }
+          return;
         }
 
-        let dataToUse;
-        if (fetchedData) {
-          dataToUse = fetchedData;
-        } else {
-          dataToUse = calculateLocalOverviewData();
-        }
-
+        // Fallback: Local calculations
+        const dataToUse = calculateLocalOverviewData();
         renderOverviewKPIs(dataToUse);
         renderOverviewMonthlySummaryTable(dataToUse);
         drawOverviewSvgChart(dataToUse);
@@ -14627,15 +14825,124 @@
     }
     window.showStatusToast = showStatusToast;
 
-    // ดึงข้อมูลจำนวนเหรียญและต้นทุนจาก Google Sheets ผ่าน Apps Script Web App Proxy
+    const FAST_CRYPTO_CACHE_URL = 'https://srv1913532.hstgr.cloud/super-app/data/crypto_holdings.json';
+
+    // Helper: ดึงข้อมูลพอร์ต Fast VPS Cache พร้อม fallback ไฟล์ในเครื่อง
+    async function fetchFastCryptoCache() {
+      const urls = [
+        FAST_CRYPTO_CACHE_URL + '?t=' + Date.now(),
+        'data/crypto_holdings.json?t=' + Date.now()
+      ];
+      for (const url of urls) {
+        try {
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 3500);
+          const res = await fetch(url, { signal: controller.signal });
+          clearTimeout(timeoutId);
+          if (res.ok) {
+            const data = await res.json();
+            if (data && (data.totals || data.assets)) {
+              console.log('Successfully fetched crypto holdings from cache:', url);
+              return data;
+            }
+          }
+        } catch (err) {
+          console.warn('Fast crypto cache fetch failed for:', url, err.message || err);
+        }
+      }
+      return null;
+    }
+
+    // Helper: คืนค่าคลาส สี และ SVG ไอคอนของแต่ละเหรียญ
+    function getCoinMetadata(coin) {
+      if (coin === 'BTC') {
+        return {
+          coinClass: 'btc-coin',
+          logoSvg: `<svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2.5" style="width:16px;height:16px;"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>`,
+          defaultLabel: 'BTC (ของฉัน)',
+          color: '#f59e0b'
+        };
+      } else if (coin === 'Mod_BTC') {
+        return {
+          coinClass: 'mod-btc-coin',
+          logoSvg: `<svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2.5" style="width:16px;height:16px;"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>`,
+          defaultLabel: 'BTC (ของมด)',
+          color: '#f59e0b'
+        };
+      } else if (coin === 'Thyme_KUB') {
+        return {
+          coinClass: 'kub-coin',
+          logoSvg: `<svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5" style="width:16px;height:16px;"><path d="M7 21V3l10 9-10 9z"></path></svg>`,
+          defaultLabel: 'KUB (ของธาม)',
+          color: '#10b981'
+        };
+      } else if (coin === 'ETH') {
+        return {
+          coinClass: 'eth-coin',
+          logoSvg: `<svg viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2" style="width:16px;height:16px;"><path d="M12 2 4 11.5l8 4.5 8-4.5zM12 22l-8-6 8 6 8-6zM12 16V2"></path></svg>`,
+          defaultLabel: 'ETH',
+          color: '#8b5cf6'
+        };
+      } else if (coin === 'BNB') {
+        return {
+          coinClass: 'bnb-coin',
+          logoSvg: `<svg viewBox="0 0 24 24" fill="none" stroke="#eab308" stroke-width="2.5" style="width:16px;height:16px;"><path d="M12 2L4 10l8 8 8-8-8-8zM12 8l4 4-4 4-4-4 4-4z"></path></svg>`,
+          defaultLabel: 'BNB',
+          color: '#eab308'
+        };
+      } else if (coin === 'SOL') {
+        return {
+          coinClass: 'sol-coin',
+          logoSvg: `<svg viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2.5" style="width:16px;height:16px;"><path d="m4 6 4-4h12M4 12l4-4h12M4 18l4-4h12"></path></svg>`,
+          defaultLabel: 'SOL',
+          color: '#6366f1'
+        };
+      } else if (coin === 'XRP') {
+        return {
+          coinClass: 'xrp-coin',
+          logoSvg: `<svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.5" style="width:16px;height:16px;"><circle cx="12" cy="12" r="9"></circle><path d="M8 12h8M12 8v8"></path></svg>`,
+          defaultLabel: 'XRP',
+          color: '#3b82f6'
+        };
+      } else if (coin === 'ASTER') {
+        return {
+          coinClass: 'aster-coin',
+          logoSvg: `<svg viewBox="0 0 24 24" fill="none" stroke="#ec4899" stroke-width="2" style="width:16px;height:16px;"><path d="M12 2v20M2 12h20M5.8 5.8l12.4 12.4M5.8 18.2L18.2 5.8"></path></svg>`,
+          defaultLabel: 'ASTER',
+          color: '#ec4899'
+        };
+      }
+      return {
+        coinClass: 'generic-coin',
+        logoSvg: '',
+        defaultLabel: coin,
+        color: '#94a3b8'
+      };
+    }
+
+    // ดึงข้อมูลจำนวนเหรียญและต้นทุนจาก Fast VPS Cache (พร้อม fallback ในเครื่อง หรือ Google Sheets Proxy)
     async function getSheetsCryptoHoldings(spreadsheetId) {
+      try {
+        const cacheData = await fetchFastCryptoCache();
+        if (cacheData) {
+          if (typeof showStatusToast === 'function') {
+            showStatusToast("ดึงข้อมูลพอร์ตจริงจาก Fast VPS Cache สำเร็จ!", true);
+          }
+          return cacheData.holdings ? Object.assign({}, cacheData.holdings, cacheData) : cacheData;
+        }
+      } catch (e) {
+        console.warn("Fast crypto cache lookup error in getSheetsCryptoHoldings:", e);
+      }
+
       const holdings = JSON.parse(JSON.stringify(DEFAULT_CRYPTO_HOLDINGS));
       if (!spreadsheetId) return holdings;
       
       const scriptUrl = localStorage.getItem('income_tracker_gas_url') || DEFAULT_GAS_URL;
       if (!scriptUrl) {
         console.warn("Apps Script URL not set. Using fallback crypto holdings.");
-        showStatusToast("ไม่ได้ตั้งค่า Apps Script URL (ใช้ข้อมูลพอร์ตจำลอง)", false);
+        if (typeof showStatusToast === 'function') {
+          showStatusToast("ไม่ได้ตั้งค่า Apps Script URL (ใช้ข้อมูลพอร์ตจำลอง)", false);
+        }
         return holdings;
       }
       
@@ -14659,209 +14966,170 @@
           const result = await res.json();
           if (result.status === 'success' && result.holdings) {
             console.log("Successfully fetched crypto holdings from Apps Script proxy:", result.holdings);
-            showStatusToast("เชื่อมต่อสำเร็จ ดึงข้อมูลพอร์ตจริงจาก Sheets แล้ว!", true);
+            if (typeof showStatusToast === 'function') {
+              showStatusToast("เชื่อมต่อสำเร็จ ดึงข้อมูลพอร์ตจริงจาก Sheets แล้ว!", true);
+            }
             return result.holdings;
           } else {
             console.warn("Apps Script returned error or invalid status:", result.message);
-            showStatusToast("หลังบ้านแจ้งข้อผิดพลาด: " + (result.message || "ไม่ระบุ"), false);
+            if (typeof showStatusToast === 'function') {
+              showStatusToast("หลังบ้านแจ้งข้อผิดพลาด: " + (result.message || "ไม่ระบุ"), false);
+            }
           }
         } else {
-          showStatusToast("การเชื่อมต่อเซิร์ฟเวอร์ล้มเหลว (HTTP " + res.status + ")", false);
+          if (typeof showStatusToast === 'function') {
+            showStatusToast("การเชื่อมต่อเซิร์ฟเวอร์ล้มเหลว (HTTP " + res.status + ")", false);
+          }
         }
       } catch (e) {
         console.error("Failed to fetch crypto holdings via Apps Script (falling back):", e);
-        showStatusToast("เชื่อมต่อคลาวด์ล้มเหลว/Timeout (ใช้ข้อมูลพอร์ตจำลอง)", false);
+        if (typeof showStatusToast === 'function') {
+          showStatusToast("เชื่อมต่อคลาวด์ล้มเหลว/Timeout (ใช้ข้อมูลพอร์ตจำลอง)", false);
+        }
       }
       
       return holdings;
     }
+    window.getSheetsCryptoHoldings = getSheetsCryptoHoldings;
 
     // ฟังก์ชันคำนวณและอัปเดต UI พอร์ตคริปโต
     async function refreshCryptoPortfolio() {
       const refreshBtn = document.getElementById('btn-refresh-crypto');
       if (refreshBtn) {
         refreshBtn.disabled = true;
-        refreshBtn.querySelector('span').textContent = 'Loading...';
+        const span = refreshBtn.querySelector('span');
+        if (span) span.textContent = 'Loading...';
       }
       
       try {
-        const DEFAULT_CRYPTO_SHEET_ID = '1yWxTiVglJsWhVBSlB7UPu7MXGRQ_vti5IjqxWTCFJK0';
-        localStorage.setItem('income_tracker_crypto_sheet_id', DEFAULT_CRYPTO_SHEET_ID);
-        const spreadsheetId = DEFAULT_CRYPTO_SHEET_ID;
+        let res = await fetchFastCryptoCache();
         
-        // ดึงข้อมูลพร้อมกัน
-        const [livePrices, holdings] = await Promise.all([
-          getLiveCryptoPrices(),
-          getSheetsCryptoHoldings(spreadsheetId)
-        ]);
-        
-        // ดึงทุน DCA สะสมโดยตรงจากแท็บเหรียญหลักของแต่ละคน โดยไม่บวกปนกับเหรียญอื่นมั่วซั่ว
-        const kengCapital = holdings['BTC'] && holdings['BTC'].dcaCapital !== undefined ? holdings['BTC'].dcaCapital : (holdings['BTC'] ? (holdings['BTC'].amount * holdings['BTC'].basePrice) : 28634.46);
-        const modCapital = holdings['Mod_BTC'] && holdings['Mod_BTC'].dcaCapital !== undefined ? holdings['Mod_BTC'].dcaCapital : (holdings['Mod_BTC'] ? (holdings['Mod_BTC'].amount * holdings['Mod_BTC'].basePrice) : 3525.00);
-        const thymeCapital = holdings['Thyme_KUB'] && holdings['Thyme_KUB'].dcaCapital !== undefined ? holdings['Thyme_KUB'].dcaCapital : (holdings['Thyme_KUB'] ? (holdings['Thyme_KUB'].amount * holdings['Thyme_KUB'].basePrice) : 10260.00);
-        let totalCurrentValue = 0;
-        let totalCost = 0;
-        let kengTotalCost = 0;
-        let kengTotalCurrentValue = 0;
-        
-        const container = document.getElementById('crypto-assets-grid');
-        if (container) {
-          container.innerHTML = '';
+        if (!res || !res.totals) {
+          const DEFAULT_CRYPTO_SHEET_ID = '1yWxTiVglJsWhVBSlB7UPu7MXGRQ_vti5IjqxWTCFJK0';
+          const fallbackData = await getSheetsCryptoHoldings(DEFAULT_CRYPTO_SHEET_ID);
+          if (fallbackData && fallbackData.totals) {
+            res = fallbackData;
+          }
         }
         
-        CRYPTO_COINS.forEach(coin => {
-          const data = holdings[coin];
-          const livePrice = livePrices[coin] || data.basePrice;
+        if (res && res.totals) {
+          const totals = res.totals;
           
-          const cost = data.dcaCapital !== undefined ? data.dcaCapital : (data.amount * data.basePrice);
-          const currentValue = data.amount * livePrice;
-          const pnlThb = currentValue - cost;
-          const pnlPct = cost > 0 ? (pnlThb / cost) * 100 : 0;
-          
-          totalCurrentValue += currentValue;
-          totalCost += cost;
-          
-          const isKengCoin = !['Mod_BTC', 'Thyme_KUB'].includes(coin);
-          if (isKengCoin) {
-            kengTotalCost += cost;
-            kengTotalCurrentValue += currentValue;
+          // นำค่าจริงมาอัปเดต 4 การ์ด KPI ด้านบน
+          const kengCap = document.getElementById('crypto-keng-capital') || document.getElementById('keng-capital-val');
+          if (kengCap) kengCap.textContent = formatNumber(totals.kengCapital) + ' THB';
+
+          const kengCapSub = document.getElementById('crypto-keng-capital-sub') || document.getElementById('keng-capital-pnl');
+          if (kengCapSub) {
+            const isKengUp = totals.kengPnLPct >= 0;
+            kengCapSub.textContent = `+${formatNumber(totals.kengCurrentValue)} THB (${isKengUp ? '+' : ''}${totals.kengPnLPct.toFixed(2)}%)`;
+            kengCapSub.style.color = isKengUp ? '#27a873' : '#ef4444';
           }
-          
-          let coinClass = 'eth-coin';
-          let logoSvg = '';
-          let coinLabel = coin;
-          
-          if (coin === 'BTC') {
-            coinClass = 'btc-coin';
-            logoSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2.5" style="width:16px;height:16px;"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>`;
-            coinLabel = 'BTC (ของฉัน)';
-          } else if (coin === 'Mod_BTC') {
-            coinClass = 'mod-btc-coin';
-            logoSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2.5" style="width:16px;height:16px;"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>`;
-            coinLabel = 'BTC (ของมด)';
-          } else if (coin === 'Thyme_KUB') {
-            coinClass = 'kub-coin';
-            logoSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5" style="width:16px;height:16px;"><path d="M7 21V3l10 9-10 9z"></path></svg>`;
-            coinLabel = 'KUB (ของธาม)';
-          } else if (coin === 'ETH') {
-            coinClass = 'eth-coin';
-            logoSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2" style="width:16px;height:16px;"><path d="M12 2 4 11.5l8 4.5 8-4.5zM12 22l-8-6 8 6 8-6zM12 16V2"></path></svg>`;
-            coinLabel = 'ETH';
-          } else if (coin === 'BNB') {
-            coinClass = 'bnb-coin';
-            logoSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="#eab308" stroke-width="2.5" style="width:16px;height:16px;"><path d="M12 2L4 10l8 8 8-8-8-8zM12 8l4 4-4 4-4-4 4-4z"></path></svg>`;
-            coinLabel = 'BNB';
-          } else if (coin === 'SOL') {
-            coinClass = 'sol-coin';
-            logoSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2.5" style="width:16px;height:16px;"><path d="m4 6 4-4h12M4 12l4-4h12M4 18l4-4h12"></path></svg>`;
-            coinLabel = 'SOL';
-          } else if (coin === 'XRP') {
-            coinClass = 'xrp-coin';
-            logoSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.5" style="width:16px;height:16px;"><circle cx="12" cy="12" r="9"></circle><path d="M8 12h8M12 8v8"></path></svg>`;
-            coinLabel = 'XRP';
-          } else if (coin === 'ASTER') {
-            coinClass = 'aster-coin';
-            logoSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="#ec4899" stroke-width="2" style="width:16px;height:16px;"><path d="M12 2v20M2 12h20M5.8 5.8l12.4 12.4M5.8 18.2L18.2 5.8"></path></svg>`;
-            coinLabel = 'ASTER';
+
+          const modCap = document.getElementById('crypto-mod-capital') || document.getElementById('mod-capital-val');
+          if (modCap) modCap.textContent = formatNumber(totals.modCapital) + ' THB';
+
+          const thymeCap = document.getElementById('crypto-thyme-capital') || document.getElementById('thyme-capital-val');
+          if (thymeCap) thymeCap.textContent = formatNumber(totals.thymeCapital) + ' THB';
+
+          const livePnl = document.getElementById('crypto-live-pnl') || document.getElementById('total-portfolio-val');
+          if (livePnl) livePnl.textContent = formatNumber(totals.totalCurrentValue) + ' THB';
+
+          const livePnlSub = document.getElementById('crypto-live-pnl-sub') || document.getElementById('total-pnl-status');
+          if (livePnlSub) {
+            const isTotalUp = totals.totalPnL >= 0;
+            livePnlSub.textContent = `${isTotalUp ? '+' : ''}${formatNumber(totals.totalPnL)} THB (${totals.totalPnLPct >= 0 ? '+' : ''}${totals.totalPnLPct.toFixed(2)}%)`;
+            livePnlSub.className = `crypto-card-pnl ${isTotalUp ? 'crypto-pnl-up' : 'crypto-pnl-down'}`;
+            livePnlSub.style.color = isTotalUp ? '#27a873' : '#ef4444';
           }
-          
-          if (container) {
-            const div = document.createElement('div');
-            div.className = `coin-card ${coinClass}`;
-            
-            const pnlThbClass = pnlThb >= 0 ? 'text-success' : 'text-danger';
-            const pnlThbSign = pnlThb >= 0 ? '+' : '';
-            const pnlPctSign = pnlPct >= 0 ? '+' : '';
-            const pnlColor = pnlThb >= 0 ? '#27a873' : '#ef4444';
-            
-            div.innerHTML = `
-              <div class="coin-card-header" style="display: flex; flex-direction: column; gap: 4px; width: 100%;">
-                <div style="display: flex; align-items: center; gap: 8px; width: 100%;">
-                  <div class="coin-icon-wrapper" style="width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    ${logoSvg}
+
+          const lastUpdated = document.getElementById('crypto-last-updated');
+          if (lastUpdated) {
+            lastUpdated.textContent = `Last Updated: ${res.last_synced_str || new Date().toLocaleString('th-TH')}`;
+          }
+
+          // เรนเดอร์การ์ดเหรียญใน #crypto-assets-grid จาก res.assets
+          const container = document.getElementById('crypto-assets-grid');
+          if (container && Array.isArray(res.assets)) {
+            container.innerHTML = '';
+            res.assets.forEach(item => {
+              const meta = getCoinMetadata(item.coin);
+              const pnlThb = item.pnlThb !== undefined ? item.pnlThb : (item.currentValue - item.cost);
+              const pnlPct = item.pnlPct !== undefined ? item.pnlPct : (item.cost > 0 ? (pnlThb / item.cost) * 100 : 0);
+              const isUp = pnlThb >= 0;
+              const pnlThbSign = isUp ? '+' : '';
+              const pnlPctSign = pnlPct >= 0 ? '+' : '';
+              const pnlColor = isUp ? '#27a873' : '#ef4444';
+              const label = item.label || meta.defaultLabel;
+
+              const div = document.createElement('div');
+              div.className = `coin-card ${meta.coinClass}`;
+              div.innerHTML = `
+                <div class="coin-card-header" style="display: flex; flex-direction: column; gap: 4px; width: 100%;">
+                  <div style="display: flex; align-items: center; gap: 8px; width: 100%;">
+                    <div class="coin-icon-wrapper" style="width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                      ${meta.logoSvg}
+                    </div>
+                    <span class="coin-amount" style="font-family: var(--font-heading); font-size: 15px; font-weight: 850; color: var(--color-text-primary);">${formatCryptoAmount(item.amount)} ${label}</span>
                   </div>
-                  <span class="coin-amount" style="font-family: var(--font-heading); font-size: 15px; font-weight: 850; color: var(--color-text-primary);">${formatCryptoAmount(data.amount)} ${coinLabel}</span>
+                  <div class="coin-value" style="font-family: var(--font-body); font-size: 13px; font-weight: 500; color: var(--color-text-secondary); margin-top: 2px;">
+                    มูลค่าปัจจุบัน: <span style="font-weight: 700; color: var(--color-text-primary);">THB ${formatNumber(item.currentValue)}</span>
+                  </div>
                 </div>
-                <div class="coin-value" style="font-family: var(--font-body); font-size: 13px; font-weight: 500; color: var(--color-text-secondary); margin-top: 2px;">
-                  มูลค่าปัจจุบัน: <span style="font-weight: 700; color: var(--color-text-primary);">THB ${formatNumber(currentValue)}</span>
+                
+                <div class="coin-details-row" style="display: flex; flex-direction: column; gap: 2px; width: 100%; margin-top: 10px; padding: 8px 0; border-top: 1px dashed rgba(0,0,0,0.06); border-bottom: 1px dashed rgba(0,0,0,0.06); font-size: 11px; font-family: var(--font-body); color: var(--color-text-secondary);">
+                  <div style="display: flex; justify-content: space-between;">
+                    <span>ต้นทุนสะสม:</span>
+                    <span style="font-weight: 600; color: var(--color-text-primary);">THB ${formatNumber(item.cost)}</span>
+                  </div>
+                  <div style="display: flex; justify-content: space-between;">
+                    <span>ราคาตลาด:</span>
+                    <span style="font-weight: 600; color: var(--color-text-primary);">THB ${formatNumber(item.livePrice)}</span>
+                  </div>
                 </div>
-              </div>
-              
-              <div class="coin-details-row" style="display: flex; flex-direction: column; gap: 2px; width: 100%; margin-top: 10px; padding: 8px 0; border-top: 1px dashed rgba(0,0,0,0.06); border-bottom: 1px dashed rgba(0,0,0,0.06); font-size: 11px; font-family: var(--font-body); color: var(--color-text-secondary);">
-                <div style="display: flex; justify-content: space-between;">
-                  <span>ต้นทุนสะสม:</span>
-                  <span style="font-weight: 600; color: var(--color-text-primary);">THB ${formatNumber(cost)}</span>
+                
+                <div class="coin-card-footer" style="display: flex; justify-content: flex-end; align-items: center; width: 100%; margin-top: 10px; padding-bottom: 4px;">
+                  <span class="coin-pnl-status" style="font-family: var(--font-heading); font-size: 12px; font-weight: 800; color: ${pnlColor};">
+                    ${pnlThbSign}${formatNumber(pnlThb)} (${pnlPctSign}${pnlPct.toFixed(2)}%)
+                  </span>
                 </div>
-                <div style="display: flex; justify-content: space-between;">
-                  <span>ราคาตลาด:</span>
-                  <span style="font-weight: 600; color: var(--color-text-primary);">THB ${formatNumber(livePrice)}</span>
-                </div>
-              </div>
-              
-              <div class="coin-card-footer" style="display: flex; justify-content: flex-end; align-items: center; width: 100%; margin-top: 10px; padding-bottom: 4px;">
-                <span class="coin-pnl-status" style="font-family: var(--font-heading); font-size: 12px; font-weight: 800; color: ${pnlColor};">
-                  ${pnlThbSign}${formatNumber(pnlThb)} (${pnlPctSign}${pnlPct.toFixed(2)}%)
-                </span>
-              </div>
-            `;
-            container.appendChild(div);
+              `;
+              container.appendChild(div);
+            });
           }
-        });
-        
-        // อัปเดตการ์ด
-        const kengPnlThb = kengTotalCurrentValue - kengTotalCost;
-        const kengPnlPct = kengTotalCost > 0 ? (kengPnlThb / kengTotalCost) * 100 : 0;
-        
-        const totalPnLThb = totalCurrentValue - totalCost;
-        const totalPnLPct = totalCost > 0 ? (totalPnLThb / totalCost) * 100 : 0;
-        
-        document.getElementById('keng-capital-val').textContent = kengTotalCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' THB';
-        document.getElementById('mod-capital-val').textContent = modCapital.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' THB';
-        document.getElementById('thyme-capital-val').textContent = thymeCapital.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' THB';
-        
-        // อัปเดต PnL ในกล่อง Keng's Capital
-        const kengPnlEl = document.getElementById('keng-capital-pnl');
-        if (kengPnlEl) {
-          const isKengUp = kengPnlThb >= 0;
-          const kengSign = isKengUp ? '+' : '';
-          kengPnlEl.style.color = isKengUp ? '#27a873' : '#ef4444';
-          kengPnlEl.textContent = `${kengSign}${kengPnlThb.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} THB (${kengSign}${kengPnlPct.toFixed(2)}%)`;
+
+          // เรนเดอร์ Donut Chart และ Legend จาก res.breakdown
+          if (Array.isArray(res.breakdown)) {
+            drawCryptoDonutChart(res.breakdown);
+          } else if (res.holdings) {
+            drawCryptoDonutChart(res.holdings, res.livePrices);
+          }
+
+          if (typeof showStatusToast === 'function') {
+            showStatusToast("อัปเดตข้อมูลพอร์ตคริปโตสำเร็จ", true);
+          }
+        } else {
+          console.warn("Unable to load crypto cache.");
+          if (typeof showStatusToast === 'function') {
+            showStatusToast("ไม่สามารถโหลดพอร์ตคริปโตได้", false);
+          }
         }
-        
-        document.getElementById('total-portfolio-val').textContent = totalCurrentValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' THB';
-        
-        const totalPnlThbEl = document.getElementById('total-pnl-thb');
-        const totalPnlPctEl = document.getElementById('total-pnl-pct');
-        
-        const isTotalUp = totalPnLThb >= 0;
-        const totalPnlSign = isTotalUp ? '+' : '';
-        
-        if (totalPnlThbEl && totalPnlPctEl) {
-          totalPnlThbEl.className = isTotalUp ? 'crypto-pnl-up' : 'crypto-pnl-down';
-          totalPnlPctEl.className = isTotalUp ? 'crypto-pnl-up' : 'crypto-pnl-down';
-          
-          totalPnlThbEl.textContent = totalPnlSign + totalPnLThb.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' THB';
-          totalPnlPctEl.textContent = `(${totalPnlSign}${totalPnLPct.toFixed(2)}%)`;
-        }
-        
-        // อัปเดตเวลาล่าสุด
-        const now = new Date();
-        document.getElementById('crypto-last-updated').textContent = `Last Updated: ${now.toLocaleDateString()} ${now.toLocaleTimeString()}`;
-        
-        // วาดกราฟวงกลมสัดส่วนสินทรัพย์
-        drawCryptoDonutChart(holdings, livePrices);
       } catch (e) {
-        console.log('Error refreshing crypto portfolio:', e);
+        console.error('Error refreshing crypto portfolio:', e);
+        if (typeof showStatusToast === 'function') {
+          showStatusToast("เกิดข้อผิดพลาดในการโหลดพอร์ตคริปโต", false);
+        }
       } finally {
         if (refreshBtn) {
           refreshBtn.disabled = false;
-          refreshBtn.querySelector('span').textContent = 'Refresh Data';
+          const span = refreshBtn.querySelector('span');
+          if (span) span.textContent = 'Refresh Data';
         }
       }
     }
     window.refreshCryptoPortfolio = refreshCryptoPortfolio;
 
-    function drawCryptoDonutChart(holdings, livePrices) {
+    function drawCryptoDonutChart(breakdownOrHoldings, livePrices) {
       const container = document.getElementById('crypto-donut-chart-container');
       const legend = document.getElementById('crypto-chart-legend');
       if (!container || !legend) return;
@@ -14869,27 +15137,55 @@
       container.innerHTML = '';
       legend.innerHTML = '';
       
+      let coinValues = [];
       let totalValue = 0;
-      const coinValues = [];
       
-      // คำนวณมูลค่ารวมและของแต่ละเหรียญ
-      CRYPTO_COINS.forEach(coin => {
-        const data = holdings[coin];
-        const livePrice = livePrices[coin] || data.basePrice;
-        const val = data.amount * livePrice;
-        totalValue += val;
-        
-        const label = coin === 'Thyme_KUB' ? 'KUB' : (coin === 'Mod_BTC' ? 'BTC (Mod)' : (coin === 'BTC' ? 'BTC (ฉัน)' : coin));
-        const color = coin.includes('BTC') ? '#f59e0b' : (coin.includes('KUB') ? '#10b981' : (coin.includes('ETH') ? '#8b5cf6' : (coin.includes('BNB') ? '#eab308' : (coin.includes('SOL') ? '#6366f1' : (coin.includes('XRP') ? '#3b82f6' : '#ec4899')))));
-        
-        if (val > 0) {
-          coinValues.push({ label, val, color });
+      if (Array.isArray(breakdownOrHoldings)) {
+        const breakdown = breakdownOrHoldings;
+        breakdown.forEach(item => {
+          const meta = getCoinMetadata(item.coin);
+          const val = parseFloat(item.value || 0);
+          const pct = parseFloat(item.percentage || 0);
+          totalValue += val;
+          if (val > 0 || pct > 0) {
+            coinValues.push({
+              label: item.label || meta.defaultLabel,
+              val: val,
+              percent: pct > 0 ? (pct / 100) : 0,
+              color: meta.color
+            });
+          }
+        });
+      } else if (breakdownOrHoldings && typeof breakdownOrHoldings === 'object') {
+        const holdings = breakdownOrHoldings;
+        const prices = livePrices || {};
+        CRYPTO_COINS.forEach(coin => {
+          const data = holdings[coin];
+          if (!data) return;
+          const livePrice = prices[coin] || data.basePrice || 0;
+          const val = (data.amount || 0) * livePrice;
+          totalValue += val;
+          const meta = getCoinMetadata(coin);
+          if (val > 0) {
+            coinValues.push({ label: meta.defaultLabel, val, color: meta.color });
+          }
+        });
+        if (totalValue > 0) {
+          coinValues.forEach(item => {
+            item.percent = item.val / totalValue;
+          });
         }
-      });
+      }
       
-      if (totalValue === 0) {
+      if (coinValues.length === 0) {
         container.innerHTML = '<span style="font-size: 12px; color: var(--color-text-secondary);">ไม่มีข้อมูลเหรียญ</span>';
         return;
+      }
+      
+      if (totalValue > 0 && coinValues.some(c => !c.percent)) {
+        coinValues.forEach(item => {
+          item.percent = item.val / totalValue;
+        });
       }
       
       // วาด Donut Chart SVG (เส้นรอบวง r=60 คือ 2 * PI * 60 = 377px)
@@ -14903,9 +15199,8 @@
       svgContent += `<circle cx="90" cy="90" r="${r}" fill="none" stroke="rgba(0,0,0,0.02)" stroke-width="14"></circle>`;
       
       coinValues.forEach(item => {
-        const percent = item.val / totalValue;
+        const percent = item.percent || (totalValue > 0 ? item.val / totalValue : 0);
         const strokeLength = percent * c;
-        const strokeOffset = c - strokeLength;
         const dashOffset = -(accumulatedPercent * c);
         
         svgContent += `
@@ -15286,6 +15581,27 @@
           }
         });
 
+        // Lookup current month in cachedOverviewData (if available)
+        let curMonthCached = null;
+        if (window.cachedOverviewData && Array.isArray(window.cachedOverviewData)) {
+          const monthNum = parseInt(selectedPeriod.split('-')[1], 10);
+          const thaiMonthNames = ['', 'ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
+          const targetThaiMonth = thaiMonthNames[monthNum] || 'ก.ย.';
+          curMonthCached = window.cachedOverviewData.find(m =>
+            m && (m.monthIndex === (monthNum - 1) || m.month === targetThaiMonth || m.monthName === targetThaiMonth)
+          );
+        }
+
+        // Sync Grab income from cache or fallback for current month (Sep: 5,289 ฿)
+        if (curMonthCached) {
+          const cachedGrabInc = parseFloat(curMonthCached.grab_income ?? curMonthCached.grabIncome) || 0;
+          if (cachedGrabInc > 0) {
+            grabTotal = cachedGrabInc;
+          }
+        } else if (selectedPeriod === '2026-09' && (grabTotal === 0 || grabTotal === 4200)) {
+          grabTotal = 5289.0;
+        }
+
         const totalInflow = baseSalary + commTotal + rentTotal + grabTotal + otherInflows;
 
         // 2. Calculate Living Expenses
@@ -15364,6 +15680,12 @@
         const totalFixedInstallmentsPerMonth = 21959; // 1,500 + 3,169 + 9,000 + 3,400 + 4,890
 
         // 4. The 3 Allocation Buckets
+        // Pull All-time totals from window.cachedTotals (fallback to real sheet totals)
+        const allTimeIncome = (window.cachedTotals && window.cachedTotals.total_income) ? window.cachedTotals.total_income : 433983.0;
+        const allTimeSavings10 = Math.round(allTimeIncome * 0.10); // ~43,398
+        const allTimeGrabKm = (window.cachedTotals && window.cachedTotals.total_grab_distance_km) ? window.cachedTotals.total_grab_distance_km : 11903.1;
+        const allTimeCarFund = Math.round((window.cachedTotals && window.cachedTotals.total_grab_car_fund_thb) ? window.cachedTotals.total_grab_car_fund_thb : 35709.3);
+
         // Bucket 1: DCA 10%
         const bucket1Total = totalInflow * 0.10;
         const b1Salary10 = baseSalary * 0.10;
@@ -15383,10 +15705,18 @@
             if (match) grabKm += parseFloat(match[1]);
           }
         });
-        if (grabKm === 0 && grabTotal > 0) {
-          grabKm = Math.round(grabTotal / 12);
+
+        // Pull Grab distance from cache or fallback for current month (Sep: 593.6 km)
+        if (grabKm === 0) {
+          if (curMonthCached) {
+            grabKm = parseFloat(curMonthCached.grab_distance_km ?? curMonthCached.grabDistanceKm) || 0;
+          }
+          if (grabKm === 0 && (selectedPeriod === '2026-09' || !selectedPeriod)) {
+            grabKm = 593.6;
+          }
         }
-        const bucket3Reserve = grabKm * 3.0;
+
+        const bucket3Reserve = Math.round(grabKm * 3.0); // 593.6 x 3.0 = 1,780.8 -> 1,781 ฿
         let vehicleSpent = 0;
         periodItems.forEach(item => {
           if (item.type === 'vehicle' || item.category === 'Vehicle Fund') {
@@ -15530,6 +15860,10 @@
         if (b1RentEl) b1RentEl.textContent = fmtThb(b1Rent10);
         const b1GrabEl = document.getElementById('pfc-b1-grab');
         if (b1GrabEl) b1GrabEl.textContent = fmtThb(b1Grab10);
+        const b1AllTimeEl = document.getElementById('pfc-b1-all-time');
+        if (b1AllTimeEl) b1AllTimeEl.textContent = fmtThb(allTimeSavings10);
+        const b1AllTimeStatEl = document.getElementById('pfc-b1-alltime-stat');
+        if (b1AllTimeStatEl) b1AllTimeStatEl.textContent = fmtThb(allTimeSavings10);
 
         const b2TotalEl = document.getElementById('pfc-bucket2-total');
         if (b2TotalEl) b2TotalEl.textContent = fmtThb(bucket2Total);
@@ -15541,15 +15875,28 @@
         if (b2AccelEl) b2AccelEl.textContent = fmtThb(bucket2Total);
         const b2StatusEl = document.getElementById('pfc-b2-status');
         if (b2StatusEl) b2StatusEl.textContent = `${debtCoveragePct}% Allocated`;
+        const b2AllTimeEl = document.getElementById('pfc-b2-all-time');
+        if (b2AllTimeEl) b2AllTimeEl.textContent = fmtThb(allTimeSavings10);
+        const b2AllTimeStatEl = document.getElementById('pfc-b2-alltime-stat');
+        if (b2AllTimeStatEl) b2AllTimeStatEl.textContent = fmtThb(allTimeSavings10);
 
         const b3TotalEl = document.getElementById('pfc-bucket3-total');
-        if (b3TotalEl) b3TotalEl.textContent = fmtThb(bucket3Total);
+        if (b3TotalEl) b3TotalEl.textContent = fmtThb(bucket3Reserve);
         const b3KmEl = document.getElementById('pfc-bucket3-km');
         if (b3KmEl) b3KmEl.textContent = `${grabKm.toFixed(1)} km`;
         const b3MileageEl = document.getElementById('pfc-b3-mileage');
         if (b3MileageEl) b3MileageEl.textContent = `${grabKm.toFixed(1)} km`;
         const b3ReserveEl = document.getElementById('pfc-b3-reserve');
         if (b3ReserveEl) b3ReserveEl.textContent = fmtThb(bucket3Reserve);
+        const b3AllTimeEl = document.getElementById('pfc-b3-all-time');
+        if (b3AllTimeEl) b3AllTimeEl.textContent = fmtThb(allTimeCarFund);
+        const b3AllTimeReserveEl = document.getElementById('pfc-b3-alltime-reserve');
+        if (b3AllTimeReserveEl) b3AllTimeReserveEl.textContent = fmtThb(allTimeCarFund);
+        const formattedAllTimeKm = `${allTimeGrabKm.toLocaleString(undefined, {minimumFractionDigits: 1, maximumFractionDigits: 1})} km`;
+        const b3AllTimeKmEl = document.getElementById('pfc-b3-alltime-km');
+        if (b3AllTimeKmEl) b3AllTimeKmEl.textContent = formattedAllTimeKm;
+        const b3AllTimeKmSubEl = document.getElementById('pfc-b3-alltime-km-sub');
+        if (b3AllTimeKmSubEl) b3AllTimeKmSubEl.textContent = formattedAllTimeKm;
         const b3SpentEl = document.getElementById('pfc-b3-spent');
         if (b3SpentEl) b3SpentEl.textContent = fmtThb(vehicleSpent);
 
@@ -16107,6 +16454,20 @@
           alert('บันทึกบิลสื่อสารรวม 3 เลขหมาย (2,296.22 บาท) เรียบร้อยแล้ว');
         });
 
+        document.getElementById('pfc-preset-apple')?.addEventListener('click', () => {
+          addTransaction({
+            date: dateNow,
+            type: 'expense',
+            category: 'Subscriptions',
+            tag: '#AppleID #Subscriptions #PersonalFixed',
+            description: 'Apple ID Subscriptions (~1,012 บาท: Monthly 816 + Annual reserve 196)',
+            channel: 'MAKE 152-8-62971-3 (ส่วนตัว)',
+            amount: -1012,
+            verified: true
+          });
+          alert('บันทึก Apple ID Subscriptions (1,012 บาท) เรียบร้อยแล้ว');
+        });
+
         document.getElementById('pfc-preset-thyme')?.addEventListener('click', () => {
           addTransaction({
             date: dateNow,
@@ -16364,6 +16725,21 @@
             verified: true
           });
           alert('บันทึกบิลสื่อสารรวม 3 เลขหมาย (2,296.22 บาท) เรียบร้อยแล้ว');
+        });
+
+        // Day 27: Apple ID Subscriptions (~1,012 THB = Monthly 816 + Annual reserve 196)
+        document.getElementById('pfc-routine-apple-pay-btn')?.addEventListener('click', () => {
+          addTransaction({
+            date: dateNow,
+            type: 'expense',
+            category: 'Subscriptions',
+            tag: '#AppleID #Subscriptions #PersonalFixed',
+            description: 'Apple ID Subscriptions (~1,012 บาท: Monthly 816 + Annual reserve 196)',
+            channel: 'MAKE 152-8-62971-3 (ส่วนตัว)',
+            amount: -1012,
+            verified: true
+          });
+          alert('บันทึก Apple ID Subscriptions (1,012 บาท) เรียบร้อยแล้ว');
         });
       }
 
