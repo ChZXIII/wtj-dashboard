@@ -9,8 +9,8 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="ChZ Super App">
-  <link rel="apple-touch-icon" href="assets/icon-192.png?v=2.8.0">
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/icon-180.png?v=2.8.0">
+  <link rel="apple-touch-icon" href="assets/icon-192.png?v=2.8.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/icon-180.png?v=2.8.1">
 
   <script>
     // Force unregister all active service worker caches to prevent browser hijacking
@@ -2341,15 +2341,16 @@
       height: 297mm;
       min-height: 297mm;
       box-sizing: border-box;
-      background: white !important;
-      color: black !important;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-      font-family: 'Prompt', sans-serif;
-      padding: 15mm;
+      background: #ffffff !important;
+      color: #0f172a !important;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+      font-family: 'IBM Plex Sans Thai', 'Outfit', 'Inter', 'Sukhumvit Set', sans-serif;
+      padding: 12mm 14mm;
       display: flex;
       flex-direction: column;
       font-size: 12px;
       line-height: 1.45;
+      position: relative;
     }
 
     /* Document Export Page Layout View Modes */
@@ -2394,37 +2395,335 @@
     }
     .document-export-page.mode-split .print-paper {
     }
-    .doc-header-row { display: flex; justify-content: space-between; align-items: flex-start; width: 100%; }
-    .doc-issuer-block { width: 58%; text-align: left; }
-    .doc-logo { font-size: 22px; font-weight: 800; color: #0f172a; margin-bottom: 6px; }
-    .doc-issuer-details { font-size: 10px; color: #475569; line-height: 1.5; }
-    .doc-title-block { width: 40%; text-align: right; }
-    .doc-title-block h1 { font-size: 18px; margin: 0; color: #0f172a; font-weight: 700; }
-    .doc-title-block h2 { font-size: 11px; margin: 0 0 8px 0; color: #64748b; font-weight: 600; letter-spacing: 1px; }
-    .doc-meta-table { border: 1.5px solid #0f172a; border-radius: 4px; overflow: hidden; font-size: 10px; background: #ffffff; }
-    .meta-row { display: flex; border-bottom: 1.5px solid #0f172a; }
-    .meta-row:last-child { border-bottom: none; }
-    .meta-label { width: 108px; padding: 4px 6px; background: #f8fafc; font-weight: 600; border-right: 1.5px solid #0f172a; color: #334155; }
-    .meta-val { padding: 4px 6px; font-weight: 600; color: #0f172a; }
-    .doc-divider { height: 1.5px; background: #0f172a; margin: 12px 0; width: 100%; }
-    .doc-billto-row { display: flex; justify-content: space-between; margin-bottom: 15px; width: 100%; }
-    .doc-billto-block { width: 55%; text-align: left; }
-    .section-title { font-size: 11px; font-weight: 700; color: #0f172a; text-transform: uppercase; margin-bottom: 6px; border-bottom: 1px solid #e2e8f0; padding-bottom: 2px; }
-    .client-details-preview { font-size: 10px; color: #334155; line-height: 1.5; }
-    .doc-project-block { width: 40%; text-align: left; }
-    .project-details-preview { font-size: 10px; color: #334155; line-height: 1.5; }
-    .preview-items-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 10px; }
-    .preview-items-table th { background: #0f172a; color: #ffffff; padding: 6px 8px; font-weight: 600; text-align: left; border: 1px solid #0f172a; }
-    .preview-items-table td { padding: 6px 8px; border: 1px solid #cbd5e1; color: #0f172a; }
-    .preview-summary-area { display: flex; justify-content: flex-end; margin-top: 15px; width: 100%; }
-    .summary-table-mini { width: 45%; border-collapse: collapse; font-size: 10px; }
-    .summary-table-mini td { padding: 4px 6px; border-bottom: 1px solid #e2e8f0; }
-    .summary-table-mini tr:last-child td { border-bottom: 2px double #0f172a; font-weight: 700; font-size: 11px; }
-    .payment-preview-info { font-size: 9px; color: #475569; margin-top: auto; padding-top: 15px; border-top: 1px dashed #cbd5e1; }
-    .doc-signatures-row { display: flex; justify-content: flex-end; align-items: flex-end; margin-top: 25px; width: 100%; }
-    .sig-box-left, .sig-box-right { width: 45%; text-align: center; font-size: 10px; }
-    .sig-line { width: 80%; border-bottom: 1px solid #0f172a; margin: 0 auto 6px auto; height: 35px; display: flex; align-items: flex-end; justify-content: center; position: relative; }
-    .sig-img { max-height: 35px; max-width: 120px; object-fit: contain; }
+
+    /* FELTZ DOCUMENT ENGINE A4 STYLES (GHN Style) */
+    .doc-header, .doc-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 2px solid #0f172a;
+      padding-bottom: 14px;
+      margin-bottom: 16px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .company-info, .doc-issuer-block {
+      flex: 1;
+      max-width: 52%;
+      text-align: left;
+    }
+
+    .brand-title, .doc-logo {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: #0f172a;
+      line-height: 1.1;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+
+    .company-name-th {
+      font-size: 14px;
+      font-weight: 700;
+      color: #1e293b;
+      line-height: 1.3;
+    }
+
+    .company-name-en {
+      font-size: 10px;
+      font-weight: 600;
+      color: #64748b;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+
+    .company-details, .doc-issuer-details {
+      font-size: 10.5px;
+      color: #334155;
+      line-height: 1.45;
+    }
+
+    .doc-meta, .doc-title-block {
+      width: 45%;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .doc-badge-title {
+      display: inline-block;
+      background: #0f172a;
+      color: #ffffff;
+      padding: 6px 14px;
+      font-size: 15px;
+      font-weight: 800;
+      border-radius: 4px;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+      white-space: nowrap;
+    }
+
+    .doc-badge-title-en {
+      font-size: 10.5px;
+      font-weight: 700;
+      color: #475569;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+      white-space: nowrap;
+    }
+
+    .meta-table, .doc-meta-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 6px;
+    }
+
+    .meta-table td {
+      padding: 3px 6px;
+      font-size: 11px;
+      white-space: nowrap !important;
+    }
+
+    .meta-table td:first-child {
+      color: #64748b;
+      text-align: right;
+      font-weight: 500;
+    }
+
+    .meta-table td:last-child {
+      text-align: right;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .mono {
+      font-family: 'JetBrains Mono', 'IBM Plex Sans Thai', monospace;
+      letter-spacing: -0.2px;
+    }
+
+    /* Client & Project Cards */
+    .client-project-grid, .doc-billto-row {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 16px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .info-card, .doc-billto-block, .doc-project-block {
+      flex: 1;
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      padding: 10px 14px;
+      text-align: left;
+      box-sizing: border-box;
+    }
+
+    .info-card-header, .section-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: #0284c7;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+      border-bottom: 1px dashed #cbd5e1;
+      padding-bottom: 4px;
+    }
+
+    .info-card-content, .client-details-preview, .project-details-preview {
+      font-size: 11px;
+      line-height: 1.45;
+      color: #1e293b;
+    }
+
+    /* Items Table */
+    .items-table, .preview-items-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 14px;
+    }
+
+    .items-table th, .preview-items-table th {
+      background: #0f172a;
+      color: #ffffff;
+      padding: 8px 10px;
+      font-size: 11px;
+      font-weight: 600;
+      text-align: left;
+      border: 1px solid #0f172a;
+    }
+
+    .items-table th.center, .preview-items-table th.center { text-align: center; }
+    .items-table th.right, .preview-items-table th.right { text-align: right; }
+
+    .items-table td, .preview-items-table td {
+      padding: 8px 10px;
+      font-size: 11px;
+      border: 1px solid #e2e8f0;
+      vertical-align: top;
+      color: #1e293b;
+    }
+
+    .items-table tr:nth-child(even) td, .preview-items-table tr:nth-child(even) td {
+      background: #fcfdfd;
+    }
+
+    .items-table td.center, .preview-items-table td.center { text-align: center; }
+    .items-table td.right, .preview-items-table td.right { text-align: right; }
+
+    /* Totals Summary */
+    .totals-section, .preview-summary-area {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 18px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .baht-text-box {
+      flex: 1;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 6px;
+      padding: 10px 14px;
+      font-size: 11.5px;
+      line-height: 1.4;
+      text-align: left;
+      box-sizing: border-box;
+    }
+
+    .baht-text-label {
+      font-size: 10px;
+      font-weight: 600;
+      color: #166534;
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+
+    .baht-text-value {
+      font-weight: 700;
+      color: #15803d;
+      font-size: 12px;
+    }
+
+    .totals-table, .summary-table-mini {
+      width: 320px;
+      border-collapse: collapse;
+    }
+
+    .totals-table td, .summary-table-mini td {
+      padding: 5px 8px;
+      font-size: 11px;
+      border-bottom: none;
+    }
+
+    .totals-table td:first-child, .summary-table-mini td:first-child {
+      text-align: right;
+      color: #475569;
+      font-weight: 500;
+    }
+
+    .totals-table td:last-child, .summary-table-mini td:last-child {
+      text-align: right;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .totals-table tr.grand-total td {
+      background: #0f172a;
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 800;
+      padding: 8px 10px;
+      border-radius: 4px;
+    }
+
+    /* Terms & Conditions Box */
+    .terms-box, .payment-preview-info {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 10px 14px;
+      font-size: 10.5px;
+      color: #334155;
+      margin-bottom: 20px;
+      line-height: 1.45;
+      text-align: left;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .terms-title {
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 4px;
+    }
+
+    /* Signatures Section */
+    .signatures-container, .doc-signatures-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-top: auto;
+      padding-top: 10px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .signature-card, .sig-box-left, .sig-box-right {
+      width: 220px;
+      text-align: center;
+      position: relative;
+    }
+
+    .signature-img, .sig-img {
+      max-height: 55px;
+      width: auto;
+      display: block;
+      margin: 0 auto -8px auto;
+      mix-blend-mode: multiply;
+      position: relative;
+      z-index: 2;
+      object-fit: contain;
+    }
+
+    .signature-line {
+      border-bottom: 1px dashed #64748b;
+      width: 85%;
+      margin: 12px auto 6px auto;
+    }
+
+    .signer-name {
+      font-size: 11px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .signer-title {
+      font-size: 9.5px;
+      color: #64748b;
+    }
+
+    @media print {
+      body {
+        background: transparent !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+      .print-paper {
+        width: 210mm !important;
+        min-height: 297mm !important;
+        margin: 0 !important;
+        padding: 12mm 14mm !important;
+        box-shadow: none !important;
+        page-break-after: avoid !important;
+        page-break-inside: avoid !important;
+      }
+    }
     .segment-switcher-container { display: flex; background: rgba(0, 0, 0, 0.05); padding: 4px; border-radius: 12px; margin-bottom: 16px; width: 100%; box-sizing: border-box; }
     .segment-btn-tab { flex: 1; padding: 8px; border-radius: 8px; border: none; font-weight: 600; font-size: 11px; cursor: pointer; transition: all 0.2s; background: transparent; color: var(--color-text-secondary); }
     .segment-btn-tab.active { background: var(--color-pastel-green); color: #27a873; }
@@ -5427,7 +5726,7 @@
             </div>
             <div class="user-info-text">
               <div class="user-role">CHZ MANAGER</div>
-              <div class="user-version">Version 2.8.0</div>
+              <div class="user-version">Version 2.8.1</div>
             </div>
           </div>
         </div>
@@ -5444,7 +5743,7 @@
             <!-- หัวข้อและปุ่มย้อนกลับสไลด์ -->
             <div class="settings-header">
               <div class="settings-header-text">
-                 <h3 class="settings-title" style="display: flex; align-items: center; gap: 8px;">Google Sheets Connection <span style="font-size: 11px; background: rgba(0,0,0,0.06); color: var(--color-text-secondary); padding: 2px 8px; border-radius: 8px; font-weight: 500;">Version 2.8.0</span></h3>
+                 <h3 class="settings-title" style="display: flex; align-items: center; gap: 8px;">Google Sheets Connection <span style="font-size: 11px; background: rgba(0,0,0,0.06); color: var(--color-text-secondary); padding: 2px 8px; border-radius: 8px; font-weight: 500;">Version 2.8.1</span></h3>
                 <p style="font-size: 11px; color: var(--color-text-secondary); margin-top: 4px;">ผูกแอปเข้ากับสิทธิ์ Google Sheets ของแกผ่าน API หรือ Google Apps Script</p>
               </div>
               <button class="capsule-btn btn-back-to-overview" id="settings-back-to-overview-btn" style="display: none; cursor: pointer; background: rgba(39, 168, 115, 0.1) !important; color: #27a873 !important; border: none !important;">
@@ -5524,30 +5823,30 @@
               <div class="settings-grid-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
                 <div class="settings-form-group">
                   <label>ชื่อผู้ขาย / บุคคลธรรมดา</label>
-                  <input type="text" id="settings-seller-name" placeholder="ระบุชื่อผู้ขาย หรือชื่อบุคคลธรรมดา" value="">
+                  <input type="text" id="settings-seller-name" placeholder="ระบุชื่อผู้ขาย หรือชื่อบุคคลธรรมดา" value="นาย มงคล วงศ์สกุลยานนท์ (Feltz Studio)">
                 </div>
                 <div class="settings-form-group">
                   <label>เลขประจำตัวผู้เสียภาษี (เลขบัตร ปชช.)</label>
-                  <input type="text" id="settings-seller-tax-id" placeholder="ระบุเลขประจำตัวผู้เสียภาษี 13 หลัก" value="">
+                  <input type="text" id="settings-seller-tax-id" placeholder="ระบุเลขประจำตัวผู้เสียภาษี 13 หลัก" value="3509900218949">
                 </div>
               </div>
               <div class="settings-form-group" style="margin-top: 16px;">
                 <label>ที่อยู่ผู้ขาย</label>
-                <input type="text" id="settings-seller-address" placeholder="ระบุที่อยู่สำหรับการออกเอกสาร" value="">
+                <input type="text" id="settings-seller-address" placeholder="ระบุที่อยู่สำหรับการออกเอกสาร" value="65/1 ถนนต้นขาม 2 ตำบลท่าศาลา อำเภอเมือง จังหวัดเชียงใหม่ 50000">
               </div>
               <div class="settings-grid-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px;">
                 <div class="settings-form-group">
                   <label>เบอร์โทรผู้ขาย</label>
-                  <input type="text" id="settings-seller-phone" placeholder="ระบุเบอร์โทรศัพท์ผู้ขาย" value="">
+                  <input type="text" id="settings-seller-phone" placeholder="ระบุเบอร์โทรศัพท์ผู้ขาย" value="089-554-4355">
                 </div>
                 <div class="settings-form-group">
                   <label>อีเมลผู้ขาย</label>
-                  <input type="email" id="settings-seller-email" placeholder="ระบุอีเมลผู้ขาย" value="">
+                  <input type="email" id="settings-seller-email" placeholder="ระบุอีเมลผู้ขาย" value="feltzstudio@gmail.com">
                 </div>
               </div>
               <div class="settings-form-group" style="margin-top: 16px;">
                 <label>ข้อมูลการชำระเงิน (บัญชีธนาคาร)</label>
-                <input type="text" id="settings-seller-bank" placeholder="เช่น ธ.กสิกรไทย เลขที่ 862-2-21524-2 ชื่อบัญชี มงคล วงศ์สกุลยานนท์" value="">
+                <input type="text" id="settings-seller-bank" placeholder="เช่น ธนาคารกสิกรไทย..." value="ธนาคารกสิกรไทย (KBank) เลขที่ 862-2-21524-2 ชื่อบัญชี นาย มงคล วงศ์สกุลยานนท์">
               </div>
             </div>
 
@@ -6157,7 +6456,7 @@
                 <div style="display: flex; gap: 12px;">
                   <div class="settings-form-group" style="flex: 1;">
                     <label for="export-doc-number">เลขที่เอกสาร / Document No.</label>
-                    <input type="text" id="export-doc-number" value="QT2026-001" required>
+                    <input type="text" id="export-doc-number" value="FS-QT-202609-001" required>
                   </div>
                   <div class="settings-form-group" style="flex: 1;">
                     <label for="export-doc-date">วันที่เอกสาร / Date</label>
@@ -6188,7 +6487,7 @@
                   <span style="font-size: 11px; font-weight: 700; color: var(--color-text-primary); text-transform: uppercase;">ข้อมูลผู้ขาย / Seller Details</span>
                   <div class="settings-form-group" style="margin-top: 8px;">
                     <label for="seller-name">ชื่อผู้ขาย / Company</label>
-                    <input type="text" id="seller-name" value="มงคล วงศ์สกุลยานนท์ (Feltz Studio)" required>
+                    <input type="text" id="seller-name" value="นาย มงคล วงศ์สกุลยานนท์ (Feltz Studio)" required>
                   </div>
                   <div class="settings-form-group" style="margin-top: 8px;">
                     <label for="seller-address">ที่อยู่ / Address</label>
@@ -6236,7 +6535,7 @@
                   <span style="font-size: 11px; font-weight: 700; color: var(--color-text-primary); text-transform: uppercase;">ข้อมูลโครงการ & หมายเหตุ / Project & Remarks</span>
                   <div class="settings-form-group" style="margin-top: 8px;">
                     <label for="doc-project-name">ชื่อโครงการ/ชื่องาน / Project Name</label>
-                    <input type="text" id="doc-project-name" placeholder="ชื่อโครงการ/ชื่องาน (ไม่บังคับ)...">
+                    <input type="text" id="doc-project-name" placeholder="ชื่อโครงการ/ชื่องาน (ค่าเริ่มต้น: บริการงานถ่ายภาพและผลิตสื่อ)...">
                   </div>
                   <div class="settings-form-group" style="margin-top: 8px;">
                     <label for="doc-remarks">หมายเหตุ / Remarks</label>
@@ -6282,7 +6581,7 @@
                     </div>
                     <div class="settings-form-group" style="flex: 1;">
                       <label for="doc-bank-info">ข้อมูลการชำระเงิน (บัญชีธนาคาร)</label>
-                      <input type="text" id="doc-bank-info" value="ธ.กสิกรไทย (KBank) เลขที่ 862-2-21524-2 ชื่อบัญชี นาย มงคล วงศ์สกุลยานนท์" required>
+                      <input type="text" id="doc-bank-info" value="ธนาคารกสิกรไทย (KBank) เลขที่ 862-2-21524-2 ชื่อบัญชี นาย มงคล วงศ์สกุลยานนท์" required>
                     </div>
                   </div>
                 </div>
@@ -6291,7 +6590,7 @@
                 <div style="border: 1px dashed rgba(0,0,0,0.1); border-radius: 12px; padding: 12px; background: rgba(255,255,255,0.4); display: flex; flex-direction: column; gap: 8px;">
                   <div class="settings-form-group">
                     <label for="doc-signer-name">ชื่อผู้ลงนาม / Authorized Signer</label>
-                    <input type="text" id="doc-signer-name" value="มงคล วงศ์สกุลยานนท์" required>
+                    <input type="text" id="doc-signer-name" value="นาย มงคล วงศ์สกุลยานนท์" required>
                   </div>
                   <label style="display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 500; cursor: pointer; color: var(--color-text-secondary);">
                     <input type="checkbox" id="doc-show-sig" checked style="width: 16px; height: 16px; accent-color: var(--color-neon-rose);">
@@ -6312,68 +6611,75 @@
                 <!-- A4 Live Preview Container -->
                 <div class="paper-scale-wrapper">
                   <div class="print-paper" id="a4-preview-content">
-                    <!-- Document Header -->
-
-                    <div class="doc-header-row">
-                      <div class="doc-issuer-block">
-                        <div class="doc-logo">Feltz Studio</div>
-                        <div class="doc-issuer-details" id="preview-seller-details">
-                          123/45 ถนนราชดำเนิน แขวงพระบรมมหาราชวัง เขตพระนคร กรุงเทพฯ 10200<br>
-                          โทร: 081-234-5678
+                    <!-- Header -->
+                    <div class="doc-header">
+                      <div class="company-info">
+                        <div class="brand-title">FELTZ STUDIO</div>
+                        <div class="company-name-th" id="preview-company-name-th">นาย มงคล วงศ์สกุลยานนท์ (Feltz Studio)</div>
+                        <div class="company-name-en">MONGKOL WONGSAKULYANON (FELTZ STUDIO)</div>
+                        <div class="company-details" id="preview-seller-details">
+                          เลขประจำตัวผู้เสียภาษี: <span class="mono" style="font-weight:700;" id="preview-seller-tax-id">3509900218949</span><br>
+                          ที่อยู่: <span id="preview-seller-address">65/1 ถนนต้นขาม 2 ตำบลท่าศาลา อำเภอเมือง จังหวัดเชียงใหม่ 50000</span><br>
+                          โทรศัพท์: <span id="preview-seller-phone">089-554-4355</span> | อีเมล: <span id="preview-seller-email">feltzstudio@gmail.com</span>
                         </div>
                       </div>
-                      <div class="doc-title-block">
-                        <h1 id="preview-doc-title">ใบเสนอราคา</h1>
-                        <h2 id="preview-doc-title-en">QUOTATION</h2>
-                        <div class="doc-meta-table">
-                          <div class="meta-row">
-                            <div class="meta-label">เลขที่ / No.</div>
-                            <div class="meta-val" id="preview-doc-number">QT2026-001</div>
-                          </div>
-                          <div class="meta-row">
-                            <div class="meta-label">วันที่ / Date</div>
-                            <div class="meta-val" id="preview-doc-date">2026-07-01</div>
-                          </div>
-                          <div class="meta-row" id="preview-doc-due-date-row" style="display: none;">
-                            <div class="meta-label">ครบกำหนด / Due</div>
-                            <div class="meta-val" id="preview-doc-due-date">-</div>
-                          </div>
-                        </div>
+
+                      <div class="doc-meta">
+                        <div class="doc-badge-title" id="preview-doc-title">ใบเสนอราคา</div>
+                        <div class="doc-badge-title-en" id="preview-doc-title-en">QUOTATION</div>
+
+                        <table class="meta-table">
+                          <tbody>
+                            <tr>
+                              <td>เลขที่เอกสาร / No:</td>
+                              <td class="mono" style="font-size: 13px; color: #0284c7;" id="preview-doc-number">FS-QT-202609-001</td>
+                            </tr>
+                            <tr id="preview-ref-row" style="display: none;">
+                              <td id="preview-ref-label">อ้างอิงเอกสาร / Ref:</td>
+                              <td class="mono" id="preview-ref-doc-no">-</td>
+                            </tr>
+                            <tr>
+                              <td>วันที่ / Date:</td>
+                              <td class="mono" id="preview-doc-date">16/09/2026</td>
+                            </tr>
+                            <tr id="preview-date-row-2">
+                              <td id="preview-date-label-2">ยืนราคาถึงวันที่ / Valid Until:</td>
+                              <td class="mono" id="preview-doc-date-val-2">16/10/2026</td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </div>
 
-                    <div class="doc-divider"></div>
-
-                    <!-- Bill to & Project Row -->
-                    <div class="doc-billto-row">
-                      <div class="doc-billto-block">
-                        <div class="section-title">ลูกค้า / Client</div>
-                        <div class="client-details-preview" id="preview-client-details">
-                          ชื่อลูกค้า: -<br>
-                          ที่อยู่: -<br>
-                          โทร: -
+                    <!-- Client & Project Cards -->
+                    <div class="client-project-grid">
+                      <div class="info-card">
+                        <div class="info-card-header">ข้อมูลลูกค้า (Customer Details)</div>
+                        <div class="info-card-content" id="preview-client-details">
+                          <strong style="font-size: 12px; color: #0f172a;" id="preview-client-name">ลูกค้าทั่วไป</strong><br>
+                          เลขประจำตัวผู้เสียภาษี: <span class="mono" style="font-weight: 700;" id="preview-client-tax-id">-</span><br>
+                          ที่อยู่: <span id="preview-client-address">-</span><br>
+                          โทรศัพท์: <span id="preview-client-phone">-</span>
                         </div>
                       </div>
-                      <div class="doc-project-block">
-                        <div class="section-title">ข้อมูลโครงการ / Project</div>
-                        <div class="project-details-preview" id="preview-project-details">
-                          โครงการ: Feltz Studio Creative Work<br>
-                          ผู้ติดต่อ: เก่งกาจ
-                        </div>
-                        <div id="preview-payment-terms-block" style="display: none; margin-top: 10px;">
-                          <div class="section-title">เงื่อนไขการชำระเงิน / TERMS:</div>
-                          <div class="project-details-preview" id="preview-payment-terms">ชำระทันที</div>
+
+                      <div class="info-card">
+                        <div class="info-card-header">รายละเอียดงาน & โครงการ (Project Details)</div>
+                        <div class="info-card-content" id="preview-project-details">
+                          <strong>โครงการ:</strong> <span id="preview-project-name">บริการงานถ่ายภาพและผลิตสื่อ</span><br>
+                          <strong>เงื่อนไขการชำระ:</strong> <span id="preview-project-payment-term">โอนเงินผ่านบัญชีธนาคาร</span><br>
+                          <strong>ผู้ติดต่อประสานงาน:</strong> มงคล วงศ์สกุลยานนท์ (Feltz Studio)
                         </div>
                       </div>
                     </div>
 
                     <!-- Items Table -->
-                    <table class="preview-items-table">
+                    <table class="items-table preview-items-table">
                       <thead>
                         <tr>
-                          <th style="width: 10%; text-align: center;">ลำดับ</th>
-                          <th style="width: 70%; text-align: left;">รายละเอียดสินค้า/บริการ (Description)</th>
-                          <th style="width: 20%; text-align: right;">จำนวนเงิน (บาท) Amount (THB)</th>
+                          <th class="center" style="width: 50px;">ลำดับ</th>
+                          <th>รายการ / รายละเอียด (Description)</th>
+                          <th class="right" style="width: 140px;">จำนวนเงิน (บาท)</th>
                         </tr>
                       </thead>
                       <tbody id="preview-items-tbody">
@@ -6381,65 +6687,66 @@
                       </tbody>
                     </table>
 
-                    <!-- Summary Area -->
-                    <div class="preview-summary-area">
-                      <table class="summary-table-mini">
-                        <tr>
-                          <td>รวมเงิน / Subtotal</td>
-                          <td style="text-align: right;" id="preview-subtotal">0.00 THB</td>
-                        </tr>
-                        <tr id="preview-discount-row" style="display: none;">
-                          <td>ส่วนลด / Discount</td>
-                          <td style="text-align: right; color: var(--color-neon-rose);" id="preview-discount">-0.00 THB</td>
-                        </tr>
-                        <tr id="preview-tax-row" style="display: none;">
-                          <td>หัก ณ ที่จ่าย 3%</td>
-                          <td style="text-align: right; color: var(--color-neon-rose);" id="preview-tax">-0.00 THB</td>
-                        </tr>
-                        <tr>
-                          <td>ยอดเงินสุทธิ / Net Total</td>
-                          <td style="text-align: right; font-weight: 700;" id="preview-net-total">0.00 THB</td>
-                        </tr>
-                        <tr id="preview-baht-text-row">
-                          <td colspan="2" style="text-align: right; font-style: italic; color: #64748b; font-size: 10px; padding-top: 4px;" id="preview-baht-text">(ศูนย์บาทถ้วน)</td>
-                        </tr>
+                    <!-- Totals Section -->
+                    <div class="totals-section preview-summary-area">
+                      <div class="baht-text-box">
+                        <div class="baht-text-label">จำนวนเงินตัวอักษร (Thai Baht Text):</div>
+                        <div class="baht-text-value" id="preview-baht-text">(ศูนย์บาทถ้วน)</div>
+                      </div>
+
+                      <table class="totals-table">
+                        <tbody>
+                          <tr>
+                            <td>รวมเงิน / Subtotal</td>
+                            <td class="mono" id="preview-subtotal">0.00 ฿</td>
+                          </tr>
+                          <tr id="preview-discount-row" style="display: none;">
+                            <td id="preview-discount-label">ส่วนลด / Discount</td>
+                            <td class="mono" style="color: #dc2626;" id="preview-discount">-0.00 ฿</td>
+                          </tr>
+                          <tr id="preview-tax-row" style="display: none;">
+                            <td id="preview-tax-label">หักภาษี ณ ที่จ่าย / WHT (3%)</td>
+                            <td class="mono" style="color: #dc2626;" id="preview-tax">-0.00 ฿</td>
+                          </tr>
+                          <tr class="grand-total">
+                            <td id="preview-grand-total-label">ยอดเงินรวมทั้งสิ้น / Grand Total</td>
+                            <td class="mono" id="preview-net-total">0.00 ฿</td>
+                          </tr>
+                        </tbody>
                       </table>
                     </div>
 
-                    <!-- Payment info & bank -->
-                    <div class="payment-preview-info">
-                      <div id="preview-bank-details-wrap">
-                        <strong>ข้อมูลการชำระเงิน / Bank Details:</strong><br>
-                        <span id="preview-bank-info">ธนาคารกสิกรไทย 012-3-45678-9 (Feltz Studio)</span>
-                      </div>
-                      <div id="preview-remarks-block" style="margin-top: 8px; padding-top: 8px; border-top: 1px dashed #e2e8f0; font-size: 11px; color: #475569; display: none; line-height: 1.6;">
-                        <strong>หมายเหตุ / Remarks:</strong><br>
-                        <span id="preview-remarks-val">-</span>
+                    <!-- Terms & Conditions Box (RE completely excludes Bank details) -->
+                    <div class="terms-box payment-preview-info" id="preview-terms-box">
+                      <div class="terms-title" id="preview-terms-title">เงื่อนไขและข้อตกลง (Terms & Conditions):</div>
+                      <div id="preview-terms-content">
+                        <div>• ชำระมัดจำ 30-50% ของมูลค่าโครงการเพื่อสำรองคิวงานและยืนยันการว่าจ้าง</div>
+                        <div>• กำหนดยืนราคา 30 วันนับจากวันที่ออกเอกสาร</div>
+                        <div id="preview-terms-remarks" style="display: none;">• หมายเหตุ: <span id="preview-terms-remarks-val"></span></div>
+                        <div style="margin-top: 6px; color: #0284c7; font-weight: 600;" id="preview-terms-bank">* บัญชีรับโอน: <span id="preview-bank-info">ธนาคารกสิกรไทย (KBank) เลขที่ 862-2-21524-2 (นาย มงคล วงศ์สกุลยานนท์)</span></div>
                       </div>
                     </div>
 
-                    <!-- Signatures -->
-                    <div class="doc-signatures-row" style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 24px;">
-                      <!-- Left Signature (Acceptor / Receiver / Empty) -->
-                      <div class="sig-box-left" id="preview-sig-left-wrap" style="width: 200px; text-align: center; font-family: var(--font-body); font-size: 10px; color: var(--color-text-primary);">
-                        <div id="preview-sig-left-label" style="font-size: 11px; font-weight: 700; color: #0f172a; margin-bottom: 45px;">ผู้อนุมัติสั่งจ้าง / Customer Acceptance</div>
-                        <div style="width: 85%; border-bottom: 1px dashed #64748b; margin: 8px auto 6px auto;"></div>
-                        <div id="preview-sig-left-sub" style="font-size: 10px; font-weight: 500; color: #475569;">(ลงชื่อผู้ว่าจ้าง / ประทับตรา)</div>
-                        <div style="font-size: 9.5px; color: #64748b; margin-top: 3px;">วันที่ / Date: ....................</div>
+                    <!-- Signatures Section -->
+                    <div class="signatures-container doc-signatures-row">
+                      <!-- Left Signature -->
+                      <div class="signature-card sig-box-left" id="preview-sig-left-card">
+                        <div style="font-size: 11px; font-weight: 700; color: #0f172a; margin-bottom: 45px;" id="preview-sig-left-label">ผู้อนุมัติสั่งจ้าง / Customer Acceptance</div>
+                        <div class="signature-line"></div>
+                        <div class="signer-name" style="font-size: 10px; font-weight: 500; color: #475569;" id="preview-sig-left-sub">(ลงชื่อผู้ว่าจ้าง / ประทับตรา)</div>
+                        <div class="signer-title" style="margin-top: 3px;" id="preview-sig-left-date">วันที่ / Date: ....................</div>
                       </div>
 
-                      <!-- Right Signature (Feltz Studio / Keng) -->
-                      <div class="sig-box-right" style="width: 200px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: var(--font-body); font-size: 10px; color: var(--color-text-primary);">
-                        <div id="preview-sig-top-label" style="font-size: 10px; margin-bottom: 6px; font-weight: 600; color: #475569;">เสนอราคาโดย</div>
-                        <div style="height: 45px; display: flex; align-items: flex-end; justify-content: center; position: relative; margin-bottom: 4px;">
-                          <img src="signatures/sig_keng.png" class="sig-img" id="preview-sig-img" style="max-height: 45px; object-fit: contain;">
+                      <!-- Right Signature -->
+                      <div class="signature-card sig-box-right" id="preview-sig-right-card">
+                        <div style="font-size: 10px; font-weight: 600; color: #475569; margin-bottom: 6px;" id="preview-sig-top-label">เสนอราคาโดย</div>
+                        <div style="height: 52px; display: flex; align-items: flex-end; justify-content: center; position: relative;">
+                          <img src="signatures/sig_keng.png" class="signature-img sig-img" id="preview-sig-img" alt="Keng Signature">
                         </div>
-                        <div style="font-weight: 700; font-size: 11px; margin-bottom: 2px;">
-                          <span id="preview-signer-name">(นาย มงคล วงศ์สกุลยานนท์)</span>
-                        </div>
-                        <div style="width: 85%; border-bottom: 1.5px solid #0f172a; margin: 4px auto 6px auto;"></div>
-                        <div style="font-size: 10px; margin-bottom: 2px; color: #475569;" id="preview-signer-title">เจ้าของกิจการ Feltz Studio</div>
-                        <div style="font-size: 9.5px; color: #64748b;" id="preview-sig-date">วันที่ / Date: 02/07/2026</div>
+                        <div class="signature-line"></div>
+                        <div class="signer-name" id="preview-signer-name">นาย มงคล วงศ์สกุลยานนท์</div>
+                        <div class="signer-title" id="preview-signer-title">ผู้มีอำนาจลงนาม / Authorized Signature</div>
+                        <div class="signer-title" style="margin-top: 3px;" id="preview-sig-date">วันที่ / Date: 16/09/2026</div>
                       </div>
                     </div>
                   </div>
@@ -10983,12 +11290,29 @@
         const pdfShiftKey = localStorage.getItem('income_tracker_pdfshift_api_key') || DEFAULT_PDFSHIFT_API_KEY;
         const driveFolderLink = localStorage.getItem('income_tracker_company_drive_url') || DEFAULT_COMPANY_DRIVE_URL;
         
-        const sellerName = localStorage.getItem('income_tracker_seller_name') || 'มงคล วงศ์สกุลยานนท์ (Feltz Studio)';
-        const sellerTaxId = localStorage.getItem('income_tracker_seller_tax_id') || '3509900218949';
-        const sellerAddress = localStorage.getItem('income_tracker_seller_address') || '65/1 ถ.ต้นขาม2 ต.ท่าศาลา อ.เมือง จ.เชียงใหม่';
-        const sellerPhone = localStorage.getItem('income_tracker_seller_phone') || '0895544355';
-        const sellerEmail = localStorage.getItem('income_tracker_seller_email') || 'feltzstudio@gmail.com';
-        const sellerBank = localStorage.getItem('income_tracker_seller_bank') || 'ธ.กสิกรไทย เลขที่ 862-2-21524-2 ชื่อบัญชี มงคล วงศ์สกุลยานนท์';
+        let sellerName = localStorage.getItem('income_tracker_seller_name') || 'นาย มงคล วงศ์สกุลยานนท์ (Feltz Studio)';
+        let sellerTaxId = localStorage.getItem('income_tracker_seller_tax_id') || '3509900218949';
+        let sellerAddress = localStorage.getItem('income_tracker_seller_address') || '65/1 ถนนต้นขาม 2 ตำบลท่าศาลา อำเภอเมือง จังหวัดเชียงใหม่ 50000';
+        let sellerPhone = localStorage.getItem('income_tracker_seller_phone') || '089-554-4355';
+        let sellerEmail = localStorage.getItem('income_tracker_seller_email') || 'feltzstudio@gmail.com';
+        let sellerBank = localStorage.getItem('income_tracker_seller_bank') || 'ธนาคารกสิกรไทย (KBank) เลขที่ 862-2-21524-2 ชื่อบัญชี นาย มงคล วงศ์สกุลยานนท์';
+
+        if (!sellerName || sellerName === 'มงคล วงศ์สกุลยานนท์ (Feltz Studio)') {
+          sellerName = 'นาย มงคล วงศ์สกุลยานนท์ (Feltz Studio)';
+          localStorage.setItem('income_tracker_seller_name', sellerName);
+        }
+        if (!sellerAddress || sellerAddress === '65/1 ถ.ต้นขาม2 ต.ท่าศาลา อ.เมือง จ.เชียงใหม่') {
+          sellerAddress = '65/1 ถนนต้นขาม 2 ตำบลท่าศาลา อำเภอเมือง จังหวัดเชียงใหม่ 50000';
+          localStorage.setItem('income_tracker_seller_address', sellerAddress);
+        }
+        if (!sellerPhone || sellerPhone === '0895544355') {
+          sellerPhone = '089-554-4355';
+          localStorage.setItem('income_tracker_seller_phone', sellerPhone);
+        }
+        if (!sellerBank || sellerBank === 'ธ.กสิกรไทย เลขที่ 862-2-21524-2 ชื่อบัญชี มงคล วงศ์สกุลยานนท์') {
+          sellerBank = 'ธนาคารกสิกรไทย (KBank) เลขที่ 862-2-21524-2 ชื่อบัญชี นาย มงคล วงศ์สกุลยานนท์';
+          localStorage.setItem('income_tracker_seller_bank', sellerBank);
+        }
 
         if (document.getElementById('settings-script-url')) {
           document.getElementById('settings-script-url').value = scriptUrl;
@@ -12560,123 +12884,34 @@
 
       function updateA4Preview() {
         // Read form values
-        const docType = document.getElementById('export-doc-type').value;
-        const docNumber = document.getElementById('export-doc-number').value;
-        const docDate = document.getElementById('export-doc-date').value;
-        const dueDate = document.getElementById('export-doc-due-date') ? document.getElementById('export-doc-due-date').value : '';
-        const paymentTerms = document.getElementById('export-doc-payment-terms') ? document.getElementById('export-doc-payment-terms').value : '';
+        const docType = document.getElementById('export-doc-type')?.value || 'quotation';
+        const docNumber = document.getElementById('export-doc-number')?.value || 'FS-QT-202609-001';
+        const docDate = document.getElementById('export-doc-date')?.value || '';
+        const dueDate = document.getElementById('export-doc-due-date')?.value || '';
+        const paymentTerms = document.getElementById('export-doc-payment-terms')?.value || '';
         
-        const sellerName = document.getElementById('seller-name').value;
-        const sellerAddress = document.getElementById('seller-address').value;
-        const sellerPhone = document.getElementById('seller-phone').value;
+        const sellerName = document.getElementById('seller-name')?.value || 'นาย มงคล วงศ์สกุลยานนท์ (Feltz Studio)';
+        const sellerAddress = document.getElementById('seller-address')?.value || '65/1 ถนนต้นขาม 2 ตำบลท่าศาลา อำเภอเมือง จังหวัดเชียงใหม่ 50000';
+        const sellerPhone = document.getElementById('seller-phone')?.value || '089-554-4355';
+        const sellerTaxId = document.getElementById('settings-seller-tax-id')?.value || localStorage.getItem('income_tracker_seller_tax_id') || '3509900218949';
+        const sellerEmail = document.getElementById('settings-seller-email')?.value || localStorage.getItem('income_tracker_seller_email') || 'feltzstudio@gmail.com';
 
-        const clientName = document.getElementById('client-name').value || '-';
-        const clientAddress = document.getElementById('client-address').value || '-';
-        const clientPhone = document.getElementById('client-phone').value || '-';
+        const clientName = document.getElementById('client-name')?.value || 'ลูกค้าทั่วไป';
+        const clientAddress = document.getElementById('client-address')?.value.trim() || '-';
+        const clientPhone = document.getElementById('client-phone')?.value.trim() || '-';
+        const clientTaxId = document.getElementById('client-tax-id')?.value.trim() || '-';
 
-        const discount = parseFloat(document.getElementById('doc-discount').value) || 0;
+        const discount = parseFloat(document.getElementById('doc-discount')?.value) || 0;
+        const discountDesc = document.getElementById('doc-discount-desc')?.value.trim() || '';
         const whtSelect = document.getElementById('doc-wht-select');
         const whtRate = whtSelect ? parseInt(whtSelect.value) || 0 : 0;
-        const bankInfo = document.getElementById('doc-bank-info').value;
-        const signerName = document.getElementById('doc-signer-name').value;
-        const showSig = document.getElementById('doc-show-sig').checked;
+        const bankInfo = document.getElementById('doc-bank-info')?.value || 'ธนาคารกสิกรไทย (KBank) เลขที่ 862-2-21524-2 ชื่อบัญชี นาย มงคล วงศ์สกุลยานนท์';
+        const signerName = document.getElementById('doc-signer-name')?.value || 'นาย มงคล วงศ์สกุลยานนท์';
+        const showSig = document.getElementById('doc-show-sig')?.checked !== false;
 
-        const discountDesc = document.getElementById('doc-discount-desc').value.trim() || '';
-        const projectName = document.getElementById('doc-project-name').value.trim() || '';
-        const docRemarks = document.getElementById('doc-remarks').value.trim() || '';
-        const clientTaxId = document.getElementById('client-tax-id').value.trim() || '';
-
-        const sellerTaxId = document.getElementById('settings-seller-tax-id')?.value || '';
-        const sellerEmail = document.getElementById('settings-seller-email')?.value || '';
-
-        // Update Text titles in Preview
-        const previewSellerDetails = document.getElementById('preview-seller-details');
-        const previewDocTitle = document.getElementById('preview-doc-title');
-        const previewDocTitleEn = document.getElementById('preview-doc-title-en');
-        const previewDocNumber = document.getElementById('preview-doc-number');
-        const previewDocDate = document.getElementById('preview-doc-date');
-        const previewClientDetails = document.getElementById('preview-client-details');
-        const previewBankInfo = document.getElementById('preview-bank-info');
-        const previewSignerName = document.getElementById('preview-signer-name');
-        const previewSigImg = document.getElementById('preview-sig-img');
-
-        if (previewSellerDetails) {
-          let detailsHTML = `<strong style="font-weight: 700; color: #0f172a; font-size: 11px;">${sellerName}</strong><br>`;
-          detailsHTML += `${sellerAddress}<br>`;
-          detailsHTML += `โทร: ${sellerPhone}`;
-          if (sellerEmail) {
-            detailsHTML += ` | อีเมล: ${sellerEmail}`;
-          }
-          if (sellerTaxId) {
-            detailsHTML += `<br>เลขประจำตัวผู้เสียภาษี: ${sellerTaxId}`;
-          }
-          previewSellerDetails.innerHTML = detailsHTML;
-        }
-
-        // Set document types title
-        if (previewDocTitle && previewDocTitleEn) {
-          if (docType === 'quotation') {
-            previewDocTitle.textContent = 'ใบเสนอราคา';
-            previewDocTitleEn.textContent = 'QUOTATION';
-          } else if (docType === 'invoice') {
-            previewDocTitle.textContent = 'ใบวางบิล';
-            previewDocTitleEn.textContent = 'INVOICE';
-          } else {
-            previewDocTitle.textContent = 'ใบเสร็จรับเงิน';
-            previewDocTitleEn.textContent = 'RECEIPT';
-          }
-        }
-
-        if (previewDocNumber) previewDocNumber.textContent = docNumber;
-        if (previewDocDate) previewDocDate.textContent = docDate;
-
-        const invoiceFieldsContainer = document.getElementById('invoice-fields-container');
-        const previewDueDateRow = document.getElementById('preview-doc-due-date-row');
-        const previewPaymentTermsBlock = document.getElementById('preview-payment-terms-block');
-
-        if (docType === 'invoice') {
-          if (invoiceFieldsContainer) invoiceFieldsContainer.style.display = 'flex';
-          if (previewDueDateRow) {
-            previewDueDateRow.style.display = 'flex';
-            const previewDueDate = document.getElementById('preview-doc-due-date');
-            if (previewDueDate) previewDueDate.textContent = dueDate || '-';
-          }
-          if (previewPaymentTermsBlock) {
-            previewPaymentTermsBlock.style.display = 'block';
-            const previewPaymentTerms = document.getElementById('preview-payment-terms');
-            if (previewPaymentTerms) previewPaymentTerms.textContent = paymentTerms || 'ชำระทันที';
-          }
-        } else {
-          if (invoiceFieldsContainer) invoiceFieldsContainer.style.display = 'none';
-          if (previewDueDateRow) previewDueDateRow.style.display = 'none';
-          if (previewPaymentTermsBlock) previewPaymentTermsBlock.style.display = 'none';
-        }
-        
-        if (previewClientDetails) {
-          let clientDetailsHTML = `ชื่อลูกค้า: ${clientName}<br>ที่อยู่: ${clientAddress}<br>โทร: ${clientPhone}`;
-          if (clientTaxId) {
-            clientDetailsHTML += `<br>เลขผู้เสียภาษีลูกค้า / Client Tax ID: ${clientTaxId}`;
-          }
-          previewClientDetails.innerHTML = clientDetailsHTML;
-        }
-
-        const previewProjectDetails = document.getElementById('preview-project-details');
-        if (previewProjectDetails) {
-          previewProjectDetails.innerHTML = `โครงการ: ${projectName || 'Feltz Studio Creative Work'}`;
-        }
-
-        const previewRemarksBlock = document.getElementById('preview-remarks-block');
-        const previewRemarksVal = document.getElementById('preview-remarks-val');
-        if (previewRemarksBlock && previewRemarksVal) {
-          if (docRemarks) {
-            previewRemarksBlock.style.display = 'block';
-            previewRemarksVal.textContent = docRemarks;
-          } else {
-            previewRemarksBlock.style.display = 'none';
-          }
-        }
-
-        if (previewBankInfo) previewBankInfo.textContent = bankInfo;
+        const projectName = document.getElementById('doc-project-name')?.value.trim() || 'บริการงานถ่ายภาพและผลิตสื่อ';
+        const docRemarks = document.getElementById('doc-remarks')?.value.trim() || '';
+        const refDocNo = document.getElementById('autofillDocSelect')?.value || '';
 
         // Helper to format Date string YYYY-MM-DD to DD/MM/YYYY
         function formatDateToDMY(dateStr) {
@@ -12688,165 +12923,284 @@
           return dateStr;
         }
 
-        const previewSigTopLabel = document.getElementById('preview-sig-top-label');
-        const previewSignerTitle = document.getElementById('preview-signer-title');
-        const previewSigDate = document.getElementById('preview-sig-date');
-
-        // Format name with prefix and parentheses
-        let formattedSigner = signerName;
-        if (!formattedSigner.startsWith('(')) {
-          if (!formattedSigner.startsWith('นาย') && !formattedSigner.startsWith('นาง') && !formattedSigner.startsWith('นางสาว')) {
-            formattedSigner = 'นาย ' + formattedSigner;
+        function add30Days(dateStr) {
+          if (!dateStr) return '';
+          const parts = dateStr.split('-');
+          if (parts.length === 3) {
+            const y = parseInt(parts[0], 10);
+            const m = parseInt(parts[1], 10) - 1;
+            const d = parseInt(parts[2], 10);
+            const dt = new Date(y, m, d);
+            if (!isNaN(dt.getTime())) {
+              dt.setDate(dt.getDate() + 30);
+              const resY = dt.getFullYear();
+              const resM = String(dt.getMonth() + 1).padStart(2, '0');
+              const resD = String(dt.getDate()).padStart(2, '0');
+              return `${resD}/${resM}/${resY}`;
+            }
           }
-          formattedSigner = `(${formattedSigner})`;
-        }
-        if (previewSignerName) previewSignerName.textContent = formattedSigner;
-
-        // Set signature date formatted as DD/MM/YYYY
-        if (previewSigDate) {
-          const dmyDate = formatDateToDMY(docDate);
-          previewSigDate.textContent = `วันที่ / Date: ${dmyDate || '-'}`;
+          return dateStr;
         }
 
-        // Set Signatures dynamically based on docType
-        const previewSigLeftWrap = document.getElementById('preview-sig-left-wrap');
-        const previewSigLeftLabel = document.getElementById('preview-sig-left-label');
-        const previewSigLeftSub = document.getElementById('preview-sig-left-sub');
+        const now = new Date();
+        const fallbackDMY = `${String(now.getDate()).padStart(2, '0')}/${String(now.getMonth() + 1).padStart(2, '0')}/${now.getFullYear()}`;
+        const formattedDocDate = formatDateToDMY(docDate) || fallbackDMY;
+
+        // 1. Header & Issuer Profile
+        const previewCompanyNameTh = document.getElementById('preview-company-name-th');
+        if (previewCompanyNameTh) previewCompanyNameTh.textContent = sellerName;
+
+        const previewSellerTaxId = document.getElementById('preview-seller-tax-id');
+        if (previewSellerTaxId) previewSellerTaxId.textContent = sellerTaxId;
+
+        const previewSellerAddress = document.getElementById('preview-seller-address');
+        if (previewSellerAddress) previewSellerAddress.textContent = sellerAddress;
+
+        const previewSellerPhone = document.getElementById('preview-seller-phone');
+        if (previewSellerPhone) previewSellerPhone.textContent = sellerPhone;
+
+        const previewSellerEmail = document.getElementById('preview-seller-email');
+        if (previewSellerEmail) previewSellerEmail.textContent = sellerEmail;
+
+        // 2. Doc Badge & Metadata
+        const previewDocTitle = document.getElementById('preview-doc-title');
+        const previewDocTitleEn = document.getElementById('preview-doc-title-en');
+        const previewDocNumber = document.getElementById('preview-doc-number');
+        const previewDocDate = document.getElementById('preview-doc-date');
+        const previewDateLabel2 = document.getElementById('preview-date-label-2');
+        const previewDocDateVal2 = document.getElementById('preview-doc-date-val-2');
+        const previewRefRow = document.getElementById('preview-ref-row');
+        const previewRefLabel = document.getElementById('preview-ref-label');
+        const previewRefDocNo = document.getElementById('preview-ref-doc-no');
+
+        if (previewDocNumber) previewDocNumber.textContent = docNumber;
+        if (previewDocDate) previewDocDate.textContent = formattedDocDate;
+
+        let dateLabel2 = 'ครบกำหนดชำระ / Due Date:';
+        let dateVal2 = formattedDocDate;
 
         if (docType === 'quotation') {
-          if (previewSigLeftWrap) previewSigLeftWrap.style.display = 'block';
-          if (previewSigLeftLabel) previewSigLeftLabel.textContent = 'ผู้อนุมัติสั่งจ้าง / Customer Acceptance';
-          if (previewSigLeftSub) previewSigLeftSub.textContent = '(ลงชื่อผู้ว่าจ้าง / ประทับตรา)';
-          if (previewSigTopLabel) {
-            previewSigTopLabel.style.display = 'block';
-            previewSigTopLabel.textContent = 'เสนอราคาโดย';
-          }
-          if (previewSignerTitle) {
-            previewSignerTitle.textContent = 'ผู้มีอำนาจลงนาม / Authorized Signature';
-          }
+          if (previewDocTitle) previewDocTitle.textContent = 'ใบเสนอราคา';
+          if (previewDocTitleEn) previewDocTitleEn.textContent = 'QUOTATION';
+          dateLabel2 = 'ยืนราคาถึงวันที่ / Valid Until:';
+          dateVal2 = add30Days(docDate) || formattedDocDate;
+          if (previewRefRow) previewRefRow.style.display = 'none';
         } else if (docType === 'invoice') {
-          if (previewSigLeftWrap) previewSigLeftWrap.style.display = 'block';
-          if (previewSigLeftLabel) previewSigLeftLabel.textContent = 'ผู้รับวางบิล / Received By';
-          if (previewSigLeftSub) previewSigLeftSub.textContent = '(ลงชื่อผู้รับวางบิล)';
-          if (previewSigTopLabel) {
-            previewSigTopLabel.style.display = 'block';
-            previewSigTopLabel.textContent = 'ผู้วางบิล';
-          }
-          if (previewSignerTitle) {
-            previewSignerTitle.textContent = 'ผู้มีอำนาจลงนาม / Authorized Signature';
+          if (previewDocTitle) previewDocTitle.textContent = 'ใบวางบิล / ใบแจ้งหนี้';
+          if (previewDocTitleEn) previewDocTitleEn.textContent = 'INVOICE / BILLING NOTE';
+          dateLabel2 = 'ครบกำหนดชำระ / Due Date:';
+          dateVal2 = dueDate ? formatDateToDMY(dueDate) : formattedDocDate;
+          if (previewRefRow) {
+            if (refDocNo) {
+              previewRefRow.style.display = 'table-row';
+              if (previewRefLabel) previewRefLabel.textContent = 'อ้างอิงเอกสาร / Ref:';
+              if (previewRefDocNo) previewRefDocNo.textContent = refDocNo;
+            } else {
+              previewRefRow.style.display = 'none';
+            }
           }
         } else if (docType === 'receipt') {
-          if (previewSigLeftWrap) previewSigLeftWrap.style.display = 'none'; // RE: Empty left signature box
-          if (previewSigTopLabel) {
-            previewSigTopLabel.style.display = 'block';
-            previewSigTopLabel.textContent = 'ผู้รับเงิน / Authorized Signature';
-          }
-          if (previewSignerTitle) {
-            previewSignerTitle.textContent = 'ผู้มีอำนาจลงนาม / Authorized Signature';
-          }
-        }
-
-        const bankDetailsWrap = document.getElementById('preview-bank-details-wrap');
-        const paymentPreviewInfo = document.querySelector('.payment-preview-info');
-        const remarksBlock = document.getElementById('preview-remarks-block');
-
-        if (docType === 'receipt') {
-          if (bankDetailsWrap) bankDetailsWrap.style.display = 'none';
-          if (!docRemarks) {
-            if (paymentPreviewInfo) paymentPreviewInfo.style.display = 'none';
-          } else {
-            if (paymentPreviewInfo) {
-              paymentPreviewInfo.style.display = 'block';
-              paymentPreviewInfo.style.borderTop = '1px dashed #cbd5e1';
-            }
-            if (remarksBlock) {
-              remarksBlock.style.borderTop = 'none';
-              remarksBlock.style.marginTop = '0';
-              remarksBlock.style.paddingTop = '0';
+          if (previewDocTitle) previewDocTitle.textContent = 'ใบเสร็จรับเงิน';
+          if (previewDocTitleEn) previewDocTitleEn.textContent = 'RECEIPT';
+          dateLabel2 = 'วันที่รับชำระ / Paid Date:';
+          dateVal2 = formattedDocDate;
+          if (previewRefRow) {
+            if (refDocNo) {
+              previewRefRow.style.display = 'table-row';
+              if (previewRefLabel) previewRefLabel.textContent = 'อ้างอิงใบวางบิล / Ref Invoice:';
+              if (previewRefDocNo) previewRefDocNo.textContent = refDocNo;
+            } else {
+              previewRefRow.style.display = 'none';
             }
           }
-        } else {
-          if (bankDetailsWrap) bankDetailsWrap.style.display = 'block';
-          if (paymentPreviewInfo) {
-            paymentPreviewInfo.style.display = 'block';
-            paymentPreviewInfo.style.borderTop = '1px dashed #cbd5e1';
-          }
-          if (remarksBlock) {
-            remarksBlock.style.borderTop = '1px dashed #e2e8f0';
-            remarksBlock.style.marginTop = '8px';
-            remarksBlock.style.paddingTop = '8px';
-          }
         }
 
-        if (previewSigImg) {
-          if (showSig) {
-            previewSigImg.style.display = 'block';
-          } else {
-            previewSigImg.style.display = 'none';
-          }
+        if (previewDateLabel2) previewDateLabel2.textContent = dateLabel2;
+        if (previewDocDateVal2) previewDocDateVal2.textContent = dateVal2;
+
+        // Toggle Form fields for invoice
+        const invoiceFieldsContainer = document.getElementById('invoice-fields-container');
+        if (invoiceFieldsContainer) {
+          invoiceFieldsContainer.style.display = (docType === 'invoice') ? 'flex' : 'none';
         }
 
-        // Render preview table items and calculate financial totals
+        // 3. Client & Project Details
+        const previewClientName = document.getElementById('preview-client-name');
+        if (previewClientName) previewClientName.textContent = clientName;
+
+        const previewClientTaxId = document.getElementById('preview-client-tax-id');
+        if (previewClientTaxId) previewClientTaxId.textContent = clientTaxId;
+
+        const previewClientAddress = document.getElementById('preview-client-address');
+        if (previewClientAddress) previewClientAddress.textContent = clientAddress;
+
+        const previewClientPhone = document.getElementById('preview-client-phone');
+        if (previewClientPhone) previewClientPhone.textContent = clientPhone;
+
+        const previewProjectName = document.getElementById('preview-project-name');
+        if (previewProjectName) previewProjectName.textContent = projectName;
+
+        const previewProjectPaymentTerm = document.getElementById('preview-project-payment-term');
+        if (previewProjectPaymentTerm) {
+          previewProjectPaymentTerm.textContent = (docType === 'invoice' && paymentTerms) ? paymentTerms : 'โอนเงินผ่านบัญชีธนาคาร';
+        }
+
+        // 4. Render items & Totals
         const tbody = document.getElementById('preview-items-tbody');
+        let subtotal = 0;
         if (tbody) {
           tbody.innerHTML = '';
-          let subtotal = 0;
-
           exportItems.forEach((item, index) => {
             const amount = parseFloat(item.amount) || 0;
             subtotal += amount;
 
             const tr = document.createElement('tr');
             tr.innerHTML = `
-              <td style="text-align: center; padding: 6px 8px; border: 1px solid #cbd5e1;">${index + 1}</td>
-              <td style="padding: 6px 8px; border: 1px solid #cbd5e1; white-space: pre-wrap;">${item.desc || '-'}</td>
-              <td style="text-align: right; padding: 6px 8px; border: 1px solid #cbd5e1;">${amount.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+              <td class="center mono" style="width: 50px;">${index + 1}</td>
+              <td><strong>${item.desc || '-'}</strong></td>
+              <td class="right mono" style="width: 140px;"><strong>${amount.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</strong></td>
             `;
             tbody.appendChild(tr);
           });
+        }
 
-          // Calculations
-          const discountVal = discount;
-          const totalAfterDiscount = Math.max(0, subtotal - discountVal);
-          const taxVal = totalAfterDiscount * (whtRate / 100);
-          const netTotal = totalAfterDiscount - taxVal;
+        const discountVal = discount;
+        const totalAfterDiscount = Math.max(0, subtotal - discountVal);
+        const taxVal = totalAfterDiscount * (whtRate / 100);
+        const netTotal = Math.round((totalAfterDiscount - taxVal) * 100) / 100;
 
-          document.getElementById('preview-subtotal').textContent = `${subtotal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} THB`;
-          
-          const discountRow = document.getElementById('preview-discount-row');
-          if (discountVal > 0) {
-            if (discountRow) {
-              discountRow.style.display = 'table-row';
-              const firstCell = discountRow.querySelector('td:first-child');
-              if (firstCell) {
-                firstCell.textContent = discountDesc ? `ส่วนลด (${discountDesc})` : 'ส่วนลด / Discount';
-              }
+        const previewSubtotal = document.getElementById('preview-subtotal');
+        if (previewSubtotal) {
+          previewSubtotal.textContent = `${subtotal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} ฿`;
+        }
+
+        const discountRow = document.getElementById('preview-discount-row');
+        const previewDiscount = document.getElementById('preview-discount');
+        const previewDiscountLabel = document.getElementById('preview-discount-label');
+        if (discountVal > 0) {
+          if (discountRow) discountRow.style.display = 'table-row';
+          if (previewDiscountLabel) previewDiscountLabel.textContent = discountDesc ? `ส่วนลด (${discountDesc}) / Discount` : 'ส่วนลด / Discount';
+          if (previewDiscount) previewDiscount.textContent = `-${discountVal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} ฿`;
+        } else {
+          if (discountRow) discountRow.style.display = 'none';
+        }
+
+        const taxRow = document.getElementById('preview-tax-row');
+        const previewTax = document.getElementById('preview-tax');
+        const previewTaxLabel = document.getElementById('preview-tax-label');
+        if (taxVal > 0) {
+          if (taxRow) taxRow.style.display = 'table-row';
+          if (previewTaxLabel) previewTaxLabel.textContent = `หักภาษี ณ ที่จ่าย / WHT (${whtRate}%)`;
+          if (previewTax) previewTax.textContent = `-${taxVal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} ฿`;
+        } else {
+          if (taxRow) taxRow.style.display = 'none';
+        }
+
+        const previewGrandTotalLabel = document.getElementById('preview-grand-total-label');
+        if (previewGrandTotalLabel) {
+          if (docType === 'quotation') {
+            previewGrandTotalLabel.textContent = 'ยอดเงินรวมทั้งสิ้น / Grand Total';
+          } else if (docType === 'invoice') {
+            previewGrandTotalLabel.textContent = (taxVal > 0) ? 'ยอดรับสุทธิ / Net Payable' : 'จำนวนเงินรวมทั้งสิ้น / Amount Due';
+          } else if (docType === 'receipt') {
+            previewGrandTotalLabel.textContent = 'ยอดรับชำระสุทธิ / Net Received';
+          }
+        }
+
+        const previewNetTotal = document.getElementById('preview-net-total');
+        if (previewNetTotal) {
+          previewNetTotal.textContent = `${netTotal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} ฿`;
+        }
+
+        const bahtText = thaiBahtText(netTotal);
+        const previewBahtText = document.getElementById('preview-baht-text');
+        if (previewBahtText) {
+          previewBahtText.textContent = `(${bahtText})`;
+        }
+
+        // 5. Terms & Conditions Box
+        const previewTermsBox = document.getElementById('preview-terms-box');
+        const previewTermsTitle = document.getElementById('preview-terms-title');
+        const previewTermsContent = document.getElementById('preview-terms-content');
+
+        if (previewTermsBox && previewTermsTitle && previewTermsContent) {
+          if (docType === 'quotation') {
+            previewTermsBox.style.display = 'block';
+            previewTermsTitle.textContent = 'เงื่อนไขและข้อตกลง (Terms & Conditions):';
+            previewTermsContent.innerHTML = `
+              <div>• ชำระมัดจำ 30-50% ของมูลค่าโครงการเพื่อสำรองคิวงานและยืนยันการว่าจ้าง</div>
+              <div>• กำหนดยืนราคา 30 วันนับจากวันที่ออกเอกสาร</div>
+              ${docRemarks ? `<div>• หมายเหตุ: ${docRemarks}</div>` : ''}
+              <div style="margin-top: 6px; color: #0284c7; font-weight: 600;">* บัญชีรับโอน: ${bankInfo}</div>
+            `;
+          } else if (docType === 'invoice') {
+            previewTermsBox.style.display = 'block';
+            previewTermsTitle.textContent = 'รายละเอียดการชำระเงิน (Payment Details):';
+            previewTermsContent.innerHTML = `
+              <div>• ข้อมูลการชำระเงิน: <strong>${bankInfo}</strong></div>
+              ${docRemarks ? `<div>• หมายเหตุ: ${docRemarks}</div>` : ''}
+              <div style="margin-top: 4px; font-size: 9.5px; color: #64748b;">* ในกรณีชำระด้วยเช็ค เอกสารนี้จะสมบูรณ์เมื่อเช็คได้เรียกเก็บเงินผ่านธนาคารเรียบร้อยแล้ว</div>
+            `;
+          } else if (docType === 'receipt') {
+            if (docRemarks) {
+              previewTermsBox.style.display = 'block';
+              previewTermsTitle.textContent = 'หมายเหตุ (Remarks):';
+              previewTermsContent.innerHTML = `<div>• ${docRemarks}</div>`;
+            } else {
+              previewTermsBox.style.display = 'none';
             }
-            document.getElementById('preview-discount').textContent = `-${discountVal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} THB`;
-          } else {
-            if (discountRow) discountRow.style.display = 'none';
           }
+        }
 
-          const taxRow = document.getElementById('preview-tax-row');
-          if (taxVal > 0) {
-            if (taxRow) {
-              taxRow.style.display = 'table-row';
-              const firstCell = taxRow.querySelector('td:first-child');
-              if (firstCell) {
-                firstCell.textContent = `หัก ณ ที่จ่าย ${whtRate}% / Withholding Tax`;
-              }
-            }
-            document.getElementById('preview-tax').textContent = `-${taxVal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} THB`;
-          } else {
-            if (taxRow) taxRow.style.display = 'none';
-          }
+        // 6. Signatures Section
+        const previewSigLeftCard = document.getElementById('preview-sig-left-card');
+        const previewSigLeftLabel = document.getElementById('preview-sig-left-label');
+        const previewSigLeftSub = document.getElementById('preview-sig-left-sub');
+        const previewSigLeftDate = document.getElementById('preview-sig-left-date');
 
-          document.getElementById('preview-net-total').textContent = `${netTotal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} THB`;
-          const bahtText = thaiBahtText(netTotal);
-          const bahtTextEl = document.getElementById('preview-baht-text');
-          if (bahtTextEl) {
-            bahtTextEl.textContent = `(${bahtText})`;
+        const previewSigTopLabel = document.getElementById('preview-sig-top-label');
+        const previewSigImg = document.getElementById('preview-sig-img');
+        const previewSignerName = document.getElementById('preview-signer-name');
+        const previewSignerTitle = document.getElementById('preview-signer-title');
+        const previewSigDate = document.getElementById('preview-sig-date');
+
+        if (docType === 'quotation') {
+          if (previewSigLeftCard) {
+            previewSigLeftCard.style.visibility = 'visible';
+            previewSigLeftCard.style.display = 'block';
           }
+          if (previewSigLeftLabel) previewSigLeftLabel.textContent = 'ผู้อนุมัติสั่งจ้าง / Customer Acceptance';
+          if (previewSigLeftSub) previewSigLeftSub.textContent = '(ลงชื่อผู้ว่าจ้าง / ประทับตรา)';
+          if (previewSigLeftDate) previewSigLeftDate.textContent = 'วันที่ / Date: ....................';
+          if (previewSigTopLabel) previewSigTopLabel.textContent = 'เสนอราคาโดย';
+        } else if (docType === 'invoice') {
+          if (previewSigLeftCard) {
+            previewSigLeftCard.style.visibility = 'visible';
+            previewSigLeftCard.style.display = 'block';
+          }
+          if (previewSigLeftLabel) previewSigLeftLabel.textContent = 'ผู้รับวางบิล / Received By';
+          if (previewSigLeftSub) previewSigLeftSub.textContent = '(ลงชื่อผู้รับวางบิล)';
+          if (previewSigLeftDate) previewSigLeftDate.textContent = 'วันที่ / Date: ....................';
+          if (previewSigTopLabel) previewSigTopLabel.textContent = 'ผู้วางบิล';
+        } else if (docType === 'receipt') {
+          // RE: Left signature box is 100% EMPTY
+          if (previewSigLeftCard) {
+            previewSigLeftCard.style.visibility = 'hidden';
+          }
+          if (previewSigTopLabel) previewSigTopLabel.textContent = 'ผู้รับเงิน / Authorized Signature';
+        }
+
+        if (previewSigImg) {
+          previewSigImg.style.display = showSig ? 'block' : 'none';
+        }
+        if (previewSignerName) {
+          previewSignerName.textContent = signerName;
+        }
+        if (previewSignerTitle) {
+          previewSignerTitle.textContent = 'ผู้มีอำนาจลงนาม / Authorized Signature';
+        }
+        if (previewSigDate) {
+          previewSigDate.textContent = `วันที่ / Date: ${formattedDocDate}`;
         }
       }
 
@@ -12900,7 +13254,8 @@
         'seller-name', 'seller-address',
         'seller-phone', 'client-name', 'client-address', 'client-phone',
         'doc-discount', 'doc-bank-info', 'doc-signer-name',
-        'doc-discount-desc', 'doc-project-name', 'doc-remarks', 'client-tax-id'
+        'doc-discount-desc', 'doc-project-name', 'doc-remarks', 'client-tax-id',
+        'autofillDocSelect'
       ];
       exportFormInputs.forEach(id => {
         const el = document.getElementById(id);
@@ -12945,9 +13300,11 @@
           // Auto update document number prefix
           const docNumInput = document.getElementById('export-doc-number');
           if (docNumInput) {
-            const prefix = docType === 'quotation' ? 'QT' : docType === 'invoice' ? 'INV' : 'RE';
-            const numPart = docNumInput.value.replace(/^[A-Z]+/, '');
-            docNumInput.value = prefix + (numPart || '2026-001');
+            const prefix = docType === 'quotation' ? 'FS-QT' : docType === 'invoice' ? 'FS-IV' : 'FS-RE';
+            const numPart = docNumInput.value.replace(/^(?:FS-)?(?:QT|IV|INV|RE|RC)[-_]?/i, '');
+            const now = new Date();
+            const ym = now.getFullYear().toString() + String(now.getMonth() + 1).padStart(2, '0');
+            docNumInput.value = `${prefix}-${numPart || (ym + '-001')}`;
           }
 
           if (docType === 'invoice') {
