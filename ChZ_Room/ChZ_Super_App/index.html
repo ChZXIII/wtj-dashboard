@@ -4476,6 +4476,12 @@
       position: relative;
       overflow: hidden;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
+      min-width: 0;
+      box-sizing: border-box;
+    }
+
+    .pfc-bill-card.bill-power {
+      grid-column: span 2;
     }
 
     .pfc-bill-card:hover {
@@ -4658,6 +4664,9 @@
       flex-direction: column;
       gap: 14px;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+      grid-column: 1 / -1;
+      min-width: 0;
+      box-sizing: border-box;
     }
 
     .pfc-subs-hub-header {
@@ -4851,6 +4860,8 @@
       justify-content: space-between;
       gap: 10px;
       transition: all 0.2s ease;
+      min-width: 0;
+      box-sizing: border-box;
     }
 
     .pfc-sub-item-card:hover {
@@ -5210,7 +5221,66 @@
         grid-template-columns: 1fr;
       }
       .pfc-bills-grid {
-        grid-template-columns: 1fr;
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+        gap: 14px !important;
+      }
+      .pfc-bill-card,
+      .pfc-bill-card.bill-power,
+      .pfc-subs-hub-card,
+      #pfc-subs-hub-container {
+        grid-column: auto !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
+      }
+      .pfc-subs-hub-header {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 12px !important;
+      }
+      .pfc-subs-hub-actions {
+        width: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 8px !important;
+      }
+      .pfc-subs-btn-primary,
+      .pfc-subs-btn-secondary {
+        width: 100% !important;
+        justify-content: center !important;
+        padding: 8px 12px !important;
+      }
+      .pfc-subs-metrics-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 8px !important;
+        width: 100% !important;
+      }
+      .pfc-subs-filters-bar {
+        overflow-x: auto !important;
+        flex-wrap: nowrap !important;
+        white-space: nowrap !important;
+        width: 100% !important;
+        padding-bottom: 6px !important;
+        -webkit-overflow-scrolling: touch !important;
+      }
+      .pfc-subs-filter-btn {
+        flex-shrink: 0 !important;
+      }
+      .pfc-subs-items-grid {
+        grid-template-columns: 1fr !important;
+        width: 100% !important;
+        gap: 8px !important;
+      }
+      .pfc-sub-item-card {
+        width: 100% !important;
+        box-sizing: border-box !important;
+        min-width: 0 !important;
+      }
+      .pfc-bill-calc-row {
+        grid-template-columns: 1fr !important;
       }
       .pfc-settlement-breakdown {
         grid-template-columns: 1fr 1fr;
@@ -5218,6 +5288,12 @@
       .pfc-daily-budget-stats {
         width: 100%;
         justify-content: space-between;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .pfc-subs-metrics-grid {
+        grid-template-columns: 1fr !important;
       }
     }
   </style>
@@ -7168,7 +7244,7 @@
               </div>
 
               <!-- Bill Card 4: วันที่ 20-21 - ค่าไฟ 3 บิล & เครื่องคิดเลขหักมิเตอร์ไอ้บอล -->
-              <div class="pfc-bill-card bill-power" style="grid-column: span 2;">
+              <div class="pfc-bill-card bill-power">
                 <div class="pfc-bill-header">
                   <div class="pfc-bill-info">
                     <span class="pfc-bill-title">
@@ -7267,7 +7343,7 @@
               </div>
 
               <!-- Bill Card 6: Subscription & Recurring Command Hub (แบบ A) -->
-              <div class="pfc-bill-card bill-subs-hub pfc-subs-hub-card" id="pfc-subs-hub-container" style="grid-column: 1 / -1;">
+              <div class="pfc-bill-card bill-subs-hub pfc-subs-hub-card" id="pfc-subs-hub-container">
                 <!-- Hub Header -->
                 <div class="pfc-subs-hub-header">
                   <div class="pfc-subs-hub-title-group">
