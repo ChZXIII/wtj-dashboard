@@ -1082,6 +1082,10 @@ textarea.form-control {
   margin: 0 auto;
   opacity: 0.88;
   mix-blend-mode: multiply;
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  filter: contrast(105%) brightness(100%);
   pointer-events: none;
   z-index: 2;
   transition: opacity 0.2s ease-in-out;
@@ -2178,7 +2182,7 @@ textarea.form-control {
 }
 
   </style>
-  <link rel="manifest" href="manifest.json?v=152">
+  <link rel="manifest" href="manifest.json?v=153">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -2394,7 +2398,7 @@ textarea.form-control {
           </div>
         </div>
         <div style="font-size: 10px; opacity: 0.5; margin-top: 12px; text-align: center; font-family: monospace; letter-spacing: 0.5px;">
-          Version V1.52
+          Version V1.53
         </div>
       </div>
     </aside>
@@ -2831,6 +2835,17 @@ textarea.form-control {
                 </div>
               </div>
 
+              <div class="form-row">
+                <div class="form-group" id="groupDocPoNumber">
+                  <label for="docPoNumber">เลขที่ใบสั่งซื้อ / P.O. No.</label>
+                  <input type="text" id="docPoNumber" class="form-control" placeholder="เช่น PO-2026-0901">
+                </div>
+                <div class="form-group" id="groupDocJobCode">
+                  <label for="docJobCode">รหัสโครงการ / Job Code</label>
+                  <input type="text" id="docJobCode" class="form-control" placeholder="เช่น JOB-VIRADA-01">
+                </div>
+              </div>
+
               <div class="form-group">
                 <label for="docProjectName">รายละเอียดงาน / ชื่อโครงการ</label>
                 <input type="text" id="docProjectName" class="form-control" placeholder="เช่น บริการถ่ายทำวีดีโอพรีเซนต์องค์กร">
@@ -3206,6 +3221,8 @@ textarea.form-control {
                       <td>อ้างอิงเอกสาร / Ref:</td>
                       <td id="prevDocRefVal" class="mono" style="font-weight: 700;">-</td>
                     </tr>
+                    <tr id="prevDocPoNumberRow" style="display: none;"><td id="prevDocPoNumberLabel">เลขที่ใบสั่งซื้อ / P.O. No.:</td><td id="prevDocPoNumberVal" class="mono" style="font-weight: 700;">-</td></tr>
+                    <tr id="prevDocJobCodeRow" style="display: none;"><td id="prevDocJobCodeLabel">รหัสโครงการ / Job Code:</td><td id="prevDocJobCodeVal" class="mono" style="font-weight: 700;">-</td></tr>
                     <tr>
                       <td id="prevDocDateLabel">วันที่ / Date:</td>
                       <td id="prevDocDateVal" class="mono" style="font-weight: 700;">-</td>
@@ -3264,6 +3281,10 @@ textarea.form-control {
                   <tr id="prevVatRow" style="display: none;">
                     <td id="prevVatLabelCell">ภาษีมูลค่าเพิ่ม / VAT (7%)</td>
                     <td id="prevVatVal" class="mono">0.00 ฿</td>
+                  </tr>
+                  <tr id="prevGrossRow" style="display: none;">
+                    <td id="prevGrossLabelCell">ยอดเงินรวมทั้งสิ้น / Total Amount</td>
+                    <td id="prevGrossVal" class="mono">0.00 ฿</td>
                   </tr>
                   <tr id="prevWhtRow" style="display: none;">
                     <td id="prevWhtLabelCell">หักภาษี ณ ที่จ่าย / WHT (<span id="prevWhtRateValShow">0</span>%)</td>
@@ -4565,6 +4586,46 @@ textarea.form-control {
     </div>
   </div>
 
+  <!-- Modal: Document Saved Success & Action Options -->
+  <div id="docSaveSuccessModal" class="modal-overlay">
+    <div class="modal-card" style="max-width: 460px; text-align: center;">
+      <div class="modal-header" style="justify-content: center; position: relative;">
+        <h2 class="modal-title" style="margin: 0; font-size: 20px;">บันทึกเอกสารสำเร็จ</h2>
+        <button id="btnCloseDocSaveSuccessModal" class="modal-close-btn" style="position: absolute; right: 0;" title="ปิดหน้าต่าง">&times;</button>
+      </div>
+      <div style="padding: 16px 8px 8px;">
+        <div style="width: 56px; height: 56px; margin: 0 auto 16px; border-radius: 50%; background-color: #e6f4ea; display: flex; align-items: center; justify-content: center; border: 2px solid #34a853;">
+          <svg style="width: 32px; height: 32px; color: #1e7e34;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+        <div style="font-size: 14px; color: var(--text-secondary); margin-bottom: 6px;">
+          เลขที่เอกสารที่บันทึก
+        </div>
+        <div id="modalSavedDocNumber" class="mono" style="font-size: 22px; font-weight: 800; color: var(--accent-color); margin-bottom: 12px; letter-spacing: 0.5px;">
+          -
+        </div>
+        <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 24px;">
+          ข้อมูลได้รับการบันทึกและซิงค์ลงระบบเรียบร้อยแล้ว<br>ระบบได้ทำการล็อกเอกสารนี้เพื่อป้องกันการบันทึกซ้ำ
+        </p>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <button type="button" id="btnModalSuccessPrintPdf" class="btn-primary" style="padding: 12px 18px; font-size: 15px; font-weight: 700; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;">
+            <svg class="btn-icon" style="width: 18px; height: 18px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+            </svg>
+            พิมพ์ / ดาวน์โหลด PDF
+          </button>
+          <button type="button" id="btnModalSuccessCreateNew" class="btn-secondary" style="padding: 12px 18px; font-size: 15px; font-weight: 700; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;">
+            <svg class="btn-icon" style="width: 18px; height: 18px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+            สร้างเอกสารใบใหม่
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Printable Payment Voucher (PV) -->
 
   <div id="printPvPaper" class="wht-card-paper" style="display: none; font-family: 'IBM Plex Sans Thai', 'Outfit', 'Inter', 'Sukhumvit Set', sans-serif; padding: 30px; background: #fff; max-width: 800px; margin: 0 auto; color: #000;">
@@ -4736,7 +4797,7 @@ textarea.form-control {
   </div>
 
   <script src="assets/html2pdf.bundle.min.js"></script>
-  <script src="app.js?v=152"></script>
+  <script src="app.js?v=153"></script>
   <script>
     if ('serviceWorker' in navigator) {
       let refreshing = false;
@@ -4747,7 +4808,7 @@ textarea.form-control {
         }
       });
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js?v=152')
+        navigator.serviceWorker.register('sw.js?v=153')
           .then(reg => {
             console.log('Service Worker Registered!', reg);
             reg.update();

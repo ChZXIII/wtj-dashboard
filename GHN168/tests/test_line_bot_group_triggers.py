@@ -214,38 +214,44 @@ class TestLineBotGroupTriggers(unittest.TestCase):
             self.assertFalse(result.get("is_valid_receipt"))
 
     def test_process_line_events_group_non_financial_image_silent(self):
-        """In group chat, sending a non-financial image must result in NO reply (silent)."""
+        """In group chat, sending an image sends instant ack, but no subsequent push for non-financial images."""
         group_event = create_mock_event(source_type="group", msg_type="image", group_id="C_test_non_fin_group")
         payload = {"events": [group_event]}
 
         with patch("line_bot_server.download_line_image_content", return_value=b"dummy_image_bytes"), \
              patch("line_bot_server.analyze_receipt_image_with_ai", return_value={"is_financial_document": False, "is_valid_receipt": False}), \
              patch("line_bot_server.send_line_reply") as mock_reply, \
-             patch("line_bot_server.send_line_reply_messages") as mock_reply_msgs:
+             patch("line_bot_server.send_line_push_message") as mock_push:
 
             asyncio.run(process_line_events(payload))
-            
-            # Must not call any reply functions in group chat for non-financial images
-            mock_reply.assert_not_called()
-            mock_reply_msgs.assert_not_called()
+
+            # Step 1: Immediate acknowledgment via reply_token
+            mock_reply.assert_called_once()
+            self.assertIn("เลขาเฟิสได้รับรูปภาพแล้วค่ะ", mock_reply.call_args[0][1])
+            # Step 2: In group, non-financial images stay silent without pushing
+            mock_push.assert_not_called()
 
     def test_process_line_events_1on1_non_financial_image_polite_reply(self):
-        """In 1-on-1 chat, sending a non-financial image sends a polite informative response."""
+        """In 1-on-1 chat, sending a non-financial image sends instant ack and polite informative push response."""
         user_event = create_mock_event(source_type="user", msg_type="image", user_id="U_test_1on1")
         payload = {"events": [user_event]}
 
         with patch("line_bot_server.download_line_image_content", return_value=b"dummy_image_bytes"), \
              patch("line_bot_server.analyze_receipt_image_with_ai", return_value={"is_financial_document": False, "is_valid_receipt": False}), \
              patch("line_bot_server.send_line_reply") as mock_reply, \
-             patch("line_bot_server.send_line_reply_messages") as mock_reply_msgs:
+             patch("line_bot_server.send_line_push_message") as mock_push:
 
             asyncio.run(process_line_events(payload))
-            
-            # Must call send_line_reply with polite message
+
+            # Step 1: Immediate acknowledgment via reply_token
             mock_reply.assert_called_once()
-            reply_text = mock_reply.call_args[0][1]
-            self.assertIn("ไม่ใช่สลิปโอนเงิน", reply_text)
-            self.assertIn("ค่ะ", reply_text)
+            self.assertIn("เลขาเฟิสได้รับรูปภาพแล้วค่ะ", mock_reply.call_args[0][1])
+
+            # Step 2: Final response delivered via send_line_push_message
+            mock_push.assert_called_once()
+            push_text = mock_push.call_args[0][1][0]["text"]
+            self.assertIn("ไม่ใช่สลิปโอนเงิน", push_text)
+            self.assertIn("ค่ะ", push_text)
 
 
 if __name__ == "__main__":

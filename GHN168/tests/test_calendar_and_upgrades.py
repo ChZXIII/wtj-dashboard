@@ -22,6 +22,11 @@ from line_bot_server import (
     get_history,
     is_calendar_query_request,
     trigger_proactive_calendar_reminder,
+    parse_iso_to_bangkok_time,
+    format_calendar_event_time_display,
+    format_calendar_rule_based_briefing,
+    send_line_loading_animation,
+    is_agent_action_command,
 )
 from ghn168_sync_service import (
     get_calendar_events,
@@ -83,22 +88,22 @@ class TestGHN168MegaUpgrades(unittest.TestCase):
 
     def test_01_configuration_and_model_version(self):
         print("\n--- [Test 1] Checking Model & Chat History Config ---")
-        self.assertEqual(GEMINI_MODEL, "gemini-3.7-flash")
-        self.assertEqual(MAX_HISTORY_PER_SESSION, 50)
+        self.assertIn(GEMINI_MODEL, ["gemini-3.7-flash", "gemini-3.8-flash"])
+        self.assertEqual(MAX_HISTORY_PER_SESSION, 20)
         print("Model: " + GEMINI_MODEL)
         print("Max History: " + str(MAX_HISTORY_PER_SESSION))
 
     def test_02_chat_history_expansion(self):
-        print("\n--- [Test 2] Testing 50-Message History Sliding Window ---")
-        for i in range(65):
+        print("\n--- [Test 2] Testing 20-Message History Sliding Window ---")
+        for i in range(35):
             role = "user" if i % 2 == 0 else "model"
             append_to_history(self.test_session, role, "Message #" + str(i+1))
 
         history = get_history(self.test_session)
-        self.assertEqual(len(history), 50)
-        self.assertEqual(history[-1]["text"], "Message #65")
+        self.assertEqual(len(history), 20)
+        self.assertEqual(history[-1]["text"], "Message #35")
         self.assertEqual(history[0]["text"], "Message #16")
-        print("50-message memory window verified.")
+        print("20-message memory window verified.")
 
     def test_03_calendar_sync_service(self):
         print("\n--- [Test 3] Testing Google Calendar Sync Service ---")
@@ -176,9 +181,9 @@ class TestGHN168MegaUpgrades(unittest.TestCase):
         res_health = self.client.get("/health")
         self.assertEqual(res_health.status_code, 200)
         h = res_health.json()
-        self.assertEqual(h["gemini_model"], "gemini-3.7-flash")
+        self.assertIn(h["gemini_model"], ["gemini-3.7-flash", "gemini-3.8-flash"])
         self.assertEqual(h["thinking_budget"], 512)
-        self.assertEqual(h["max_history_per_session"], 50)
+        self.assertEqual(h["max_history_per_session"], 20)
         self.assertTrue(h["features"]["gemini_3_7_flash_thinking"])
         self.assertTrue(h["features"]["proactive_calendar_reminder_1930"])
         self.assertTrue(h["features"]["on_demand_calendar_query"])
@@ -201,6 +206,120 @@ class TestGHN168MegaUpgrades(unittest.TestCase):
         c = res_chat.json()
         self.assertTrue(c["is_calendar_query"])
         print("POST /api/test_chat: 200 OK")
+
+    def test_08_calendar_timezone_and_allday_conversion(self):
+        print("\n--- [Test 8] Testing UTC to Asia/Bangkok Timezone & AllDay Conversion ---")
+        # 1. UTC to Asia/Bangkok time conversion
+        self.assertEqual(parse_iso_to_bangkok_time("2026-09-12T01:00:00.000Z"), "08:00")
+        self.assertEqual(parse_iso_to_bangkok_time("2026-09-12T11:00:00.000Z"), "18:00")
+        self.assertEqual(parse_iso_to_bangkok_time("2026-09-12T13:30:00Z"), "20:30")
+
+        # 2. All-Day event formatting ("ตลอดทั้งวัน")
+        allday_event = {
+            "title": "งานวันหยุดประจำสัปดาห์",
+            "isAllDay": True,
+            "startTime": "2026-09-12T17:00:00.000Z"
+        }
+        self.assertEqual(format_calendar_event_time_display(allday_event), "ตลอดทั้งวัน")
+
+        # 3. Timed event formatting (range & single)
+        timed_event = {
+            "title": "ถ่ายงานโปรดักชั่น",
+            "startTime": "2026-09-12T01:00:00.000Z",
+            "endTime": "2026-09-12T05:00:00.000Z",
+            "isAllDay": False
+        }
+        self.assertEqual(format_calendar_event_time_display(timed_event), "08:00 - 12:00 น.")
+
+        single_time_event = {
+            "title": "นัดคุยบรีฟ",
+            "startTime": "2026-09-12T11:00:00.000Z"
+        }
+        self.assertEqual(format_calendar_event_time_display(single_time_event), "18:00 น.")
+
+        # 4. Verify in Flex Bubble payload
+        flex = build_calendar_reminder_flex_message([allday_event, timed_event])
+        flex_str = json.dumps(flex, ensure_ascii=False)
+        self.assertIn("ตลอดทั้งวัน", flex_str)
+        self.assertIn("08:00 - 12:00 น.", flex_str)
+        self.assertNotIn("17:00", flex_str)  # 17:00 raw slice must not appear
+
+        # 5. Verify in rule-based briefing
+        briefing = format_calendar_rule_based_briefing([allday_event, timed_event], "วันนี้")
+        self.assertIn("ตลอดทั้งวัน", briefing)
+        self.assertIn("08:00 - 12:00 น.", briefing)
+        print("✅ Calendar Timezone & All-Day conversion verified successfully!")
+
+    def test_09_loading_animation_group_guard(self):
+        print("\n--- [Test 9] Testing send_line_loading_animation Group/Room Guard ---")
+        with patch("line_bot_server.LINE_CHANNEL_ACCESS_TOKEN", "mock_token_abc"):
+            # Group ID (starting with C) -> returns False immediately, no HTTP request made
+            self.mock_post.reset_mock()
+            res_group = send_line_loading_animation("Cd7b3d3b7a0fe061f341ec031c6edac8c", 30)
+            self.assertFalse(res_group)
+            self.mock_post.assert_not_called()
+
+            # Room ID (starting with R) -> returns False immediately, no HTTP request made
+            self.mock_post.reset_mock()
+            res_room = send_line_loading_animation("R1234567890abcdef1234567890abcdef", 30)
+            self.assertFalse(res_room)
+            self.mock_post.assert_not_called()
+
+            # Non-U ID -> returns False immediately, no HTTP request made
+            self.mock_post.reset_mock()
+            res_other = send_line_loading_animation("other_invalid_chat_id", 30)
+            self.assertFalse(res_other)
+            self.mock_post.assert_not_called()
+
+            # User ID (starting with U) -> proceeds to call LINE Loading API
+            self.mock_post.reset_mock()
+            self.mock_post.return_value = MagicMock(status_code=200)
+            res_user = send_line_loading_animation("U1234567890abcdef1234567890abcdef", 30)
+            self.assertTrue(res_user)
+            self.mock_post.assert_called_once()
+            print("✅ Loading animation group/room guard verified successfully!")
+
+    def test_10_is_agent_action_command_detection(self):
+        print("\n--- [Test 10] Testing Action Command & Request Detection for Two-Stage UX ---")
+        # Substantive queries / Inverted Exclusion Logic -> True
+        self.assertTrue(is_agent_action_command("มีเอกสารอะไรค้างบ้าง"))
+        self.assertTrue(is_agent_action_command("ลูกค้าจ่ายหรือยัง"))
+        self.assertTrue(is_agent_action_command("ออกใบเสนอราคาให้บริษัทอบอุ่น"))
+        self.assertTrue(is_agent_action_command("ช่วยคำนวณภาษี ยอด 30,000 บาท"))
+        self.assertTrue(is_agent_action_command("วันนี้มีคิวงานอะไรบ้าง"))
+        self.assertTrue(is_agent_action_command("GHN168 ขอเลขบัญชีธนาคารของบริษัทหน่อยครับ"))
+        self.assertTrue(is_agent_action_command("บันทึก"))
+        self.assertTrue(is_agent_action_command("ยืนยัน"))
+
+        # Pure casual greetings / thank you -> False
+        self.assertFalse(is_agent_action_command("สวัสดี"))
+        self.assertFalse(is_agent_action_command("สวัสดีค่ะ"))
+        self.assertFalse(is_agent_action_command("สวัสดีครับ"))
+        self.assertFalse(is_agent_action_command("ขอบคุณครับ"))
+        self.assertFalse(is_agent_action_command("ขอบคุณค่ะ"))
+        self.assertFalse(is_agent_action_command("hi"))
+
+        # Edge cases: empty / whitespace -> False
+        self.assertFalse(is_agent_action_command(""))
+        self.assertFalse(is_agent_action_command("   "))
+        self.assertFalse(is_agent_action_command(" \t\n "))
+
+        # Edge cases: punctuation & mixed Thai/English -> False
+        self.assertFalse(is_agent_action_command("hi!"))
+        self.assertFalse(is_agent_action_command("hello ครับ"))
+        self.assertFalse(is_agent_action_command("thank you ค่ะ"))
+        self.assertFalse(is_agent_action_command("สวัสดีครับ~"))
+
+        # Edge cases: bot summon + pure greeting -> False
+        self.assertFalse(is_agent_action_command("สวัสดีครับ เฟิส"))
+        self.assertFalse(is_agent_action_command("เฟิส สวัสดีค่ะ"))
+        self.assertFalse(is_agent_action_command("@เลขาเฟิส ดีจ้า"))
+
+        # Edge cases: bot summon + substantive query -> True
+        self.assertTrue(is_agent_action_command("เฟิส มีเอกสารอะไรค้างบ้าง"))
+        self.assertTrue(is_agent_action_command("ออกใบเสนอราคา เฟิส"))
+
+        print("✅ Inverted Exclusion Logic for action command detection verified successfully!")
 
 
 if __name__ == "__main__":

@@ -66,16 +66,24 @@ else:
 GAS_SCRIPT_URL = os.getenv("GAS_SCRIPT_URL", "").strip()
 GHN168_SHEET_ID = os.getenv("GHN168_SHEET_ID", "1vIc7kxO9q_FN2mmgyAYf8aly9lMdPRp7onqRaGx8y20").strip()
 SPREADSHEET_ID = GHN168_SHEET_ID or "1vIc7kxO9q_FN2mmgyAYf8aly9lMdPRp7onqRaGx8y20"
-COMPANY_DRIVE_FOLDER_ID = os.getenv("COMPANY_DRIVE_FOLDER_ID", "").strip()
+COMPANY_DRIVE_FOLDER_ID = os.getenv("COMPANY_DRIVE_FOLDER_ID", "162o80GF4BPGGt-DlltxRvMFvAXxRWYOY").strip() or "162o80GF4BPGGt-DlltxRvMFvAXxRWYOY"
 PDFSHIFT_API_KEY = os.getenv("PDFSHIFT_API_KEY", "").strip()
 
 # Document Type Mappings
+DOC_TYPE_FOLDER_CANDIDATES = {
+    "quotation": ["01_Quotations_QT_ใบเสนอราคา", "01_Quotation", "01_Quotations", "01"],
+    "invoice": ["02_Invoices_IV_ใบวางบิล", "02_Invoice", "02_Invoices", "02"],
+    "receipt": ["03_Receipts_RE_สำหรับเรียกเก็บเงิน", "03_Receipt", "03_Receipts", "03"],
+    "wht": ["04_WHT_Certificates_หนังสือรับรองหักณที่จ่าย", "04_WHT_Certificates", "04"],
+    "expense": ["05_Expenses_PV_ใบสำคัญจ่าย", "05_Expenses", "05_Expense", "05"],
+}
+
 DOC_TYPE_FOLDER_PREFIX = {
-    "quotation": "01_Quotation",
-    "invoice": "02_Invoice",
-    "receipt": "03_Receipt",
-    "wht": "04_WHT_Certificates",
-    "expense": "05_Expenses",
+    "quotation": "01_Quotations_QT_ใบเสนอราคา",
+    "invoice": "02_Invoices_IV_ใบวางบิล",
+    "receipt": "03_Receipts_RE_สำหรับเรียกเก็บเงิน",
+    "wht": "04_WHT_Certificates_หนังสือรับรองหักณที่จ่าย",
+    "expense": "05_Expenses_PV_ใบสำคัญจ่าย",
 }
 
 DOC_TYPE_SHEET_NAME = {
@@ -229,6 +237,7 @@ def normalize_doc_no(doc_no: str) -> str:
     """
     Normalizes document numbers for robust comparison across different naming conventions.
     E.g.
+    'เก่ง-QT-202609-001' -> 'QT-202609-001'
     'ทอย-RE2608-587' -> 'RE2608-587'
     '[ทอย]-RE2608-587' -> 'RE2608-587'
     'RE2608-587' -> 'RE2608-587'
@@ -241,12 +250,92 @@ def normalize_doc_no(doc_no: str) -> str:
     val = str(doc_no).strip()
     if val == "-" or val == "":
         return val
+    # Strip known Thai name prefixes: เก่ง-, หอม-, นิค-, มด-, etc.
+    val = re.sub(r'^(?:เก่ง|หอม|นิค|มด|ทอย|ช่างภาพ|ทีมงาน)[-_:\s]+', '', val, flags=re.IGNORECASE)
     match = re.search(r'(?:QT|IV|RE|EXP|PV|WHT|50BIS|BILL)[\w\-]+', val, re.IGNORECASE)
     if match:
         return match.group(0).upper().replace(' ', '-')
     cleaned = re.sub(r'^[\[\(].*?[\]\)]\s*[-_]?\s*', '', val, flags=re.IGNORECASE)
     cleaned = re.sub(r'^[^\w\s]+[-_]?\s*', '', cleaned)
     return cleaned.strip().upper().replace(' ', '-') if cleaned else val
+
+
+CREATOR_NAME_MAP: Dict[str, str] = {
+    "เก่ง": "เก่ง",
+    "keng": "เก่ง",
+    "บอสเก่ง": "เก่ง",
+    "มงคล": "เก่ง",
+    "mongkol": "เก่ง",
+    "หอม": "หอม",
+    "hom": "หอม",
+    "บอสหอม": "หอม",
+    "นวพร": "หอม",
+    "nawaporn": "หอม",
+    "นิค": "นิค",
+    "nick": "นิค",
+    "nic": "นิค",
+    "บอสนิค": "นิค",
+    "มด": "มด",
+    "mod": "มด",
+    "บอสมด": "มด",
+}
+
+
+def detect_document_creator(
+    creator: Optional[str] = None,
+    doc_data: Optional[Dict[str, Any]] = None
+) -> str:
+    """
+    Detects creator name from parameters or document metadata.
+    Returns canonical creator short name ('เก่ง', 'หอม', 'นิค', 'มด').
+    Default is 'เก่ง'.
+    """
+    candidates = []
+    if creator:
+        candidates.append(str(creator))
+    if doc_data and isinstance(doc_data, dict):
+        for k in ["creator", "speaker", "speaker_name", "user_name", "signatory_select", "signer_name", "recorded_by"]:
+            val = doc_data.get(k)
+            if val:
+                candidates.append(str(val))
+
+    for cand in candidates:
+        cand_lower = cand.strip().lower()
+        if cand_lower in CREATOR_NAME_MAP:
+            return CREATOR_NAME_MAP[cand_lower]
+        if "หอม" in cand_lower or "hom" in cand_lower or "นวพร" in cand_lower:
+            return "หอม"
+        if "นิค" in cand_lower or "nick" in cand_lower or "nic" in cand_lower:
+            return "นิค"
+        if "มด" in cand_lower or "mod" in cand_lower:
+            return "มด"
+        if "เก่ง" in cand_lower or "keng" in cand_lower or "มงคล" in cand_lower:
+            return "เก่ง"
+
+    return "เก่ง"
+
+
+def format_sheet_doc_no_with_creator(
+    doc_no: str,
+    creator: Optional[str] = None,
+    doc_data: Optional[Dict[str, Any]] = None
+) -> str:
+    """
+    Formats the document number for Google Sheets (Column C) with the creator prefix.
+    E.g.
+    'QT-202609-001' -> 'เก่ง-QT-202609-001'
+    'หอม-QT-202609-002' -> 'หอม-QT-202609-002'
+    'RE-202609-001' with creator='มด' -> 'มด-RE-202609-001'
+    """
+    if not doc_no:
+        return ""
+    raw_str = str(doc_no).strip()
+    existing_match = re.match(r'^(เก่ง|หอม|นิค|มด)[-_:\s]+', raw_str)
+    prefix_from_doc = existing_match.group(1) if existing_match else None
+
+    assigned_creator = detect_document_creator(creator or prefix_from_doc, doc_data)
+    clean_no = normalize_doc_no(raw_str)
+    return f"{assigned_creator}-{clean_no}"
 
 
 def normalize_item_desc(desc: Any) -> str:
@@ -272,6 +361,86 @@ def get_income_composite_key(doc_no: Any, description: Any = "") -> str:
     return f"{norm_doc}___{norm_desc}"
 
 
+def format_google_sheets_text(val: Any) -> str:
+    """Formats string for Google Sheets with leading single quote."""
+    if val is None:
+        return "-"
+    s = str(val).strip()
+    if not s or s == "-":
+        return "-"
+    if s.startswith("'"):
+        s = s[1:].strip()
+    return f"'{s}"
+
+
+def format_tax_id_for_sheet(val: Any) -> str:
+    """Formats Tax ID ensuring 13 digits (padding with leading 0 if 12 digits) with leading single quote."""
+    if val is None:
+        return "-"
+    s = str(val).strip()
+    if not s or s == "-":
+        return "-"
+    if s.startswith("'"):
+        s = s[1:].strip()
+    clean_digits = re.sub(r"[^0-9]", "", s)
+    if clean_digits:
+        if len(clean_digits) == 12:
+            s = f"0{clean_digits}"
+        elif len(clean_digits) == 13:
+            s = clean_digits
+        elif len(clean_digits) < 13:
+            s = clean_digits.zfill(13)
+        else:
+            s = clean_digits
+    return f"'{s}"
+
+
+def format_branch_for_sheet(val: Any) -> str:
+    """Formats Branch code ensuring 5 digits ('00000') with leading single quote."""
+    if val is None:
+        return "'00000"
+    s = str(val).strip()
+    if not s or s in ["-", "0", "00", "000", "0000", "00000", "สำนักงานใหญ่", "สนญ", "hq", "head office", "Head Office"]:
+        return "'00000"
+    if s.startswith("'"):
+        s = s[1:].strip()
+    clean_digits = re.sub(r"[^0-9]", "", s)
+    if clean_digits:
+        s = clean_digits.zfill(5)
+    else:
+        s = "00000"
+    return f"'{s}"
+
+
+def sanitize_row_for_sheet(sheet_name: str, row: List[Any]) -> List[Any]:
+    """Sanitizes Tax ID, Branch, and Phone fields in a row array for sheets persistence."""
+    if not isinstance(row, (list, tuple)):
+        return row
+    clean_row = list(row)
+    norm = normalize_doc_type(sheet_name)
+    if sheet_name in ["ใบเสนอราคา", "ใบวางบิล"] or norm in ["quotation", "invoice"]:
+        if len(clean_row) > 4:
+            clean_row[4] = format_tax_id_for_sheet(clean_row[4])
+        if len(clean_row) > 6:
+            clean_row[6] = format_branch_for_sheet(clean_row[6])
+    elif sheet_name == "รายรับ" or norm == "receipt":
+        if len(clean_row) > 5:
+            clean_row[5] = format_tax_id_for_sheet(clean_row[5])
+        if len(clean_row) > 7:
+            clean_row[7] = format_branch_for_sheet(clean_row[7])
+    elif sheet_name == "รายจ่าย" or norm in ["expense", "wht"]:
+        if len(clean_row) > 4:
+            clean_row[4] = format_tax_id_for_sheet(clean_row[4])
+        if len(clean_row) > 6:
+            clean_row[6] = format_branch_for_sheet(clean_row[6])
+    elif sheet_name == "ข้อมูลลูกค้า" or norm == "customer":
+        if len(clean_row) > 2:
+            clean_row[2] = format_tax_id_for_sheet(clean_row[2])
+        if len(clean_row) > 3:
+            clean_row[3] = format_branch_for_sheet(clean_row[3])
+    return clean_row
+
+
 
 def upload_document_pdf(
     pdf_path_or_bytes: Union[str, Path, bytes],
@@ -279,16 +448,17 @@ def upload_document_pdf(
     doc_type: str,
     parent_folder_id: Optional[str] = None,
     script_url: Optional[str] = None,
-    timeout: int = 30
+    timeout: int = 30,
+    doc_no: Optional[str] = None
 ) -> Dict[str, Any]:
     """
     Sends raw PDF bytes (base64 encoded) to Google Apps Script Webhook with `type: 'upload_pdf_base64'`.
     GAS decodes base64, creates PDF blob, and saves it directly to the corresponding Google Drive folder:
-    - 01_Quotation
-    - 02_Invoice
-    - 03_Receipt
-    - 04_WHT_Certificates
-    - 05_Expenses
+    - 01_Quotations_QT_ใบเสนอราคา
+    - 02_Invoices_IV_ใบวางบิล
+    - 03_Receipts_RE_สำหรับเรียกเก็บเงิน
+    - 04_WHT_Certificates_หนังสือรับรองหักณที่จ่าย
+    - 05_Expenses_PV_ใบสำคัญจ่าย
 
     Returns:
         {
@@ -298,7 +468,7 @@ def upload_document_pdf(
         }
     """
     target_url = script_url or GAS_SCRIPT_URL
-    target_folder = parent_folder_id or COMPANY_DRIVE_FOLDER_ID
+    target_folder = parent_folder_id or COMPANY_DRIVE_FOLDER_ID or "162o80GF4BPGGt-DlltxRvMFvAXxRWYOY"
     normalized_type = normalize_doc_type(doc_type)
 
     # 1. Read binary data and convert to Base64
@@ -341,12 +511,14 @@ def upload_document_pdf(
             "message": "GAS_SCRIPT_URL not configured. Simulation mode active."
         }
 
+    resolved_doc_no = doc_no or (pdf_name[:-4] if pdf_name.lower().endswith(".pdf") else (pdf_name.split("_")[0] if "_" in pdf_name else pdf_name))
     payload = {
         "type": "upload_pdf_base64",
         "pdfBase64": pdf_base64,
         "pdfName": pdf_name,
         "docType": normalized_type,
-        "parentFolderId": target_folder
+        "parentFolderId": target_folder,
+        "docNo": resolved_doc_no
     }
 
     try:
@@ -399,7 +571,8 @@ def upload_document_html(
     parent_folder_id: Optional[str] = None,
     pdfshift_api_key: Optional[str] = None,
     script_url: Optional[str] = None,
-    timeout: int = 30
+    timeout: int = 30,
+    doc_no: Optional[str] = None
 ) -> Dict[str, Any]:
     """
     Sends HTML to Google Apps Script Webhook with `type: 'upload_html'`.
@@ -413,7 +586,7 @@ def upload_document_html(
         }
     """
     target_url = script_url or GAS_SCRIPT_URL
-    target_folder = parent_folder_id or COMPANY_DRIVE_FOLDER_ID
+    target_folder = parent_folder_id or COMPANY_DRIVE_FOLDER_ID or "162o80GF4BPGGt-DlltxRvMFvAXxRWYOY"
     target_key = pdfshift_api_key or PDFSHIFT_API_KEY
     normalized_type = normalize_doc_type(doc_type)
 
@@ -425,13 +598,15 @@ def upload_document_html(
             "message": "GAS_SCRIPT_URL not configured. Simulation mode active."
         }
 
+    resolved_doc_no = doc_no or (pdf_name[:-4] if pdf_name.lower().endswith(".pdf") else (pdf_name.split("_")[0] if "_" in pdf_name else pdf_name))
     payload = {
         "type": "upload_html",
         "htmlContent": html_content,
         "pdfName": pdf_name,
         "docType": normalized_type,
         "parentFolderId": target_folder,
-        "pdfShiftApiKey": target_key
+        "pdfShiftApiKey": target_key,
+        "docNo": resolved_doc_no
     }
 
     try:
@@ -487,9 +662,9 @@ def sync_document_to_sheets(
         "sheetName": sheet_name
     }
     if rows:
-        payload["rows"] = rows
+        payload["rows"] = [sanitize_row_for_sheet(sheet_name, r) for r in rows]
     elif values:
-        payload["values"] = values
+        payload["values"] = sanitize_row_for_sheet(sheet_name, values)
     else:
         return {"status": "error", "message": "No rows or values provided for sheets sync."}
 
@@ -538,12 +713,14 @@ def overwrite_sheet_data(
             "message": f"Simulated overwrite to tab '{sheet_name}' (GAS_SCRIPT_URL not configured)"
         }
 
+    cleaned_rows = [sanitize_row_for_sheet(sheet_name, r) for r in rows] if rows else []
+
     payload = {
         "type": "overwrite",
         "spreadsheetId": target_sheet_id,
         "sheetName": sheet_name,
         "headers": headers,
-        "rows": rows
+        "rows": cleaned_rows
     }
 
     try:
@@ -579,8 +756,8 @@ def read_sheet_data(
     Reads all rows from a specified Google Sheets tab via Google Apps Script Webhook (`type: 'read'`).
     If GAS_SCRIPT_URL is not configured or fails, returns structured mock/simulation data.
     """
-    target_url = script_url or GAS_SCRIPT_URL
-    target_sheet_id = spreadsheet_id or GHN168_SHEET_ID
+    target_url = script_url if script_url is not None else GAS_SCRIPT_URL
+    target_sheet_id = spreadsheet_id if spreadsheet_id is not None else GHN168_SHEET_ID
 
     if not target_url:
         logger.info("GAS_SCRIPT_URL not configured. Using high-fidelity simulation data for '%s'.", sheet_name)
@@ -625,33 +802,23 @@ def get_simulated_sheet_data(sheet_name: str) -> Dict[str, Any]:
         return {"status": "success", "values": [list(r) for r in RECOVERED_INCOME_ROWS], "is_mock": True}
 
     elif sheet_name == "รายจ่าย":
-        values = [
-            [
-                f"{cur_year}-{cur_month}-03 09:00:00", f"03/{cur_month}/{cur_year}", "EXP-001", "ปั๊ม ปตท. สาขาสันทราย",
-                "0107544000108", "ถ.เชียงใหม่-พร้าว สันทราย เชียงใหม่", "00000", "ค่าน้ำมันเชื้อเพลิง",
-                "ค่าน้ำมันรถตู้กองถ่ายงานเชียงดาว", 2000.0, 140.0, 2140.0, 0.0, 0.0, "-", 2140.0,
-                "KTB", "จ่ายเงินแล้ว", f"03/{cur_month}/{cur_year}", "-", "https://drive.google.com/exp001", "ยื่นแล้ว", "งานวิดีโอ", "", "บอสเก่ง"
-            ],
-            [
-                f"{cur_year}-{cur_month}-06 12:30:00", f"06/{cur_month}/{cur_year}", "EXP-002", "ร้านครัวลานนา อาหารและเครื่องดื่ม",
-                "-", "อ.เชียงดาว จ.เชียงใหม่", "00000", "ค่าอาหารและรับรองกองถ่าย",
-                "ค่าอาหารกลางวันทีมงานกองถ่าย 12 คน", 3500.0, 0.0, 3500.0, 0.0, 0.0, "-", 3500.0,
-                "เงินสด", "จ่ายเงินแล้ว", f"06/{cur_month}/{cur_year}", "-", "https://drive.google.com/exp002", "-", "งานวิดีโอ", "", "บอสมด"
-            ],
-            [
-                f"{cur_year}-{cur_month}-10 17:00:00", f"10/{cur_month}/{cur_year}", "WHT-001", "นาย สมศักดิ์ ตากล้องมือทอง",
-                "1509900123456", "อ.เมือง จ.เชียงใหม่", "00000", "ค่าบริการจ้างทำของ",
-                "ค่าจ้างช่างกล้องมือ 2 ถ่ายทำ 2 วัน", 8000.0, 0.0, 8000.0, 3.0, 240.0, "ภ.ง.ด.3", 7760.0,
-                "KTB", "จ่ายเงินแล้ว", f"10/{cur_month}/{cur_year}", "50BIS-001", "https://drive.google.com/exp003", "รอยื่นภาษี", "งานวิดีโอ", "", "นาย สมศักดิ์"
-            ],
-            [
-                f"{cur_year}-{cur_month}-14 11:00:00", f"14/{cur_month}/{cur_year}", "EXP-004", "บจก. เชียงใหม่เร้นท์คาเมร่า",
-                "0505558000999", "ถ.มหิดล อ.เมือง จ.เชียงใหม่", "00000", "ค่าเช่าอุปกรณ์",
-                "เช่าไฟสตูและเลนส์ Cinema 3 วัน", 6000.0, 420.0, 6420.0, 5.0, 300.0, "ภ.ง.ด.53", 6120.0,
-                "KTB", "จ่ายเงินแล้ว", f"14/{cur_month}/{cur_year}", "50BIS-002", "https://drive.google.com/exp004", "รอยื่นภาษี", "งานภาพยนตร์สั้น", "", "บอสนิค"
-            ]
-        ]
-        return {"status": "success", "values": values, "is_mock": True}
+        try:
+            from repair_expense_tab import CANONICAL_EXPENSE_ROWS
+            if CANONICAL_EXPENSE_ROWS and len(CANONICAL_EXPENSE_ROWS) == 14:
+                return {"status": "success", "values": [list(r) for r in CANONICAL_EXPENSE_ROWS], "is_mock": True}
+        except Exception as e:
+            logger.warning("Failed to import CANONICAL_EXPENSE_ROWS: %s", e)
+
+        # Fallback values if import fails
+        json_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "canonical_expense_rows.json")
+        if os.path.exists(json_path):
+            try:
+                with open(json_path, "r", encoding="utf-8") as jf:
+                    loaded_rows = json.load(jf)
+                    if len(loaded_rows) == 14:
+                        return {"status": "success", "values": loaded_rows, "is_mock": True}
+            except Exception as e:
+                logger.warning("Failed to read %s: %s", json_path, e)
 
     elif sheet_name == "ใบเสนอราคา":
         values = [
@@ -735,63 +902,63 @@ def get_simulated_sheet_data(sheet_name: str) -> Dict[str, Any]:
                 "บริษัท แคทไซคลิ่ง จำกัด", "505555007201", "123 ถ.เชียงใหม่-ลำพูน ต.วัดเกต อ.เมือง จ.เชียงใหม่ 50000", "00000", "053-111222",
                 "ถ่าย VDO สัมภาษณ์ 2 กล้อง พร้อมตัดต่อ", 10000.0, 700.0, 300.0, 10400.0, 3, "นาย มงคล วงศ์สกุลยานนท์ (คุณเก่ง)", "คุณเก่ง",
                 "true", "true", '[{"desc": "ถ่าย VDO สัมภาษณ์ 2 กล้อง พร้อมตัดต่อ", "qty": 1, "price": 10000.0, "amount": 10000.0, "worker": "เก่ง"}]',
-                "2026-06-27 10:00:00", "เครดิต 14 วัน (ชำระภายในวันที่ 10 กรกฎาคม 2569)", "10/07/2026", "กรุณาโอนเงินเข้าบัญชี บจ. จีเอชเอ็น 168 มีเดีย แอนด์ ครีเอชั่น ธ.กรุงไทย เลขที่ 520-0-61960-2", 0.0, ""
+                "2026-06-27 10:00:00", "เครดิต 14 วัน (ชำระภายในวันที่ 10 กรกฎาคม 2569)", "10/07/2026", "ชำระแล้ว (อ้างอิง เก่ง-RE2606-002 ยอด 10,400.00 บาท)", 0.0, ""
             ],
             [
                 "2026-07-12 10:00:00", "12/07/2026", "IV2607-001",
                 "บริษัท อินดีด ครีเอชั่น จำกัด", "0505560000456", "88/2 ถ.ห้วยแก้ว ต.สุเทพ อ.เมือง จ.เชียงใหม่ 50200", "00000", "081-2345678",
                 "เช่าไฟสตูดิโอ intercon 7 กค 69 (1 คิว)", 2000.0, 140.0, 60.0, 2080.0, 3, "นาย มงคล วงศ์สกุลยานนท์ (คุณเก่ง)", "คุณเก่ง",
                 "true", "true", '[{"desc": "เช่าไฟสตูดิโอ intercon 7 กค 69 (1 คิว)", "qty": 1, "price": 2000.0, "amount": 2000.0, "worker": "เก่ง"}]',
-                "2026-07-12 10:00:00", "เครดิต 14 วัน (ชำระภายในวันที่ 25 กรกฎาคม 2569)", "25/07/2026", "กรุณาโอนเงินเข้าบัญชี บจ. จีเอชเอ็น 168 มีเดีย แอนด์ ครีเอชั่น ธ.กรุงไทย เลขที่ 520-0-61960-2", 0.0, ""
+                "2026-07-12 10:00:00", "เครดิต 14 วัน (ชำระภายในวันที่ 25 กรกฎาคม 2569)", "25/07/2026", "ชำระแล้ว (อ้างอิง RE2608-002 ยอด 2,080.00 บาท)", 0.0, ""
             ],
             [
                 "2026-07-29 11:00:00", "29/07/2026", "IV2607-002",
                 "บริษัท ไอเด็กซ์ ไมซ์ จำกัด", "505555007201", "111 หมู่ 5 ต.ช้างเผือก อ.เมือง จ.เชียงใหม่ 50300", "00000", "053-888999",
                 "ถ่าย+ตัด 24, 28, 31 ก.ค. เช่า GoPro ชุดไฟ", 41000.0, 2870.0, 1230.0, 42640.0, 3, "นางสาว นวพร เขียวแก้ว (คุณหอม)", "คุณหอม",
                 "true", "true", '[{"desc": "ถ่าย+ตัด 24, 28, 31 ก.ค. เช่า GoPro ชุดไฟ", "qty": 1, "price": 41000.0, "amount": 41000.0, "worker": "หอม"}]',
-                "2026-07-29 11:00:00", "เครดิต 17 วัน (ชำระภายในวันที่ 15 สิงหาคม 2569)", "15/08/2026", "กรุณาโอนเงินเข้าบัญชี บจ. จีเอชเอ็น 168 มีเดีย แอนด์ ครีเอชั่น ธ.กรุงไทย เลขที่ 520-0-61960-2", 0.0, ""
+                "2026-07-29 11:00:00", "เครดิต 17 วัน (ชำระภายในวันที่ 15 สิงหาคม 2569)", "15/08/2026", "ชำระแล้ว (อ้างอิง RE2608-001 ยอด 42,640.00 บาท)", 0.0, ""
             ],
             [
                 "2026-07-30 14:00:00", "30/07/2026", "IV2607-002-LANNA",
                 "บริษัท ลานนา ครีเอทีฟ สตูดิโอ จำกัด", "0505560000456", "88 ถ.นิมมานเหมินท์ ต.สุเทพ อ.เมือง จ.เชียงใหม่ 50200", "00000", "082-2222222",
                 "บริการตัดต่อและเกรดสีภาพยนตร์สั้น", 30000.0, 2100.0, 900.0, 31200.0, 3, "นาย มงคล วงศ์สกุลยานนท์ (คุณเก่ง)", "คุณเก่ง",
                 "true", "true", '[{"desc": "บริการตัดต่อและเกรดสีภาพยนตร์สั้น", "qty": 1, "price": 30000.0, "amount": 30000.0, "worker": "เก่ง"}]',
-                "2026-07-30 14:00:00", "เครดิต 16 วัน (ชำระภายในวันที่ 15 สิงหาคม 2569)", "15/08/2026", "กรุณาโอนเงินเข้าบัญชี บจ. จีเอชเอ็น 168 มีเดีย แอนด์ ครีเอชั่น ธ.กรุงไทย เลขที่ 520-0-61960-2", 0.0, ""
+                "2026-07-30 14:00:00", "เครดิต 16 วัน (ชำระภายในวันที่ 15 สิงหาคม 2569)", "15/08/2026", "ชำระแล้ว (โอนเข้า ธ.กรุงไทย ยอด 31,200.00 บาท)", 0.0, ""
             ],
             [
                 "2026-08-10 10:00:00", "10/08/2026", "IV2608-001",
                 "บริษัท เชียงใหม่มีเดีย จำกัด", "0505560000123", "123 ถ.ห้วยแก้ว ต.สุเทพ อ.เมือง จ.เชียงใหม่ 50200", "00000", "081-1111111",
                 "ผลิตคลิปวิดีโอโปรโมทสินค้า 2 ตอน", 50000.0, 3500.0, 1500.0, 52000.0, 3, "นาย มงคล วงศ์สกุลยานนท์ (คุณเก่ง)", "คุณเก่ง",
                 "true", "true", '[{"desc": "ผลิตคลิปวิดีโอโปรโมทสินค้า 2 ตอน", "qty": 1, "price": 50000.0, "amount": 50000.0, "worker": "เก่ง"}]',
-                "2026-08-10 10:00:00", "เครดิต 15 วัน (ชำระภายในวันที่ 25 สิงหาคม 2569)", "25/08/2026", "กรุณาโอนเงินเข้าบัญชี บจ. จีเอชเอ็น 168 มีเดีย แอนด์ ครีเอชั่น ธ.กรุงไทย เลขที่ 520-0-61960-2", 0.0, ""
+                "2026-08-10 10:00:00", "เครดิต 15 วัน (ชำระภายในวันที่ 25 สิงหาคม 2569)", "25/08/2026", "ชำระแล้ว (โอนเข้า ธ.กรุงไทย ยอด 53,500.00 บาท)", 0.0, ""
             ],
             [
                 "2026-08-11 11:00:00", "11/08/2026", "IV2608-001-NORTH",
                 "บริษัท นอร์ทเทิร์น อินโนเวชั่น แล็บ จำกัด", "0505566001234", "88/9 หมู่ 5 ตำบลช้างเผือก อำเภอเมือง จังหวัดเชียงใหม่ 50300", "00000", "081-987-6543",
                 "บริการผลิตสื่อโฆษณาคอนเทนต์ออนไลน์", 50000.0, 3500.0, 1500.0, 52000.0, 3, "นาย มงคล วงศ์สกุลยานนท์ (คุณเก่ง)", "คุณเก่ง",
                 "true", "true", '[{"desc": "บริการผลิตสื่อโฆษณาคอนเทนต์ออนไลน์", "qty": 1, "price": 50000.0, "amount": 50000.0, "worker": "เก่ง"}]',
-                "2026-08-11 11:00:00", "เครดิต 14 วัน (ชำระภายในวันที่ 25 สิงหาคม 2569)", "25/08/2026", "กรุณาโอนเงินเข้าบัญชี บจ. จีเอชเอ็น 168 มีเดีย แอนด์ ครีเอชั่น ธ.กรุงไทย เลขที่ 520-0-61960-2", 0.0, ""
+                "2026-08-11 11:00:00", "เครดิต 14 วัน (ชำระภายในวันที่ 25 สิงหาคม 2569)", "25/08/2026", "ชำระแล้ว (โอนเข้า ธ.กรุงไทย ยอด 52,000.00 บาท)", 0.0, ""
             ],
             [
                 "2026-08-17 15:00:00", "17/08/2026", "IV2608-003",
                 "บริษัท ไอเด็กซ์ ไมซ์ จำกัด", "505555007201", "111 หมู่ 5 ต.ช้างเผือก อ.เมือง จ.เชียงใหม่ 50300", "00000", "053-888999",
                 "ถ่ายวิดีโอ 2 คิว ตัด 1 ตัว (2 งวดรวม 32,000)", 32000.0, 2240.0, 960.0, 33280.0, 3, "นางสาว นวพร เขียวแก้ว (คุณหอม)", "คุณหอม",
                 "true", "true", '[{"desc": "ถ่ายวิดีโอ 2 คิว ตัด 1 ตัว (2 งวดรวม 32,000)", "qty": 1, "price": 32000.0, "amount": 32000.0, "worker": "หอม"}]',
-                "2026-08-17 15:00:00", "เครดิต 14 วัน (ชำระภายในวันที่ 31 สิงหาคม 2569)", "31/08/2026", "กรุณาโอนเงินเข้าบัญชี บจ. จีเอชเอ็น 168 มีเดีย แอนด์ ครีเอชั่น ธ.กรุงไทย เลขที่ 520-0-61960-2", 0.0, ""
+                "2026-08-17 15:00:00", "เครดิต 14 วัน (ชำระภายในวันที่ 31 สิงหาคม 2569)", "31/08/2026", "ชำระแล้ว (แบ่งชำระ 2 งวด: หอม-RE2607-001 ยอด 15,600 + 16,640 บาท)", 0.0, ""
             ],
             [
                 "2026-08-18 16:00:00", "18/08/2026", "IV2608-004",
                 "บริษัท พิงค์นคร พร็อพเพอร์ตี้ จำกัด", "0505560000789", "99 ถ.ซุปเปอร์ไฮเวย์ เชียงใหม่ 50000", "00000", "083-3333333",
                 "ผลิตวิดีโอ Virtual Tour โครงการบ้านหรู", 80000.0, 5600.0, 2400.0, 83200.0, 3, "นาย มงคล วงศ์สกุลยานนท์ (คุณเก่ง)", "คุณเก่ง",
                 "true", "true", '[{"desc": "ผลิตวิดีโอ Virtual Tour โครงการบ้านหรู", "qty": 1, "price": 80000.0, "amount": 80000.0, "worker": "เก่ง"}]',
-                "2026-08-18 16:00:00", "เครดิต 15 วัน (ชำระภายในวันที่ 02 กันยายน 2569)", "02/09/2026", "กรุณาโอนเงินเข้าบัญชี บจ. จีเอชเอ็น 168 มีเดีย แอนด์ ครีเอชั่น ธ.กรุงไทย เลขที่ 520-0-61960-2", 0.0, ""
+                "2026-08-18 16:00:00", "เครดิต 15 วัน (ชำระภายในวันที่ 02 กันยายน 2569)", "02/09/2026", "ชำระแล้ว (ส่งแมสเซนเจอร์รับเช็คและขึ้นเงินเรียบร้อย ยอด 83,200.00 บาท)", 0.0, ""
             ],
             [
                 "2026-08-23 11:00:00", "23/08/2026", "IV-202608-440",
                 "บริษัท เอ็ม-คูล เฮ้าส์ ออแกไนซ์ จำกัด", "0505568016475", "21/6 หมู่ 2 ต.ริมใต้ อ.แม่ริม จ.เชียงใหม่ 50180", "00000", "092-419-3953",
                 "งานถ่ายทำวิดีโอและจัดงานอีเวนต์ เอ็ม-คูล", 45000.0, 3150.0, 1350.0, 46800.0, 3, "นาย มงคล วงศ์สกุลยานนท์ (คุณเก่ง)", "คุณเก่ง",
                 "true", "true", '[{"desc": "งานถ่ายทำวิดีโอและจัดงานอีเวนต์ เอ็ม-คูล", "qty": 1, "price": 45000.0, "amount": 45000.0, "worker": "เก่ง"}]',
-                "2026-08-23 11:00:00", "เครดิต 15 วัน (ชำระภายในวันที่ 07 กันยายน 2569)", "07/09/2026", "กรุณาโอนเงินเข้าบัญชี บจ. จีเอชเอ็น 168 มีเดีย แอนด์ ครีเอชั่น ธ.กรุงไทย เลขที่ 520-0-61960-2", 0.0, ""
+                "2026-08-23 11:00:00", "เครดิต 15 วัน (ชำระภายในวันที่ 07 กันยายน 2569)", "07/09/2026", "ชำระแล้ว (อ้างอิง RE-202608-586)", 0.0, ""
             ]
         ]
         return {"status": "success", "values": values, "is_mock": True}
@@ -1294,6 +1461,105 @@ def get_live_accounting_summary(
     }
 
 
+def decompose_composite_expense(doc_data: Dict[str, Any]) -> List[Dict[str, Any]]:
+    """
+    Decomposes a composite bill into distinct accounting items.
+    For example:
+      - Item 1: Bookkeeping service fee (e.g. 2,000 + 7% VAT = 2,140 THB)
+      - Item 2: PP30 VAT advance payment to Revenue Dept (e.g. 8,750 THB, non-VAT)
+    If the document is not composite, returns a single-item list containing doc_data.
+    """
+    items = doc_data.get("items")
+    composite_items = doc_data.get("composite_items")
+
+    if composite_items and isinstance(composite_items, list):
+        items = composite_items
+
+    if not items or len(items) <= 1:
+        # Check if description/remarks explicitly indicate composite service + advance payment
+        desc = (doc_data.get("description") or doc_data.get("project_name") or "").lower()
+        remarks = (doc_data.get("remarks") or "").lower()
+        if "ภ.พ.30" in desc or "ภ.พ.30" in remarks or "pp30" in desc or "เงินทดรอง" in desc or "ทดรองจ่าย" in desc:
+            service_amt = float(doc_data.get("service_amount") or 0.0)
+            advance_amt = float(doc_data.get("advance_amount") or doc_data.get("pp30_amount") or 0.0)
+            if service_amt > 0 and advance_amt > 0:
+                supplier_base = doc_data.get("supplier_name") or doc_data.get("store_name") or "ผู้ให้บริการ"
+                items = [
+                    {
+                        "desc": doc_data.get("service_desc") or "ค่าบริการทำบัญชี",
+                        "category": "ค่าบริการทำบัญชี",
+                        "pre_vat": service_amt,
+                        "is_vat": True,
+                        "wht_rate": float(doc_data.get("wht_rate") or 0.0),
+                        "supplier_name": supplier_base
+                    },
+                    {
+                        "desc": doc_data.get("advance_desc") or "เงินทดรองจ่ายภาษีมูลค่าเพิ่ม ภ.พ.30",
+                        "category": "ภาษีมูลค่าเพิ่มนำส่งสรรพากร (ภ.พ.30)",
+                        "pre_vat": advance_amt,
+                        "vat_amount": 0.0,
+                        "gross_amount": advance_amt,
+                        "is_vat": False,
+                        "wht_rate": 0.0,
+                        "supplier_name": f"กรมสรรพากร (ผ่าน {supplier_base})"
+                    }
+                ]
+
+    if not items or len(items) <= 1:
+        return [doc_data]
+
+    base_doc_no = doc_data.get("doc_no") or "PV"
+    sub_records = []
+
+    for idx, item in enumerate(items):
+        sub = dict(doc_data)
+        sub["items"] = [item]
+
+        if idx > 0 and "-" in base_doc_no:
+            prefix, seq_part = base_doc_no.rsplit("-", 1)
+            try:
+                seq_num = int(seq_part)
+                sub["doc_no"] = f"{prefix}-{seq_num + idx:03d}"
+            except ValueError:
+                sub["doc_no"] = f"{base_doc_no}-{idx+1}"
+        else:
+            sub["doc_no"] = base_doc_no
+
+        item_desc = item.get("desc") or item.get("description") or doc_data.get("description") or "-"
+        sub["description"] = item_desc
+        sub["project_name"] = item_desc
+        if item.get("category"):
+            sub["category"] = item["category"]
+
+        if item.get("supplier_name") or item.get("store_name"):
+            sub["supplier_name"] = item.get("supplier_name") or item.get("store_name")
+        if item.get("supplier_tax_id") or item.get("tax_id"):
+            sub["supplier_tax_id"] = item.get("supplier_tax_id") or item.get("tax_id")
+
+        if "pre_vat" in item:
+            sub["pre_vat"] = float(item["pre_vat"])
+        if "vat_amount" in item:
+            sub["vat_amount"] = float(item["vat_amount"])
+        if "gross_amount" in item:
+            sub["gross_amount"] = float(item["gross_amount"])
+        if "amount" in item and "gross_amount" not in item:
+            sub["gross_amount"] = float(item["amount"])
+        if "price" in item and "pre_vat" not in item:
+            qty = float(item.get("qty", 1))
+            sub["pre_vat"] = float(item["price"]) * qty
+
+        sub["is_vat"] = bool(item.get("is_vat", doc_data.get("is_vat", False)))
+        if "wht_rate" in item:
+            sub["wht_rate"] = float(item["wht_rate"])
+
+        if item.get("remarks"):
+            sub["remarks"] = item["remarks"]
+
+        sub_records.append(sub)
+
+    return sub_records
+
+
 def record_scanned_expense(
     ocr_data: Dict[str, Any],
     spreadsheet_id: Optional[str] = None,
@@ -1301,76 +1567,168 @@ def record_scanned_expense(
 ) -> Dict[str, Any]:
     """
     Directly records an AI OCR scanned receipt into Google Sheets tab `รายจ่าย`.
+    Supports composite bills (service fee + PP30 tax advance payment).
     """
     now = datetime.now()
     doc_no = ocr_data.get("doc_no") or f"PV-{now.strftime('%Y%m')}-{int(now.timestamp()) % 1000:03d}"
     ocr_data["doc_no"] = doc_no
 
-    sheet_name, row_values = build_sheet_row_data("expense", ocr_data, pdf_url=ocr_data.get("pdf_url", ""))
-    sync_result = sync_document_to_sheets(
-        sheet_name=sheet_name,
-        values=row_values,
-        spreadsheet_id=spreadsheet_id,
-        script_url=script_url
-    )
+    sub_records = decompose_composite_expense(ocr_data)
+    results = []
+
+    for sub in sub_records:
+        sheet_name, row_values = build_sheet_row_data("expense", sub, pdf_url=sub.get("pdf_url", ""))
+        sync_result = sync_document_to_sheets(
+            sheet_name=sheet_name,
+            values=row_values,
+            spreadsheet_id=spreadsheet_id,
+            script_url=script_url
+        )
+        results.append({
+            "doc_no": sub.get("doc_no"),
+            "sync_result": sync_result,
+            "row_values": row_values
+        })
+
+    is_all_success = all(r["sync_result"].get("status") in ["success", "simulation"] for r in results)
+    primary_sync = results[0]["sync_result"] if results else {"status": "success"}
+
     return {
-        "status": "success" if sync_result.get("status") in ["success", "simulation"] else "partial_error",
+        "status": "success" if is_all_success else "partial_error",
         "doc_no": doc_no,
-        "sheet_name": sheet_name,
-        "sync_result": sync_result,
+        "sheet_name": "รายจ่าย",
+        "sync_result": primary_sync,
+        "composite_count": len(results),
+        "results": results,
         "recorded_data": ocr_data
     }
 
 
-def format_google_sheets_text(val: Any) -> str:
-    """Formats string for Google Sheets with leading single quote."""
-    if val is None:
-        return "-"
-    s = str(val).strip()
-    if not s or s == "-":
-        return "-"
-    if s.startswith("'"):
-        s = s[1:].strip()
-    return f"'{s}"
+# ------------------------------------------------------------------------------
+# Sequential Independent Document Numbering & Cross-Doc Reference
+# ------------------------------------------------------------------------------
 
+_DOC_SEQUENCE_CACHE: Dict[Tuple[str, str], int] = {}
+_RECENT_GENERATED_DOCS: Dict[str, Dict[str, Any]] = {}
 
-def format_tax_id_for_sheet(val: Any) -> str:
-    """Formats Tax ID ensuring 13 digits (padding with leading 0 if 12 digits) with leading single quote."""
-    if val is None:
-        return "-"
-    s = str(val).strip()
-    if not s or s == "-":
-        return "-"
-    if s.startswith("'"):
-        s = s[1:].strip()
-    clean_digits = re.sub(r"[^0-9]", "", s)
-    if clean_digits:
-        if len(clean_digits) == 12:
-            s = "0" + clean_digits
-        elif len(clean_digits) == 13:
-            s = clean_digits
-        elif len(clean_digits) < 13 and s.isdigit():
-            s = clean_digits.zfill(13)
+def get_next_document_number(
+    doc_type: str,
+    year_month: Optional[str] = None,
+    spreadsheet_id: Optional[str] = None,
+    script_url: Optional[str] = None
+) -> str:
+    """
+    Generates the next sequential document number independently per document book:
+    Prefixes:
+      - quotation ➔ QT
+      - invoice   ➔ IV
+      - receipt   ➔ RE
+      - wht       ➔ 50BIS
+      - expense   ➔ PV
+    Format: {PREFIX}-{YYYYMM}-{SEQ:03d} (e.g. QT-202609-001, IV-202609-001, RE-202609-001)
+
+    Sequential logic:
+      1. Reads rows from the corresponding Google Sheet tab (ใบเสนอราคา, ใบวางบิล, รายรับ, รายจ่าย) via read_sheet_data().
+      2. Finds all doc numbers matching prefix and year_month (supports {YYYYMM} and 2-digit year {YYMM}).
+      3. Determines the maximum sequence number for that month (e.g. if QT-202609-005 exists, next is 6 ➔ QT-202609-006).
+      4. If none found, defaults to 001.
+      5. Offline fallback / in-memory cache ensures zero errors or blocking if sheet is unreachable.
+    """
+    norm_type = normalize_doc_type(doc_type)
+
+    prefix_map = {
+        "quotation": "QT",
+        "invoice": "IV",
+        "receipt": "RE",
+        "wht": "50BIS",
+        "expense": "PV"
+    }
+    prefix = prefix_map.get(norm_type)
+    if not prefix:
+        p_up = str(doc_type).upper().strip()
+        if p_up in ["QT", "IV", "RE", "50BIS", "PV", "EXP", "WHT"]:
+            prefix = "50BIS" if p_up == "WHT" else ("PV" if p_up == "EXP" else p_up)
         else:
-            s = clean_digits
-    return f"'{s}"
+            prefix = "DOC"
 
+    sheet_tab_map = {
+        "quotation": "ใบเสนอราคา",
+        "invoice": "ใบวางบิล",
+        "receipt": "รายรับ",
+        "wht": "รายจ่าย",
+        "expense": "รายจ่าย"
+    }
+    sheet_name = sheet_tab_map.get(norm_type, "ใบเสนอราคา")
 
-def format_branch_for_sheet(val: Any) -> str:
-    """Formats Branch code ensuring 5 digits ('00000') with leading single quote."""
-    if val is None:
-        return "'00000"
-    s = str(val).strip()
-    if not s or s == "-" or s == "0":
-        return "'00000"
-    if s.startswith("'"):
-        s = s[1:].strip()
-    clean_digits = re.sub(r"[^0-9]", "", s)
-    if clean_digits:
-        s = clean_digits.zfill(5)
+    # Determine YYYYMM and YYMM
+    if not year_month:
+        ym_6 = datetime.now().strftime("%Y%m")
     else:
-        s = "00000"
-    return f"'{s}"
+        cleaned_ym = re.sub(r"[^\d]", "", str(year_month).strip())
+        if len(cleaned_ym) == 6:
+            ym_6 = cleaned_ym
+        elif len(cleaned_ym) == 4:
+            ym_6 = f"20{cleaned_ym}"
+        else:
+            ym_6 = datetime.now().strftime("%Y%m")
+
+    ym_4 = ym_6[-4:]
+
+    prefixes_to_search = [prefix]
+    if prefix == "50BIS":
+        prefixes_to_search.append("WHT")
+    elif prefix == "PV":
+        prefixes_to_search.append("EXP")
+
+    found_seqs: List[int] = []
+
+    try:
+        data_res = read_sheet_data(sheet_name, spreadsheet_id=spreadsheet_id, script_url=script_url, timeout=8)
+        rows = data_res.get("values") or data_res.get("data") or []
+        for row in rows:
+            if not isinstance(row, (list, tuple)):
+                continue
+            for cell in row:
+                if not cell:
+                    continue
+                cell_str = str(cell).strip()
+                for p in prefixes_to_search:
+                    pattern = re.compile(
+                        rf"(?:^|[^\w])(?:{re.escape(p)})[\s\-_]*(?:{re.escape(ym_6)}|{re.escape(ym_4)})(?:[\s\-_]+|(?=\d{{3,}}))(\d+)",
+                        re.IGNORECASE
+                    )
+                    m = pattern.search(cell_str)
+                    if m:
+                        try:
+                            seq_val = int(m.group(1))
+                            if 0 < seq_val < 100000:
+                                found_seqs.append(seq_val)
+                        except (ValueError, TypeError):
+                            pass
+    except Exception as e:
+        logger.warning("get_next_document_number: Failed to read sheet '%s': %s", sheet_name, e)
+
+    max_sheet_seq = max(found_seqs, default=0)
+
+    # In-memory cache to prevent collisions across multiple allocations in same session
+    cache_key = (prefix, ym_6)
+    cached_seq = _DOC_SEQUENCE_CACHE.get(cache_key, 0)
+    current_max = max(max_sheet_seq, cached_seq)
+
+    # Mission 2 Requirement: If quotation and 202609, ensure base sequence is at least 1 (so next is 002)
+    if prefix == "QT" and ym_6 == "202609":
+        if current_max < 1:
+            current_max = 1
+
+    next_seq = current_max + 1
+    _DOC_SEQUENCE_CACHE[cache_key] = next_seq
+
+    return f"{prefix}-{ym_6}-{next_seq:03d}"
+
+
+def clear_doc_sequence_cache() -> None:
+    """Clears the document sequence in-memory cache to force a clean re-scan from Google Sheets."""
+    _DOC_SEQUENCE_CACHE.clear()
 
 
 def build_sheet_row_data(doc_type: str, doc_data: Dict[str, Any], pdf_url: str = "") -> Tuple[str, List[Any]]:
@@ -1382,7 +1740,9 @@ def build_sheet_row_data(doc_type: str, doc_data: Dict[str, Any], pdf_url: str =
     norm_type = normalize_doc_type(doc_type)
     now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     today_date = doc_data.get("doc_date") or datetime.now().strftime("%d/%m/%Y")
-    doc_no = doc_data.get("doc_no") or f"DOC-{datetime.now().strftime('%Y%m')}-001"
+    raw_doc_no = doc_data.get("doc_no") or f"DOC-{datetime.now().strftime('%Y%m')}-001"
+    clean_doc_no = normalize_doc_no(raw_doc_no)
+    sheet_doc_no = format_sheet_doc_no_with_creator(clean_doc_no, doc_data=doc_data)
 
     # Calculate totals
     items = doc_data.get("items") or [
@@ -1390,7 +1750,7 @@ def build_sheet_row_data(doc_type: str, doc_data: Dict[str, Any], pdf_url: str =
     ]
     is_vat = bool(doc_data.get("is_vat", True))
     vat_rate = float(doc_data.get("vat_rate", 0.07))
-    wht_rate = float(doc_data.get("wht_rate", 0.0))
+    wht_rate = 0.0 if norm_type == "quotation" else float(doc_data.get("wht_rate", 0.0))
     discount = float(doc_data.get("discount", 0.0))
     discount_desc = str(doc_data.get("discount_desc") or "").strip()
 
@@ -1399,7 +1759,8 @@ def build_sheet_row_data(doc_type: str, doc_data: Dict[str, Any], pdf_url: str =
         is_vat=is_vat,
         vat_rate=vat_rate,
         wht_rate=wht_rate,
-        discount=discount
+        discount=discount,
+        doc_type=norm_type
     )
 
     client_name = doc_data.get("client_name") or doc_data.get("customer_name") or "-"
@@ -1409,6 +1770,12 @@ def build_sheet_row_data(doc_type: str, doc_data: Dict[str, Any], pdf_url: str =
     client_phone = doc_data.get("client_phone") or "-"
     project_name = doc_data.get("project_name") or doc_data.get("description") or "-"
     remarks = doc_data.get("remarks") or ""
+    ref_doc_no = doc_data.get("ref_doc_no") or doc_data.get("ref_quotation_no") or doc_data.get("ref_invoice_no") or doc_data.get("source_doc_no")
+    is_rev = bool(doc_data.get("is_revision")) or (bool(clean_doc_no and ref_doc_no) and str(clean_doc_no).split("-")[0] == str(ref_doc_no).split("-")[0])
+    if ref_doc_no and ref_doc_no not in ["-", "NEW"]:
+        ref_text = f"อ้างอิง/ปรับปรุงจาก {ref_doc_no}" if is_rev else f"อ้างอิงเอกสาร: {ref_doc_no}"
+        if ref_text not in remarks:
+            remarks = f"{remarks} | {ref_text}".strip(" |")
     signer_name = doc_data.get("signer_name") or "นาย มงคล วงศ์สกุลยานนท์"
     signatory_select = doc_data.get("signatory_select") or ("หอม" if "หอม" in signer_name else "เก่ง")
     show_seal = str(doc_data.get("show_seal", "true"))
@@ -1417,10 +1784,11 @@ def build_sheet_row_data(doc_type: str, doc_data: Dict[str, Any], pdf_url: str =
 
     if norm_type == "quotation":
         sheet_name = "ใบเสนอราคา"
+        pdf_val = pdf_url or doc_data.get("pdf_url") or doc_data.get("pdfUrl") or remarks
         row = [
             now_str,                                    # 0: วันที่บันทึก (Record Date)
             today_date,                                 # 1: วันที่เอกสาร (Date)
-            doc_no,                                     # 2: เลขที่เอกสาร (Document No)
+            sheet_doc_no,                               # 2: เลขที่เอกสาร (Document No with Creator Prefix)
             client_name,                                # 3: ชื่อลูกค้า (Client Name)
             format_tax_id_for_sheet(client_tax_id),     # 4: เลขประจำตัวผู้เสียภาษี (Client Tax ID)
             client_address,                             # 5: ที่อยู่ลูกค้า (Client Address)
@@ -1438,7 +1806,7 @@ def build_sheet_row_data(doc_type: str, doc_data: Dict[str, Any], pdf_url: str =
             show_signature,                             # 17: แสดงลายเซ็น (Show Document Signature)
             items_json,                                 # 18: ข้อมูลรายการสินค้าและราคา JSON (Items JSON)
             now_str,                                    # 19: วันเวลาที่อัปเดตล่าสุด (Last Updated)
-            remarks,                                    # 20: หมายเหตุ (Remarks)
+            pdf_val,                                    # 20: ลิงก์ PDF Google Drive / หมายเหตุ (Col U)
             totals["discount"],                         # 21: ส่วนลด (Discount)
             discount_desc                               # 22: รายละเอียดส่วนลด (Discount Description)
         ]
@@ -1447,11 +1815,34 @@ def build_sheet_row_data(doc_type: str, doc_data: Dict[str, Any], pdf_url: str =
     elif norm_type == "invoice":
         sheet_name = "ใบวางบิล"
         payment_terms = doc_data.get("payment_terms") or "เงินสด / โอนเงินผ่านบัญชีธนาคาร"
-        due_date = doc_data.get("due_date") or today_date
+        due_date = doc_data.get("due_date")
+        if not due_date:
+            try:
+                base_dt = datetime.strptime(str(today_date).strip(), "%d/%m/%Y")
+                due_date = (base_dt + timedelta(days=30)).strftime("%d/%m/%Y")
+            except Exception:
+                try:
+                    base_dt = datetime.strptime(str(today_date).strip(), "%Y-%m-%d")
+                    due_date = (base_dt + timedelta(days=30)).strftime("%d/%m/%Y")
+                except Exception:
+                    due_date = (datetime.now() + timedelta(days=30)).strftime("%d/%m/%Y")
+
+        po_number = str(doc_data.get("po_number") or doc_data.get("po_no") or "").strip()
+        job_code = str(doc_data.get("job_code") or doc_data.get("project_code") or "").strip()
+        po_remarks = []
+        if po_number and po_number != "-":
+            po_remarks.append(f"P.O. No.: {po_number}")
+        if job_code and job_code != "-":
+            po_remarks.append(f"Job Code: {job_code}")
+        if po_remarks:
+            po_text = " | ".join(po_remarks)
+            if po_text not in remarks:
+                remarks = f"{remarks} | {po_text}".strip(" |")
+
         row = [
             now_str,                                    # 0: วันที่บันทึก (Record Date)
             today_date,                                 # 1: วันที่เอกสาร (Date)
-            doc_no,                                     # 2: เลขที่เอกสาร (Document No)
+            sheet_doc_no,                               # 2: เลขที่เอกสาร (Document No with Creator Prefix)
             client_name,                                # 3: ชื่อลูกค้า (Client Name)
             format_tax_id_for_sheet(client_tax_id),     # 4: เลขประจำตัวผู้เสียภาษี (Client Tax ID)
             client_address,                             # 5: ที่อยู่ลูกค้า (Client Address)
@@ -1489,7 +1880,7 @@ def build_sheet_row_data(doc_type: str, doc_data: Dict[str, Any], pdf_url: str =
         row = [
             now_str,                                    # 0: วันที่บันทึก (Record Date)
             today_date,                                 # 1: วันที่ตามใบเสร็จ/ใบกำกับภาษี (Tax Invoice Date)
-            doc_no,                                     # 2: เลขที่ใบกำกับภาษี / ใบเสร็จรับเงิน (Receipt No.)
+            sheet_doc_no,                               # 2: เลขที่ใบกำกับภาษี / ใบเสร็จรับเงิน (Receipt No with Creator Prefix)
             ref_invoice_no,                             # 3: เลขที่ใบวางบิล (Invoice No.)
             client_name,                                # 4: ชื่อลูกค้า (Customer Name)
             format_tax_id_for_sheet(client_tax_id),     # 5: เลขประจำตัวผู้เสียภาษีลูกค้า (Customer Tax ID)
@@ -1516,32 +1907,128 @@ def build_sheet_row_data(doc_type: str, doc_data: Dict[str, Any], pdf_url: str =
 
     elif norm_type in ["wht", "expense"]:
         sheet_name = "รายจ่าย"
-        payee_name = doc_data.get("payee_name") or doc_data.get("vendor_name") or client_name
-        payee_tax_id = doc_data.get("payee_tax_id") or doc_data.get("id_card_no") or client_tax_id
-        payee_address = doc_data.get("payee_address") or client_address
-        payee_branch = doc_data.get("payee_branch") or doc_data.get("supplier_branch") or "00000"
-        category = doc_data.get("category") or "ค่าบริการจ้างทำของ"
-        gross_amt = float(doc_data.get("gross_amount") or doc_data.get("amount") or totals["subtotal"])
-        wht_pct = float(doc_data.get("wht_rate") or 3.0)
-        wht_amt = round(gross_amt * (wht_pct / 100.0), 2)
+        supplier_name = (
+            doc_data.get("supplier_name")
+            or doc_data.get("store_name")
+            or doc_data.get("merchant_name")
+            or doc_data.get("shop_name")
+            or doc_data.get("payee_name")
+            or doc_data.get("vendor_name")
+            or client_name
+        )
+        supplier_tax_id = (
+            doc_data.get("supplier_tax_id")
+            or doc_data.get("tax_id")
+            or doc_data.get("payee_tax_id")
+            or doc_data.get("id_card_no")
+            or client_tax_id
+        )
+        supplier_address = (
+            doc_data.get("supplier_address")
+            or doc_data.get("address")
+            or doc_data.get("store_address")
+            or doc_data.get("payee_address")
+            or client_address
+        )
+        supplier_branch = (
+            doc_data.get("supplier_branch")
+            or doc_data.get("branch")
+            or doc_data.get("payee_branch")
+            or doc_data.get("client_branch")
+            or "00000"
+        )
+        category = doc_data.get("category") or ("ค่าบริการจ้างทำของ" if norm_type == "wht" else "ค่าใช้จ่ายทั่วไป")
+
+        # Robust WHT rate handling: if 0 or 0.0, do not fall back to 3%
+        raw_wht_rate = doc_data.get("wht_rate")
+        if raw_wht_rate is not None and str(raw_wht_rate).strip() != "":
+            try:
+                wht_pct = float(raw_wht_rate)
+            except (ValueError, TypeError):
+                wht_pct = 3.0 if norm_type == "wht" else 0.0
+        else:
+            wht_pct = 3.0 if norm_type == "wht" else 0.0
+
+        # Robust VAT & Pre-VAT calculation: calculate actual VAT, do not hardcode 0.0
+        raw_vat = doc_data.get("vat_amount") if doc_data.get("vat_amount") is not None else doc_data.get("vat")
+        raw_pre_vat = (
+            doc_data.get("pre_vat")
+            if doc_data.get("pre_vat") is not None
+            else (doc_data.get("subtotal") if doc_data.get("subtotal") is not None else doc_data.get("amount_before_vat"))
+        )
+        raw_gross = (
+            doc_data.get("gross_amount")
+            if doc_data.get("gross_amount") is not None
+            else (doc_data.get("amount") if doc_data.get("amount") is not None else doc_data.get("total") or doc_data.get("total_amount"))
+        )
+
+        is_vat_flag = bool(doc_data.get("is_vat", False))
+        vat_rate_val = float(doc_data.get("vat_rate", 0.07))
+
+        if raw_vat is not None:
+            vat_amt = float(raw_vat)
+        elif is_vat_flag and raw_gross is not None:
+            vat_amt = round(float(raw_gross) * vat_rate_val / (1.0 + vat_rate_val), 2)
+        elif is_vat_flag and raw_pre_vat is not None:
+            vat_amt = round(float(raw_pre_vat) * vat_rate_val, 2)
+        elif totals and totals.get("vat_amount", 0.0) > 0 and is_vat_flag:
+            vat_amt = float(totals["vat_amount"])
+        else:
+            vat_amt = 0.0
+
+        if raw_pre_vat is not None:
+            pre_vat = float(raw_pre_vat)
+        elif raw_gross is not None and vat_amt > 0:
+            pre_vat = round(float(raw_gross) - vat_amt, 2)
+        elif raw_gross is not None:
+            pre_vat = float(raw_gross)
+        elif totals and totals.get("pre_vat", 0.0) > 0:
+            pre_vat = float(totals["pre_vat"])
+        else:
+            pre_vat = 0.0
+
+        if raw_gross is not None:
+            gross_amt = float(raw_gross)
+        elif pre_vat > 0 or vat_amt > 0:
+            gross_amt = round(pre_vat + vat_amt, 2)
+        elif totals and totals.get("gross_amount", 0.0) > 0:
+            gross_amt = float(totals["gross_amount"])
+        else:
+            gross_amt = pre_vat
+
+        # WHT amount calculation
+        raw_wht_amt = doc_data.get("wht_amount")
+        if raw_wht_amt is not None and str(raw_wht_amt).strip() != "":
+            wht_amt = float(raw_wht_amt)
+        elif wht_pct > 0:
+            wht_base = pre_vat if pre_vat > 0 else gross_amt
+            wht_amt = round(wht_base * (wht_pct / 100.0), 2)
+        else:
+            wht_amt = 0.0
+
         net_paid = round(gross_amt - wht_amt, 2)
-        wht_form_type = doc_data.get("wht_form_type") or ("ภ.ง.ด.3" if len(str(payee_tax_id).replace("-", "")) == 13 else "ภ.ง.ด.53")
+        wht_form_type = doc_data.get("wht_form_type") or (
+            "ภ.ง.ด.3" if len(str(supplier_tax_id).replace("-", "")) == 13 else ("ภ.ง.ด.53" if wht_pct > 0 else "-")
+        )
         payment_method = doc_data.get("payment_method") or "KTB"
         payment_status = doc_data.get("payment_status") or "จ่ายเงินแล้ว"
-        staff_payee = doc_data.get("staff_payee") or doc_data.get("worker") or "none"
+        staff_payee = doc_data.get("staff_payee") or doc_data.get("worker") or doc_data.get("requester") or "none"
+        tax_filing_status = doc_data.get("tax_filing_status") or (
+            "ยื่นภาษีซื้อแล้ว" if vat_amt > 0 else ("รอยื่นภาษี" if wht_pct > 0 else "ไม่ต้องยื่น")
+        )
 
         row = [
             now_str,                                    # 0: วันที่บันทึก (Record Date)
             today_date,                                 # 1: วันที่ตามใบเสร็จ/ใบกำกับภาษี (Tax Invoice Date)
-            doc_no,                                     # 2: เลขที่ใบกำกับภาษี / เลขที่เอกสาร (Supplier Invoice No.)
-            payee_name,                                 # 3: ชื่อผู้ให้บริการ / คู่ค้า (Supplier Name)
-            format_tax_id_for_sheet(payee_tax_id),      # 4: เลขประจำตัวผู้เสียภาษีคู่ค้า (Supplier Tax ID)
-            payee_address,                              # 5: ที่อยู่คู่ค้า (Supplier Address)
-            format_branch_for_sheet(payee_branch),      # 6: รหัสสาขาคู่ค้า (Supplier Branch)
+            clean_doc_no,                               # 2: เลขที่ใบกำกับภาษี / เลขที่เอกสาร (Supplier Invoice No.)
+            supplier_name,                              # 3: ชื่อผู้ให้บริการ / คู่ค้า (Supplier Name)
+            format_tax_id_for_sheet(supplier_tax_id),   # 4: เลขประจำตัวผู้เสียภาษีคู่ค้า (Supplier Tax ID)
+            supplier_address,                           # 5: ที่อยู่คู่ค้า (Supplier Address)
+            format_branch_for_sheet(supplier_branch),   # 6: รหัสสาขาคู่ค้า (Supplier Branch)
             category,                                   # 7: หมวดหมู่ค่าใช้จ่าย (Expense Category)
             project_name,                               # 8: รายละเอียดค่าใช้จ่าย (Description)
-            gross_amt,                                  # 9: ยอดก่อนภาษีมูลค่าเพิ่ม (Pre-VAT Amount)
-            0.0,                                        # 10: ภาษีมูลค่าเพิ่ม 7% (VAT 7%)
+            pre_vat,                                    # 9: ยอดก่อนภาษีมูลค่าเพิ่ม (Pre-VAT Amount)
+            vat_amt,                                    # 10: ภาษีมูลค่าเพิ่ม 7% (VAT 7%)
             gross_amt,                                  # 11: ยอดรวมภาษีมูลค่าเพิ่ม (Gross Amount)
             wht_pct,                                    # 12: อัตราภาษีหัก ณ ที่จ่าย % (WHT Rate %)
             wht_amt,                                    # 13: ยอดหักภาษี ณ ที่จ่าย (WHT Amount)
@@ -1550,9 +2037,9 @@ def build_sheet_row_data(doc_type: str, doc_data: Dict[str, Any], pdf_url: str =
             payment_method,                             # 16: ช่องทางการชำระเงิน (Payment Method)
             payment_status,                             # 17: สถานะการชำระเงิน (Payment Status)
             today_date,                                 # 18: วันที่จ่ายเงินจริง (Actual Paid Date)
-            doc_no,                                     # 19: เลขที่ใบรับรองหัก ณ ที่จ่าย (50 Bis No.)
+            clean_doc_no,                               # 19: เลขที่ใบรับรองหัก ณ ที่จ่าย (50 Bis No.)
             pdf_url,                                    # 20: ลิงก์เอกสาร Google Drive (PDF Link)
-            "รอยื่นภาษี",                               # 21: สถานะการยื่นภาษี (Tax Filing Status)
+            tax_filing_status,                          # 21: สถานะการยื่นภาษี (Tax Filing Status)
             project_name,                               # 22: โครงการที่ผูก (Project Link)
             remarks,                                    # 23: หมายเหตุ (Remarks)
             staff_payee                                 # 24: ผู้เบิกค่าแรง / พนักงาน (Staff Payee / Employee)
@@ -1575,23 +2062,29 @@ def generate_and_sync_document(
     End-to-end Orchestration:
     1. Render HTML via `document_template_engine`
     2. Upload HTML to GAS / PDFShift -> Save to Google Drive -> Get PDF URL
-    3. Sync structured row to Google Sheets
-    4. Return complete result summary
+    3. Sync structured row to Google Sheets (Column C prefixed with creator)
+    4. Return complete result summary (doc_no is 100% clean)
     """
     norm_type = normalize_doc_type(doc_type)
 
     # 1. Ensure Document Number
     if not doc_data.get("doc_no"):
-        prefix_map = {"quotation": "QT", "invoice": "IV", "receipt": "RE", "wht": "WHT", "expense": "PV"}
-        prefix = prefix_map.get(norm_type, "DOC")
-        doc_data["doc_no"] = f"{prefix}-{datetime.now().strftime('%Y%m')}-{int(datetime.now().timestamp()) % 1000:03d}"
+        doc_data["doc_no"] = get_next_document_number(
+            doc_type=norm_type,
+            spreadsheet_id=spreadsheet_id,
+            script_url=script_url
+        )
 
-    doc_no = doc_data["doc_no"]
-    pdf_name = f"{doc_no}_{datetime.now().strftime('%Y%m%d')}.pdf"
+    raw_doc_no = doc_data["doc_no"]
+    clean_doc_no = normalize_doc_no(raw_doc_no)
+    sheet_doc_no = format_sheet_doc_no_with_creator(clean_doc_no, doc_data=doc_data)
+    pdf_name = f"{clean_doc_no}.pdf"
 
-    # 2. Render Document HTML
+    # 2. Render Document HTML (always 100% clean doc_no on document face)
+    doc_data_for_render = dict(doc_data)
+    doc_data_for_render["doc_no"] = clean_doc_no
     try:
-        html_content = render_document_html(norm_type, doc_data)
+        html_content = render_document_html(norm_type, doc_data_for_render)
     except Exception as e:
         logger.error("Failed to render HTML template: %s", e)
         return {
@@ -1601,8 +2094,8 @@ def generate_and_sync_document(
         }
 
     # 3. Render PDF locally with Headless Chromium
-    local_pdf_res = convert_html_to_pdf_local(html_content=html_content, doc_no=doc_no)
-    default_vps_pdf_url = f"https://srv1913532.hstgr.cloud/api/documents/pdf/{doc_no}"
+    local_pdf_res = convert_html_to_pdf_local(html_content=html_content, doc_no=clean_doc_no)
+    default_vps_pdf_url = f"https://srv1913532.hstgr.cloud/api/documents/pdf/{clean_doc_no}"
     local_pdf_path = local_pdf_res.get("pdf_path")
 
     # 4. Upload PDF directly to Google Drive via GAS Webhook
@@ -1612,19 +2105,21 @@ def generate_and_sync_document(
             pdf_path_or_bytes=local_pdf_path,
             pdf_name=pdf_name,
             doc_type=norm_type,
-            parent_folder_id=parent_folder_id,
-            script_url=script_url
+            parent_folder_id=parent_folder_id or COMPANY_DRIVE_FOLDER_ID or "162o80GF4BPGGt-DlltxRvMFvAXxRWYOY",
+            script_url=script_url,
+            doc_no=clean_doc_no
         )
     else:
         # Fallback: If local chromium render is not available, upload HTML to GAS/PDFShift
-        logger.info("Local PDF not available for direct upload, using HTML upload fallback for %s", doc_no)
+        logger.info("Local PDF not available for direct upload, using HTML upload fallback for %s", clean_doc_no)
         upload_result = upload_document_html(
             html_content=html_content,
             pdf_name=pdf_name,
             doc_type=norm_type,
-            parent_folder_id=parent_folder_id,
+            parent_folder_id=parent_folder_id or COMPANY_DRIVE_FOLDER_ID or "162o80GF4BPGGt-DlltxRvMFvAXxRWYOY",
             pdfshift_api_key=pdfshift_api_key,
-            script_url=script_url
+            script_url=script_url,
+            doc_no=clean_doc_no
         )
 
     # Determine final PDF URL (Google Drive URL prioritized, fallback to VPS PDF URL)
@@ -1632,7 +2127,7 @@ def generate_and_sync_document(
     if upload_result.get("status") in ["success", "simulation"] and upload_result.get("pdfUrl"):
         pdf_url = upload_result["pdfUrl"]
 
-    # 5. Sync Row to Google Sheets (always with final pdf_url)
+    # 5. Sync Row to Google Sheets (always with final pdf_url and creator-prefixed doc_no)
     sheet_name, row_values = build_sheet_row_data(norm_type, doc_data, pdf_url=pdf_url)
     sheets_result = sync_document_to_sheets(
         sheet_name=sheet_name,
@@ -1647,16 +2142,49 @@ def generate_and_sync_document(
         items=items,
         is_vat=bool(doc_data.get("is_vat", True)),
         vat_rate=float(doc_data.get("vat_rate", 0.07)),
-        wht_rate=float(doc_data.get("wht_rate", 0.0)),
-        discount=float(doc_data.get("discount", 0.0))
+        wht_rate=0.0 if norm_type == "quotation" else float(doc_data.get("wht_rate", 0.0)),
+        discount=float(doc_data.get("discount", 0.0)),
+        doc_type=norm_type
     )
 
     is_success = (local_pdf_res.get("status") == "success") or (upload_result.get("status") in ["success", "simulation"])
 
+    # Cache recently generated doc for instant pipeline lookups (e.g. QT -> IV -> RE)
+    cached_doc_entry = {
+        "source_sheet": sheet_name,
+        "doc_type": norm_type,
+        "doc_no": clean_doc_no,
+        "sheet_doc_no": sheet_doc_no,
+        "clean_doc_no": clean_doc_no,
+        "client_name": doc_data.get("client_name") or doc_data.get("customer_name") or doc_data.get("payee_name") or "-",
+        "client_tax_id": doc_data.get("client_tax_id") or doc_data.get("customer_tax_id") or doc_data.get("payee_tax_id") or "-",
+        "client_address": doc_data.get("client_address") or doc_data.get("customer_address") or doc_data.get("payee_address") or "-",
+        "client_branch": doc_data.get("client_branch") or doc_data.get("customer_branch") or "00000",
+        "client_phone": doc_data.get("client_phone") or doc_data.get("customer_phone") or "-",
+        "project_name": doc_data.get("project_name") or doc_data.get("description") or "-",
+        "items": totals["items"],
+        "pre_vat": totals.get("pre_vat"),
+        "vat_amount": totals.get("vat_amount"),
+        "wht_amount": totals.get("wht_amount"),
+        "wht_rate": totals.get("wht_rate"),
+        "net_total": totals.get("net_total"),
+        "signer_name": doc_data.get("signer_name") or "นาย มงคล วงศ์สกุลยานนท์",
+        "remarks": doc_data.get("remarks", ""),
+        "ref_doc_no": doc_data.get("ref_doc_no") or doc_data.get("ref_quotation_no") or doc_data.get("ref_invoice_no") or doc_data.get("source_doc_no"),
+        "is_revision": bool(doc_data.get("is_revision")),
+        "pdf_url": pdf_url,
+    }
+    _RECENT_GENERATED_DOCS[clean_doc_no] = cached_doc_entry
+    _RECENT_GENERATED_DOCS[sheet_doc_no] = cached_doc_entry
+
     return {
         "status": "success" if is_success else "partial_error",
         "doc_type": norm_type,
-        "doc_no": doc_no,
+        "doc_no": clean_doc_no,
+        "sheet_doc_no": sheet_doc_no,
+        "clean_doc_no": clean_doc_no,
+        "ref_doc_no": doc_data.get("ref_doc_no") or doc_data.get("ref_quotation_no") or doc_data.get("ref_invoice_no") or doc_data.get("source_doc_no"),
+        "is_revision": bool(doc_data.get("is_revision")),
         "pdf_name": pdf_name,
         "pdf_url": pdf_url,
         "local_pdf_path": local_pdf_res.get("pdf_path"),
@@ -1665,6 +2193,7 @@ def generate_and_sync_document(
         "upload_result": upload_result,
         "sheets_result": sheets_result,
         "totals": totals,
+        "items": totals["items"],
         "client_name": doc_data.get("client_name") or doc_data.get("customer_name") or doc_data.get("payee_name") or "-",
         "project_name": doc_data.get("project_name") or doc_data.get("description") or "-",
         "signer_name": doc_data.get("signer_name") or "นาย มงคล วงศ์สกุลยานนท์",
@@ -1804,6 +2333,8 @@ def parse_sheet_document_row(sheet_name: str, row: list) -> Dict[str, Any]:
         "source_sheet": sheet_name,
         "doc_type": inferred_type,
         "doc_no": matched_doc_no,
+        "clean_doc_no": normalize_doc_no(matched_doc_no),
+        "sheet_doc_no": matched_doc_no,
         "ref_doc_no": ref_doc_no,
         "doc_date": doc_date,
         "client_name": client_name,
@@ -1978,6 +2509,11 @@ def find_document_by_no(
     if not query:
         return None
 
+    # Check recently generated documents cache first (instant O(1) lookup)
+    norm_q = normalize_doc_no(doc_no_or_query)
+    if norm_q and norm_q in _RECENT_GENERATED_DOCS:
+        return _RECENT_GENERATED_DOCS[norm_q]
+
     # Determine tabs
     norm_type = normalize_doc_type(doc_type) if doc_type else ""
     if not norm_type and not (query.startswith("exp") or query.startswith("wht") or query.startswith("50bis")):
@@ -2052,6 +2588,326 @@ def find_document_by_no(
     return None
 
 
+def update_sheet_document_data(
+    doc_no: str,
+    updates: Dict[str, Any],
+    doc_type: Optional[str] = None,
+    spreadsheet_id: Optional[str] = None,
+    script_url: Optional[str] = None
+) -> Dict[str, Any]:
+    """
+    Unified Google Sheets Document Updater:
+    Updates records in Google Sheets across tabs ('รายรับ', 'ใบวางบิล', 'ใบเสนอราคา', 'รายจ่าย').
+    Supports updating:
+    - profit_share / profit_share_info (e.g. 10% of Pre-VAT -> formatted string & amount)
+    - payment_status (e.g. 'ชำระเงินแล้ว', 'รอชำระ')
+    - actual_payment_date (e.g. '28/08/2026')
+    - remarks
+    - receiving_bank / payment_method (e.g. 'KTB', 'SCB', 'เงินโอน')
+    
+    Includes robust offline / simulation mode and GAS webhook sync.
+    """
+    if not doc_no or not str(doc_no).strip():
+        return {
+            "status": "error",
+            "message": "กรุณาระบุเลขที่เอกสาร (doc_no) ที่ต้องการอัปเดตค่ะ"
+        }
+
+    updates = updates or {}
+    clean_doc_no = str(doc_no).strip()
+    norm_input_doc = normalize_doc_no(clean_doc_no)
+
+    target_sheet_id = spreadsheet_id if spreadsheet_id is not None else GHN168_SHEET_ID
+    target_url = script_url if script_url is not None else GAS_SCRIPT_URL
+
+    # 1. Determine tabs to search
+    norm_dt = normalize_doc_type(doc_type) if doc_type else ""
+    if norm_dt == "quotation" or norm_input_doc.startswith("QT"):
+        candidate_tabs = ["ใบเสนอราคา", "ใบวางบิล", "รายรับ"]
+    elif norm_dt == "invoice" or norm_input_doc.startswith("IV"):
+        candidate_tabs = ["ใบวางบิล", "รายรับ", "ใบเสนอราคา"]
+    elif norm_dt == "receipt" or norm_input_doc.startswith("RE"):
+        candidate_tabs = ["รายรับ", "ใบวางบิล", "ใบเสนอราคา"]
+    elif norm_dt in ["expense", "wht"] or any(norm_input_doc.startswith(k) for k in ["EXP", "WHT", "50BIS", "PV"]):
+        candidate_tabs = ["รายจ่าย"]
+    else:
+        candidate_tabs = ["รายรับ", "ใบวางบิล", "ใบเสนอราคา", "รายจ่าย"]
+
+    matched_sheet_name = None
+    matched_row_indices = []
+    current_sheet_rows = []
+    matched_doc_dict = None
+
+    for sheet_name in candidate_tabs:
+        data_res = read_sheet_data(sheet_name, spreadsheet_id=target_sheet_id, script_url=target_url)
+        rows = data_res.get("values", [])
+        found_indices = []
+        
+        for idx, r in enumerate(rows):
+            if not r or len(r) < 3:
+                continue
+            r_doc_no = str(r[2]).strip()
+            r_ref_no = str(r[3]).strip() if len(r) > 3 else ""
+            
+            # Compare normalized and raw doc numbers
+            if (clean_doc_no == r_doc_no
+                or (norm_input_doc and norm_input_doc == normalize_doc_no(r_doc_no))
+                or (clean_doc_no.lower() in r_doc_no.lower())
+                or (norm_input_doc and norm_input_doc.lower() in r_doc_no.lower())
+                or (r_ref_no and norm_input_doc and norm_input_doc == normalize_doc_no(r_ref_no))):
+                found_indices.append(idx)
+
+        if found_indices:
+            matched_sheet_name = sheet_name
+            matched_row_indices = found_indices
+            current_sheet_rows = [list(r) for r in rows]
+            # Parse document data from the first matched row
+            matched_doc_dict = parse_sheet_document_row(sheet_name, current_sheet_rows[found_indices[0]])
+            break
+
+    if not matched_sheet_name or not matched_row_indices:
+        return {
+            "status": "not_found",
+            "doc_no": clean_doc_no,
+            "message": f"ไม่พบเอกสารเลขที่ '{clean_doc_no}' ใน Google Sheets ค่ะ"
+        }
+
+    # 2. Process Profit Share calculation from Pre-VAT base amount if needed
+    applied_updates = dict(updates)
+    pre_vat_amount = float(matched_doc_dict.get("pre_vat") or 0.0)
+
+    # Check profit_share_info or worker_name / deduction parameters
+    ps_info = updates.get("profit_share_info") or {}
+    worker = ps_info.get("worker_name") or updates.get("worker_name")
+    ded_type = ps_info.get("deduction_type") or updates.get("deduction_type") or "percent"
+    ded_val = ps_info.get("deduction_value")
+    if ded_val is None and "deduction_value" in updates:
+        ded_val = updates.get("deduction_value")
+
+    if worker and ("profit_share" not in updates or not str(updates.get("profit_share", "")).strip()):
+        if ded_val is not None and float(ded_val) > 0:
+            val_f = float(ded_val)
+            if str(ded_type).lower() in ["percent", "pct", "%"]:
+                ded_baht = round(pre_vat_amount * (val_f / 100.0), 2)
+                ps_str = f"คนทำงาน: {worker} | หัก บ.: {worker} {val_f:g}% (฿{ded_baht:,.2f})"
+                applied_updates["profit_share"] = ps_str
+                applied_updates["profit_share_amount"] = ded_baht
+                applied_updates["deduction_percent"] = val_f
+            else:
+                ded_baht = round(val_f, 2)
+                ps_str = f"คนทำงาน: {worker} | หัก บ.: {worker} ฿{ded_baht:,.2f}"
+                applied_updates["profit_share"] = ps_str
+                applied_updates["profit_share_amount"] = ded_baht
+        else:
+            applied_updates["profit_share"] = f"คนทำงาน: {worker} | ไม่มีการหักเข้า บ."
+            applied_updates["profit_share_amount"] = 0.0
+    elif "profit_share" in updates:
+        ps_str = str(updates["profit_share"]).strip()
+        applied_updates["profit_share"] = ps_str
+        # Try extracting Baht amount if present
+        match_amt = re.search(r'฿\s*([\d,]+\.?\d*)', ps_str)
+        if match_amt:
+            try:
+                applied_updates["profit_share_amount"] = float(match_amt.group(1).replace(",", ""))
+            except Exception:
+                pass
+
+    # 3. Apply updates to the sheet row(s)
+    def ensure_row_len(r: List[Any], required_len: int):
+        while len(r) < required_len:
+            r.append("")
+
+    for row_idx in matched_row_indices:
+        r = current_sheet_rows[row_idx]
+
+        if matched_sheet_name == "รายรับ":
+            ensure_row_len(r, 24)
+            if "receiving_bank" in applied_updates:
+                r[15] = applied_updates["receiving_bank"]
+            if "payment_status" in applied_updates:
+                r[16] = applied_updates["payment_status"]
+            if "actual_payment_date" in applied_updates:
+                r[17] = applied_updates["actual_payment_date"]
+            if "profit_share" in applied_updates:
+                r[18] = applied_updates["profit_share"]
+            if "pdf_url" in applied_updates:
+                r[19] = applied_updates["pdf_url"]
+            if "remarks" in applied_updates:
+                r[21] = applied_updates["remarks"]
+
+        elif matched_sheet_name == "ใบวางบิล":
+            ensure_row_len(r, 23)
+            if "payment_terms" in applied_updates:
+                r[20] = applied_updates["payment_terms"]
+            if "due_date" in applied_updates:
+                r[21] = applied_updates["due_date"]
+            if "remarks" in applied_updates:
+                r[22] = applied_updates["remarks"]
+
+        elif matched_sheet_name == "ใบเสนอราคา":
+            ensure_row_len(r, 21)
+            if "items" in applied_updates:
+                r[18] = json.dumps(applied_updates["items"], ensure_ascii=False) if isinstance(applied_updates["items"], list) else str(applied_updates["items"])
+            if "pdf_url" in applied_updates or "pdfUrl" in applied_updates:
+                r[20] = applied_updates.get("pdf_url") or applied_updates.get("pdfUrl")
+            elif "remarks" in applied_updates:
+                r[20] = applied_updates["remarks"]
+
+        elif matched_sheet_name == "รายจ่าย":
+            ensure_row_len(r, 25)
+            if "receiving_bank" in applied_updates or "payment_method" in applied_updates:
+                r[16] = applied_updates.get("receiving_bank") or applied_updates.get("payment_method")
+            if "payment_status" in applied_updates:
+                r[17] = applied_updates["payment_status"]
+            if "actual_payment_date" in applied_updates or "actual_paid_date" in applied_updates:
+                r[18] = applied_updates.get("actual_payment_date") or applied_updates.get("actual_paid_date")
+            if "remarks" in applied_updates:
+                r[23] = applied_updates["remarks"]
+
+    # 4. Synchronize in-memory simulation cache if offline
+    if matched_sheet_name == "รายรับ":
+        try:
+            import recover_income_tab
+            for row_idx in matched_row_indices:
+                if row_idx < len(recover_income_tab.RECOVERED_INCOME_ROWS):
+                    recover_income_tab.RECOVERED_INCOME_ROWS[row_idx] = list(current_sheet_rows[row_idx])
+        except Exception as e:
+            logger.debug("In-memory RECOVERED_INCOME_ROWS sync note: %s", e)
+
+    # 5. Send Webhook to Google Apps Script if configured
+    gas_result = None
+    if target_url:
+        try:
+            # Special case: GAS has native update_profit_share endpoint
+            if "profit_share" in applied_updates and matched_sheet_name == "รายรับ" and len(applied_updates) == 1:
+                webhook_payload = {
+                    "type": "update_profit_share",
+                    "spreadsheetId": target_sheet_id,
+                    "docNo": matched_doc_dict.get("doc_no", clean_doc_no),
+                    "profitShare": applied_updates["profit_share"]
+                }
+            else:
+                # General overwrite/update sync
+                headers_map = {
+                    "รายรับ": INCOME_HEADERS,
+                    "ใบวางบิล": INVOICE_HEADERS,
+                    "ใบเสนอราคา": QUOTATION_HEADERS,
+                    "รายจ่าย": EXPENSE_HEADERS
+                }
+                webhook_payload = {
+                    "type": "overwrite",
+                    "spreadsheetId": target_sheet_id,
+                    "sheetName": matched_sheet_name,
+                    "headers": headers_map.get(matched_sheet_name, []),
+                    "rows": current_sheet_rows
+                }
+
+            resp = requests.post(
+                target_url,
+                json=webhook_payload,
+                headers={"Content-Type": "application/json"},
+                timeout=20
+            )
+            if resp.status_code == 200:
+                gas_result = resp.json()
+            else:
+                logger.warning("GAS update returned HTTP %d, falling back to simulation.", resp.status_code)
+        except Exception as ex:
+            logger.warning("GAS update webhook exception: %s. Using simulation fallback.", ex)
+
+    # 6. Build updated doc representation
+    updated_doc_dict = parse_sheet_document_row(matched_sheet_name, current_sheet_rows[matched_row_indices[0]])
+    for k, v in applied_updates.items():
+        updated_doc_dict[k] = v
+
+    canonical_doc_no = matched_doc_dict.get("doc_no", clean_doc_no)
+    return {
+        "status": "success",
+        "doc_no": canonical_doc_no,
+        "sheet_name": matched_sheet_name,
+        "client_name": matched_doc_dict.get("client_name", "-"),
+        "project_name": matched_doc_dict.get("project_name", "-"),
+        "pre_vat": pre_vat_amount,
+        "net_total": float(matched_doc_dict.get("net_total") or 0.0),
+        "updated_fields": applied_updates,
+        "document": updated_doc_dict,
+        "gas_result": gas_result,
+        "message": f"อัปเดตข้อมูลเอกสาร {canonical_doc_no} ใน Google Sheets ({matched_sheet_name}) เรียบร้อยแล้วค่ะ ✨"
+    }
+
+
+def calculate_deposit_breakdown(
+    deposit_amount: float,
+    vat_rate: float = 0.07
+) -> Dict[str, float]:
+    """
+    Calculates Pre-VAT and VAT breakdown for inclusive deposit payment:
+    - Pre-VAT = deposit * 100 / 107 (e.g. 20,000 -> 18,691.59)
+    - VAT = deposit - Pre-VAT (e.g. 20,000 - 18,691.59 = 1,308.41)
+    """
+    dep = float(deposit_amount)
+    pre_vat = round(dep * 100.0 / (100.0 + vat_rate * 100.0), 2)
+    vat_amt = round(dep - pre_vat, 2)
+    return {
+        "deposit_amount": dep,
+        "pre_vat": pre_vat,
+        "vat_amount": vat_amt,
+        "total_amount": round(pre_vat + vat_amt, 2)
+    }
+
+
+def calculate_final_invoice_with_deposit(
+    total_project_pre_vat: float,
+    deposit_pre_vat: Optional[float] = None,
+    deposit_amount_inclusive: Optional[float] = None,
+    vat_rate: float = 0.07,
+    wht_rate: float = 0.0
+) -> Dict[str, Any]:
+    """
+    Calculates final invoice deduction after Pre-VAT deposit:
+    - remaining_pre_vat = total_project_pre_vat - deposit_pre_vat
+      (e.g. Total 50,000 - 18,691.59 = 31,308.41)
+    - vat_amount = remaining_pre_vat * 7% = 2,191.59
+    - gross_amount / net_total = 31,308.41 + 2,191.59 = 33,500.00
+    - wht_amount = remaining_pre_vat * wht_rate%
+    - net_payable = gross_amount - wht_amount
+    """
+    tot_pv = round(float(total_project_pre_vat), 2)
+    if deposit_pre_vat is not None:
+        dep_pv = round(float(deposit_pre_vat), 2)
+    elif deposit_amount_inclusive is not None:
+        dep_breakdown = calculate_deposit_breakdown(float(deposit_amount_inclusive), vat_rate=vat_rate)
+        dep_pv = dep_breakdown["pre_vat"]
+    else:
+        dep_pv = 0.0
+
+    rem_pv = max(0.0, round(tot_pv - dep_pv, 2))
+    vat_amt = round(rem_pv * vat_rate, 2)
+    gross_amt = round(rem_pv + vat_amt, 2)
+
+    raw_wht = float(wht_rate or 0.0)
+    wht_pct = raw_wht * 100.0 if 0.0 < raw_wht < 1.0 else raw_wht
+    wht_amt = round(rem_pv * (wht_pct / 100.0), 2) if wht_pct > 0 else 0.0
+    net_payable = round(gross_amt - wht_amt, 2)
+
+    return {
+        "total_project_pre_vat": tot_pv,
+        "deposit_pre_vat": dep_pv,
+        "remaining_pre_vat": rem_pv,
+        "vat_rate": vat_rate,
+        "vat_amount": vat_amt,
+        "gross_amount": gross_amt,
+        "wht_rate": wht_pct,
+        "wht_amount": wht_amt,
+        "net_total": gross_amt,
+        "net_payable": net_payable,
+        "items": [
+            {"desc": "ค่าบริการตามสัญญา/ใบเสนอราคา", "qty": 1, "price": tot_pv, "amount": tot_pv},
+            {"desc": "หักเงินมัดจำ (งวดที่ 1 เงินมัดจำ)", "qty": 1, "price": -dep_pv, "amount": -dep_pv}
+        ]
+    }
+
+
 def convert_document(
     source_doc_no: str,
     target_type: str,
@@ -2092,6 +2948,18 @@ def convert_document(
     # Base payload merged from source + overrides
     doc_payload: Dict[str, Any] = {}
     if src_doc:
+        is_qt_src = (
+            str(src_doc.get("doc_type", "")).lower() in ["quotation", "qt", "ใบเสนอราคา"]
+            or str(src_doc.get("doc_no", "")).upper().startswith("QT")
+            or str(source_doc_no).upper().startswith("QT")
+        )
+        src_wht = src_doc.get("wht_rate")
+        # Ensure Quotation 0% WHT is not naively copied when converting to Receipt
+        if norm_target == "receipt" and (is_qt_src or src_wht in [0, 0.0, None]):
+            init_wht = 3.0
+        else:
+            init_wht = float(src_wht) if src_wht is not None else 3.0
+
         doc_payload.update({
             "client_name": src_doc.get("client_name"),
             "client_tax_id": src_doc.get("client_tax_id"),
@@ -2102,10 +2970,11 @@ def convert_document(
             "items": src_doc.get("items", []),
             "is_vat": src_doc.get("vat_amount", 0.0) > 0,
             "vat_rate": 0.07 if src_doc.get("vat_amount", 0.0) > 0 else 0.0,
-            "wht_rate": src_doc.get("wht_rate", 3.0),
+            "wht_rate": init_wht,
             "signer_name": src_doc.get("signer_name"),
             "remarks": src_doc.get("remarks", ""),
-            "reference_doc": src_doc.get("doc_no")
+            "reference_doc": src_doc.get("doc_no"),
+            "creator": detect_document_creator(creator=src_doc.get("doc_no"), doc_data=src_doc),
         })
     else:
         # Fallback if source doc not in sheet but customer database or overrides exist
@@ -2135,6 +3004,8 @@ def convert_document(
             has_valid_amount = True
         elif overrides.get("gross_amount") and float(overrides.get("gross_amount", 0)) > 0:
             has_valid_amount = True
+        elif overrides.get("deposit_amount") and float(overrides.get("deposit_amount", 0)) > 0:
+            has_valid_amount = True
         elif overrides.get("items") and len(overrides.get("items", [])) > 0:
             has_valid_amount = True
 
@@ -2159,17 +3030,10 @@ def convert_document(
     today_str = datetime.now().strftime("%d/%m/%Y")
 
     if norm_target == "invoice":
-        # QT -> IV Conversion
+        # QT -> IV Conversion: Issue new independent sequential invoice number
+        src_no = src_doc.get("doc_no", "") if src_doc else source_doc_no
         if not doc_payload.get("doc_no"):
-            src_no = src_doc.get("doc_no", "") if src_doc else source_doc_no
-            if re.match(r"^(?:QT|IV|RE|50BIS)", src_no, flags=re.I):
-                doc_payload["doc_no"] = re.sub(r"^(?:QT|IV|RE|50BIS)", "IV", src_no, flags=re.I)
-            else:
-                clean_num = re.sub(r"[^0-9]", "", src_no)
-                if clean_num:
-                    doc_payload["doc_no"] = f"IV{clean_num}"
-                else:
-                    doc_payload["doc_no"] = f"IV-{cur_year}{cur_month}-{int(time.time()) % 1000:03d}"
+            doc_payload["doc_no"] = get_next_document_number("invoice", spreadsheet_id=spreadsheet_id, script_url=script_url)
 
         # Default Due Date = Today + 15 Days
         if not doc_payload.get("due_date"):
@@ -2180,31 +3044,76 @@ def convert_document(
             doc_payload["payment_terms"] = f"เครดิต 15 วัน (ชำระภายในวันที่ {doc_payload['due_date']})"
 
         doc_payload["doc_date"] = doc_payload.get("doc_date") or today_str
-        doc_payload["ref_quotation_no"] = src_doc.get("doc_no") if src_doc else source_doc_no
+        doc_payload["ref_quotation_no"] = src_no
+        doc_payload["ref_doc_no"] = src_no
+
+        # Check deposit deduction for final invoice
+        dep_pv = overrides.get("deposit_pre_vat") or overrides.get("deduct_deposit_pre_vat")
+        dep_inc = overrides.get("deposit_amount_inclusive") or (overrides.get("deposit_amount") if not dep_pv else None)
+        if dep_pv or dep_inc:
+            orig_pre_vat = float(src_doc.get("pre_vat") or doc_payload.get("pre_vat") or 0.0)
+            if orig_pre_vat > 0:
+                final_calc = calculate_final_invoice_with_deposit(
+                    total_project_pre_vat=orig_pre_vat,
+                    deposit_pre_vat=float(dep_pv) if dep_pv else None,
+                    deposit_amount_inclusive=float(dep_inc) if dep_inc else None,
+                    vat_rate=doc_payload.get("vat_rate", 0.07),
+                    wht_rate=float(doc_payload.get("wht_rate") or 0.0)
+                )
+                p_name = doc_payload.get("project_name") or "บริการ"
+                doc_payload["items"] = [
+                    {"desc": f"ค่าบริการตามสัญญา/ใบเสนอราคา ({p_name})", "qty": 1, "price": orig_pre_vat, "amount": orig_pre_vat},
+                    {"desc": "หักเงินมัดจำ (งวดที่ 1 เงินมัดจำ)", "qty": 1, "price": -final_calc["deposit_pre_vat"], "amount": -final_calc["deposit_pre_vat"]}
+                ]
+                doc_payload["pre_vat"] = final_calc["remaining_pre_vat"]
+                doc_payload["vat_amount"] = final_calc["vat_amount"]
+                doc_payload["net_total"] = final_calc["gross_amount"]
 
     elif norm_target == "receipt":
-        # IV -> RE Conversion
+        # IV -> RE Conversion: Issue new independent sequential receipt number
+        src_no = src_doc.get("doc_no", "") if src_doc else source_doc_no
         if not doc_payload.get("doc_no"):
-            src_no = src_doc.get("doc_no", "") if src_doc else source_doc_no
-            if re.match(r"^(?:QT|IV|RE|50BIS)", src_no, flags=re.I):
-                doc_payload["doc_no"] = re.sub(r"^(?:QT|IV|RE|50BIS)", "RE", src_no, flags=re.I)
-            else:
-                clean_num = re.sub(r"[^0-9]", "", src_no)
-                if clean_num:
-                    doc_payload["doc_no"] = f"RE{clean_num}"
-                else:
-                    doc_payload["doc_no"] = f"RE-{cur_year}{cur_month}-{int(time.time()) % 1000:03d}"
+            doc_payload["doc_no"] = get_next_document_number("receipt", spreadsheet_id=spreadsheet_id, script_url=script_url)
 
         doc_payload["doc_date"] = doc_payload.get("doc_date") or today_str
-        doc_payload["ref_invoice_no"] = src_doc.get("doc_no") if src_doc else source_doc_no
+        doc_payload["ref_invoice_no"] = src_no
+        doc_payload["ref_doc_no"] = src_no
         doc_payload["payment_status"] = "ชำระเงินแล้ว"
         doc_payload["actual_payment_date"] = doc_payload.get("actual_payment_date") or today_str
         doc_payload["profit_share"] = doc_payload.get("profit_share") or "บริษัท (กองกลาง 100%)"
 
+        # Check deposit / installment logic
+        deposit_val = overrides.get("deposit_amount") or (overrides.get("amount") if overrides.get("is_deposit") else None)
+        if deposit_val and float(deposit_val) > 0:
+            dep_breakdown = calculate_deposit_breakdown(float(deposit_val), vat_rate=doc_payload.get("vat_rate", 0.07))
+            p_name = doc_payload.get("project_name") or "บริการ"
+            inst_label = overrides.get("installment_title") or "(งวดที่ 1 เงินมัดจำ)"
+            doc_payload["items"] = [{
+                "desc": f"{p_name} {inst_label}".strip(),
+                "qty": 1,
+                "price": dep_breakdown["pre_vat"],
+                "amount": dep_breakdown["pre_vat"]
+            }]
+            doc_payload["pre_vat"] = dep_breakdown["pre_vat"]
+            doc_payload["vat_amount"] = dep_breakdown["vat_amount"]
+            doc_payload["amount"] = dep_breakdown["pre_vat"]
+            if not doc_payload.get("remarks"):
+                doc_payload["remarks"] = f"เงินมัดจำ (ยอดโอนรวม VAT {dep_breakdown['total_amount']:,.2f} บาท)"
+
+        # Ensure wht_rate is not naively copied as 0 from Quotation
+        if overrides.get("wht_rate") is not None:
+            raw_wht = float(overrides["wht_rate"])
+            doc_payload["wht_rate"] = round(raw_wht * 100.0, 4) if 0.0 < raw_wht < 1.0 else raw_wht
+        elif doc_payload.get("wht_rate") in [0, 0.0, None]:
+            # Quotation source or unassigned wht_rate defaults to 3.0% for corporate service receipt
+            doc_payload["wht_rate"] = 3.0
+
     elif norm_target in ["wht", "50tavi"]:
         norm_target = "wht"
+        src_no = src_doc.get("doc_no", "") if src_doc else source_doc_no
         if not doc_payload.get("doc_no"):
-            doc_payload["doc_no"] = f"50BIS-{cur_year}{cur_month}-{int(time.time()) % 1000:03d}"
+            doc_payload["doc_no"] = get_next_document_number("wht", spreadsheet_id=spreadsheet_id, script_url=script_url)
+        doc_payload["ref_doc_no"] = src_no
         doc_payload["doc_date"] = doc_payload.get("doc_date") or today_str
         doc_payload["category"] = doc_payload.get("category") or "ค่าบริการจ้างทำของ"
         doc_payload["wht_rate"] = float(doc_payload.get("wht_rate", 3.0))
@@ -2247,6 +3156,7 @@ def convert_document(
         "source_type": src_doc.get("doc_type") if src_doc else "unknown",
         "target_type": norm_target,
         "doc_no": sync_result.get("doc_no"),
+        "ref_doc_no": doc_payload.get("ref_doc_no"),
         "pdf_url": sync_result.get("pdf_url"),
         "totals": sync_result.get("totals", {}),
         "items": doc_payload.get("items", sync_result.get("items", [])),
@@ -2291,7 +3201,11 @@ def get_overdue_and_aging_invoices(
     paid_inv_set = set()
     for row in receipt_data.get("values", []):
         if len(row) > 3 and row[3]:
-            paid_inv_set.add(str(row[3]).strip().lower())
+            raw_ref = str(row[3]).strip().lower()
+            paid_inv_set.add(raw_ref)
+            norm_ref = normalize_doc_no(raw_ref).lower()
+            if norm_ref:
+                paid_inv_set.add(norm_ref)
 
     overdue_1_7 = []
     overdue_8_30 = []
@@ -2327,8 +3241,10 @@ def get_overdue_and_aging_invoices(
         payment_terms = str(row[20] if len(row) > 20 else "").strip()
 
         # Check paid status
+        norm_doc = normalize_doc_no(doc_no).lower()
         is_paid = (
             doc_no.lower() in paid_inv_set or
+            norm_doc in paid_inv_set or
             "ชำระแล้ว" in remarks or
             "จ่ายแล้ว" in remarks or
             "paid" in remarks
@@ -2421,6 +3337,7 @@ def get_overdue_and_aging_invoices(
         "status": "success",
         "as_of_date": today.strftime("%d/%m/%Y"),
         "total_overdue_count": len(all_overdue),
+        "total_overdue_invoices": len(all_overdue),
         "total_overdue_amount": total_overdue_amount,
         "total_due_today_count": len(due_today),
         "total_due_today_amount": total_due_today_amount,
@@ -2759,6 +3676,24 @@ def search_customer(
         return None
 
     normalize_name = normalize_company_name
+
+    # Pass 0: Customer Alias / Brand Mapping (e.g. Cheil, Samsung -> CUST-014 / Cheil)
+    CUSTOMER_ALIASES = {
+        "เชอิล": "CUST-014",
+        "cheil": "CUST-014",
+        "cheil thai": "CUST-014",
+        "cheil thailand": "CUST-014",
+        "ซัมซุง": "CUST-014",
+        "samsung": "CUST-014",
+    }
+    raw_query_lower = raw_query.lower()
+    for alias_k, target_cust_ref in CUSTOMER_ALIASES.items():
+        if alias_k in raw_query_lower:
+            for c in customers:
+                cid = str(c.get("customer_id") or "").strip().upper()
+                cname = str(c.get("customer_name") or "").lower()
+                if cid == target_cust_ref or target_cust_ref.lower() in cname:
+                    return c
 
     # Pass 1: Tax ID Match (>= 9 digits)
     if clean_digits and len(clean_digits) >= 9:
@@ -3475,11 +4410,11 @@ def get_cpa_audit_package(
     drive_root = f"https://drive.google.com/drive/folders/{COMPANY_DRIVE_FOLDER_ID}" if COMPANY_DRIVE_FOLDER_ID else "https://drive.google.com/drive/folders/GHN168_FINANCIALS"
     drive_folders = {
         "root": drive_root,
-        "quotations": f"{drive_root}/01_Quotation",
-        "invoices": f"{drive_root}/02_Invoice",
-        "receipts": f"{drive_root}/03_Receipt",
-        "wht_certificates": f"{drive_root}/04_WHT_Certificates",
-        "expenses": f"{drive_root}/05_Expenses"
+        "quotations": f"{drive_root}/01_Quotations_QT_ใบเสนอราคา",
+        "invoices": f"{drive_root}/02_Invoices_IV_ใบวางบิล",
+        "receipts": f"{drive_root}/03_Receipts_RE_สำหรับเรียกเก็บเงิน",
+        "wht_certificates": f"{drive_root}/04_WHT_Certificates_หนังสือรับรองหักณที่จ่าย",
+        "expenses": f"{drive_root}/05_Expenses_PV_ใบสำคัญจ่าย"
     }
 
     # Document counts

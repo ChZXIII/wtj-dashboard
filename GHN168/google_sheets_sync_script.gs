@@ -220,6 +220,12 @@ function doPost(e) {
           "message": "อัปโหลดไฟล์ PDF ล้มเหลว: ไม่สามารถเซฟลงโฟลเดอร์ Google Drive ได้ (อาจเกิดจากสิทธิ์เข้าถึง หรือโฟลเดอร์ไม่ถูกต้องนะแก!)"
         })).setMimeType(ContentService.MimeType.JSON);
       }
+
+      // อัปเดตลิงก์ PDF ลงคอลัมน์ U (Column 21) ในชีต 'ใบเสนอราคา' ทันที
+      if (pdfUrl && (docType === "quotation" || docType === "qt")) {
+        var targetDocNo = data.docNo || (pdfName ? pdfName.replace(/\.pdf$/i, '').split("_")[0] : "");
+        updateQuotationPdfUrl(activeSpreadsheet, targetDocNo, pdfUrl);
+      }
       
       return ContentService.createTextOutput(JSON.stringify({
         "status": "success",
@@ -289,6 +295,12 @@ function doPost(e) {
           "status": "error",
           "message": "เซฟไฟล์ PDF ลงโฟลเดอร์ล้มเหลว (อาจเกิดจากสิทธิ์เข้าถึง หรือโฟลเดอร์ไม่ถูกต้องนะแก!)"
         })).setMimeType(ContentService.MimeType.JSON);
+      }
+
+      // อัปเดตลิงก์ PDF ลงคอลัมน์ U (Column 21) ในชีต 'ใบเสนอราคา' ทันที
+      if (pdfUrl && (docType === "quotation" || docType === "qt")) {
+        var targetDocNo = data.docNo || (pdfName ? pdfName.replace(/\.pdf$/i, "").split("_")[0] : "");
+        updateQuotationPdfUrl(activeSpreadsheet, targetDocNo, pdfUrl);
       }
       
       return ContentService.createTextOutput(JSON.stringify({
@@ -660,6 +672,24 @@ function doPost(e) {
       
       // อัปเดตข้อมูลแถวแบบปลอดภัย (ห้ามใช้ sheet.clear())
       if (rows && rows.length > 0) {
+        for (var rIdx = 0; rIdx < rows.length; rIdx++) {
+          var rRow = rows[rIdx];
+          if (Array.isArray(rRow)) {
+            if (sheetName === "ใบเสนอราคา" || sheetName === "ใบวางบิล") {
+              if (rRow.length > 4) rRow[4] = formatTaxIdForSheet(rRow[4]);
+              if (rRow.length > 6) rRow[6] = formatBranchForSheet(rRow[6]);
+            } else if (sheetName === "รายรับ") {
+              if (rRow.length > 5) rRow[5] = formatTaxIdForSheet(rRow[5]);
+              if (rRow.length > 7) rRow[7] = formatBranchForSheet(rRow[7]);
+            } else if (sheetName === "รายจ่าย") {
+              if (rRow.length > 4) rRow[4] = formatTaxIdForSheet(rRow[4]);
+              if (rRow.length > 6) rRow[6] = formatBranchForSheet(rRow[6]);
+            } else if (sheetName === "ข้อมูลลูกค้า") {
+              if (rRow.length > 2) rRow[2] = formatTaxIdForSheet(rRow[2]);
+              if (rRow.length > 3) rRow[3] = formatBranchForSheet(rRow[3]);
+            }
+          }
+        }
         var numRows = rows.length;
         var numCols = rows[0].length;
         sheet.getRange(2, 1, numRows, numCols).setValues(rows);
@@ -804,6 +834,36 @@ function doPost(e) {
       })).setMimeType(ContentService.MimeType.JSON);
     }
     
+    // ----------------------------------------------------
+    // CASE: ลบไฟล์ออกจาก Google Drive (ล้างไฟล์ขยะ / ไฟล์ทดสอบ)
+    // ----------------------------------------------------
+    else if (data.type === "delete_drive_file") {
+      var fileName = data.fileName || "";
+      var fileId = data.fileId || "";
+      var deletedCount = 0;
+      if (fileId) {
+        try {
+          var f = DriveApp.getFileById(fileId);
+          f.setTrashed(true);
+          deletedCount++;
+        } catch (e) {
+          Logger.log("Error trashing file by id: " + e.toString());
+        }
+      } else if (fileName) {
+        var files = DriveApp.getFilesByName(fileName);
+        while (files.hasNext()) {
+          var f = files.next();
+          f.setTrashed(true);
+          deletedCount++;
+        }
+      }
+      return ContentService.createTextOutput(JSON.stringify({
+        "status": "success",
+        "message": "ลบไฟล์ออกจาก Drive สำเร็จ (" + deletedCount + " ไฟล์)",
+        "deletedCount": deletedCount
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+    
     // INVALID TYPE
     else {
       return ContentService.createTextOutput(JSON.stringify({
@@ -868,6 +928,46 @@ function normalizeCompanyName(name) {
 function normalizeItemDesc(desc) {
   if (!desc) return "";
   return String(desc).trim().toLowerCase().replace(/\s+/g, " ");
+}
+
+/**
+ * Formats Tax ID ensuring 13 digits (padding leading 0 if 12 digits) with leading single quote
+ */
+function formatTaxIdForSheet(val) {
+  if (val === undefined || val === null) return "-";
+  var s = String(val).trim();
+  if (!s || s === "-") return "-";
+  if (s.indexOf("'") === 0) s = s.substring(1).trim();
+  var digits = s.replace(/\D/g, "");
+  if (digits.length === 12) {
+    s = "0" + digits;
+  } else if (digits.length === 13) {
+    s = digits;
+  } else if (digits.length > 0 && digits.length < 13) {
+    s = digits.padStart(13, "0");
+  } else if (digits.length > 0) {
+    s = digits;
+  }
+  return "'" + s;
+}
+
+/**
+ * Formats Branch code ensuring 5 digits ('00000') with leading single quote
+ */
+function formatBranchForSheet(val) {
+  if (val === undefined || val === null) return "'00000";
+  var s = String(val).trim();
+  if (!s || s === "-" || s === "0" || s === "00" || s === "000" || s === "0000" || s === "สำนักงานใหญ่" || s === "สนญ" || s.toLowerCase() === "hq" || s.toLowerCase() === "head office") {
+    return "'00000";
+  }
+  if (s.indexOf("'") === 0) s = s.substring(1).trim();
+  var digits = s.replace(/\D/g, "");
+  if (digits.length > 0) {
+    s = digits.padStart(5, "0");
+  } else {
+    s = "00000";
+  }
+  return "'" + s;
 }
 
 /**
@@ -1009,6 +1109,23 @@ function smartMergeRow(existingRow, newRow, sheetName) {
  * In-place Upsert Guard function across all tabs
  */
 function upsertRowInSheet(sheet, sheetName, rowValues) {
+  // ป้องกันเลข 0 ด้านหน้าหาย: Sanitize Tax ID and Branch format
+  if (rowValues && Array.isArray(rowValues)) {
+    if (sheetName === "ใบเสนอราคา" || sheetName === "ใบวางบิล") {
+      if (rowValues.length > 4) rowValues[4] = formatTaxIdForSheet(rowValues[4]);
+      if (rowValues.length > 6) rowValues[6] = formatBranchForSheet(rowValues[6]);
+    } else if (sheetName === "รายรับ") {
+      if (rowValues.length > 5) rowValues[5] = formatTaxIdForSheet(rowValues[5]);
+      if (rowValues.length > 7) rowValues[7] = formatBranchForSheet(rowValues[7]);
+    } else if (sheetName === "รายจ่าย") {
+      if (rowValues.length > 4) rowValues[4] = formatTaxIdForSheet(rowValues[4]);
+      if (rowValues.length > 6) rowValues[6] = formatBranchForSheet(rowValues[6]);
+    } else if (sheetName === "ข้อมูลลูกค้า") {
+      if (rowValues.length > 2) rowValues[2] = formatTaxIdForSheet(rowValues[2]);
+      if (rowValues.length > 3) rowValues[3] = formatBranchForSheet(rowValues[3]);
+    }
+  }
+
   var lastRow = sheet.getLastRow();
   var updated = false;
   var rowToUpdate = -1;
@@ -1231,40 +1348,108 @@ function beautifySheet(sheet, sheetName) {
       sheet.setColumnWidth(c, 85);
     }
   }
+
+  // 5. ป้องกันเลข 0 ด้านหน้าหาย: จัด Format Plain Text (@) สำหรับคอลัมน์ Tax ID, สาขา, เบอร์โทรศัพท์
+  try {
+    if (sheetName === "รายรับ") {
+      sheet.getRange("F2:F").setNumberFormat("@");
+      sheet.getRange("H2:H").setNumberFormat("@");
+    } else if (sheetName === "ใบเสนอราคา" || sheetName === "ใบวางบิล") {
+      sheet.getRange("E2:E").setNumberFormat("@");
+      sheet.getRange("F2:F").setNumberFormat("@");
+      sheet.getRange("G2:G").setNumberFormat("@");
+      sheet.getRange("H2:H").setNumberFormat("@");
+    } else if (sheetName === "รายจ่าย") {
+      sheet.getRange("E2:E").setNumberFormat("@");
+      sheet.getRange("G2:G").setNumberFormat("@");
+    } else if (sheetName === "ข้อมูลลูกค้า") {
+      sheet.getRange("C2:C").setNumberFormat("@");
+      sheet.getRange("D2:D").setNumberFormat("@");
+      sheet.getRange("F2:F").setNumberFormat("@");
+    } else {
+      sheet.getRange("F2:F").setNumberFormat("@");
+      sheet.getRange("H2:H").setNumberFormat("@");
+    }
+  } catch (formatErr) {
+    Logger.log("Formatting Plain Text error: " + formatErr.toString());
+  }
+}
+
+function getDriveSubFolder(parentFolder, docType) {
+  if (!parentFolder) return null;
+  var normType = (docType || "").toString().toLowerCase().trim();
+  var candidates = [];
+  if (normType === "quotation" || normType === "qt") {
+    candidates = ["01_Quotations_QT_ใบเสนอราคา", "01_Quotation", "01_Quotations", "01"];
+  } else if (normType === "invoice" || normType === "iv") {
+    candidates = ["02_Invoices_IV_ใบวางบิล", "02_Invoice", "02_Invoices", "02"];
+  } else if (normType === "receipt" || normType === "re") {
+    candidates = ["03_Receipts_RE_สำหรับเรียกเก็บเงิน", "03_Receipt", "03_Receipts", "03"];
+  } else if (normType === "wht" || normType === "50bis" || normType === "50tawi" || normType === "50tavi") {
+    candidates = ["04_WHT_Certificates_หนังสือรับรองหักณที่จ่าย", "04_WHT_Certificates", "04"];
+  } else if (normType === "expense" || normType === "pv") {
+    candidates = ["05_Expenses_PV_ใบสำคัญจ่าย", "05_Expenses", "05_Expense", "05"];
+  }
+
+  var folders = parentFolder.getFolders();
+  var allFolders = [];
+  while (folders.hasNext()) {
+    allFolders.push(folders.next());
+  }
+
+  // 1. Check exact or prefix candidate match in priority order
+  for (var i = 0; i < candidates.length; i++) {
+    var cand = candidates[i].toLowerCase();
+    for (var j = 0; j < allFolders.length; j++) {
+      var folder = allFolders[j];
+      var name = folder.getName().toLowerCase();
+      if (name === cand || name.indexOf(cand + "_") === 0 || name.indexOf(cand + " ") === 0 || name.indexOf(cand) === 0) {
+        return folder;
+      }
+    }
+  }
+
+  // 2. Fallback prefix check (e.g. "01", "02")
+  if (candidates.length > 0) {
+    var prefix = candidates[candidates.length - 1].toLowerCase();
+    for (var k = 0; k < allFolders.length; k++) {
+      var f = allFolders[k];
+      var fname = f.getName().toLowerCase();
+      if (fname.indexOf(prefix) === 0) {
+        return f;
+      }
+    }
+  }
+
+  return parentFolder;
+}
+
+function updateQuotationPdfUrl(spreadsheet, docNo, pdfUrl) {
+  if (!spreadsheet || !docNo || !pdfUrl) return false;
+  try {
+    var qSheet = spreadsheet.getSheetByName("ใบเสนอราคา");
+    if (qSheet && qSheet.getLastRow() > 1) {
+      var qRows = qSheet.getRange(2, 3, qSheet.getLastRow() - 1, 1).getValues();
+      for (var qi = 0; qi < qRows.length; qi++) {
+        if (normalizeDocNo(qRows[qi][0]) === normalizeDocNo(docNo)) {
+          // Column 21 is Column U in 'ใบเสนอราคา' (0-indexed 20, 1-indexed 21)
+          qSheet.getRange(qi + 2, 21).setValue(pdfUrl);
+          return true;
+        }
+      }
+    }
+  } catch (err) {
+    Logger.log("Error updating quotation Col U: " + err.toString());
+  }
+  return false;
 }
 
 function uploadPdfToDrive(pdfBase64, pdfName, docType, parentFolderId) {
   if (!pdfBase64 || !parentFolderId) return null;
-  var parentFolder = DriveApp.getFolderById(parentFolderId);
-  if (!parentFolder) return null;
-  var prefix = "";
-  if (docType === "quotation") prefix = "01";
-  else if (docType === "invoice") prefix = "02";
-  else if (docType === "receipt") prefix = "03";
-  else if (docType === "wht") prefix = "04";
-  else if (docType === "expense" || docType === "pv") prefix = "05";
-  
-  var subFolder = null;
-  var folders = parentFolder.getFolders();
-  while (folders.hasNext()) {
-    var folder = folders.next();
-    var name = folder.getName();
-    if (name.indexOf(prefix + "_") === 0 || name.indexOf(prefix + " ") === 0 || name === prefix) {
-      subFolder = folder;
-      break;
-    }
-  }
-  var uploadFolder = subFolder || parentFolder;
   var contentType = "application/pdf";
   var decoded = Utilities.base64Decode(pdfBase64);
   var blob = Utilities.newBlob(decoded, contentType, pdfName);
-  var file = uploadFolder.createFile(blob);
-  try {
-    file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
-  } catch (sharingError) {
-    Logger.log("ไม่สามารถตั้งค่าการแชร์ไฟล์ได้เนื่องจากข้อจำกัดสิทธิ์ของโดเมนองค์กร: " + sharingError.toString());
-  }
-  return file.getUrl();
+  return saveBlobToFolder(blob, docType, parentFolderId);
 }
 
 function convertHtmlToPdfWithPdfShift(htmlContent, apiKey, filename) {
@@ -1274,7 +1459,7 @@ function convertHtmlToPdfWithPdfShift(htmlContent, apiKey, filename) {
     source: htmlContent,
     sandbox: false,
     delay: 3000,
-    use_print_media: true
+    media: "print"
   };
   
   var options = {
@@ -1309,25 +1494,7 @@ function saveBlobToFolder(blob, docType, parentFolderId) {
   var parentFolder = DriveApp.getFolderById(parentFolderId);
   if (!parentFolder) return null;
   
-  var prefix = "";
-  if (docType === "quotation") prefix = "01";
-  else if (docType === "invoice") prefix = "02";
-  else if (docType === "receipt") prefix = "03";
-  else if (docType === "wht") prefix = "04";
-  else if (docType === "expense" || docType === "pv") prefix = "05";
-  
-  var subFolder = null;
-  var folders = parentFolder.getFolders();
-  while (folders.hasNext()) {
-    var folder = folders.next();
-    var name = folder.getName();
-    if (name.indexOf(prefix + "_") === 0 || name.indexOf(prefix + " ") === 0 || name === prefix) {
-      subFolder = folder;
-      break;
-    }
-  }
-  
-  var uploadFolder = subFolder || parentFolder;
+  var uploadFolder = getDriveSubFolder(parentFolder, docType) || parentFolder;
   var file = uploadFolder.createFile(blob);
   try {
     file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);

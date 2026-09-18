@@ -16,6 +16,7 @@ Features:
 """
 
 import os
+import sys
 import shutil
 import subprocess
 import tempfile
@@ -24,7 +25,7 @@ import logging
 from pathlib import Path
 from typing import Any, Dict, Optional, Union
 
-from document_template_engine import render_document_html
+from document_template_engine import render_document_html, normalize_doc_no
 
 logger = logging.getLogger("ghn168_pdf_engine")
 if not logger.handlers:
@@ -106,16 +107,18 @@ def get_local_pdf_path(doc_no: str) -> Optional[Path]:
     """
     if not doc_no:
         return None
-    clean_no = str(doc_no).strip()
+    clean_no = normalize_doc_no(doc_no)
+    raw_no = str(doc_no).strip()
     storage = get_pdf_storage_dir()
-    candidate = storage / f"{clean_no}.pdf"
-    if candidate.is_file() and candidate.stat().st_size > 1000:
-        return candidate
-    
-    # Also check local fallback dir if different
-    fallback = FALLBACK_STORAGE_DIR / f"{clean_no}.pdf"
-    if fallback.is_file() and fallback.stat().st_size > 1000:
-        return fallback
+    for name in [clean_no, raw_no]:
+        if not name:
+            continue
+        candidate = storage / f"{name}.pdf"
+        if candidate.is_file() and candidate.stat().st_size > 1000:
+            return candidate
+        fallback = FALLBACK_STORAGE_DIR / f"{name}.pdf"
+        if fallback.is_file() and fallback.stat().st_size > 1000:
+            return fallback
 
     return None
 
@@ -153,10 +156,12 @@ def convert_html_to_pdf_local(
             "size_bytes": 0
         }
 
+    clean_doc_no = normalize_doc_no(doc_no) if doc_no else ""
+
     # Resolve output PDF path
     storage_dir = get_pdf_storage_dir()
     if output_pdf_path is None:
-        file_name = f"{doc_no}.pdf" if doc_no else f"doc_{int(time.time()*1000)}.pdf"
+        file_name = f"{clean_doc_no}.pdf" if clean_doc_no else f"doc_{int(time.time()*1000)}.pdf"
         target_path = storage_dir / file_name
     else:
         target_path = Path(output_pdf_path).resolve()
@@ -182,28 +187,39 @@ def convert_html_to_pdf_local(
         with open(temp_html_path, "w", encoding="utf-8") as f:
             f.write(html_content)
 
-        # Build headless command with robust flags
-        cmd = [
-            chromium_bin,
-            "--headless=new",
-            "--disable-gpu",
-            "--no-sandbox",
-            "--disable-dev-shm-usage",
-            "--disable-software-rasterizer",
-            "--disable-extensions",
-            "--disable-crash-reporter",
-            "--disable-background-networking",
-            "--disable-default-apps",
-            "--disable-sync",
-            "--no-first-run",
-            "--no-default-browser-check",
-            "--no-pdf-header-footer",
-            "--print-to-pdf-no-header",
-            f"--crash-dumps-dir={temp_profile_dir}",
-            f"--user-data-dir={temp_profile_dir}",
-            f"--print-to-pdf={str(target_path)}",
-            temp_html_path
-        ]
+        # Build headless command with robust flags (optimized for Linux VPS & macOS)
+        is_macos = (sys.platform == "darwin")
+        if is_macos:
+            cmd = [
+                chromium_bin,
+                "--headless",
+                "--no-pdf-header-footer",
+                "--print-to-pdf-no-header",
+                f"--print-to-pdf={str(target_path)}",
+                temp_html_path
+            ]
+        else:
+            cmd = [
+                chromium_bin,
+                "--headless=new",
+                "--disable-gpu",
+                "--no-sandbox",
+                "--disable-dev-shm-usage",
+                "--disable-software-rasterizer",
+                "--disable-extensions",
+                "--disable-crash-reporter",
+                "--disable-background-networking",
+                "--disable-default-apps",
+                "--disable-sync",
+                "--no-first-run",
+                "--no-default-browser-check",
+                "--no-pdf-header-footer",
+                "--print-to-pdf-no-header",
+                f"--crash-dumps-dir={temp_profile_dir}",
+                f"--user-data-dir={temp_profile_dir}",
+                f"--print-to-pdf={str(target_path)}",
+                temp_html_path
+            ]
 
         logger.info("Executing Chromium PDF conversion: %s -> %s", temp_html_path, target_path)
         proc = subprocess.run(
@@ -222,7 +238,7 @@ def convert_html_to_pdf_local(
                 "status": "success",
                 "pdf_path": str(target_path),
                 "size_bytes": size,
-                "doc_no": doc_no or target_path.stem,
+                "doc_no": clean_doc_no or target_path.stem,
                 "binary_used": chromium_bin,
                 "message": f"PDF generated successfully ({size:,} bytes)"
             }

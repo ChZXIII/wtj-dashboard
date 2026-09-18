@@ -58,11 +58,11 @@ logging.basicConfig(
 )
 logger = logging.getLogger("cleanup_receipts")
 
-TARGET_DOC_NO = "ทอย-RE2608-587"
-TARGET_DRIVE_URL = "https://drive.google.com/file/d/13Q2F0Ayzk5n0pVHWDgCtu1bw3E8ux4ET/view?usp=drivesdk"
-TARGET_REMARKS = "คนทำงาน: หอม | บริษัท (กองกลาง 100%)"
-TARGET_RECORDED_BY = "หอม (ผ่านเลขาเฟิส)"
-TARGET_PROFIT_SHARE = "บริษัท (กองกลาง 100%)"
+TARGET_DOC_NO = "หอม-RE2608-587"
+TARGET_DRIVE_URL = "https://drive.google.com/file/d/10sYppBBP3SXgmcIwLNIlMJWxMnn_RN5G/view?usp=drivesdk"
+TARGET_REMARKS = "ผลิต VTR AOT"
+TARGET_RECORDED_BY = "เลขาเฟิส (GHN168 LINE Bot)"
+TARGET_PROFIT_SHARE = "คนทำงาน: หอม | หัก บ.: หอม 10% (฿5,000.00)"
 TARGET_PRE_VAT = 50000.0
 TARGET_VAT = 3500.0
 TARGET_GROSS = 53500.0

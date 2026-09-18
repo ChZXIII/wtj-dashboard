@@ -193,5 +193,106 @@ class TestCustomerSaveFormatting(unittest.TestCase):
         self.assertEqual(res["customer"]["branch"], "00000")
 
 
+class TestSmartCorporateWHT(unittest.TestCase):
+    """Test suite for Smart Corporate WHT determination and decimal normalization."""
+
+    def test_smart_wht_corporate_defaults(self):
+        from line_bot_server import determine_smart_wht_rate, is_corporate_customer
+        
+        # 1. Corporate Customer -> 3% WHT for services
+        self.assertTrue(is_corporate_customer("บริษัท เชียงใหม่มีเดีย จำกัด"))
+        self.assertTrue(is_corporate_customer("หจก. ลานนา โปรดักชั่น"))
+        self.assertTrue(is_corporate_customer("บริษัท อินดีโก ไอเดีย บิสซิเนส อีเว้นท์ จำกัด"))
+        self.assertFalse(is_corporate_customer("คุณสมชาย ใจดี"))
+
+        rate_corp = determine_smart_wht_rate(
+            client_name="บริษัท เชียงใหม่มีเดีย จำกัด",
+            project_name="ถ่ายทำวิดีโอโฆษณา"
+        )
+        self.assertEqual(rate_corp, 3.0)
+
+        # 2. Rental Equipment / Studio -> 5% WHT
+        rate_rent = determine_smart_wht_rate(
+            client_name="บริษัท นอร์ทเทิร์น อินโนเวชั่น แล็บ จำกัด",
+            project_name="เช่าอุปกรณ์กล้องและไฟสตูดิโอ"
+        )
+        self.assertEqual(rate_rent, 5.0)
+
+        # 3. Transport / Logistics -> 1% WHT
+        rate_trans = determine_smart_wht_rate(
+            client_name="บริษัท แคทไซคลิ่ง จำกัด",
+            project_name="ค่าขนส่งและโลจิสติกส์กองถ่าย"
+        )
+        self.assertEqual(rate_trans, 1.0)
+
+        # 4. Individual Customer with no WHT -> 0%
+        rate_indiv = determine_smart_wht_rate(
+            client_name="คุณสมชาย ใจดี",
+            project_name="ถ่ายภาพโปรไฟล์"
+        )
+        self.assertEqual(rate_indiv, 0.0)
+
+        # 5. Decimal rate normalization in determine_smart_wht_rate
+        self.assertEqual(determine_smart_wht_rate(explicit_wht_rate=0.03), 3.0)
+        self.assertEqual(determine_smart_wht_rate(explicit_wht_rate=0.01), 1.0)
+        self.assertEqual(determine_smart_wht_rate(explicit_wht_rate=0.05), 5.0)
+        self.assertEqual(determine_smart_wht_rate(explicit_wht_rate=3.0), 3.0)
+
+        # 6. Explicit override "ไม่หัก"
+        self.assertEqual(determine_smart_wht_rate(client_name="บริษัท เชียงใหม่มีเดีย จำกัด", raw_text="ไม่หัก wht"), 0.0)
+
+
+class TestSanitizeRowForSheetAndBatchFix(unittest.TestCase):
+    """Test suite for pre-flight row sanitization and batch tax ID recovery."""
+
+    def test_sanitize_row_for_all_tabs(self):
+        from ghn168_sync_service import sanitize_row_for_sheet
+
+        # 1. ใบเสนอราคา (Tax ID at idx 4, Branch at idx 6)
+        qt_row = ["2026-08-31", "31/08/2026", "QT2608-001", "บจก. เทส", "505555007201", "เชียงใหม่", "0", "081-1111111"]
+        clean_qt = sanitize_row_for_sheet("ใบเสนอราคา", qt_row)
+        self.assertEqual(clean_qt[4], "'0505555007201")
+        self.assertEqual(clean_qt[6], "'00000")
+
+        # 2. ใบวางบิล (Tax ID at idx 4, Branch at idx 6)
+        iv_row = ["2026-08-31", "31/08/2026", "IV2608-001", "บจก. เทส", "505561010315", "เชียงใหม่", "0", "081-1111111"]
+        clean_iv = sanitize_row_for_sheet("ใบวางบิล", iv_row)
+        self.assertEqual(clean_iv[4], "'0505561010315")
+        self.assertEqual(clean_iv[6], "'00000")
+
+        # 3. รายรับ (Tax ID at idx 5, Branch at idx 7)
+        re_row = ["2026-08-31", "31/08/2026", "RE2608-001", "IV2608-001", "บจก. เทส", "505545004373", "เชียงใหม่", "0"]
+        clean_re = sanitize_row_for_sheet("รายรับ", re_row)
+        self.assertEqual(clean_re[5], "'0505545004373")
+        self.assertEqual(clean_re[7], "'00000")
+
+        # 4. รายจ่าย (Tax ID at idx 4, Branch at idx 6)
+        exp_row = ["2026-08-31", "31/08/2026", "PV2608-001", "บจก. เทส", "505568016475", "เชียงใหม่", "0"]
+        clean_exp = sanitize_row_for_sheet("รายจ่าย", exp_row)
+        self.assertEqual(clean_exp[4], "'0505568016475")
+        self.assertEqual(clean_exp[6], "'00000")
+
+        # 5. ข้อมูลลูกค้า (Tax ID at idx 2, Branch at idx 3)
+        cust_row = ["CUST-001", "บจก. เทส", "505560000888", "0", "เชียงใหม่", "081-1111111"]
+        clean_cust = sanitize_row_for_sheet("ข้อมูลลูกค้า", cust_row)
+        self.assertEqual(clean_cust[2], "'0505560000888")
+        self.assertEqual(clean_cust[3], "'00000")
+
+    def test_canonical_12_digit_tax_ids_from_spec(self):
+        # Specific 12-digit tax IDs mentioned in user request
+        tax_ids_12 = [
+            "505555007201",
+            "505561010315",
+            "505545004373",
+            "505568016475",
+            "505560000888",
+            "505566001234"
+        ]
+        for tid in tax_ids_12:
+            formatted = format_tax_id_for_sheet(tid)
+            self.assertTrue(formatted.startswith("'0"), f"Failed for {tid}")
+            self.assertEqual(len(formatted.lstrip("'")), 13, f"Failed len for {tid}")
+
+
 if __name__ == "__main__":
     unittest.main()

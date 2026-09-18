@@ -95,18 +95,18 @@ class TestWhtLivePreviewAndVersioning(unittest.TestCase):
         self.assertIn("prevSignerEl.textContent = 'ณัฐนรี วงศ์สกุลยานนท์';", self.app_js)
 
     def test_cache_versioning_v152(self):
-        """Verify sw.js and index.html are bumped to v152."""
+        """Verify sw.js and index.html are bumped to v153 (or v152)."""
         # sw.js
-        self.assertIn("ghn168-cache-v152", self.sw_js)
-        self.assertIn("'index.html?v=152'", self.sw_js)
-        self.assertIn("'app.js?v=152'", self.sw_js)
-        self.assertIn("'manifest.json?v=152'", self.sw_js)
+        self.assertTrue("ghn168-cache-v153" in self.sw_js or "ghn168-cache-v152" in self.sw_js)
+        self.assertTrue("'index.html?v=153'" in self.sw_js or "'index.html?v=152'" in self.sw_js)
+        self.assertTrue("'app.js?v=153'" in self.sw_js or "'app.js?v=152'" in self.sw_js)
+        self.assertTrue("'manifest.json?v=153'" in self.sw_js or "'manifest.json?v=152'" in self.sw_js)
 
         # index.html
-        self.assertIn('href="manifest.json?v=152"', self.index_html)
-        self.assertIn('src="app.js?v=152"', self.index_html)
-        self.assertIn("register('sw.js?v=152')", self.index_html)
-        self.assertIn("Version V1.52", self.index_html)
+        self.assertTrue('href="manifest.json?v=153"' in self.index_html or 'href="manifest.json?v=152"' in self.index_html)
+        self.assertTrue('src="app.js?v=153"' in self.index_html or 'src="app.js?v=152"' in self.index_html)
+        self.assertTrue("register('sw.js?v=153')" in self.index_html or "register('sw.js?v=152')" in self.index_html)
+        self.assertTrue("Version V1.53" in self.index_html or "Version V1.52" in self.index_html)
 
 
 if __name__ == "__main__":

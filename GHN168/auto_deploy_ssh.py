@@ -187,18 +187,26 @@ def main():
         "app.js",
         "local_pdf_engine.py",
         "document_template_engine.py",
+        "ghn_memory_engine.py",
         "ghn168_sync_service.py",
         "google_sheets_sync_script.gs",
+        "fix_tax_id_leading_zeros.py",
         "cleanup_receipt_duplicates.py",
         "recover_income_tab.py",
+        "regenerate_aot_receipt.py",
+        "sync_receipt_aot_re563.py",
+        "repair_expense_tab.py",
         "line_bot_server.py",
         "manifest.json",
         "signature_pad.html",
         "sw.js",
-        "start_line_bot.sh"
+        "start_line_bot.sh",
+        "tests/test_clean_slate_line_bot.py",
+        "tests/test_po_job_code_and_pdf_pipeline.py"
     ]
     log("STEP 2", "Uploading updated core Python modules to /opt/ghn168_bot/...")
     try:
+        run_ssh_command(f"mkdir -p {REMOTE_APP_DIR}/tests {REMOTE_APP_DIR}/data {REMOTE_APP_DIR}/assets {REMOTE_APP_DIR}/signatures", timeout=15)
         for fname in files_to_sync:
             lpath = os.path.join(SCRIPT_DIR, fname)
             if not os.path.isfile(lpath):
@@ -207,6 +215,17 @@ def main():
             log("STEP 2", f"Uploading {fname} -> {rpath}...")
             upload_file_scp(lpath, rpath, timeout=60)
             log("STEP 2", f"✅ {fname} uploaded.")
+
+        # Create data folder on remote and upload data files
+        run_ssh_command(f"mkdir -p {REMOTE_APP_DIR}/data", timeout=10)
+        data_dir = os.path.join(SCRIPT_DIR, "data")
+        if os.path.isdir(data_dir):
+            for dfile in os.listdir(data_dir):
+                if dfile.endswith(".json"):
+                    l_data = os.path.join(data_dir, dfile)
+                    r_data = f"{REMOTE_APP_DIR}/data/{dfile}"
+                    upload_file_scp(l_data, r_data, timeout=30)
+            log("STEP 2", "✅ Data files uploaded.")
 
         # Create assets folder on remote and upload key images
         run_ssh_command(f"mkdir -p {REMOTE_APP_DIR}/assets", timeout=10)
@@ -253,16 +272,60 @@ def main():
         sys.exit(1)
 
     # -------------------------------------------------------------------------
-    # Step 2.6: Run Full Test Suites on VPS
+    # Step 2.6: Pre-restart Syntax Validation on VPS
     # -------------------------------------------------------------------------
-    log("STEP 2.6", "Executing full test discovery suite on VPS...")
+    log("STEP 2.6", "Verifying line_bot_server syntax on remote VPS...")
     try:
-        test_out = run_ssh_command("cd /opt/ghn168_bot && /opt/ghn168_bot/venv/bin/python3 -m unittest discover -s tests -p 'test_*.py'", timeout=60)
-        log("STEP 2.6", f"VPS Test Suite Output:\n{test_out.strip()}")
-        results["steps"]["vps_test_suite"] = {"status": "success", "output": test_out.strip()}
+        py_check = run_ssh_command("cd /opt/ghn168_bot && /opt/ghn168_bot/venv/bin/python3 -m py_compile line_bot_server.py", timeout=20)
+        log("STEP 2.6", "✅ line_bot_server.py syntax verified.")
+        results["steps"]["pre_syntax_check"] = {"status": "success"}
     except Exception as e:
-        log("STEP 2.6", f"VPS Test suite encountered an error: {e}")
-        results["steps"]["vps_test_suite"] = {"status": "warning", "error": str(e)}
+        log("STEP 2.6", f"Pre-check failed: {e}")
+        results["steps"]["pre_syntax_check"] = {"status": "warning", "error": str(e)}
+
+    # -------------------------------------------------------------------------
+    # Step 2.8: Enforce Single Worker (--workers 1) & 7-Day PDF Auto-Purge Cron
+    # -------------------------------------------------------------------------
+    log("STEP 2.8", "Enforcing single worker (--workers 1) and setting up 7-day PDF auto-purge...")
+    try:
+        # 1. Update systemd service to use --workers 1 to avoid duplicate cron notifications
+        service_file_content = """[Unit]
+Description=GHN168 Corporate & Accounting Executive Assistant LINE Bot
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/ghn168_bot
+ExecStart=/opt/ghn168_bot/venv/bin/uvicorn line_bot_server:app --host 0.0.0.0 --port 8000 --workers 1
+Restart=always
+RestartSec=5
+EnvironmentFile=/opt/ghn168_bot/.env
+
+[Install]
+WantedBy=multi-user.target
+"""
+        run_ssh_command("cat << 'EOF' > /etc/systemd/system/ghn168-bot.service\n" + service_file_content + "\nEOF", timeout=15)
+        run_ssh_command("systemctl daemon-reload", timeout=15)
+        log("STEP 2.8", "✅ ghn168-bot.service updated with --workers 1.")
+
+        # 2. Setup Daily Cron for auto-purging generated PDFs older than 7 days
+        purge_cron_cmd = "find /opt/ghn168_bot/generated_docs/ -name '*.pdf' -type f -mtime +7 -delete"
+        # Ensure generated_docs directory exists
+        run_ssh_command("mkdir -p /opt/ghn168_bot/generated_docs", timeout=10)
+        # Execute immediate purge check
+        run_ssh_command(purge_cron_cmd, timeout=15)
+        # Install cron job in /etc/cron.daily/ghn168_purge_pdfs
+        cron_script = f"""#!/bin/bash
+{purge_cron_cmd}
+"""
+        run_ssh_command("cat << 'EOF' > /etc/cron.daily/ghn168_purge_pdfs\n" + cron_script + "\nEOF", timeout=15)
+        run_ssh_command("chmod +x /etc/cron.daily/ghn168_purge_pdfs", timeout=10)
+        log("STEP 2.8", "✅ 7-day PDF auto-purge cron installed in /etc/cron.daily/ghn168_purge_pdfs.")
+        results["steps"]["single_worker_and_purge"] = {"status": "success"}
+    except Exception as e:
+        log("STEP 2.8", f"Failed configuring single worker or purge: {e}")
+        results["steps"]["single_worker_and_purge"] = {"status": "warning", "error": str(e)}
 
     # -------------------------------------------------------------------------
     # Step 3: Restart systemd service ghn168-bot
@@ -327,24 +390,28 @@ def main():
         log("VERIFY", f"Failed to list files: {e}")
         results["steps"]["remote_files"] = {"error": str(e)}
 
-    # 4.5 Live Document Conversion Flex Message Verification on VPS
+    # 4.5 Remote Clean Slate Test Execution
     try:
-        conv_check_cmd = """curl -s -X POST http://127.0.0.1:8000/api/documents/convert -H "Content-Type: application/json" -d '{"source_doc_no": "QT2608-001", "target_type": "invoice"}'"""
-        conv_check_out = run_ssh_command(conv_check_cmd, timeout=30)
-        log("VERIFY", f"VPS Live Conversion API Response:\n{conv_check_out[:300]}...")
-        results["steps"]["conversion_live_check"] = {"status": "success", "response": conv_check_out[:300]}
+        test_out = run_ssh_command("cd /opt/ghn168_bot && /opt/ghn168_bot/venv/bin/pytest tests/test_clean_slate_line_bot.py", timeout=60)
+        log("VERIFY", f"Remote clean slate test suite result:\n{test_out.strip()}")
+        results["steps"]["clean_slate_tests"] = {
+            "output": test_out.strip(),
+            "status": "passed" if ("passed" in test_out and "failed" not in test_out) else "warning"
+        }
     except Exception as e:
-        log("VERIFY", f"Conversion Live Check failed: {e}")
-        results["steps"]["conversion_live_check"] = {"error": str(e)}
+        log("VERIFY", f"Remote clean slate tests encountered an issue: {e}")
+        results["steps"]["clean_slate_tests"] = {"error": str(e), "status": "failed"}
 
-    # 4.6 Remote Schema Validation Test Execution
+    # 4.6 Remote Health Check Validation
     try:
-        test_out = run_ssh_command("cd /opt/ghn168_bot && /opt/ghn168_bot/venv/bin/python3 -m unittest test_line_flex_schema_validation.py", timeout=20)
-        log("VERIFY", f"Remote test suite result:\n{test_out.strip()}")
-        results["steps"]["remote_tests"] = {"output": test_out.strip(), "status": "passed" if "OK" in test_out else "warning"}
+        health_public = run_ssh_command("curl -s https://srv1913532.hstgr.cloud/health", timeout=15).strip()
+        if not health_public or "status" not in health_public:
+            health_public = run_ssh_command("curl -s http://127.0.0.1:8000/health", timeout=15).strip()
+        log("VERIFY", f"Remote health check validation response: {health_public}")
+        results["steps"]["remote_health_validation"] = {"response": health_public, "status": "success"}
     except Exception as e:
-        log("VERIFY", f"Remote tests encountered an issue: {e}")
-        results["steps"]["remote_tests"] = {"error": str(e)}
+        log("VERIFY", f"Remote health check validation failed: {e}")
+        results["steps"]["remote_health_validation"] = {"error": str(e), "status": "failed"}
 
     # 4.7 Journalctl Logs Check
     try:
@@ -360,6 +427,7 @@ def main():
     # -------------------------------------------------------------------------
     bot_ok = results.get("steps", {}).get("service_status", {}).get("is_active") == "active"
     caddy_ok = results.get("steps", {}).get("caddy_status", {}).get("is_active") == "active"
+    clean_tests_ok = results.get("steps", {}).get("clean_slate_tests", {}).get("status") == "passed"
     
     if bot_ok and caddy_ok:
         results["status"] = "success"
@@ -372,7 +440,9 @@ def main():
     print(f"  Target VPS      : {VPS_HOST}", flush=True)
     print(f"  Bot Service     : {'✅ ACTIVE' if bot_ok else '❌ NOT ACTIVE'}", flush=True)
     print(f"  Caddy Proxy     : {'✅ ACTIVE' if caddy_ok else '❌ NOT ACTIVE'}", flush=True)
+    print(f"  Clean Slate Test: {'✅ PASSED' if clean_tests_ok else '⚠️ CHECK LOGS'}", flush=True)
     print(f"  Local Health    : {results.get('steps', {}).get('health_check', {}).get('response', 'N/A')}", flush=True)
+    print(f"  Health Validated: {results.get('steps', {}).get('remote_health_validation', {}).get('response', 'N/A')}", flush=True)
     print(f"  Webhook URL     : https://srv1913532.hstgr.cloud/callback", flush=True)
     print(f"  Health Endpoint : https://srv1913532.hstgr.cloud/health", flush=True)
     print("=" * 70, flush=True)

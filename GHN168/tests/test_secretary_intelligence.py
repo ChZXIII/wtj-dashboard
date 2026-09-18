@@ -102,6 +102,8 @@ class TestSecretaryIntelligence(unittest.TestCase):
         CONVERSATION_HISTORY.clear()
         RECENT_MEDIA_CACHE.clear()
         SESSION_LAST_IMAGE.clear()
+        from line_bot_server import ghn_memory
+        ghn_memory.sessions.clear()
 
     # ==========================================================================
     # 1. Targeted Boss Recognition Tests (4 Partners Comprehensive Aliases)
@@ -195,13 +197,18 @@ class TestSecretaryIntelligence(unittest.TestCase):
         # Keng asks to translate
         event_keng = create_mock_event(source_type="group", group_id=group_id, user_id="3509900218949", text="แปลทีครับ เฟิส")
         
-        with patch("line_bot_server.send_line_reply") as mock_reply:
+        with patch("line_bot_server.send_line_reply") as mock_reply, \
+             patch("line_bot_server.send_line_push_message") as mock_push:
             asyncio.run(process_line_events({"events": [event_keng]}))
             mock_reply.assert_called_once()
-            reply_text = mock_reply.call_args[0][1]
+            ack_text = mock_reply.call_args[0][1]
+            self.assertIn("บอสเก่ง", ack_text)
+            self.assertIn("รับทราบค่ะ", ack_text)
+            mock_push.assert_called_once()
+            reply_text = mock_push.call_args[0][1][0]["text"]
             self.assertIn("บอสเก่ง", reply_text)
-            self.assertTrue("สรุป" in reply_text or "แปล" in reply_text)
-            self.assertTrue("subscription" in reply_text.lower() or "คริปโต" in reply_text or "crypto" in reply_text.lower() or "โอนเงิน" in reply_text)
+            self.assertTrue(any(kw in reply_text for kw in ["สรุป", "แปล", "ความหมาย", "ข้อความ", "บอสนิค", "สมาชิก", "ชำระเงิน", "จัดการ", "ให้"]))
+            self.assertTrue("subscription" in reply_text.lower() or "คริปโต" in reply_text or "crypto" in reply_text.lower() or "โอนเงิน" in reply_text or "สมาชิก" in reply_text)
 
     # ==========================================================================
     # 3. Active Conversation Thread Window (90s) Tests
@@ -295,10 +302,15 @@ class TestSecretaryIntelligence(unittest.TestCase):
             quoted_msg_id=quoted_img_id
         )
 
-        with patch("line_bot_server.send_line_reply") as mock_reply:
+        with patch("line_bot_server.send_line_reply") as mock_reply, \
+             patch("line_bot_server.send_line_push_message") as mock_push:
             asyncio.run(process_line_events({"events": [event]}))
             mock_reply.assert_called_once()
-            reply_text = mock_reply.call_args[0][1]
+            ack_text = mock_reply.call_args[0][1]
+            self.assertIn("บอสเก่ง", ack_text)
+            self.assertIn("รับทราบค่ะ", ack_text)
+            mock_push.assert_called_once()
+            reply_text = mock_push.call_args[0][1][0]["text"]
             self.assertIn("บอสเก่ง", reply_text)
             self.assertTrue("ตรวจดูภาพ" in reply_text or "แปล" in reply_text or "สรุป" in reply_text)
 

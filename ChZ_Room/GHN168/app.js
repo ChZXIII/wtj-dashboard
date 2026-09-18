@@ -685,18 +685,20 @@ function updatePageTitle() {
   let customTitle = 'เอกสาร';
   if (currentDocType === 'wht') {
     const whtNo = document.getElementById('whtDocNumber') ? document.getElementById('whtDocNumber').value.trim() : '';
-    customTitle = 'ใบหัก_ณ_ที่จ่าย_50_ทวิ';
-    if (whtNo) customTitle += `_${cleanDocNo(whtNo)}`;
+    customTitle = whtNo ? cleanDocNo(whtNo) : 'ใบหัก_ณ_ที่จ่าย_50_ทวิ';
   } else {
     const docNo = document.getElementById('docNumber') ? document.getElementById('docNumber').value.trim() : '';
-    if (currentDocType === 'quotation') {
-      customTitle = 'ใบเสนอราคา_สัญญาจ้าง';
-    } else if (currentDocType === 'invoice') {
-      customTitle = 'ใบวางบิล';
-    } else if (currentDocType === 'receipt') {
-      customTitle = 'ใบเสร็จรับเงิน';
+    if (docNo) {
+      customTitle = cleanDocNo(docNo);
+    } else {
+      if (currentDocType === 'quotation') {
+        customTitle = 'ใบเสนอราคา_สัญญาจ้าง';
+      } else if (currentDocType === 'invoice') {
+        customTitle = 'ใบวางบิล';
+      } else if (currentDocType === 'receipt') {
+        customTitle = 'ใบเสร็จรับเงิน';
+      }
     }
-    if (docNo) customTitle += `_${cleanDocNo(docNo)}`;
   }
   
   document.title = customTitle.replace(/[\/\\?%*:|"<>\s]+/g, '_');
@@ -985,7 +987,8 @@ function setupEventListeners() {
     'docClientName', 'docClientTaxId', 'docClientAddress', 'docClientPhone', 'docClientBranch',
     'docNumber', 'docPaymentTerm', 'docProjectName', 'doc_sellerName', 
     'doc_sellerTaxId', 'doc_sellerAddress', 'doc_sellerPhone', 'doc_sellerEmail',
-    'doc_bankDetails', 'doc_signerName', 'docRemarks'
+    'doc_bankDetails', 'doc_signerName', 'docRemarks', 'docInvoiceNo',
+    'docPoNumber', 'docJobCode'
   ];
   inputsToSync.forEach(id => {
     const el = document.getElementById(id);
@@ -1057,6 +1060,23 @@ function setupEventListeners() {
         phoneInput.value = sourceDoc.clientPhone || sourceDoc.phone || '';
       }
       document.getElementById('docProjectName').value = sourceDoc.detail || sourceDoc.projectName || '';
+      
+      if (document.getElementById('docPoNumber')) {
+        let po = sourceDoc.po_number || sourceDoc.poNumber || '';
+        if (!po && sourceDoc.remarks) {
+          const m = sourceDoc.remarks.match(/P\.O\.\s*No\.?:\s*([^|]+)/i);
+          if (m) po = m[1].trim();
+        }
+        document.getElementById('docPoNumber').value = po;
+      }
+      if (document.getElementById('docJobCode')) {
+        let job = sourceDoc.job_code || sourceDoc.jobCode || '';
+        if (!job && sourceDoc.remarks) {
+          const m = sourceDoc.remarks.match(/Job\s*Code:\s*([^|]+)/i);
+          if (m) job = m[1].trim();
+        }
+        document.getElementById('docJobCode').value = job;
+      }
       
       // ตรวจสอบว่าเป็นเอกสารประเภทเดียวกัน (โหมดแก้ไข) หรือต่างประเภท (โหมดดึงข้อมูลอ้างอิง)
       const isSameType = sourceDoc.type === currentDocType;
@@ -1455,10 +1475,16 @@ function setupEventListeners() {
   });
 
   // Sync Data Button with Button Lock / Debounce Guard
+  let isDocFormLocked = false;
   const btnSaveAndSyncDoc = document.getElementById('btnSaveAndSyncDoc');
   let isSyncingDoc = false;
   if (btnSaveAndSyncDoc) {
     btnSaveAndSyncDoc.addEventListener('click', async () => {
+      if (isDocFormLocked) {
+        const currentDocNo = getCurrentActiveDocNumber();
+        showDocSaveSuccessModal(currentDocNo);
+        return;
+      }
       if (isSyncingDoc) return;
       isSyncingDoc = true;
       btnSaveAndSyncDoc.disabled = true;
@@ -1468,31 +1494,36 @@ function setupEventListeners() {
       try {
         // 1. สั่งบันทึกและซิงค์ Sheets
         const success = await processDocumentSync();
-        if (!success) return; // ติด Validation หรือข้อผิดพลาด ไม่ทำงานต่อ
+        if (!success) {
+          btnSaveAndSyncDoc.disabled = false;
+          btnSaveAndSyncDoc.innerHTML = originalText;
+          return; // ติด Validation หรือกดยกเลิกใน Guard ไม่ทำงานต่อ
+        }
         
         // 2. ถ้าติ๊กอัปโหลดขึ้น Drive ให้สั่งอัปโหลด PDF
         const chk = document.getElementById('chkUploadToDrive');
         if (chk && chk.checked) {
           await handleUploadPdfToDrive('btnSaveAndSyncDoc');
         }
-        
-        // 3. สั่งโหลดไฟล์ PDF / เปิดหน้าต่าง Print Preview (เฉพาะกรณีไม่ได้ติ๊กอัปโหลดขึ้น Drive)
-        if (!(chk && chk.checked)) {
-          const isMobileOrTablet = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
-                                  (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-          if (isMobileOrTablet) {
-            exportPdfClientSide();
-          } else {
-            window.print();
-          }
-        }
+
+        // 3. ล็อกสถานะฟอร์ม เพื่อป้องกันการกดปุ่ม "บันทึกและซิงค์" ซ้ำบนเอกสารเดิม
+        lockDocumentForm();
+
+        // 4. แสดงหน้าต่างแจ้งเตือนสำเร็จ สรุปเลขที่เอกสารที่บันทึกสำเร็จ พร้อม 2 ปุ่มทางเลือก
+        const savedDocNo = getCurrentActiveDocNumber();
+        showDocSaveSuccessModal(savedDocNo);
+
       } catch (err) {
         console.error('Error during save and sync:', err);
         alert('เกิดข้อผิดพลาดในการบันทึกและซิงค์ข้อมูล: ' + (err.message || err));
-      } finally {
-        isSyncingDoc = false;
         btnSaveAndSyncDoc.disabled = false;
         btnSaveAndSyncDoc.innerHTML = originalText;
+      } finally {
+        isSyncingDoc = false;
+        if (!isDocFormLocked) {
+          btnSaveAndSyncDoc.disabled = false;
+          btnSaveAndSyncDoc.innerHTML = originalText;
+        }
       }
     });
   }
@@ -1818,6 +1849,9 @@ function updateUploadBtnVisibility() {
 
 function setDocType(type, keepCurrentNumber = false) {
   currentDocType = type;
+  if (!keepCurrentNumber) {
+    unlockDocumentForm();
+  }
   
   // Toggle buttons active class
   ['Quotation', 'Invoice', 'Receipt', 'Wht'].forEach(t => {
@@ -1865,6 +1899,16 @@ function setDocType(type, keepCurrentNumber = false) {
   if (groupInvoiceNo) {
     groupInvoiceNo.style.display = type === 'receipt' ? '' : 'none';
   }
+
+  const docWhtSelect = document.getElementById('docWhtSelect');
+  if (docWhtSelect) {
+    if (type === 'quotation') {
+      docWhtSelect.value = '0';
+      docWhtSelect.disabled = true;
+    } else {
+      docWhtSelect.disabled = false;
+    }
+  }
   
   const syncBtn = document.getElementById('btnSaveAndSyncDoc');
 
@@ -1904,38 +1948,33 @@ function setDocType(type, keepCurrentNumber = false) {
     previewWht.style.display = 'none';
     if (formInternalDetails) formInternalDetails.style.display = (type === 'quotation') ? 'none' : 'block';
 
-    // Show/hide due date terms (hide for receipt and quotation)
-    if (type === 'receipt' || type === 'quotation') {
-      groupDueDate.style.display = 'none';
-      groupPaymentTerm.style.display = 'none';
-      syncBtn.style.display = 'block';
-      if (type === 'receipt') {
-        syncBtn.innerHTML = `
-          <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
-          </svg>
-          บันทึกข้อมูล & ออกเอกสาร (PDF)
-        `;
-      } else {
-        syncBtn.innerHTML = `
-          <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
-          </svg>
-          บันทึกข้อมูล & ออกเอกสาร (PDF)
-        `;
+    syncBtn.style.display = 'block';
+    syncBtn.innerHTML = `
+      <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+      </svg>
+      บันทึกข้อมูล & ออกเอกสาร (PDF)
+    `;
+
+    // Show/hide due date terms
+    if (type === 'receipt') {
+      if (groupDueDate) groupDueDate.style.display = 'none';
+      if (groupPaymentTerm) groupPaymentTerm.style.display = 'none';
+    } else if (type === 'quotation') {
+      if (groupDueDate) {
+        groupDueDate.style.display = '';
+        const lblDueDate = groupDueDate.querySelector('label');
+        if (lblDueDate) lblDueDate.textContent = 'ยืนราคาถึงวันที่ (Valid Until)';
       }
+      if (groupPaymentTerm) groupPaymentTerm.style.display = 'none';
+      updateDueDateFromPaymentTerm();
     } else {
-      groupDueDate.style.display = '';
-      groupPaymentTerm.style.display = '';
-      syncBtn.style.display = 'block'; // แสดงปุ่มเซฟเสมอสำหรับ QT และ IV
-      if (type === 'invoice') {
-        syncBtn.innerHTML = `
-          <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
-          </svg>
-          บันทึกข้อมูล & ออกเอกสาร (PDF)
-        `;
+      if (groupDueDate) {
+        groupDueDate.style.display = '';
+        const lblDueDate = groupDueDate.querySelector('label');
+        if (lblDueDate) lblDueDate.textContent = 'วันที่ครบกำหนด';
       }
+      if (groupPaymentTerm) groupPaymentTerm.style.display = '';
       updateDueDateFromPaymentTerm();
     }
 
@@ -2089,11 +2128,159 @@ function autoGenerateDocNumber(type) {
   return `${matchPattern}-${String(nextNum).padStart(3, '0')}`;
 }
 
-function createNewDocument() {
-  if (!confirm('ยืนยันการสร้างเอกสารใหม่? ข้อมูลปัจจุบันที่กำลังพิมพ์อยู่จะถูกล้างออก (ข้อมูลที่บันทึกไปก่อนหน้านี้จะไม่สูญหาย)')) {
+function getCurrentActiveDocNumber() {
+  if (currentDocType === 'wht') {
+    const el = document.getElementById('whtDocNumber');
+    return el ? el.value.trim() : '';
+  }
+  const el = document.getElementById('docNumber');
+  return el ? el.value.trim() : '';
+}
+
+function lockDocumentForm() {
+  isDocFormLocked = true;
+  const btnSave = document.getElementById('btnSaveAndSyncDoc');
+  if (btnSave) {
+    btnSave.disabled = true;
+    btnSave.classList.add('btn-locked');
+    btnSave.title = 'เอกสารนี้ถูกบันทึกแล้ว กรุณากดสร้างเอกสารใหม่หากต้องการออกใบใหม่';
+    btnSave.innerHTML = `
+      <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+      </svg>
+      บันทึกข้อมูลเรียบร้อยแล้ว
+    `;
+  }
+}
+
+function unlockDocumentForm() {
+  isDocFormLocked = false;
+  const btnSave = document.getElementById('btnSaveAndSyncDoc');
+  if (btnSave) {
+    btnSave.disabled = false;
+    btnSave.classList.remove('btn-locked');
+    btnSave.title = '';
+    btnSave.innerHTML = `
+      <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+      </svg>
+      บันทึกข้อมูล & ออกเอกสาร (PDF)
+    `;
+  }
+}
+
+function showDocSaveSuccessModal(docNo) {
+  let modal = document.getElementById('docSaveSuccessModal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'docSaveSuccessModal';
+    modal.className = 'modal-overlay';
+    modal.innerHTML = `
+      <div class="modal-card" style="max-width: 460px; text-align: center;">
+        <div class="modal-header" style="justify-content: center; position: relative;">
+          <h2 class="modal-title" style="margin: 0; font-size: 20px;">บันทึกเอกสารสำเร็จ</h2>
+          <button id="btnCloseDocSaveSuccessModal" class="modal-close-btn" style="position: absolute; right: 0;" title="ปิดหน้าต่าง">&times;</button>
+        </div>
+        <div style="padding: 16px 8px 8px;">
+          <div style="width: 56px; height: 56px; margin: 0 auto 16px; border-radius: 50%; background-color: #e6f4ea; display: flex; align-items: center; justify-content: center; border: 2px solid #34a853;">
+            <svg style="width: 32px; height: 32px; color: #1e7e34;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+          <div style="font-size: 14px; color: var(--text-secondary); margin-bottom: 6px;">
+            เลขที่เอกสารที่บันทึก
+          </div>
+          <div id="modalSavedDocNumber" class="mono" style="font-size: 22px; font-weight: 800; color: var(--accent-color); margin-bottom: 12px; letter-spacing: 0.5px;">
+            ${docNo || '-'}
+          </div>
+          <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 24px;">
+            ข้อมูลได้รับการบันทึกและซิงค์ลงระบบเรียบร้อยแล้ว<br>ระบบได้ทำการล็อกเอกสารนี้เพื่อป้องกันการบันทึกซ้ำ
+          </p>
+          <div style="display: flex; flex-direction: column; gap: 10px;">
+            <button type="button" id="btnModalSuccessPrintPdf" class="btn-primary" style="padding: 12px 18px; font-size: 15px; font-weight: 700; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;">
+              <svg class="btn-icon" style="width: 18px; height: 18px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+              </svg>
+              พิมพ์ / ดาวน์โหลด PDF
+            </button>
+            <button type="button" id="btnModalSuccessCreateNew" class="btn-secondary" style="padding: 12px 18px; font-size: 15px; font-weight: 700; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;">
+              <svg class="btn-icon" style="width: 18px; height: 18px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+              </svg>
+              สร้างเอกสารใบใหม่
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+  } else {
+    const numEl = document.getElementById('modalSavedDocNumber');
+    if (numEl) numEl.textContent = docNo || '-';
+  }
+
+  const btnClose = document.getElementById('btnCloseDocSaveSuccessModal');
+  if (btnClose) {
+    btnClose.onclick = () => modal.classList.remove('active');
+  }
+
+  modal.onclick = (e) => {
+    if (e.target === modal) modal.classList.remove('active');
+  };
+
+  const btnPrint = document.getElementById('btnModalSuccessPrintPdf');
+  if (btnPrint) {
+    btnPrint.onclick = () => {
+      modal.classList.remove('active');
+      const isMobileOrTablet = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+                              (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+      if (isMobileOrTablet) {
+        exportPdfClientSide();
+      } else {
+        window.print();
+      }
+    };
+  }
+
+  const btnNew = document.getElementById('btnModalSuccessCreateNew');
+  if (btnNew) {
+    btnNew.onclick = () => {
+      modal.classList.remove('active');
+      createNewDocument(true);
+    };
+  }
+
+  modal.classList.add('active');
+}
+
+function createNewDocument(force = false) {
+  if (!force && !confirm('ยืนยันการสร้างเอกสารใหม่? ข้อมูลปัจจุบันที่กำลังพิมพ์อยู่จะถูกล้างออก (ข้อมูลที่บันทึกไปก่อนหน้านี้จะไม่สูญหาย)')) {
     return;
   }
   
+  // Unlock document form lock state
+  unlockDocumentForm();
+
+  if (currentDocType === 'wht') {
+    const whtNoEl = document.getElementById('whtDocNumber');
+    if (whtNoEl) whtNoEl.value = autoGenerateDocNumber('wht');
+    const payeeName = document.getElementById('whtPayeeName');
+    if (payeeName) payeeName.value = '';
+    const payeeTaxId = document.getElementById('whtPayeeTaxId');
+    if (payeeTaxId) payeeTaxId.value = '';
+    const payeeAddress = document.getElementById('whtPayeeAddress');
+    if (payeeAddress) payeeAddress.value = '';
+    const whtAmount = document.getElementById('whtAmount');
+    if (whtAmount) whtAmount.value = '';
+    const whtDescription = document.getElementById('whtDescription');
+    if (whtDescription) whtDescription.value = '';
+    const whtPayeeSelect = document.getElementById('whtPayeeSelect');
+    if (whtPayeeSelect) whtPayeeSelect.value = '';
+    calculateWhtTotals();
+    syncWhtPreview();
+    return;
+  }
+
   // Clear inputs
   document.getElementById('docClientName').value = '';
   document.getElementById('docClientTaxId').value = '';
@@ -2101,6 +2288,8 @@ function createNewDocument() {
   document.getElementById('docClientAddress').value = '';
   const phoneEl = document.getElementById('docClientPhone');
   if (phoneEl) phoneEl.value = '';
+  if (document.getElementById('docPoNumber')) document.getElementById('docPoNumber').value = '';
+  if (document.getElementById('docJobCode')) document.getElementById('docJobCode').value = '';
   document.getElementById('docRemarks').value = '';
   const discountInput = document.getElementById('docDiscountInput');
   if (discountInput) discountInput.value = '';
@@ -2113,6 +2302,7 @@ function createNewDocument() {
   const dd = String(today.getDate()).padStart(2, '0');
   const docDateEl = document.getElementById('docDate');
   if (docDateEl) docDateEl.value = `${yyyy}-${mm}-${dd}`;
+  updateDueDateFromPaymentTerm();
   
   // Reset items
   const defaultWorker = document.getElementById('docOwner') ? document.getElementById('docOwner').value : 'เก่ง';
@@ -2132,6 +2322,27 @@ function createNewDocument() {
   calculateDocTotals();
   syncDocPreview();
 }
+
+function loadDocIntoEditor(doc) {
+  if (!doc) return;
+  if (document.getElementById('docPoNumber')) {
+    let po = doc.po_number || doc.poNumber || '';
+    if (!po && doc.remarks) {
+      const m = doc.remarks.match(/P\.O\.\s*No\.?:\s*([^|]+)/i);
+      if (m) po = m[1].trim();
+    }
+    document.getElementById('docPoNumber').value = po;
+  }
+  if (document.getElementById('docJobCode')) {
+    let job = doc.job_code || doc.jobCode || '';
+    if (!job && doc.remarks) {
+      const m = doc.remarks.match(/Job\s*Code:\s*([^|]+)/i);
+      if (m) job = m[1].trim();
+    }
+    document.getElementById('docJobCode').value = job;
+  }
+}
+window.loadDocIntoEditor = loadDocIntoEditor;
 
 function renderPaperTable() {
   const table = document.getElementById('prevPaperTable');
@@ -2319,15 +2530,19 @@ function calculateDocTotals() {
 
   const vatChecked = document.getElementById('docVatCheckbox') ? document.getElementById('docVatCheckbox').checked : true;
   const whtSelect = document.getElementById('docWhtSelect');
-  const whtRate = whtSelect ? parseInt(whtSelect.value) || 0 : 0;
+  let whtRate = whtSelect ? parseInt(whtSelect.value) || 0 : 0;
+  if (currentDocType === 'quotation') {
+    whtRate = 0;
+  }
 
   const discountInput = document.getElementById('docDiscountInput');
   const discount = discountInput ? (parseFloat(discountInput.value) || 0) : 0;
 
   const totalAfterDiscount = Math.max(0, subtotal - discount);
   const vat = vatChecked ? totalAfterDiscount * 0.07 : 0;
-  const wht = totalAfterDiscount * (whtRate / 100);
-  const grandTotal = totalAfterDiscount + vat - wht;
+  const grossAmount = totalAfterDiscount + vat;
+  const wht = currentDocType === 'quotation' ? 0 : totalAfterDiscount * (whtRate / 100);
+  const grandTotal = currentDocType === 'quotation' ? grossAmount : grossAmount - wht;
 
   // Render previews in Totals Section
   const prevSubtotalVal = document.getElementById('prevSubtotalVal');
@@ -2367,9 +2582,36 @@ function calculateDocTotals() {
     }
   }
 
+  const prevGrossRow = document.getElementById('prevGrossRow');
+  const prevGrossVal = document.getElementById('prevGrossVal');
+  const prevNetTotalLabelCell = document.getElementById('prevNetTotalLabelCell');
+
+  // Gross row (for Receipt when WHT > 0)
+  if (currentDocType === 'receipt' && whtRate > 0) {
+    if (prevGrossRow) {
+      prevGrossRow.style.display = '';
+      if (prevGrossVal) {
+        prevGrossVal.textContent = `${grossAmount.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ฿`;
+      }
+    }
+    if (prevNetTotalLabelCell) {
+      prevNetTotalLabelCell.textContent = 'ยอดโอนสุทธิ / Net Paid';
+    }
+  } else if (currentDocType === 'quotation') {
+    if (prevGrossRow) prevGrossRow.style.display = 'none';
+    if (prevNetTotalLabelCell) {
+      prevNetTotalLabelCell.textContent = 'ยอดเงินรวมทั้งสิ้น / Grand Total';
+    }
+  } else {
+    if (prevGrossRow) prevGrossRow.style.display = 'none';
+    if (prevNetTotalLabelCell) {
+      prevNetTotalLabelCell.textContent = 'ยอดเงินสุทธิ / Net Total';
+    }
+  }
+
   const prevWhtRow = document.getElementById('prevWhtRow');
   if (prevWhtRow) {
-    if (whtRate > 0) {
+    if (currentDocType !== 'quotation' && whtRate > 0) {
       prevWhtRow.style.display = '';
       const prevWhtRateValShow = document.getElementById('prevWhtRateValShow');
       if (prevWhtRateValShow) {
@@ -2389,7 +2631,13 @@ function calculateDocTotals() {
     prevGrandTotalVal.textContent = `${grandTotal.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ฿`;
   }
 
-  const bahtText = thaiBahtText(grandTotal);
+  // Thai Baht Text according to Section 86/4:
+  // For quotation and receipt: baht text must represent gross amount before WHT!
+  let bahtAmount = grandTotal;
+  if (currentDocType === 'receipt' || currentDocType === 'quotation') {
+    bahtAmount = grossAmount;
+  }
+  const bahtText = thaiBahtText(bahtAmount);
   const prevBahtTextVal = document.getElementById('prevBahtTextVal');
   if (prevBahtTextVal) {
     prevBahtTextVal.textContent = bahtText;
@@ -2478,7 +2726,7 @@ function updateDueDateFromPaymentTerm() {
   const termEl = document.getElementById('docPaymentTerm');
   const dueDateEl = document.getElementById('docDueDate');
 
-  if (!docDateEl || !termEl || !dueDateEl) return;
+  if (!docDateEl || !dueDateEl) return;
 
   const docDateVal = docDateEl.value; // Format: YYYY-MM-DD
   if (!docDateVal) return;
@@ -2486,23 +2734,26 @@ function updateDueDateFromPaymentTerm() {
   const dateObj = new Date(docDateVal);
   if (isNaN(dateObj.getTime())) return;
 
-  const termVal = termEl.value; // e.g., "30 วัน", "ชำระทันที", "7 วัน"
-  let daysToAdd = 0;
-
-  if (termVal.includes('30 วัน')) {
+  let daysToAdd = 30; // default 30 days
+  if (currentDocType === 'quotation') {
     daysToAdd = 30;
-  } else if (termVal.includes('15 วัน')) {
-    daysToAdd = 15;
-  } else if (termVal.includes('7 วัน')) {
-    daysToAdd = 7;
-  } else if (termVal.includes('3 วัน')) {
-    daysToAdd = 3;
-  } else if (termVal.includes('ชำระทันที')) {
-    daysToAdd = 0;
-  } else {
-    const numMatch = termVal.match(/\d+/);
-    if (numMatch) {
-      daysToAdd = parseInt(numMatch[0]);
+  } else if (termEl) {
+    const termVal = termEl.value || '30 วัน';
+    if (termVal.includes('30 วัน')) {
+      daysToAdd = 30;
+    } else if (termVal.includes('15 วัน')) {
+      daysToAdd = 15;
+    } else if (termVal.includes('7 วัน')) {
+      daysToAdd = 7;
+    } else if (termVal.includes('3 วัน')) {
+      daysToAdd = 3;
+    } else if (termVal.includes('ชำระทันที')) {
+      daysToAdd = 0;
+    } else {
+      const numMatch = termVal.match(/\d+/);
+      if (numMatch) {
+        daysToAdd = parseInt(numMatch[0]);
+      }
     }
   }
 
@@ -2523,6 +2774,49 @@ function syncDocPreview() {
   if (prevDocTitleText) prevDocTitleText.textContent = docTitle;
   const prevDocTitleEnText = document.getElementById('prevDocTitleEnText');
   if (prevDocTitleEnText) prevDocTitleEnText.textContent = docTitleEn;
+
+  // Doc Ref Row logic (Quotations suppress ref row)
+  const prevDocRefRow = document.getElementById('prevDocRefRow');
+  const prevDocRefVal = document.getElementById('prevDocRefVal');
+  const docInvoiceNoEl = document.getElementById('docInvoiceNo');
+  const docInvoiceNoVal = docInvoiceNoEl ? docInvoiceNoEl.value.trim() : '';
+  if (prevDocRefRow) {
+    if (currentDocType === 'quotation') {
+      prevDocRefRow.style.display = 'none';
+    } else if (currentDocType === 'receipt' && docInvoiceNoVal) {
+      prevDocRefRow.style.display = '';
+      if (prevDocRefVal) prevDocRefVal.textContent = cleanDocNo(docInvoiceNoVal);
+    } else {
+      prevDocRefRow.style.display = 'none';
+    }
+  }
+
+  // P.O. No. & Job Code preview rows (Zero Blank Rows rule)
+  const poNumEl = document.getElementById('docPoNumber');
+  const poNumberVal = poNumEl ? poNumEl.value.trim() : '';
+  const prevDocPoNumberRow = document.getElementById('prevDocPoNumberRow');
+  const prevDocPoNumberVal = document.getElementById('prevDocPoNumberVal');
+  if (prevDocPoNumberRow) {
+    if (poNumberVal && poNumberVal !== '-') {
+      prevDocPoNumberRow.style.display = '';
+      if (prevDocPoNumberVal) prevDocPoNumberVal.textContent = poNumberVal;
+    } else {
+      prevDocPoNumberRow.style.display = 'none';
+    }
+  }
+
+  const jobCodeEl = document.getElementById('docJobCode');
+  const jobCodeVal = jobCodeEl ? jobCodeEl.value.trim() : '';
+  const prevDocJobCodeRow = document.getElementById('prevDocJobCodeRow');
+  const prevDocJobCodeVal = document.getElementById('prevDocJobCodeVal');
+  if (prevDocJobCodeRow) {
+    if (jobCodeVal && jobCodeVal !== '-') {
+      prevDocJobCodeRow.style.display = '';
+      if (prevDocJobCodeVal) prevDocJobCodeVal.textContent = jobCodeVal;
+    } else {
+      prevDocJobCodeRow.style.display = 'none';
+    }
+  }
 
   // Due Date row & label logic for Quotation, Invoice, Receipt
   const dueDateRow = document.getElementById('prevDocDueDateRow');
@@ -2667,11 +2961,29 @@ function syncDocPreview() {
     prevSignerLabel.textContent = 'กรรมการผู้มีอำนาจลงนาม / Authorized Signature';
   }
 
-  // Toggle left signature box
+  // Toggle left signature box (Quotation has Customer Acceptance block)
   const prevLeftSignBox = document.getElementById('prevLeftSignBox');
   if (prevLeftSignBox) {
-    prevLeftSignBox.style.visibility = 'visible';
-    prevLeftSignBox.style.display = '';
+    if (currentDocType === 'quotation') {
+      prevLeftSignBox.className = 'signature-card signature-box';
+      prevLeftSignBox.style.visibility = 'visible';
+      prevLeftSignBox.style.display = '';
+      prevLeftSignBox.style.marginLeft = '0';
+      prevLeftSignBox.style.marginRight = 'auto';
+      prevLeftSignBox.style.textAlign = 'center';
+      prevLeftSignBox.innerHTML = `
+        <div style="font-size: 11px; font-weight: 700; color: #0f172a; margin-bottom: 45px;">ผู้อนุมัติสั่งจ้าง / Customer Acceptance</div>
+        <div class="signature-line"></div>
+        <div class="signer-name" style="font-size: 10px; font-weight: 500; color: #475569;">(ลงชื่อผู้ว่าจ้าง / ประทับตรา)</div>
+        <div class="signer-title signature-label" style="margin-top: 3px;">วันที่ / Date: ....................</div>
+      `;
+    } else {
+      prevLeftSignBox.className = 'signature-col-empty';
+      prevLeftSignBox.innerHTML = '';
+      prevLeftSignBox.style.marginLeft = '';
+      prevLeftSignBox.style.marginRight = '';
+      prevLeftSignBox.style.textAlign = '';
+    }
   }
 
   // Terms and Conditions Section sync
@@ -2699,8 +3011,8 @@ function syncDocPreview() {
         ${remarksVal ? `<div>• หมายเหตุ: ${escapeHtml(remarksVal)}</div>` : ''}
         <div style="margin-top: 2px; font-size: 9.5px; color: #64748b;">* ในกรณีชำระด้วยเช็ค เอกสารนี้จะสมบูรณ์เมื่อเช็คได้เรียกเก็บเงินผ่านธนาคารเรียบร้อยแล้ว</div>
       `;
-    } else if (currentDocType === 'receipt') {
-      // ตัดกล่อง "รายละเอียดการชำระเงิน (Payment Details)" ทิ้งโดยสิ้นเชิง
+    } else if (['receipt', 're', 'tax_invoice'].includes(String(currentDocType || '').toLowerCase())) {
+      // ตัดกล่อง "รายละเอียดการชำระเงิน (Payment Details)" ทิ้งโดยสิ้นเชิง 100%
       if (remarksVal) {
         if (prevRemarksSection) prevRemarksSection.style.display = 'block';
         prevTermsTitle.textContent = 'หมายเหตุ (Remarks):';
@@ -2828,7 +3140,8 @@ function formatDate(dateStr) {
 
 function cleanDocNo(val) {
   if (!val || val === '-') return val;
-  const str = String(val).trim();
+  let str = String(val).trim();
+  str = str.replace(/^(?:เก่ง|หอม|นิค|พี่นิค|มด|ทอย|ช่างภาพ|ทีมงาน)[-_:\s]+/i, '');
   const match = str.match(/(?:QT|IV|RE|EXP|PV|WHT|50BIS|BILL)[\w\-]+/i);
   if (match) {
     return match[0].toUpperCase().replace(/\s+/g, '-');
@@ -2838,6 +3151,36 @@ function cleanDocNo(val) {
                      .replace(/\s+/g, '')
                      .toUpperCase();
   return cleaned;
+}
+
+function getActiveCreatorName() {
+  const creatorElem = document.getElementById('docCreatorSelect');
+  const creatorVal = creatorElem ? creatorElem.value : '';
+  const sigElem = document.getElementById('doc_signatureSelect');
+  const sigVal = sigElem ? sigElem.value : '';
+
+  if (creatorVal === 'hom' || sigVal === 'hom') return 'หอม';
+  if (creatorVal === 'nick' || sigVal === 'nick') return 'นิค';
+  if (creatorVal === 'mod' || sigVal === 'mod') return 'มด';
+  if (creatorVal === 'keng' || sigVal === 'keng') return 'เก่ง';
+
+  return 'เก่ง';
+}
+
+function formatSheetDocNoWithCreator(docNo, creator) {
+  if (!docNo) return '';
+  const clean = cleanDocNo(docNo);
+  let activeCreator = creator;
+  if (!activeCreator) {
+    const raw = String(docNo).trim();
+    const match = raw.match(/^(เก่ง|หอม|นิค|พี่นิค|มด)[-_:\s]+/);
+    if (match) {
+      activeCreator = match[1] === 'พี่นิค' ? 'นิค' : match[1];
+    } else {
+      activeCreator = getActiveCreatorName();
+    }
+  }
+  return `${activeCreator}-${clean}`;
 }
 
 function formatAddressForPreview(text, isHtml = false) {
@@ -2929,6 +3272,8 @@ function processDocumentSync() {
     const phoneInput = document.getElementById('docClientPhone');
     const clientPhone = phoneInput ? phoneInput.value : '-';
     const detail = document.getElementById('docProjectName').value;
+    const poNumber = (document.getElementById('docPoNumber') ? document.getElementById('docPoNumber').value.trim() : '');
+    const jobCode = (document.getElementById('docJobCode') ? document.getElementById('docJobCode').value.trim() : '');
     
     let subtotal = 0;
     docItems.forEach(item => {
@@ -2937,13 +3282,13 @@ function processDocumentSync() {
     });
     
     const vatChecked = document.getElementById('docVatCheckbox').checked;
-    const whtRate = parseInt(document.getElementById('docWhtSelect').value) || 0;
+    const whtRate = currentDocType === 'quotation' ? 0 : (parseInt(document.getElementById('docWhtSelect').value) || 0);
     const discountInput = document.getElementById('docDiscountInput');
     const discount = discountInput ? (parseFloat(discountInput.value) || 0) : 0;
     const totalAfterDiscount = Math.max(0, subtotal - discount);
     const vat = Math.round((vatChecked ? totalAfterDiscount * 0.07 : 0) * 100) / 100;
-    const wht = Math.round((totalAfterDiscount * (whtRate / 100)) * 100) / 100;
-    const net = Math.round((totalAfterDiscount + vat - wht) * 100) / 100;
+    const wht = currentDocType === 'quotation' ? 0 : Math.round((totalAfterDiscount * (whtRate / 100)) * 100) / 100;
+    const net = currentDocType === 'quotation' ? Math.round((totalAfterDiscount + vat) * 100) / 100 : Math.round((totalAfterDiscount + vat - wht) * 100) / 100;
     const paymentTerm = document.getElementById('docPaymentTerm').value;
     const dueDate = document.getElementById('docDueDate').value;
 
@@ -2966,15 +3311,11 @@ function processDocumentSync() {
     const existingDoc = dbDocs.find(d => cleanDocNo(d.number) === cleanDocNo(docNo) && d.type === currentDocType);
     if (existingDoc) {
       const userChoice = confirm(
-        `⚠️ ตรวจพบเลขที่เอกสาร "${docNo}" มีอยู่ในระบบแล้ว!\n\n` +
+        `ตรวจพบเลขที่เอกสาร "${docNo}" มีอยู่ในระบบแล้ว\n\n` +
         `• กด [ตกลง / OK] เพื่อบันทึกอัปเดตทับเอกสารเดิม\n` +
-        `• กด [ยกเลิก / Cancel] เพื่อรันเลขที่เอกสารใหม่ให้อัตโนมัติและแก้ไข`
+        `• กด [ยกเลิก / Cancel] เพื่อยกเลิกการบันทึก`
       );
       if (!userChoice) {
-        const newDocNo = autoGenerateDocNumber(currentDocType);
-        const docNoInput = document.getElementById('docNumber');
-        if (docNoInput) docNoInput.value = newDocNo;
-        alert(`ระบบได้เปลี่ยนเลขที่เอกสารเป็น "${newDocNo}" เรียบร้อยแล้ว กรุณากดบันทึกอีกครั้งค่ะ`);
         resolve(false);
         return;
       }
@@ -2989,6 +3330,8 @@ function processDocumentSync() {
       date: dateStr,
       name: clientName,
       detail: detail,
+      po_number: poNumber,
+      job_code: jobCode,
       amount: subtotal,
       discount: discount,
       discountDesc: document.getElementById('docDiscountDesc') ? document.getElementById('docDiscountDesc').value.trim() : '',
@@ -3016,12 +3359,28 @@ function processDocumentSync() {
       }))
     };
 
+    let remarks = document.getElementById('docRemarks') ? document.getElementById('docRemarks').value.trim() : '';
+    const poRemarks = [];
+    if (poNumber && poNumber !== '-') {
+      poRemarks.push(`P.O. No.: ${poNumber}`);
+    }
+    if (jobCode && jobCode !== '-') {
+      poRemarks.push(`Job Code: ${jobCode}`);
+    }
+    if (poRemarks.length > 0) {
+      const poText = poRemarks.join(' | ');
+      if (!remarks.includes(poText)) {
+        remarks = remarks ? `${remarks} | ${poText}` : poText;
+      }
+    }
+
+    const sheetDocNo = formatSheetDocNoWithCreator(docNo);
     if (currentDocType === 'quotation') {
       payload.sheetName = 'ใบเสนอราคา';
       payload.values = [
         recordDate,
         dateStr,
-        docNo,
+        sheetDocNo,
         clientName,
         formatGoogleSheetsText(clientTaxId),
         clientAddress || "-",
@@ -3039,7 +3398,7 @@ function processDocumentSync() {
         showSignature,
         JSON.stringify(docRecord.items),
         new Date().toLocaleString(),
-        document.getElementById('docRemarks').value || "-",
+        remarks || "-",
         discount,
         document.getElementById('docDiscountDesc') ? document.getElementById('docDiscountDesc').value.trim() : ''
       ];
@@ -3048,7 +3407,7 @@ function processDocumentSync() {
       payload.values = [
         recordDate,
         dateStr,
-        docNo,
+        sheetDocNo,
         clientName,
         formatGoogleSheetsText(clientTaxId),
         clientAddress || "-",
@@ -3068,7 +3427,7 @@ function processDocumentSync() {
         new Date().toLocaleString(),
         paymentTerm || "-",
         dueDateStr || "-",
-        document.getElementById('docRemarks').value || "-",
+        remarks || "-",
         discount,
         document.getElementById('docDiscountDesc') ? document.getElementById('docDiscountDesc').value.trim() : ''
       ];
@@ -3107,15 +3466,11 @@ function processDocumentSync() {
     const existingWht = dbDocs.find(d => cleanDocNo(d.number) === cleanDocNo(docNo) && d.type === 'wht');
     if (existingWht) {
       const userChoice = confirm(
-        `⚠️ ตรวจพบเลขที่เอกสาร "${docNo}" มีอยู่ในระบบแล้ว!\n\n` +
+        `ตรวจพบเลขที่เอกสาร "${docNo}" มีอยู่ในระบบแล้ว\n\n` +
         `• กด [ตกลง / OK] เพื่อบันทึกอัปเดตทับเอกสารเดิม\n` +
-        `• กด [ยกเลิก / Cancel] เพื่อรันเลขที่เอกสารใหม่ให้อัตโนมัติและแก้ไข`
+        `• กด [ยกเลิก / Cancel] เพื่อยกเลิกการบันทึก`
       );
       if (!userChoice) {
-        const newDocNo = autoGenerateDocNumber('wht');
-        const docNoInput = document.getElementById('whtDocNumber');
-        if (docNoInput) docNoInput.value = newDocNo;
-        alert(`ระบบได้เปลี่ยนเลขที่เอกสารเป็น "${newDocNo}" เรียบร้อยแล้ว กรุณากดบันทึกอีกครั้งค่ะ`);
         resolve(false);
         return;
       }
@@ -3203,6 +3558,8 @@ function processDocumentSync() {
     const clientBranch = document.getElementById('docClientBranch').value || '00000';
     const clientAddress = document.getElementById('docClientAddress').value || '-';
     const detail = document.getElementById('docProjectName').value;
+    const poNumber = (document.getElementById('docPoNumber') ? document.getElementById('docPoNumber').value.trim() : '');
+    const jobCode = (document.getElementById('docJobCode') ? document.getElementById('docJobCode').value.trim() : '');
 
     let subtotal = 0;
     docItems.forEach(item => {
@@ -3228,7 +3585,20 @@ function processDocumentSync() {
     const paymentStatus = document.getElementById('docPaymentStatus').value;
     const actualPaymentDate = document.getElementById('docActualPaymentDate').value || dateVal;
     const recordedBy = document.getElementById('docRecordedBy').value;
-    const remarks = document.getElementById('docRemarks').value;
+    let remarks = document.getElementById('docRemarks') ? document.getElementById('docRemarks').value.trim() : '';
+    const poRemarks = [];
+    if (poNumber && poNumber !== '-') {
+      poRemarks.push(`P.O. No.: ${poNumber}`);
+    }
+    if (jobCode && jobCode !== '-') {
+      poRemarks.push(`Job Code: ${jobCode}`);
+    }
+    if (poRemarks.length > 0) {
+      const poText = poRemarks.join(' | ');
+      if (!remarks.includes(poText)) {
+        remarks = remarks ? `${remarks} | ${poText}` : poText;
+      }
+    }
 
     if (!docNo || !dateVal || !clientName || subtotal <= 0) {
       alert('กรุณากรอกข้อมูลรายรับให้ครบถ้วนก่อนทำการบันทึก');
@@ -3243,15 +3613,11 @@ function processDocumentSync() {
     const existingReceipt = dbDocs.find(d => cleanDocNo(d.number) === cleanDocNo(docNo) && d.type === 'receipt');
     if (existingReceipt) {
       const userChoice = confirm(
-        `⚠️ ตรวจพบเลขที่เอกสาร "${docNo}" มีอยู่ในระบบแล้ว!\n\n` +
+        `ตรวจพบเลขที่เอกสาร "${docNo}" มีอยู่ในระบบแล้ว\n\n` +
         `• กด [ตกลง / OK] เพื่อบันทึกอัปเดตทับเอกสารเดิม\n` +
-        `• กด [ยกเลิก / Cancel] เพื่อรันเลขที่เอกสารใหม่ให้อัตโนมัติและแก้ไข`
+        `• กด [ยกเลิก / Cancel] เพื่อยกเลิกการบันทึก`
       );
       if (!userChoice) {
-        const newDocNo = autoGenerateDocNumber('receipt');
-        const docNoInput = document.getElementById('docNumber');
-        if (docNoInput) docNoInput.value = newDocNo;
-        alert(`ระบบได้เปลี่ยนเลขที่เอกสารเป็น "${newDocNo}" เรียบร้อยแล้ว กรุณากดบันทึกอีกครั้งค่ะ`);
         resolve(false);
         return;
       }
@@ -3281,12 +3647,13 @@ function processDocumentSync() {
       };
     });
 
+    const receiptSheetDocNo = formatSheetDocNoWithCreator(docNo);
     if (localItems.length > 0) {
       payload.rows = localItems.map(item => {
         return [
           recordDate,
           dateStr,
-          docNo,
+          receiptSheetDocNo,
           invoiceNo || "-",
           clientName,
           formatGoogleSheetsText(clientTaxId),
@@ -3314,7 +3681,7 @@ function processDocumentSync() {
       payload.values = [
         recordDate,
         dateStr,
-        docNo,
+        receiptSheetDocNo,
         invoiceNo || "-",
         clientName,
         formatGoogleSheetsText(clientTaxId),
@@ -3345,6 +3712,8 @@ function processDocumentSync() {
       date: dateStr,
       name: clientName,
       detail: detail,
+      po_number: poNumber,
+      job_code: jobCode,
       amount: subtotal,
       discount: discount,
       discountDesc: document.getElementById('docDiscountDesc') ? document.getElementById('docDiscountDesc').value.trim() : '',
@@ -3391,7 +3760,7 @@ function processDocumentSync() {
     })
     .then(res => {
       if (res.status === 'success') {
-        alert(`บันทึกและซิงค์ข้อมูลลง Google Sheets เรียบร้อยแล้ว\nข้อความระบบ: ${res.message}`);
+        console.log(`บันทึกและซิงค์ข้อมูลลง Google Sheets เรียบร้อยแล้ว: ${res.message}`);
         
         docRecord.status = 'synced';
         dbDocs.unshift(docRecord);
@@ -3434,8 +3803,10 @@ function processDocumentSync() {
       resolve(true);
     })
     .finally(() => {
-      syncBtn.innerHTML = origHtml;
-      syncBtn.disabled = false;
+      if (!isDocFormLocked) {
+        syncBtn.innerHTML = origHtml;
+        syncBtn.disabled = false;
+      }
     });
   });
 }
@@ -4165,12 +4536,22 @@ function fetchDocumentsFromSheets(showToast = false) {
           console.error('Error parsing items JSON for', docNo, e);
         }
 
+        const remarksStr = row[20] || '-';
+        let poNumber = '';
+        let jobCode = '';
+        const poMatch = remarksStr.match(/P\.O\.\s*No\.?:\s*([^|]+)/i);
+        if (poMatch) poNumber = poMatch[1].trim();
+        const jobMatch = remarksStr.match(/Job\s*Code:\s*([^|]+)/i);
+        if (jobMatch) jobCode = jobMatch[1].trim();
+
         const docRecord = {
           number: docNo,
           type: 'quotation',
           date: row[1] || '',
           name: row[3] || '',
           detail: row[8] || '',
+          po_number: poNumber,
+          job_code: jobCode,
           amount: parseFloat(row[9]) || 0,
           status: 'synced',
           timestamp: row[19] || '',
@@ -4186,7 +4567,7 @@ function fetchDocumentsFromSheets(showToast = false) {
           signatureSelect: row[15] || 'keng',
           showSeal: String(row[16]) === 'true',
           showSignature: String(row[17]) === 'true',
-          remarks: row[20] || '-',
+          remarks: remarksStr,
           discount: parseFloat(row[21]) || 0,
           discountDesc: row[22] || '',
           items: items
@@ -4212,12 +4593,22 @@ function fetchDocumentsFromSheets(showToast = false) {
           console.error('Error parsing items JSON for', docNo, e);
         }
 
+        const remarksStr = row[22] || '-';
+        let poNumber = '';
+        let jobCode = '';
+        const poMatch = remarksStr.match(/P\.O\.\s*No\.?:\s*([^|]+)/i);
+        if (poMatch) poNumber = poMatch[1].trim();
+        const jobMatch = remarksStr.match(/Job\s*Code:\s*([^|]+)/i);
+        if (jobMatch) jobCode = jobMatch[1].trim();
+
         const docRecord = {
           number: docNo,
           type: 'invoice',
           date: row[1] || '',
           name: row[3] || '',
           detail: row[8] || '',
+          po_number: poNumber,
+          job_code: jobCode,
           amount: parseFloat(row[9]) || 0,
           status: 'synced',
           timestamp: row[19] || '',
@@ -4236,7 +4627,7 @@ function fetchDocumentsFromSheets(showToast = false) {
           items: items,
           paymentTerm: row[20] || '-',
           dueDate: row[21] || '',
-          remarks: row[22] || '-',
+          remarks: remarksStr,
           discount: parseFloat(row[23]) || 0,
           discountDesc: row[24] || ''
         };
@@ -4297,12 +4688,22 @@ function fetchDocumentsFromSheets(showToast = false) {
           const ownerMatch = profitShareStr.match(/คนดีล:\s*([^|]+)/) || profitShareStr.match(/คนทำงาน:\s*([^|]+)/);
           if (ownerMatch) ownerName = ownerMatch[1].trim();
 
+          const remarksStr = row[21] || '';
+          let poNumber = '';
+          let jobCode = '';
+          const poMatch = remarksStr.match(/P\.O\.\s*No\.?:\s*([^|]+)/i);
+          if (poMatch) poNumber = poMatch[1].trim();
+          const jobMatch = remarksStr.match(/Job\s*Code:\s*([^|]+)/i);
+          if (jobMatch) jobCode = jobMatch[1].trim();
+
           incomeDocsMap[docNo] = {
             number: docNo,
             type: type,
             date: row[1] || '',
             name: row[4] || '',
             detail: row[8] || '',
+            po_number: poNumber,
+            job_code: jobCode,
             amount: 0,
             vat: 0,
             wht: 0,
@@ -4312,7 +4713,7 @@ function fetchDocumentsFromSheets(showToast = false) {
             paymentStatus: row[16] || 'จ่ายเงินแล้ว',
             actualPaymentDate: row[17] || '',
             recordedBy: row[20] || '',
-            remarks: row[21] || '',
+            remarks: remarksStr,
             discount: parseFloat(row[22]) || 0,
             discountDesc: row[23] || '',
             status: 'synced',
@@ -5638,12 +6039,7 @@ function exportPdfClientSide() {
   const docNoInput = document.getElementById(currentDocType === 'wht' ? 'whtDocNumber' : 'docNumber');
   const docNo = docNoInput ? docNoInput.value.trim() : '';
   const cleanedDocNo = cleanDocNo(docNo);
-  let displayDocType = 'เอกสาร';
-  if (currentDocType === 'quotation') displayDocType = 'ใบเสนอราคา_สัญญาจ้าง';
-  else if (currentDocType === 'invoice') displayDocType = 'ใบวางบิล';
-  else if (currentDocType === 'receipt') displayDocType = 'ใบเสร็จรับเงิน';
-  else if (currentDocType === 'wht') displayDocType = 'ใบหัก_ณ_ที่จ่าย_50_ทวิ';
-  const finalFilename = `${displayDocType}_${cleanedDocNo}.pdf`.replace(/[\/\\?%*:|"<>\s]+/g, '_');
+  const finalFilename = `${cleanedDocNo}.pdf`;
 
   const opt = {
     margin: 0,
@@ -5770,7 +6166,7 @@ async function handleUploadPdfToDrive(triggerBtnId = 'btnSaveAndSyncDoc') {
     const detail = (document.getElementById('docProjectName') ? document.getElementById('docProjectName').value : '').trim();
     const vatChecked = document.getElementById('docVatCheckbox') ? document.getElementById('docVatCheckbox').checked : true;
     const whtSelect = document.getElementById('docWhtSelect');
-    const whtRate = whtSelect ? (parseInt(whtSelect.value) || 0) : 0;
+    const whtRate = currentDocType === 'quotation' ? 0 : (whtSelect ? (parseInt(whtSelect.value) || 0) : 0);
     const discountInput = document.getElementById('docDiscountInput');
     const discount = discountInput ? (parseFloat(discountInput.value) || 0) : 0;
     const discountDescInput = document.getElementById('docDiscountDesc');
@@ -5796,6 +6192,8 @@ async function handleUploadPdfToDrive(triggerBtnId = 'btnSaveAndSyncDoc') {
       client_address: clientAddress,
       client_phone: clientPhone,
       project_name: detail,
+      po_number: (document.getElementById('docPoNumber') ? document.getElementById('docPoNumber').value.trim() : ''),
+      job_code: (document.getElementById('docJobCode') ? document.getElementById('docJobCode').value.trim() : ''),
       items: docItems.map(item => ({
         desc: item.desc || "-",
         qty: item.qty || 1,
@@ -5918,12 +6316,7 @@ async function handleUploadPdfToDrive(triggerBtnId = 'btnSaveAndSyncDoc') {
 
   // สร้างชื่อไฟล์
   const cleanedDocNo = cleanDocNo(docNo);
-  let displayDocType = 'เอกสาร';
-  if (currentDocType === 'quotation') displayDocType = 'ใบเสนอราคา_สัญญาจ้าง';
-  else if (currentDocType === 'invoice') displayDocType = 'ใบวางบิล';
-  else if (currentDocType === 'receipt') displayDocType = 'ใบเสร็จรับเงิน';
-  else if (currentDocType === 'wht') displayDocType = 'ใบหัก_ณ_ที่จ่าย_50_ทวิ';
-  const pdfName = `${displayDocType}_${cleanedDocNo}.pdf`.replace(/[\/\\?%*:|"<>\s]+/g, '_');
+  const pdfName = `${cleanedDocNo}.pdf`;
 
   const previewElement = currentDocType === 'wht'
     ? document.getElementById('previewWhtDoc')

@@ -18,7 +18,7 @@ Features:
 """
 
 import base64
-from datetime import datetime
+from datetime import datetime, timedelta
 import os
 from pathlib import Path
 import re
@@ -56,6 +56,30 @@ def format_company_name_with_branch(name: Optional[str], branch: Optional[str] =
         return f"{cleaned_name} ({b_str})"
     else:
         return f"{cleaned_name} (สาขาที่ {b_str})"
+
+
+def normalize_doc_no(doc_no: Any) -> str:
+    """
+    Normalizes document numbers to 100% clean official format without creator/worker prefixes.
+    E.g.
+    'เก่ง-QT-202609-001' -> 'QT-202609-001'
+    'หอม-RE2608-001' -> 'RE2608-001'
+    'นิค-IV-202609-002' -> 'IV-202609-002'
+    'มด-QT2608-001' -> 'QT2608-001'
+    '[ทอย]-RE2608-587' -> 'RE2608-587'
+    """
+    if not doc_no:
+        return ""
+    val = str(doc_no).strip()
+    if val == "-" or val == "":
+        return val
+    match = re.search(r'(?:QT|IV|RE|EXP|PV|WHT|50BIS|BILL)[\w\-]+', val, re.IGNORECASE)
+    if match:
+        return match.group(0).upper().replace(' ', '-')
+    cleaned = re.sub(r'^[\[\(].*?[\]\)]\s*[-_]?\s*', '', val, flags=re.IGNORECASE)
+    cleaned = re.sub(r'^[^\w\s]+[-_]?\s*', '', cleaned)
+    return cleaned.strip().upper().replace(' ', '-') if cleaned else val
+
 
 # Default Corporate Profile for GHN 168 Media & Creation Co., Ltd.
 DEFAULT_COMPANY_INFO = {
@@ -227,23 +251,29 @@ def calculate_document_totals(
     is_vat: bool = True,
     vat_rate: float = 0.07,
     wht_rate: float = 0.0,
-    discount: float = 0.0
+    discount: float = 0.0,
+    doc_type: str = ""
 ) -> Dict[str, Any]:
     """
     Computes Subtotal, Discount, Pre-VAT, VAT, WHT, Grand Total, and Thai Baht words.
+    For Quotation (ใบเสนอราคา): WHT is strictly 0%, Net Total equals Gross Amount (Subtotal - Discount + VAT).
     """
     subtotal = 0.0
     processed_items = []
 
     for idx, item in enumerate(items, start=1):
         desc = str(item.get("desc") or item.get("description") or f"รายการที่ {idx}").strip()
+        qty = float(item.get("qty") or item.get("quantity") or 1.0)
+        price = float(item.get("price") or item.get("unit_price") or 0.0)
         if item.get("amount") is not None:
             line_total = round(float(item.get("amount") or 0.0), 2)
+            if price == 0.0 and qty > 0:
+                price = round(line_total / qty, 2)
         elif item.get("line_total") is not None:
             line_total = round(float(item.get("line_total") or 0.0), 2)
+            if price == 0.0 and qty > 0:
+                price = round(line_total / qty, 2)
         else:
-            qty = float(item.get("qty") or item.get("quantity") or 1.0)
-            price = float(item.get("price") or item.get("unit_price") or 0.0)
             line_total = round(qty * price, 2)
 
         worker = str(item.get("worker") or item.get("staff") or "เก่ง").strip()
@@ -252,6 +282,8 @@ def calculate_document_totals(
         processed_items.append({
             "index": idx,
             "desc": desc,
+            "qty": qty,
+            "price": price,
             "amount": line_total,
             "line_total": line_total,
             "worker": worker
@@ -264,11 +296,32 @@ def calculate_document_totals(
     vat_amount = round(pre_vat * vat_rate, 2) if is_vat else 0.0
     gross_amount = round(pre_vat + vat_amount, 2)
 
-    # WHT is calculated on pre-vat basis (standard Thai revenue code)
-    wht_percent = float(wht_rate or 0.0)
-    wht_amount = round(pre_vat * (wht_percent / 100.0), 2) if wht_percent > 0 else 0.0
+    is_quotation = str(doc_type).lower().strip() in ["quotation", "qt", "ใบเสนอราคา"]
+    is_invoice = str(doc_type).lower().strip() in ["invoice", "iv", "ใบวางบิล", "ใบแจ้งหนี้"]
+    is_receipt = str(doc_type).lower().strip() in ["receipt", "re", "tax_invoice", "ใบเสร็จ", "ใบเสร็จรับเงิน", "ใบกำกับภาษี", "ใบเสร็จรับเงิน/ใบกำกับภาษี"]
+    if is_quotation or is_invoice:
+        wht_percent = 0.0
+        wht_amount = 0.0
+        net_total = gross_amount
+        baht_text = thai_baht_text(gross_amount)
+    else:
+        # WHT is calculated on pre-vat basis (standard Thai revenue code)
+        # Automatically normalize decimal rates (e.g. 0.03, 0.01, 0.05) to percentage (3.0, 1.0, 5.0)
+        raw_wht = float(wht_rate or 0.0)
+        if 0.0 < raw_wht < 1.0:
+            wht_percent = round(raw_wht * 100.0, 4)
+        elif raw_wht >= 1.0:
+            wht_percent = raw_wht
+        else:
+            wht_percent = 0.0
 
-    net_total = round(gross_amount - wht_amount, 2)
+        wht_amount = round(pre_vat * (wht_percent / 100.0), 2) if wht_percent > 0 else 0.0
+        net_total = round(gross_amount - wht_amount, 2)
+        # Under Thai Revenue Code Section 86/4, Tax Invoice / Receipt Baht Text reads Gross Amount before WHT
+        if is_receipt:
+            baht_text = thai_baht_text(gross_amount)
+        else:
+            baht_text = thai_baht_text(net_total)
 
     return {
         "items": processed_items,
@@ -283,7 +336,7 @@ def calculate_document_totals(
         "wht_amount": wht_amount,
         "net_total": net_total,
         "grand_total": net_total,
-        "baht_text": thai_baht_text(net_total)
+        "baht_text": baht_text
     }
 
 
@@ -643,6 +696,10 @@ h1, h2, h3, h4, h5, h6, .doc-badge-title, .doc-badge-title-en, .company-name-th,
   max-height: 160px;
   opacity: 0.88;
   mix-blend-mode: multiply;
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  filter: contrast(105%) brightness(100%);
   pointer-events: none;
   display: inline-block;
 }
@@ -750,18 +807,29 @@ def _render_standard_document_html(doc_type: str, data: Dict[str, Any]) -> str:
     assets = get_default_assets()
     company = {**DEFAULT_COMPANY_INFO, **data.get("company", {})}
 
+    # Normalize Document Type
+    norm_doc_type = str(doc_type or "").lower().strip()
+    if norm_doc_type in ["receipt", "re", "tax_invoice", "ใบเสร็จ", "ใบเสร็จรับเงิน"]:
+        doc_type_norm = "receipt"
+    elif norm_doc_type in ["invoice", "iv", "billing", "bill", "ใบแจ้งหนี้", "ใบวางบิล"]:
+        doc_type_norm = "invoice"
+    elif norm_doc_type in ["quotation", "qt", "ใบเสนอราคา"]:
+        doc_type_norm = "quotation"
+    else:
+        doc_type_norm = norm_doc_type
+
     # Document Type Meta Titles
-    if doc_type == "quotation":
+    if doc_type_norm == "quotation":
         doc_badge_th = "ใบเสนอราคา"
         doc_badge_en = "QUOTATION"
         doc_prefix = "QT"
         payment_due_label = "ยืนราคาถึงวันที่ / Valid Until"
-    elif doc_type == "invoice":
+    elif doc_type_norm == "invoice":
         doc_badge_th = "ใบวางบิล / ใบแจ้งหนี้"
         doc_badge_en = "INVOICE / BILLING NOTE"
         doc_prefix = "IV"
         payment_due_label = "ครบกำหนดชำระ / Due Date"
-    elif doc_type == "receipt":
+    elif doc_type_norm == "receipt":
         doc_badge_th = "ใบเสร็จรับเงิน / ใบกำกับภาษี"
         doc_badge_en = "RECEIPT / TAX INVOICE"
         doc_prefix = "RE"
@@ -772,16 +840,73 @@ def _render_standard_document_html(doc_type: str, data: Dict[str, Any]) -> str:
         doc_prefix = "DOC"
         payment_due_label = "วันที่ครบกำหนด / Due Date"
 
-    # Meta Info
-    doc_no = data.get("doc_no") or f"{doc_prefix}-{datetime.now().strftime('%Y%m')}-001"
+    # Meta Info - Always 100% clean document number (never creator prefix on client-facing document)
+    raw_doc_no = data.get("doc_no") or f"{doc_prefix}-{datetime.now().strftime('%Y%m')}-001"
+    doc_no = normalize_doc_no(raw_doc_no)
     doc_date = data.get("doc_date") or datetime.now().strftime("%d/%m/%Y")
-    due_date = data.get("due_date") or doc_date
-    ref_doc_no = data.get("ref_doc_no") or data.get("ref_invoice_no") or data.get("invoice_no") or data.get("ref_no")
-    ref_row_html = f"""
+    due_date = data.get("due_date")
+    if not due_date:
+        if doc_type_norm in ["quotation", "invoice"]:
+            try:
+                base_dt = datetime.strptime(str(doc_date).strip(), "%d/%m/%Y")
+                due_date = (base_dt + timedelta(days=30)).strftime("%d/%m/%Y")
+            except Exception:
+                try:
+                    base_dt = datetime.strptime(str(doc_date).strip(), "%Y-%m-%d")
+                    due_date = (base_dt + timedelta(days=30)).strftime("%d/%m/%Y")
+                except Exception:
+                    due_date = (datetime.now() + timedelta(days=30)).strftime("%d/%m/%Y")
+        else:
+            due_date = doc_date
+
+    raw_ref_doc_no = data.get("ref_doc_no") or data.get("ref_quotation_no") or data.get("ref_invoice_no") or data.get("invoice_no") or data.get("ref_no") or data.get("source_doc_no")
+    ref_doc_no = normalize_doc_no(raw_ref_doc_no) if raw_ref_doc_no else ""
+    is_rev = bool(data.get("is_revision")) or (bool(doc_no and ref_doc_no) and str(doc_no).split("-")[0] == str(ref_doc_no).split("-")[0])
+    ref_title = "อ้างอิง/ปรับปรุงจาก / Ref:" if is_rev else "อ้างอิงเอกสาร / Ref:"
+    if doc_type_norm == "quotation":
+        # Keep Quotation PDF clean - hide ref row on document while preserving in backend/sheets
+        ref_row_html = ""
+    elif doc_type_norm == "invoice":
+        # Strict Reference Rule: IV only references origin Quotation (QT). Drop internal revision or other refs on PDF.
+        if ref_doc_no and (ref_doc_no.upper().startswith("QT") or "QT" in ref_doc_no.upper()):
+            ref_row_html = f"""
         <tr>
           <td>อ้างอิงเอกสาร / Ref:</td>
           <td class="mono">{ref_doc_no}</td>
-        </tr>""" if ref_doc_no else ""
+        </tr>"""
+        else:
+            ref_row_html = ""
+    elif doc_type_norm == "receipt":
+        # Strict Reference Rule: RE only references origin Invoice (IV). Drop internal revision or other refs on PDF.
+        if ref_doc_no and (ref_doc_no.upper().startswith("IV") or "IV" in ref_doc_no.upper()):
+            ref_row_html = f"""
+        <tr>
+          <td>อ้างอิงใบวางบิล / Ref Invoice:</td>
+          <td class="mono">{ref_doc_no}</td>
+        </tr>"""
+        else:
+            ref_row_html = ""
+    else:
+        ref_row_html = f"""
+        <tr>
+          <td>{ref_title}</td>
+          <td class="mono">{ref_doc_no}</td>
+        </tr>""" if ref_doc_no and not is_rev else ""
+
+    po_number = str(data.get("po_number") or data.get("po_no") or "").strip()
+    job_code = str(data.get("job_code") or data.get("project_code") or "").strip()
+
+    po_row_html = f"""
+        <tr>
+          <td>เลขที่ใบสั่งซื้อ / P.O. No.:</td>
+          <td class="mono">{po_number}</td>
+        </tr>""" if (po_number and po_number != "-") else ""
+
+    job_code_row_html = f"""
+        <tr>
+          <td>รหัสโครงการ / Job Code:</td>
+          <td class="mono">{job_code}</td>
+        </tr>""" if (job_code and job_code != "-") else ""
 
     # Client Info
     client_name = data.get("client_name") or data.get("customer_name") or "ลูกค้าทั่วไป"
@@ -810,7 +935,8 @@ def _render_standard_document_html(doc_type: str, data: Dict[str, Any]) -> str:
         is_vat=is_vat,
         vat_rate=vat_rate,
         wht_rate=wht_rate,
-        discount=discount
+        discount=discount,
+        doc_type=doc_type_norm
     )
 
     # Logo, Seal, Signatures
@@ -837,11 +963,16 @@ def _render_standard_document_html(doc_type: str, data: Dict[str, Any]) -> str:
     # Render items HTML rows (3 columns: [ลำดับ | รายการ / รายละเอียด | จำนวนเงิน])
     item_rows = []
     for it in totals["items"]:
+        qty_val = it.get("qty", 1.0)
+        price_val = it.get("price", 0.0)
+        detail_note = ""
+        if (qty_val != 1.0 or (price_val > 0 and price_val != it["line_total"])) and price_val > 0:
+            detail_note = f'<div style="font-size: 11px; color: #64748b; margin-top: 2px;">(จำนวน {qty_val:g} x {format_currency(price_val)} ฿)</div>'
         item_rows.append(f"""
         <tr>
           <td class="center mono" style="width: 50px;">{it['index']}</td>
           <td>
-            <strong>{it['desc']}</strong>
+            <strong>{it['desc']}</strong>{detail_note}
           </td>
           <td class="right mono" style="width: 140px;"><strong>{format_currency(it['line_total'])}</strong></td>
         </tr>
@@ -869,7 +1000,7 @@ def _render_standard_document_html(doc_type: str, data: Dict[str, Any]) -> str:
         """
 
     wht_row_html = ""
-    if totals["wht_rate"] > 0:
+    if doc_type_norm not in ["quotation", "invoice"] and totals["wht_rate"] > 0:
         wht_row_html = f"""
         <tr>
           <td>หักภาษี ณ ที่จ่าย / WHT ({totals['wht_rate']:g}%)</td>
@@ -877,19 +1008,55 @@ def _render_standard_document_html(doc_type: str, data: Dict[str, Any]) -> str:
         </tr>
         """
 
-    # Terms and Notes section
+    gross_row_html = ""
+    if doc_type_norm == "receipt" and totals["wht_amount"] > 0:
+        gross_row_html = f"""
+        <tr>
+          <td>ยอดเงินรวมทั้งสิ้น / Total Amount</td>
+          <td class="mono">{format_currency(totals['gross_amount'])} ฿</td>
+        </tr>
+        """
+        grand_total_label = "ยอดโอนสุทธิ / Net Paid"
+    elif doc_type_norm == "invoice":
+        grand_total_label = "จำนวนเงินรวมทั้งสิ้น / Amount Due"
+    elif doc_type_norm == "quotation":
+        grand_total_label = "ยอดเงินรวมทั้งสิ้น / Grand Total"
+    else:
+        grand_total_label = "ยอดเงินสุทธิ / Net Total"
+
+    if doc_type_norm == "quotation":
+        left_signature_html = """
+    <div class="signature-card" style="margin-left: 0; margin-right: auto; text-align: center;">
+      <div style="font-size: 11px; font-weight: 700; color: #0f172a; margin-bottom: 45px;">ผู้อนุมัติสั่งจ้าง / Customer Acceptance</div>
+      <div class="signature-line"></div>
+      <div class="signer-name" style="font-size: 10px; font-weight: 500; color: #475569;">(ลงชื่อผู้ว่าจ้าง / ประทับตรา)</div>
+      <div class="signer-title" style="margin-top: 3px;">วันที่ / Date: ....................</div>
+    </div>"""
+    elif doc_type_norm == "invoice":
+        left_signature_html = """
+    <div class="signature-card" style="margin-left: 0; margin-right: auto; text-align: center;">
+      <div style="font-size: 11px; font-weight: 700; color: #0f172a; margin-bottom: 45px;">ผู้รับวางบิล / Received By</div>
+      <div class="signature-line"></div>
+      <div class="signer-name" style="font-size: 10px; font-weight: 500; color: #475569;">(ลงชื่อผู้รับวางบิล)</div>
+      <div class="signer-title" style="margin-top: 3px;">วันที่ / Date: ....................</div>
+    </div>"""
+    else:
+        left_signature_html = '<div class="signature-col-empty"></div>'
+
+    # Terms and Notes section (Receipt RE completely excludes Payment Details box)
     terms_html = ""
-    if doc_type == "quotation":
+    if doc_type_norm == "quotation":
+        display_remarks = re.sub(r'\|?\s*อ้างอิง(?:/ปรับปรุงจาก|เอกสาร)?[:\s]+[^\s\|]+', '', remarks).strip(' |')
         terms_html = f"""
         <div class="terms-box">
           <div class="terms-title">เงื่อนไขและข้อตกลง (Terms & Conditions):</div>
           <div>• ชำระมัดจำ 30-50% ของมูลค่าโครงการเพื่อสำรองคิวงานและยืนยันการว่าจ้าง</div>
           <div>• กำหนดยืนราคา 30 วันนับจากวันที่ออกเอกสาร</div>
-          {f"<div>• หมายเหตุ: {remarks}</div>" if remarks else ""}
+          {f"<div>• หมายเหตุ: {display_remarks}</div>" if display_remarks else ""}
           <div style="margin-top: 4px; color: #0284c7;">* บัญชีรับโอน: {company['bank_name']} เลขที่ <strong>{company['bank_account_no']}</strong> ({company['bank_account_name']})</div>
         </div>
         """
-    elif doc_type == "invoice":
+    elif doc_type_norm == "invoice":
         terms_html = f"""
         <div class="terms-box">
           <div class="terms-title">รายละเอียดการชำระเงิน (Payment Details):</div>
@@ -899,7 +1066,7 @@ def _render_standard_document_html(doc_type: str, data: Dict[str, Any]) -> str:
           <div style="margin-top: 2px; font-size: 9.5px; color: #64748b;">* ในกรณีชำระด้วยเช็ค เอกสารนี้จะสมบูรณ์เมื่อเช็คได้เรียกเก็บเงินผ่านธนาคารเรียบร้อยแล้ว</div>
         </div>
         """
-    elif doc_type == "receipt":
+    elif doc_type_norm == "receipt":
         if remarks:
             terms_html = f"""
         <div class="terms-box">
@@ -946,7 +1113,7 @@ def _render_standard_document_html(doc_type: str, data: Dict[str, Any]) -> str:
         <tr>
           <td>เลขที่เอกสาร / No:</td>
           <td class="mono" style="font-size: 13px; color: #0284c7;">{doc_no}</td>
-        </tr>{ref_row_html}
+        </tr>{ref_row_html}{po_row_html}{job_code_row_html}
         <tr>
           <td>วันที่ / Date:</td>
           <td class="mono">{doc_date}</td>
@@ -1009,9 +1176,10 @@ def _render_standard_document_html(doc_type: str, data: Dict[str, Any]) -> str:
       </tr>
       {discount_row_html}
       {vat_row_html}
+      {gross_row_html}
       {wht_row_html}
       <tr class="grand-total">
-        <td>ยอดเงินสุทธิ / Net Total</td>
+        <td>{grand_total_label}</td>
         <td class="mono">{format_currency(totals['net_total'])} ฿</td>
       </tr>
     </table>
@@ -1022,7 +1190,7 @@ def _render_standard_document_html(doc_type: str, data: Dict[str, Any]) -> str:
 
   <!-- Signatures Section -->
   <div class="signatures-container">
-    <div class="signature-col-empty"></div>
+    {left_signature_html}
 
     <div class="seal-watermark-center">
       {'<img src="' + seal_src + '" class="seal-watermark" alt="Company Seal">' if show_seal and seal_src else ''}
@@ -1065,14 +1233,21 @@ def render_wht_html(data: Dict[str, Any]) -> str:
     payee_address = data.get("payee_address") or data.get("client_address") or data.get("customer_address") or "-"
 
 
-    # Document Meta
-    doc_no = data.get("doc_no") or f"WHT-{datetime.now().strftime('%Y%m')}-001"
+    # Document Meta - Always 100% clean document number
+    raw_doc_no = data.get("doc_no") or f"WHT-{datetime.now().strftime('%Y%m')}-001"
+    doc_no = normalize_doc_no(raw_doc_no)
     doc_date = data.get("doc_date") or datetime.now().strftime("%d/%m/%Y")
 
     # Income & Tax Details
     income_desc = data.get("income_desc") or data.get("description") or "ค่าบริการและงานตัดต่อผลิตสื่อ"
     gross_amount = float(data.get("gross_amount") or data.get("amount") or 0.0)
-    wht_rate = float(data.get("wht_rate") or 3.0)
+    raw_wht_rate = float(data.get("wht_rate") if data.get("wht_rate") is not None else 3.0)
+    if 0.0 < raw_wht_rate < 1.0:
+        wht_rate = round(raw_wht_rate * 100.0, 4)
+    elif raw_wht_rate >= 1.0:
+        wht_rate = raw_wht_rate
+    else:
+        wht_rate = 0.0
     tax_amount = round(gross_amount * (wht_rate / 100.0), 2)
     net_paid = round(gross_amount - tax_amount, 2)
     tax_baht_text = thai_baht_text(tax_amount)

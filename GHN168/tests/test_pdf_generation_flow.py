@@ -186,7 +186,8 @@ class TestDocumentTemplateEngine(unittest.TestCase):
         self.assertIn("QT-202608-001", html)
         self.assertIn("บริษัท สตาร์ตอัป เชียงใหม่ จำกัด", html)
         self.assertIn("ภาษีมูลค่าเพิ่ม / VAT (7%)", html)
-        self.assertIn("สองหมื่นหกพันบาทถ้วน", html)
+        self.assertIn("สองหมื่นหกพันเจ็ดร้อยห้าสิบบาทถ้วน", html)
+        self.assertNotIn("หักภาษี ณ ที่จ่าย", html)
         # Verify 3-column table
         self.assertIn('<th class="center" style="width: 50px;">ลำดับ</th>', html)
         self.assertIn('<th>รายการ / รายละเอียด (Description)</th>', html)
@@ -261,6 +262,84 @@ class TestDocumentTemplateEngine(unittest.TestCase):
         self.assertNotIn("Payment Details", html)
         self.assertIn("หมายเหตุ (Remarks):", html)
         self.assertIn("ชำระเงินครบถ้วนเรียบร้อยแล้ว", html)
+
+    def test_wht_rate_normalization_decimal_and_percentage(self):
+        """Test WHT rate normalization: 0.03 -> 3.0%, 0.01 -> 1.0%, 0.05 -> 5.0%, 3.0 -> 3.0%."""
+        # Decimal 0.03
+        totals_dec = calculate_document_totals(
+            items=[{"desc": "บริการผลิตสื่อ", "price": 50000.0, "qty": 1}],
+            is_vat=True,
+            vat_rate=0.07,
+            wht_rate=0.03
+        )
+        self.assertEqual(totals_dec["pre_vat"], 50000.0)
+        self.assertEqual(totals_dec["vat_amount"], 3500.0)
+        self.assertEqual(totals_dec["gross_amount"], 53500.0)
+        self.assertEqual(totals_dec["wht_rate"], 3.0)  # Normalized to 3.0%
+        self.assertEqual(totals_dec["wht_amount"], 1500.0)  # 50000 * 3% = 1500
+        self.assertEqual(totals_dec["net_total"], 52000.0)
+
+        # Decimal 0.01
+        totals_trans = calculate_document_totals(
+            items=[{"desc": "ค่าขนส่ง", "price": 10000.0, "qty": 1}],
+            is_vat=True,
+            vat_rate=0.07,
+            wht_rate=0.01
+        )
+        self.assertEqual(totals_trans["wht_rate"], 1.0)
+        self.assertEqual(totals_trans["wht_amount"], 100.0)
+
+        # Decimal 0.05
+        totals_rent = calculate_document_totals(
+            items=[{"desc": "ค่าเช่าอุปกรณ์", "price": 20000.0, "qty": 1}],
+            is_vat=True,
+            vat_rate=0.07,
+            wht_rate=0.05
+        )
+        self.assertEqual(totals_rent["wht_rate"], 5.0)
+        self.assertEqual(totals_rent["wht_amount"], 1000.0)
+
+        # Percentage 3.0
+        totals_pct = calculate_document_totals(
+            items=[{"desc": "บริการผลิตสื่อ", "price": 50000.0, "qty": 1}],
+            is_vat=True,
+            vat_rate=0.07,
+            wht_rate=3.0
+        )
+        self.assertEqual(totals_pct["wht_rate"], 3.0)
+        self.assertEqual(totals_pct["wht_amount"], 1500.0)
+
+    def test_aot_receipt_re2608_563_calculation_and_html(self):
+        """Verify AOT RE-202608-563 receipt: no Payment details, 3% WHT, exact 52,000 net total."""
+        doc_data = {
+            "doc_no": "RE-202608-563",
+            "doc_date": "28/08/2026",
+            "client_name": "บริษัท อินดีโก ไอเดีย บิสซิเนส อีเว้นท์ จำกัด",
+            "client_tax_id": "0505561010315",
+            "client_address": "เลขที่ 500/62 หมู่ที่ 2 ต.แม่เหียะ อ.เมืองเชียงใหม่ จ.เชียงใหม่ 50100",
+            "client_branch": "00000",
+            "project_name": "ผลิต VTR AOT / บริการผลิตสื่อและโปรดักชั่น (งาน AOT)",
+            "items": [{"desc": "ผลิต VTR AOT / บริการผลิตสื่อและโปรดักชั่น (งาน AOT)", "qty": 1, "price": 50000.0}],
+            "is_vat": True,
+            "wht_rate": 0.03,  # Passed as decimal 0.03
+            "remarks": "ผลิต VTR AOT"
+        }
+        html = render_receipt_html(doc_data)
+        self.assertIn("RE-202608-563", html)
+        self.assertIn("ใบเสร็จรับเงิน / ใบกำกับภาษี", html)
+        self.assertIn("บริษัท อินดีโก ไอเดีย บิสซิเนส อีเว้นท์ จำกัด", html)
+        self.assertIn("0505561010315", html)
+        self.assertIn("50,000.00", html)
+        self.assertIn("3,500.00", html)
+        self.assertIn("1,500.00", html)
+        self.assertIn("52,000.00", html)
+        self.assertIn("ห้าหมื่นสามพันห้าร้อยบาทถ้วน", html)
+        self.assertIn("หักภาษี ณ ที่จ่าย / WHT (3%)", html)
+        self.assertNotIn("0.03%", html)
+        # Verify Payment Details box is completely removed
+        self.assertNotIn("รายละเอียดการชำระเงิน", html)
+        self.assertNotIn("520-0-61960-2", html)
+        self.assertNotIn("ในกรณีชำระด้วยเช็ค", html)
 
     def test_render_wht_html(self):
         html = render_wht_html({
@@ -362,12 +441,12 @@ class TestGhn168SyncService(unittest.TestCase):
         })
         self.assertEqual(sheet_name, "ใบเสนอราคา")
         self.assertEqual(len(row), 23)
-        self.assertEqual(row[2], "QT-TEST-001")  # Doc No
+        self.assertIn("QT-TEST-001", row[2])  # Doc No (with creator prefix)
         self.assertEqual(row[3], "ลูกค้า ก")     # Client Name
         self.assertEqual(row[9], 10000.0)       # Pre-VAT
         self.assertEqual(row[10], 700.0)        # VAT 7%
-        self.assertEqual(row[11], 300.0)        # WHT 3%
-        self.assertEqual(row[12], 10400.0)      # Net Total
+        self.assertEqual(row[11], 0.0)          # WHT 0.0 for quotation
+        self.assertEqual(row[12], 10700.0)      # Net Total (Grand Total = 10,000 + 700)
 
     def test_build_sheet_row_data_receipt(self):
         sheet_name, row = build_sheet_row_data("receipt", {
@@ -379,7 +458,7 @@ class TestGhn168SyncService(unittest.TestCase):
         }, pdf_url="https://drive.google.com/test_pdf")
         self.assertEqual(sheet_name, "รายรับ")
         self.assertEqual(len(row), 24)
-        self.assertEqual(row[2], "RE-TEST-001")
+        self.assertIn("RE-TEST-001", row[2])  # Doc No (with creator prefix)
         self.assertEqual(row[19], "https://drive.google.com/test_pdf")
 
     def test_build_sheet_row_data_wht(self):
@@ -483,7 +562,7 @@ class TestLineBotServerEndpoints(unittest.TestCase):
         data = res.json()
         self.assertIn(data["status"], ["success", "simulation"])
         self.assertTrue(data["doc_no"].startswith("QT-"))
-        self.assertEqual(data["totals"]["net_total"], 12480.0)
+        self.assertEqual(data["totals"]["net_total"], 12840.0)
 
     def test_api_document_preview_html(self):
         res = self.client.get("/api/document_preview/quotation?client_name=PreviewCompany&amount=25000")
@@ -571,7 +650,7 @@ class TestLineBotServerEndpoints(unittest.TestCase):
         self.assertEqual(res["totals"]["gross_amount"], 19260.0)
         self.assertEqual(res["totals"]["wht_amount"], 540.0)
         self.assertEqual(res["totals"]["net_total"], 18720.0)
-        self.assertEqual(res["totals"]["baht_text"], "หนึ่งหมื่นแปดพันเจ็ดร้อยยี่สิบบาทถ้วน")
+        self.assertEqual(res["totals"]["baht_text"], "หนึ่งหมื่นเก้าพันสองร้อยหกสิบบาทถ้วน")
 
         # HTML verification
         html = render_document_html("receipt", doc_payload)
@@ -583,7 +662,7 @@ class TestLineBotServerEndpoints(unittest.TestCase):
         self.assertIn("21/6 หมู่ 2 ต.ริมใต้ อ.แม่ริม จ.เชียงใหม่ 50180", html)
         self.assertIn("นาย มงคล วงศ์สกุลยานนท์", html)
         self.assertIn("18,720.00", html)
-        self.assertIn("หนึ่งหมื่นแปดพันเจ็ดร้อยยี่สิบบาทถ้วน", html)
+        self.assertIn("หนึ่งหมื่นเก้าพันสองร้อยหกสิบบาทถ้วน", html)
         print("✅ End-to-end M-Cool Receipt generation & 3% WHT rendering verified 100%.")
 
 
